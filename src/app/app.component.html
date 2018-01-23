@@ -1,20 +1,61 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div uk-grid class="app" uk-height-viewport>
+  <div class="uk-width-1-4" style="background: #2C3E50">
+    <div class="title-block">
+      <div class="uk-margin-left" style="padding-bottom: 15px;">
+        <span class="title">
+          RaiBlocks
+          <!--<span class="uk-text-success uk-text-middle" *ngIf="node.online" title="Node is online. Block {{ node.count }} ({{ node.unchecked}} unchecked)" uk-icon="icon: bolt" uk-tooltip></span>-->
+          <!--<span class="uk-text-warning uk-text-middle" *ngIf="!node.online" title="Node is offline.  Check settings or start RaiWallet." uk-icon="icon: warning" uk-tooltip></span>-->
+        </span>
+        <span class="balance-text">Balance</span>
+        <span class="balance">{{ wallet.balance | rai: 'dynamic' }}</span>
+        <span class="balance-text uk-text-muted">Pending</span>
+        <span class="balance uk-text-muted">{{ wallet.pending | rai: 'dynamic' }}</span>
+      </div>
+
+    </div>
+
+    <app-wallet-widget></app-wallet-widget>
+
+    <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
+      <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
+      <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left">History</a></li>
+      <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+      <li>
+        <div uk-grid>
+          <div class="uk-width-3-4">
+            <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
+          </div>
+          <div class="uk-width-1-4 uk-text-center">
+            <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
+          </div>
+        </div>
+      </li>
+      <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
+      <li class="uk-parent">
+        <a href="#" class="uk-margin-left">Settings</a>
+        <ul class="uk-nav-sub">
+          <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
+          <!--<li><a routerLink="/configure" routerLinkActive="active" class="uk-margin-left">Configure Node</a></li>-->
+          <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure Wallet</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="uk-position-bottom-left uk-position-small footer">
+      &hearts; <a routerLink="/">RaiVault.io</a>
+    </div>
+
+  </div>
+  <div class="uk-width-3-4" style="padding-left: 0;">
+    <div class="uk-panel uk-panel-scrollable uk-height-1-1">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+
+<app-notifications></app-notifications>
+<app-account-viewer></app-account-viewer>
+
+
 

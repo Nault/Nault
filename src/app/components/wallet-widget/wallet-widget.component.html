@@ -1,0 +1,43 @@
+<div class="uk-width-1-1 uk-background-secondary wallet-bar">
+  <div class="uk-margin-left" style="padding-top: 6px; padding-bottom: 6px; color: #FFF;">
+    <div uk-grid>
+      <div class="uk-width-1-1">
+        <div *ngIf="wallet.seed">
+          <!--<a class="uk-float-right uk-margin-right uk-text-middle" routerLink="/manage-wallet"><span class="uk-text-top" uk-icon="icon: cog"></span></a>-->
+          <div *ngIf="wallet.locked" class="uk-text-bottom">
+            <span style="cursor: pointer;" uk-toggle="target: #unlock-wallet-modal">
+              <span uk-icon="icon: lock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Locked</span>
+            </span>
+          </div>
+          <div *ngIf="!wallet.locked">
+            <span style="cursor:pointer" (click)="lockWallet()">
+              <span uk-icon="icon: unlock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Unlocked</span>
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="!wallet.seed">
+          <a routerLink="/configure-wallet" class="uk-text-warning">
+            <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom">Configure Wallet</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="unlock-wallet-modal" uk-modal>
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-header">
+      <h2 class="uk-modal-title">Unlock Wallet</h2>
+    </div>
+    <div class="uk-modal-body">
+      <input type="password" [(ngModel)]="unlockPassword" class="uk-input" placeholder="Enter wallet password">
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()">Unlock</button>
+    </div>
+  </div>
+</div>

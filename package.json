@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/core": "0.0.28",
     "@angular/animations": "^5.0.0",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
@@ -21,8 +22,15 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "@types/crypto-js": "^3.1.38",
+    "bignumber.js": "^5.0.0",
+    "blakejs": "^1.1.0",
     "core-js": "^2.4.1",
+    "crypto": "^1.0.1",
+    "crypto-js": "^3.1.9-1",
+    "ngx-clipboard": "^9.1.2",
     "rxjs": "^5.5.2",
+    "tweetnacl": "^1.0.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

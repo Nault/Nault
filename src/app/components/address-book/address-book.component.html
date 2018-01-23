@@ -1,0 +1,80 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+    <div uk-grid>
+      <div class="uk-width-1-2">
+        <h2>Address Book</h2>
+      </div>
+      <div class="uk-width-1-2 uk-text-right">
+        <button class="uk-button uk-button-secondary" (click)="activePanel = 1">Create New Address</button>
+      </div>
+    </div>
+    <p>
+      You can use the address book to store a nickname for accounts you frequently transact with.
+    </p>
+
+
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 0" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default uk-margin">
+          <table class="uk-table uk-table-striped uk-table-small">
+            <thead>
+            <tr>
+              <th class="uk-width-2-5">Name</th>
+              <th class="uk-width-3-6">Account ID</th>
+              <th class="uk-width-1-6 uk-text-center">Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let addressBook of addressBook$ | async">
+              <td>{{ addressBook.name }} </td>
+              <td class="uk-text-truncate"><a (click)="modal.showAccount(addressBook.account)" class="uk-link-text" title="View Account Details" uk-tooltip>{{ addressBook.account }}</a></td>
+              <td class="uk-text-center">
+                <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 1" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header">
+            <h2 class="uk-card-title">Create New Address</h2>
+          </div>
+          <div class="uk-card-body">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newAddressAccount" placeholder="xrb_abc123">
+                </div>
+              </div>
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-name">Account Name</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="uk-card-footer">
+            <div uk-grid>
+              <div class="uk-width-1-2 uk-text-left">
+                <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">Cancel</button>
+              </div>
+              <div class="uk-width-1-2 uk-text-right">
+                <button class="uk-button uk-button-primary" (click)="saveNewAddress()">Save New Address</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

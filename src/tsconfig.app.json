@@ -3,11 +3,14 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "es2015",
-    "types": []
+    "module": "commonjs",
+    "allowJs": false,
+    "types": [],
+    "lib": ["dom", "es7", "scripthost"]
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "app/lib/tweetnacl/*"
   ]
 }

@@ -1,0 +1,53 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+    <h2>Manage Wallet</h2>
+
+    <!--<div class="uk-card uk-card-default">-->
+      <!--<div class="uk-card-header">-->
+        <!--<h3 class="uk-card-title">Wallet Information</h3>-->
+      <!--</div>-->
+      <!--<div class="uk-card-body">-->
+        <!--<div uk-grid>-->
+          <!--<div class="uk-width-1-4">Wallet Status:</div>-->
+          <!--<div class="uk-width-3-4">-->
+            <!--<span *ngIf="wallet.locked">Locked</span>-->
+            <!--<span *ngIf="!wallet.locked">Unlocked</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Change Wallet Password</h3>
+      </div>
+      <div class="uk-card-body">
+        <div uk-grid>
+          <div class="uk-width-1-2">
+            <input class="uk-input" [(ngModel)]="newPassword" placeholder="New Password" type="password">
+          </div>
+          <div class="uk-width-1-2">
+            <input class="uk-input" [(ngModel)]="confirmPassword" placeholder="Confirm New Password" type="password">
+          </div>
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <button (click)="changePassword()" class="uk-button uk-button-secondary">Update Password</button>
+      </div>
+    </div>
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Backup Wallet Seed</h3>
+      </div>
+      <div class="uk-card-body">
+        <p *ngIf="wallet.locked">
+          To backup your wallet seed, unlock your wallet.
+        </p>
+        <p *ngIf="!wallet.locked">
+          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

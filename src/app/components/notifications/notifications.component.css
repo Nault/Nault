@@ -1,0 +1,17 @@
+.wallet-notification {
+  border: 1px solid #d4d4d4;
+  font-size: 14px;
+  padding: 12px;
+}
+
+.close-notification {
+  top: 16px;
+}
+
+.notification-container {
+  position: absolute;
+  bottom: 0;
+  width: 70%;
+  left: 15%;
+  z-index: 1050;
+}

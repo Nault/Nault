@@ -1,0 +1,62 @@
+.body {
+  background: #000;
+}
+
+.app {
+  font-family: 'Lato', sans-serif;
+  background: #f0f1f1;
+  /*height: 100%;*/
+}
+
+.title-block {
+  background: #fff;
+}
+
+.title-block .title {
+  font-size: 24px;
+  font-weight: bold;
+  display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.title-block .balance-text {
+  display: block;
+  font-size: 12px;
+}
+
+.title-block .balance {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: -8px;
+}
+
+.left-nav {
+  font-size: 18px;
+}
+
+.left-nav .active {
+  color: #6ccff5;
+  font-weight: bold;
+}
+
+.left-nav a {
+  color: #FFF;
+}
+
+.left-nav a:hover {
+  color: #6ccff5;
+}
+
+.wallet-bar a {
+  color: #fff;
+}
+
+.footer {
+  color: #d4d5d5;
+  font-size: 12px;
+}
+
+.footer a {
+  color: #fff;
+}
