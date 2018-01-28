@@ -3,14 +3,12 @@
     <div class="title-block">
       <div class="uk-margin-left" style="padding-bottom: 15px;">
         <span class="title">
-          RaiBlocks
-          <!--<span class="uk-text-success uk-text-middle" *ngIf="node.online" title="Node is online. Block {{ node.count }} ({{ node.unchecked}} unchecked)" uk-icon="icon: bolt" uk-tooltip></span>-->
-          <!--<span class="uk-text-warning uk-text-middle" *ngIf="!node.online" title="Node is offline.  Check settings or start RaiWallet." uk-icon="icon: warning" uk-tooltip></span>-->
+          RaiVault
         </span>
         <span class="balance-text">Balance</span>
-        <span class="balance">{{ wallet.balance | rai: 'dynamic' }}</span>
+        <span class="balance">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
         <span class="balance-text uk-text-muted">Pending</span>
-        <span class="balance uk-text-muted">{{ wallet.pending | rai: 'dynamic' }}</span>
+        <span class="balance uk-text-muted">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
       </div>
 
     </div>
@@ -35,9 +33,10 @@
       <li class="uk-parent">
         <a href="#" class="uk-margin-left">Settings</a>
         <ul class="uk-nav-sub">
+          <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
           <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
           <!--<li><a routerLink="/configure" routerLinkActive="active" class="uk-margin-left">Configure Node</a></li>-->
-          <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure Wallet</a></li>
+          <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
         </ul>
       </li>
     </ul>

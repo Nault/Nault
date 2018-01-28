@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
+import {AppSettingsService} from "../../services/app-settings.service";
 
 @Component({
   selector: 'app-accounts',
@@ -11,7 +12,7 @@ import {ModalService} from "../../services/modal.service";
 export class AccountsComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
 
-  constructor(private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService) { }
+  constructor(private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, private settings: AppSettingsService) { }
 
   async ngOnInit() {
   }

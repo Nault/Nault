@@ -1,0 +1,50 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+    <h2>Configure RaiVault</h2>
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Change XRB Display Value</h3>
+      </div>
+      <div class="uk-card-body">
+        <div uk-grid>
+          <div class="uk-width-1-1">
+            <p>
+              This setting changes the default denomination used throughout the app when displaying balances.
+            </p>
+          </div>
+          <div class="uk-width-3-4">
+            Current Value:
+          </div>
+          <div class="uk-width-1-4">
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>
+              <div uk-dropdown>
+                <ul class="uk-nav uk-dropdown-nav">
+                  <li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <button (click)="updateSettings()" class="uk-button uk-button-secondary">Update Settings</button>
+      </div>
+    </div>
+
+    <!--<div class="uk-card uk-card-default uk-margin">-->
+      <!--<div class="uk-card-header">-->
+        <!--<h3 class="uk-card-title">Wallet Save Settings</h3>-->
+      <!--</div>-->
+      <!--<div class="uk-card-body">-->
+        <!--<p *ngIf="wallet.locked">-->
+          <!--To backup your wallet seed, unlock your wallet.-->
+        <!--</p>-->
+        <!--<p *ngIf="!wallet.locked">-->
+          <!--To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+</div>

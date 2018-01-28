@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
+import {BigNumber} from 'bignumber.js'
 
 const nacl = window['nacl'];
 
@@ -35,6 +36,11 @@ export class UtilService {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
+  };
+  xrb = {
+    xrbToRaw: xrbToRaw,
+    kraiToRaw: kraiToRaw,
+    raiToRaw: raiToRaw,
   };
 
 }
@@ -221,6 +227,22 @@ function getAccountPublicKey(account) {
   return uint4ToHex(key_uint4);
 }
 
+/**
+ * Conversion functions
+ */
+const xrb = 1000000000000000000000000000000;
+const krai = 1000000000000000000000000000;
+const rai  = 1000000000000000000000000;
+function xrbToRaw(value) {
+  return new BigNumber(value).times(xrb);
+}
+function kraiToRaw(value) {
+  return new BigNumber(value).times(krai);
+}
+function raiToRaw(value) {
+  return new BigNumber(value).times(rai);
+}
+
 function array_crop (array) {
   var length = array.length - 1;
   var cropped_array = new Uint8Array(length);
@@ -268,5 +290,10 @@ const util = {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
+  },
+  xrb: {
+    xrbToRaw: xrbToRaw,
+    kraiToRaw: kraiToRaw,
+    raiToRaw: raiToRaw,
   }
 };

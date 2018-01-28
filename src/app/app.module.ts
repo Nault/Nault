@@ -27,6 +27,8 @@ import {HistoryComponent} from "./components/history/history.component";
 import {WalletWidgetComponent} from "./components/wallet-widget/wallet-widget.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
 import {WorkPoolService} from "./services/work-pool.service";
+import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
+import {AppSettingsService} from "./services/app-settings.service";
 
 
 @NgModule({
@@ -45,6 +47,7 @@ import {WorkPoolService} from "./services/work-pool.service";
     HistoryComponent,
     WalletWidgetComponent,
     ManageWalletComponent,
+    ConfigureAppComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +65,7 @@ import {WorkPoolService} from "./services/work-pool.service";
     AddressBookService,
     ModalService,
     WorkPoolService,
+    AppSettingsService,
   ],
   bootstrap: [AppComponent]
 })

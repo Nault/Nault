@@ -7,6 +7,7 @@ import * as blake from 'blakejs';
 import BigNumber from "bignumber.js";
 import {UtilService} from "../../services/util.service";
 import {WorkPoolService} from "../../services/work-pool.service";
+import {AppSettingsService} from "../../services/app-settings.service";
 const nacl = window['nacl'];
 
 @Component({
@@ -27,6 +28,7 @@ export class ReceiveComponent implements OnInit {
     public modal: ModalService,
     private api: ApiService,
     private workPool: WorkPoolService,
+    private settings: AppSettingsService,
     private util: UtilService) { }
 
   async ngOnInit() {
@@ -162,6 +164,7 @@ export class ReceiveComponent implements OnInit {
 
     const processResponse = await this.api.process(blockData);
     if (processResponse && processResponse.hash) {
+      walletAccount.frontier = processResponse.hash;
       this.notificationService.sendSuccess(`Successfully received XRB!`);
       this.workPool.addToPool(processResponse.hash); // Add new hash into the work pool
     } else {

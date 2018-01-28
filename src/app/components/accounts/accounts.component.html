@@ -24,8 +24,8 @@
             <strong *ngIf="account.addressBookName" class="uk-margin-right">{{ account.addressBookName }}</strong>
             <a (click)="modal.showAccount(account.id)" class="uk-link-text" title="View Account Details" uk-tooltip>{{ account.id }}</a>
           </td>
-          <td>{{ account.balance | rai: 'dynamic' }}</td>
-          <td>{{ account.pending | rai: 'dynamic' }}</td>
+          <td>{{ account.balance | rai: settings.settings.displayDenomination }}</td>
+          <td>{{ account.pending | rai: settings.settings.displayDenomination }}</td>
         </tr>
         <tr *ngIf="!(accounts).length">
           <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a></td>

@@ -4,8 +4,8 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class ApiService {
 
-  rpcUrl = `https://raivault.io/api/node-api`;
-  // rpcUrl = `http://localhost:9950/api/node-api`;
+  // rpcUrl = `https://raivault.io/api/node-api`;
+  rpcUrl = `http://localhost:9950/api/node-api`;
 
   constructor(private http: HttpClient) { }
 

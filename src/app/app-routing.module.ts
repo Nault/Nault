@@ -9,12 +9,14 @@ import {AddressBookComponent} from "./components/address-book/address-book.compo
 import {ReceiveComponent} from "./components/receive/receive.component";
 import {HistoryComponent} from "./components/history/history.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
+import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'address-book', component: AddressBookComponent },
   { path: 'configure-wallet', component: ConfigureWalletComponent },
+  { path: 'configure-app', component: ConfigureAppComponent },
   { path: 'manage-wallet', component: ManageWalletComponent },
   { path: 'history', component: HistoryComponent },
   { path: 'send', component: SendComponent },

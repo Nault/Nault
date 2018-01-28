@@ -40,7 +40,7 @@
             <tr *ngFor="let block of pendingBlocks">
               <td class="uk-text-truncate"><a class="uk-link-text" (click)="modal.showAccount(block.account)" title="View Account Details" uk-tooltip>{{ block.account }}</a></td>
               <td class="uk-text-truncate"><a class="uk-link-text" (click)="modal.showAccount(block.source)" title="View Account Details" uk-tooltip>{{ block.source }}</a></td>
-              <td>{{ block.amount | rai: 'dynamic' }}</td>
+              <td>{{ block.amount | rai: settings.settings.displayDenomination }}</td>
               <td class="uk-text-nowrap">
                 <button *ngIf="!block.loading" (click)="receivePending(block)" class="uk-button uk-button-secondary uk-button-small">Receive</button>
                 <button *ngIf="block.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span class="uk-margin-right" uk-spinner></span> Loading</button>

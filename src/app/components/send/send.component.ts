@@ -25,14 +25,14 @@ export class SendComponent implements OnInit {
   showAddressBook = false;
 
   amounts = [
-    { name: 'mRai', value: 'mrai'},
-    { name: 'kRai', value: 'krai'},
-    { name: 'Rai', value: 'rai'},
+    { name: 'XRB', shortName: 'XRB', value: 'mrai' },
+    { name: 'KRAI (0.001 XRB)', shortName: 'KRAI', value: 'krai' },
+    { name: 'RAI (0.000001 XRB)', shortName: 'RAI', value: 'rai' },
   ];
-  selectedAmount = this.amounts[2];
+  selectedAmount = this.amounts[0];
 
   amount = 0;
-  rawAmount: BigNumber|number|string = 0;
+  rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   fromAccountID: any = '';
   toAccount: any = false;
@@ -98,30 +98,17 @@ export class SendComponent implements OnInit {
     const to = await this.nodeApi.accountInfo(this.toAccountID);
     if (!from) return this.notificationService.sendError(`From account not found`);
 
-    // console.log(`Loaded from account balance, full balance: `, from.balance);
     from.balanceBN = new BigNumber(from.balance || 0);
     to.balanceBN = new BigNumber(to.balance || 0);
-
-    // console.log(`Created BN version of from balance: `, from.balanceBN.c.join(''));
 
     this.fromAccount = from;
     this.toAccount = to;
 
-    // console.log(`Original amount entered: `, this.amount);
-    // console.log(`Selected type is: `, this.selectedAmount);
+    const rawAmount = this.getAmountBaseValue(this.amount || 0);
+    this.rawAmount = rawAmount;
 
-    const rawAmount = await this.getAmountBaseValue(this.amount || 0);
-    if (!rawAmount || rawAmount.error) return this.notificationService.sendError(`Unable to convert amount: ${rawAmount.error}`);
-
-    // console.log(`Got converted raw amount from the server: `, rawAmount.amount);
-
-    this.rawAmount = rawAmount.amount;
-    const rawAmountBN = new BigNumber(this.rawAmount || 0);
-
-    // console.log(`Created BN version of raw amount: `, rawAmountBN.c.join(''));
-
-    if (this.amount < 0 || rawAmountBN.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
-    if (from.balanceBN.minus(rawAmountBN).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
+    if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
 
     // Start precopmuting the work...
     this.workPool.addToPool(this.fromAccount.frontier);
@@ -136,28 +123,17 @@ export class SendComponent implements OnInit {
 
     this.confirmingTransaction = true;
 
-    // Calculate the remaining balance for sender
-    // console.log(`From account: `, this.fromAccountID);
-    // console.log(`Current balance of account:`, this.fromAccount.balance);
-    // console.log(`Current balance of account (BN):`, this.fromAccount.balanceBN.c.join(''));
-    //
-    // console.log(`Transaction amount: `, this.rawAmount);
     const remaining = new BigNumber(this.fromAccount.balance).minus(this.rawAmount);
-    // console.log(`Sending amount: `, this.rawAmount);
-    // console.log(`Remaining balance: `, remaining.c.join(''));
-    const remainingDec = this.util.dec.toHex(remaining.c.join(''), 16);
 
-    // Try to capitalize the remaining?
-    // console.log(`Remaining balance (Hex): `, remainingDec);
-    // console.log(`Remaining Decimal value2: `, remainingDec.toUpperCase());
-
-    // console.log(`To account: `, this.toAccountID);
-    // console.log(``);
+    let remainingNew = remaining.toString(16);
+    while (remainingNew.length < 32) {
+      remainingNew = '0' + remainingNew;
+    }
 
     const context = blake.blake2bInit(32, null);
     blake.blake2bUpdate(context, this.util.hex.toUint8(this.fromAccount.frontier));
     blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.toAccountID)));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(remainingDec));
+    blake.blake2bUpdate(context, this.util.hex.toUint8(remainingNew));
     const hashBytes = blake.blake2bFinal(context);
 
     // Sign the hash bytes with the account priv key bytes
@@ -169,7 +145,7 @@ export class SendComponent implements OnInit {
       type: 'send',
       previous: this.fromAccount.frontier,
       destination: this.toAccountID,
-      balance: remainingDec,
+      balance: remainingNew,
       work: null,
       signature: signature,
     };
@@ -182,7 +158,8 @@ export class SendComponent implements OnInit {
     const processResponse = await this.nodeApi.process(blockData);
     if (processResponse && processResponse.hash) {
       this.activePanel = 'send';
-      this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.name}!`);
+      walletAccount.frontier = processResponse.hash;
+      this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
       this.workPool.addToPool(processResponse.hash); // Add new hash to work pool
     } else {
       this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
@@ -192,12 +169,16 @@ export class SendComponent implements OnInit {
     await this.walletService.reloadBalances();
   }
 
-  async getAmountBaseValue(value) {
+  getAmountBaseValue(value) {
+
     switch (this.selectedAmount.value) {
       default:
-      case 'rai': return await this.nodeApi.raiToRaw(value);
-      case 'mrai': return await this.nodeApi.mraiToRaw(value);
-      case 'krai': return await this.nodeApi.kraiToRaw(value);
+      case 'rai': return this.util.xrb.raiToRaw(value);
+      case 'mrai': return this.util.xrb.xrbToRaw(value);
+      case 'krai': return this.util.xrb.kraiToRaw(value);
+      // case 'rai': return await this.nodeApi.raiToRaw(value);
+      // case 'mrai': return await this.nodeApi.mraiToRaw(value);
+      // case 'krai': return await this.nodeApi.kraiToRaw(value);
     }
   }
 
