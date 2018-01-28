@@ -12,7 +12,7 @@ import {AppSettingsService} from "../../services/app-settings.service";
 export class AccountsComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
 
-  constructor(private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, private settings: AppSettingsService) { }
+  constructor(private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, public settings: AppSettingsService) { }
 
   async ngOnInit() {
   }

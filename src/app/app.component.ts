@@ -11,7 +11,7 @@ import {AppSettingsService} from "./services/app-settings.service";
 export class AppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
-  constructor(private walletService: WalletService, private addressBook: AddressBookService, private settings: AppSettingsService) { }
+  constructor(private walletService: WalletService, private addressBook: AddressBookService, public settings: AppSettingsService) { }
 
   async ngOnInit() {
     await this.addressBook.loadAddressBook();

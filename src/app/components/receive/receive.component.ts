@@ -28,7 +28,7 @@ export class ReceiveComponent implements OnInit {
     public modal: ModalService,
     private api: ApiService,
     private workPool: WorkPoolService,
-    private settings: AppSettingsService,
+    public settings: AppSettingsService,
     private util: UtilService) { }
 
   async ngOnInit() {
