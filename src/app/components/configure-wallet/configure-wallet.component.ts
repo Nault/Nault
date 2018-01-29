@@ -21,6 +21,7 @@ export class ConfigureWalletComponent implements OnInit {
 
   async importExistingWallet() {
     const existingSeed = this.importSeedModel;
+    if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
 
     this.walletService.createWalletFromSeed(existingSeed);
     this.activePanel = 4;

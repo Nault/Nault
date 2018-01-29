@@ -42,12 +42,12 @@ export class WalletService {
     this.wallet.seed = walletJson.seed;
     this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
     this.wallet.locked = walletJson.locked;
-    this.wallet.accountsIndex = walletJson.accountsIndex;
 
     if (this.wallet.locked) {
       return this.wallet; // If the wallet is locked on load, it has to be unlocked before we can load anything?
     }
 
+    this.wallet.accountsIndex = walletJson.accountsIndex;
     await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
 
     await this.reloadBalances();

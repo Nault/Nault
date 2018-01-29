@@ -13,19 +13,40 @@
               This setting changes the default denomination used throughout the app when displaying balances.
             </p>
           </div>
-          <div class="uk-width-3-4">
-            Current Value:
-          </div>
-          <div class="uk-width-1-4">
-            <div class="uk-inline uk-width-1-1">
-              <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>
-              <div uk-dropdown>
-                <ul class="uk-nav uk-dropdown-nav">
-                  <li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>
-                </ul>
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Current Value</label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>
+                    <div uk-dropdown>
+                      <ul class="uk-nav uk-dropdown-nav">
+                        <li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+
+          <!--<div class="uk-width-3-4">-->
+            <!--Current Value:-->
+          <!--</div>-->
+          <!--<div class="uk-width-1-4">-->
+            <!--<div class="uk-inline uk-width-1-1">-->
+              <!--<button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>-->
+              <!--<div uk-dropdown>-->
+                <!--<ul class="uk-nav uk-dropdown-nav">-->
+                  <!--<li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">

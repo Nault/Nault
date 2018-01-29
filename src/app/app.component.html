@@ -1,54 +1,119 @@
-<div uk-grid class="app" uk-height-viewport>
-  <div class="uk-width-1-4" style="background: #2C3E50">
-    <div class="title-block">
-      <div class="uk-margin-left" style="padding-bottom: 15px;">
-        <span class="title">
-          RaiVault
-        </span>
-        <span class="balance-text">Balance</span>
-        <span class="balance">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
-        <span class="balance-text uk-text-muted">Pending</span>
-        <span class="balance uk-text-muted">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
+<div uk-grid class="app uk-offcanvas-content" uk-height-viewport>
+
+  <!-- Mobile Offcanvas Nav -->
+  <div id="mobile-nav" uk-offcanvas="mode: reveal; overlay: false;">
+    <div class="uk-offcanvas-bar" style="padding: 0; background: #2C3E50;">
+
+      <div class="title-block">
+        <div class="uk-margin-left" style="padding-bottom: 15px; color: #666;">
+            <span class="title">
+              RaiVault
+            </span>
+          <span class="balance-text">Balance</span>
+          <span class="balance">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+          <span class="balance-text" style="color: #999">Pending</span>
+          <span class="balance " style="color: #999">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
+        </div>
       </div>
 
-    </div>
+      <app-wallet-widget></app-wallet-widget>
 
-    <app-wallet-widget></app-wallet-widget>
-
-    <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-      <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-      <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left">History</a></li>
-      <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
-      <li>
-        <div uk-grid>
-          <div class="uk-width-3-4">
-            <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
+      <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
+        <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Accounts</a></li>
+        <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">History</a></li>
+        <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Send</a></li>
+        <li>
+          <div uk-grid>
+            <div class="uk-width-3-4">
+              <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Receive</a>
+            </div>
+            <div class="uk-width-1-4 uk-text-center">
+              <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
+            </div>
           </div>
-          <div class="uk-width-1-4 uk-text-center">
-            <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
-          </div>
-        </div>
-      </li>
-      <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
-      <li class="uk-parent">
-        <a href="#" class="uk-margin-left">Settings</a>
-        <ul class="uk-nav-sub">
-          <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
-          <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
-          <!--<li><a routerLink="/configure" routerLinkActive="active" class="uk-margin-left">Configure Node</a></li>-->
-          <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
-        </ul>
-      </li>
-    </ul>
-
-    <div class="uk-position-bottom-left uk-position-small footer">
-      &hearts; <a routerLink="/">RaiVault.io</a>
+        </li>
+        <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Address Book</a></li>
+        <li class="uk-parent">
+          <a href="#" class="uk-margin-left">Settings</a>
+          <ul class="uk-nav-sub">
+            <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">App Settings</a></li>
+            <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Manage Wallet</a></li>
+            <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Configure New Wallet</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-
   </div>
-  <div class="uk-width-3-4" style="padding-left: 0;">
-    <div class="uk-panel uk-panel-scrollable uk-height-1-1">
-      <router-outlet></router-outlet>
+  <!-- End Mobile OffCanvas Nav -->
+
+
+  <div class="uk-width-1-1">
+
+    <!-- Mobile top bar -->
+    <div uk-grid class=" uk-hidden@s uk-background-secondary" style="color: #FFF;">
+      <div class="uk-width-1-2">
+        <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" uk-toggle="target: #mobile-nav;" style="cursor: pointer;">
+          <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
+          <span style="font-size: 22px;" >RaiVault</span>
+        </div>
+      </div>
+      <div class="uk-width-1-2 " style="text-align: right;">
+      </div>
+    </div>
+
+    <!-- Main content container-->
+    <div uk-grid uk-height-viewport style="margin-top: 0;">
+      <div class="uk-width-1-4 uk-visible@s" style="background: #2C3E50">
+        <div class="title-block">
+          <div class="uk-margin-left" style="padding-bottom: 15px;">
+            <span class="title">
+              RaiVault
+            </span>
+            <span class="balance-text">Balance</span>
+            <span class="balance">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+            <span class="balance-text uk-text-muted">Pending</span>
+            <span class="balance uk-text-muted">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
+          </div>
+
+        </div>
+
+        <app-wallet-widget></app-wallet-widget>
+
+        <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
+          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
+          <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left">History</a></li>
+          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+          <li>
+            <div uk-grid>
+              <div class="uk-width-3-4">
+                <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
+              </div>
+              <div class="uk-width-1-4 uk-text-center">
+                <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
+              </div>
+            </div>
+          </li>
+          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
+          <li class="uk-parent">
+            <a href="#" class="uk-margin-left">Settings</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
+              <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="uk-position-bottom-left uk-position-small footer">
+          &hearts; <a routerLink="/">RaiVault.io</a>
+        </div>
+
+      </div>
+      <div class="uk-width-expand uk-width-1-1" style="">
+        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0;">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </div>
   </div>
 </div>
