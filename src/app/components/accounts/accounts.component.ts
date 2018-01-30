@@ -26,4 +26,8 @@ export class AccountsComponent implements OnInit {
     this.notificationService.sendSuccess(`Successfully created new account ${newAccount.id}`);
   }
 
+  copied() {
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+  }
+
 }

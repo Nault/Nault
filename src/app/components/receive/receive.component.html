@@ -38,8 +38,32 @@
             </thead>
             <tbody>
             <tr *ngFor="let block of pendingBlocks">
-              <td class="uk-text-truncate"><a class="uk-link-text" (click)="modal.showAccount(block.account)" title="View Account Details" uk-tooltip>{{ block.account }}</a></td>
-              <td class="uk-text-truncate"><a class="uk-link-text" (click)="modal.showAccount(block.source)" title="View Account Details" uk-tooltip>{{ block.source }}</a></td>
+              <td class="uk-visible-toggle">
+                <div uk-grid>
+                  <div class="uk-width-expand uk-text-truncate">
+                    {{ block.account }}
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px;">
+                    <ul class="uk-hidden-hover uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="block.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a (click)="modal.showAccount(block.account)" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+              <td class="uk-visible-toggle">
+                <div uk-grid>
+                  <div class="uk-width-expand uk-text-truncate">
+                    {{ block.source }}
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px;">
+                    <ul class="uk-hidden-hover uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="block.source" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a (click)="modal.showAccount(block.source)" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
               <td>{{ block.amount | rai: settings.settings.displayDenomination }}</td>
               <td class="uk-text-nowrap">
                 <button *ngIf="!block.loading" (click)="receivePending(block)" class="uk-button uk-button-secondary uk-button-small">Receive</button>

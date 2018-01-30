@@ -29,12 +29,21 @@
             </thead>
             <tbody>
             <tr *ngFor="let history of accountHistory">
-              <td class="uk-text-truncate">
-                <strong *ngIf="history.addressBookName" class="uk-margin-right">{{ history.addressBookName }}</strong>
-                <a (click)="modal.showAccount(history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>{{ history.account }}</a>
+              <td class="uk-visible-toggle">
+                <div uk-grid>
+                  <div class="uk-width-expand uk-text-truncate">
+                    <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.account }}
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px;">
+                    <ul class="uk-hidden-hover uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a (click)="modal.showAccount(history.account)" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
               </td>
               <td>{{ history.type }}</td>
-              <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: 'dynamic' }}</td>
+              <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: settings.settings.displayDenomination }}</td>
               <td class="uk-text-truncate">{{ history.hash }}</td>
             </tr>
             <tr *ngIf="!accountHistory.length">

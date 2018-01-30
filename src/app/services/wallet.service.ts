@@ -129,6 +129,10 @@ export class WalletService {
    * Reset wallet to a base state, without changing reference to the main object
    */
   resetWallet() {
+    this.walletPassword = '';
+    this.wallet.locked = false;
+    this.wallet.seed = '';
+    this.wallet.seedBytes = null;
     this.wallet.accounts = [];
     this.wallet.accountsIndex = 0;
     this.wallet.balance = new BigNumber(0);

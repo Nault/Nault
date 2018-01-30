@@ -176,4 +176,8 @@ export class ReceiveComponent implements OnInit {
     await this.loadPendingForAll();
   }
 
+  copied() {
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+  }
+
 }

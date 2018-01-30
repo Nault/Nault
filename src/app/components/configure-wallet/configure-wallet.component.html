@@ -65,7 +65,15 @@
     </p>
     <div uk-grid>
       <div class="uk-width-1-4">Wallet Seed</div>
-      <div class="uk-width-3-4">{{ newWalletSeed }}</div>
+      <div class="uk-width-3-4 uk-text-truncate">
+        {{ newWalletSeed }}<br>
+        <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
+
+      </div>
+      <!--<div class="uk-width-1-4"></div>-->
+      <!--<div class="uk-width-3-4">-->
+        <!--<a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>-->
+      <!--</div>-->
     </div>
     <!--<div uk-grid>-->
       <!--<div class="uk-width-1-4">Wallet ID</div>-->

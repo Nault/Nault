@@ -27,7 +27,19 @@
             <tbody>
             <tr *ngFor="let addressBook of addressBook$ | async">
               <td>{{ addressBook.name }} </td>
-              <td class="uk-text-truncate"><a (click)="modal.showAccount(addressBook.account)" class="uk-link-text" title="View Account Details" uk-tooltip>{{ addressBook.account }}</a></td>
+              <td class="uk-visible-toggle">
+                <div uk-grid>
+                  <div class="uk-width-expand uk-text-truncate">
+                    {{ addressBook.account }}
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px;">
+                    <ul class="uk-hidden-hover uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a (click)="modal.showAccount(addressBook.account)" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
               <td class="uk-text-center">
                 <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
               </td>

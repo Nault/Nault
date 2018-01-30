@@ -3,6 +3,8 @@ import {WalletService} from "../../services/wallet.service";
 import {ModalService} from "../../services/modal.service";
 import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
+import {NotificationService} from "../../services/notification.service";
+import {AppSettingsService} from "../../services/app-settings.service";
 
 @Component({
   selector: 'app-history',
@@ -14,7 +16,7 @@ export class HistoryComponent implements OnInit {
 
   accounts = this.walletService.wallet.accounts;
 
-  constructor(private walletService: WalletService, public modal: ModalService, private addressBook: AddressBookService, private api: ApiService) { }
+  constructor(private walletService: WalletService, public modal: ModalService, private addressBook: AddressBookService, private api: ApiService, private notifications: NotificationService, public settings: AppSettingsService) { }
 
   async ngOnInit() {
   }
@@ -29,6 +31,10 @@ export class HistoryComponent implements OnInit {
         return h;
       });
     }
+  }
+
+  copied() {
+    this.notifications.sendSuccess(`Successfully copied to clipboard!`);
   }
 
 }

@@ -47,4 +47,8 @@ export class ConfigureWalletComponent implements OnInit {
     this.activePanel = panel;
   }
 
+  copied() {
+    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`);
+  }
+
 }

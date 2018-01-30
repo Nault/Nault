@@ -6,31 +6,42 @@
     </div>
     <div class="uk-modal-body">
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5 uk-margin-remove">Account ID:</div>
-        <div class="uk-width-3-5 uk-margin-remove uk-text-truncate">{{ accountID }}</div>
-        <div class="uk-width-1-5 uk-margin-remove">
-          <button class="uk-button uk-button-small uk-button-secondary" title="Copy Address To Clipboard" ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-tooltip><span uk-icon="icon: copy;"></span> Copy</button>
+        <div class="uk-width-1-5@s uk-width-1-2 uk-margin-remove">Account ID:</div>
+        <div class="uk-width-4-5@s uk-width-1-2 uk-margin-remove uk-visible-toggle">
+          <div uk-grid>
+            <div class="uk-width-expand uk-text-truncate">
+              {{ accountID }}
+            </div>
+            <div class="uk-width-auto" style="padding-left: 10px;">
+              <ul class="uk-hidden-hover uk-iconnav">
+                <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5">Address Book:</div>
-        <div class="uk-width-4-5">{{ addressBookEntry || 'No entry saved' }}</div>
+        <div class="uk-width-1-5@s uk-width-1-2">Address Book:</div>
+        <div class="uk-width-4-5@s uk-width-1-2">
+          <span *ngIf="addressBookEntry" class="uk-label uk-label-default">{{ addressBookEntry }}</span>
+          <span *ngIf="!addressBookEntry">No entry saved</span>
+        </div>
       </div>
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5">Balance:</div>
-        <div class="uk-width-4-5">{{ account.balance || 0 | rai: 'dynamic' }}</div>
+        <div class="uk-width-1-5@s uk-width-1-2">Balance:</div>
+        <div class="uk-width-4-5@s uk-width-1-2">{{ account.balance || 0 | rai: 'xrb' }}</div>
       </div>
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5">Pending:</div>
-        <div class="uk-width-4-5">{{ account.pending || 0 | rai: 'dynamic' }}</div>
+        <div class="uk-width-1-5@s uk-width-1-2">Pending:</div>
+        <div class="uk-width-4-5@s uk-width-1-2">{{ account.pending || 0 | rai: 'xrb' }}</div>
       </div>
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5">Transactions:</div>
-        <div class="uk-width-4-5">{{ account.block_count || 0 }}</div>
+        <div class="uk-width-1-5@s uk-width-1-2">Transactions:</div>
+        <div class="uk-width-4-5@s uk-width-1-2">{{ account.block_count || 0 }}</div>
       </div>
       <div class="uk-margin-remove" uk-grid>
-        <div class="uk-width-1-5">Last Modified:</div>
-        <div class="uk-width-4-5">{{ account.modified_timestamp * 1000 | date }}</div>
+        <div class="uk-width-1-5@s uk-width-1-2">Last Modified:</div>
+        <div class="uk-width-4-5@s uk-width-1-2">{{ account.modified_timestamp * 1000 | date }}</div>
       </div>
     </div>
     <div class="uk-modal-footer">

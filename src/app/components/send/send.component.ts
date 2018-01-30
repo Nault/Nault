@@ -9,6 +9,7 @@ import {UtilService} from "../../services/util.service";
 
 import * as blake from 'blakejs';
 import {WorkPoolService} from "../../services/work-pool.service";
+import {AppSettingsService} from "../../services/app-settings.service";
 
 const nacl = window['nacl'];
 
@@ -46,6 +47,7 @@ export class SendComponent implements OnInit {
     private notificationService: NotificationService,
     private nodeApi: ApiService,
     private workPool: WorkPoolService,
+    public settings: AppSettingsService,
     private util: UtilService) { }
 
   async ngOnInit() {
