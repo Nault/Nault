@@ -29,6 +29,7 @@ import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.co
 import {WorkPoolService} from "./services/work-pool.service";
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 import {AppSettingsService} from "./services/app-settings.service";
+import {WebsocketService} from "./services/websocket.service";
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import {AppSettingsService} from "./services/app-settings.service";
     ModalService,
     WorkPoolService,
     AppSettingsService,
+    WebsocketService,
   ],
   bootstrap: [AppComponent]
 })

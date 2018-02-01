@@ -5,6 +5,7 @@ import {BigNumber} from 'bignumber.js';
 import {AddressBookService} from "./address-book.service";
 import * as CryptoJS from 'crypto-js';
 import {WorkPoolService} from "./work-pool.service";
+import {WebsocketService} from "./websocket.service";
 
 export interface WalletAccount {
   id: string;
@@ -30,7 +31,14 @@ export class WalletService {
     locked: false,
   };
 
-  constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService) { }
+  constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService, private websocket: WebsocketService) {
+    // this.websocket.newTransactions$.subscribe(value => {
+    //   if (!value) return; // Not really a new transaction
+    //
+    //   console.log(`Wallet service, received new transaction!`);
+    //   this.reloadBalances();
+    // })
+  }
 
   async loadStoredWallet() {
     this.resetWallet();
@@ -51,6 +59,10 @@ export class WalletService {
     await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
 
     await this.reloadBalances();
+
+    if (this.wallet.accounts.length) {
+      this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
+    }
 
     return this.wallet;
   }
@@ -201,6 +213,8 @@ export class WalletService {
     this.wallet.accounts.push(newAccount);
 
     if (reloadBalances) await this.reloadBalances();
+
+    this.websocket.subscribeAccounts([accountName]);
 
     this.saveWalletExport();
 
