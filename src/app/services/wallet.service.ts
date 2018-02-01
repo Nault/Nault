@@ -32,12 +32,25 @@ export class WalletService {
   };
 
   constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService, private websocket: WebsocketService) {
-    // this.websocket.newTransactions$.subscribe(value => {
-    //   if (!value) return; // Not really a new transaction
-    //
-    //   console.log(`Wallet service, received new transaction!`);
-    //   this.reloadBalances();
-    // })
+    this.websocket.newTransactions$.subscribe(transaction => {
+      if (!transaction) return; // Not really a new transaction
+
+      // console.log(`Wallet service, received new transaction!`, transaction);
+
+      // We need an auto accept option, otherwise there is no point
+
+      // transaction.account - the person who initiated the transaction
+      // transaction.block.destination - receiver of the block
+      // transaction.hash
+      // transaction.amount
+      // transaction.block.type (send)
+
+      // All we really need is to be able to do a receive on this hash, we dont need the huge shit before
+
+      // TODO: Need function for reloading a specific accounts balance, instead of all of them (Which also fixes the total balance)
+
+      this.reloadBalances();
+    })
   }
 
   async loadStoredWallet() {

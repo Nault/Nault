@@ -6,6 +6,8 @@ export class WebsocketService {
 
   queuedCommands = [];
 
+  keepaliveTimeout = 60 * 1000;
+
   socket = {
     connected: false,
     ws: null,
@@ -16,15 +18,18 @@ export class WebsocketService {
   constructor() { }
 
   connect() {
-    console.log(`connecting`);
+    // console.log(`connecting`);
     // const ws = new WebSocket('ws://localhost:3333');
-    const ws = new WebSocket('ws://ws.nanovault.io');
+    const ws = new WebSocket('wss://ws.nanovault.io');
+    // const ws = new WebSocket('ws://ws.nanovault.io');
     this.socket.ws = ws;
 
     ws.onopen = event => {
       this.socket.connected = true;
-      console.log(`Socket open`, event);
+      // console.log(`Socket open`, event);
       this.queuedCommands.forEach(event => ws.send(JSON.stringify(event)));
+
+      this.keepalive(); // Start keepalives!
     };
     ws.onerror = event => {
       console.log(`Socket error`, event);
@@ -34,10 +39,10 @@ export class WebsocketService {
       console.log(`Socket close`, event);
     };
     ws.onmessage = event => {
-      console.log(`Got message! `, event);
+      // console.log(`Got message! `, event);
       try {
         const newEvent = JSON.parse(event.data);
-        console.log(`Parsed event!!`, newEvent);
+        // console.log(`Parsed event!!`, newEvent);
 
         if (newEvent.event === 'newTransaction') {
           // apparently we got something, just trigger a pending for all basically? ezpz?
@@ -49,6 +54,18 @@ export class WebsocketService {
     }
   }
 
+  keepalive() {
+    if (this.socket.connected) {
+      this.socket.ws.send(JSON.stringify({ event: 'keepalive' }));
+    }
+
+    setTimeout(() => {
+      this.keepalive();
+    }, this.keepaliveTimeout);
+  }
+
+
+
   subscribeAccounts(accountIDs: string[]) {
     const event = { event: 'subscribe', data: accountIDs };
     if (!this.socket.connected) {
@@ -58,7 +75,7 @@ export class WebsocketService {
       }
       return;
     }
-    console.log(`Sending subscribe for accounts`, event);
+    // console.log(`Sending subscribe for accounts`, event);
     this.socket.ws.send(JSON.stringify(event));
   }
 

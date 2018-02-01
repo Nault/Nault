@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
     await this.addressBook.loadAddressBook();
     await this.walletService.loadStoredWallet();
     this.settings.loadAppSettings();
-
-    // this.websocket.connect();
+    this.websocket.connect();
   }
 }
