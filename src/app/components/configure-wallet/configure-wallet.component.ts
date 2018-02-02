@@ -13,6 +13,7 @@ export class ConfigureWalletComponent implements OnInit {
 
   newWalletSeed = '';
   importSeedModel = '';
+  walletPasswordModel = '';
 
   constructor(private walletService: WalletService, private notifications: NotificationService) { }
 
@@ -41,6 +42,15 @@ export class ConfigureWalletComponent implements OnInit {
     this.newWalletSeed = '';
 
     this.activePanel = 4;
+  }
+
+  saveWalletPassword() {
+    const newPassword = this.walletPasswordModel;
+    this.walletService.walletPassword = newPassword;
+    this.walletPasswordModel = '';
+
+    this.activePanel = 5;
+    this.notifications.sendSuccess(`Successfully set wallet password!`);
   }
 
   setPanel(panel) {

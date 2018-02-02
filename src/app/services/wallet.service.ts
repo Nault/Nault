@@ -6,6 +6,8 @@ import {AddressBookService} from "./address-book.service";
 import * as CryptoJS from 'crypto-js';
 import {WorkPoolService} from "./work-pool.service";
 import {WebsocketService} from "./websocket.service";
+import {NanoBlockService} from "./nano-block.service";
+import {NotificationService} from "./notification.service";
 
 export interface WalletAccount {
   id: string;
@@ -31,9 +33,27 @@ export class WalletService {
     locked: false,
   };
 
-  constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService, private websocket: WebsocketService) {
-    this.websocket.newTransactions$.subscribe(transaction => {
+  constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService, private websocket: WebsocketService, private nanoBlock: NanoBlockService, private notifications: NotificationService) {
+    this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
+
+      // Okay so, find out if this is a send, with our account as a destination or not
+      const walletAccountIDs = this.wallet.accounts.map(a => a.id);
+      if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.destination) !== -1) {
+        // Okay we want to perform an automatic receive on this baby
+
+        // We do a receive for the account, it should know if it has txs?
+        const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.destination);
+        if (walletAccount) {
+          const newHash = await this.nanoBlock.generateReceive(walletAccount, transaction.hash);
+          if (newHash) {
+            // Can we send notifications from here? sure why not lol
+            this.notifications.sendSuccess(`Successfully received Nano!`);
+          } else {
+            this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+          }
+        }
+      }
 
       // console.log(`Wallet service, received new transaction!`, transaction);
 

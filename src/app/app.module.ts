@@ -30,6 +30,7 @@ import {WorkPoolService} from "./services/work-pool.service";
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 import {AppSettingsService} from "./services/app-settings.service";
 import {WebsocketService} from "./services/websocket.service";
+import {NanoBlockService} from "./services/nano-block.service";
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import {WebsocketService} from "./services/websocket.service";
     WorkPoolService,
     AppSettingsService,
     WebsocketService,
+    NanoBlockService,
   ],
   bootstrap: [AppComponent]
 })

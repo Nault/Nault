@@ -8,6 +8,7 @@ import BigNumber from "bignumber.js";
 import {UtilService} from "../../services/util.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
+import {NanoBlockService} from "../../services/nano-block.service";
 const nacl = window['nacl'];
 
 @Component({
@@ -29,6 +30,7 @@ export class ReceiveComponent implements OnInit {
     private api: ApiService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
+    private nanoBlock: NanoBlockService,
     private util: UtilService) { }
 
   async ngOnInit() {
@@ -104,72 +106,14 @@ export class ReceiveComponent implements OnInit {
     if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
     pendingBlock.loading = true;
 
-    // From account?
-    const fromAcct = await this.api.accountInfo(pendingBlock.source);
-    if (!fromAcct) throw new Error(`Unable to load info on source account?`);
+    const newBlock = this.nanoBlock.generateReceive(walletAccount, sourceBlock);
 
-    const toAcct = await this.api.accountInfo(walletAccount.id);
-    let blockData: any = {};
-    let workBlock = null;
-
-    if (!toAcct || !toAcct.frontier) {
-      // This is an open block!
-      const context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
-      const hashBytes = blake.blake2bFinal(context);
-
-      const privKey = walletAccount.keyPair.secretKey;
-      const signed = nacl.sign.detached(hashBytes, privKey);
-      const signature = this.util.hex.fromUint8(signed);
-      const PK = this.util.account.getAccountPublicKey(walletAccount.id);
-
-      workBlock = PK;
-      blockData = {
-        type: 'open',
-        account: pendingBlock.account,
-        representative: this.representativeAccount,
-        source: sourceBlock,
-        signature: signature,
-        work: null,
-      };
-    } else {
-      const previousBlock = toAcct.frontier;
-      const context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(previousBlock));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-      const hashBytes = blake.blake2bFinal(context);
-
-      const privKey = walletAccount.keyPair.secretKey;
-      const signed = nacl.sign.detached(hashBytes, privKey);
-      const signature = this.util.hex.fromUint8(signed);
-
-      workBlock = previousBlock;
-      blockData = {
-        type: 'receive',
-        previous: previousBlock,
-        source: sourceBlock,
-        signature: signature,
-        work: null,
-      };
-    }
-
-    // const response = await this.api.workGenerate(workBlock);
-    const response = await this.workPool.getWork(workBlock);
-
-    const work = response.work;
-
-    blockData.work = work;
-
-    const processResponse = await this.api.process(blockData);
-    if (processResponse && processResponse.hash) {
-      walletAccount.frontier = processResponse.hash;
+    if (newBlock) {
       this.notificationService.sendSuccess(`Successfully received XRB!`);
-      this.workPool.addToPool(processResponse.hash); // Add new hash into the work pool
     } else {
-      this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
+      this.notificationService.sendError(`There was an error receiving the transaction`)
     }
+
     pendingBlock.loading = false;
 
     await this.walletService.reloadBalances();

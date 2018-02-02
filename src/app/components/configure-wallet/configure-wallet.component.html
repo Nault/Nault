@@ -1,7 +1,7 @@
 <h2>Configure Wallet</h2>
 <p>Use the options below to import an existing wallet or create a new one.</p>
 
-<div *ngIf="wallet.seed && (activePanel != 3 && activePanel != 4)" class="uk-alert uk-alert-danger">
+<div *ngIf="wallet.seed && (activePanel != 3 && activePanel != 4 && activePanel != 5)" class="uk-alert uk-alert-danger">
   <b>You already have a wallet configured</b><br>
   Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
   Without it, <b>any funds you have will become completely unrecoverable!</b>
@@ -20,8 +20,8 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 0">
   <div class="uk-card-body">
     <p>
-      When you create a new wallet, a new RaiBlocks seed will be generated which can be used to create brand new accounts
-      on the RaiBlocks network.  Your RaiBlocks seed is the master key to all of your accounts and by proxy any money inside of them!
+      When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts
+      on the Nano network.  Your Nano seed is the master key to all of your accounts and by proxy any money inside of them!
     </p>
     <div class="uk-alert-warning" uk-alert>
       <p>Make sure you back up your seed, write it down, and keep it incredibly safe!  There is NO way to recover it after
@@ -36,7 +36,7 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 1">
   <div class="uk-card-body">
     <p>
-      If you already have a RaiBlocks wallet, you can use your backup seed to import it below.  When you import an existing wallet,
+      If you already have a Nano wallet, you can use your backup seed to import it below.  When you import an existing wallet,
       we create a new wallet and attach your seed to it.  None of your existing wallets or accounts are affected, and your seed
       is not stored anywhere besides in your local client.<br>
       <br>
@@ -60,8 +60,7 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 3">
   <div class="uk-card-body">
     <p>
-      Your new RaiBlocks wallet has been created!  Make sure to write down/save your seed as it will be completely unrecoverable
-      after you exit this screen!!
+      Your new Nano wallet has been created!  Your seed is below; make sure to write it down, save it, and never share it with anyone!
     </p>
     <div uk-grid>
       <div class="uk-width-1-4">Wallet Seed</div>
@@ -70,15 +69,7 @@
         <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
 
       </div>
-      <!--<div class="uk-width-1-4"></div>-->
-      <!--<div class="uk-width-3-4">-->
-        <!--<a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>-->
-      <!--</div>-->
     </div>
-    <!--<div uk-grid>-->
-      <!--<div class="uk-width-1-4">Wallet ID</div>-->
-      <!--<div class="uk-width-3-4">{{ newWalletID }}</div>-->
-    <!--</div>-->
   </div>
   <div class="uk-card-footer">
     <button class="uk-button uk-button-danger" (click)="confirmNewSeed()">Ive Saved My Seed</button>
@@ -88,7 +79,26 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 4">
   <div class="uk-card-body">
     <p>
-      Your wallet has been configured and you are ready to send and receive RaiBlocks!
+      The last step is to set a new password for your wallet.  This password is used to lock and unlock your wallet,
+      which encrypts the sensitive parts of your wallet and disables sending, receiving, creating accounts, etc.<br>
+      <br>
+      Set your wallet password below:
+    </p>
+    <div uk-grid>
+      <div class="uk-width-1-1">
+        <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
+      </div>
+    </div>
+  </div>
+  <div class="uk-card-footer uk-text-right">
+    <button class="uk-button uk-button-primary" (click)="saveWalletPassword()">Set Wallet Password</button>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default" *ngIf="activePanel == 5">
+  <div class="uk-card-body">
+    <p>
+      Your wallet has been configured and you are ready to send and receive Nano!
     </p>
   </div>
   <div class="uk-card-footer uk-text-right">
