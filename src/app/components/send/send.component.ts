@@ -160,13 +160,14 @@ export class SendComponent implements OnInit {
     // Send to process?
     const processResponse = await this.nodeApi.process(blockData);
     if (processResponse && processResponse.hash) {
+      walletAccount.frontier = processResponse.hash;
+      this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
+      this.workPool.addToPool(processResponse.hash); // Add new hash to work pool
+
       this.activePanel = 'send';
       this.amount = 0;
       this.toAccountID = '';
       this.toAccountStatus = null;
-      walletAccount.frontier = processResponse.hash;
-      this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
-      this.workPool.addToPool(processResponse.hash); // Add new hash to work pool
     } else {
       this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
     }
