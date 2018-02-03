@@ -161,6 +161,9 @@ export class SendComponent implements OnInit {
     const processResponse = await this.nodeApi.process(blockData);
     if (processResponse && processResponse.hash) {
       this.activePanel = 'send';
+      this.amount = 0;
+      this.toAccountID = '';
+      this.toAccountStatus = null;
       walletAccount.frontier = processResponse.hash;
       this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
       this.workPool.addToPool(processResponse.hash); // Add new hash to work pool

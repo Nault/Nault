@@ -4,47 +4,38 @@
 
     <div uk-grid>
 
-      <div class="uk-width-1-2@m" *ngIf="!wallet.seed">
+
+      <div class="uk-width-1-1@m" *ngIf="wallet.seed">
         <div class="uk-card uk-card-default uk-card-small">
           <div class="uk-card-header">
-            <h3 class="uk-card-title uk-margin-remove-bottom">Configure Your Wallet</h3>
+            <div uk-grid>
+              <div class="uk-width-1-2@s">
+                <h3 class="uk-card-title uk-margin-remove-bottom">Wallet Configured</h3>
+              </div>
+              <div class="uk-width-1-2@s uk-text-right@s">
+                <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
+              </div>
+            </div>
           </div>
-          <div class="uk-card-body">
-            <p>
-              NanoVault is an open source web wallet for using Nano which makes it incredibly easy to send and receive Nano from anywhere in the world.<br>
-              <br>
-              To get started, press the button below to configure your wallet.
-            </p>
-          </div>
-          <div class="uk-card-footer uk-text-right">
-            <button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>
-          </div>
-        </div>
-      </div>
-      <div class="uk-width-1-2@m" *ngIf="wallet.seed">
-        <div class="uk-card uk-card-default uk-card-small">
-          <div class="uk-card-header">
-            <h3 class="uk-card-title uk-margin-remove-bottom">Wallet Configured</h3>
-          </div>
-          <div class="uk-card-body">
-            <p>
-              NanoVault is an open source web wallet for using Nano which makes it incredibly easy to send and receive Nano from anywhere in the world.<br>
-              <br>
-              Looks like your wallet is already configured, great!  Press the button below to view your accounts.
-            </p>
-          </div>
-          <div class="uk-card-footer uk-text-right">
-            <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
-          </div>
+          <!--<div class="uk-card-body">-->
+            <!--<p>-->
+              <!--Looks like your wallet is already configured, great!  Press the button below to view your accounts.-->
+            <!--</p>-->
+          <!--</div>-->
+          <!--<div class="uk-card-footer uk-text-right">-->
+            <!--<button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>-->
+          <!--</div>-->
         </div>
       </div>
 
-      <div class="uk-width-1-2@m">
+      <div class="uk-width-1-1@m">
         <div class="uk-card uk-card-default uk-card-small">
           <div class="uk-card-header">
-            <h3 class="uk-card-title uk-margin-remove-bottom">Main Features</h3>
+            <h3 class="uk-card-title uk-margin-remove-bottom">Why NanoVault?</h3>
           </div>
           <div class="uk-card-body">
+            NanoVault is an open source web wallet which makes it incredibly easy to send and receive <a href="https://nano.org" target="_blank">Nano</a> from anywhere in the world.<br>
+
             <!--<span class="uk-text-lead">NanoVault Features</span>-->
             <dl class="uk-description-list">
               <dt>Fully Client-side Signing</dt>
@@ -59,6 +50,23 @@
           </div>
         </div>
       </div>
+
+      <div class="uk-width-1-1@m" *ngIf="!wallet.seed">
+        <div class="uk-card uk-card-default uk-card-small">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title uk-margin-remove-bottom">Configure Your Wallet</h3>
+          </div>
+          <div class="uk-card-body">
+            <p>
+              To get started, press the button below to configure your wallet.
+            </p>
+          </div>
+          <div class="uk-card-footer uk-text-right">
+            <button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!--<div class="uk-card uk-card-default">-->
