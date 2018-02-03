@@ -41,6 +41,9 @@ export class UtilService {
     xrbToRaw: xrbToRaw,
     kraiToRaw: kraiToRaw,
     raiToRaw: raiToRaw,
+    rawToXrb: rawToXrb,
+    rawToKrai: rawToKrai,
+    rawToRai: rawToRai,
   };
 
 }
@@ -242,6 +245,16 @@ function kraiToRaw(value) {
 function raiToRaw(value) {
   return new BigNumber(value).times(rai);
 }
+function rawToXrb(value) {
+  return new BigNumber(value).div(xrb);
+}
+function rawToKrai(value) {
+  return new BigNumber(value).div(krai);
+}
+function rawToRai(value) {
+  return new BigNumber(value).div(rai);
+}
+
 
 function array_crop (array) {
   var length = array.length - 1;
@@ -295,5 +308,8 @@ const util = {
     xrbToRaw: xrbToRaw,
     kraiToRaw: kraiToRaw,
     raiToRaw: raiToRaw,
+    rawToXrb: rawToXrb,
+    rawToKrai: rawToKrai,
+    rawToRai: rawToRai,
   }
 };

@@ -99,6 +99,7 @@ export class SendComponent implements OnInit {
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
     const to = await this.nodeApi.accountInfo(this.toAccountID);
     if (!from) return this.notificationService.sendError(`From account not found`);
+    if (this.fromAccountID == this.toAccountID) return this.notificationService.sendWarning(`From and to account cannot be the same`);
 
     from.balanceBN = new BigNumber(from.balance || 0);
     to.balanceBN = new BigNumber(to.balance || 0);
@@ -171,6 +172,15 @@ export class SendComponent implements OnInit {
     await this.walletService.reloadBalances();
   }
 
+  setMaxAmount() {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
+    if (!walletAccount) return;
+
+    const raiVal = this.util.xrb.rawToRai(walletAccount.balance).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.xrb.raiToRaw(raiVal));
+    this.amount = maxAmount.toNumber();
+  }
+
   getAmountBaseValue(value) {
 
     switch (this.selectedAmount.value) {
@@ -178,9 +188,15 @@ export class SendComponent implements OnInit {
       case 'rai': return this.util.xrb.raiToRaw(value);
       case 'mrai': return this.util.xrb.xrbToRaw(value);
       case 'krai': return this.util.xrb.kraiToRaw(value);
-      // case 'rai': return await this.nodeApi.raiToRaw(value);
-      // case 'mrai': return await this.nodeApi.mraiToRaw(value);
-      // case 'krai': return await this.nodeApi.kraiToRaw(value);
+    }
+  }
+
+  getAmountValueFromBase(value) {
+    switch (this.selectedAmount.value) {
+      default:
+      case 'rai': return this.util.xrb.rawToRai(value);
+      case 'mrai': return this.util.xrb.rawToXrb(value);
+      case 'krai': return this.util.xrb.rawToKrai(value);
     }
   }
 

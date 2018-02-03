@@ -2,17 +2,94 @@
   <div class="uk-width-1-1 uk-animation-slide-left-small">
     <h2>Welcome to NanoVault!</h2>
 
-    <div class="uk-card uk-card-default">
-      <div class="uk-card-body">
-        <p>
-          NanoVault is an open source wallet application for Nano.  It aims to make Nano incredibly easy to use, and adds
-          a few helpful features as well. Press the button below to configure the application<br>
-        </p>
+    <div uk-grid>
+
+      <div class="uk-width-1-2@m" *ngIf="!wallet.seed">
+        <div class="uk-card uk-card-default uk-card-small">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title uk-margin-remove-bottom">Configure Your Wallet</h3>
+          </div>
+          <div class="uk-card-body">
+            <p>
+              NanoVault is an open source web wallet for using Nano which makes it incredibly easy to send and receive Nano from anywhere in the world.<br>
+              <br>
+              To get started, press the button below to configure your wallet.
+            </p>
+          </div>
+          <div class="uk-card-footer uk-text-right">
+            <button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>
+          </div>
+        </div>
       </div>
-      <div class="uk-card-footer uk-text-right">
-        <button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>
+      <div class="uk-width-1-2@m" *ngIf="wallet.seed">
+        <div class="uk-card uk-card-default uk-card-small">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title uk-margin-remove-bottom">Wallet Configured</h3>
+          </div>
+          <div class="uk-card-body">
+            <p>
+              NanoVault is an open source web wallet for using Nano which makes it incredibly easy to send and receive Nano from anywhere in the world.<br>
+              <br>
+              Looks like your wallet is already configured, great!  Press the button below to view your accounts.
+            </p>
+          </div>
+          <div class="uk-card-footer uk-text-right">
+            <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="uk-width-1-2@m">
+        <div class="uk-card uk-card-default uk-card-small">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title uk-margin-remove-bottom">Main Features</h3>
+          </div>
+          <div class="uk-card-body">
+            <!--<span class="uk-text-lead">NanoVault Features</span>-->
+            <dl class="uk-description-list">
+              <dt>Fully Client-side Signing</dt>
+              <dd>All sensitive operations happen in your browser only - your seed or private keys are never sent to a server.</dd>
+              <dt>Stateless Wallet</dt>
+              <dd>Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily!</dd>
+              <dt>Mobile Friendly</dt>
+              <dd>Send and receive Nano from any device, any time, anywhere.</dd>
+              <dt>And more</dt>
+              <dd>Send and receive transactions nearly instantly, store names for your accounts in the address book, and more!</dd>
+            </dl>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!--<div class="uk-card uk-card-default">-->
+      <!--<div class="uk-card-body">-->
+        <!--<p>-->
+          <!--NanoVault is an open source web wallet for using Nano which makes it incredibly easy to send and receive Nano from anywhere in the world.<br>-->
+        <!--</p>-->
+        <!--<span class="uk-text-lead">NanoVault Features</span>-->
+        <!--<div uk-grid>-->
+          <!--<div class="uk-width-1-2">-->
+            <!--To get started, all you need to do is create or import an existing seed.-->
+          <!--</div>-->
+          <!--<div class="uk-width-1-2">-->
+            <!--<dl class="uk-description-list">-->
+              <!--<dt>Fully Client-side Signing</dt>-->
+              <!--<dd>All sensitive operations happen in your browser only - your seed or private keys are never sent to a server.</dd>-->
+              <!--<dt>Stateless Wallet</dt>-->
+              <!--<dd>Because no information is ever stored on a server, there are no accounts to login to or email address required. Create as many wallets as you want and switch between them easily!</dd>-->
+              <!--<dt>Open Source</dt>-->
+              <!--<dd>Because we wouldn't trust any wallet that wasn't - view all of the source on GitHub.</dd>-->
+              <!--<dt>And more</dt>-->
+              <!--<dd>Send and receive transactions nearly instantly, store names for your accounts in the address book, and more!</dd>-->
+            <!--</dl>-->
+          <!--</div>-->
+        <!--</div>-->
+
+      <!--</div>-->
+      <!--<div class="uk-card-footer uk-text-right">-->
+        <!--<button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>-->
+      <!--</div>-->
+    <!--</div>-->
     <hr class="uk-divider-icon">
     <div class="uk-card uk-card-small uk-card-default uk-margin">
       <div class="uk-card-body uk-text-center">

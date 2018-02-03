@@ -16,12 +16,15 @@ export class HistoryComponent implements OnInit {
 
   accounts = this.walletService.wallet.accounts;
 
+  searchPerformed = false;
+
   constructor(private walletService: WalletService, public modal: ModalService, private addressBook: AddressBookService, private api: ApiService, private notifications: NotificationService, public settings: AppSettingsService) { }
 
   async ngOnInit() {
   }
 
   async getAccountHistory(account) {
+    this.searchPerformed = true;
     this.accountHistory = [];
 
     const history = await this.api.accountHistory(account);

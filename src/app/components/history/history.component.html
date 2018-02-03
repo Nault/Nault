@@ -46,8 +46,11 @@
               <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: settings.settings.displayDenomination }}</td>
               <td class="uk-text-truncate">{{ history.hash }}</td>
             </tr>
-            <tr *ngIf="!accountHistory.length">
+            <tr *ngIf="!accountHistory.length && searchPerformed">
               <td colspan="4" style="text-align: center;">No account history</td>
+            </tr>
+            <tr *ngIf="!searchPerformed">
+              <td colspan="4" style="text-align: center;">Select an account and press View History to see the recent transactions</td>
             </tr>
             </tbody>
           </table>
