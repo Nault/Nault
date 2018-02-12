@@ -59,7 +59,7 @@
                   <div class="uk-width-auto" style="padding-left: 10px;">
                     <ul class="uk-hidden-hover uk-iconnav">
                       <li><a ngxClipboard [cbContent]="block.source" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                      <li><a [routerLink]="'/account/' + account.id" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                      <li><a [routerLink]="'/account/' + block.source" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
                     </ul>
                   </div>
                 </div>
