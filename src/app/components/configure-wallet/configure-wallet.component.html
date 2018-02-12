@@ -21,9 +21,9 @@
   <div class="uk-card-body">
     <p>
       When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts
-      on the Nano network.  Your Nano seed is the master key to all of your accounts and by proxy any money inside of them!
+      on the Nano network.  Your Nano seed is the master key to all of your accounts and any money inside of them!
     </p>
-    <div class="uk-alert-warning" uk-alert>
+    <div class="uk-alert-primary" uk-alert>
       <p>Make sure you back up your seed, write it down, and keep it incredibly safe!  There is NO way to recover it after
         creation, and all funds inside WILL be lost without it!  You have been warned!</p>
     </div>
@@ -46,7 +46,7 @@
     </p>
     <div uk-grid>
       <div class="uk-width-1-1">
-        <input type="text" class="uk-input" [(ngModel)]="importSeedModel" placeholder="Your RaiWallet Backup Seed">
+        <input type="text" class="uk-input" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
       </div>
     </div>
   </div>
@@ -87,6 +87,9 @@
     <div uk-grid>
       <div class="uk-width-1-1">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
+      </div>
+      <div class="uk-width-1-1">
+        <input type="password" class="uk-input" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
       </div>
     </div>
   </div>

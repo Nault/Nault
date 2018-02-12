@@ -7,10 +7,10 @@ interface AppSettings {
 
 @Injectable()
 export class AppSettingsService {
-  storeKey = `raivault-appsettings`;
+  storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
-    displayDenomination: 'xrb',
+    displayDenomination: 'mnano',
     walletStore: 'localStorage',
   };
 

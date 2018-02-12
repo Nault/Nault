@@ -23,6 +23,8 @@ export interface WalletAccount {
 
 @Injectable()
 export class WalletService {
+  storeKey = `nanovault-wallet`;
+
   walletPassword = '';
   wallet = {
     seedBytes: null,
@@ -86,7 +88,7 @@ export class WalletService {
   async loadStoredWallet() {
     this.resetWallet();
 
-    const walletData = localStorage.getItem('raivault-wallet');
+    const walletData = localStorage.getItem(this.storeKey);
     if (!walletData) return this.wallet;
 
     const walletJson = JSON.parse(walletData);
@@ -130,7 +132,6 @@ export class WalletService {
     return true;
   }
   unlockWallet(password: string) {
-    // Find old seed, find new seed?
     try {
       const decryptedBytes = CryptoJS.AES.decrypt(this.wallet.seed, password);
       const decryptedSeed = decryptedBytes.toString(CryptoJS.enc.Utf8);
@@ -269,11 +270,11 @@ export class WalletService {
 
     switch (this.appSettings.settings.walletStore) {
       case 'none':
-        localStorage.removeItem('raivault-wallet');
+        localStorage.removeItem(this.storeKey);
         break;
       default:
       case 'localStorage':
-        localStorage.setItem('raivault-wallet', JSON.stringify(exportData));
+        localStorage.setItem(this.storeKey, JSON.stringify(exportData));
         break;
     }
   }

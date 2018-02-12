@@ -27,9 +27,9 @@ export class SendComponent implements OnInit {
   showAddressBook = false;
 
   amounts = [
-    { name: 'XRB', shortName: 'XRB', value: 'mrai' },
-    { name: 'KRAI (0.001 XRB)', shortName: 'KRAI', value: 'krai' },
-    { name: 'RAI (0.000001 XRB)', shortName: 'RAI', value: 'rai' },
+    { name: 'XRB', shortName: 'XRB', value: 'mnano' },
+    { name: 'KNANO (0.001 XRB)', shortName: 'KNANO', value: 'knano' },
+    { name: 'NANO (0.000001 XRB)', shortName: 'NANO', value: 'nano' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -197,18 +197,18 @@ export class SendComponent implements OnInit {
 
     switch (this.selectedAmount.value) {
       default:
-      case 'rai': return this.util.xrb.raiToRaw(value);
-      case 'mrai': return this.util.xrb.xrbToRaw(value);
-      case 'krai': return this.util.xrb.kraiToRaw(value);
+      case 'nano': return this.util.xrb.raiToRaw(value);
+      case 'knano': return this.util.xrb.kraiToRaw(value);
+      case 'mnano': return this.util.xrb.xrbToRaw(value);
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-      case 'rai': return this.util.xrb.rawToRai(value);
-      case 'mrai': return this.util.xrb.rawToXrb(value);
-      case 'krai': return this.util.xrb.rawToKrai(value);
+      case 'nano': return this.util.xrb.rawToRai(value);
+      case 'knano': return this.util.xrb.rawToKrai(value);
+      case 'mnano': return this.util.xrb.rawToXrb(value);
     }
   }
 

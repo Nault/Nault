@@ -22,6 +22,7 @@ export class ManageWalletComponent implements OnInit {
 
   async changePassword() {
     if (this.newPassword !== this.confirmPassword) return this.notificationService.sendError(`Passwords do not match`);
+    if (this.newPassword.length < 1) return this.notificationService.sendError(`Password cannot be empty`);
     if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
 
     this.walletService.walletPassword = this.newPassword;

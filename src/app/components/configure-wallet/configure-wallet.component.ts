@@ -14,6 +14,7 @@ export class ConfigureWalletComponent implements OnInit {
   newWalletSeed = '';
   importSeedModel = '';
   walletPasswordModel = '';
+  walletPasswordConfirmModel = '';
 
   constructor(private walletService: WalletService, private notifications: NotificationService) { }
 
@@ -45,9 +46,16 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   saveWalletPassword() {
+    if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
+      return this.notifications.sendError(`Password confirmation does not match, try again!`);
+    }
+    if (this.walletPasswordModel.length < 1) {
+      return this.notifications.sendWarning(`Password cannot be empty!`);
+    }
     const newPassword = this.walletPasswordModel;
     this.walletService.walletPassword = newPassword;
     this.walletPasswordModel = '';
+    this.walletPasswordConfirmModel = '';
 
     this.activePanel = 5;
     this.notifications.sendSuccess(`Successfully set wallet password!`);

@@ -12,11 +12,11 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'XRB', value: 'xrb' },
-    { name: 'KRAI (0.001 XRB)', value: 'krai' },
-    { name: 'RAI (0.000001 XRB)', value: 'rai' },
+    { name: 'XRB', value: 'mnano' },
+    { name: 'KNANO (0.001 XRB)', value: 'knano' },
+    { name: 'NANO (0.000001 XRB)', value: 'nano' },
   ];
-  selectedDenomination = this.denominations.find(d => d.value === (this.appSettings.getAppSetting('displayDenomination') || 'xrb'));
+  selectedDenomination = this.denominations.find(d => d.value === (this.appSettings.getAppSetting('displayDenomination') || 'mnano')) || this.denominations[0];
 
   storageOptions = [
     { name: 'Local Storage', value: 'localStorage' },
@@ -27,6 +27,7 @@ export class ConfigureAppComponent implements OnInit {
   constructor(private walletService: WalletService, private notifications: NotificationService, private appSettings: AppSettingsService) { }
 
   async ngOnInit() {
+    const currentDenomination = this.appSettings.getAppSetting('displayDenomination');
   }
 
   updateSettings() {
