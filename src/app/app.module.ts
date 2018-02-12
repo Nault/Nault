@@ -31,6 +31,7 @@ import {ConfigureAppComponent} from "./components/configure-app/configure-app.co
 import {AppSettingsService} from "./services/app-settings.service";
 import {WebsocketService} from "./services/websocket.service";
 import {NanoBlockService} from "./services/nano-block.service";
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {NanoBlockService} from "./services/nano-block.service";
     WalletWidgetComponent,
     ManageWalletComponent,
     ConfigureAppComponent,
+    AccountDetailsComponent,
   ],
   imports: [
     BrowserModule,

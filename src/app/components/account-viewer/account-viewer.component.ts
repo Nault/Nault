@@ -14,6 +14,7 @@ export class AccountViewerComponent implements OnInit {
   accountID: string = '';
   account: any = {};
   addressBookEntry: any = null;
+  accountHistory: any[] = [];
 
   constructor(private modalService: ModalService, private nodeApi: ApiService, private notifications: NotificationService, private addressBook: AddressBookService) { }
 

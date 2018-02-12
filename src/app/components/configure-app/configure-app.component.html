@@ -4,20 +4,20 @@
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Change XRB Display Value</h3>
+        <h3 class="uk-card-title">Wallet Settings</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
           <div class="uk-width-1-1">
             <p>
-              This setting changes the default denomination used throughout the app when displaying balances.
+              Use the settings below to change how your wallet operates.
             </p>
           </div>
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Current Value</label>
+                <label class="uk-form-label">Display Denomination <span uk-icon="icon: info;" uk-tooltip title="Change the default denomination used throughout the application when displaying Nano balances"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -33,20 +33,26 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
 
-          <!--<div class="uk-width-3-4">-->
-            <!--Current Value:-->
-          <!--</div>-->
-          <!--<div class="uk-width-1-4">-->
-            <!--<div class="uk-inline uk-width-1-1">-->
-              <!--<button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>-->
-              <!--<div uk-dropdown>-->
-                <!--<ul class="uk-nav uk-dropdown-nav">-->
-                  <!--<li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>-->
-                <!--</ul>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
+              <div class="uk-margin">
+                <label class="uk-form-label">Wallet Storage <span uk-icon="icon: info;" uk-tooltip title="Change where your wallet is stored.  If you select none, your wallet is reset every time you reload."></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedStorage.name }}</button>
+                    <div uk-dropdown>
+                      <ul class="uk-nav uk-dropdown-nav">
+                        <li class="uk-active" *ngFor="let storage of storageOptions" [class]="{ 'uk-active': selectedStorage.value == storage.value }"><a href="#" (click)="selectedStorage = storage">{{ storage.name }}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">
@@ -54,18 +60,5 @@
       </div>
     </div>
 
-    <!--<div class="uk-card uk-card-default uk-margin">-->
-      <!--<div class="uk-card-header">-->
-        <!--<h3 class="uk-card-title">Wallet Save Settings</h3>-->
-      <!--</div>-->
-      <!--<div class="uk-card-body">-->
-        <!--<p *ngIf="wallet.locked">-->
-          <!--To backup your wallet seed, unlock your wallet.-->
-        <!--</p>-->
-        <!--<p *ngIf="!wallet.locked">-->
-          <!--To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.-->
-        <!--</p>-->
-      <!--</div>-->
-    <!--</div>-->
   </div>
 </div>

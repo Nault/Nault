@@ -18,6 +18,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedDenomination = this.denominations.find(d => d.value === (this.appSettings.getAppSetting('displayDenomination') || 'xrb'));
 
+  storageOptions = [
+    { name: 'Local Storage', value: 'localStorage' },
+    { name: 'None', value: 'none' },
+  ];
+  selectedStorage = this.storageOptions[0];
+
   constructor(private walletService: WalletService, private notifications: NotificationService, private appSettings: AppSettingsService) { }
 
   async ngOnInit() {
@@ -25,8 +31,17 @@ export class ConfigureAppComponent implements OnInit {
 
   updateSettings() {
     const newDenomination = this.selectedDenomination.value;
+    const newStorage = this.selectedStorage.value;
+
+    const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
+
     this.appSettings.setAppSetting('displayDenomination', newDenomination);
+    this.appSettings.setAppSetting('walletStore', newStorage);
 
     this.notifications.sendSuccess(`App settings successfully updated!`);
+
+    if (resaveWallet) {
+      this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
+    }
   }
 }

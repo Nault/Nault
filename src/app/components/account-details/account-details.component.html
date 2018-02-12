@@ -1,0 +1,169 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+
+    <h2>Account Details</h2>
+
+
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header uk-visible-toggle">
+
+
+
+
+        <div uk-grid>
+          <div class="uk-width-expand uk-text-truncate ">
+            <h3 class="uk-card-title">{{ accountID }}</h3>
+          </div>
+          <div class="uk-width-auto" style="padding-left: 10px;">
+            <ul class="uk-hidden-hover uk-iconnav">
+              <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="uk-card-body uk-padding-remove">
+
+        <ul uk-tab>
+          <li><a href="#">Account Details</a></li>
+          <li><a href="#">Transaction History</a></li>
+          <li class="uk-visible@s"><a [routerLink]="'/send'" [queryParams]="{ to: accountID }"><b>Send Nano</b></a></li>
+        </ul>
+
+        <ul class="uk-switcher uk-margin">
+          <li>
+
+            <div class="uk-padding-small">
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Balance:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">{{ account.balance || 0 | rai: settings.settings.displayDenomination }}</div>
+              </div>
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Pending:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">{{ account.pending || 0 | rai: settings.settings.displayDenomination }}</div>
+              </div>
+
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Address Book:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">
+                  <div *ngIf="showEditAddressBook">
+                    <div uk-grid>
+                      <div class=" uk-width-1-1">
+                        <div class="uk-margin">
+                          <div class="uk-inline">
+                            <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check"></a>
+                            <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-icon="icon: close"></a>
+                            <input class="uk-input" [(ngModel)]="addressBookModel" placeholder="Account Label" type="text">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!showEditAddressBook">
+                    <span *ngIf="addressBookEntry" class="uk-label uk-label-default">{{ addressBookEntry }}</span>
+                    <span *ngIf="!addressBookEntry">No entry saved</span>
+                    <span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = true"></span>
+                  </div>
+
+
+                </div>
+              </div>
+
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Representative:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">
+
+                  <div *ngIf="showEditRepresentative">
+                    <div uk-grid>
+                      <div class=" uk-width-1-1">
+                        <div class="uk-margin">
+                          <div class="uk-inline uk-width-1-1">
+                            <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check"></a>
+                            <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close"></a>
+                            <input class="uk-input" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!showEditRepresentative">
+
+                    <div uk-grid>
+                      <div class="uk-width-expand uk-text-truncate ">
+                        {{ account.representative || 'N/A' }}
+                      </div>
+                      <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount">
+                        <ul class="uk-hidden-hover uk-iconnav">
+                          <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Transactions:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">{{ account.block_count || 0 }}</div>
+              </div>
+              <div class="uk-margin-remove" uk-grid>
+                <div class="uk-width-1-5@s uk-width-1-2">Last Modified:</div>
+                <div class="uk-width-4-5@s uk-width-1-2">{{ account.modified_timestamp * 1000 | date }}</div>
+              </div>
+            </div>
+
+          </li>
+          <li>
+
+            <div class="uk-card uk-card-default uk-margin-top">
+              <table class="uk-table uk-table-striped uk-table-small">
+                <thead>
+                <tr>
+                  <th class="uk-width-2-5">Account</th>
+                  <th class="uk-width-1-5">Type</th>
+                  <th class="uk-width-1-5">Amount</th>
+                  <th class="uk-width-1-5">Hash</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let history of accountHistory">
+                  <td class="uk-visible-toggle">
+                    <div uk-grid>
+                      <div class="uk-width-expand uk-text-truncate">
+                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.account }}
+                      </div>
+                      <div class="uk-width-auto" style="padding-left: 10px;">
+                        <ul class="uk-hidden-hover uk-iconnav">
+                          <li><a ngxClipboard [cbContent]="history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                          <li><a [routerLink]="'/account/' + history.account" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ history.type }}</td>
+                  <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: settings.settings.displayDenomination }}</td>
+                  <td class="uk-text-truncate">{{ history.hash }}</td>
+                </tr>
+                <tr *ngIf="!accountHistory.length && searchPerformed">
+                  <td colspan="4" style="text-align: center;">No account history</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </li>
+          <li>Send some nanners</li>
+        </ul>
+
+
+
+      </div>
+      <!--<div class="uk-card-footer uk-text-right">-->
+        <!--<button class="uk-button uk-button-default" type="button">View History</button>-->
+        <!--<button class="uk-button uk-button-default" type="button">Send Nano</button>-->
+      <!--</div>-->
+    </div>
+
+  </div>
+</div>

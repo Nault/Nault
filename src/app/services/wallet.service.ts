@@ -8,6 +8,7 @@ import {WorkPoolService} from "./work-pool.service";
 import {WebsocketService} from "./websocket.service";
 import {NanoBlockService} from "./nano-block.service";
 import {NotificationService} from "./notification.service";
+import {AppSettingsService} from "./app-settings.service";
 
 export interface WalletAccount {
   id: string;
@@ -33,7 +34,16 @@ export class WalletService {
     locked: false,
   };
 
-  constructor(private util: UtilService, private api: ApiService, private addressBook: AddressBookService, private workPool: WorkPoolService, private websocket: WebsocketService, private nanoBlock: NanoBlockService, private notifications: NotificationService) {
+  constructor(
+    private util: UtilService,
+    private api: ApiService,
+    private appSettings: AppSettingsService,
+    private addressBook: AddressBookService,
+    private workPool: WorkPoolService,
+    private websocket: WebsocketService,
+    private nanoBlock: NanoBlockService,
+    private notifications: NotificationService)
+  {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
 
@@ -55,22 +65,22 @@ export class WalletService {
         }
       }
 
-      // console.log(`Wallet service, received new transaction!`, transaction);
-
-      // We need an auto accept option, otherwise there is no point
-
-      // transaction.account - the person who initiated the transaction
-      // transaction.block.destination - receiver of the block
-      // transaction.hash
-      // transaction.amount
-      // transaction.block.type (send)
-
-      // All we really need is to be able to do a receive on this hash, we dont need the huge shit before
-
-      // TODO: Need function for reloading a specific accounts balance, instead of all of them (Which also fixes the total balance)
-
       this.reloadBalances();
+    });
+
+    this.addressBook.addressBook$.subscribe(newAddressBook => {
+      this.reloadAddressBook();
     })
+  }
+
+  reloadAddressBook() {
+    this.wallet.accounts.forEach(account => {
+      account.addressBookName = this.addressBook.getAccountName(account.id);
+    })
+  }
+
+  getWalletAccount(accountID) {
+    return this.wallet.accounts.find(a => a.id == accountID);
   }
 
   async loadStoredWallet() {
@@ -256,7 +266,16 @@ export class WalletService {
 
   saveWalletExport() {
     const exportData = this.generateWalletExport();
-    localStorage.setItem('raivault-wallet', JSON.stringify(exportData));
+
+    switch (this.appSettings.settings.walletStore) {
+      case 'none':
+        localStorage.removeItem('raivault-wallet');
+        break;
+      default:
+      case 'localStorage':
+        localStorage.setItem('raivault-wallet', JSON.stringify(exportData));
+        break;
+    }
   }
 
   generateWalletExport() {

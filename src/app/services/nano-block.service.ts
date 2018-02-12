@@ -11,6 +11,39 @@ export class NanoBlockService {
 
   constructor(private api: ApiService, private util: UtilService, private workPool: WorkPoolService) { }
 
+  async generateChange(walletAccount, representativeAccount) {
+    const toAcct = await this.api.accountInfo(walletAccount.id);
+    if (!toAcct) throw new Error(`Account must have an open block first`);
+
+    const context = blake.blake2bInit(32, null);
+    blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.frontier));
+    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(representativeAccount)));
+    const hashBytes = blake.blake2bFinal(context);
+
+    const privKey = walletAccount.keyPair.secretKey;
+    const signed = nacl.sign.detached(hashBytes, privKey);
+    const signature = this.util.hex.fromUint8(signed);
+
+    const workResponse = await this.workPool.getWork(toAcct.frontier);
+
+    const blockData = {
+      type: 'change',
+      previous: toAcct.frontier,
+      representative: representativeAccount,
+      signature: signature,
+      work: workResponse.work,
+    };
+
+    const processResponse = await this.api.process(blockData);
+    if (processResponse && processResponse.hash) {
+      walletAccount.frontier = processResponse.hash;
+      this.workPool.addToPool(processResponse.hash); // Add new hash into the work pool
+      return processResponse.hash;
+    } else {
+      return null;
+    }
+  }
+
   async generateReceive(walletAccount, sourceBlock) {
     const toAcct = await this.api.accountInfo(walletAccount.id);
     let blockData: any = {};

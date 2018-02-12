@@ -10,10 +10,12 @@ import {ReceiveComponent} from "./components/receive/receive.component";
 import {HistoryComponent} from "./components/history/history.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
+import {AccountDetailsComponent} from "./components/account-details/account-details.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'accounts', component: AccountsComponent },
+  { path: 'account/:account', component: AccountDetailsComponent },
   { path: 'address-book', component: AddressBookComponent },
   { path: 'configure-wallet', component: ConfigureWalletComponent },
   { path: 'configure-app', component: ConfigureAppComponent },

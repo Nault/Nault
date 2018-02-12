@@ -10,6 +10,7 @@ import {UtilService} from "../../services/util.service";
 import * as blake from 'blakejs';
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
+import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
 
 const nacl = window['nacl'];
 
@@ -42,6 +43,7 @@ export class SendComponent implements OnInit {
   confirmingTransaction: boolean = false;
 
   constructor(
+    private router: ActivatedRoute,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
@@ -51,6 +53,12 @@ export class SendComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
+    const params = this.router.snapshot.queryParams;
+    if (params && params.to) {
+      this.toAccountID = params.to;
+      this.validateDestination();
+    }
+
     await this.addressBookService.loadAddressBook();
   }
 

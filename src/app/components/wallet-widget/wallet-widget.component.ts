@@ -29,21 +29,12 @@ export class WalletWidgetComponent implements OnInit {
   async unlockWallet() {
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
-    // const UIkit = (window as any).UIkit;
-    // UIkit.modal(document.getElementById('unlock-wallet-modal')).hide();
-    //
-    // console.log('Ui kit hide??', UIkit.modal(document.getElementById('unlock-wallet-modal')));
-    // console.log('element? ', document.getElementById('unlock-wallet-modal'));
-
     if (unlocked) {
       this.walletService.walletPassword = this.unlockPassword; // Save the password in ram only, to lock the wallet
       this.notificationService.sendSuccess(`Wallet unlocked`);
     } else {
       this.notificationService.sendError(`Unable to unlock wallet`);
     }
-
-    // UIkit.modal(document.getElementById('unlock-wallet-modal')).hide();
-
 
     this.unlockPassword = '';
   }
