@@ -120,4 +120,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookModel = '';
   }
 
+  copied() {
+    this.notifications.sendSuccess(`Successfully copied to clipboard!`);
+  }
+
 }

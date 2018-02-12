@@ -145,7 +145,7 @@
                   <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: settings.settings.displayDenomination }}</td>
                   <td class="uk-text-truncate">{{ history.hash }}</td>
                 </tr>
-                <tr *ngIf="!accountHistory.length && searchPerformed">
+                <tr *ngIf="!accountHistory.length">
                   <td colspan="4" style="text-align: center;">No account history</td>
                 </tr>
                 </tbody>
