@@ -22,7 +22,7 @@ export class WebsocketService {
 
   connect() {
     if (this.socket.connected && this.socket.ws) return;
-    const ws = new WebSocket('wss://ws2.nanovault.io');
+    const ws = new WebSocket('wss://ws.nanovault.io');
     this.socket.ws = ws;
 
     ws.onopen = event => {
