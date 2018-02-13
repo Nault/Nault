@@ -51,6 +51,9 @@ export class ApiService {
     return await this.http.post(`${this.rpcUrl}/address-book-remove`, { account }).toPromise();
   }
 
+  async blocksInfo(blocks): Promise<{blocks: any, error?: string}> {
+    return await this.request('blocks_info', { hashes: blocks, pending: true, source: true });
+  }
   async blockCount(): Promise<{count: number, unchecked: number }> {
     return await this.request('block_count', { });
   }

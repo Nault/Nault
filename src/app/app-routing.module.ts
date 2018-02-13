@@ -11,6 +11,7 @@ import {HistoryComponent} from "./components/history/history.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 import {AccountDetailsComponent} from "./components/account-details/account-details.component";
+import {TransactionDetailsComponent} from "./components/transaction-details/transaction-details.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'history', component: HistoryComponent },
   { path: 'send', component: SendComponent },
   { path: 'receive', component: ReceiveComponent },
+  { path: 'transaction/:transaction', component: TransactionDetailsComponent },
 ];
 
 @NgModule({

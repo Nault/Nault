@@ -1,0 +1,16 @@
+.confirm-title {
+  font-weight: bolder;
+  /*display: block;*/
+  font-size: 24px;
+}
+
+.confirm-currency {
+  font-weight: bolder;
+  display: block;
+  font-size: 20px;
+}
+
+.confirm-subtitle {
+  display: block;
+  font-size: 10px;
+}

@@ -32,6 +32,7 @@ import {AppSettingsService} from "./services/app-settings.service";
 import {WebsocketService} from "./services/websocket.service";
 import {NanoBlockService} from "./services/nano-block.service";
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
+import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { AccountDetailsComponent } from './components/account-details/account-de
     ManageWalletComponent,
     ConfigureAppComponent,
     AccountDetailsComponent,
+    TransactionDetailsComponent,
   ],
   imports: [
     BrowserModule,

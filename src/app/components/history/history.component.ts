@@ -36,6 +36,15 @@ export class HistoryComponent implements OnInit {
     }
   }
 
+  async getBlockData(hash) {
+    const blockData = await this.api.blocksInfo([hash]);
+    console.log(`Got block data: `, blockData);
+    const hashData = blockData.blocks[hash];
+    console.log(`got hash data: `, hashData);
+    const hashContents = JSON.parse(hashData.contents);
+    console.log(`Hash contents: `, hashContents);
+  }
+
   copied() {
     this.notifications.sendSuccess(`Successfully copied to clipboard!`);
   }

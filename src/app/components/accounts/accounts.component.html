@@ -23,13 +23,13 @@
           <td class="uk-visible-toggle">
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
-                <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
+                <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
+                  <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
+                </a>
               </div>
               <div class="uk-width-auto" style="padding-left: 10px;">
                 <ul class="uk-hidden-hover uk-iconnav">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                  <li><a [routerLink]="'/account/' + account.id" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>
-                  <!--<li><a (click)="modal.showAccount(account.id)" uk-icon="icon: info" title="View Account Details" uk-tooltip></a></li>-->
                 </ul>
               </div>
             </div>
