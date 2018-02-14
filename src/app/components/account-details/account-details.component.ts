@@ -29,6 +29,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   representativeModel = '';
 
   routerSub = null;
+  priceSub = null;
 
   constructor(
     private router: ActivatedRoute,
@@ -48,6 +49,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         this.loadAccountDetails(); // Reload the state when navigating to itself from the transactions page
       }
     });
+    this.priceSub = this.price.lastPrice$.subscribe(event => {
+      this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+      this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
+    });
 
     await this.loadAccountDetails();
   }
@@ -66,6 +71,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.routerSub) {
       this.routerSub.unsubscribe();
+    }
+    if (this.priceSub) {
+      this.priceSub.unsubscribe();
     }
   }
 

@@ -126,10 +126,10 @@
               <table class="uk-table uk-table-striped uk-table-small">
                 <thead>
                 <tr>
-                  <th class="uk-width-2-5">Account</th>
-                  <th class="uk-width-1-5">Type</th>
-                  <th class="uk-width-1-5">Amount</th>
-                  <th class="uk-width-1-5">Hash</th>
+                  <th class="uk-width-3-5@m uk-width-1-2">Account</th>
+                  <!--<th class="uk-width-1-5">Type</th>-->
+                  <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
+                  <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -148,8 +148,10 @@
                       </div>
                     </div>
                   </td>
-                  <td>{{ history.type }}</td>
-                  <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.amount | rai: settings.settings.displayDenomination }}</td>
+                  <!--<td>{{ history.type }}</td>-->
+                  <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">
+                    {{ history.type == 'send' ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
+                  </td>
                   <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ history.hash }}</a></td>
                 </tr>
                 <tr *ngIf="!accountHistory.length">
