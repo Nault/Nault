@@ -37,8 +37,10 @@ export class SendComponent implements OnInit {
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   fromAccountID: any = '';
+  fromAddressBook = '';
   toAccount: any = false;
   toAccountID: '';
+  toAddressBook = '';
   toAccountStatus = null;
   confirmingTransaction: boolean = false;
 
@@ -122,6 +124,8 @@ export class SendComponent implements OnInit {
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
 
     // Start precopmuting the work...
+    this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
+    this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
     this.workPool.addToPool(this.fromAccount.frontier);
 
     this.activePanel = 'confirm';
@@ -129,7 +133,7 @@ export class SendComponent implements OnInit {
 
   async confirmTransaction() {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id == this.fromAccountID);
-    if (!walletAccount) throw new Error(`unable to find sending account in wallet`);
+    if (!walletAccount) throw new Error(`Unable to find sending account in wallet`);
     if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
 
     this.confirmingTransaction = true;
@@ -176,6 +180,8 @@ export class SendComponent implements OnInit {
       this.amount = 0;
       this.toAccountID = '';
       this.toAccountStatus = null;
+      this.fromAddressBook = '';
+      this.toAddressBook = '';
     } else {
       this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
     }
