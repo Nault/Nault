@@ -273,7 +273,12 @@ export class WalletService {
     let index = accountIndex;
     if (index === null) {
       index = this.wallet.accountsIndex; // Use the existing number, then increment it
-      this.wallet.accountsIndex += 1;
+
+      // Make sure the index is not being used (ie. if you delete acct 3/5, then press add twice, it goes 3, 6, 7)
+      while (this.wallet.accounts.find(a => a.index === index)) index++;
+
+      // Correct the next index? nah. maybe in the future...
+      this.wallet.accountsIndex = index + 1;
     }
 
     const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
@@ -305,6 +310,29 @@ export class WalletService {
     this.saveWalletExport();
 
     return newAccount;
+  }
+
+  async removeWalletAccount(accountID: string) {
+    const walletAccount = this.getWalletAccount(accountID);
+    if (!walletAccount) throw new Error(`Account is not in wallet`);
+
+    const walletAccountIndex = this.wallet.accounts.findIndex(a => a.id === accountID);
+    if (walletAccountIndex === -1) throw new Error(`Account is not in wallet`);
+
+    this.wallet.accounts.splice(walletAccountIndex, 1);
+
+    // Reset the account index if this account is lower than the current index
+    if (walletAccount.index < this.wallet.accountsIndex) {
+      this.wallet.accountsIndex = walletAccount.index;
+    }
+
+    // TODO: Unsubscribe from websocket
+
+    // Reload the balances, save new wallet state
+    await this.reloadBalances();
+    this.saveWalletExport();
+
+    return true;
   }
 
   saveWalletExport() {

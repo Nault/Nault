@@ -82,13 +82,12 @@
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <span class="title">
               NanoVault
-              <!--<span style="font-size: 12px">{{ nanoPrice.lastPrice | fiat: settings.settings.displayCurrency }}</span>-->
             </span>
-            <div style="display: inline-block; text-align: right;">
+            <div style="display: inline-block; text-align: right;" class="uk-text-truncate">
 
               <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
-              <span style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XRB">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" style="">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XRB">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
+              <span class="balance" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
             </div>
 
             <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="wallet.pending.gt(0)">
@@ -96,11 +95,6 @@
               <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
               <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
             </div>
-
-            <!--<span style="margin-left: 11px; color: #62a25b">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>-->
-            <!--<span class="balance-text uk-text-muted">Pending <span style="margin-left: 10px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span></span>-->
-            <!--<span class="balance uk-text-muted">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>-->
-
           </div>
 
         </div>

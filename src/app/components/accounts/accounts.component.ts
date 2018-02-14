@@ -30,4 +30,16 @@ export class AccountsComponent implements OnInit {
     this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
   }
 
+  async deleteAccount(account) {
+    if (this.walletService.walletIsLocked()) {
+      return this.notificationService.sendWarning(`Wallet must be unlocked.`);
+    }
+    try {
+      await this.walletService.removeWalletAccount(account.id);
+      this.notificationService.sendSuccess(`Successfully removed account ${account.id}`);
+    } catch (err) {
+      this.notificationService.sendError(`Unable to delete account: ${err.message}`);
+    }
+  }
+
 }

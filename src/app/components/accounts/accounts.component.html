@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let account of accounts">
+        <tr *ngFor="let account of accounts" class="uk-visible-toggle">
           <td class="uk-visible-toggle">
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
@@ -46,6 +46,10 @@
             <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
             </div>
+            <div class="uk-float-right uk-hidden-hover">
+              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+            </div>
+
           </td>
         </tr>
         <tr *ngIf="!(accounts).length">
