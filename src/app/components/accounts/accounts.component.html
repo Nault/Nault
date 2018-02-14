@@ -15,7 +15,7 @@
         <tr>
           <th class="uk-width-2-5">Account</th>
           <th class="uk-width-1-4">Balance</th>
-          <th class="uk-width-1-4">Pending</th>
+          <th class="uk-width-1-6"></th>
         </tr>
         </thead>
         <tbody>
@@ -34,8 +34,19 @@
               </div>
             </div>
           </td>
-          <td>{{ account.balance | rai: settings.settings.displayDenomination }}</td>
-          <td>{{ account.pending | rai: settings.settings.displayDenomination }}</td>
+          <td>
+            {{ account.balance | rai: settings.settings.displayDenomination }}
+            <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
+              {{ account.pending | rai: settings.settings.displayDenomination }}
+            </div>
+          </td>
+          <!--<td>{{ account.pending | rai: settings.settings.displayDenomination }}</td>-->
+          <td>
+            {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+            <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
+              {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+            </div>
+          </td>
         </tr>
         <tr *ngIf="!(accounts).length">
           <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a></td>

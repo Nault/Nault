@@ -36,11 +36,17 @@
             <div class="uk-padding-small">
               <div class="uk-margin-remove" uk-grid>
                 <div class="uk-width-1-5@s uk-width-1-2">Balance:</div>
-                <div class="uk-width-4-5@s uk-width-1-2">{{ account.balance || 0 | rai: settings.settings.displayDenomination }}</div>
+                <div class="uk-width-4-5@s uk-width-1-2">
+                  {{ account.balance || 0 | rai: settings.settings.displayDenomination }}<br>
+                  {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+                </div>
               </div>
               <div class="uk-margin-remove" uk-grid>
                 <div class="uk-width-1-5@s uk-width-1-2">Pending:</div>
-                <div class="uk-width-4-5@s uk-width-1-2">{{ account.pending || 0 | rai: settings.settings.displayDenomination }}</div>
+                <div class="uk-width-4-5@s uk-width-1-2">
+                  {{ account.pending || 0 | rai: settings.settings.displayDenomination }}<br>
+                  {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+                </div>
               </div>
 
               <div class="uk-margin-remove" uk-grid>

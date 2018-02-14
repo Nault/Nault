@@ -9,6 +9,7 @@ import {WebsocketService} from "./websocket.service";
 import {NanoBlockService} from "./nano-block.service";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
+import {PriceService} from "./price.service";
 
 export interface WalletAccount {
   id: string;
@@ -18,7 +19,20 @@ export interface WalletAccount {
   index: number;
   balance: number|BigNumber;
   pending: number|BigNumber;
+  balanceFiat: number;
+  pendingFiat: number;
   addressBookName: string|null;
+}
+export interface FullWallet {
+  seedBytes: any;
+  seed: string|null;
+  balance: number|BigNumber;
+  pending: number|BigNumber;
+  balanceFiat: number;
+  pendingFiat: number;
+  accounts: WalletAccount[];
+  accountsIndex: number;
+  locked: boolean;
 }
 
 @Injectable()
@@ -26,11 +40,13 @@ export class WalletService {
   storeKey = `nanovault-wallet`;
 
   walletPassword = '';
-  wallet = {
+  wallet: FullWallet = {
     seedBytes: null,
     seed: '',
     balance: new BigNumber(0),
     pending: new BigNumber(0),
+    balanceFiat: 0,
+    pendingFiat: 0,
     accounts: [],
     accountsIndex: 0,
     locked: false,
@@ -41,6 +57,7 @@ export class WalletService {
     private api: ApiService,
     private appSettings: AppSettingsService,
     private addressBook: AddressBookService,
+    private price: PriceService,
     private workPool: WorkPoolService,
     private websocket: WebsocketService,
     private nanoBlock: NanoBlockService,
@@ -193,11 +210,28 @@ export class WalletService {
     this.wallet.accountsIndex = 0;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
+    this.wallet.balanceFiat = 0;
+    this.wallet.pendingFiat = 0;
+  }
+
+  reloadFiatBalances() {
+    const fiatPrice = this.price.price.lastPrice;
+
+    this.wallet.accounts.forEach(account => {
+      account.balanceFiat = this.util.nano.rawToMnano(account.balance).times(fiatPrice).toNumber();
+      account.pendingFiat = this.util.nano.rawToMnano(account.pending).times(fiatPrice).toNumber();
+    });
+
+    this.wallet.balanceFiat = this.util.nano.rawToMnano(this.wallet.balance).times(fiatPrice).toNumber();
+    this.wallet.pendingFiat = this.util.nano.rawToMnano(this.wallet.pending).times(fiatPrice).toNumber();
   }
 
   async reloadBalances() {
+    const fiatPrice = this.price.price.lastPrice;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
+    this.wallet.balanceFiat = 0;
+    this.wallet.pendingFiat = 0;
     const accountIDs = this.wallet.accounts.map(a => a.id);
     const accounts = await this.api.accountsBalances(accountIDs);
     const frontiers = await this.api.accountsFrontiers(accountIDs);
@@ -213,6 +247,9 @@ export class WalletService {
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
       walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
 
+      walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
+      walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
+
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
 
       walletBalance = walletBalance.plus(walletAccount.balance);
@@ -226,6 +263,9 @@ export class WalletService {
 
     this.wallet.balance = walletBalance;
     this.wallet.pending = walletPending;
+
+    this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
+    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPending).times(fiatPrice).toNumber();
   }
 
   async addWalletAccount(accountIndex: number|null = null, reloadBalances: boolean = true) {
@@ -248,6 +288,8 @@ export class WalletService {
       keyPair: accountKeyPair,
       balance: 0,
       pending: 0,
+      balanceFiat: 0,
+      pendingFiat: 0,
       index: index,
       addressBookName,
     };

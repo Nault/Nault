@@ -188,8 +188,8 @@ export class SendComponent implements OnInit {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
     if (!walletAccount) return;
 
-    const raiVal = this.util.xrb.rawToRai(walletAccount.balance).floor();
-    const maxAmount = this.getAmountValueFromBase(this.util.xrb.raiToRaw(raiVal));
+    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
   }
 
@@ -197,18 +197,18 @@ export class SendComponent implements OnInit {
 
     switch (this.selectedAmount.value) {
       default:
-      case 'nano': return this.util.xrb.raiToRaw(value);
-      case 'knano': return this.util.xrb.kraiToRaw(value);
-      case 'mnano': return this.util.xrb.xrbToRaw(value);
+      case 'nano': return this.util.nano.nanoToRaw(value);
+      case 'knano': return this.util.nano.knanoToRaw(value);
+      case 'mnano': return this.util.nano.mnanoToRaw(value);
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-      case 'nano': return this.util.xrb.rawToRai(value);
-      case 'knano': return this.util.xrb.rawToKrai(value);
-      case 'mnano': return this.util.xrb.rawToXrb(value);
+      case 'nano': return this.util.nano.rawToNano(value);
+      case 'knano': return this.util.nano.rawToKnano(value);
+      case 'mnano': return this.util.nano.rawToMnano(value);
     }
   }
 

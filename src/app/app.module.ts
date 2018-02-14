@@ -33,6 +33,8 @@ import {WebsocketService} from "./services/websocket.service";
 import {NanoBlockService} from "./services/nano-block.service";
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
+import {PriceService} from "./services/price.service";
+import { FiatPipe } from './pipes/fiat.pipe';
 
 
 @NgModule({
@@ -54,6 +56,7 @@ import { TransactionDetailsComponent } from './components/transaction-details/tr
     ConfigureAppComponent,
     AccountDetailsComponent,
     TransactionDetailsComponent,
+    FiatPipe,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { TransactionDetailsComponent } from './components/transaction-details/tr
     AppSettingsService,
     WebsocketService,
     NanoBlockService,
+    PriceService,
   ],
   bootstrap: [AppComponent]
 })

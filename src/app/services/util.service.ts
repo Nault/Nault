@@ -37,13 +37,13 @@ export class UtilService {
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
   };
-  xrb = {
-    xrbToRaw: xrbToRaw,
-    kraiToRaw: kraiToRaw,
-    raiToRaw: raiToRaw,
-    rawToXrb: rawToXrb,
-    rawToKrai: rawToKrai,
-    rawToRai: rawToRai,
+  nano = {
+    mnanoToRaw: mnanoToRaw,
+    knanoToRaw: knanoToRaw,
+    nanoToRaw: nanoToRaw,
+    rawToMnano: rawToMnano,
+    rawToKnano: rawToKnano,
+    rawToNano: rawToNano,
   };
 
 }
@@ -233,27 +233,29 @@ function getAccountPublicKey(account) {
 /**
  * Conversion functions
  */
-const xrb = 1000000000000000000000000000000;
-const krai = 1000000000000000000000000000;
-const rai  = 1000000000000000000000000;
-function xrbToRaw(value) {
-  return new BigNumber(value).times(xrb);
+const mnano = 1000000000000000000000000000000;
+const knano = 1000000000000000000000000000;
+const nano  = 1000000000000000000000000;
+function mnanoToRaw(value) {
+  return new BigNumber(value).times(mnano);
 }
-function kraiToRaw(value) {
-  return new BigNumber(value).times(krai);
+function knanoToRaw(value) {
+  return new BigNumber(value).times(knano);
 }
-function raiToRaw(value) {
-  return new BigNumber(value).times(rai);
+function nanoToRaw(value) {
+  return new BigNumber(value).times(nano);
 }
-function rawToXrb(value) {
-  return new BigNumber(value).div(xrb);
+function rawToMnano(value) {
+  return new BigNumber(value).div(mnano);
 }
-function rawToKrai(value) {
-  return new BigNumber(value).div(krai);
+function rawToKnano(value) {
+  return new BigNumber(value).div(knano);
 }
-function rawToRai(value) {
-  return new BigNumber(value).div(rai);
+function rawToNano(value) {
+  return new BigNumber(value).div(nano);
 }
+
+
 
 
 function array_crop (array) {
@@ -304,12 +306,12 @@ const util = {
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
   },
-  xrb: {
-    xrbToRaw: xrbToRaw,
-    kraiToRaw: kraiToRaw,
-    raiToRaw: raiToRaw,
-    rawToXrb: rawToXrb,
-    rawToKrai: rawToKrai,
-    rawToRai: rawToRai,
+  nano: {
+    mnanoToRaw: mnanoToRaw,
+    knanoToRaw: knanoToRaw,
+    nanoToRaw: nanoToRaw,
+    rawToMnano: rawToMnano,
+    rawToKnano: rawToKnano,
+    rawToNano: rawToNano,
   }
 };

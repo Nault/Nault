@@ -6,6 +6,8 @@ import {NotificationService} from "../../services/notification.service";
 import {WalletService} from "../../services/wallet.service";
 import {NanoBlockService} from "../../services/nano-block.service";
 import {AppSettingsService} from "../../services/app-settings.service";
+import {PriceService} from "../../services/price.service";
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-account-details',
@@ -33,8 +35,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private route: Router,
     private addressBook: AddressBookService,
     private api: ApiService,
+    private price: PriceService,
     private notifications: NotificationService,
     private wallet: WalletService,
+    private util: UtilService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService) { }
 
@@ -53,6 +57,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
+    // Set fiat values?
+    this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+    this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     await this.getAccountHistory(this.accountID);
   }
 

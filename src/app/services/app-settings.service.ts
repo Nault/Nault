@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 interface AppSettings {
   displayDenomination: string;
   walletStore: string;
+  displayCurrency: string;
 }
 
 @Injectable()
@@ -12,6 +13,7 @@ export class AppSettingsService {
   settings: AppSettings = {
     displayDenomination: 'mnano',
     walletStore: 'localStorage',
+    displayCurrency: 'USD',
   };
 
   constructor() { }
