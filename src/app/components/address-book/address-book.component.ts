@@ -27,6 +27,8 @@ export class AddressBookComponent implements OnInit {
   async saveNewAddress() {
     if (!this.newAddressAccount || !this.newAddressName) return this.notificationService.sendError(`Account and name are required`);
 
+    this.newAddressAccount = this.newAddressAccount.replace(/ /g, ''); // Remove spaces
+
     // Make sure name doesn't exist
     if (this.addressBookService.nameExists(this.newAddressName)) {
       return this.notificationService.sendError(`This name is already in use!  Please use a unique name`);

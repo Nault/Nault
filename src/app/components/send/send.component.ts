@@ -41,7 +41,7 @@ export class SendComponent implements OnInit {
   fromAccountID: any = '';
   fromAddressBook = '';
   toAccount: any = false;
-  toAccountID: '';
+  toAccountID: string = '';
   toAddressBook = '';
   toAccountStatus = null;
   confirmingTransaction: boolean = false;
@@ -89,6 +89,9 @@ export class SendComponent implements OnInit {
   async validateDestination() {
     // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
     setTimeout(() => this.showAddressBook = false, 400);
+
+    // Remove spaces from the account id
+    this.toAccountID = this.toAccountID.replace(/ /g, '');
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);
