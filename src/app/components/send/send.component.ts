@@ -11,6 +11,7 @@ import * as blake from 'blakejs';
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
+import {PriceService} from "../../services/price.service";
 
 const nacl = window['nacl'];
 
@@ -34,6 +35,7 @@ export class SendComponent implements OnInit {
   selectedAmount = this.amounts[0];
 
   amount = 0;
+  amountFiat: number = 0;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   fromAccountID: any = '';
@@ -50,6 +52,7 @@ export class SendComponent implements OnInit {
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
     private nodeApi: ApiService,
+    public price: PriceService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private util: UtilService) { }
@@ -122,6 +125,9 @@ export class SendComponent implements OnInit {
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
+
+    // Determine fiat value of the amount
+    this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     // Start precopmuting the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
