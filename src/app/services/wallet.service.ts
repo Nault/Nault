@@ -27,7 +27,7 @@ export interface FullWallet {
   seedBytes: any;
   seed: string|null;
   balance: number|BigNumber;
-  pending: number|BigNumber;
+  pending: BigNumber;
   balanceFiat: number;
   pendingFiat: number;
   accounts: WalletAccount[];
