@@ -83,7 +83,7 @@
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
           <span style="display: block; padding-top: 8px;">You are about to send</span>
           <span style="display:block; font-size: 32px;">{{ rawAmount | rai: 'xrb' }}</span>
-          <span style="display:block; font-size: 16px; padding-bottom: 5px;">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XRB</span>
+          <span style="display:block; font-size: 16px; padding-bottom: 5px;" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XRB</span>
         </div>
         <br>
         <div uk-grid *ngIf="fromAccount && toAccount">

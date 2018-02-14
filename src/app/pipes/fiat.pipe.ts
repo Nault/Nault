@@ -9,6 +9,9 @@ export class FiatPipe extends CurrencyPipe implements PipeTransform {
   // transform(value: any, currencyCode?: string, display?: 'code' | 'symbol' | 'symbol-narrow' | boolean, digits?: string, locale?: string): string | null;
 
   transform(value: any, currencyCode?: string, display?: 'code' | 'symbol' | 'symbol-narrow' | boolean, digits?: string, locale?: string): any {
+    if (currencyCode === '') {
+      return ``;
+    }
     if (currencyCode === 'BTC') {
       return `BTC ${new BigNumber(new Number(value).toFixed(4) || 0).toFixed(6)}`;
     }
