@@ -13,6 +13,9 @@ import {AppSettingsService} from "../../services/app-settings.service";
 })
 export class HistoryComponent implements OnInit {
   accountHistory: any[] = [];
+  pageSize = 25;
+  maxPageSize = 200;
+  currentAccount = '';
 
   accounts = this.walletService.wallet.accounts;
 
@@ -23,26 +26,29 @@ export class HistoryComponent implements OnInit {
   async ngOnInit() {
   }
 
-  async getAccountHistory(account) {
+  async getAccountHistory(account, resetPage = true) {
+    if (resetPage) {
+      this.pageSize = 25;
+    }
     this.searchPerformed = true;
-    this.accountHistory = [];
+    this.currentAccount = account;
 
-    const history = await this.api.accountHistory(account);
+    const history = await this.api.accountHistory(account, this.pageSize);
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
         h.addressBookName = this.addressBook.getAccountName(h.account) || null;
         return h;
       });
+    } else {
+      this.accountHistory = [];
     }
   }
 
-  async getBlockData(hash) {
-    const blockData = await this.api.blocksInfo([hash]);
-    console.log(`Got block data: `, blockData);
-    const hashData = blockData.blocks[hash];
-    console.log(`got hash data: `, hashData);
-    const hashContents = JSON.parse(hashData.contents);
-    console.log(`Hash contents: `, hashContents);
+  async loadMore() {
+    if (this.pageSize <= this.maxPageSize) {
+      this.pageSize += 25;
+      await this.getAccountHistory(this.currentAccount, false);
+    }
   }
 
   copied() {

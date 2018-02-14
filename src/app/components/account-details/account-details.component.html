@@ -127,7 +127,6 @@
                 <thead>
                 <tr>
                   <th class="uk-width-3-5@m uk-width-1-2">Account</th>
-                  <!--<th class="uk-width-1-5">Type</th>-->
                   <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
                   <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
                 </tr>
@@ -148,7 +147,6 @@
                       </div>
                     </div>
                   </td>
-                  <!--<td>{{ history.type }}</td>-->
                   <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">
                     {{ history.type == 'send' ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
                   </td>
@@ -156,6 +154,11 @@
                 </tr>
                 <tr *ngIf="!accountHistory.length">
                   <td colspan="4" style="text-align: center;">No account history</td>
+                </tr>
+                <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
+                  <td colspan="4" style="text-align: center;">
+                    <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
+                  </td>
                 </tr>
                 </tbody>
               </table>

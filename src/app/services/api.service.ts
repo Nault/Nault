@@ -90,8 +90,8 @@ export class ApiService {
   async accountCreate(wallet): Promise<{account?: string, error?: string}> {
     return await this.request('account_create', { wallet });
   }
-  async accountHistory(account): Promise<{history: any }> {
-    return await this.request('account_history', { account, count: 25 });
+  async accountHistory(account, count = 25): Promise<{history: any }> {
+    return await this.request('account_history', { account, count });
   }
   async accountList(wallet): Promise<{accounts: any }> {
     return await this.request('account_list', { wallet });

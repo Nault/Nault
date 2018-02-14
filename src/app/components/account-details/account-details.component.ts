@@ -16,6 +16,8 @@ import {UtilService} from "../../services/util.service";
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
   accountHistory: any[] = [];
+  pageSize = 25;
+  maxPageSize = 200;
 
   addressBookEntry: any = null;
   account: any = {};
@@ -77,15 +79,25 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async getAccountHistory(account) {
-    this.accountHistory = [];
-
-    const history = await this.api.accountHistory(account);
+  async getAccountHistory(account, resetPage = true) {
+    if (resetPage) {
+      this.pageSize = 25;
+    }
+    const history = await this.api.accountHistory(account, this.pageSize);
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
         h.addressBookName = this.addressBook.getAccountName(h.account) || null;
         return h;
       });
+    } else {
+      this.accountHistory = [];
+    }
+  }
+
+  async loadMore() {
+    if (this.pageSize <= this.maxPageSize) {
+      this.pageSize += 25;
+      await this.getAccountHistory(this.accountID, false);
     }
   }
 

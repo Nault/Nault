@@ -7,12 +7,12 @@
         Select Account
 
         <div uk-grid>
-          <div class="uk-width-3-4@s">
+          <div class="uk-width-3-4@m uk-width-3-5@s">
             <select class="uk-select" #accountHistoryModel>
               <option *ngFor="let account of accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName+' ('+account.id+')' : account.id }}</option>
             </select>
           </div>
-          <div class="uk-width-1-4@s">
+          <div class="uk-width-1-4@m uk-width-2-5@s">
             <button class="uk-button uk-button-primary uk-width-1-1" (click)="getAccountHistory(accountHistoryModel.value)">View History</button>
           </div>
         </div>
@@ -22,7 +22,6 @@
             <thead>
             <tr>
               <th class="uk-width-3-5@m uk-width-1-2">Account</th>
-              <!--<th class="uk-width-1-5">Type</th>-->
               <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
               <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
             </tr>
@@ -43,7 +42,6 @@
                   </div>
                 </div>
               </td>
-              <!--<td>{{ history.type }}</td>-->
               <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">{{ history.type == 'send' ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}</td>
               <td class="uk-text-truncate">
                 <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" uk-tooltip title="View Block Details">{{ history.hash }}</a>
@@ -54,6 +52,11 @@
             </tr>
             <tr *ngIf="!searchPerformed">
               <td colspan="4" style="text-align: center;">Select an account and press View History to see the recent transactions</td>
+            </tr>
+            <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
+              <td colspan="4" style="text-align: center;">
+                <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
+              </td>
             </tr>
             </tbody>
           </table>
