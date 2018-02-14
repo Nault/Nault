@@ -61,6 +61,15 @@
   color: #fff;
 }
 
+.footer-link {
+  margin-left: 5px;
+  margin-right: 5px;
+  opacity: 0.5;
+}
+.footer-link:hover {
+  opacity: 1;
+}
+
 .confirm-title {
   font-weight: bolder;
   display: block;

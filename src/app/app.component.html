@@ -15,18 +15,12 @@
             <span style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
             <span class="balance" style="">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
           </div>
-          <!--<span class="balance-text">Balance</span>-->
-          <!--<span class="balance">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>-->
-          <!--<span>{{ wallet.balanceFiat }}</span>-->
 
           <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="wallet.pending.gt(0)">
             <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px; color: #999;">Pending </span>
             <span style="margin-left: 11px; display: inline-block; font-size: 12px; color: #999;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
             <span class="balance" style="clear: left; text-align: left; color: #999;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
           </div>
-          <!--<span class="balance-text" style="color: #999">Pending</span>-->
-          <!--<span class="balance " style="color: #999">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>-->
-          <!--<span>{{ wallet.pendingFiat }}</span>-->
         </div>
       </div>
 
@@ -56,6 +50,16 @@
           </ul>
         </li>
       </ul>
+
+      <div class="footer" uk-grid>
+        <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
+          <a routerLink="/" uk-icon="icon: home" uk-tooltip title="Return to Homepage" class="footer-link"></a>
+          <a href="https://github.com/cronoh/nanovault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
+          <a href="https://twitter.com/NanoVault" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
+          <a href="https://discord.gg/kCeAuJM" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+        </div>
+      </div>
+
     </div>
   </div>
   <!-- End Mobile OffCanvas Nav -->
@@ -126,8 +130,13 @@
           </li>
         </ul>
 
-        <div class="uk-position-bottom-left uk-position-small footer">
-          &hearts; <a routerLink="/">NanoVault.io</a>
+        <div class="footer" uk-grid>
+          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
+            <a routerLink="/" uk-icon="icon: home" uk-tooltip title="Return to Homepage" class="footer-link"></a>
+            <a href="https://github.com/cronoh/nanovault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
+            <a href="https://twitter.com/NanoVault" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
+            <a href="https://discord.gg/kCeAuJM" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+          </div>
         </div>
 
       </div>
