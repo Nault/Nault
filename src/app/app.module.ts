@@ -35,6 +35,7 @@ import { AccountDetailsComponent } from './components/account-details/account-de
 import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
 import {PriceService} from "./services/price.service";
 import { FiatPipe } from './pipes/fiat.pipe';
+import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { FiatPipe } from './pipes/fiat.pipe';
     AccountDetailsComponent,
     TransactionDetailsComponent,
     FiatPipe,
+    ImportWalletComponent,
   ],
   imports: [
     BrowserModule,

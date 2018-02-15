@@ -49,5 +49,34 @@
         </p>
       </div>
     </div>
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Export NanoVault Wallet</h3>
+      </div>
+      <div class="uk-card-body">
+        Use the export to easily load your wallet on other devices.  Your wallet data will be encrypted by your password, and then imported into NanoVault on your new device!<br>
+        <div *ngIf="showQRExport" uk-grid>
+          <div class="uk-width-1-1">
+            <hr class="uk-divider-icon">
+          </div>
+
+          <div class="uk-width-1-2@s uk-width-1-4@m">
+            <img [src]="QRExportImg">
+          </div>
+          <div class="uk-width-1-2@s uk-width-3-4@m">
+            Scan the QR code on any device to load your NanoVault wallet!<br>
+            <br>
+            If you do not have a QR code scanner, you can also import your wallet by using the URL below.<br>
+            <input type="text" class="uk-input" value="{{ QRExportUrl }}"><br>
+            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
+          </div>
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <button (click)="exportWallet()" class="uk-button uk-button-secondary">Export QR Code</button>
+      </div>
+    </div>
+
   </div>
 </div>

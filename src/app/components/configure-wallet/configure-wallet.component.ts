@@ -53,7 +53,10 @@ export class ConfigureWalletComponent implements OnInit {
       return this.notifications.sendWarning(`Password cannot be empty!`);
     }
     const newPassword = this.walletPasswordModel;
-    this.walletService.walletPassword = newPassword;
+    this.walletService.wallet.password = newPassword;
+
+    this.walletService.saveWalletExport();
+
     this.walletPasswordModel = '';
     this.walletPasswordConfirmModel = '';
 

@@ -33,13 +33,13 @@ export interface FullWallet {
   accounts: WalletAccount[];
   accountsIndex: number;
   locked: boolean;
+  password: string;
 }
 
 @Injectable()
 export class WalletService {
   storeKey = `nanovault-wallet`;
 
-  walletPassword = '';
   wallet: FullWallet = {
     seedBytes: null,
     seed: '',
@@ -50,6 +50,7 @@ export class WalletService {
     accounts: [],
     accountsIndex: 0,
     locked: false,
+    password: '',
   };
 
   constructor(
@@ -117,6 +118,7 @@ export class WalletService {
       return this.wallet; // If the wallet is locked on load, it has to be unlocked before we can load anything?
     }
 
+    this.wallet.password = walletJson.password;
     this.wallet.accountsIndex = walletJson.accountsIndex;
     await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
 
@@ -129,8 +131,50 @@ export class WalletService {
     return this.wallet;
   }
 
+  async loadImportedWallet(seed, password, accountsIndex = 1) {
+    this.resetWallet();
+
+    this.wallet.seed = seed;
+    this.wallet.seedBytes = this.util.hex.toUint8(seed);
+    this.wallet.accountsIndex = accountsIndex;
+    this.wallet.password = password;
+
+    for (let i = 0; i < accountsIndex; i++) {
+      await this.addWalletAccount(i, false);
+    }
+
+    await this.reloadBalances();
+
+    if (this.wallet.accounts.length) {
+      this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
+    }
+
+    return this.wallet;
+  }
+
+  generateExportData() {
+    const exportData: any = {
+      accountsIndex: this.wallet.accountsIndex,
+    };
+    if (this.wallet.locked) {
+      exportData.seed = this.wallet.seed;
+    } else {
+      exportData.seed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password).toString();
+    }
+
+    return exportData;
+  }
+
+  generateExportUrl() {
+    const exportData = this.generateExportData();
+    const base64Data = btoa(JSON.stringify(exportData));
+
+    return `https://nanovault.io/import-wallet#${base64Data}`;
+    // return `http://localhost:4200/import-wallet#${base64Data}`;
+  }
+
   lockWallet() {
-    const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.walletPassword);
+    const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password);
 
     // Update the seed
     this.wallet.seed = encryptedSeed.toString();
@@ -143,6 +187,7 @@ export class WalletService {
     });
 
     this.wallet.locked = true;
+    this.wallet.password = '';
 
     this.saveWalletExport(); // Save so that a refresh gives you a locked wallet
 
@@ -162,6 +207,7 @@ export class WalletService {
       });
 
       this.wallet.locked = false;
+      this.wallet.password = password;
 
       this.saveWalletExport(); // Save so a refresh also gives you your unlocked wallet?
 
@@ -202,7 +248,7 @@ export class WalletService {
    * Reset wallet to a base state, without changing reference to the main object
    */
   resetWallet() {
-    this.walletPassword = '';
+    this.wallet.password = '';
     this.wallet.locked = false;
     this.wallet.seed = '';
     this.wallet.seedBytes = null;
@@ -277,8 +323,10 @@ export class WalletService {
       // Make sure the index is not being used (ie. if you delete acct 3/5, then press add twice, it goes 3, 6, 7)
       while (this.wallet.accounts.find(a => a.index === index)) index++;
 
-      // Correct the next index? nah. maybe in the future...
-      this.wallet.accountsIndex = index + 1;
+      // Find the next available index
+      let nextIndex = index + 1;
+      while (this.wallet.accounts.find(a => a.index === nextIndex)) nextIndex++;
+      this.wallet.accountsIndex = nextIndex;
     }
 
     const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
@@ -353,6 +401,7 @@ export class WalletService {
     const data = {
       seed: this.wallet.seed,
       locked: this.wallet.locked,
+      password: this.wallet.locked ? '' : this.wallet.password,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
       accountsIndex: this.wallet.accountsIndex,
     };

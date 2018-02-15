@@ -12,6 +12,7 @@ import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.co
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 import {AccountDetailsComponent} from "./components/account-details/account-details.component";
 import {TransactionDetailsComponent} from "./components/transaction-details/transaction-details.component";
+import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'address-book', component: AddressBookComponent },
   { path: 'configure-wallet', component: ConfigureWalletComponent },
   { path: 'configure-app', component: ConfigureAppComponent },
+  { path: 'import-wallet', component: ImportWalletComponent },
   { path: 'manage-wallet', component: ManageWalletComponent },
   { path: 'history', component: HistoryComponent },
   { path: 'send', component: SendComponent },
