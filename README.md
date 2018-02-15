@@ -12,7 +12,7 @@ To install the desktop version, head over to the [releases section](https://gith
 ___
 
 #### Everything below is only for contributing to the development of NanoVault
-#### To download NanoVault go to the [releases section](https://github.com/cronoh/raivault/releases), or use the web wallet at [nanovault.io](https://nanovault.io)
+#### To download NanoVault go to the [releases section](https://github.com/cronoh/nanovault/releases), or use the web wallet at [nanovault.io](https://nanovault.io)
 
 ___
 
