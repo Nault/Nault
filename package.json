@@ -29,6 +29,7 @@
     "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
     "ngx-clipboard": "^9.1.2",
+    "qrcode": "^1.2.0",
     "rxjs": "^5.5.2",
     "tweetnacl": "^1.0.0",
     "zone.js": "^0.8.14"
@@ -40,6 +41,7 @@
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "@types/qrcode": "^0.8.1",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",

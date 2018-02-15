@@ -8,6 +8,7 @@ import {NanoBlockService} from "../../services/nano-block.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {PriceService} from "../../services/price.service";
 import {UtilService} from "../../services/util.service";
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-account-details',
@@ -29,6 +30,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   addressBookModel = '';
   showEditRepresentative = false;
   representativeModel = '';
+
+  qrCodeImage = null;
 
   routerSub = null;
   priceSub = null;
@@ -68,6 +71,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
     this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     await this.getAccountHistory(this.accountID);
+
+
+    const qrCode = await QRCode.toDataURL(`xrb:${this.accountID}`);
+    this.qrCodeImage = qrCode;
   }
 
   ngOnDestroy() {
