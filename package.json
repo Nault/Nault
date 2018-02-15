@@ -1,14 +1,21 @@
 {
-  "name": "raivault",
-  "version": "0.0.0",
+  "name": "NanoVault",
+  "version": "1.0.0",
   "license": "MIT",
+  "description": "Wallet for interacting with Nano",
+  "author": "Andrew Steele",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "desktop": "electron main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist-full": "electron-builder -wml --x64"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +50,8 @@
     "@types/node": "~6.0.60",
     "@types/qrcode": "^0.8.1",
     "codelyzer": "^4.0.1",
+    "electron": "^1.8.2",
+    "electron-builder": "^19.52.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
@@ -55,5 +64,21 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2"
+  },
+  "build": {
+    "appId": "com.electron.nanovault",
+    "buildVersion": "1.0.0",
+    "productName": "NanoVault",
+    "copyright": "Copyright © 2018 Andrew Steele",
+    "directories": {
+      "output": "dist-desktop",
+      "app": "./"
+    },
+    "mac": {
+      "category": "public.app-category.finance"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
