@@ -29,6 +29,11 @@ export class WebsocketService {
       this.socket.connected = true;
       this.queuedCommands.forEach(event => ws.send(JSON.stringify(event)));
 
+      // Resubscribe to accounts?
+      if (this.subscribedAccounts.length) {
+        this.subscribeAccounts(this.subscribedAccounts);
+      }
+
       this.keepalive(); // Start keepalives!
     };
     ws.onerror = event => {
@@ -89,6 +94,20 @@ export class WebsocketService {
       return;
     }
     this.socket.ws.send(JSON.stringify(event));
+  }
+
+  unsubscribeAccounts(accountIDs: string[]) {
+    const event = { event: 'unsubscribe', data: accountIDs };
+    accountIDs.forEach(account => {
+      const existingIndex = this.subscribedAccounts.indexOf(account);
+      if (existingIndex !== -1) {
+        this.subscribedAccounts.splice(existingIndex, 1); // Remove from our internal subscription list
+      }
+    });
+    // If we aren't connected, we don't need to do anything.  On reconnect, it won't subscribe.
+    if (this.socket.connected) {
+      this.socket.ws.send(JSON.stringify(event));
+    }
   }
 
 }

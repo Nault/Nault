@@ -170,7 +170,6 @@ export class WalletService {
     const base64Data = btoa(JSON.stringify(exportData));
 
     return `https://nanovault.io/import-wallet#${base64Data}`;
-    // return `http://localhost:4200/import-wallet#${base64Data}`;
   }
 
   lockWallet() {
@@ -248,6 +247,9 @@ export class WalletService {
    * Reset wallet to a base state, without changing reference to the main object
    */
   resetWallet() {
+    if (this.wallet.accounts.length) {
+      this.websocket.unsubscribeAccounts(this.wallet.accounts.map(a => a.id)); // Unsubscribe from old accounts
+    }
     this.wallet.password = '';
     this.wallet.locked = false;
     this.wallet.seed = '';
@@ -374,7 +376,7 @@ export class WalletService {
       this.wallet.accountsIndex = walletAccount.index;
     }
 
-    // TODO: Unsubscribe from websocket
+    this.websocket.unsubscribeAccounts([accountID]);
 
     // Reload the balances, save new wallet state
     await this.reloadBalances();

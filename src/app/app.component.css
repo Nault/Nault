@@ -18,6 +18,10 @@
   display: block;
   padding-top: 10px;
   padding-bottom: 10px;
+  color: #666;
+}
+.title-block .title:hover {
+  text-decoration: none;
 }
 .title-block .balance-text {
   display: block;
