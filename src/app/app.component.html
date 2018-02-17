@@ -28,9 +28,9 @@
 
       <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
         <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Accounts</a></li>
-        <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">History</a></li>
+        <!--<li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">History</a></li>-->
         <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Send</a></li>
-        <li>
+        <li *ngIf="wallet.pending.gt(0)">
           <div uk-grid>
             <div class="uk-width-3-4">
               <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Receive</a>
@@ -105,9 +105,9 @@
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
           <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-          <li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left">History</a></li>
+          <!--<li><a routerLink="/history" routerLinkActive="active" class="uk-margin-left">History</a></li>-->
           <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
-          <li>
+          <li *ngIf="wallet.pending.gt(0)">
             <div uk-grid>
               <div class="uk-width-3-4">
                 <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
