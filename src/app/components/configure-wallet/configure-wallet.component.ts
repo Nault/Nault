@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-configure-wallet',
@@ -16,9 +17,18 @@ export class ConfigureWalletComponent implements OnInit {
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
 
-  constructor(private walletService: WalletService, private notifications: NotificationService) { }
+  constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService) { }
 
   async ngOnInit() {
+    // Allow a seed import via URL.  (Insecure, not recommended)
+    const importSeed = this.router.snapshot.fragment;
+    if (importSeed && importSeed.length > 1) {
+      if (importSeed.length !== 64) return this.notifications.sendError(`Import seed is invalid, double check it!`);
+
+      this.walletService.createWalletFromSeed(importSeed);
+      this.activePanel = 4;
+      this.notifications.sendSuccess(`Successfully imported wallet seed!`);
+    }
   }
 
   async importExistingWallet() {
