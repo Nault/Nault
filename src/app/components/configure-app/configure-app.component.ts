@@ -17,13 +17,13 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'KNANO (0.001 XRB)', value: 'knano' },
     { name: 'NANO (0.000001 XRB)', value: 'nano' },
   ];
-  selectedDenomination = this.denominations.find(d => d.value === (this.appSettings.getAppSetting('displayDenomination') || 'mnano')) || this.denominations[0];
+  selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
     { name: 'Local Storage', value: 'localStorage' },
     { name: 'None', value: 'none' },
   ];
-  selectedStorage = this.storageOptions[0];
+  selectedStorage = this.storageOptions[0].value;
 
   currencies = [
     { name: 'None', value: '' },
@@ -66,14 +66,21 @@ export class ConfigureAppComponent implements OnInit {
   constructor(private walletService: WalletService, private notifications: NotificationService, private appSettings: AppSettingsService, private price: PriceService) { }
 
   async ngOnInit() {
-    const currency = this.appSettings.getAppSetting('displayCurrency');
-    const matchingCurrency = this.currencies.find(d => d.value === currency);
+    const settings = this.appSettings.settings;
+
+    const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
-    }
+
+    const matchingDenomination = this.denominations.find(d => d.value == settings.displayDenomination);
+    this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
+
+    const matchingStorage = this.storageOptions.find(d => d.value == settings.walletStore);
+    this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
+  }
 
   async updateSettings() {
-    const newDenomination = this.selectedDenomination.value;
-    const newStorage = this.selectedStorage.value;
+    const newDenomination = this.selectedDenomination;
+    const newStorage = this.selectedStorage;
     const newCurrency = this.selectedCurrency;
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;

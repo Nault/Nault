@@ -21,12 +21,9 @@
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedDenomination.name }}</button>
-                    <div uk-dropdown>
-                      <ul class="uk-nav uk-dropdown-nav">
-                        <li class="uk-active" *ngFor="let denomination of denominations" [class]="{ 'uk-active': selectedDenomination.value == denomination.value }"><a href="#" (click)="selectedDenomination = denomination">{{ denomination.name }}</a></li>
-                      </ul>
-                    </div>
+                    <select class="uk-select" [(ngModel)]="selectedDenomination">
+                      <option *ngFor="let denomination of denominations" [value]="denomination.value">{{ denomination.name }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -41,12 +38,9 @@
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-default uk-width-1-1" type="button">{{ selectedStorage.name }}</button>
-                    <div uk-dropdown>
-                      <ul class="uk-nav uk-dropdown-nav">
-                        <li class="uk-active" *ngFor="let storage of storageOptions" [class]="{ 'uk-active': selectedStorage.value == storage.value }"><a href="#" (click)="selectedStorage = storage">{{ storage.name }}</a></li>
-                      </ul>
-                    </div>
+                    <select class="uk-select" [(ngModel)]="selectedStorage">
+                      <option *ngFor="let storage of storageOptions" [value]="storage.value">{{ storage.name }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
