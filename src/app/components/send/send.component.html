@@ -99,19 +99,17 @@
         <div uk-grid *ngIf="fromAccount && toAccount">
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-right" style="padding: 20px 20px;">
-
-                <span class="confirm-title">FROM</span>
-
-                <hr />
+              <div class="uk-card-header uk-text-left" style="padding: 20px 20px;">
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="fromAddressBook">
                     <span class="confirm-title">{{ fromAddressBook }}</span>
+                    <span class="confirm-subtitle">From Account</span>
                     <span class="uk-text-small uk-text-truncate">{{ fromAccountID }}</span>
                   </div>
                   <div *ngIf="!fromAddressBook">
                     <span class="confirm-title uk-text-truncate">{{ fromAccountID }}</span>
+                    <span class="confirm-subtitle">From Account</span>
                     <br />
                   </div>
                 </span>
@@ -133,19 +131,19 @@
 
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-left" style="padding: 20px 20px;">
+              <div class="uk-card-header uk-text-right" style="padding: 20px 20px;">
 
-                <span class="confirm-title">TO</span>
 
-                <hr />
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title">{{ toAddressBook }}</span>
+                    <span class="confirm-subtitle">To Account</span>
                     <span class="uk-text-small uk-text-truncate">{{ toAccountID }}</span>
                   </div>
                   <div *ngIf="!toAddressBook">
                     <span class="confirm-title uk-text-truncate">{{ toAccountID }}</span>
+                    <span class="confirm-subtitle">To Account</span>
                     <br />
                   </div>
                 </span>
