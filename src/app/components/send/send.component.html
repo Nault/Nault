@@ -117,12 +117,11 @@
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ fromAccount.balance | rai: 'xrb'}}</span>
+                    <span class="confirm-currency">{{ fromAccount.balance || 0 | rai: 'xrb'}}</span>
                     <span class="confirm-subtitle">Current Balance</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency">{{ fromAccount.balanceBN.minus(rawAmount) | rai: 'xrb'}}</span>
-                    <span class="confirm-subtitle">New Balance</span>
+                    <span class="confirm-currency uk-text-danger">-{{ rawAmount | rai: 'xrb' }}</span>
                   </div>
                 </div>
               </div>
@@ -155,8 +154,7 @@
                     <span class="confirm-subtitle">Current Balance</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency">{{ toAccount.balanceBN.plus(rawAmount) | rai: 'xrb'}}</span>
-                    <span class="confirm-subtitle">New Balance</span>
+                    <span class="confirm-currency uk-text-success">+{{ rawAmount | rai: 'xrb' }}</span>
                   </div>
                 </div>
               </div>
