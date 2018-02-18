@@ -77,7 +77,11 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sendTransaction()">Send Transaction</button>
+            <div uk-grid>
+              <div class="uk-width-1-1">
+                <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sendTransaction()">Send Nano</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -95,19 +99,30 @@
         <div uk-grid *ngIf="fromAccount && toAccount">
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header" style="padding: 20px 20px;">
+              <div class="uk-card-header uk-text-right" style="padding: 20px 20px;">
+
+                <span class="confirm-title">FROM</span>
+
+                <hr />
+
                 <span class="confirm-title uk-text-truncate">
-                  <span class="uk-label" *ngIf="fromAddressBook">{{ fromAddressBook }}</span> {{ fromAccountID }}
+                  <div *ngIf="fromAddressBook">
+                    <span class="confirm-title">{{ fromAddressBook }}</span>
+                    <span class="uk-text-small uk-text-truncate">{{ fromAccountID }}</span>
+                  </div>
+                  <div *ngIf="!fromAddressBook">
+                    <span class="confirm-title uk-text-truncate">{{ fromAccountID }}</span>
+                    <br />
+                  </div>
                 </span>
-                <span class="confirm-subtitle">From Account</span>
               </div>
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
                     <span class="confirm-currency">{{ fromAccount.balance | rai: 'xrb'}}</span>
-                    <span class="confirm-subtitle">Previous Balance</span>
+                    <span class="confirm-subtitle">Current Balance</span>
                   </div>
-                  <div class="uk-width-1-2">
+                  <div class="uk-width-1-2 uk-text-right">
                     <span class="confirm-currency">{{ fromAccount.balanceBN.minus(rawAmount) | rai: 'xrb'}}</span>
                     <span class="confirm-subtitle">New Balance</span>
                   </div>
@@ -118,17 +133,30 @@
 
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-truncate" style="padding: 20px 20px;">
-                <span class="confirm-title uk-text-truncate"><span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID }}</span>
-                <span class="confirm-subtitle">To Account</span>
+              <div class="uk-card-header uk-text-left" style="padding: 20px 20px;">
+
+                <span class="confirm-title">TO</span>
+
+                <hr />
+
+                <span class="confirm-title uk-text-truncate">
+                  <div *ngIf="toAddressBook">
+                    <span class="confirm-title">{{ toAddressBook }}</span>
+                    <span class="uk-text-small uk-text-truncate">{{ toAccountID }}</span>
+                  </div>
+                  <div *ngIf="!toAddressBook">
+                    <span class="confirm-title uk-text-truncate">{{ toAccountID }}</span>
+                    <br />
+                  </div>
+                </span>
               </div>
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
                     <span class="confirm-currency">{{ toAccount.balance || 0 | rai: 'xrb'}}</span>
-                    <span class="confirm-subtitle">Previous Balance</span>
+                    <span class="confirm-subtitle">Current Balance</span>
                   </div>
-                  <div class="uk-width-1-2">
+                  <div class="uk-width-1-2 uk-text-right">
                     <span class="confirm-currency">{{ toAccount.balanceBN.plus(rawAmount) | rai: 'xrb'}}</span>
                     <span class="confirm-subtitle">New Balance</span>
                   </div>
@@ -140,10 +168,10 @@
 
         <div uk-grid>
           <div class="uk-width-1-2@s">
-            <button (click)="activePanel = 'send'" class="uk-button uk-button-danger uk-width-1-1">Cancel Transaction</button>
+            <button (click)="activePanel = 'send'" class="uk-button uk-button-danger uk-width-1-1">Cancel</button>
           </div>
           <div class="uk-width-1-2@s">
-            <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm Transaction</button>
+            <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Send</button>
             <button *ngIf="confirmingTransaction" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
 
           </div>

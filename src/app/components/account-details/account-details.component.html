@@ -7,11 +7,39 @@
       <div class="uk-card-header uk-visible-toggle">
 
         <div uk-grid>
-          <div class="uk-width-expand uk-text-truncate ">
-            <h3 class="uk-card-title">{{ accountID }}</h3>
+
+          <div class="uk-width-expand">
+
+            <div *ngIf="showEditAddressBook" uk-grid>
+              <div uk-grid>
+                <div class=" uk-width-1-1">
+                  <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                      <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check"></a>
+                      <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-icon="icon: close"></a>
+                      <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Account Label" type="text">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!showEditAddressBook" uk-grid>
+              <div class="uk-width-1-1">
+                <div *ngIf="addressBookEntry">
+                    <h3 class="uk-card-title">{{ addressBookEntry }}</h3>
+                    <div class="uk-text-small uk-text-truncate">{{ accountID }}</div>
+                </div>
+
+                <div *ngIf="!addressBookEntry">
+                  <h3 class="uk-card-title uk-text-truncate">{{ accountID }} <span class="uk-text-right" uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = true"></span></h3>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div class="uk-width-auto" style="padding-left: 10px;">
+          <div class="uk-width-auto">
             <ul class="uk-hidden-hover uk-iconnav">
+              <li><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = true" title="Edit Account Label"></span></li>
               <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
             </ul>
           </div>
@@ -20,89 +48,84 @@
       <div class="uk-card-body uk-padding-remove uk-form-horizontal">
 
         <div class="uk-padding-small" style="" uk-grid>
-          <div class="uk-width-2-5@s uk-width-1-4@m">
-            <img *ngIf="qrCodeImage" [src]="qrCodeImage">
-          </div>
+
           <div class="uk-width-3-5@s uk-width-3-4@m">
             <div uk-grid>
-              <div class="uk-width-1-1 uk-margin-remove">
-                <label class="uk-form-label">Balance</label>
-                <div class="uk-form-controls">
-                  {{ account.balance || 0 | rai: settings.settings.displayDenomination }}<br>
-                  {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+              <div class="uk-width-1-1">
+                <div uk-grid>
+                  <div class="uk-width-1-3 uk-text-right">
+                    Account Balance
+                  </div>
+                  <div class="uk-width-1-3 uk-text-right">
+                    {{ account.balance || 0 | rai: settings.settings.displayDenomination }}
+                  </div>
+                  <div class="uk-width-1-3 uk-text-left">
+                    {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+                  </div>
                 </div>
               </div>
-              <div class="uk-width-1-1 uk-margin-remove">
-                <label class="uk-form-label">Pending</label>
-                <div class="uk-form-controls uk-text-muted">
-                  {{ account.pending || 0 | rai: settings.settings.displayDenomination }}<br>
-                  {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+
+              <div class="uk-width-1-1">
+                <div uk-grid>
+                  <div class="uk-width-1-3 uk-text-right">
+                    Pending Deposits
+                  </div>
+                  <div class="uk-width-1-3 uk-text-right">
+                    {{ account.pending || 0 | rai: settings.settings.displayDenomination }}
+                  </div>
+                  <div class="uk-width-1-3 uk-text-left">
+                    {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+                  </div>
                 </div>
               </div>
-              <div class="uk-width-1-1 uk-margin-remove">
-                <label class="uk-form-label">Address Book</label>
-                <div class="uk-form-controls">
-                  <div *ngIf="showEditAddressBook" uk-grid>
-                    <div uk-grid>
-                      <div class=" uk-width-1-1">
-                        <div class="uk-margin">
-                          <div class="uk-inline uk-width-1-1">
-                            <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check"></a>
-                            <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-icon="icon: close"></a>
-                            <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Account Label" type="text">
+
+              <div class="uk-width-1-1">
+                <div uk-grid>
+                  <div class="uk-width-1-3 uk-text-right">
+                    Representative
+                  </div>
+                  <div class="uk-width-1-3 uk-text-right">
+                    <div *ngIf="showEditRepresentative">
+                      <div uk-grid>
+                        <div class=" uk-width-1-1">
+                          <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                              <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check"></a>
+                              <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close"></a>
+                              <input class="uk-input" (keyup.enter)="saveRepresentative()" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text">
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div *ngIf="!showEditAddressBook" uk-grid>
-                    <div class="uk-width-1-1">
-                      <span *ngIf="addressBookEntry" class="uk-label uk-label-default">{{ addressBookEntry }}</span>
-                      <span *ngIf="!addressBookEntry">No entry saved</span>
-                      <span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = true"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <div *ngIf="!showEditRepresentative">
 
-              <div class="uk-width-1-1 uk-margin-remove">
-                <label class="uk-form-label">Representative</label>
-                <div class="uk-form-controls">
-                  <div *ngIf="showEditRepresentative">
-                    <div uk-grid>
-                      <div class=" uk-width-1-1">
-                        <div class="uk-margin">
-                          <div class="uk-inline uk-width-1-1">
-                            <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check"></a>
-                            <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close"></a>
-                            <input class="uk-input" (keyup.enter)="saveRepresentative()" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text">
-                          </div>
+                      <div uk-grid>
+                        <div class="uk-width-expand uk-text-truncate ">
+                          {{ account.representative || 'N/A' }}
+                        </div>
+                        <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
+                          <ul class="uk-hidden-hover uk-iconnav">
+                            <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>
+                          </ul>
                         </div>
                       </div>
+
                     </div>
                   </div>
-                  <div *ngIf="!showEditRepresentative">
-
-                    <div uk-grid>
-                      <div class="uk-width-expand uk-text-truncate ">
-                        {{ account.representative || 'N/A' }}
-                      </div>
-                      <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
-                        <ul class="uk-hidden-hover uk-iconnav">
-                          <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>
-                        </ul>
-                      </div>
-                    </div>
-
-                  </div>
+                  <div class="uk-width-1-3 uk-text-left"></div>
                 </div>
               </div>
+
             </div>
           </div>
-
+          <div class="uk-width-2-5@s uk-width-1-4@m uk-text-center">
+            <img *ngIf="qrCodeImage" [src]="qrCodeImage"><br />
+            <span class="uk-text-small">Scan to receive Nano</span>
+          </div>
         </div>
 
-        <div uk-grid style="margin-top: 0;">
+        <div uk-grid style="margin-top: 25px;">
           <div class="uk-width-1-1">
             <h3 class="uk-heading-divider uk-text-center" style="margin-bottom: 0;">Recent Transactions<span></span></h3>
 
