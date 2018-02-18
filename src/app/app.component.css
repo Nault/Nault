@@ -90,3 +90,17 @@
   display: block;
   font-size: 10px;
 }
+
+
+@media (max-width: 12450px) {
+  .content-container {
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+}
+@media (max-width: 639px) {
+  .content-container {
+    padding-left: 30px;
+    padding-right: inherit;
+  }
+}

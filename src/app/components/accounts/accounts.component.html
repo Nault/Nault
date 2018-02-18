@@ -14,8 +14,8 @@
         <thead>
         <tr>
           <th class="uk-width-3-5@m uk-width-1-2">Account</th>
-          <th class="uk-width-1-5@m uk-width-1-4">Balance</th>
-          <th class="uk-width-1-5@m uk-width-1-4"></th>
+          <th class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
+          <th class="uk-width-1-5@m uk-width-1-4 uk-text-right"></th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +24,8 @@
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
+                  <!--<span *ngIf="account.addressBookName" style="font-weight: bold;">{{ account.addressBookName }}</span>-->
+                  <!--<span *ngIf="!account.addressBookName">{{ account.id }}</span>-->
                   <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
                 </a>
               </div>
@@ -34,20 +36,20 @@
               </div>
             </div>
           </td>
-          <td>
+          <td class=" uk-text-right">
             {{ account.balance | rai: settings.settings.displayDenomination }}
             <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
               {{ account.pending | rai: settings.settings.displayDenomination }}
             </div>
           </td>
           <!--<td>{{ account.pending | rai: settings.settings.displayDenomination }}</td>-->
-          <td>
+          <td class=" uk-text-left">
             {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
             </div>
             <div class="uk-float-right uk-hidden-hover">
-              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
 
           </td>

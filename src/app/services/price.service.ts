@@ -16,7 +16,7 @@ export class PriceService {
 
   async getPrice(currency = 'USD') {
     const convertString = currency !== 'USD' && currency !== 'BTC' ? `?convert=${currency}` : ``;
-    const response: any = await this.http.get(`${this.apiUrl}ticker/raiblocks/${convertString}`).toPromise();
+    const response: any = await this.http.get(`${this.apiUrl}ticker/nano/${convertString}`).toPromise();
     if (!response || !response.length) {
       return this.price.lastPrice;
     }

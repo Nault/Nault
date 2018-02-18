@@ -36,6 +36,7 @@ import { TransactionDetailsComponent } from './components/transaction-details/tr
 import {PriceService} from "./services/price.service";
 import { FiatPipe } from './pipes/fiat.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
+import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { ImportWalletComponent } from './components/import-wallet/import-wallet.
     TransactionDetailsComponent,
     FiatPipe,
     ImportWalletComponent,
+    NanoAccountIdComponent,
   ],
   imports: [
     BrowserModule,

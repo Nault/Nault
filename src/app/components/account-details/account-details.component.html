@@ -49,7 +49,7 @@
                           <div class="uk-inline uk-width-1-1">
                             <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check"></a>
                             <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-icon="icon: close"></a>
-                            <input class="uk-input" [(ngModel)]="addressBookModel" placeholder="Account Label" type="text">
+                            <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Account Label" type="text">
                           </div>
                         </div>
                       </div>
@@ -75,7 +75,7 @@
                           <div class="uk-inline uk-width-1-1">
                             <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check"></a>
                             <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close"></a>
-                            <input class="uk-input" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text">
+                            <input class="uk-input" (keyup.enter)="saveRepresentative()" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text">
                           </div>
                         </div>
                       </div>

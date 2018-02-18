@@ -22,6 +22,7 @@ export class AccountsComponent implements OnInit {
       return this.notificationService.sendError(`Wallet is locked.`);
     }
     if (!this.walletService.wallet.seed) return this.notificationService.sendError(`Wallet is not configured`);
+    if (this.walletService.wallet.accounts.length >= 10) return this.notificationService.sendWarning(`You can only track up to 10 accounts at a time.`);
     const newAccount = await this.walletService.addWalletAccount();
     this.notificationService.sendSuccess(`Successfully created new account ${newAccount.id}`);
   }
