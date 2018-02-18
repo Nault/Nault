@@ -1,73 +1,82 @@
 <div uk-grid>
   <div class="uk-width-1-1 uk-animation-slide-left-small">
-    <h2>Welcome to NanoVault!</h2>
-
-    <div uk-grid>
-
-
-      <div class="uk-width-1-1@m" *ngIf="wallet.seed">
-        <div class="uk-card uk-card-default uk-card-small">
-          <div class="uk-card-header">
-            <div uk-grid>
-              <div class="uk-width-1-2@s">
-                <h3 class="uk-card-title uk-margin-remove-bottom">Wallet Configured</h3>
-              </div>
-              <div class="uk-width-1-2@s uk-text-right@s">
-                <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
-              </div>
-            </div>
+    <div uk-grid class="uk-text-center" style="margin-bottom: 90px;">
+      <div class="uk-width-1-1">
+        <h2>Welcome to NanoVault!</h2>
+        <span class="uk-text-lead">The "no strings attached" open source wallet for <a href="https://nano.org" class="uk-link-text" target="_blank">Nano</a></span><br>
+      </div>
+      <div class="uk-width-1-1" *ngIf="!wallet.seed">
+        <div uk-grid>
+          <div class="uk-width-1-1" style="margin-top: 60px;">
+            <span class="uk-text-small">To get started, choose an option below to configure your wallet</span>
+          </div>
+          <div class="uk-width-1-2@m">
+            <button routerLink="/configure-wallet" class="uk-button uk-button-primary uk-button-large">Create A New Wallet</button>
+          </div>
+          <div class="uk-width-1-2@m">
+            <button routerLink="/configure-wallet" [queryParams]="{ import: 1}" class="uk-button uk-button-primary uk-button-large">Import Existing Wallet</button>
           </div>
         </div>
       </div>
+
+      <div class="uk-width-1-1" *ngIf="wallet.seed">
+        <div uk-grid>
+          <div class="uk-width-1-1" style="margin-top: 60px;">
+            <span class="uk-text-small">Welcome back!  It looks like your wallet is already configured.</span>
+          </div>
+          <div class="uk-width-1-1@m">
+            <button routerLink="/accounts" class="uk-button uk-button-primary uk-button-large">View My Accounts</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div uk-grid class="uk-margin-top">
 
       <div class="uk-width-1-1@m">
         <div class="uk-card uk-card-default uk-card-small">
-          <div class="uk-card-header">
-            <h3 class="uk-card-title uk-margin-remove-bottom">Why NanoVault?</h3>
-          </div>
           <div class="uk-card-body">
-            NanoVault is an open source web wallet which makes it incredibly easy to send and receive <a href="https://nano.org" target="_blank">Nano</a> from anywhere in the world.<br>
 
-            <!--<span class="uk-text-lead">NanoVault Features</span>-->
-            <dl class="uk-description-list">
-              <dt>Fully Client-side Signing</dt>
-              <dd>All sensitive operations happen in your browser only - your seed and private keys are never sent across your network.</dd>
-              <dt>Stateless Wallet</dt>
-              <dd>Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.</dd>
-              <dt>Mobile Friendly</dt>
-              <dd>Send and receive Nano from any device, any time, anywhere.</dd>
-              <dt>And more</dt>
-              <dd>Easily send and receive transactions nearly instantly, store labels for your accounts in the address book, and more!</dd>
-            </dl>
+            <ul uk-accordion="">
+              <li class="">
+
+                <a class="uk-accordion-title uk-link-text" href="#">Why Use NanoVault?</a>
+                <div class="uk-accordion-content">
+                  <!--NanoVault is an open source web wallet which makes it incredibly easy to send and receive <a href="https://nano.org" target="_blank">Nano</a> from anywhere in the world.<br>-->
+
+                  <dl class="uk-description-list">
+                    <dt>Security Focused</dt>
+                    <dd>All sensitive operations happen in your browser only - your seed and private keys are never sent across your network, or stored on any server in any format.</dd>
+                    <dt>"No Strings Attached" Wallet</dt>
+                    <dd>Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.</dd>
+                    <dt>Any Device</dt>
+                    <dd>Send and receive Nano from any device using the web wallet, or <a href="https://github.com/cronoh/nanovault/releases" target="_blank">download our desktop wallet</a> available for Windows/Mac/Linux.</dd>
+                    <dt>Helpful Features</dt>
+                    <dd>Store labels for your accounts in the address book, track your balances in your local currency, and more!</dd>
+                  </dl>
+                </div>
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>
 
-      <div class="uk-width-1-1@m" *ngIf="!wallet.seed">
-        <div class="uk-card uk-card-default uk-card-small">
-          <div class="uk-card-header">
-            <h3 class="uk-card-title uk-margin-remove-bottom">Configure Your Wallet</h3>
-          </div>
-          <div class="uk-card-body">
-            <p>
-              To get started, press the button below to configure your wallet.
-            </p>
-          </div>
-          <div class="uk-card-footer uk-text-right">
-            <button routerLink="/configure-wallet" class="uk-button uk-button-primary">Configure Wallet</button>
+      <div class="uk-width-1-1">
+
+        <hr class="uk-divider-icon">
+
+        <div class="uk-card uk-card-small uk-card-default uk-margin uk-width-1-1">
+          <div class="uk-card-body uk-text-center">
+            NanoVault is open source and all code is available at <a href="https://github.com/cronoh/nanovault" target="_blank">https://github.com/cronoh/nanovault</a>.<br>
+            Please submit any feedback or bug reports on our GitHub page.  Thank you for using NanoVault!
           </div>
         </div>
+
+        <div class="uk-text-center uk-text-small">
+          Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }">{{ donationAccount }}</a>
+        </div>
       </div>
-    </div>
-    <hr class="uk-divider-icon">
-    <div class="uk-card uk-card-small uk-card-default uk-margin">
-      <div class="uk-card-body uk-text-center">
-        This project is open source and all code is available at <a href="https://github.com/cronoh/nanovault" target="_blank">https://github.com/cronoh/nanovault</a>.<br>
-        Please submit any feedback or bug reports on our GitHub page.  Thank you for using NanoVault!
-      </div>
-    </div>
-    <div class="uk-text-center uk-text-small">
-      Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }">{{ donationAccount }}</a>
     </div>
   </div>
 </div>

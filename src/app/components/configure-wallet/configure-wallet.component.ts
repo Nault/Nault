@@ -29,6 +29,11 @@ export class ConfigureWalletComponent implements OnInit {
       this.activePanel = 4;
       this.notifications.sendSuccess(`Successfully imported wallet seed!`);
     }
+
+    const toggleImport = this.router.snapshot.queryParams.import;
+    if (toggleImport) {
+      this.activePanel = 1;
+    }
   }
 
   async importExistingWallet() {
