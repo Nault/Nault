@@ -1,6 +1,6 @@
 <div uk-grid>
   <div class="uk-width-1-1">
-    <h2>Send XRB</h2>
+    <h2>Send Nano</h2>
 
     <div uk-grid *ngIf="activePanel == 'send'" class="uk-animation-slide-left-small">
       <div class="uk-width-1-1">
@@ -14,7 +14,6 @@
                 <label class="uk-form-label" for="form-horizontal-select">From Account</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="fromAccountID" id="form-horizontal-select">
-                    <!--<option *ngFor="let account of accounts" [value]="account.id">{{ account.balance | rai: settings.settings.displayDenomination }} - {{ account.id | squeeze }} {{ account.addressBookName ? '('+account.addressBookName+')' : '' }}</option>-->
                     <option *ngFor="let account of accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName + ' - ' : '' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                 </div>
@@ -39,6 +38,13 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="uk-form-controls" *ngIf="addressBookMatch">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-label uk-label-primary">{{ addressBookMatch }}</span>
+
+                  </div>
+                </div>
               </div>
 
               <div uk-grid>
@@ -55,7 +61,7 @@
                       </div>
                       <div class="uk-width-2-5">
                         <div class="uk-inline uk-width-1-1">
-                          <button class="uk-button uk-button-secondary uk-width-1-1" type="button">{{ selectedAmount.shortName }}</button>
+                          <button class="uk-button uk-button-secondary uk-width-1-1" type="button" style="text-transform: none;">{{ selectedAmount.shortName }}</button>
                           <div uk-dropdown>
                             <ul class="uk-nav uk-dropdown-nav">
                               <li class="uk-active" *ngFor="let amount of amounts" [class]="{ 'uk-active': selectedAmount.value == amount.value }"><a href="#" (click)="selectedAmount = amount">{{ amount.name }}</a></li>
@@ -83,7 +89,7 @@
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
           <span style="display: block; padding-top: 8px;">You are about to send</span>
           <span style="display:block; font-size: 32px;">{{ rawAmount | rai: 'xrb' }}</span>
-          <span style="display:block; font-size: 16px; padding-bottom: 5px;" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XRB</span>
+          <span style="display:block; font-size: 16px; padding-bottom: 5px;" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</span>
         </div>
         <br>
         <div uk-grid *ngIf="fromAccount && toAccount">

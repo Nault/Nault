@@ -13,14 +13,14 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'XRB', value: 'mnano' },
-    { name: 'KNANO (0.001 XRB)', value: 'knano' },
-    { name: 'NANO (0.000001 XRB)', value: 'nano' },
+    { name: 'NANO (1 Mnano)', value: 'mnano' },
+    { name: 'knano (0.001 Mnano)', value: 'knano' },
+    { name: 'nano (0.000001 Mnano)', value: 'nano' },
   ];
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
-    { name: 'Local Storage', value: 'localStorage' },
+    { name: 'Browser Local Storage', value: 'localStorage' },
     { name: 'None', value: 'none' },
   ];
   selectedStorage = this.storageOptions[0].value;

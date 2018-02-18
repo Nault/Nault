@@ -13,6 +13,22 @@
               Use the settings below to change how your wallet operates.
             </p>
           </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedCurrency" id="form-horizontal-select">
+                    <option *ngFor="let currency of currencies" [value]="currency.value">{{ currency.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
@@ -44,21 +60,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
-                <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="selectedCurrency" id="form-horizontal-select">
-                    <option *ngFor="let currency of currencies" [value]="currency.value">{{ currency.name }}</option>
-                  </select>
-                </div>
-              </div>
-
             </div>
           </div>
 

@@ -26,11 +26,12 @@ export class SendComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
   addressBookResults$ = new BehaviorSubject([]);
   showAddressBook = false;
+  addressBookMatch = '';
 
   amounts = [
-    { name: 'XRB', shortName: 'XRB', value: 'mnano' },
-    { name: 'KNANO (0.001 XRB)', shortName: 'KNANO', value: 'knano' },
-    { name: 'NANO (0.000001 XRB)', shortName: 'NANO', value: 'nano' },
+    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
+    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
+    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -68,6 +69,7 @@ export class SendComponent implements OnInit {
     }
 
     await this.addressBookService.loadAddressBook();
+    this.fromAccountID = this.accounts[0].id;
   }
 
   searchAddressBook() {
@@ -95,6 +97,8 @@ export class SendComponent implements OnInit {
 
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
+
+    this.addressBookMatch = this.addressBookService.getAccountName(this.toAccountID);
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);

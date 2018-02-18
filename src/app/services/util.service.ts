@@ -215,10 +215,10 @@ function getPublicAccountID(accountPublicKeyBytes) {
 }
 
 function getAccountPublicKey(account) {
-  if ((!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) || account.length !== 64) throw new Error(`Invalid XRB Account`);
+  if ((!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) || account.length !== 64) throw new Error(`Invalid NANO Account`);
   const account_crop = account.substring(4,64);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
-  if (!isValid) throw new Error(`Invalid XRB account`);
+  if (!isValid) throw new Error(`Invalid NANO account`);
 
   const key_uint4 = array_crop(uint5ToUint4(stringToUint5(account_crop.substring(0, 52))));
   const hash_uint4 = uint5ToUint4(stringToUint5(account_crop.substring(52, 60)));

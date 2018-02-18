@@ -10,7 +10,7 @@ export class SqueezePipe implements PipeTransform {
     const closingChars = 5;
     const firstChars = value.split('').slice(0, openingChars).join('');
     const lastChars = value.split('').slice(-closingChars).join('');
-    return `${firstChars}.....${lastChars}`;
+    return `${firstChars}...${lastChars}`;
   }
 
 }

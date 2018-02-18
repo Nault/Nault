@@ -18,10 +18,10 @@ export class RaiPipe implements PipeTransform {
 
     switch (denomination.toLowerCase()) {
       default:
-      case 'xrb': return `${(value / this.mrai).toFixed(6)}${!hideText ? ' XRB': ''}`;
-      case 'mnano': return `${(value / this.mrai).toFixed(this.precision)}${!hideText ? ' XRB': ''}`;
-      case 'knano': return `${(value / this.krai).toFixed(3)}${!hideText ? ' kNano': ''}`;
-      case 'nano': return `${(value / this.rai).toFixed(0)}${!hideText ? ' Nano': ''}`;
+      case 'xrb': return `${(value / this.mrai).toFixed(6)}${!hideText ? ' NANO': ''}`;
+      case 'mnano': return `${(value / this.mrai).toFixed(this.precision)}${!hideText ? ' NANO': ''}`;
+      case 'knano': return `${(value / this.krai).toFixed(3)}${!hideText ? ' knano': ''}`;
+      case 'nano': return `${(value / this.rai).toFixed(0)}${!hideText ? ' nano': ''}`;
       case 'raw': return `${value}${!hideText ? ' raw': ''}`;
       case 'dynamic':
         const rai = (value / this.rai);
