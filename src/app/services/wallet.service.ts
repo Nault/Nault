@@ -113,20 +113,24 @@ export class WalletService {
     this.wallet.seed = walletJson.seed;
     this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
     this.wallet.locked = walletJson.locked;
+    this.wallet.password = walletJson.password || null;
+    this.wallet.accountsIndex = walletJson.accountsIndex || 0;
 
-    if (this.wallet.locked) {
-      return this.wallet; // If the wallet is locked on load, it has to be unlocked before we can load anything?
+    if (walletJson.accounts && walletJson.accounts.length) {
+      if (this.wallet.locked) {
+        // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
+        walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
+      } else {
+        await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
+      }
+    } else {
+      // Loading from accounts index
+      if (!this.wallet.locked) {
+        await this.loadAccountsFromIndex(); // Need to have the seed to reload any accounts if they are not stored
+      }
     }
-
-    this.wallet.password = walletJson.password;
-    this.wallet.accountsIndex = walletJson.accountsIndex;
-    await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
 
     await this.reloadBalances();
-
-    if (this.wallet.accounts.length) {
-      this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
-    }
 
     return this.wallet;
   }
@@ -150,6 +154,14 @@ export class WalletService {
     }
 
     return this.wallet;
+  }
+
+  async loadAccountsFromIndex() {
+    this.wallet.accounts = [];
+
+    for (let i = 0; i < this.wallet.accountsIndex; i++) {
+      await this.addWalletAccount(i, false);
+    }
   }
 
   generateExportData() {
@@ -207,6 +219,11 @@ export class WalletService {
 
       this.wallet.locked = false;
       this.wallet.password = password;
+
+      // TODO: Determine if we need to load some accounts - should only be used when? Loading from import.
+      if (this.wallet.accounts.length < this.wallet.accountsIndex) {
+        this.loadAccountsFromIndex().then(() => this.reloadBalances()); // Reload all?
+      }
 
       this.saveWalletExport(); // Save so a refresh also gives you your unlocked wallet?
 
@@ -316,8 +333,31 @@ export class WalletService {
     this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPending).times(fiatPrice).toNumber();
   }
 
+  async loadWalletAccount(accountIndex, accountID) {
+    let index = accountIndex;
+    const addressBookName = this.addressBook.getAccountName(accountID);
+
+    const newAccount: WalletAccount = {
+      id: accountID,
+      frontier: null,
+      secret: null,
+      keyPair: null,
+      balance: 0,
+      pending: 0,
+      balanceFiat: 0,
+      pendingFiat: 0,
+      index: index,
+      addressBookName,
+    };
+
+    this.wallet.accounts.push(newAccount);
+    this.websocket.subscribeAccounts([accountID]);
+
+    return newAccount;
+  }
+
   async addWalletAccount(accountIndex: number|null = null, reloadBalances: boolean = true) {
-    if (!this.wallet.seedBytes) return;
+    // if (!this.wallet.seedBytes) return;
     let index = accountIndex;
     if (index === null) {
       index = this.wallet.accountsIndex; // Use the existing number, then increment it
