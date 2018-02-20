@@ -5,7 +5,7 @@
         <h2>Address Book</h2>
       </div>
       <div class="uk-width-1-2 uk-text-right">
-        <button class="uk-button uk-button-secondary" (click)="activePanel = 1">Create New Address</button>
+        <button class="uk-button uk-button-secondary" (click)="activePanel = 1">Add New Contact</button>
       </div>
     </div>
     <p>
@@ -55,7 +55,7 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">Create New Address</h2>
+            <h2 class="uk-card-title">Create New Contact</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
@@ -67,7 +67,7 @@
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-name">Account Name</label>
+                <label class="uk-form-label" for="new-address-name">Name</label>
                 <div class="uk-form-controls">
                   <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" placeholder="Exchange Deposit Address, Main Trading Account, etc">
                 </div>
@@ -80,7 +80,7 @@
                 <button class="uk-button uk-button-danger uk-width-1-1" (click)="cancelNewAddress()">Cancel</button>
               </div>
               <div class="uk-width-1-2@s uk-text-right">
-                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewAddress()">Save New Address</button>
+                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewAddress()">Save New Contact</button>
               </div>
             </div>
           </div>

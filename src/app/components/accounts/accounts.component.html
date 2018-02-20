@@ -4,7 +4,7 @@
       <div class="uk-width-1-2"><h2>Accounts</h2></div>
       <div class="uk-width-1-2 uk-text-right">
         <button class="uk-button uk-button-secondary" (click)="createAccount()">
-          Create New Account
+          Add New Account
         </button>
       </div>
     </div>
@@ -49,7 +49,7 @@
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
             </div>
             <div class="uk-float-right uk-hidden-hover">
-              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
+              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Remove Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
 
           </td>
