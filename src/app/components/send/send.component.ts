@@ -35,7 +35,7 @@ export class SendComponent implements OnInit {
   ];
   selectedAmount = this.amounts[0];
 
-  amount = 0;
+  amount = null;
   amountFiat: number = 0;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
@@ -193,11 +193,12 @@ export class SendComponent implements OnInit {
       this.workPool.addToPool(processResponse.hash); // Add new hash to work pool
 
       this.activePanel = 'send';
-      this.amount = 0;
+      this.amount = null;
       this.toAccountID = '';
       this.toAccountStatus = null;
       this.fromAddressBook = '';
       this.toAddressBook = '';
+      this.addressBookMatch = '';
     } else {
       this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
     }
