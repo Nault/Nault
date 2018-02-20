@@ -127,6 +127,8 @@ export class SendComponent implements OnInit {
     from.balanceBN = new BigNumber(from.balance || 0);
     to.balanceBN = new BigNumber(to.balance || 0);
 
+    console.log(`Actual from balance: `, from.balance);
+
     this.fromAccount = from;
     this.toAccount = to;
 

@@ -121,7 +121,7 @@ export class WalletService {
         // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
         walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
       } else {
-        await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
+        await Promise.all(walletJson.accounts.map(async (account) => await this.addWalletAccount(account.index, false)));
       }
     } else {
       // Loading from accounts index
