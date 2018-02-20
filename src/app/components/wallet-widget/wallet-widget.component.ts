@@ -12,9 +12,14 @@ export class WalletWidgetComponent implements OnInit {
 
   unlockPassword = '';
 
+  modal: any = null;
+
   constructor(private walletService: WalletService, private notificationService: NotificationService) { }
 
   ngOnInit() {
+    const UIkit = (window as any).UIkit;
+    const modal = UIkit.modal(document.getElementById('unlock-wallet-modal'));
+    this.modal = modal;
   }
 
   async lockWallet() {
@@ -32,8 +37,9 @@ export class WalletWidgetComponent implements OnInit {
 
     if (unlocked) {
       this.notificationService.sendSuccess(`Wallet unlocked`);
+      this.modal.hide();
     } else {
-      this.notificationService.sendError(`Unable to unlock wallet`);
+      this.notificationService.sendError(`Invalid password, please try again!`);
     }
 
     this.unlockPassword = '';

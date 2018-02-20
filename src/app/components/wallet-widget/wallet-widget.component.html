@@ -3,9 +3,8 @@
     <div uk-grid>
       <div class="uk-width-1-1">
         <div *ngIf="wallet.seed">
-          <!--<a class="uk-float-right uk-margin-right uk-text-middle" routerLink="/manage-wallet"><span class="uk-text-top" uk-icon="icon: cog"></span></a>-->
           <div *ngIf="wallet.locked" class="uk-text-bottom">
-            <span style="cursor: pointer;" uk-toggle="target: #unlock-wallet-modal">
+            <span style="cursor: pointer;" (click)="modal.show()">
               <span uk-icon="icon: lock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Locked</span>
             </span>
           </div>
@@ -33,11 +32,11 @@
       <h2 class="uk-modal-title">Unlock Wallet</h2>
     </div>
     <div class="uk-modal-body">
-      <input type="password" [(ngModel)]="unlockPassword" class="uk-input" placeholder="Enter wallet password">
+      <input autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()" class="uk-input" placeholder="Enter wallet password">
     </div>
     <div class="uk-modal-footer uk-text-right">
       <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-      <button class="uk-button uk-button-primary uk-modal-close" type="button" (click)="unlockWallet()">Unlock</button>
+      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()">Unlock</button>
     </div>
   </div>
 </div>
