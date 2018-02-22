@@ -4,13 +4,6 @@ NanoVault is a fully client-side signing wallet for sending and receiving [Nano]
 on your [desktop](https://github.com/cronoh/nanovault/releases) or [in your browser](https://nanovault.io)
 
 ![NanoVault Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/NanoVault-Preview.png)
-
-# Install NanoVault
-
-NanoVault can be used on the web at [nanovault.io](https://nanovault.io) or on your desktop (Windows/Mac/Linux).
-
-To install the desktop version, head over to the [releases section](https://github.com/cronoh/nanovault/releases) and download the latest version of the application for your OS to get started!
-
 ___
 
 # Table of Contents
