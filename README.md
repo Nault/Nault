@@ -15,8 +15,8 @@ ___
 
 # Table of Contents
 * [Install](#install-nanovault)
-* [Development Prerequisites](#development-prerequisites)
 * [Application Structure](#application-structure)
+* [Development Prerequisites](#development-prerequisites)
 * [Development Guide](#development-guide)
 
 # Install NanoVault
@@ -31,19 +31,18 @@ ___
 
 ___
 
-
-# Development Prerequisites
-- Node Package Manager: [Install NPM](https://www.npmjs.com/get-npm)
-- Angular CLI: `npm install -g @angular/cli`
-
-
 # Application Structure
 
 The application is broken into a few separate pieces:
 
-- [NanoVault](https://github.com/cronoh/nanovault) - The main UI for the wallet
-- [NanoVault-Server](https://github.com/cronoh/nanovault-server) - Serves the Wallet UI and brokers public communication between the wallet and the Nano Node
+- [NanoVault](https://github.com/cronoh/nanovault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
+- [NanoVault-Server](https://github.com/cronoh/nanovault-server) - Serves the Wallet UI and brokers public communication between the wallet and the Nano Node.
 - [NanoVault-WS](https://github.com/cronoh/nanovault-ws) - Websocket server that receives new blocks from the Nano node and sends them in real time to the wallet ui.
+
+
+# Development Prerequisites
+- Node Package Manager: [Install NPM](https://www.npmjs.com/get-npm)
+- Angular CLI: `npm install -g @angular/cli`
 
 
 # Development Guide
