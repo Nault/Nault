@@ -4,6 +4,8 @@ interface AppSettings {
   displayDenomination: string;
   walletStore: string;
   displayCurrency: string;
+  lockOnClose: number;
+  lockInactivityMinutes: number;
 }
 
 @Injectable()
@@ -14,6 +16,8 @@ export class AppSettingsService {
     displayDenomination: 'mnano',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
+    lockOnClose: 1,
+    lockInactivityMinutes: 30,
   };
 
   constructor() { }
@@ -24,7 +28,7 @@ export class AppSettingsService {
     if (settingsStore) {
       settings = JSON.parse(settingsStore);
     }
-    this.settings = settings;
+    this.settings = Object.assign(this.settings, settings);
 
     return this.settings;
   }

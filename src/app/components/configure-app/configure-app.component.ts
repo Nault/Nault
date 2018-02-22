@@ -63,6 +63,23 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedCurrency = this.currencies[0].value;
 
+  inactivityOptions = [
+    { name: 'Never', value: 0 },
+    { name: '1 Minute', value: 1 },
+    { name: '5 Minutes', value: 5 },
+    { name: '15 Minutes', value: 15 },
+    { name: '30 Minutes', value: 30 },
+    { name: '1 Hour', value: 60 },
+    { name: '6 Hours', value: 360 },
+  ];
+  selectedInactivityMinutes = this.inactivityOptions[4].value;
+
+  lockOptions = [
+    { name: 'Lock Wallet On Close', value: 1 },
+    { name: 'Do Not Lock Wallet On Close', value: 0 },
+  ];
+  selectedLockOption = 1;
+
   constructor(private walletService: WalletService, private notifications: NotificationService, private appSettings: AppSettingsService, private price: PriceService) { }
 
   async ngOnInit() {
@@ -76,30 +93,41 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingStorage = this.storageOptions.find(d => d.value == settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
+
+    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value == settings.lockInactivityMinutes);
+    this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
+
+    const matchingLockOption = this.lockOptions.find(d => d.value === settings.lockOnClose);
+    this.selectedLockOption = matchingLockOption ? matchingLockOption.value : this.lockOptions[0].value;
   }
 
-  async updateSettings() {
-    const newDenomination = this.selectedDenomination;
-    const newStorage = this.selectedStorage;
+  async updateDisplaySettings() {
     const newCurrency = this.selectedCurrency;
-
-    const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-
-    this.appSettings.setAppSetting('displayDenomination', newDenomination);
-    this.appSettings.setAppSetting('walletStore', newStorage);
-
-    this.notifications.sendSuccess(`App settings successfully updated!`);
-
-    if (resaveWallet) {
-      this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
-    }
+    this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
+    this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
       // Reload prices with our currency, then call to reload fiat balances.
       await this.price.getPrice(newCurrency);
       this.appSettings.setAppSetting('displayCurrency', newCurrency);
       this.walletService.reloadFiatBalances();
+    }
+
+  }
+
+  async updateWalletSettings() {
+    const newStorage = this.selectedStorage;
+
+    const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
+
+    this.appSettings.setAppSetting('walletStore', newStorage);
+    this.appSettings.setAppSetting('lockOnClose', new Number(this.selectedLockOption));
+    this.appSettings.setAppSetting('lockInactivityMinutes', new Number(this.selectedInactivityMinutes));
+    this.notifications.sendSuccess(`App wallet settings successfully updated!`);
+
+    if (resaveWallet) {
+      this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
     }
   }
 }

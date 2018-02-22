@@ -1,4 +1,4 @@
-<div uk-grid class="app uk-offcanvas-content" uk-height-viewport>
+<div uk-grid class="app uk-offcanvas-content" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
 
   <!-- Mobile Offcanvas Nav -->
   <div id="mobile-nav" uk-offcanvas="mode: reveal; overlay: false;">
@@ -138,7 +138,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" style="">
+      <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0;">
           <router-outlet></router-outlet>
         </div>

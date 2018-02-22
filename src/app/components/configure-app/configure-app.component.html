@@ -4,15 +4,10 @@
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Wallet Settings</h3>
+        <h3 class="uk-card-title">Display Settings</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
-          <div class="uk-width-1-1">
-            <p>
-              Use the settings below to change how your wallet operates.
-            </p>
-          </div>
 
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
@@ -46,6 +41,55 @@
             </div>
           </div>
 
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <button (click)="updateDisplaySettings()" class="uk-button uk-button-secondary">Update Display Settings</button>
+      </div>
+    </div>
+
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Wallet Settings</h3>
+      </div>
+      <div class="uk-card-body">
+        <div uk-grid>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Lock On Exit <span uk-icon="icon: info;" uk-tooltip title="Change if your wallet should be locked automatically when you exit or reload NanoVault"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedLockOption">
+                      <option *ngFor="let option of lockOptions" [value]="option.value">{{ option.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Lock After Inactivity <span uk-icon="icon: info;" uk-tooltip title="Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedInactivityMinutes">
+                      <option *ngFor="let option of inactivityOptions" [value]="option.value">{{ option.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
@@ -66,7 +110,7 @@
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">
-        <button (click)="updateSettings()" class="uk-button uk-button-secondary">Update Settings</button>
+        <button (click)="updateWalletSettings()" class="uk-button uk-button-secondary">Update Wallet Settings</button>
       </div>
     </div>
 
