@@ -1,10 +1,9 @@
 # NanoVault
 
 NanoVault is a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/raiblocks) 
-on your [Windows/Mac/Linux](https://github.com/cronoh/nanovault/releases) or online at [https://nanovault.io](https://nanovault.io)
+on your [desktop](https://github.com/cronoh/nanovault/releases) or [in your browser](https://nanovault.io)
 
-![RaiVault Desktop Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/Desktop-Preview.png)
-![RaiVault Mobile Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/Mobile-Preview.png)
+![NanoVault Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/NanoVault-Preview.png)
 
 # Install NanoVault
 
