@@ -40,6 +40,12 @@ export class AppComponent implements OnInit {
         this.walletService.lockWallet();
       }
     });
+    window.addEventListener("unload",  (e) => {
+      if (this.wallet.locked) return; // Already locked, nothing to worry about
+      if (this.settings.settings.lockOnClose == 1) {
+        this.walletService.lockWallet();
+      }
+    });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {

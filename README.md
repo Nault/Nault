@@ -41,9 +41,9 @@ ___
 
 The application is broken into a few separate pieces:
 
-- NanoVault - The main UI for the wallet
-- NanoVault-Server - Brokers public communication between the wallet UI and the Nano Node
-- NanoVault-WS - Receives new blocks from the Nano node and sends them in real time to the wallet ui.
+- [NanoVault](https://github.com/cronoh/nanovault) - The main UI for the wallet
+- [NanoVault-Server](https://github.com/cronoh/nanovault-server) - Serves the Wallet UI and brokers public communication between the wallet and the Nano Node
+- [NanoVault-WS](https://github.com/cronoh/nanovault-ws) - Websocket server that receives new blocks from the Nano node and sends them in real time to the wallet ui.
 
 
 # Development Guide
