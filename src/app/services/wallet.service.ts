@@ -75,12 +75,17 @@ export class WalletService {
         // We do a receive for the account, it should know if it has txs?
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.destination);
         if (walletAccount) {
-          const newHash = await this.nanoBlock.generateReceive(walletAccount, transaction.hash);
-          if (newHash) {
-            // Can we send notifications from here? sure why not lol
-            this.notifications.sendSuccess(`Successfully received Nano!`);
+          // If the wallet is locked, show a notification
+          if (this.wallet.locked) {
+            this.notifications.sendWarning(`New incoming transaction - unlock wallet to receive it!`);
           } else {
-            this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+            const newHash = await this.nanoBlock.generateReceive(walletAccount, transaction.hash);
+            if (newHash) {
+              // Can we send notifications from here? sure why not lol
+              this.notifications.sendSuccess(`Successfully received Nano!`);
+            } else {
+              this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+            }
           }
         }
       }
