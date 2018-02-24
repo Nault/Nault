@@ -53,6 +53,8 @@ export class WalletService {
     password: '',
   };
 
+  pendingBlocks = [];
+
   constructor(
     private util: UtilService,
     private api: ApiService,
@@ -67,26 +69,18 @@ export class WalletService {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
 
-      // Okay so, find out if this is a send, with our account as a destination or not
+      // Find out if this is a send, with our account as a destination or not
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.destination) !== -1) {
-        // Okay we want to perform an automatic receive on this baby
-
-        // We do a receive for the account, it should know if it has txs?
+        // Perform an automatic receive
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.destination);
         if (walletAccount) {
           // If the wallet is locked, show a notification
           if (this.wallet.locked) {
             this.notifications.sendWarning(`New incoming transaction - unlock wallet to receive it!`);
-          } else {
-            const newHash = await this.nanoBlock.generateReceive(walletAccount, transaction.hash);
-            if (newHash) {
-              // Can we send notifications from here? sure why not lol
-              this.notifications.sendSuccess(`Successfully received Nano!`);
-            } else {
-              this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
-            }
           }
+          this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
+          await this.processPendingBlocks();
         }
       }
 
@@ -231,6 +225,9 @@ export class WalletService {
         this.loadAccountsFromIndex().then(() => this.reloadBalances()); // Reload all?
       }
 
+      // Process any pending blocks
+      this.processPendingBlocks();
+
       this.saveWalletExport(); // Save so a refresh also gives you your unlocked wallet?
 
       return true;
@@ -337,7 +334,14 @@ export class WalletService {
 
     this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
     this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPending).times(fiatPrice).toNumber();
+
+    // If there is a pending balance, search for the actual pending transactions
+    if (walletPending.gt(0)) {
+      this.loadPendingBlocksForWallet();
+    }
   }
+
+
 
   async loadWalletAccount(accountIndex, accountID) {
     let index = accountIndex;
@@ -429,6 +433,53 @@ export class WalletService {
     this.saveWalletExport();
 
     return true;
+  }
+
+  addPendingBlock(accountID, blockHash, amount) {
+    const existingHash = this.pendingBlocks.find(b => b.hash == blockHash);
+    if (existingHash) return; // Already added
+
+    this.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount });
+  }
+
+  async loadPendingBlocksForWallet() {
+    if (!this.wallet.accounts.length) return;
+    const pending = await this.api.accountsPending(this.wallet.accounts.map(a => a.id));
+    if (!pending || !pending.blocks) return;
+
+    for (let account in pending.blocks) {
+      if (!pending.blocks.hasOwnProperty(account)) continue;
+      for (let block in pending.blocks[account]) {
+        if (!pending.blocks[account].hasOwnProperty(block)) continue;
+
+        this.addPendingBlock(account, block, pending.blocks[account][block].amount);
+      }
+    }
+
+    // Now, only if we have results, do a unique on the account names, and run account info on all of them?
+    if (this.pendingBlocks.length) {
+      this.processPendingBlocks();
+    }
+  }
+
+  async processPendingBlocks() {
+    if (this.wallet.locked || !this.pendingBlocks.length) return;
+
+    const nextBlock = this.pendingBlocks.shift();
+    const walletAccount = this.getWalletAccount(nextBlock.account);
+    if (!walletAccount) return; // Dispose of the block, no matching account
+
+    const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash);
+    if (newHash) {
+      const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.toFixed(6)} Nano!`);
+    } else {
+      this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+    }
+
+    await this.reloadBalances();
+
+    setTimeout(() => this.processPendingBlocks(), 500);
   }
 
   saveWalletExport() {

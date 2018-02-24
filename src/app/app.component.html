@@ -92,11 +92,14 @@
               <span class="balance" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
             </div>
 
-            <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="wallet.pending.gt(0)">
-              <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Pending </span>
-              <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
+            <div *ngIf="wallet.pending.gt(0)">
+              <div style="display: inline-block; text-align: right;" class="uk-text-muted">
+                <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Pending </span>
+                <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
+                <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
+              </div>
             </div>
+
           </div>
 
         </div>
