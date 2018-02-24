@@ -97,7 +97,7 @@
             <div class="uk-card uk-card-default">
               <div class="uk-card-header" style="padding: 20px 20px;">
                 <span class="confirm-title uk-text-truncate">
-                  <span class="uk-label" *ngIf="fromAddressBook">{{ fromAddressBook }}</span> {{ fromAccountID }}
+                  <span class="uk-label" *ngIf="fromAddressBook">{{ fromAddressBook }}</span> {{ fromAccountID | squeeze }}
                 </span>
                 <span class="confirm-subtitle">From Account</span>
               </div>
@@ -119,7 +119,7 @@
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
               <div class="uk-card-header uk-text-truncate" style="padding: 20px 20px;">
-                <span class="confirm-title uk-text-truncate"><span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID }}</span>
+                <span class="confirm-title uk-text-truncate"><span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID | squeeze }}</span>
                 <span class="confirm-subtitle">To Account</span>
               </div>
               <div class="uk-card-body" style="padding: 20px 20px;">

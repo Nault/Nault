@@ -45,6 +45,11 @@
                 <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
               </td>
             </tr>
+            <tr *ngIf="!(addressBook$ | async).length">
+              <td colspan="3" style="text-align: center;">
+                You do not have any address book entries saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
