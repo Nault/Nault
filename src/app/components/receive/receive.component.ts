@@ -18,7 +18,6 @@ const nacl = window['nacl'];
 })
 export class ReceiveComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
-  representativeAccount = 'xrb_1awsn43we17c1oshdru4azeqjz9wii41dy8npubm4rg11so7dx3jtqgoeahy'; // Official Representative 6
 
   pendingAccountModel = 0;
   pendingBlocks = [];
