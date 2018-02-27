@@ -248,8 +248,8 @@ export class WalletService {
 
     let emptyTicker = 0;
     let usedIndices = [];
-    const batchSize = emptyAccountBuffer;
     let greatestUsedIndex = 0;
+    const batchSize = emptyAccountBuffer + 1;
     for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
       let batchAccounts = {}
       let batchAccountsArray = []
