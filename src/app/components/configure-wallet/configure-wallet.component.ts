@@ -25,9 +25,7 @@ export class ConfigureWalletComponent implements OnInit {
     if (importSeed && importSeed.length > 1) {
       if (importSeed.length !== 64) return this.notifications.sendError(`Import seed is invalid, double check it!`);
 
-      this.walletService.createWalletFromSeed(importSeed);
-      this.activePanel = 4;
-      this.notifications.sendSuccess(`Successfully imported wallet seed!`);
+      await this.createWalletFromSeed(importSeed);
     }
 
     const toggleImport = this.router.snapshot.queryParams.import;
@@ -36,14 +34,21 @@ export class ConfigureWalletComponent implements OnInit {
     }
   }
 
+  async createWalletFromSeed(seed) {
+
+    this.notifications.sendInfo(`Attempting to import seed. Scanning for used accounts, this could take some time...`);
+    await this.walletService.createWalletFromSeed(seed);
+    this.activePanel = 4;
+
+    this.notifications.sendSuccess(`Successfully imported existing wallet!`);
+
+  }
+
   async importExistingWallet() {
     const existingSeed = this.importSeedModel.trim();
     if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
 
-    this.walletService.createWalletFromSeed(existingSeed);
-    this.activePanel = 4;
-
-    this.notifications.sendSuccess(`Successfully imported existing wallet!`);
+    await this.createWalletFromSeed(existingSeed);
   }
 
   async createNewWallet() {
