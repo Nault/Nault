@@ -240,13 +240,62 @@ export class WalletService {
     return this.wallet.locked;
   }
 
-  createWalletFromSeed(seed: string) {
+  async createWalletFromSeed(seed: string, emptyAccountBuffer: number = 20) {
     this.resetWallet();
 
     this.wallet.seed = seed;
     this.wallet.seedBytes = this.util.hex.toUint8(seed);
 
-    this.addWalletAccount();
+    let emptyTicker = 0;
+    let usedIndices = [];
+    const batchSize = emptyAccountBuffer;
+    let greatestUsedIndex = 0;
+    for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
+      let batchAccounts = {}
+      let batchAccountsArray = []
+      for (let i = 0; i < batchSize; i++) {
+        const index = batch * batchSize + i;
+        const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
+        const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+        const accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+        batchAccounts[accountAddress] = {
+          index: index,
+          used: false
+        }
+        batchAccountsArray.push(accountAddress)
+      }
+      let batchResponse = await this.api.accountsBalances(batchAccountsArray);
+      for (let accountID in batchResponse.balances) {
+        const balance = new BigNumber(batchResponse.balances[accountID].balance);
+        const pending = new BigNumber(batchResponse.balances[accountID].pending);
+        const total = balance.plus(pending)
+        if (total.isGreaterThan(0)) {
+          batchAccounts[accountID].used = true
+        }
+      }
+      for (let accountID in batchAccounts) {
+        let account = batchAccounts[accountID];
+        if (account.used) {
+          usedIndices.push(account.index)
+          if (account.index > greatestUsedIndex) {
+            greatestUsedIndex = account.index
+            emptyTicker = 0;
+          }
+        } else {
+          if (account.index > greatestUsedIndex) {
+            emptyTicker ++;
+          }
+        }
+      }
+    }
+    if (usedIndices.length > 0) {
+      for (let i = 0; i < usedIndices.length - 1; i++) {
+        this.addWalletAccount(usedIndices[i], false);
+      }
+      this.addWalletAccount(usedIndices.length - 1, true);
+    } else{
+      this.addWalletAccount();
+    }
 
     return this.wallet.seed;
   }
