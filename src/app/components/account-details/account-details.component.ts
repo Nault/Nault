@@ -9,6 +9,7 @@ import {AppSettingsService} from "../../services/app-settings.service";
 import {PriceService} from "../../services/price.service";
 import {UtilService} from "../../services/util.service";
 import * as QRCode from 'qrcode';
+import BigNumber from "bignumber.js";
 
 @Component({
   selector: 'app-account-details',
@@ -16,6 +17,8 @@ import * as QRCode from 'qrcode';
   styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
+  nano = 1000000000000000000000000;
+
   accountHistory: any[] = [];
   pageSize = 25;
   maxPageSize = 200;
@@ -68,6 +71,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
     // Set fiat values?
+    this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.nano);
+    this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.nano);
     this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
     this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     await this.getAccountHistory(this.accountID);

@@ -21,6 +21,8 @@ const nacl = window['nacl'];
   styleUrls: ['./send.component.css']
 })
 export class SendComponent implements OnInit {
+  nano = 1000000000000000000000000;
+
   activePanel = 'send';
 
   accounts = this.walletService.wallet.accounts;
@@ -36,6 +38,7 @@ export class SendComponent implements OnInit {
   selectedAmount = this.amounts[0];
 
   amount = null;
+  amountRaw = new BigNumber(0);
   amountFiat: number = 0;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
@@ -131,9 +134,12 @@ export class SendComponent implements OnInit {
     this.toAccount = to;
 
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
-    this.rawAmount = rawAmount;
+    this.rawAmount = rawAmount.plus(this.amountRaw);
+
+    const nanoAmount = this.rawAmount.div(this.nano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
+    if (nanoAmount.lessThan(1)) return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
 
     // Determine fiat value of the amount
@@ -194,6 +200,7 @@ export class SendComponent implements OnInit {
 
       this.activePanel = 'send';
       this.amount = null;
+      this.resetRaw();
       this.toAccountID = '';
       this.toAccountStatus = null;
       this.fromAddressBook = '';
@@ -211,9 +218,15 @@ export class SendComponent implements OnInit {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
     if (!walletAccount) return;
 
+    this.amountRaw = walletAccount.balanceRaw;
+
     const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
+  }
+
+  resetRaw() {
+    this.amountRaw = new BigNumber(0);
   }
 
   getAmountBaseValue(value) {

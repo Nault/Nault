@@ -24,8 +24,6 @@
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
-                  <!--<span *ngIf="account.addressBookName" style="font-weight: bold;">{{ account.addressBookName }}</span>-->
-                  <!--<span *ngIf="!account.addressBookName">{{ account.id }}</span>-->
                   <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
                 </a>
               </div>
@@ -38,14 +36,19 @@
           </td>
           <td class=" uk-text-right">
             {{ account.balance | rai: settings.settings.displayDenomination }}
-            <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
+            <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
+              {{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
+            </div>
+            <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
               {{ account.pending | rai: settings.settings.displayDenomination }}
             </div>
+            <div *ngIf="account.pendingRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
+              {{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
+            </div>
           </td>
-          <!--<td>{{ account.pending | rai: settings.settings.displayDenomination }}</td>-->
           <td class=" uk-text-left">
             {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
-            <div *ngIf="account.pending > 0" class="uk-text-muted uk-text-small">
+            <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
             </div>
             <div class="uk-float-right uk-hidden-hover">

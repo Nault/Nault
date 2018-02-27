@@ -17,8 +17,10 @@ export interface WalletAccount {
   secret: any;
   keyPair: any;
   index: number;
-  balance: number|BigNumber;
-  pending: number|BigNumber;
+  balance: BigNumber;
+  pending: BigNumber;
+  balanceRaw: BigNumber;
+  pendingRaw: BigNumber;
   balanceFiat: number;
   pendingFiat: number;
   addressBookName: string|null;
@@ -26,8 +28,10 @@ export interface WalletAccount {
 export interface FullWallet {
   seedBytes: any;
   seed: string|null;
-  balance: number|BigNumber;
+  balance: BigNumber;
   pending: BigNumber;
+  balanceRaw: BigNumber;
+  pendingRaw: BigNumber;
   balanceFiat: number;
   pendingFiat: number;
   accounts: WalletAccount[];
@@ -38,6 +42,7 @@ export interface FullWallet {
 
 @Injectable()
 export class WalletService {
+  nano = 1000000000000000000000000;
   storeKey = `nanovault-wallet`;
 
   wallet: FullWallet = {
@@ -45,6 +50,8 @@ export class WalletService {
     seed: '',
     balance: new BigNumber(0),
     pending: new BigNumber(0),
+    balanceRaw: new BigNumber(0),
+    pendingRaw: new BigNumber(0),
     balanceFiat: 0,
     pendingFiat: 0,
     accounts: [],
@@ -53,7 +60,9 @@ export class WalletService {
     password: '',
   };
 
+  processingPending = false;
   pendingBlocks = [];
+  successfulBlocks = [];
 
   constructor(
     private util: UtilService,
@@ -84,7 +93,9 @@ export class WalletService {
         }
       }
 
-      this.reloadBalances();
+      // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
+
+      await this.reloadBalances();
     });
 
     this.addressBook.addressBook$.subscribe(newAddressBook => {
@@ -129,7 +140,7 @@ export class WalletService {
       }
     }
 
-    await this.reloadBalances();
+    await this.reloadBalances(true);
 
     return this.wallet;
   }
@@ -146,7 +157,7 @@ export class WalletService {
       await this.addWalletAccount(i, false);
     }
 
-    await this.reloadBalances();
+    await this.reloadBalances(true);
 
     if (this.wallet.accounts.length) {
       this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
@@ -294,10 +305,12 @@ export class WalletService {
     this.wallet.pendingFiat = this.util.nano.rawToMnano(this.wallet.pending).times(fiatPrice).toNumber();
   }
 
-  async reloadBalances() {
+  async reloadBalances(reloadPending = true) {
     const fiatPrice = this.price.price.lastPrice;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
+    this.wallet.balanceRaw = new BigNumber(0);
+    this.wallet.pendingRaw = new BigNumber(0);
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     const accountIDs = this.wallet.accounts.map(a => a.id);
@@ -314,6 +327,9 @@ export class WalletService {
       if (!walletAccount) continue;
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
       walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
+
+      walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
+      walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
 
       walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
       walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
@@ -332,12 +348,15 @@ export class WalletService {
     this.wallet.balance = walletBalance;
     this.wallet.pending = walletPending;
 
+    this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.nano);
+    this.wallet.pendingRaw = new BigNumber(walletPending).mod(this.nano);
+
     this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
     this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPending).times(fiatPrice).toNumber();
 
     // If there is a pending balance, search for the actual pending transactions
-    if (walletPending.gt(0)) {
-      this.loadPendingBlocksForWallet();
+    if (reloadPending && walletPending.gt(0)) {
+      await this.loadPendingBlocksForWallet();
     }
   }
 
@@ -352,8 +371,10 @@ export class WalletService {
       frontier: null,
       secret: null,
       keyPair: null,
-      balance: 0,
-      pending: 0,
+      balance: new BigNumber(0),
+      pending: new BigNumber(0),
+      balanceRaw: new BigNumber(0),
+      pendingRaw: new BigNumber(0),
       balanceFiat: 0,
       pendingFiat: 0,
       index: index,
@@ -391,8 +412,10 @@ export class WalletService {
       frontier: null,
       secret: accountBytes,
       keyPair: accountKeyPair,
-      balance: 0,
-      pending: 0,
+      balance: new BigNumber(0),
+      pending: new BigNumber(0),
+      balanceRaw: new BigNumber(0),
+      pendingRaw: new BigNumber(0),
       balanceFiat: 0,
       pendingFiat: 0,
       index: index,
@@ -436,6 +459,7 @@ export class WalletService {
   }
 
   addPendingBlock(accountID, blockHash, amount) {
+    if (this.successfulBlocks.indexOf(blockHash) !== -1) return; // Already successful with this block
     const existingHash = this.pendingBlocks.find(b => b.hash == blockHash);
     if (existingHash) return; // Already added
 
@@ -462,8 +486,29 @@ export class WalletService {
     }
   }
 
+  promiseSleep(timeout = 1000): Promise<void> {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  // updateAccountBalance(walletAccount, amount) {
+  //   console.log(`Updating account  balance...? `, amount);
+  //   walletAccount.balance = walletAccount.balance.plus(amount);
+  //   walletAccount.pending = walletAccount.balance.minus(amount);
+  //   walletAccount.balanceRaw = walletAccount.balance.mod(this.nano);
+  //   walletAccount.pendingRaw = walletAccount.pending.mod(this.nano);
+  //
+  //   // this.wallet.balance = this.wallet.balance.plus(amount);
+  //   // this.wallet.pending = this.wallet.balance.minus(amount);
+  //   // this.wallet.balanceRaw = this.wallet.balance.mod(this.nano);
+  //   // this.wallet.pendingRaw = this.wallet.balance.mod(this.nano);
+  // }
+
   async processPendingBlocks() {
-    if (this.wallet.locked || !this.pendingBlocks.length) return;
+    if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length) return;
+
+    this.processingPending = true;
 
     const nextBlock = this.pendingBlocks.shift();
     const walletAccount = this.getWalletAccount(nextBlock.account);
@@ -471,15 +516,21 @@ export class WalletService {
 
     const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash);
     if (newHash) {
+      if (this.successfulBlocks.length >= 15) this.successfulBlocks.shift();
+      this.successfulBlocks.push(nextBlock.hash);
+
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
       this.notifications.sendSuccess(`Successfully received ${receiveAmount.toFixed(6)} Nano!`);
+
+      // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
+      await this.reloadBalances();
     } else {
       this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
     }
 
-    await this.reloadBalances();
+    this.processingPending = false;
 
-    setTimeout(() => this.processPendingBlocks(), 500);
+    setTimeout(() => this.processPendingBlocks(), 1500);
   }
 
   saveWalletExport() {

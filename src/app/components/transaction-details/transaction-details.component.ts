@@ -11,6 +11,8 @@ import {AddressBookService} from "../../services/address-book.service";
   styleUrls: ['./transaction-details.component.css']
 })
 export class TransactionDetailsComponent implements OnInit {
+  nano = 1000000000000000000000000;
+
   routerSub = null;
   transaction: any = {};
   hashID = '';
@@ -20,6 +22,8 @@ export class TransactionDetailsComponent implements OnInit {
   fromAccountID = '';
   toAddressBook = '';
   fromAddressBook = '';
+
+  amountRaw = new BigNumber(0);
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -43,6 +47,7 @@ export class TransactionDetailsComponent implements OnInit {
     this.fromAccountID = '';
     this.toAddressBook = '';
     this.fromAddressBook = '';
+    this.amountRaw = new BigNumber(0);
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
     const blockData = await this.api.blocksInfo([hash]);
@@ -55,6 +60,9 @@ export class TransactionDetailsComponent implements OnInit {
     hashData.contents = hashContents;
 
     this.blockType = hashData.contents.type;
+    if (hashData.amount) {
+      this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
+    }
 
     this.transaction = hashData;
 

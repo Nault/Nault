@@ -13,7 +13,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">From Account</label>
                 <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="fromAccountID" id="form-horizontal-select">
+                  <select class="uk-select" [(ngModel)]="fromAccountID" (change)="resetRaw()" id="form-horizontal-select">
                     <option *ngFor="let account of accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName + ' - ' : '' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                 </div>
@@ -57,6 +57,9 @@
                           <a class="uk-form-icon uk-form-icon-flip" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
                           <input [(ngModel)]="amount" class="uk-input" id="form-horizontal-text" type="text" placeholder="Amount of {{ selectedAmount.name }} to send">
                         </div>
+                        <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-text-center uk-text-small uk-text-muted">
+                          +{{ amountRaw.toString(10) }} raw &nbsp; <a (click)="resetRaw()">remove raw</a>
+                        </div>
 
                       </div>
                       <div class="uk-width-2-5">
@@ -69,6 +72,7 @@
                           </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -89,6 +93,7 @@
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
           <span style="display: block; padding-top: 8px;">You are about to send</span>
           <span style="display:block; font-size: 32px;">{{ rawAmount | rai: 'xrb' }}</span>
+          <span style="display:block; font-size: 12px;" *ngIf="amountRaw.gt(0)">+{{ amountRaw.toString(10) }} raw</span>
           <span style="display:block; font-size: 16px; padding-bottom: 5px;" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</span>
         </div>
         <br>
