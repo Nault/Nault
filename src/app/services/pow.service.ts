@@ -196,7 +196,8 @@ export class PowService {
       if (error.message === 'webgl2_required') {
         this.webGLAvailable = false;
       }
-      response.reject(error);
+      response.resolve(null);
+      // response.reject(error);
     }
 
     return response.promise;
