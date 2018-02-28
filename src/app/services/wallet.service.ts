@@ -251,8 +251,8 @@ export class WalletService {
     let greatestUsedIndex = 0;
     const batchSize = emptyAccountBuffer + 1;
     for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
-      let batchAccounts = {}
-      let batchAccountsArray = []
+      let batchAccounts = {};
+      let batchAccountsArray = [];
       for (let i = 0; i < batchSize; i++) {
         const index = batch * batchSize + i;
         const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
@@ -260,17 +260,16 @@ export class WalletService {
         const accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
         batchAccounts[accountAddress] = {
           index: index,
+          publicKey: this.util.uint8.toHex(accountKeyPair.publicKey).toUpperCase(),
           used: false
-        }
-        batchAccountsArray.push(accountAddress)
+        };
+        batchAccountsArray.push(accountAddress);
       }
-      let batchResponse = await this.api.accountsBalances(batchAccountsArray);
-      for (let accountID in batchResponse.balances) {
-        const balance = new BigNumber(batchResponse.balances[accountID].balance);
-        const pending = new BigNumber(batchResponse.balances[accountID].pending);
-        const total = balance.plus(pending)
-        if (total.isGreaterThan(0)) {
-          batchAccounts[accountID].used = true
+      let batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
+      for (let accountID in batchResponse.frontiers) {
+        const frontier = batchResponse.frontiers[accountID];
+        if (frontier !== batchAccounts[accountID].publicKey) {
+          batchAccounts[accountID].used = true;
         }
       }
       for (let accountID in batchAccounts) {
