@@ -15,9 +15,17 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <script type="text/javascript" src="/assets/lib/blake2b/blake2b.js"></script>
   <script type="text/javascript" src="/assets/lib/tweetnacl/nacl.js"></script>
+  <script type="text/javascript" src="/assets/lib/pow/pow.js"></script>
+  <script type="text/javascript" src="/assets/lib/pow/startThreads.js"></script>
+  <script type="text/javascript" src="/assets/lib/pow/nano-webgl-pow.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script type="text/javascript">
+    Module['onRuntimeInitialized'] = function() {
+      window.PoWCPU = true;
+    }
+  </script>
 </head>
 <body class="body" style="font-family: 'Lato', sans-serif;">
   <app-root></app-root>

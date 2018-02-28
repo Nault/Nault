@@ -21,7 +21,7 @@ export class AddressBookComponent implements OnInit {
   constructor(private addressBookService: AddressBookService, private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, private nodeApi: ApiService) { }
 
   async ngOnInit() {
-    const book = await this.addressBookService.loadAddressBook();
+    this.addressBookService.loadAddressBook();
   }
 
   async saveNewAddress() {

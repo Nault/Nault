@@ -5,6 +5,10 @@ import {AppSettingsService} from "./services/app-settings.service";
 import {WebsocketService} from "./services/websocket.service";
 import {PriceService} from "./services/price.service";
 import {NotificationService} from "./services/notification.service";
+import {PowService} from "./services/pow.service";
+import {WorkPoolService} from "./services/work-pool.service";
+
+const mod = window['Module'];
 
 @Component({
   selector: 'app-root',
@@ -23,11 +27,14 @@ export class AppComponent implements OnInit {
     public settings: AppSettingsService,
     private websocket: WebsocketService,
     private notifications: NotificationService,
+    private pow: PowService,
+    private workPool: WorkPoolService,
     public price: PriceService) { }
 
   async ngOnInit() {
     this.settings.loadAppSettings();
-    await this.addressBook.loadAddressBook();
+    this.addressBook.loadAddressBook();
+    this.workPool.loadWorkCache();
     await this.walletService.loadStoredWallet();
     this.websocket.connect();
 

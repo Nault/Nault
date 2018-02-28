@@ -12,6 +12,7 @@ import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
 import {PriceService} from "../../services/price.service";
+import {NanoBlockService} from "../../services/nano-block.service";
 
 const nacl = window['nacl'];
 
@@ -56,6 +57,7 @@ export class SendComponent implements OnInit {
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
     private nodeApi: ApiService,
+    private nanoBlock: NanoBlockService,
     public price: PriceService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
@@ -71,7 +73,7 @@ export class SendComponent implements OnInit {
       this.validateDestination();
     }
 
-    await this.addressBookService.loadAddressBook();
+    this.addressBookService.loadAddressBook();
     this.fromAccountID = this.accounts[0].id;
   }
 
@@ -148,7 +150,7 @@ export class SendComponent implements OnInit {
     // Start precopmuting the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
     this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
-    this.workPool.addToPool(this.fromAccount.frontier);
+    this.workPool.addWorkToCache(this.fromAccount.frontier);
 
     this.activePanel = 'confirm';
   }
@@ -160,44 +162,9 @@ export class SendComponent implements OnInit {
 
     this.confirmingTransaction = true;
 
-    const remaining = new BigNumber(this.fromAccount.balance).minus(this.rawAmount);
-
-    let remainingNew = remaining.toString(16);
-    while (remainingNew.length < 32) {
-      remainingNew = '0' + remainingNew;
-    }
-
-    const context = blake.blake2bInit(32, null);
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.fromAccount.frontier));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.toAccountID)));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(remainingNew));
-    const hashBytes = blake.blake2bFinal(context);
-
-    // Sign the hash bytes with the account priv key bytes
-    const signed = nacl.sign.detached(hashBytes, walletAccount.keyPair.secretKey);
-    const signature = this.util.hex.fromUint8(signed);
-
-    // Now we just need work...
-    const blockData = {
-      type: 'send',
-      previous: this.fromAccount.frontier,
-      destination: this.toAccountID,
-      balance: remainingNew,
-      work: null,
-      signature: signature,
-    };
-
-    const response = await this.workPool.getWork(this.fromAccount.frontier);
-
-    blockData.work = response.work;
-
-    // Send to process?
-    const processResponse = await this.nodeApi.process(blockData);
-    if (processResponse && processResponse.hash) {
-      walletAccount.frontier = processResponse.hash;
+    const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount);
+    if (newHash) {
       this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
-      this.workPool.addToPool(processResponse.hash); // Add new hash to work pool
-
       this.activePanel = 'send';
       this.amount = null;
       this.resetRaw();
@@ -207,8 +174,9 @@ export class SendComponent implements OnInit {
       this.toAddressBook = '';
       this.addressBookMatch = '';
     } else {
-      this.notificationService.sendError(`There was an error sending your transaction: ${processResponse.message}`)
+      this.notificationService.sendError(`There was an error sending your transaction, please try again.`)
     }
+
     this.confirmingTransaction = false;
 
     await this.walletService.reloadBalances();

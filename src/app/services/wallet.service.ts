@@ -343,7 +343,7 @@ export class WalletService {
     // Make sure any frontiers are in the work pool
     // If they have no frontier, we want to use their pub key?
     const hashes = this.wallet.accounts.map(account => account.frontier || this.util.account.getAccountPublicKey(account.id));
-    hashes.forEach(hash => this.workPool.addToPool(hash));
+    hashes.forEach(hash => this.workPool.addWorkToCache(hash));
 
     this.wallet.balance = walletBalance;
     this.wallet.pending = walletPending;
@@ -511,6 +511,9 @@ export class WalletService {
     this.processingPending = true;
 
     const nextBlock = this.pendingBlocks.shift();
+    if (this.successfulBlocks.find(b => b.hash == nextBlock.hash)) {
+      return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
+    }
     const walletAccount = this.getWalletAccount(nextBlock.account);
     if (!walletAccount) return; // Dispose of the block, no matching account
 

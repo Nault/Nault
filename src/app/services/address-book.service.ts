@@ -11,7 +11,7 @@ export class AddressBookService {
 
   constructor() { }
 
-  async loadAddressBook() {
+  loadAddressBook() {
     let addressBook = [];
     const addressBookStore = localStorage.getItem(this.storeKey);
     if (addressBookStore) {

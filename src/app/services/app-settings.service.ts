@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import set = Reflect.set;
+
+type WalletStore = 'localStorage'|'none';
+type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
 
 interface AppSettings {
   displayDenomination: string;
@@ -6,6 +10,7 @@ interface AppSettings {
   displayCurrency: string;
   lockOnClose: number;
   lockInactivityMinutes: number;
+  powSource: PoWSource;
 }
 
 @Injectable()
@@ -18,6 +23,7 @@ export class AppSettingsService {
     displayCurrency: 'USD',
     lockOnClose: 1,
     lockInactivityMinutes: 30,
+    powSource: 'best',
   };
 
   constructor() { }
@@ -43,6 +49,15 @@ export class AppSettingsService {
 
   setAppSetting(key, value) {
     this.settings[key] = value;
+    this.saveAppSettings();
+  }
+
+  setAppSettings(settingsObject) {
+    for (let key in settingsObject) {
+      if (!settingsObject.hasOwnProperty(key)) continue;
+      this.settings[key] = settingsObject[key];
+    }
+
     this.saveAppSettings();
   }
 

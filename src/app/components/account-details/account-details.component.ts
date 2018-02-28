@@ -114,6 +114,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async saveRepresentative() {
+    if (this.wallet.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
     if (!this.walletAccount) return;
     const repAccount = this.representativeModel;
 

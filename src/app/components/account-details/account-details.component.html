@@ -29,7 +29,7 @@
                 <label class="uk-form-label">Balance</label>
                 <div class="uk-form-controls">
                   {{ account.balance || 0 | rai: settings.settings.displayDenomination }}<br>
-                  <span *ngIf="account.balanceRaw.gt(0)" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.balanceRaw.toString(10) }} raw</span>
+                  <span *ngIf="account.balanceRaw && account.balanceRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.balanceRaw.toString(10) }} raw</span>
                   {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
                 </div>
               </div>
@@ -37,7 +37,7 @@
                 <label class="uk-form-label">Pending</label>
                 <div class="uk-form-controls uk-text-muted">
                   {{ account.pending || 0 | rai: settings.settings.displayDenomination }}<br>
-                  <span *ngIf="account.pendingRaw.gt(0)" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.pendingRaw.toString(10) }} raw</span>
+                  <span *ngIf="account.pendingRaw && account.pendingRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.pendingRaw.toString(10) }} raw</span>
                   {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
                 </div>
               </div>

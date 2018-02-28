@@ -9,6 +9,8 @@ export class WebsocketService {
   keepaliveTimeout = 60 * 1000;
   reconnectTimeout = 5 * 1000;
 
+  keepaliveSet = false;
+
   socket = {
     connected: false,
     ws: null,
@@ -22,6 +24,7 @@ export class WebsocketService {
 
   connect() {
     if (this.socket.connected && this.socket.ws) return;
+    delete this.socket.ws; // Maybe this will erase old connections
     const ws = new WebSocket('wss://ws.nanovault.io');
     this.socket.ws = ws;
 
@@ -34,7 +37,9 @@ export class WebsocketService {
         this.subscribeAccounts(this.subscribedAccounts);
       }
 
-      this.keepalive(); // Start keepalives!
+      if (!this.keepaliveSet) {
+        this.keepalive(); // Start keepalives!
+      }
     };
     ws.onerror = event => {
       // this.socket.connected = false;
@@ -68,6 +73,7 @@ export class WebsocketService {
   }
 
   keepalive() {
+    this.keepaliveSet = true;
     if (this.socket.connected) {
       this.socket.ws.send(JSON.stringify({ event: 'keepalive' }));
     }

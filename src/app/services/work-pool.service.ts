@@ -1,32 +1,71 @@
 import { Injectable } from '@angular/core';
-import {ApiService} from "./api.service";
+import {PowService} from "./pow.service";
 
 @Injectable()
 export class WorkPoolService {
-  poolLength = 75;
+  storeKey = `nanovault-workcache`;
 
-  pool = [];
+  cacheLength = 25;
+  workCache = [];
 
-  constructor(private nodeApi: ApiService) { }
+  constructor(private pow: PowService) { }
 
-
-  addToPool(hash: string) {
-    const existingJob = this.pool.find(p => p.hash == hash);
-    if (existingJob) return existingJob.value;
-
-    const newJob = { hash, value: this.nodeApi.workGenerate(hash) };
-
-    this.pool.push(newJob);
-
-    if (this.pool.length >= this.poolLength) this.pool.shift(); // Prune if we are at max length
-
-    return newJob.value;
+  public workExists(hash) {
+    return !!this.workCache.find(p => p.hash == hash);
   }
 
-  getWork(hash: string) {
-    const existingJob = this.pool.find(p => p.hash == hash);
-    if (existingJob) return existingJob.value;
+  // A simple helper, which doesn't wait for a response (Used for pre-loading work)
+  public addWorkToCache(hash) {
+    this.getWork(hash);
+  }
 
-    return this.addToPool(hash);
+  // Remove a hash from from the cache
+  public removeFromCache(hash) {
+    const cachedIndex = this.workCache.findIndex(p => p.hash == hash);
+    if (cachedIndex === -1) return;
+
+    this.workCache.splice(cachedIndex, 1);
+    this.saveWorkCache();
+  }
+
+  // Get work for a hash.  Uses the cache, or the current setting for generating it.
+  public async getWork(hash) {
+    const cached = this.workCache.find(p => p.hash == hash);
+    if (cached) return cached.work;
+
+    const work = await this.pow.getPow(hash);
+
+    this.workCache.push({ hash, work });
+    if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
+    this.saveWorkCache();
+
+    return work;
+  }
+
+  /**
+   * Save the work cache to localStorage
+   */
+  private saveWorkCache() {
+    // Remove duplicates
+    this.workCache = this.workCache.reduce((previous, current) => {
+      if (!previous.find(p => p.hash == current.hash)) previous.push(current);
+      return previous;
+    }, []);
+
+    localStorage.setItem(this.storeKey, JSON.stringify(this.workCache));
+  }
+
+  /**
+   * Load the work cache from localStorage
+   */
+  public loadWorkCache() {
+    let workCache = [];
+    const workCacheStore = localStorage.getItem(this.storeKey);
+    if (workCacheStore) {
+      workCache = JSON.parse(workCacheStore);
+    }
+    this.workCache = workCache;
+
+    return this.workCache;
   }
 }

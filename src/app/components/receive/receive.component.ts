@@ -64,7 +64,7 @@ export class ReceiveComponent implements OnInit {
       if (frontiers && frontiers.frontiers) {
         for (let account in frontiers.frontiers) {
           if (!frontiers.frontiers.hasOwnProperty(account)) continue;
-          this.workPool.addToPool(frontiers.frontiers[account]);
+          this.workPool.addWorkToCache(frontiers.frontiers[account]);
         }
       }
     }

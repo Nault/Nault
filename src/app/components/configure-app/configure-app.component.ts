@@ -3,6 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {PriceService} from "../../services/price.service";
+import {PowService} from "../../services/pow.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -80,7 +81,20 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedLockOption = 1;
 
-  constructor(private walletService: WalletService, private notifications: NotificationService, private appSettings: AppSettingsService, private price: PriceService) { }
+  powOptions = [
+    { name: 'Best Option Available', value: 'best' },
+    { name: 'Client Side - WebGL (Chrome/Firefox)', value: 'clientWebGL' },
+    { name: 'Client Side - CPU', value: 'clientCPU' },
+    { name: 'Server - NanoVault Server', value: 'server' },
+  ];
+  selectedPoWOption = this.powOptions[0].value;
+
+  constructor(
+    private walletService: WalletService,
+    private notifications: NotificationService,
+    private appSettings: AppSettingsService,
+    private pow: PowService,
+    private price: PriceService) { }
 
   async ngOnInit() {
     const settings = this.appSettings.settings;
@@ -99,6 +113,9 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingLockOption = this.lockOptions.find(d => d.value === settings.lockOnClose);
     this.selectedLockOption = matchingLockOption ? matchingLockOption.value : this.lockOptions[0].value;
+
+    const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
+    this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
   }
 
   async updateDisplaySettings() {
@@ -118,12 +135,29 @@ export class ConfigureAppComponent implements OnInit {
 
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
+    let newPoW = this.selectedPoWOption;
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
-    this.appSettings.setAppSetting('walletStore', newStorage);
-    this.appSettings.setAppSetting('lockOnClose', new Number(this.selectedLockOption));
-    this.appSettings.setAppSetting('lockInactivityMinutes', new Number(this.selectedInactivityMinutes));
+    if (this.appSettings.settings.powSource !== newPoW) {
+      if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
+        this.notifications.sendWarning(`WebGL support not available, set PoW to Best`);
+        newPoW = 'best';
+      }
+      if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
+        this.notifications.sendWarning(`CPU Worker support not available, set PoW to Best`);
+        newPoW = 'best';
+      }
+    }
+
+    const newSettings = {
+      walletStore: newStorage,
+      lockOnClose: new Number(this.selectedLockOption),
+      lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
+      powSource: newPoW,
+    };
+
+    this.appSettings.setAppSettings(newSettings);
     this.notifications.sendSuccess(`App wallet settings successfully updated!`);
 
     if (resaveWallet) {

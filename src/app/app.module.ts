@@ -37,6 +37,7 @@ import {PriceService} from "./services/price.service";
 import { FiatPipe } from './pipes/fiat.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
+import {PowService} from "./services/pow.service";
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nan
     WebsocketService,
     NanoBlockService,
     PriceService,
+    PowService,
   ],
   bootstrap: [AppComponent]
 })
