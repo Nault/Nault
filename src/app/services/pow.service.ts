@@ -22,7 +22,7 @@ export class PowService {
    * Determine the best PoW Method available for this browser
    */
   determineBestPoWMethod() {
-    if (this.hasWebGLSupport()) return 'clientWebGL';
+    // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
 
     return 'server';
