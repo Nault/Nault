@@ -60,7 +60,7 @@ export class ApiService {
   async workGenerate(hash): Promise<{ work: string }> {
     return await this.request('work_generate', { hash });
   }
-  async process(block): Promise<{ hash: string, message?: string }> {
+  async process(block): Promise<{ hash: string, error?: string }> {
     return await this.request('process', { block: JSON.stringify(block) });
   }
   async walletBalances(wallet): Promise<{balances: any }> {

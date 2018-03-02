@@ -162,20 +162,25 @@ export class SendComponent implements OnInit {
 
     this.confirmingTransaction = true;
 
-    const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount);
-    if (newHash) {
-      this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
-      this.activePanel = 'send';
-      this.amount = null;
-      this.resetRaw();
-      this.toAccountID = '';
-      this.toAccountStatus = null;
-      this.fromAddressBook = '';
-      this.toAddressBook = '';
-      this.addressBookMatch = '';
-    } else {
-      this.notificationService.sendError(`There was an error sending your transaction, please try again.`)
+    try {
+      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount);
+      if (newHash) {
+        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
+        this.activePanel = 'send';
+        this.amount = null;
+        this.resetRaw();
+        this.toAccountID = '';
+        this.toAccountStatus = null;
+        this.fromAddressBook = '';
+        this.toAddressBook = '';
+        this.addressBookMatch = '';
+      } else {
+        this.notificationService.sendError(`There was an error sending your transaction, please try again.`)
+      }
+    } catch (err) {
+      this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`)
     }
+
 
     this.confirmingTransaction = false;
 
