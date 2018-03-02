@@ -4,6 +4,7 @@ import {NotificationService} from "../../services/notification.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {PriceService} from "../../services/price.service";
 import {PowService} from "../../services/pow.service";
+import {WorkPoolService} from "../../services/work-pool.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -94,6 +95,7 @@ export class ConfigureAppComponent implements OnInit {
     private notifications: NotificationService,
     private appSettings: AppSettingsService,
     private pow: PowService,
+    private workPool: WorkPoolService,
     private price: PriceService) { }
 
   async ngOnInit() {
@@ -163,5 +165,10 @@ export class ConfigureAppComponent implements OnInit {
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
     }
+  }
+
+  clearWorkCache() {
+    this.workPool.clearCache();
+    this.notifications.sendSuccess(`Successfully cleared the work cache!`);
   }
 }

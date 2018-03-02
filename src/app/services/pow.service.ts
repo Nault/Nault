@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {AppSettingsService} from "./app-settings.service";
 import {ApiService} from "./api.service";
+import {NotificationService} from "./notification.service";
+import {queue} from "rxjs/scheduler/queue";
 
 const mod = window['Module'];
 
@@ -14,7 +16,7 @@ export class PowService {
   parallelQueue = false;
   processingQueueItem = false;
 
-  constructor(private appSettings: AppSettingsService, private api: ApiService) { }
+  constructor(private appSettings: AppSettingsService, private api: ApiService, private notifications: NotificationService) { }
 
   /**
    * Determine the best PoW Method available for this browser
@@ -33,7 +35,7 @@ export class PowService {
   async getPow(hash) {
     const existingPoW = this.PoWPool.find(p => p.hash == hash);
     if (existingPoW) {
-      return existingPoW.work || existingPoW.promise.promise;
+      return existingPoW.promise.promise; // Its okay if its resolved already
     }
 
     return this.addQueueItem(hash);
@@ -46,7 +48,7 @@ export class PowService {
   addQueueItem(hash) {
     const existingPoW = this.PoWPool.find(p => p.hash == hash);
     if (existingPoW) {
-      return existingPoW.work || existingPoW.promise.promise;
+      return existingPoW.promise.promise;
     }
 
     const queueItem = {
@@ -130,11 +132,17 @@ export class PowService {
         break;
     }
 
-    queueItem.work = work;
-    queueItem.promise.resolve(work);
-
     this.PoWPool.shift(); // Remove this item from the queue
     this.processingQueueItem = false;
+
+    if (!work) {
+      this.notifications.sendError(`Unable to generate work for ${queueItem.hash} using ${powSource}`);
+      queueItem.promise.reject(null);
+    } else {
+      queueItem.work = work;
+      queueItem.promise.resolve(work);
+    }
+
     this.processQueue();
 
     return queueItem;

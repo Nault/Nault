@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {PowService} from "./pow.service";
+import {NotificationService} from "./notification.service";
 
 @Injectable()
 export class WorkPoolService {
@@ -8,7 +9,7 @@ export class WorkPoolService {
   cacheLength = 25;
   workCache = [];
 
-  constructor(private pow: PowService) { }
+  constructor(private pow: PowService, private notifications: NotificationService) { }
 
   public workExists(hash) {
     return !!this.workCache.find(p => p.hash == hash);
@@ -28,12 +29,23 @@ export class WorkPoolService {
     this.saveWorkCache();
   }
 
+  public clearCache() {
+    this.workCache = [];
+    this.saveWorkCache();
+
+    return true;
+  }
+
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash) {
     const cached = this.workCache.find(p => p.hash == hash);
-    if (cached) return cached.work;
+    if (cached && cached.work) return cached.work;
 
     const work = await this.pow.getPow(hash);
+    if (!work) {
+      this.notifications.sendWarning(`Failed to retrieve work for ${hash}.  Try a different PoW method.`);
+      return null;
+    }
 
     this.workCache.push({ hash, work });
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
