@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import set = Reflect.set;
 
-type WalletStore = 'localStorage'|'none';
-type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
+export type WalletStore = 'localStorage'|'none';
+export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
 
 interface AppSettings {
   displayDenomination: string;

@@ -3,6 +3,7 @@ import {AppSettingsService} from "./app-settings.service";
 import {ApiService} from "./api.service";
 import {NotificationService} from "./notification.service";
 import {queue} from "rxjs/scheduler/queue";
+import { PoWSource } from './app-settings.service'
 
 const mod = window['Module'];
 
@@ -21,7 +22,7 @@ export class PowService {
   /**
    * Determine the best PoW Method available for this browser
    */
-  determineBestPoWMethod() {
+  determineBestPoWMethod(): PoWSource {
     // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
 
