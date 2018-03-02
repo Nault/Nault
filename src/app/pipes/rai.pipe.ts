@@ -20,8 +20,13 @@ export class RaiPipe implements PipeTransform {
       default:
       case 'xrb': return `${(value / this.mrai).toFixed(6)}${!hideText ? ' NANO': ''}`;
       case 'mnano':
-        const newVal = value / this.mrai < 0.000001 ? 0 : value / this.mrai; // New more precise toFixed function, but bugs on huge raw numbers
-        return `${this.toFixed(newVal, this.precision)}${!hideText ? ' NANO': ''}`;
+        const hasRawValue = (value / this.rai) % 1;
+        if (hasRawValue) {
+          const newVal = value / this.mrai < 0.000001 ? 0 : value / this.mrai; // New more precise toFixed function, but bugs on huge raw numbers
+          return `${this.toFixed(newVal, this.precision)}${!hideText ? ' NANO': ''}`;
+        } else {
+          return `${(value / this.mrai).toFixed(6)}${!hideText ? ' NANO': ''}`;
+        }
       case 'knano': return `${(value / this.krai).toFixed(3)}${!hideText ? ' knano': ''}`;
       case 'nano': return `${(value / this.rai).toFixed(0)}${!hideText ? ' nano': ''}`;
       case 'raw': return `${value}${!hideText ? ' raw': ''}`;
