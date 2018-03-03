@@ -88,34 +88,24 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   importFromFile(files) {
-    console.log(`Got import from file?`, files);
     if (!files.length) return;
 
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
-      console.log(`Got load event? `, event);
       const fileData = event.target['result'];
-      console.log(`Got file data: `, fileData);
       try {
         const importData = JSON.parse(fileData);
         if (!importData.seed || !importData.accountsIndex) {
           return this.notifications.sendError(`Bad import data `)
         }
 
-        // Get export data? a to b?
         const walletEncrypted = btoa(JSON.stringify(importData));
-
         this.route.navigate(['import-wallet'], { fragment: walletEncrypted });
-
-
-        // this.walletService.loadImportedWallet()
       } catch (err) {
         this.notifications.sendError(`Unable to parse import data, make sure you selected the right file!`);
       }
     };
-
-    console.log(`Reading?`);
 
     reader.readAsText(file);
   }
