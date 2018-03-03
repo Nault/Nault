@@ -7,27 +7,32 @@ type NotificationType = 'info'|'success'|'warning'|'error';
 export class NotificationService {
 
   notifications$ = new Rx.BehaviorSubject(null);
+  removeNotification$ = new Rx.BehaviorSubject(null);
 
   constructor() { }
 
   // This provides an entry point for all components to send notifications.
   // It exposes an observable that the actual component uses to grab new notifications
 
-  sendNotification(type: NotificationType, message: string) {
-    this.notifications$.next({ type, message });
+  sendNotification(type: NotificationType, message: string, options = {}) {
+    this.notifications$.next({ type, message, options });
   }
 
-  sendInfo(message:string) {
-    this.sendNotification('info', message);
+  removeNotification(identifier: string) {
+    this.removeNotification$.next(identifier);
   }
-  sendSuccess(message:string) {
-    this.sendNotification('success', message);
+
+  sendInfo(message:string, options = {}) {
+    this.sendNotification('info', message, options);
   }
-  sendWarning(message:string) {
-    this.sendNotification('warning', message);
+  sendSuccess(message:string, options = {}) {
+    this.sendNotification('success', message, options);
   }
-  sendError(message:string) {
-    this.sendNotification('error', message);
+  sendWarning(message:string, options = {}) {
+    this.sendNotification('warning', message, options);
+  }
+  sendError(message:string, options = {}) {
+    this.sendNotification('error', message, options);
   }
 
 }

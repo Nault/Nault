@@ -17,14 +17,37 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.notifications$.subscribe(notification => {
       if (!notification) return; // Default value
 
+      // Check the options
+      const length = notification.options.hasOwnProperty('length') ? notification.options.length : this.notificationLength;
+      const identifier = notification.options.identifier || null;
+
+      // Stop duplicates
+      if (identifier) {
+        const existingNotification = this.notifications.find(n => n.identifier === identifier);
+        if (existingNotification) return;
+      }
+
       const newNotification = {
         type: notification.type,
         message: notification.message,
         cssClass: this.getCssClass(notification.type),
+        identifier: identifier,
+        length: length,
       };
 
       this.notifications.push(newNotification);
-      setTimeout(() => this.removeNotification(newNotification), this.notificationLength);
+      if (length) {
+        setTimeout(() => this.removeNotification(newNotification), length);
+      }
+    });
+
+    this.notificationService.removeNotification$.subscribe(identifier => {
+      if (!identifier) return;
+
+      const existingNotification = this.notifications.find(n => n.identifier === identifier);
+      if (existingNotification) {
+        this.removeNotification(existingNotification);
+      }
     });
   }
 

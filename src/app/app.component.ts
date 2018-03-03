@@ -40,6 +40,11 @@ export class AppComponent implements OnInit {
 
     await this.updateFiatPrices();
 
+    // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
+    if (this.wallet.locked && this.wallet.pending.gt(0)) {
+      this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+    }
+
     // When the page closes, determine if we should lock the wallet
     window.addEventListener("beforeunload",  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about

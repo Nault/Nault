@@ -86,7 +86,7 @@ export class WalletService {
         if (walletAccount) {
           // If the wallet is locked, show a notification
           if (this.wallet.locked) {
-            this.notifications.sendWarning(`New incoming transaction - unlock wallet to receive it!`);
+            this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
           }
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
           await this.processPendingBlocks();
@@ -230,6 +230,8 @@ export class WalletService {
 
       this.wallet.locked = false;
       this.wallet.password = password;
+
+      this.notifications.removeNotification('pending-locked'); // If there is a notification to unlock, remove it
 
       // TODO: Determine if we need to load some accounts - should only be used when? Loading from import.
       if (this.wallet.accounts.length < this.wallet.accountsIndex) {
