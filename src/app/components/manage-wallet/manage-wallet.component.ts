@@ -58,15 +58,26 @@ export class ManageWalletComponent implements OnInit {
     const exportData = this.walletService.generateExportData();
     const blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' });
 
+    // Check for iOS, which is weird with saving files
+    const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, fileName);
     } else {
       const elem = window.document.createElement('a');
-      elem.href = window.URL.createObjectURL(blob);
+      const objUrl = window.URL.createObjectURL(blob);
+      if (iOS) {
+        elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
+      } else {
+        elem.href = objUrl;
+      }
       elem.download = fileName;
       document.body.appendChild(elem);
       elem.click();
-      document.body.removeChild(elem);
+      setTimeout(function(){
+        document.body.removeChild(elem);
+        window.URL.revokeObjectURL(objUrl);
+      }, 200);
     }
 
     this.notificationService.sendSuccess(`Wallet export downloaded!`);

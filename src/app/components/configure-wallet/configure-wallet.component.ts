@@ -96,7 +96,7 @@ export class ConfigureWalletComponent implements OnInit {
       const fileData = event.target['result'];
       try {
         const importData = JSON.parse(fileData);
-        if (!importData.seed || !importData.accountsIndex) {
+        if (!importData.seed || !importData.hasOwnProperty('accountsIndex')) {
           return this.notifications.sendError(`Bad import data `)
         }
 
