@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-configure-wallet',
@@ -17,7 +17,7 @@ export class ConfigureWalletComponent implements OnInit {
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
 
-  constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService) { }
+  constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService, private route: Router) { }
 
   async ngOnInit() {
     // Allow a seed import via URL.  (Insecure, not recommended)
@@ -86,5 +86,42 @@ export class ConfigureWalletComponent implements OnInit {
   copied() {
     this.notifications.sendSuccess(`Wallet seed copied to clipboard!`);
   }
+
+  importFromFile(files) {
+    console.log(`Got import from file?`, files);
+    if (!files.length) return;
+
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      console.log(`Got load event? `, event);
+      const fileData = event.target['result'];
+      console.log(`Got file data: `, fileData);
+      try {
+        const importData = JSON.parse(fileData);
+        if (!importData.seed || !importData.accountsIndex) {
+          return this.notifications.sendError(`Bad import data `)
+        }
+
+        // Get export data? a to b?
+        const walletEncrypted = btoa(JSON.stringify(importData));
+
+        this.route.navigate(['import-wallet'], { fragment: walletEncrypted });
+
+
+        // this.walletService.loadImportedWallet()
+      } catch (err) {
+        this.notifications.sendError(`Unable to parse import data, make sure you selected the right file!`);
+      }
+    };
+
+    console.log(`Reading?`);
+
+    reader.readAsText(file);
+  }
+
+
+
+
 
 }

@@ -51,4 +51,25 @@ export class ManageWalletComponent implements OnInit {
     this.notificationService.sendSuccess(`Wallet seed copied to clipboard!`);
   }
 
+  exportToFile() {
+    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+
+    const fileName = `NanoVault-Wallet.json`;
+    const exportData = this.walletService.generateExportData();
+    const blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' });
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(blob, fileName);
+    } else {
+      const elem = window.document.createElement('a');
+      elem.href = window.URL.createObjectURL(blob);
+      elem.download = fileName;
+      document.body.appendChild(elem);
+      elem.click();
+      document.body.removeChild(elem);
+    }
+
+    this.notificationService.sendSuccess(`Wallet export downloaded!`);
+  }
+
 }

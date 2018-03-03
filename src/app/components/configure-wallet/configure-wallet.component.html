@@ -35,6 +35,7 @@
 
 <div class="uk-card uk-card-default" *ngIf="activePanel == 1">
   <div class="uk-card-body">
+
     <p>
       If you already have a Nano wallet, you can use your backup seed to import it below.  When you import a seed,
       none of your existing wallets or accounts are affected, and your seed
@@ -51,6 +52,10 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
+    <div class="js-upload uk-text-left" style="float: left;" uk-form-custom>
+      <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
+      <button class="uk-button uk-button-secondary " type="button" tabindex="-1">Import From File</button>
+    </div>
     <button class="uk-button uk-button-primary" (click)="importExistingWallet()">Import Existing Wallet</button>
   </div>
 </div>
