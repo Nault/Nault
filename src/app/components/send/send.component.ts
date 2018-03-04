@@ -151,6 +151,9 @@ export class SendComponent implements OnInit {
     if (nanoAmount.lessThan(1)) return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
 
+    // Determine a proper raw amount to show in the UI, if a decimal was entered
+    this.amountRaw = this.rawAmount.mod(this.nano);
+
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
