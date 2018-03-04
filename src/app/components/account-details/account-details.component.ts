@@ -68,6 +68,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async loadAccountDetails() {
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
+    this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
     // Set fiat values?
@@ -143,8 +144,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async saveAddressBook() {
-    const addressBookName = this.addressBookModel;
-    if (!addressBookName) return;
+    const addressBookName = this.addressBookModel.trim();
+    if (!addressBookName) {
+      // Check for deleting an entry in the address book
+      if (this.addressBookEntry) {
+        this.addressBook.deleteAddress(this.accountID);
+        this.notifications.sendSuccess(`Saved removed address book entry!`);
+        this.addressBookEntry = null;
+      }
+
+      this.showEditAddressBook = false;
+      return;
+    }
 
     try {
       await this.addressBook.saveAddress(this.accountID, addressBookName);
@@ -157,7 +168,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     this.addressBookEntry = addressBookName;
     this.showEditAddressBook = false;
-    this.addressBookModel = '';
   }
 
   copied() {

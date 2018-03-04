@@ -60,7 +60,7 @@ export class AddressBookComponent implements OnInit {
 
   async deleteAddress(account) {
     try {
-      await this.addressBookService.deleteAddress(account);
+      this.addressBookService.deleteAddress(account);
       this.notificationService.sendSuccess(`Successfully deleted address book entry`)
     } catch (err) {
       this.notificationService.sendError(`Unable to delete entry: ${err.message}`)

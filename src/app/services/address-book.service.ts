@@ -38,7 +38,7 @@ export class AddressBookService {
 
   }
 
-  async deleteAddress(account) {
+  deleteAddress(account) {
     const existingAccountIndex = this.addressBook.findIndex(a => a.account.toLowerCase() === account.toLowerCase());
     if (existingAccountIndex === -1) return;
 
