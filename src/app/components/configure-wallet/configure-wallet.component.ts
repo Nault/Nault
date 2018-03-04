@@ -35,13 +35,11 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async createWalletFromSeed(seed) {
-
     this.notifications.sendInfo(`Attempting to import seed. Scanning for used accounts, this could take some time...`);
     await this.walletService.createWalletFromSeed(seed);
     this.activePanel = 4;
 
     this.notifications.sendSuccess(`Successfully imported existing wallet!`);
-
   }
 
   async importExistingWallet() {

@@ -74,7 +74,14 @@ export class SendComponent implements OnInit {
     }
 
     this.addressBookService.loadAddressBook();
-    this.fromAccountID = this.accounts[0].id;
+    // Look for the first account that has a balance
+    const accountIDWithBalance = this.accounts.reduce((previous, current) => {
+      if (previous) return previous;
+      if (current.balance.gt(0)) return current.id;
+      return null;
+    }, null);
+
+    this.fromAccountID = accountIDWithBalance || this.accounts[0].id;
   }
 
   searchAddressBook() {

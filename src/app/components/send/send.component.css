@@ -14,3 +14,15 @@
   display: block;
   font-size: 10px;
 }
+
+
+@media (max-width: 12450px) {
+  .br-spacer {
+    display: block;
+  }
+}
+@media (max-width: 959px) {
+  .br-spacer {
+    display: none;
+  }
+}

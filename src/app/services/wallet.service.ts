@@ -131,7 +131,7 @@ export class WalletService {
         // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
         walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
       } else {
-        await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
+        await Promise.all(walletJson.accounts.map(async (account) => await this.addWalletAccount(account.index, false)));
       }
     } else {
       // Loading from accounts index
@@ -253,7 +253,7 @@ export class WalletService {
     return this.wallet.locked;
   }
 
-  async createWalletFromSeed(seed: string, emptyAccountBuffer: number = 20) {
+  async createWalletFromSeed(seed: string, emptyAccountBuffer: number = 10) {
     this.resetWallet();
 
     this.wallet.seed = seed;
@@ -535,25 +535,6 @@ export class WalletService {
       this.processPendingBlocks();
     }
   }
-
-  promiseSleep(timeout = 1000): Promise<void> {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, timeout);
-    });
-  }
-
-  // updateAccountBalance(walletAccount, amount) {
-  //   console.log(`Updating account  balance...? `, amount);
-  //   walletAccount.balance = walletAccount.balance.plus(amount);
-  //   walletAccount.pending = walletAccount.balance.minus(amount);
-  //   walletAccount.balanceRaw = walletAccount.balance.mod(this.nano);
-  //   walletAccount.pendingRaw = walletAccount.pending.mod(this.nano);
-  //
-  //   // this.wallet.balance = this.wallet.balance.plus(amount);
-  //   // this.wallet.pending = this.wallet.balance.minus(amount);
-  //   // this.wallet.balanceRaw = this.wallet.balance.mod(this.nano);
-  //   // this.wallet.pendingRaw = this.wallet.balance.mod(this.nano);
-  // }
 
   async processPendingBlocks() {
     if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length) return;
