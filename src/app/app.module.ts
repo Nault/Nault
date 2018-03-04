@@ -20,10 +20,8 @@ import {SendComponent} from "./components/send/send.component";
 import {SqueezePipe} from "./pipes/squeeze.pipe";
 import {ModalService} from "./services/modal.service";
 import {AddressBookComponent} from "./components/address-book/address-book.component";
-import {AccountViewerComponent} from "./components/account-viewer/account-viewer.component";
 import {ClipboardModule} from "ngx-clipboard";
 import {ReceiveComponent} from "./components/receive/receive.component";
-import {HistoryComponent} from "./components/history/history.component";
 import {WalletWidgetComponent} from "./components/wallet-widget/wallet-widget.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
 import {WorkPoolService} from "./services/work-pool.service";
@@ -51,9 +49,7 @@ import {PowService} from "./services/pow.service";
     AccountsComponent,
     SendComponent,
     AddressBookComponent,
-    AccountViewerComponent,
     ReceiveComponent,
-    HistoryComponent,
     WalletWidgetComponent,
     ManageWalletComponent,
     ConfigureAppComponent,

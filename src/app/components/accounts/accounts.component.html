@@ -37,13 +37,13 @@
           <td class=" uk-text-right">
             {{ account.balance | rai: settings.settings.displayDenomination }}
             <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-              {{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
+              +{{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
             </div>
             <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
               {{ account.pending | rai: settings.settings.displayDenomination }}
             </div>
             <div *ngIf="account.pendingRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-              {{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
+              +{{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
             </div>
           </td>
           <td class=" uk-text-left">

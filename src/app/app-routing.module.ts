@@ -7,7 +7,6 @@ import {AccountsComponent} from "./components/accounts/accounts.component";
 import {SendComponent} from "./components/send/send.component";
 import {AddressBookComponent} from "./components/address-book/address-book.component";
 import {ReceiveComponent} from "./components/receive/receive.component";
-import {HistoryComponent} from "./components/history/history.component";
 import {ManageWalletComponent} from "./components/manage-wallet/manage-wallet.component";
 import {ConfigureAppComponent} from "./components/configure-app/configure-app.component";
 import {AccountDetailsComponent} from "./components/account-details/account-details.component";
@@ -23,7 +22,6 @@ const routes: Routes = [
   { path: 'configure-app', component: ConfigureAppComponent },
   { path: 'import-wallet', component: ImportWalletComponent },
   { path: 'manage-wallet', component: ManageWalletComponent },
-  { path: 'history', component: HistoryComponent },
   { path: 'send', component: SendComponent },
   { path: 'receive', component: ReceiveComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
