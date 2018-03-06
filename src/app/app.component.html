@@ -78,7 +78,7 @@
     </div>
 
     <!-- Main content container-->
-    <div uk-grid uk-height-viewport style="margin-top: 0;">
+    <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0;">
       <div class="uk-width-1-4 uk-visible@s" style="background: #2C3E50">
         <div class="title-block">
           <div class="uk-margin-left" style="padding-bottom: 15px;">
@@ -139,7 +139,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;">
+      <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0;">
           <router-outlet></router-outlet>
         </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {WalletService} from "./services/wallet.service";
 import {AddressBookService} from "./services/address-book.service";
 import {AppSettingsService} from "./services/app-settings.service";
@@ -8,18 +8,20 @@ import {NotificationService} from "./services/notification.service";
 import {PowService} from "./services/pow.service";
 import {WorkPoolService} from "./services/work-pool.service";
 
-const mod = window['Module'];
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @HostListener('window:resize', ['$event']) onResize (e) {
+    this.windowHeight = e.target.innerHeight;
+  };
   wallet = this.walletService.wallet;
   nanoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
+  windowHeight = 1000;
 
   constructor(
     private walletService: WalletService,
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
     public price: PriceService) { }
 
   async ngOnInit() {
+    this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
