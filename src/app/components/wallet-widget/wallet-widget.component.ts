@@ -23,6 +23,9 @@ export class WalletWidgetComponent implements OnInit {
   }
 
   async lockWallet() {
+    if (!this.wallet.password) {
+      return this.notificationService.sendWarning(`You must set a password on your wallet - it is currently blank!`);
+    }
     const locked = await this.walletService.lockWallet();
     if (locked) {
       this.notificationService.sendSuccess(`Wallet locked`);

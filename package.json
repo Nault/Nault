@@ -63,7 +63,8 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.4.2"
+    "typescript": "~2.4.2",
+    "uikit": "^3.0.0-beta.40"
   },
   "build": {
     "appId": "com.electron.nanovault",

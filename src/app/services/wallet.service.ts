@@ -195,7 +195,7 @@ export class WalletService {
   }
 
   lockWallet() {
-    if (!this.wallet.seed) return; // Nothing to lock
+    if (!this.wallet.seed || !this.wallet.password) return; // Nothing to lock, password not set
     const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password);
 
     // Update the seed

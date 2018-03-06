@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
     setInterval(() => {
       this.inactiveSeconds += 1;
       if (!this.settings.settings.lockInactivityMinutes) return; // Do not lock on inactivity
-      if (this.wallet.locked) return;
+      if (this.wallet.locked || !this.wallet.password) return;
 
       // Determine if we have been inactive for longer than our lock setting
       if (this.inactiveSeconds >= this.settings.settings.lockInactivityMinutes * 60) {
