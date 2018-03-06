@@ -14,7 +14,6 @@
 
 .title-block .title {
   font-size: 24px;
-  font-weight: bold;
   display: block;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -31,7 +30,6 @@
 .title-block .balance {
   display: block;
   font-size: 18px;
-  font-weight: bold;
   margin-top: -8px;
 }
 
@@ -41,7 +39,6 @@
 
 .left-nav .active {
   color: #6ccff5;
-  font-weight: bold;
 }
 
 .left-nav a {
