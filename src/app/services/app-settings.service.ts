@@ -61,4 +61,16 @@ export class AppSettingsService {
     this.saveAppSettings();
   }
 
+  clearAppSettings() {
+    localStorage.removeItem(this.storeKey);
+    this.settings = {
+      displayDenomination: 'mnano',
+      walletStore: 'localStorage',
+      displayCurrency: 'USD',
+      lockOnClose: 1,
+      lockInactivityMinutes: 30,
+      powSource: 'best',
+    };
+  }
+
 }

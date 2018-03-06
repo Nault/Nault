@@ -53,6 +53,12 @@ export class AddressBookService {
     localStorage.setItem(this.storeKey, JSON.stringify(this.addressBook));
   }
 
+  clearAddressBook(): void {
+    this.addressBook = [];
+    this.addressBook$.next(this.addressBook);
+    localStorage.removeItem(this.storeKey);
+  }
+
   getAccountName(account: string): string|null {
     const match = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
     return match && match.name || null;

@@ -36,6 +36,11 @@ export class WorkPoolService {
     return true;
   }
 
+  public deleteCache() {
+    this.workCache = [];
+    localStorage.removeItem(this.storeKey);
+  }
+
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash) {
     const cached = this.workCache.find(p => p.hash == hash);

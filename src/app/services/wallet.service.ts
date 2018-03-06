@@ -572,13 +572,17 @@ export class WalletService {
 
     switch (this.appSettings.settings.walletStore) {
       case 'none':
-        localStorage.removeItem(this.storeKey);
+        this.removeWalletData();
         break;
       default:
       case 'localStorage':
         localStorage.setItem(this.storeKey, JSON.stringify(exportData));
         break;
     }
+  }
+
+  removeWalletData() {
+    localStorage.removeItem(this.storeKey);
   }
 
   generateWalletExport() {

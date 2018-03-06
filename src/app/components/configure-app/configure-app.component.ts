@@ -5,6 +5,7 @@ import {AppSettingsService} from "../../services/app-settings.service";
 import {PriceService} from "../../services/price.service";
 import {PowService} from "../../services/pow.service";
 import {WorkPoolService} from "../../services/work-pool.service";
+import {AddressBookService} from "../../services/address-book.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -94,11 +95,16 @@ export class ConfigureAppComponent implements OnInit {
     private walletService: WalletService,
     private notifications: NotificationService,
     private appSettings: AppSettingsService,
+    private addressBook: AddressBookService,
     private pow: PowService,
     private workPool: WorkPoolService,
     private price: PriceService) { }
 
   async ngOnInit() {
+    this.loadFromSettings();
+  }
+
+  loadFromSettings() {
     const settings = this.appSettings.settings;
 
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
@@ -167,8 +173,40 @@ export class ConfigureAppComponent implements OnInit {
     }
   }
 
-  clearWorkCache() {
-    this.workPool.clearCache();
-    this.notifications.sendSuccess(`Successfully cleared the work cache!`);
+  async clearWorkCache() {
+    const UIkit = window['UIkit'];
+    try {
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>');
+      this.workPool.clearCache();
+      this.notifications.sendSuccess(`Successfully cleared the work cache!`);
+    } catch (err) {}
+  }
+
+  async clearWalletData() {
+    const UIkit = window['UIkit'];
+    try {
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in NanoVault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      this.walletService.resetWallet();
+      this.walletService.removeWalletData();
+
+      this.notifications.sendSuccess(`Successfully deleted all wallet data!`);
+    } catch (err) {}
+  }
+
+  async clearAllData() {
+    const UIkit = window['UIkit'];
+    try {
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in NanoVault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      this.walletService.resetWallet();
+      this.walletService.removeWalletData();
+
+      this.workPool.deleteCache();
+      this.addressBook.clearAddressBook();
+      this.appSettings.clearAppSettings();
+
+      this.loadFromSettings();
+
+      this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+    } catch (err) {}
   }
 }
