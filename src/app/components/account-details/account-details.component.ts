@@ -140,7 +140,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const accountInfo = await this.api.accountInfo(this.accountID);
     this.account = accountInfo;
 
-    this.notifications.sendSuccess(`Successfully changed representative?`);
+    this.notifications.sendSuccess(`Successfully changed representative`);
   }
 
   async saveAddressBook() {
@@ -149,7 +149,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // Check for deleting an entry in the address book
       if (this.addressBookEntry) {
         this.addressBook.deleteAddress(this.accountID);
-        this.notifications.sendSuccess(`Saved removed address book entry!`);
+        this.notifications.sendSuccess(`Successfully removed address book entry!`);
         this.addressBookEntry = null;
       }
 
