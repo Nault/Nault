@@ -20,33 +20,23 @@ export class ConfigureWalletComponent implements OnInit {
   constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService, private route: Router) { }
 
   async ngOnInit() {
-    // Allow a seed import via URL.  (Insecure, not recommended)
-    const importSeed = this.router.snapshot.fragment;
-    if (importSeed && importSeed.length > 1) {
-      if (importSeed.length !== 64) return this.notifications.sendError(`Import seed is invalid, double check it!`);
-
-      await this.createWalletFromSeed(importSeed);
-    }
-
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
       this.activePanel = 1;
     }
   }
 
-  async createWalletFromSeed(seed) {
-    this.notifications.sendInfo(`Attempting to import seed. Scanning for used accounts, this could take some time...`);
-    await this.walletService.createWalletFromSeed(seed);
-    this.activePanel = 4;
-
-    this.notifications.sendSuccess(`Successfully imported existing wallet!`);
-  }
-
   async importExistingWallet() {
     const existingSeed = this.importSeedModel.trim();
     if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
 
-    await this.createWalletFromSeed(existingSeed);
+    this.notifications.sendInfo(`Importing existing accounts...`, { identifier: 'importing-loading' });
+    await this.walletService.createWalletFromSeed(existingSeed);
+
+    this.notifications.removeNotification('importing-loading');
+
+    this.activePanel = 4;
+    this.notifications.sendSuccess(`Successfully imported wallet!`);
   }
 
   async createNewWallet() {
@@ -112,9 +102,5 @@ export class ConfigureWalletComponent implements OnInit {
 
     reader.readAsText(file);
   }
-
-
-
-
 
 }

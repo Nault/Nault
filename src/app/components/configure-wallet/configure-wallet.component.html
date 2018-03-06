@@ -7,10 +7,9 @@
   Without it, <b>any funds you have will become completely unrecoverable!</b>
 </div>
 
-<div uk-grid>
+<div uk-grid *ngIf="activePanel == 0 || activePanel == 1">
   <div class="uk-width-1-1">
     <div class="uk-button-group uk-width-1-1">
-      <!--<button (click)="setPanel(0)" class="uk-button uk-width-1-3" [ngClass]="{ 'uk-button-primary': activePanel == 0, 'uk-button-secondary': activePanel != 0 }">Use Configured Wallet</button>-->
       <button (click)="setPanel(0)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel == 0, 'uk-button-secondary': activePanel != 0 }">Create New Wallet</button>
       <button (click)="setPanel(1)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel == 1, 'uk-button-secondary': activePanel != 1 }">Import Existing Wallet</button>
     </div>
@@ -37,24 +36,22 @@
   <div class="uk-card-body">
     <p>
       If you already have a Nano wallet, you can use your backup seed to import it below.  When you import a seed,
-      none of your existing wallets or accounts are affected, and your seed
-      is not stored anywhere besides in your local client.<br>
-      <br>
-      After importing your seed, you will need to 're-create' your accounts.  Don't worry - all of your accounts are
-      the same and your funds have not disappeared.  Just go to the accounts section and press create new account to load
-      your accounts.
+      none of your existing wallets or accounts are affected, and your seed is not stored anywhere besides in your local client.
     </p>
     <div uk-grid>
+      <div class="js-upload uk-text-left uk-width-1-1" uk-form-custom>
+        <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
+        If you have saved your wallet to a file using NanoVault before,
+        <button class="uk-button uk-button-link" type="button" tabindex="-1">Click Here To Import It</button>
+      </div>
+    </div>
+    <div uk-grid>
       <div class="uk-width-1-1">
-        <input type="text" class="uk-input" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
+        <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
       </div>
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <div class="js-upload uk-text-left" style="float: left;" uk-form-custom>
-      <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-      <button class="uk-button uk-button-secondary " type="button" tabindex="-1">Import From File</button>
-    </div>
     <button class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
   </div>
 </div>
@@ -62,6 +59,9 @@
 
 
 <div class="uk-card uk-card-default" *ngIf="activePanel == 3">
+  <div class="uk-card-header">
+    <h3 class="uk-card-title">Seed Created!</h3>
+  </div>
   <div class="uk-card-body">
     <p>
       Your new Nano wallet has been created!  Your seed is below; make sure to write it down, save it, and never share it with anyone!
@@ -81,19 +81,24 @@
 </div>
 
 <div class="uk-card uk-card-default" *ngIf="activePanel == 4">
+  <div class="uk-card-header">
+    <h3 class="uk-card-title">Set Wallet Password</h3>
+  </div>
   <div class="uk-card-body">
     <p>
-      The last step is to set a new password for your wallet.  This password is used to lock and unlock your wallet,
-      which encrypts the sensitive parts of your wallet and disables sending, receiving, creating accounts, etc.<br>
-      <br>
+      The last step is to set a new password for your wallet.  Your password is used to encrypt the sensitive parts of
+      your wallet when it is locked, which disables sending, receiving, creating accounts, and other operations.
+    </p>
+
+    <p>
       Set your wallet password below:
     </p>
     <div uk-grid>
-      <div class="uk-width-1-1">
+      <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
       </div>
-      <div class="uk-width-1-1">
-        <input type="password" class="uk-input" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
+      <div class="uk-width-1-2@m">
+        <input type="password" class="uk-input" (keyup.enter)="saveWalletPassword()" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
       </div>
     </div>
   </div>
@@ -103,6 +108,9 @@
 </div>
 
 <div class="uk-card uk-card-default" *ngIf="activePanel == 5">
+  <div class="uk-card-header">
+    <h3 class="uk-card-title">Wallet Configured!</h3>
+  </div>
   <div class="uk-card-body">
     <p>
       Your wallet has been configured and you are ready to send and receive Nano!
@@ -111,4 +119,8 @@
   <div class="uk-card-footer uk-text-right">
     <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
   </div>
+</div>
+
+<div *ngIf="activePanel == 4 || activePanel == 5" class="uk-alert-primary" uk-alert>
+  <p><b>ProTip:</b> If you lose your password, you can always restore your wallet using your seed.</p>
 </div>
