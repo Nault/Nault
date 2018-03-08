@@ -1,4 +1,5 @@
 const { app, BrowserWindow, shell, Menu } = require('electron');
+const autoUpdater = require('electron-updater').autoUpdater;
 
 let mainWindow;
 
@@ -44,7 +45,10 @@ function createWindow () {
   }
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  autoUpdater.checkForUpdatesAndNotify();
+  createWindow();
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
