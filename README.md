@@ -8,7 +8,7 @@ ___
 
 # Table of Contents
 * [Install](#install-nanovault)
-* [Bugs/Feedback](#bugs-feedback)
+* [Bugs/Feedback](#bugsfeedback)
 * [Application Structure](#application-structure)
 * [Development Prerequisites](#development-prerequisites)
 * [Development Guide](#development-guide)
