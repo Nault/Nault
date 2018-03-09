@@ -8,14 +8,24 @@ ___
 
 # Table of Contents
 * [Install](#install-nanovault)
+* [Bugs/Feedback](#bugs-feedback)
 * [Application Structure](#application-structure)
 * [Development Prerequisites](#development-prerequisites)
 * [Development Guide](#development-guide)
+* [Acknowledgements](#acknowledgements)
+
 
 # Install NanoVault
 NanoVault is available on your desktop (Windows/Mac/Linux) - just head over to the [releases section](https://github.com/cronoh/nanovault/releases) and download the latest version for your OS.
 
-You can also use NanoVault from the web at [nanovault.io](https://nanovault.io)
+You can also use NanoVault from any device on the web at [nanovault.io](https://nanovault.io)
+
+
+# Bugs/Feedback
+If you run into any issues, please use the [GitHub Issue Tracker](https://github.com/cronoh/nanovault/issues) or head over to our [Discord Server](https://discord.gg/kCeAuJM)!  
+We are continually improving and adding new features based on the feedback you provide, so please let your opinions be known!
+
+To get an idea of some of the things that are planned for the near future, check out the [Road Map](https://github.com/cronoh/nanovault/wiki/Road-Map).
 
 ___
 
@@ -70,3 +80,9 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
+# Acknowledgements
+Special thanks to the following!
+- [numtel/nano-webgl-pow](https://github.com/numtel/nano-webgl-pow) - WebGL PoW Implementation
+- [jaimehgb/RaiBlocksWebAssemblyPoW](https://github.com/jaimehgb/RaiBlocksWebAssemblyPoW) - CPU PoW Implementation
+- [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
+- [dchest/tweetnacl-js](https://github.com/dchest/tweetnacl-js) - Cryptography Implementation
