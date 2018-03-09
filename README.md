@@ -61,7 +61,7 @@ npm install
 ng serve --open
 ```
 
-# Build
+## Build
 Build a production version of the wallet:
 ```bash
 ng build --prod
