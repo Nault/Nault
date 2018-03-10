@@ -100,6 +100,10 @@ function getApplicationMenu() {
         {
           label: 'Submit Issue',
           click () { require('electron').shell.openExternal('https://github.com/cronoh/nanovault/issues/new') }
+        },
+        {
+          type: 'normal',
+          label: `NanoVault Version: ${autoUpdater.currentVersion}`,
         }
       ]
     }
