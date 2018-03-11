@@ -45,7 +45,7 @@
           To backup your wallet seed, unlock your wallet.
         </p>
         <p *ngIf="!wallet.locked">
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.
+          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard. This operation is unencrypted but compatible with most NANO wallets.   
         </p>
       </div>
     </div>
@@ -55,7 +55,8 @@
         <h3 class="uk-card-title">Export NanoVault Wallet</h3>
       </div>
       <div class="uk-card-body">
-        Use the export to easily load your wallet on other devices.  Your wallet data will be encrypted by your password, and then imported into NanoVault on your new device!<br>
+        Use this export tool to simplify wallet transfer to other devices. Your data will be encrypted by your password, and then imported into NanoVault on your new device! 
+        The export does not contain your current address book.<br>
         <div *ngIf="showQRExport" uk-grid>
           <div class="uk-width-1-1">
             <hr class="uk-divider-icon">
