@@ -7,6 +7,7 @@ import {PriceService} from "./services/price.service";
 import {NotificationService} from "./services/notification.service";
 import {PowService} from "./services/pow.service";
 import {WorkPoolService} from "./services/work-pool.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     private websocket: WebsocketService,
     private notifications: NotificationService,
     private pow: PowService,
+    private router: Router,
     private workPool: WorkPoolService,
     public price: PriceService) { }
 
@@ -60,6 +62,16 @@ export class AppComponent implements OnInit {
       if (this.settings.settings.lockOnClose == 1) {
         this.walletService.lockWallet();
       }
+    });
+
+    // Listen for an xrb: protocol link, triggered by the desktop application
+    window.addEventListener('protocol-load', (e: CustomEvent) => {
+      const protocolText = e.detail;
+      const stripped = protocolText.split('').splice(4).join(''); // Remove xrb:
+      if (stripped.startsWith('xrb_')) {
+        this.router.navigate(['account', stripped]);
+      }
+      // Soon: Load seed, automatic send page?
     });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long

@@ -16,7 +16,14 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist-full": "electron-builder -wml --x64",
-    "publish": "build -wml --x64 -p always"
+    "publish": "build -wml --x64 -p always",
+    "wallet:dev": "ng serve --open",
+    "wallet:build": "ng build --prod",
+    "wallet:build-desktop": "ng build --env=desktop --prod --base-href ",
+    "desktop:dev": "electron main.js",
+    "desktop:local": "electron-builder",
+    "desktop:full": "electron-builder -wml --x64",
+    "desktop:publish": "build -wml --x64 -p always"
   },
   "private": true,
   "dependencies": {
@@ -78,7 +85,15 @@
       "app": "./"
     },
     "mac": {
-      "category": "public.app-category.finance"
+      "category": "public.app-category.finance",
+      "extendInfo": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLName": "xrb",
+            "CFBundleURLSchemes": ["xrb"]
+          }
+        ]
+      }
     },
     "linux": {
       "target": "AppImage"
@@ -87,6 +102,11 @@
       "provider": "github",
       "owner": "cronoh",
       "repo": "nanovault"
-    }]
+    }],
+    "protocols": {
+      "name": "xrb",
+      "schemes": ["xrb"],
+      "role": "Viewer"
+    }
   }
 }

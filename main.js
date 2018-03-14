@@ -1,15 +1,23 @@
-const { app, BrowserWindow, shell, Menu } = require('electron');
+const { app, BrowserWindow, shell, Menu, protocol, webFrame } = require('electron');
 const autoUpdater = require('electron-updater').autoUpdater;
+const url = require('url');
+const path = require('path');
+
+app.setAsDefaultProtocolClient('xrb'); // Register handler for xrb: links
 
 let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000, height: 600});
-  const options = { extraHeaders: "pragma: no-cache\n" };
-  mainWindow.loadURL('https://nanovault.io', options);
+  mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false } });
+  // const options = { extraHeaders: "pragma: no-cache\n" };
+  // mainWindow.loadURL('https://nanovault.io', options);
   // mainWindow.loadURL('http://localhost:4200/');
-  // TODO: Use environment to load config which holds the actual url to load for the app
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist/index.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -31,7 +39,24 @@ function createWindow () {
 }
 
 app.on('ready', () => {
+  // Once the app is ready, launch the wallet window
   createWindow();
+
+  // Detect when the application has been loaded using an xrb: link, send it to the wallet to load
+  app.on('open-url', (event, path) => {
+    if (!mainWindow) {
+      createWindow();
+    }
+    if (!mainWindow.webContents.isLoading()) {
+      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${path}' }));`);
+    }
+    mainWindow.webContents.once('did-finish-load', () => {
+      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${path}' }));`);
+    });
+    event.preventDefault();
+  });
+
+  // Check for any updates on GitHub
   autoUpdater.checkForUpdatesAndNotify();
 });
 
@@ -52,7 +77,7 @@ app.on('activate', function () {
   }
 });
 
-// Build up the title bar options based on platform
+// Build up the menu bar options based on platform
 function getApplicationMenu() {
   const template = [
     {
@@ -95,16 +120,28 @@ function getApplicationMenu() {
       submenu: [
         {
           label: 'View GitHub',
-          click () { require('electron').shell.openExternal('https://github.com/cronoh/nanovault') }
+          click () { loadExternal('https://github.com/cronoh/nanovault') }
         },
         {
           label: 'Submit Issue',
-          click () { require('electron').shell.openExternal('https://github.com/cronoh/nanovault/issues/new') }
+          click () { loadExternal('https://github.com/cronoh/nanovault/issues/new') }
         },
+        {type: 'separator'},
         {
           type: 'normal',
           label: `NanoVault Version: ${autoUpdater.currentVersion}`,
-        }
+        },
+        {
+          label: 'View Latest Updates',
+          click () { loadExternal('https://github.com/cronoh/nanovault/releases') }
+        },
+        {type: 'separator'},
+        {
+          label: `Check for Updates...`,
+          click (menuItem, browserWindow) {
+            autoUpdater.checkForUpdatesAndNotify();
+          }
+        },
       ]
     }
   ];
@@ -115,8 +152,15 @@ function getApplicationMenu() {
       submenu: [
         {role: 'about'},
         {type: 'separator'},
-        {role: 'services', submenu: []},
+        {
+          label: `Check for Updates...`,
+          click (menuItem, browserWindow) {
+            autoUpdater.checkForUpdatesAndNotify();
+          }
+        },
         {type: 'separator'},
+        // {role: 'services', submenu: []},
+        // {type: 'separator'},
         {role: 'hide'},
         {role: 'hideothers'},
         {role: 'unhide'},
@@ -148,4 +192,8 @@ function getApplicationMenu() {
   }
 
   return template;
+}
+
+function loadExternal(url) {
+  shell.openExternal(url);
 }

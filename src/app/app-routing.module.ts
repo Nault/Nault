@@ -12,6 +12,7 @@ import {ConfigureAppComponent} from "./components/configure-app/configure-app.co
 import {AccountDetailsComponent} from "./components/account-details/account-details.component";
 import {TransactionDetailsComponent} from "./components/transaction-details/transaction-details.component";
 import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -29,7 +30,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { useHash: environment.desktop }), // On the desktop apps, use hashes so it works properly using only index.html
   ],
   declarations: [],
   exports: [RouterModule]
