@@ -56,20 +56,39 @@ cd nanovault
 npm install
 ```
 
-#### Run the app
+#### Run the wallet in dev mode
 ```bash
-ng serve --open
+npm run wallet:dev
 ```
 
-## Build
-Build a production version of the wallet:
+## Build Wallet (For Production)
+Build a production version of the wallet for web:
 ```bash
-ng build --prod
+npm run wallet:build
 ```
 
-Build the desktop versions of the wallet:
+Build a production version of the wallet for desktop: *(Required for all desktop builds)*
 ```bash
-npm run dist-full
+npm run wallet:build-desktop
+```
+
+## Desktop Builds
+
+*All desktop builds require that you have built a desktop version of the wallet before running!*
+
+Run the desktop wallet in dev mode:
+```bash
+npm run desktop:dev
+```
+
+Build the desktop wallet for your local OS (Will be in `dist-desktop`):
+```bash
+npm run desktop:local
+```
+
+Build the desktop wallet for Windows+Mac+Linux (May require dependencies for your OS [View them here](https://www.electron.build/multi-platform-build)):
+```bash
+npm run desktop:full
 ```
 
 ## Running unit tests
