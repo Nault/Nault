@@ -81,7 +81,11 @@ export class SendComponent implements OnInit {
       return null;
     }, null);
 
-    this.fromAccountID = accountIDWithBalance || this.accounts.length ? this.accounts[0].id : '';
+    if (accountIDWithBalance) {
+      this.fromAccountID = accountIDWithBalance;
+    } else {
+      this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
+    }
   }
 
   searchAddressBook() {
