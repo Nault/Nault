@@ -57,7 +57,7 @@ app.on('ready', () => {
   });
 
   // Check for any updates on GitHub
-  autoUpdater.checkForUpdatesAndNotify();
+  checkForUpdates();
 });
 
 // Quit when all windows are closed.
@@ -76,6 +76,12 @@ app.on('activate', function () {
     createWindow()
   }
 });
+
+function checkForUpdates() {
+  autoUpdater.checkForUpdatesAndNotify()
+    .then(() => {})
+    .catch(console.log);
+}
 
 // Build up the menu bar options based on platform
 function getApplicationMenu() {
@@ -139,7 +145,7 @@ function getApplicationMenu() {
         {
           label: `Check for Updates...`,
           click (menuItem, browserWindow) {
-            autoUpdater.checkForUpdatesAndNotify();
+            checkForUpdates();
           }
         },
       ]
@@ -155,7 +161,7 @@ function getApplicationMenu() {
         {
           label: `Check for Updates...`,
           click (menuItem, browserWindow) {
-            autoUpdater.checkForUpdatesAndNotify();
+            checkForUpdates();
           }
         },
         {type: 'separator'},
