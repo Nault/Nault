@@ -1,11 +1,11 @@
 <div class="uk-animation-slide-left-small" uk-grid>
-  <div class="uk-width-1-1">
+  <div class="uk-width-1-1" id="address-book-sortable">
     <div uk-grid>
       <div class="uk-width-1-2">
         <h2>Address Book</h2>
       </div>
       <div class="uk-width-1-2 uk-text-right">
-        <button class="uk-button uk-button-secondary" (click)="activePanel = 1">Add New Contact</button>
+        <button class="uk-button uk-button-secondary" (click)="activePanel = 1;">Add New Contact</button>
       </div>
     </div>
     <p>
@@ -16,42 +16,51 @@
     <div class="uk-animation-slide-left-small" *ngIf="activePanel == 0" uk-grid>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default uk-margin">
-          <table class="uk-table uk-table-striped uk-table-small">
-            <thead>
-            <tr>
-              <th class="uk-width-2-5">Name</th>
-              <th class="uk-width-3-6">Account ID</th>
-              <th class="uk-width-1-6 uk-text-center">Options</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let addressBook of addressBook$ | async">
-              <td>{{ addressBook.name }} </td>
-              <td class="uk-visible-toggle">
-                <div uk-grid>
-                  <div class="uk-width-expand uk-text-truncate">
-                    <a [routerLink]="'/account/' + addressBook.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ addressBook.account }}
-                    </a>
-                  </div>
-                  <div class="uk-width-auto" style="padding-left: 10px;">
-                    <ul class="uk-hidden-hover uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+
+          <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
+            <li style="background: #fff; border-bottom: 0;">
+              <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+                <div class="uk-width-2-5">Name</div>
+                <div class="uk-width-expand">Account ID</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="uk-list uk-list-striped" style="margin-top: 0;" uk-sortable="handle: .uk-sortable-handle; cls-custom: uk-box-shadow-small uk-background uk-background-default;">
+            <li class="" *ngFor="let addressBook of addressBook$ | async;" [attr.data-account]="addressBook.account">
+              <div uk-grid>
+                <div class="uk-width-2-5 uk-text-truncate uk-visible-toggle">
+                  <div uk-grid>
+                    <div class="uk-width-expand uk-text-truncate">
+                      <a (click)="editEntry(addressBook)" class="uk-link-text" title="Edit Account Label" uk-tooltip>{{ addressBook.name }}</a>
+                    </div>
+                    <ul class="uk-hidden-hover uk-iconnav uk-width-auto" style="padding-left: 0;">
+                      <li><span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>
                     </ul>
                   </div>
                 </div>
-              </td>
-              <td class="uk-text-center">
-                <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
-              </td>
-            </tr>
-            <tr *ngIf="!(addressBook$ | async).length">
-              <td colspan="3" style="text-align: center;">
-                You do not have any address book entries saved yet, <a (click)="activePanel = 1">click here to create one</a>.
-              </td>
-            </tr>
-            </tbody>
-          </table>
+                <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
+                  <div uk-grid>
+                    <div class="uk-width-expand uk-text-truncate">
+                      <a [routerLink]="'/account/' + addressBook.account" class="uk-link-text" title="View Account Details" uk-tooltip>
+                        {{ addressBook.account }}
+                      </a>
+                    </div>
+                    <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+
+                </div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
+                  <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+
         </div>
       </div>
     </div>
@@ -74,7 +83,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="new-address-name">Name</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc">
                 </div>
               </div>
             </div>

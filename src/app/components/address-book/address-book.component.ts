@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AddressBookService} from "../../services/address-book.service";
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
@@ -10,7 +10,7 @@ import {ApiService} from "../../services/api.service";
   templateUrl: './address-book.component.html',
   styleUrls: ['./address-book.component.css']
 })
-export class AddressBookComponent implements OnInit {
+export class AddressBookComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
 
@@ -22,6 +22,28 @@ export class AddressBookComponent implements OnInit {
 
   async ngOnInit() {
     this.addressBookService.loadAddressBook();
+  }
+
+  ngAfterViewInit() {
+    // Listen for reordering events
+    document.getElementById('address-book-sortable').addEventListener('moved', (e) => {
+      const elements = e.srcElement.children;
+
+      const result = [].slice.call(elements);
+      const datas = result.map(e => e.dataset.account);
+
+      this.addressBookService.setAddressBookOrder(datas);
+      this.notificationService.sendSuccess(`Updated address book order`);
+    });
+  }
+
+  editEntry(addressBook) {
+    this.newAddressAccount = addressBook.account;
+    this.newAddressName = addressBook.name;
+    this.activePanel = 1;
+    setTimeout(() => {
+      document.getElementById('new-address-name').focus();
+    }, 150);
   }
 
   async saveNewAddress() {
@@ -56,6 +78,10 @@ export class AddressBookComponent implements OnInit {
     this.newAddressName = '';
     this.newAddressAccount = '';
     this.activePanel = 0;
+  }
+
+  copied() {
+    this.notificationService.sendSuccess(`Account address copied to clipboard!`);
   }
 
   async deleteAddress(account) {

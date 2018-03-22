@@ -59,6 +59,18 @@ export class AddressBookService {
     localStorage.removeItem(this.storeKey);
   }
 
+  setAddressBookOrder(addressList) {
+    this.addressBook = addressList
+      .map(address => ({
+        account: address,
+        name: this.getAccountName(address)
+      }))
+      .filter(entry => entry.name !== null);
+
+    this.saveAddressBook();
+    this.addressBook$.next(this.addressBook);
+  }
+
   getAccountName(account: string): string|null {
     const match = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
     return match && match.name || null;
