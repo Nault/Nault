@@ -59,6 +59,9 @@
               </div>
 
             </li>
+            <li *ngIf="!(addressBook$ | async).length" class="uk-text-center">
+              You do not have any address book entries saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+            </li>
           </ul>
 
         </div>
