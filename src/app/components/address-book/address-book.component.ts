@@ -15,6 +15,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
 
+  addressBook$ = this.addressBookService.addressBook$;
   newAddressAccount = '';
   newAddressName = '';
 
