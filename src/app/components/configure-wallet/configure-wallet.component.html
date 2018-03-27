@@ -35,24 +35,58 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 1">
   <div class="uk-card-body">
     <p>
-      If you already have a Nano wallet, you can use your backup seed to import it below.  When you import a seed,
-      none of your existing wallets or accounts are affected, and your seed is not stored anywhere besides in your local client.
+      If you already have a Nano wallet, you can import it below.  When you import a wallet, none of your existing
+      wallets or accounts are affected, and your seed is not stored anywhere besides in your local client.  Use the drop
+      down below to select which type of import you want to use.
     </p>
     <div uk-grid>
-      <div class="js-upload uk-text-left uk-width-1-1" uk-form-custom>
-        <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-        If you have saved your wallet to a file using NanoVault before,
-        <button class="uk-button uk-button-link" type="button" tabindex="-1">Click Here To Import It</button>
+      <div class="uk-width-1-1">
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-horizontal-select">Select Import Type</label>
+            <div class="uk-form-controls">
+              <select class="uk-select" [(ngModel)]="selectedImportOption" id="form-horizontal-select">
+                <option *ngFor="let option of importOptions" [value]="option.value">{{ option.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div uk-grid>
+
+    <hr class="uk-divider-icon" style="margin-top: 10px;">
+
+    <div uk-grid *ngIf="selectedImportOption === 'file'">
       <div class="uk-width-1-1">
+        <p>
+          If you have saved your wallet to a file using NanoVault before, use the button below to import it.
+        </p>
+      </div>
+    </div>
+    <div uk-grid *ngIf="selectedImportOption === 'seed'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Enter your 64 character seed from any Nano wallet to import it below.
+        </p>
         <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
+      </div>
+    </div>
+    <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Enter your wallet mnemonic phrase generated from any Nano wallet to import it below.
+        </p>
+        <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="Your Nano Backup Mnemonic Phrase"></textarea>
       </div>
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
+    <div *ngIf="selectedImportOption === 'file'" class="js-upload" uk-form-custom style="display: inline-block;">
+      <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
+      <button class="uk-button uk-button-primary" type="button" tabindex="-1">Import From File</button>
+    </div>
+    <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Mnemonic Phrase</button>
+    <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
   </div>
 </div>
 
@@ -60,23 +94,33 @@
 
 <div class="uk-card uk-card-default" *ngIf="activePanel == 3">
   <div class="uk-card-header">
-    <h3 class="uk-card-title">Seed Created!</h3>
+    <h3 class="uk-card-title">Wallet Created!</h3>
   </div>
   <div class="uk-card-body">
     <p>
-      Your new Nano wallet has been created!  Your seed is below; make sure to write it down, save it, and never share it with anyone!
+      Your new Nano wallet has been created!  Below is the mnemonic phrase and seed for your wallet, you can use whichever you prefer.
     </p>
+    <div class="uk-alert uk-alert-primary">
+      Make sure to write down your mnemonic phrase/seed or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
+      It is the master key to all of your accounts, and the only way to recover your funds in an emergency.
+    </div>
+    <div uk-grid>
+      <div class="uk-width-1-4">Wallet Mnemonic Phrase</div>
+      <div class="uk-width-3-4">
+        {{ newWalletMnemonic }}<br>
+        <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="newWalletMnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
+      </div>
+    </div>
     <div uk-grid>
       <div class="uk-width-1-4">Wallet Seed</div>
       <div class="uk-width-3-4 uk-text-truncate">
         {{ newWalletSeed }}<br>
-        <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
-
+        <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy seed to clipboard</a>
       </div>
     </div>
   </div>
   <div class="uk-card-footer">
-    <button class="uk-button uk-button-danger" (click)="confirmNewSeed()">I've Saved My Seed</button>
+    <button class="uk-button uk-button-danger" (click)="confirmNewSeed()">I've Saved My Seed/Mnemonic</button>
   </div>
 </div>
 

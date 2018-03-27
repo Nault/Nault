@@ -4,6 +4,7 @@ import {NotificationService} from "../../services/notification.service";
 import * as QRCode from 'qrcode';
 import {AddressBookService} from "../../services/address-book.service";
 import {Router} from "@angular/router";
+import * as bip from 'bip39';
 
 @Component({
   selector: 'app-manage-wallet',
@@ -27,7 +28,7 @@ export class ManageWalletComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private addressBookService: AddressBookService,
-    private notificationService: NotificationService,
+    public notifications: NotificationService,
     private router: Router) { }
 
   async ngOnInit() {
@@ -35,20 +36,20 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async changePassword() {
-    if (this.newPassword !== this.confirmPassword) return this.notificationService.sendError(`Passwords do not match`);
-    if (this.newPassword.length < 1) return this.notificationService.sendError(`Password cannot be empty`);
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.newPassword !== this.confirmPassword) return this.notifications.sendError(`Passwords do not match`);
+    if (this.newPassword.length < 1) return this.notifications.sendError(`Password cannot be empty`);
+    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
 
     this.walletService.wallet.password = this.newPassword;
     this.walletService.saveWalletExport();
 
     this.newPassword = '';
     this.confirmPassword = '';
-    this.notificationService.sendSuccess(`Wallet password successfully updated`);
+    this.notifications.sendSuccess(`Wallet password successfully updated`);
   }
 
   async exportWallet() {
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
 
     const exportUrl = this.walletService.generateExportUrl();
     this.QRExportUrl = exportUrl;
@@ -57,13 +58,17 @@ export class ManageWalletComponent implements OnInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Wallet seed copied to clipboard!`);
+    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`);
+  }
+
+  seedMnemonic() {
+    return bip.entropyToMnemonic(this.wallet.seed);
   }
 
   async exportAddressBook() {
     const exportData = this.addressBookService.addressBook;
     if (exportData.length >= 25) {
-      return this.notificationService.sendError(`Address books with 25 or more entries need to use the file export method.`);
+      return this.notifications.sendError(`Address books with 25 or more entries need to use the file export method.`);
     }
     const base64Data = btoa(JSON.stringify(exportData));
     const exportUrl = `https://nanovault.io/import-address-book#${base64Data}`;
@@ -74,13 +79,13 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportAddressBookToFile() {
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
     const fileName = `NanoVault-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
     this.triggerFileDownload(fileName, exportData);
 
-    this.notificationService.sendSuccess(`Address book export downloaded!`);
+    this.notifications.sendSuccess(`Address book export downloaded!`);
   }
 
   triggerFileDownload(fileName, exportData) {
@@ -110,13 +115,13 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportToFile() {
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
 
     const fileName = `NanoVault-Wallet.json`;
     const exportData = this.walletService.generateExportData();
     this.triggerFileDownload(fileName, exportData);
 
-    this.notificationService.sendSuccess(`Wallet export downloaded!`);
+    this.notifications.sendSuccess(`Wallet export downloaded!`);
   }
 
   importFromFile(files) {
@@ -129,13 +134,13 @@ export class ManageWalletComponent implements OnInit {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {
-          return this.notificationService.sendError(`Bad import data, make sure you selected a NanoVault Address Book export`)
+          return this.notifications.sendError(`Bad import data, make sure you selected a NanoVault Address Book export`)
         }
 
         const walletEncrypted = btoa(JSON.stringify(importData));
         this.router.navigate(['import-address-book'], { fragment: walletEncrypted });
       } catch (err) {
-        this.notificationService.sendError(`Unable to parse import data, make sure you selected the right file!`);
+        this.notifications.sendError(`Unable to parse import data, make sure you selected the right file!`);
       }
     };
 

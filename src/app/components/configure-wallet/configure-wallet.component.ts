@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import * as bip from 'bip39';
 
 @Component({
   selector: 'app-configure-wallet',
@@ -13,9 +14,18 @@ export class ConfigureWalletComponent implements OnInit {
   activePanel = 0;
 
   newWalletSeed = '';
+  newWalletMnemonic = '';
   importSeedModel = '';
+  importSeedMnemonicModel = '';
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
+
+  selectedImportOption = 'seed';
+  importOptions = [
+    { name: 'Nano Seed', value: 'seed' },
+    { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
+    { name: 'NanoVault Wallet File', value: 'file' },
+  ];
 
   constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService, private route: Router) { }
 
@@ -27,11 +37,30 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async importExistingWallet() {
-    const existingSeed = this.importSeedModel.trim();
-    if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
+    let importSeed = '';
+    if (this.selectedImportOption === 'seed') {
+      const existingSeed = this.importSeedModel.trim();
+      if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
+      importSeed = existingSeed;
+    } else if (this.selectedImportOption === 'mnemonic') {
+      const mnemonic = this.importSeedMnemonicModel.toLowerCase().trim();
+      const words = mnemonic.split(' ');
+      if (words.length < 12) return this.notifications.sendError(`Mnemonic is too short, double check it!`);
+
+      // Try and decode the mnemonic
+      try {
+        const newSeed = bip.mnemonicToEntropy(mnemonic);
+        if (!newSeed || newSeed.length !== 64) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
+        importSeed = newSeed.toUpperCase(); // Force uppercase, for consistency
+      } catch (err) {
+        return this.notifications.sendError(`Unable to decode mnemonic, double check it!`);
+      }
+    } else {
+      return this.notifications.sendError(`Invalid import option`);
+    }
 
     this.notifications.sendInfo(`Importing existing accounts...`, { identifier: 'importing-loading' });
-    await this.walletService.createWalletFromSeed(existingSeed);
+    await this.walletService.createWalletFromSeed(importSeed);
 
     this.notifications.removeNotification('importing-loading');
 
@@ -42,6 +71,7 @@ export class ConfigureWalletComponent implements OnInit {
   async createNewWallet() {
     const newSeed = this.walletService.createNewWallet();
     this.newWalletSeed = newSeed;
+    this.newWalletMnemonic = bip.entropyToMnemonic(newSeed);
 
     this.activePanel = 3;
     this.notifications.sendSuccess(`Successfully created new wallet! Make sure to write down your seed!`);

@@ -39,6 +39,7 @@
     "@angular/router": "^5.0.0",
     "@types/crypto-js": "^3.1.38",
     "bignumber.js": "^5.0.0",
+    "bip39": "^2.5.0",
     "blakejs": "^1.1.0",
     "core-js": "^2.4.1",
     "crypto": "^1.0.1",
@@ -54,6 +55,7 @@
     "@angular/cli": "1.6.0",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",
+    "@types/bip39": "^2.4.0",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
@@ -90,7 +92,9 @@
         "CFBundleURLTypes": [
           {
             "CFBundleURLName": "xrb",
-            "CFBundleURLSchemes": ["xrb"]
+            "CFBundleURLSchemes": [
+              "xrb"
+            ]
           }
         ]
       }
@@ -98,14 +102,18 @@
     "linux": {
       "target": "AppImage"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "cronoh",
-      "repo": "nanovault"
-    }],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "cronoh",
+        "repo": "nanovault"
+      }
+    ],
     "protocols": {
       "name": "xrb",
-      "schemes": ["xrb"],
+      "schemes": [
+        "xrb"
+      ],
       "role": "Viewer"
     }
   }

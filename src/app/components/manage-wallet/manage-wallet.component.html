@@ -23,14 +23,16 @@
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Backup Wallet Seed</h3>
+        <h3 class="uk-card-title">Backup Wallet</h3>
       </div>
       <div class="uk-card-body">
         <p *ngIf="wallet.locked">
-          To backup your wallet seed, unlock your wallet.
+          To access backup options, unlock your wallet.
         </p>
         <p *ngIf="!wallet.locked">
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard. This operation is unencrypted but compatible with most NANO wallets.
+          To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          <br>
+          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.<br>
         </p>
       </div>
     </div>
