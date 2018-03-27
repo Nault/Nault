@@ -4,6 +4,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {ApiService} from "../../services/api.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-address-book',
@@ -14,11 +15,16 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
 
-  addressBook$ = this.addressBookService.addressBook$;
   newAddressAccount = '';
   newAddressName = '';
 
-  constructor(private addressBookService: AddressBookService, private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, private nodeApi: ApiService) { }
+  constructor(
+    private addressBookService: AddressBookService,
+    private walletService: WalletService,
+    private notificationService: NotificationService,
+    public modal: ModalService,
+    private router: Router,
+    private nodeApi: ApiService) { }
 
   async ngOnInit() {
     this.addressBookService.loadAddressBook();

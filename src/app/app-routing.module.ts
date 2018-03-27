@@ -12,6 +12,8 @@ import {ConfigureAppComponent} from "./components/configure-app/configure-app.co
 import {AccountDetailsComponent} from "./components/account-details/account-details.component";
 import {TransactionDetailsComponent} from "./components/transaction-details/transaction-details.component";
 import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
+import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
+
 import { environment } from '../environments/environment';
 
 const routes: Routes = [
@@ -21,6 +23,7 @@ const routes: Routes = [
   { path: 'address-book', component: AddressBookComponent },
   { path: 'configure-wallet', component: ConfigureWalletComponent },
   { path: 'configure-app', component: ConfigureAppComponent },
+  { path: 'import-address-book', component: ImportAddressBookComponent },
   { path: 'import-wallet', component: ImportWalletComponent },
   { path: 'manage-wallet', component: ManageWalletComponent },
   { path: 'send', component: SendComponent },

@@ -2,21 +2,6 @@
   <div class="uk-width-1-1">
     <h2>Manage Wallet</h2>
 
-    <!--<div class="uk-card uk-card-default">-->
-      <!--<div class="uk-card-header">-->
-        <!--<h3 class="uk-card-title">Wallet Information</h3>-->
-      <!--</div>-->
-      <!--<div class="uk-card-body">-->
-        <!--<div uk-grid>-->
-          <!--<div class="uk-width-1-4">Wallet Status:</div>-->
-          <!--<div class="uk-width-3-4">-->
-            <!--<span *ngIf="wallet.locked">Locked</span>-->
-            <!--<span *ngIf="!wallet.locked">Unlocked</span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Change Wallet Password</h3>
@@ -45,7 +30,7 @@
           To backup your wallet seed, unlock your wallet.
         </p>
         <p *ngIf="!wallet.locked">
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard. This operation is unencrypted but compatible with most NANO wallets.   
+          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard. This operation is unencrypted but compatible with most NANO wallets.
         </p>
       </div>
     </div>
@@ -55,8 +40,8 @@
         <h3 class="uk-card-title">Export NanoVault Wallet</h3>
       </div>
       <div class="uk-card-body">
-        Use this export tool to simplify wallet transfer to other devices. Your data will be encrypted by your password, and then imported into NanoVault on your new device! 
-        The export does not contain your current address book.<br>
+        Use this export tool to simplify wallet transfer to other devices. Your data will be encrypted by your password, and then imported into NanoVault on your new device!
+        The export does not contain your address book.<br>
         <div *ngIf="showQRExport" uk-grid>
           <div class="uk-width-1-1">
             <hr class="uk-divider-icon">
@@ -77,6 +62,40 @@
       <div class="uk-card-footer uk-text-right">
         <button (click)="exportToFile()" class="uk-button uk-button-secondary">Export As File</button>
         <button (click)="exportWallet()" class="uk-button uk-button-secondary">Export QR Code</button>
+      </div>
+    </div>
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">NanoVault Address Book</h3>
+      </div>
+      <div class="uk-card-body">
+        Use this tool to simplify transferring your address book between devices.  Use the options below to import or export your
+        address book from a file or QR Code/URL.  Your address book is not encrypted by your wallet password.
+        <div *ngIf="addressBookShowQRExport" uk-grid>
+          <div class="uk-width-1-1">
+            <hr class="uk-divider-icon">
+          </div>
+
+          <div class="uk-width-1-2@s uk-width-1-4@m">
+            <img [src]="addressBookQRExportImg">
+          </div>
+          <div class="uk-width-1-2@s uk-width-3-4@m">
+            Scan the QR code on any device to load your NanoVault wallet!<br>
+            <br>
+            If you do not have a QR code scanner, you can also import your wallet by using the URL below.<br>
+            <input type="text" class="uk-input" value="{{ addressBookQRExportUrl }}"><br>
+            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
+          </div>
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <div class="js-upload uk-text-left" style="display: inline-block;" uk-form-custom>
+          <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
+          <button class="uk-button uk-button-primary" type="button" tabindex="-1">Import Address Book</button>
+        </div>
+        <button (click)="exportAddressBookToFile()" class="uk-button uk-button-secondary">Export As File</button>
+        <button (click)="exportAddressBook()" class="uk-button uk-button-secondary">Export QR Code</button>
       </div>
     </div>
 

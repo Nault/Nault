@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import * as QRCode from 'qrcode';
+import {AddressBookService} from "../../services/address-book.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-manage-wallet',
@@ -18,8 +20,15 @@ export class ManageWalletComponent implements OnInit {
   showQRExport = false;
   QRExportUrl = '';
   QRExportImg = '';
+  addressBookShowQRExport = false;
+  addressBookQRExportUrl = '';
+  addressBookQRExportImg = '';
 
-  constructor(private walletService: WalletService, private notificationService: NotificationService) { }
+  constructor(
+    private walletService: WalletService,
+    private addressBookService: AddressBookService,
+    private notificationService: NotificationService,
+    private router: Router) { }
 
   async ngOnInit() {
     this.wallet = this.walletService.wallet;
@@ -51,11 +60,30 @@ export class ManageWalletComponent implements OnInit {
     this.notificationService.sendSuccess(`Wallet seed copied to clipboard!`);
   }
 
-  exportToFile() {
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+  async exportAddressBook() {
+    const exportData = this.addressBookService.addressBook;
+    if (exportData.length >= 25) {
+      return this.notificationService.sendError(`Address books with 25 or more entries need to use the file export method.`);
+    }
+    const base64Data = btoa(JSON.stringify(exportData));
+    const exportUrl = `https://nanovault.io/import-address-book#${base64Data}`;
 
-    const fileName = `NanoVault-Wallet.json`;
-    const exportData = this.walletService.generateExportData();
+    this.addressBookQRExportUrl = exportUrl;
+    this.addressBookQRExportImg = await QRCode.toDataURL(exportUrl);
+    this.addressBookShowQRExport = true;
+  }
+
+  exportAddressBookToFile() {
+    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    const fileName = `NanoVault-AddressBook.json`;
+
+    const exportData = this.addressBookService.addressBook;
+    this.triggerFileDownload(fileName, exportData);
+
+    this.notificationService.sendSuccess(`Address book export downloaded!`);
+  }
+
+  triggerFileDownload(fileName, exportData) {
     const blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' });
 
     // Check for iOS, which is weird with saving files
@@ -79,8 +107,39 @@ export class ManageWalletComponent implements OnInit {
         window.URL.revokeObjectURL(objUrl);
       }, 200);
     }
+  }
+
+  exportToFile() {
+    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+
+    const fileName = `NanoVault-Wallet.json`;
+    const exportData = this.walletService.generateExportData();
+    this.triggerFileDownload(fileName, exportData);
 
     this.notificationService.sendSuccess(`Wallet export downloaded!`);
+  }
+
+  importFromFile(files) {
+    if (!files.length) return;
+
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileData = event.target['result'];
+      try {
+        const importData = JSON.parse(fileData);
+        if (!importData.length || !importData[0].account) {
+          return this.notificationService.sendError(`Bad import data, make sure you selected a NanoVault Address Book export`)
+        }
+
+        const walletEncrypted = btoa(JSON.stringify(importData));
+        this.router.navigate(['import-address-book'], { fragment: walletEncrypted });
+      } catch (err) {
+        this.notificationService.sendError(`Unable to parse import data, make sure you selected the right file!`);
+      }
+    };
+
+    reader.readAsText(file);
   }
 
 }
