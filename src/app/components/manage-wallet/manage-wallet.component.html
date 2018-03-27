@@ -32,7 +32,7 @@
         <p *ngIf="!wallet.locked">
           To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
           <br>
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="copied()" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
         </p>
       </div>
     </div>
@@ -57,7 +57,7 @@
             <br>
             If you do not have a QR code scanner, you can also import your wallet by using the URL below.<br>
             <input type="text" class="uk-input" value="{{ QRExportUrl }}"><br>
-            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
+            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" uk-tooltip>Copy to clipboard</a>
           </div>
         </div>
       </div>
@@ -83,11 +83,11 @@
             <img [src]="addressBookQRExportImg">
           </div>
           <div class="uk-width-1-2@s uk-width-3-4@m">
-            Scan the QR code on any device to load your NanoVault wallet!<br>
+            Scan the QR code on any device to import your NanoVault Address Book!<br>
             <br>
-            If you do not have a QR code scanner, you can also import your wallet by using the URL below.<br>
+            If you do not have a QR code scanner, you can also import your address book by using the URL below.<br>
             <input type="text" class="uk-input" value="{{ addressBookQRExportUrl }}"><br>
-            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="copied()" uk-tooltip>Copy to clipboard</a>
+            <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Address book export copied to clipboard!')" uk-tooltip>Copy to clipboard</a>
           </div>
         </div>
       </div>
