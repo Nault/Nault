@@ -20,6 +20,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   nano = 1000000000000000000000000;
 
   accountHistory: any[] = [];
+  pendingBlocks = [];
   pageSize = 25;
   maxPageSize = 200;
 
@@ -66,11 +67,32 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async loadAccountDetails() {
+    this.pendingBlocks = [];
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
+
+    const pending = await this.api.pending(this.accountID, 25);
+    if (pending && pending.blocks) {
+      for (let block in pending.blocks) {
+        if (!pending.blocks.hasOwnProperty(block)) continue;
+        this.pendingBlocks.push({
+          account: pending.blocks[block].source,
+          amount: pending.blocks[block].amount,
+          addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
+          hash: block,
+        });
+      }
+    }
+
+    // If the account doesnt exist, set the pending balance manually
+    if (this.account.error) {
+      const pendingRaw = this.pendingBlocks.reduce((prev: BigNumber, current: any) => prev.plus(new BigNumber(current.amount)), new BigNumber(0));
+      this.account.pending = pendingRaw;
+    }
+
     // Set fiat values?
     this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.nano);
     this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.nano);
