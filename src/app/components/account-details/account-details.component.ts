@@ -74,16 +74,19 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
 
-    const pending = await this.api.pending(this.accountID, 25);
-    if (pending && pending.blocks) {
-      for (let block in pending.blocks) {
-        if (!pending.blocks.hasOwnProperty(block)) continue;
-        this.pendingBlocks.push({
-          account: pending.blocks[block].source,
-          amount: pending.blocks[block].amount,
-          addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
-          hash: block,
-        });
+    // If there is a pending balance, or the account is not opened yet, load pending transactions
+    if ((!this.account.error && this.account.pending > 0) || this.account.error) {
+      const pending = await this.api.pending(this.accountID, 25);
+      if (pending && pending.blocks) {
+        for (let block in pending.blocks) {
+          if (!pending.blocks.hasOwnProperty(block)) continue;
+          this.pendingBlocks.push({
+            account: pending.blocks[block].source,
+            amount: pending.blocks[block].amount,
+            addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
+            hash: block,
+          });
+        }
       }
     }
 
