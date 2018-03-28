@@ -40,7 +40,7 @@ export class SendComponent implements OnInit {
 
   amount = null;
   amountRaw = new BigNumber(0);
-  amountFiat: number = 0;
+  amountFiat: number|null = null;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   fromAccountID: any = '';
@@ -86,6 +86,32 @@ export class SendComponent implements OnInit {
     } else {
       this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
     }
+  }
+
+  // An update to the Nano amount, sync the fiat value
+  syncFiatPrice() {
+    const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
+    if (rawAmount.lte(0)) {
+      this.amountFiat = 0;
+      return;
+    }
+
+    // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
+    const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+
+    // Determine fiat value of the amount
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    this.amountFiat = fiatAmount;
+  }
+
+  // An update to the fiat amount, sync the nano value based on currently selected denomination
+  syncNanoPrice() {
+    const fiatAmount = this.amountFiat || 0;
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(fiatAmount).div(this.price.price.lastPrice));
+    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
+
+    this.amount = nanoAmount.toNumber();
   }
 
   searchAddressBook() {
@@ -182,6 +208,7 @@ export class SendComponent implements OnInit {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
         this.activePanel = 'send';
         this.amount = null;
+        this.amountFiat = null;
         this.resetRaw();
         this.toAccountID = '';
         this.toAccountStatus = null;
@@ -210,6 +237,7 @@ export class SendComponent implements OnInit {
     const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
+    this.syncFiatPrice();
   }
 
   resetRaw() {

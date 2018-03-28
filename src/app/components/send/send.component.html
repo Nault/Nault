@@ -2,6 +2,7 @@
   <div class="uk-width-1-1">
     <h2>Send Nano</h2>
 
+    <!-- Send Panel -->
     <div uk-grid *ngIf="activePanel == 'send'" class="uk-animation-slide-left-small">
       <div class="uk-width-1-1">
 
@@ -42,7 +43,6 @@
                 <div class="uk-form-controls" *ngIf="addressBookMatch">
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-label uk-label-primary">{{ addressBookMatch }}</span>
-
                   </div>
                 </div>
               </div>
@@ -55,10 +55,7 @@
                       <div class="uk-width-3-5">
                         <div class="uk-inline uk-width-1-1">
                           <a class="uk-form-icon uk-form-icon-flip" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
-                          <input [(ngModel)]="amount" class="uk-input" id="form-horizontal-text" type="text" placeholder="Amount of {{ selectedAmount.name }} to send">
-                        </div>
-                        <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-text-center uk-text-small uk-text-muted">
-                          +{{ amountRaw.toString(10) }} raw &nbsp; <a (click)="resetRaw()">remove raw</a>
+                          <input [(ngModel)]="amount" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to send">
                         </div>
 
                       </div>
@@ -73,7 +70,19 @@
                         </div>
                       </div>
 
+                      <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-width-3-5@m uk-text-center uk-text-small uk-text-muted uk-margin-remove">
+                        +{{ amountRaw.toString(10) }} raw &nbsp; <a (click)="resetRaw()">remove</a>
+                      </div>
+
+                      <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                        <div class="uk-width-1-1 uk-inline">
+                          <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px; border: 0; border-bottom: 1px solid #e5e5e5;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
+                        </div>
+                      </div>
+
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -86,8 +95,9 @@
         </div>
       </div>
     </div>
+    <!-- End Send Panel -->
 
-
+    <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
@@ -133,8 +143,6 @@
             <div class="uk-card uk-card-default">
               <div class="uk-card-header uk-text-right" style="padding: 20px 20px;">
 
-
-
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title">{{ toAddressBook }}</span>
@@ -170,11 +178,12 @@
           <div class="uk-width-1-2@s">
             <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Send</button>
             <button *ngIf="confirmingTransaction" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
-
           </div>
         </div>
       </div>
     </div>
+    <!-- End Confirmation Panel -->
+
   </div>
 </div>
 

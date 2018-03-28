@@ -37,6 +37,7 @@ import { ImportWalletComponent } from './components/import-wallet/import-wallet.
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
 import {PowService} from "./services/pow.service";
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
+import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { ImportAddressBookComponent } from './components/import-address-book/imp
     ImportWalletComponent,
     NanoAccountIdComponent,
     ImportAddressBookComponent,
+    CurrencySymbolPipe,
   ],
   imports: [
     BrowserModule,
