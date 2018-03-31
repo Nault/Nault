@@ -10,15 +10,16 @@ const nacl = window['nacl'];
 @Injectable()
 export class NanoBlockService {
   representativeAccount = 'xrb_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
+  shouldGenStateBlocks = true; // Generate state blocks instead of legacy blocks
 
   constructor(private api: ApiService, private util: UtilService, private workPool: WorkPoolService, private notifications: NotificationService) { }
 
-  async generateChange(walletAccount, representativeAccount, stateBlock: boolean) {
+  async generateChange(walletAccount, representativeAccount) {
     const toAcct = await this.api.accountInfo(walletAccount.id);
     if (!toAcct) throw new Error(`Account must have an open block first`);
 
     let blockData;
-    if (stateBlock) {
+    if (this.shouldGenStateBlocks) {
       let link = '0000000000000000000000000000000000000000000000000000000000000000';
       let context = blake.blake2bInit(32, null);
       blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
@@ -80,7 +81,7 @@ export class NanoBlockService {
     }
   }
 
-  async generateSend(walletAccount, toAccountID, rawAmount, stateBlock: boolean) {
+  async generateSend(walletAccount, toAccountID, rawAmount) {
     const fromAccount = await this.api.accountInfo(walletAccount.id);
     if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`);
 
@@ -89,7 +90,7 @@ export class NanoBlockService {
     while (remainingPadded.length < 32) remainingPadded = '0' + remainingPadded; // Left pad with 0's
 
     let blockData;
-    if (stateBlock) {
+    if (this.shouldGenStateBlocks) {
       const context = blake.blake2bInit(32, null);
       blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
       blake.blake2bUpdate(context, this.util.hex.toUint8(fromAccount.frontier));
@@ -151,14 +152,14 @@ export class NanoBlockService {
     return processResponse.hash;
   }
 
-  async generateReceive(walletAccount, sourceBlock, stateBlock: boolean) {
+  async generateReceive(walletAccount, sourceBlock) {
     const toAcct = await this.api.accountInfo(walletAccount.id);
     let blockData: any = {};
     let workBlock = null;
 
     const openEquiv = !toAcct || !toAcct.frontier;
 
-    if (stateBlock) {
+    if (this.shouldGenStateBlocks) {
       const previousBlock = toAcct.frontier || "0000000000000000000000000000000000000000000000000000000000000000";
 
       const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
