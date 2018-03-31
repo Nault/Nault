@@ -90,52 +90,87 @@ export class NanoBlockService {
     return processResponse.hash;
   }
 
-  async generateReceive(walletAccount, sourceBlock) {
+  async generateReceive(walletAccount, sourceBlock, stateBlock: boolean) {
     const toAcct = await this.api.accountInfo(walletAccount.id);
     let blockData: any = {};
     let workBlock = null;
 
-    if (!toAcct || !toAcct.frontier) {
-      // This is an open block!
+    const openEquiv = !toAcct || !toAcct.frontier;
+
+    if (stateBlock) {
+      const previousBlock = toAcct.frontier || "0000000000000000000000000000000000000000000000000000000000000000";
+
+      const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
+      const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].balance);
+      const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
+      let newBalancePadded = newBalance.toString(16);
+      while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
+
       const context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
       blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(previousBlock));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(newBalancePadded));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
       const hashBytes = blake.blake2bFinal(context);
 
       const privKey = walletAccount.keyPair.secretKey;
       const signed = nacl.sign.detached(hashBytes, privKey);
       const signature = this.util.hex.fromUint8(signed);
-      const PK = this.util.account.getAccountPublicKey(walletAccount.id);
 
-      workBlock = PK;
+      workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : previousBlock;
       blockData = {
-        type: 'open',
+        type: 'state',
         account: walletAccount.id,
+        previous: previousBlock,
         representative: this.representativeAccount,
-        source: sourceBlock,
-        signature: signature,
-        work: null,
+        balance: newBalancePadded,
+        link: sourceBlock
       };
     } else {
-      const previousBlock = toAcct.frontier;
-      const context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(previousBlock));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-      const hashBytes = blake.blake2bFinal(context);
+      if (openEquiv) {
+        // This is an open block!
+        const context = blake.blake2bInit(32, null);
+        blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
+        blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
+        blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
+        const hashBytes = blake.blake2bFinal(context);
 
-      const privKey = walletAccount.keyPair.secretKey;
-      const signed = nacl.sign.detached(hashBytes, privKey);
-      const signature = this.util.hex.fromUint8(signed);
+        const privKey = walletAccount.keyPair.secretKey;
+        const signed = nacl.sign.detached(hashBytes, privKey);
+        const signature = this.util.hex.fromUint8(signed);
+        const PK = this.util.account.getAccountPublicKey(walletAccount.id);
 
-      workBlock = previousBlock;
-      blockData = {
-        type: 'receive',
-        previous: previousBlock,
-        source: sourceBlock,
-        signature: signature,
-        work: null,
-      };
+        workBlock = PK;
+        blockData = {
+          type: 'open',
+          account: walletAccount.id,
+          representative: this.representativeAccount,
+          source: sourceBlock,
+          signature: signature,
+          work: null,
+        };
+      } else {
+        // This is a receive block
+        const previousBlock = toAcct.frontier;
+        const context = blake.blake2bInit(32, null);
+        blake.blake2bUpdate(context, this.util.hex.toUint8(previousBlock));
+        blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
+        const hashBytes = blake.blake2bFinal(context);
+
+        const privKey = walletAccount.keyPair.secretKey;
+        const signed = nacl.sign.detached(hashBytes, privKey);
+        const signature = this.util.hex.fromUint8(signed);
+
+        workBlock = previousBlock;
+        blockData = {
+          type: 'receive',
+          previous: previousBlock,
+          source: sourceBlock,
+          signature: signature,
+          work: null,
+        };
+      }
     }
 
     if (!this.workPool.workExists(workBlock)) {
