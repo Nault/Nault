@@ -13,30 +13,61 @@ export class NanoBlockService {
 
   constructor(private api: ApiService, private util: UtilService, private workPool: WorkPoolService, private notifications: NotificationService) { }
 
-  async generateChange(walletAccount, representativeAccount) {
+  async generateChange(walletAccount, representativeAccount, stateBlock: boolean) {
     const toAcct = await this.api.accountInfo(walletAccount.id);
     if (!toAcct) throw new Error(`Account must have an open block first`);
 
-    const context = blake.blake2bInit(32, null);
-    blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.frontier));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(representativeAccount)));
-    const hashBytes = blake.blake2bFinal(context);
+    let blockData;
+    if (stateBlock) {
+      let link = '0000000000000000000000000000000000000000000000000000000000000000';
+      let context = blake.blake2bInit(32, null);
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.frontier));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(representativeAccount)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.balance));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(link));
+      const hashBytes = blake.blake2bFinal(context);
 
-    const privKey = walletAccount.keyPair.secretKey;
-    const signed = nacl.sign.detached(hashBytes, privKey);
-    const signature = this.util.hex.fromUint8(signed);
+      const privKey = walletAccount.keyPair.secretKey;
+      const signed = nacl.sign.detached(hashBytes, privKey);
+      const signature = this.util.hex.fromUint8(signed);
 
-    if (!this.workPool.workExists(toAcct.frontier)) {
-      this.notifications.sendInfo(`Generating Proof of Work...`);
+      if (!this.workPool.workExists(toAcct.frontier)) {
+        this.notifications.sendInfo(`Generating Proof of Work...`);
+      }
+
+      blockData = {
+        type: 'state',
+        account: walletAccount.id,
+        previous: toAcct.frontier,
+        representative: representativeAccount,
+        balance: toAcct.balance,
+        link: link,
+        signature: signature,
+        work: await this.workPool.getWork(toAcct.frontier),
+      };
+    } else {
+      let context = blake.blake2bInit(32, null);
+      blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.frontier));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(representativeAccount)));
+      const hashBytes = blake.blake2bFinal(context);
+
+      const privKey = walletAccount.keyPair.secretKey;
+      const signed = nacl.sign.detached(hashBytes, privKey);
+      const signature = this.util.hex.fromUint8(signed);
+
+      if (!this.workPool.workExists(toAcct.frontier)) {
+        this.notifications.sendInfo(`Generating Proof of Work...`);
+      }
+
+      blockData = {
+        type: 'change',
+        previous: toAcct.frontier,
+        representative: representativeAccount,
+        signature: signature,
+        work: await this.workPool.getWork(toAcct.frontier),
+      };
     }
-
-    const blockData = {
-      type: 'change',
-      previous: toAcct.frontier,
-      representative: representativeAccount,
-      signature: signature,
-      work: await this.workPool.getWork(toAcct.frontier),
-    };
 
     const processResponse = await this.api.process(blockData);
     if (processResponse && processResponse.hash) {
@@ -49,7 +80,7 @@ export class NanoBlockService {
     }
   }
 
-  async generateSend(walletAccount, toAccountID, rawAmount) {
+  async generateSend(walletAccount, toAccountID, rawAmount, stateBlock: boolean) {
     const fromAccount = await this.api.accountInfo(walletAccount.id);
     if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`);
 
@@ -57,28 +88,58 @@ export class NanoBlockService {
     let remainingPadded = remaining.toString(16);
     while (remainingPadded.length < 32) remainingPadded = '0' + remainingPadded; // Left pad with 0's
 
-    const context = blake.blake2bInit(32, null);
-    blake.blake2bUpdate(context, this.util.hex.toUint8(fromAccount.frontier));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(toAccountID)));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(remainingPadded));
-    const hashBytes = blake.blake2bFinal(context);
+    let blockData;
+    if (stateBlock) {
+      const context = blake.blake2bInit(32, null);
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(fromAccount.frontier));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(remainingPadded));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(toAccountID)));
+      const hashBytes = blake.blake2bFinal(context);
 
-    // Sign the hash bytes with the account priv key bytes
-    const signed = nacl.sign.detached(hashBytes, walletAccount.keyPair.secretKey);
-    const signature = this.util.hex.fromUint8(signed);
+      // Sign the hash bytes with the account priv key bytes
+      const signed = nacl.sign.detached(hashBytes, walletAccount.keyPair.secretKey);
+      const signature = this.util.hex.fromUint8(signed);
 
-    if (!this.workPool.workExists(fromAccount.frontier)) {
-      this.notifications.sendInfo(`Generating Proof of Work...`);
+      if (!this.workPool.workExists(fromAccount.frontier)) {
+        this.notifications.sendInfo(`Generating Proof of Work...`);
+      }
+
+      blockData = {
+        type: 'state',
+        account: walletAccount.id,
+        previous: fromAccount.frontier,
+        representative: this.representativeAccount,
+        balance: remainingPadded,
+        link: this.util.account.getAccountPublicKey(toAccountID),
+        work: await this.workPool.getWork(fromAccount.frontier),
+        signature: signature,
+      };
+    } else {
+      const context = blake.blake2bInit(32, null);
+      blake.blake2bUpdate(context, this.util.hex.toUint8(fromAccount.frontier));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(toAccountID)));
+      blake.blake2bUpdate(context, this.util.hex.toUint8(remainingPadded));
+      const hashBytes = blake.blake2bFinal(context);
+
+      // Sign the hash bytes with the account priv key bytes
+      const signed = nacl.sign.detached(hashBytes, walletAccount.keyPair.secretKey);
+      const signature = this.util.hex.fromUint8(signed);
+
+      if (!this.workPool.workExists(fromAccount.frontier)) {
+        this.notifications.sendInfo(`Generating Proof of Work...`);
+      }
+
+      blockData = {
+        type: 'send',
+        previous: fromAccount.frontier,
+        destination: toAccountID,
+        balance: remainingPadded,
+        work: await this.workPool.getWork(fromAccount.frontier),
+        signature: signature,
+      };
     }
-
-    const blockData = {
-      type: 'send',
-      previous: fromAccount.frontier,
-      destination: toAccountID,
-      balance: remainingPadded,
-      work: await this.workPool.getWork(fromAccount.frontier),
-      signature: signature,
-    };
 
     const processResponse = await this.api.process(blockData);
     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
