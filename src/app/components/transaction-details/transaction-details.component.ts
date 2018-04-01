@@ -17,6 +17,7 @@ export class TransactionDetailsComponent implements OnInit {
   transaction: any = {};
   hashID = '';
   blockType = 'send';
+  isStateBlock = true;
 
   toAccountID = '';
   fromAccountID = '';
@@ -58,8 +59,32 @@ export class TransactionDetailsComponent implements OnInit {
     const hashData = blockData.blocks[hash];
     const hashContents = JSON.parse(hashData.contents);
     hashData.contents = hashContents;
+    console.log(hashData);
 
     this.blockType = hashData.contents.type;
+    if (this.blockType === 'state') {
+      const isOpen = hashData.contents.previous === "0000000000000000000000000000000000000000000000000000000000000000";
+      if (isOpen) {
+        this.blockType = 'open'
+      } else {
+        const prevRes = await this.api.blocksInfo([hashData.contents.previous]);
+        const prevData = prevRes.blocks[hashData.contents.previous];
+        prevData.contents = JSON.parse(prevData.contents);
+        console.log(prevData);
+        const prevBalance = new BigNumber(prevData.contents.balance);
+        const curBalance = new BigNumber(hashData.contents.balance);
+        const balDifference = curBalance.minus(prevBalance);
+        if (balDifference.isNegative()) {
+          this.blockType = 'send';
+        } else if (balDifference.isZero()) {
+          this.blockType = 'change';
+        } else {
+          this.blockType = 'receive';
+        }
+      }
+    } else {
+      this.isStateBlock = false;
+    }
     if (hashData.amount) {
       this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
     }
@@ -71,7 +96,7 @@ export class TransactionDetailsComponent implements OnInit {
     switch (this.blockType) {
       case 'send':
         fromAccount = this.transaction.block_account;
-        toAccount = this.transaction.contents.destination;
+        toAccount = this.transaction.contents.destination || this.transaction.contents.link_as_account;
         break;
       case 'open':
       case 'receive':
@@ -93,6 +118,10 @@ export class TransactionDetailsComponent implements OnInit {
 
   getBalanceFromHex(balance) {
     return new BigNumber(balance, 16);
+  }
+
+  getBalanceFromDec(balance) {
+    return new BigNumber(balance, 10);
   }
 
 }
