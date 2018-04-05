@@ -70,7 +70,7 @@
         <div class="uk-margin" *ngIf="transaction?.contents?.balance">
           <label class="uk-form-label">Balance:</label>
           <div class="uk-form-controls uk-text-truncate">
-            {{ getBalanceFromHex(transaction?.contents?.balance) | rai: settings.settings.displayDenomination }}<br>
+            {{ (isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance)) | rai: settings.settings.displayDenomination }}<br>
             <span class="uk-text-small">{{ transaction?.contents?.balance }}</span>
           </div>
         </div>
@@ -90,6 +90,18 @@
           <label class="uk-form-label">Source:</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/transaction/' + transaction?.contents?.source" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.source }}</a>
+          </div>
+        </div>
+        <div class="uk-margin" *ngIf="transaction?.contents?.link && blockType == 'receive'">
+          <label class="uk-form-label">Link (Source):</label>
+          <div class="uk-form-controls uk-text-truncate">
+            <a [routerLink]="'/transaction/' + transaction?.contents?.link" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.link }}</a>
+          </div>
+        </div>
+        <div class="uk-margin" *ngIf="transaction?.contents?.link_as_account && blockType == 'send'">
+          <label class="uk-form-label">Link (Destination):</label>
+          <div class="uk-form-controls uk-text-truncate">
+            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.link_as_account }}</a>
           </div>
         </div>
         <div class="uk-margin">
