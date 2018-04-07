@@ -38,6 +38,8 @@ import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nan
 import {PowService} from "./services/pow.service";
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
+import { RepresentativesComponent } from './components/representatives/representatives.component';
+import {RepresentativeService} from "./services/representative.service";
 
 
 @NgModule({
@@ -62,6 +64,7 @@ import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
     NanoAccountIdComponent,
     ImportAddressBookComponent,
     CurrencySymbolPipe,
+    RepresentativesComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +87,7 @@ import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
     NanoBlockService,
     PriceService,
     PowService,
+    RepresentativeService,
   ],
   bootstrap: [AppComponent]
 })

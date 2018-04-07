@@ -13,6 +13,7 @@ import {AccountDetailsComponent} from "./components/account-details/account-deta
 import {TransactionDetailsComponent} from "./components/transaction-details/transaction-details.component";
 import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
+import {RepresentativesComponent} from "./components/representatives/representatives.component";
 
 import { environment } from '../environments/environment';
 
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'manage-wallet', component: ManageWalletComponent },
   { path: 'send', component: SendComponent },
   { path: 'receive', component: ReceiveComponent },
+  { path: 'representatives', component: RepresentativesComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
 ];
 

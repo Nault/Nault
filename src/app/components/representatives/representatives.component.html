@@ -1,0 +1,43 @@
+<div uk-grid>
+  <div class="uk-width-1-1">
+    <h2>Manage Representatives</h2>
+
+    <!-- Send Panel -->
+    <div uk-grid class="uk-animation-slide-left-small">
+      <div class="uk-width-1-1">
+
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-body">
+            <p class="uk-text-lead uk-text-center">You have delegated voting weight to the following representatives</p>
+
+
+            <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
+              <li style="background: #fff; border-bottom: 0;">
+                <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+                  <div class="uk-width-expand">Representative</div>
+                  <div class="uk-width-2-5">Weight</div>
+                  <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Status</div>
+                </div>
+              </li>
+            </ul>
+            <ul class="uk-list uk-list-striped" style="margin-top: 0;">
+              <li *ngFor="let rep of report.breakdown">
+                <div uk-grid class="uk-text-danger" [ngClass]="{ 'uk-text-danger': rep.status === 'alert', 'uk-text-warning': rep.status === 'warn', 'uk-text-success': rep.status === 'trusted' }">
+                  <div class="uk-width-expand uk-text-truncate"><span *ngIf="rep.label">{{ rep.label }}</span> <span *ngIf="!rep.label">{{ rep.id }}</span></div>
+                  <div class="uk-width-2-5">{{ rep.delegatedWeight | rai: 'mnano' }}</div>
+                  <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
+                    <span *ngIf="rep.status === 'alert'" uk-tooltip title="This is an official representative or it has very high voting weight.  It is recommended to change to a new representative!">Change</span>
+                    <span *ngIf="rep.status === 'warn'" uk-tooltip title="This representative has a high voting weight.  Consider changing to a new representative.">Change</span>
+                    <span *ngIf="rep.status === 'trusted'" uk-tooltip title="This representative is marked as trusted.  No change is needed.">No Change Needed</span>
+                    <span *ngIf="rep.status === 'none'" uk-tooltip title="This representative is not known, consider switching to a trusted rep.">Unknown</span>
+                    <!--{{ rep.status }} (%{{ rep.percent.toFixed(2) }} total)-->
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

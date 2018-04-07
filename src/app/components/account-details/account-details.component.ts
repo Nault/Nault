@@ -74,6 +74,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
 
+    console.log(`Account: `, this.account);
+
+    const delegators = await this.api.delegatorsCount(this.accountID);
+    console.log(`DELEGATORS: `, delegators);
+
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
       const pending = await this.api.pending(this.accountID, 25);

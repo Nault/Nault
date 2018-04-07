@@ -23,6 +23,9 @@ export class ApiService {
   async accountsPending(accounts: string[], count: number = 50): Promise<{blocks: any }> {
     return await this.request('accounts_pending', { accounts, count, source: true });
   }
+  async delegatorsCount(account: string): Promise<{ count: string }> {
+    return await this.request('delegators_count', { account });
+  }
 
   async generateNewSeed(): Promise<any> {
     return await this.http.post(`${this.rpcUrl}/generate-seed`, {}).toPromise();
@@ -97,7 +100,7 @@ export class ApiService {
     return await this.request('account_list', { wallet });
   }
   async accountInfo(account): Promise<any> {
-    return await this.request('account_info', { account, pending: true, representative: true });
+    return await this.request('account_info', { account, pending: true, representative: true, weight: true });
   }
   async validateAccountNumber(account): Promise<{ valid: '1'|'0' }> {
     return await this.request('validate_account_number', { account });
