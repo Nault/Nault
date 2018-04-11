@@ -66,7 +66,7 @@ export class RepresentativesComponent implements OnInit {
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.representativeService.getRepresentative(representative.account);
 
-      const nanoWeight = this.util.nano.rawToMnano(representative.weight);
+      const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
       const percent = nanoWeight.div(totalSupply).times(100);
 
       // Determine the status based on some factors
