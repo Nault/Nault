@@ -29,9 +29,9 @@
             </ul>
             <ul class="uk-list uk-list-striped" style="margin-top: 0;">
               <li *ngFor="let rep of representativeOverview">
-                <div uk-grid class="" [ngClass]="{ 'uk-text-danger': rep.status === 'alert', 'uk-text-warning': rep.status === 'warn', 'uk-text-success': rep.status === 'trusted', 'uk-text-primary': rep.status === 'known' }">
+                <div uk-grid class="">
 
-                  <div class="uk-width-1-5">
+                  <div class="uk-width-1-5" [ngClass]="{ 'uk-text-danger': rep.status === 'alert', 'uk-text-warning': rep.status === 'warn', 'uk-text-success': rep.status === 'trusted', 'uk-text-primary': rep.status === 'known' }">
                     <span *ngIf="rep.status === 'alert'" uk-tooltip title="This is an official representative or it has very high (10%+) voting weight.  It is recommended to change to a new representative!"><span uk-icon="icon: warning"></span> Change</span>
                     <span *ngIf="rep.status === 'warn'" uk-tooltip title="This representative has a high voting weight (1%+).  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
                     <span *ngIf="rep.status === 'trusted'" uk-tooltip title="This representative is marked as trusted.  No change is needed."><span uk-icon="icon: star"></span> Trusted</span>
