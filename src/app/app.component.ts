@@ -8,6 +8,7 @@ import {NotificationService} from "./services/notification.service";
 import {PowService} from "./services/pow.service";
 import {WorkPoolService} from "./services/work-pool.service";
 import {Router} from "@angular/router";
+import {RepresentativeService} from "./services/representative.service";
 
 @Component({
   selector: 'app-root',
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
     private websocket: WebsocketService,
     private notifications: NotificationService,
     private pow: PowService,
+    private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
     public price: PriceService) { }
@@ -44,6 +46,8 @@ export class AppComponent implements OnInit {
     this.websocket.connect();
 
     await this.updateFiatPrices();
+
+    this.representative.loadRepresentativeList();
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     if (this.wallet.locked && this.wallet.pending.gt(0)) {

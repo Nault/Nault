@@ -59,7 +59,6 @@ export class TransactionDetailsComponent implements OnInit {
     const hashData = blockData.blocks[hash];
     const hashContents = JSON.parse(hashData.contents);
     hashData.contents = hashContents;
-    console.log(hashData);
 
     this.blockType = hashData.contents.type;
     if (this.blockType === 'state') {
@@ -70,7 +69,6 @@ export class TransactionDetailsComponent implements OnInit {
         const prevRes = await this.api.blocksInfo([hashData.contents.previous]);
         const prevData = prevRes.blocks[hashData.contents.previous];
         prevData.contents = JSON.parse(prevData.contents);
-        console.log(prevData);
         const prevBalance = new BigNumber(prevData.contents.balance);
         const curBalance = new BigNumber(hashData.contents.balance);
         const balDifference = curBalance.minus(prevBalance);

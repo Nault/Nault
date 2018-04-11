@@ -40,6 +40,7 @@ import { ImportAddressBookComponent } from './components/import-address-book/imp
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
 import { RepresentativesComponent } from './components/representatives/representatives.component';
 import {RepresentativeService} from "./services/representative.service";
+import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import {RepresentativeService} from "./services/representative.service";
     ImportAddressBookComponent,
     CurrencySymbolPipe,
     RepresentativesComponent,
+    ManageRepresentativesComponent,
   ],
   imports: [
     BrowserModule,

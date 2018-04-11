@@ -90,9 +90,25 @@
                         <div class=" uk-width-1-1">
                           <div class="uk-margin">
                             <div class="uk-inline uk-width-1-1">
-                              <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check"></a>
-                              <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close"></a>
-                              <input class="uk-input" (keyup.enter)="saveRepresentative()" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text" style="padding-right: 60px;">
+                              <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveRepresentative()" uk-icon="icon: check" uk-tooltip title="Save New Representative"></a>
+                              <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditRepresentative = false" uk-icon="icon: close" uk-tooltip title="Cancel Changes"></a>
+
+                              <input class="uk-input" (keyup.enter)="saveRepresentative()" (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="representativeModel" placeholder="New Representative Account" type="text" style="padding-right: 60px;">
+
+                              <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                                <ul class="uk-nav uk-nav-default">
+                                  <li class="uk-nav-header">Representative List Results</li>
+                                  <li class="uk-nav-divider"></li>
+                                  <li *ngFor="let rep of representativeResults$ | async">
+                                    <a (click)="selectRepresentative(rep.id)">
+                                      {{ rep.name }}
+                                      <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
+                                      <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+
                             </div>
                           </div>
                         </div>
@@ -101,7 +117,7 @@
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
                         <div class="uk-width-expand uk-text-truncate ">
-                          {{ account.representative }}
+                          <span *ngIf="repLabel" class="uk-label">{{ repLabel }}</span> {{ account.representative }}
                         </div>
                         <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
                           <ul class="uk-hidden-hover uk-iconnav">

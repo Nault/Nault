@@ -1,20 +1,92 @@
 import { Injectable } from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class RepresentativeService {
   storeKey = `nanovault-representatives`;
 
+  representatives$ = new BehaviorSubject([]);
   representatives = [];
 
+  loaded = false;
+
+  constructor() {
+    this.representatives = this.defaultRepresentatives;
+  }
+
+  loadRepresentativeList() {
+    if (this.loaded) return this.representatives;
+
+    let list = this.defaultRepresentatives;
+    const representativeStore = localStorage.getItem(this.storeKey);
+    if (representativeStore) {
+      list = JSON.parse(representativeStore);
+    }
+    this.representatives = list;
+    this.representatives$.next(list);
+    this.loaded = true;
+
+    return list;
+  }
+
+  getRepresentative(id) {
+    return this.representatives.find(rep => rep.id == id);
+  }
+
+  saveRepresentative(accountID, name, trusted = false, warn = false) {
+    const newRepresentative: any = {
+      id: accountID,
+      name: name,
+    };
+    if (trusted) newRepresentative.trusted = true;
+    if (warn) newRepresentative.warn = true;
+
+    const existingRepresentative = this.representatives.find(r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase());
+    if (existingRepresentative) {
+      this.representatives.splice(this.representatives.indexOf(existingRepresentative), 1, newRepresentative);
+    } else {
+      this.representatives.push(newRepresentative);
+    }
+
+    this.saveRepresentatives();
+    this.representatives$.next(this.representatives);
+  }
+
+  deleteRepresentative(accountID) {
+    const existingIndex = this.representatives.findIndex(a => a.id.toLowerCase() === accountID.toLowerCase());
+    if (existingIndex === -1) return;
+
+    this.representatives.splice(existingIndex, 1);
+
+    this.saveRepresentatives();
+    this.representatives$.next(this.representatives);
+  }
+
+  saveRepresentatives(): void {
+    localStorage.setItem(this.storeKey, JSON.stringify(this.representatives));
+  }
+
+  getSortedRepresentatives() {
+    const weightedReps = this.representatives.map(r => {
+      if (r.trusted) {
+        r.weight = 2;
+      } else if (r.warn) {
+        r.weight = 0;
+      } else {
+        r.weight = 1;
+      }
+      return r;
+    });
+
+    return weightedReps.sort((a, b) => b.weight - a.weight);
+  }
+
+  // Default representatives list
   defaultRepresentatives = [
     {
       id: 'xrb_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or',
       name: 'NanoVault Rep',
       trusted: true,
-    },
-    {
-      id: 'xrb_3pczxuorp48td8645bs3m6c3xotxd3idskrenmi65rbrga5zmkemzhwkaznh',
-      name: 'NanoWallet.io Rep',
     },
     {
       id: 'xrb_3arg3asgtigae3xckabaaewkx3bzsh7nwz7jkmjos79ihyaxwphhm6qgjps4',
@@ -57,6 +129,10 @@ export class RepresentativeService {
       warn: true,
     },
     {
+      id: 'xrb_3pczxuorp48td8645bs3m6c3xotxd3idskrenmi65rbrga5zmkemzhwkaznh',
+      name: 'NanoWallet.io Rep',
+    },
+    {
       id: 'xrb_1niabkx3gbxit5j5yyqcpas71dkffggbr6zpd3heui8rpoocm5xqbdwq44oh',
       name: 'KuCoin 1',
     },
@@ -89,13 +165,5 @@ export class RepresentativeService {
       name: 'Nanex Rep',
     },
   ];
-
-  constructor() {
-    this.representatives = this.defaultRepresentatives;
-  }
-
-  getRepresentative(id) {
-    return this.representatives.find(rep => rep.id == id);
-  }
 
 }

@@ -1,0 +1,130 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1" id="address-book-sortable">
+    <div uk-grid>
+      <div class="uk-width-1-2">
+        <h2>Representatives List</h2>
+      </div>
+      <div class="uk-width-1-2 uk-text-right">
+        <button class="uk-button uk-button-secondary" (click)="activePanel = 1;">Add New Rep</button>
+      </div>
+    </div>
+    <p>
+      You can use the representatives list to store a label and other information for representatives you use.
+    </p>
+
+
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 0" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default uk-margin">
+
+          <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
+            <li style="background: #fff; border-bottom: 0;">
+              <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+                <div class="uk-width-2-5">Name</div>
+                <div class="uk-width-expand">Account ID</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="uk-list uk-list-striped" style="margin-top: 0;">
+            <li class="" *ngFor="let representative of representatives$ | async;" [attr.data-account]="representative.id">
+              <div uk-grid>
+                <div class="uk-width-2-5 uk-text-truncate uk-visible-toggle">
+                  <div uk-grid>
+                    <div class="uk-width-expand uk-text-truncate">
+                      <span class="circle circle-online" *ngIf="representative.online" uk-tooltip title="Representative is online"></span>
+                      <span class="circle circle-offline" *ngIf="!representative.online" uk-tooltip title="Representative is offline"></span>
+                      <a (click)="editEntry(representative)" class="uk-link-text" title="Edit Representative" uk-tooltip>{{ representative.name }}</a>
+                    </div>
+                    <ul class="uk-iconnav uk-width-auto" style="padding-left: 0;">
+                      <!--<li><span class="uk-hidden-hover uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>-->
+                      <li *ngIf="representative.trusted"><span class="uk-text-success" uk-icon="icon: star" uk-tooltip title="Representative marked as trusted"></span></li>
+                      <li *ngIf="representative.warn"><span class="uk-text-warning" uk-icon="icon: warning" uk-tooltip title="Representative marked as avoid"></span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
+                  <div uk-grid>
+                    <div class="uk-width-expand uk-text-truncate">
+                      <a [routerLink]="'/account/' + representative.id" class="uk-link-text" title="View Account Details" uk-tooltip>
+                        {{ representative.id }}
+                      </a>
+                    </div>
+                    <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+                      <li><a ngxClipboard [cbContent]="representative.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+
+                </div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
+                  <a (click)="deleteRepresentative(representative.id)" class="uk-text-danger" title="Delete Representative" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+                </div>
+              </div>
+
+            </li>
+            <li *ngIf="!(representatives$ | async).length" class="uk-text-center">
+              You do not have any representatives saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 1" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header">
+            <h2 class="uk-card-title">Create New Representative</h2>
+          </div>
+          <div class="uk-card-body">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" placeholder="xrb_abc123">
+                </div>
+              </div>
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-name">Name</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newRepName" (keyup.enter)="saveNewRepresentative()" placeholder="Representative Name">
+                </div>
+              </div>
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Representative Flags</label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-1-1">
+                      <label style="cursor: pointer;" uk-tooltip title="Make a representative appear at the top of your list as a recommended option"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepTrusted"> &nbsp; Trusted Representative</label>
+                    </div>
+                    <div class="uk-width-1-1 uk-margin-small-top">
+                      <label style="cursor: pointer;" uk-tooltip title="Warn the user when using this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepWarn"> &nbsp; Avoid Representative</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="uk-card-footer">
+            <div uk-grid>
+              <div class="uk-width-1-2@s uk-text-left">
+                <button class="uk-button uk-button-danger uk-width-1-1" (click)="cancelNewRep()">Cancel</button>
+              </div>
+              <div class="uk-width-1-2@s uk-text-right">
+                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewRepresentative()">Save New Representative</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

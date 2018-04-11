@@ -10,6 +10,8 @@ import {PriceService} from "../../services/price.service";
 import {UtilService} from "../../services/util.service";
 import * as QRCode from 'qrcode';
 import BigNumber from "bignumber.js";
+import {RepresentativeService} from "../../services/representative.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'app-account-details',
@@ -24,6 +26,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   pageSize = 25;
   maxPageSize = 200;
 
+  repLabel: any = '';
   addressBookEntry: any = null;
   account: any = {};
   accountID: string = '';
@@ -34,6 +37,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   addressBookModel = '';
   showEditRepresentative = false;
   representativeModel = '';
+  representativeResults$ = new BehaviorSubject([]);
+  showRepresentatives = false;
+  representativeListMatch = '';
 
   qrCodeImage = null;
 
@@ -46,6 +52,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private addressBook: AddressBookService,
     private api: ApiService,
     private price: PriceService,
+    private repService: RepresentativeService,
     private notifications: NotificationService,
     private wallet: WalletService,
     private util: UtilService,
@@ -74,10 +81,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
 
-    console.log(`Account: `, this.account);
-
-    const delegators = await this.api.delegatorsCount(this.accountID);
-    console.log(`DELEGATORS: `, delegators);
+    const knownRepresentative = this.repService.getRepresentative(this.account.representative);
+    this.repLabel = knownRepresentative ? knownRepresentative.name : null;
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
@@ -169,6 +174,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const accountInfo = await this.api.accountInfo(this.accountID);
     this.account = accountInfo;
+    const newRep = this.repService.getRepresentative(repAccount);
+    this.repLabel = newRep ? newRep.name : '';
 
     this.notifications.sendSuccess(`Successfully changed representative`);
   }
@@ -198,6 +205,37 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     this.addressBookEntry = addressBookName;
     this.showEditAddressBook = false;
+  }
+
+  searchRepresentatives() {
+    this.showRepresentatives = true;
+    const search = this.representativeModel || '';
+    const representatives = this.repService.getSortedRepresentatives();
+
+    const matches = representatives
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      .slice(0, 5);
+
+    this.representativeResults$.next(matches);
+  }
+
+  selectRepresentative(rep) {
+    this.showRepresentatives = false;
+    this.representativeModel = rep;
+    this.searchRepresentatives();
+    this.validateRepresentative();
+  }
+
+  validateRepresentative() {
+    setTimeout(() => this.showRepresentatives = false, 400);
+    this.representativeModel = this.representativeModel.replace(/ /g, '');
+    const rep = this.repService.getRepresentative(this.representativeModel);
+
+    if (rep) {
+      this.representativeListMatch = rep.name;
+    } else {
+      this.representativeListMatch = '';
+    }
   }
 
   copied() {

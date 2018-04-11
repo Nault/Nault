@@ -16,6 +16,7 @@ import { ImportAddressBookComponent } from './components/import-address-book/imp
 import {RepresentativesComponent} from "./components/representatives/representatives.component";
 
 import { environment } from '../environments/environment';
+import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'send', component: SendComponent },
   { path: 'receive', component: ReceiveComponent },
   { path: 'representatives', component: RepresentativesComponent },
+  { path: 'manage-representatives', component: ManageRepresentativesComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
 ];
 
