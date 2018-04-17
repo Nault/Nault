@@ -9,6 +9,7 @@ import {PowService} from "./services/pow.service";
 import {WorkPoolService} from "./services/work-pool.service";
 import {Router} from "@angular/router";
 import {RepresentativeService} from "./services/representative.service";
+import {NodeService} from "./services/node.service";
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
     this.windowHeight = e.target.innerHeight;
   };
   wallet = this.walletService.wallet;
+  node = this.nodeService.node;
   nanoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
     private websocket: WebsocketService,
     private notifications: NotificationService,
     private pow: PowService,
+    public nodeService: NodeService,
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,

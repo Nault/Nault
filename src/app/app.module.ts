@@ -41,6 +41,7 @@ import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
 import { RepresentativesComponent } from './components/representatives/representatives.component';
 import {RepresentativeService} from "./services/representative.service";
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
+import {NodeService} from "./services/node.service";
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import {ManageRepresentativesComponent} from "./components/manage-representative
     PriceService,
     PowService,
     RepresentativeService,
+    NodeService,
   ],
   bootstrap: [AppComponent]
 })

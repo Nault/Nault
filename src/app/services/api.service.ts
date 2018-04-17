@@ -1,17 +1,28 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {NodeService} from "./node.service";
 
 @Injectable()
 export class ApiService {
 
-  rpcUrl = `https://nanovault.io/api/node-api`;
-  // rpcUrl = `http://localhost:9950/api/node-api`;
+  // rpcUrl = `https://nanovault.io/api/node-api`;
+  rpcUrl = `http://localhost:9950/api/node-api`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private node: NodeService) { }
 
   private async request(action, data): Promise<any> {
     data.action = action;
-    return await this.http.post(this.rpcUrl, data).toPromise();
+    return await this.http.post(this.rpcUrl, data).toPromise()
+      .then(res => {
+        this.node.setOnline();
+        return res;
+      })
+      .catch(err => {
+        if (err.status === 500 || err.status === 0) {
+          this.node.setOffline(); // Hard error, node is offline
+        }
+        throw err;
+      });
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {
