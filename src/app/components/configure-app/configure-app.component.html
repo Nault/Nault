@@ -124,6 +124,23 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Block Type <span uk-icon="icon: info;" uk-tooltip title="Select which type of blocks to generate (Recommended to use Legacy blocks until forced upgrade)"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedBlockOption">
+                      <option *ngFor="let option of blockOptions" [value]="option.value">{{ option.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">

@@ -11,6 +11,7 @@ interface AppSettings {
   lockOnClose: number;
   lockInactivityMinutes: number;
   powSource: PoWSource;
+  useStateBlocks: boolean;
 }
 
 @Injectable()
@@ -24,6 +25,7 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
+    useStateBlocks: false,
   };
 
   constructor() { }
@@ -70,6 +72,7 @@ export class AppSettingsService {
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',
+      useStateBlocks: false,
     };
   }
 

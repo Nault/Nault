@@ -131,12 +131,45 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (resetPage) {
       this.pageSize = 25;
     }
-    const history = await this.api.accountHistory(account, this.pageSize);
+    const history = await this.api.accountHistory(account, this.pageSize, true);
+    let additionalBlocksInfo = [];
+
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
-        h.addressBookName = this.addressBook.getAccountName(h.account) || null;
+        if (h.type === 'state') {
+          // For Open and receive blocks, we need to look up block info to get originating account
+          if (h.subtype === 'open' || h.subtype === 'receive') {
+            additionalBlocksInfo.push({ hash: h.hash, link: h.link });
+          } else {
+            h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
+            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+          }
+        } else {
+          h.addressBookName = this.addressBook.getAccountName(h.account) || null;
+        }
         return h;
       });
+
+      // Remove change blocks now that we are using the raw output
+      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change');
+
+      if (additionalBlocksInfo.length) {
+        const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
+        for (let block in blocksInfo.blocks) {
+          if (!blocksInfo.blocks.hasOwnProperty(block)) continue;
+
+          const matchingBlock = additionalBlocksInfo.find(a => a.link === block);
+          if (!matchingBlock) continue;
+          const accountInHistory = this.accountHistory.find(h => h.hash === matchingBlock.hash);
+          if (!accountInHistory) continue;
+
+          const blockData = blocksInfo.blocks[block];
+
+          accountInHistory.link_as_account = blockData.block_account;
+          accountInHistory.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
+        }
+      }
+
     } else {
       this.accountHistory = [];
     }

@@ -180,19 +180,19 @@
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a [routerLink]="'/account/' + history.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.account }}
+                      <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
+                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.link_as_account || history.account }}
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
                       <ul class="uk-hidden-hover uk-iconnav">
-                        <li><a ngxClipboard [cbContent]="history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                        <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
                     </div>
                   </div>
                 </td>
-                <td [ngClass]="{ 'uk-text-success': history.type == 'receive', 'uk-text-danger': history.type == 'send' }">
-                  {{ history.type == 'send' ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
+                <td [ngClass]="{ 'uk-text-success': history.type == 'receive' || history.subtype == 'receive', 'uk-text-danger': history.type == 'send' || history.subtype == 'send' }">
+                  {{ (history.type == 'send' || history.subtype == 'send') ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ history.hash }}</a></td>
               </tr>

@@ -72,6 +72,7 @@ export class AddressBookService {
   }
 
   getAccountName(account: string): string|null {
+    if (!account || !account.length) return null;
     const match = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
     return match && match.name || null;
   }

@@ -42,8 +42,8 @@ export class ApiService {
   async process(block): Promise<{ hash: string, error?: string }> {
     return await this.request('process', { block: JSON.stringify(block) });
   }
-  async accountHistory(account, count = 25): Promise<{history: any }> {
-    return await this.request('account_history', { account, count });
+  async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
+    return await this.request('account_history', { account, count, raw });
   }
   async accountInfo(account): Promise<any> {
     return await this.request('account_info', { account, pending: true, representative: true, weight: true });

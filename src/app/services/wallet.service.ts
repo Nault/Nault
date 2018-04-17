@@ -24,6 +24,7 @@ export interface WalletAccount {
   balanceFiat: number;
   pendingFiat: number;
   addressBookName: string|null;
+  useStateBlocks: boolean;
 }
 export interface FullWallet {
   seedBytes: any;
@@ -91,6 +92,8 @@ export class WalletService {
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
           await this.processPendingBlocks();
         }
+      } else if (transaction.block.type == 'state') {
+        await this.processStateBlock(transaction);
       }
 
       // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
@@ -101,6 +104,24 @@ export class WalletService {
     this.addressBook.addressBook$.subscribe(newAddressBook => {
       this.reloadAddressBook();
     })
+  }
+
+  async processStateBlock(transaction) {
+    if (transaction.is_send === 'true' && transaction.block.link_as_account) {
+      // This is an incoming send block, we want to perform a receive
+      const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
+      if (!walletAccount) return; // Not for our wallet?
+
+      walletAccount.useStateBlocks = true;
+      this.addPendingBlock(walletAccount.id, transaction.hash, new BigNumber(0));
+      await this.processPendingBlocks();
+    } else {
+      // Not a send to us, which means it was a block posted by us.  We shouldnt need to do anything...
+      const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
+      if (!walletAccount) return; // Not for our wallet?
+
+      walletAccount.useStateBlocks = true; // Should already be set?
+    }
   }
 
   reloadAddressBook() {
@@ -366,11 +387,16 @@ export class WalletService {
     const accountIDs = this.wallet.accounts.map(a => a.id);
     const accounts = await this.api.accountsBalances(accountIDs);
     const frontiers = await this.api.accountsFrontiers(accountIDs);
+    const allFrontiers = [];
+    for (const account in frontiers.frontiers) {
+      allFrontiers.push({ account, frontier: frontiers.frontiers[account] });
+    }
+    const frontierBlocks = await this.api.blocksInfo(allFrontiers.map(f => f.frontier));
 
     let walletBalance = new BigNumber(0);
     let walletPending = new BigNumber(0);
 
-    for (let accountID in accounts.balances) {
+    for (const accountID in accounts.balances) {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
       // Find the account, update it
       const walletAccount = this.wallet.accounts.find(a => a.id == accountID);
@@ -385,6 +411,15 @@ export class WalletService {
       walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
 
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
+
+      // Look at the accounts latest block to determine if they are using state blocks
+      if (walletAccount.frontier && frontierBlocks.blocks[walletAccount.frontier]) {
+        const frontierBlock = frontierBlocks.blocks[walletAccount.frontier];
+        const frontierBlockData = JSON.parse(frontierBlock.contents);
+        if (frontierBlockData.type === 'state') {
+          walletAccount.useStateBlocks = true;
+        }
+      }
 
       walletBalance = walletBalance.plus(walletAccount.balance);
       walletPending = walletPending.plus(walletAccount.pending);
@@ -429,6 +464,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
+      useStateBlocks: false,
     };
 
     this.wallet.accounts.push(newAccount);
@@ -470,6 +506,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
+      useStateBlocks: false,
     };
 
     // Todo, make sure this account isnt already in our list?
@@ -554,7 +591,7 @@ export class WalletService {
       this.successfulBlocks.push(nextBlock.hash);
 
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
-      this.notifications.sendSuccess(`Successfully received ${receiveAmount.toFixed(6)} Nano!`);
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} Nano!`);
 
       // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
       await this.reloadBalances();
