@@ -578,7 +578,7 @@ export class WalletService {
 
     this.processingPending = true;
 
-    const nextBlock = this.pendingBlocks.shift();
+    const nextBlock = this.pendingBlocks[0];
     if (this.successfulBlocks.find(b => b.hash == nextBlock.hash)) {
       return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
     }
@@ -599,6 +599,7 @@ export class WalletService {
       this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
     }
 
+    this.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
     this.processingPending = false;
 
     setTimeout(() => this.processPendingBlocks(), 1500);
