@@ -191,7 +191,7 @@
                     </div>
                   </div>
                 </td>
-                <td [ngClass]="{ 'uk-text-success': history.type == 'receive' || history.subtype == 'receive', 'uk-text-danger': history.type == 'send' || history.subtype == 'send' }">
+                <td [ngClass]="{ 'uk-text-success': history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open', 'uk-text-danger': history.type == 'send' || history.subtype == 'send' }">
                   {{ (history.type == 'send' || history.subtype == 'send') ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ history.hash }}</a></td>
