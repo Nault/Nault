@@ -8,7 +8,7 @@
         <div class="uk-margin-left" style="padding-bottom: 15px; color: #666;">
           <div uk-grid>
             <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
-            <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" >
+            <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="wallet.seed">
               <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
               <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
             </div>
@@ -17,7 +17,7 @@
           <div style="display: inline-block; text-align: right;" class="uk-text-truncate">
             <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
             <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-            <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+            <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && wallet.seed }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
           </div>
 
           <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="wallet.pending.gt(0)">
@@ -91,7 +91,7 @@
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <div uk-grid>
               <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
-              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" >
+              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="wallet.seed">
                 <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
                 <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
               </div>
@@ -100,7 +100,7 @@
             <div style="display: inline-block; text-align: right;" class="uk-text-truncate">
               <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
               <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null }" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+              <span class="balance" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && wallet.seed }" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
             </div>
 
             <div *ngIf="wallet.pending.gt(0)">
