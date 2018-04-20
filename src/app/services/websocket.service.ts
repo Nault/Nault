@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {AppSettingsService} from "./app-settings.service";
 
 @Injectable()
 export class WebsocketService {
@@ -20,7 +21,7 @@ export class WebsocketService {
 
   newTransactions$ = new BehaviorSubject(null);
 
-  constructor() { }
+  constructor(private appSettings: AppSettingsService) { }
 
   connect() {
     if (this.socket.connected && this.socket.ws) return;
@@ -59,10 +60,17 @@ export class WebsocketService {
         if (newEvent.event === 'newTransaction') {
           this.newTransactions$.next(newEvent.data);
         }
+        if (newEvent.event === 'useStateBlocks') {
+          this.setStateBlocks(); // Forcefully use state blocks, second canary has been released
+        }
       } catch (err) {
         console.log(`Error parsing message`, err);
       }
     }
+  }
+
+  setStateBlocks() {
+    this.appSettings.setAppSetting('useStateBlocks', true);
   }
 
   attemptReconnect() {
