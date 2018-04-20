@@ -48,6 +48,7 @@ export class TransactionDetailsComponent implements OnInit {
     this.fromAccountID = '';
     this.toAddressBook = '';
     this.fromAddressBook = '';
+    let legacyFromAccount = '';
     this.amountRaw = new BigNumber(0);
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
@@ -69,15 +70,21 @@ export class TransactionDetailsComponent implements OnInit {
         const prevRes = await this.api.blocksInfo([hashData.contents.previous]);
         const prevData = prevRes.blocks[hashData.contents.previous];
         prevData.contents = JSON.parse(prevData.contents);
-        const prevBalance = new BigNumber(prevData.contents.balance);
-        const curBalance = new BigNumber(hashData.contents.balance);
-        const balDifference = curBalance.minus(prevBalance);
-        if (balDifference.isNegative()) {
-          this.blockType = 'send';
-        } else if (balDifference.isZero()) {
-          this.blockType = 'change';
+        if (!prevData.contents.balance) {
+          // Previous block is not a state block.
+          this.blockType = prevData.contents.type;
+          legacyFromAccount = prevData.source_account;
         } else {
-          this.blockType = 'receive';
+          const prevBalance = new BigNumber(prevData.contents.balance);
+          const curBalance = new BigNumber(hashData.contents.balance);
+          const balDifference = curBalance.minus(prevBalance);
+          if (balDifference.isNegative()) {
+            this.blockType = 'send';
+          } else if (balDifference.isZero()) {
+            this.blockType = 'change';
+          } else {
+            this.blockType = 'receive';
+          }
         }
       }
     } else {
@@ -106,6 +113,11 @@ export class TransactionDetailsComponent implements OnInit {
         toAccount = this.transaction.contents.representative;
         break;
     }
+
+    if (legacyFromAccount) {
+      fromAccount = legacyFromAccount;
+    }
+
     this.toAccountID = toAccount;
     this.fromAccountID = fromAccount;
 
