@@ -120,5 +120,20 @@
       </div>
     </div>
 
+    <div uk-grid>
+      <div class="uk-width-1-1 uk-text-center">
+        <a (click)="showBlockData = !showBlockData" class="uk-link-text">{{ showBlockData ? 'Hide' : 'Show' }} Block Data</a>
+      </div>
+    </div>
+
+    <div class="uk-card uk-card-default uk-margin" *ngIf="transaction && transactionJSON && showBlockData">
+      <div class="uk-card-header">
+        Raw Block Data
+      </div>
+      <div class="uk-card-body uk-padding-small uk-form-horizontal">
+        <pre><code>{{ transactionJSON }}</code></pre>
+      </div>
+    </div>
+
   </div>
 </div>
