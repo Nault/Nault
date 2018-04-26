@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   windowHeight = 1000;
+  showSearchBar = false;
+  searchData = '';
 
   constructor(
     private walletService: WalletService,
@@ -93,6 +95,27 @@ export class AppComponent implements OnInit {
         this.notifications.sendSuccess(`Wallet locked after ${this.settings.settings.lockInactivityMinutes} minutes of inactivity`);
       }
     }, 1000);
+  }
+
+  toggleSearch(mobile = false) {
+    this.showSearchBar = !this.showSearchBar;
+    if (this.showSearchBar) {
+      setTimeout(() => document.getElementById(mobile ? 'search-input-mobile' : 'search-input').focus(), 150);
+    }
+  }
+
+  performSearch() {
+    const searchData = this.searchData.trim();
+    if (!searchData.length) return;
+
+    if (searchData.startsWith('xrb_')) {
+      this.router.navigate(['account', searchData]);
+    } else if (searchData.length === 64) {
+      this.router.navigate(['transaction', searchData]);
+    } else {
+      this.notifications.sendWarning(`Invalid Nano account or transaction hash!`)
+    }
+    this.searchData = '';
   }
 
   updateIdleTime() {
