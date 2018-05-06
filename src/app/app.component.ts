@@ -10,6 +10,8 @@ import {WorkPoolService} from "./services/work-pool.service";
 import {Router} from "@angular/router";
 import {RepresentativeService} from "./services/representative.service";
 import {NodeService} from "./services/node.service";
+import Nano from "hw-app-nano";
+import TransportU2F from "@ledgerhq/hw-transport-u2f";
 
 @Component({
   selector: 'app-root',
@@ -53,6 +55,28 @@ export class AppComponent implements OnInit {
     await this.updateFiatPrices();
 
     this.representative.loadRepresentativeList();
+
+    console.log(`Here goes thte yolo`);
+    TransportU2F.open(null).then(transport => {
+      console.log(`Open transport? `, transport);
+      transport.setExchangeTimeout(300000); // 5 minutes
+      const nano = new Nano(transport);
+
+      console.log(`Created new ledger thing? `, nano);
+      return nano.getAppConfiguration()
+        .then(conf => {
+          console.log(`Got configuration? `, conf);
+          if (conf.version !== "1.0.0") {
+            return Promise.reject("Incompatible application version");
+          }
+          return nano;
+        })
+        .catch(err => {
+          console.log(`errrrr`, err);
+        })
+    }).catch(err => {
+      console.log(`transport error: `, err);
+    })
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     if (this.wallet.locked && this.wallet.pending.gt(0)) {
