@@ -2,20 +2,39 @@
   <div class="uk-margin-left" style="padding-top: 6px; padding-bottom: 6px; color: #FFF;">
     <div uk-grid>
       <div class="uk-width-1-1">
-        <div *ngIf="wallet.seed">
-          <div *ngIf="wallet.locked" class="uk-text-bottom">
+        <div *ngIf="walletService.isLedgerWallet()">
+          <div *ngIf="ledgerStatus === 'not-connected'">
+            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-warning" uk-tooltip title="Reload Ledger status">
+              <span uk-icon="icon: refresh" style="float: right; margin-right: 15px;" class="uk-text-muted"></span>
+              <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom">Ledger Disconnected</span>
+            </span>
+          </div><div *ngIf="ledgerStatus === 'locked'">
+            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-warning" uk-tooltip title="Reload Ledger status">
+              <span uk-icon="icon: refresh" style="float: right; margin-right: 15px;" class="uk-text-muted"></span>
+              <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom">Ledger App Closed</span>
+            </span>
+          </div>
+          <div *ngIf="ledgerStatus === 'ready'">
+            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-success">
+              <span uk-icon="icon: bolt" class="uk-text-top"></span> <span class="uk-text-bottom">Ledger Ready</span>
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="walletService.isConfigured() && !walletService.isLedgerWallet()">
+          <div *ngIf="walletService.isLocked()" class="uk-text-bottom">
             <span style="cursor: pointer;" (click)="modal.show()">
               <span uk-icon="icon: lock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Locked</span>
             </span>
           </div>
-          <div *ngIf="!wallet.locked">
+          <div *ngIf="!walletService.isLocked()">
             <span style="cursor:pointer" (click)="lockWallet()">
               <span uk-icon="icon: unlock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Unlocked</span>
             </span>
           </div>
         </div>
 
-        <div *ngIf="!wallet.seed">
+        <div *ngIf="!walletService.isConfigured()">
           <a routerLink="/configure-wallet" class="uk-text-warning">
             <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom">Configure Wallet</span>
           </a>

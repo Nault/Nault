@@ -191,7 +191,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!valid || valid.valid !== '1') return this.notifications.sendWarning(`Account ID is not a valid account`);
 
     try {
-      const changed = await this.nanoBlock.generateChange(this.walletAccount, repAccount);
+      const changed = await this.nanoBlock.generateChange(this.walletAccount, repAccount, this.wallet.isLedgerWallet());
       if (!changed) {
         this.notifications.sendError(`Error changing representative, please try again`);
         return;

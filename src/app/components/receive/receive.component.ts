@@ -105,7 +105,7 @@ export class ReceiveComponent implements OnInit {
     if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
     pendingBlock.loading = true;
 
-    const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock);
+    const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
     if (newBlock) {
       this.notificationService.sendSuccess(`Successfully received XRB!`);

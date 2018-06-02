@@ -56,28 +56,6 @@ export class AppComponent implements OnInit {
 
     this.representative.loadRepresentativeList();
 
-    console.log(`Here goes thte yolo`);
-    TransportU2F.open(null).then(transport => {
-      console.log(`Open transport? `, transport);
-      transport.setExchangeTimeout(300000); // 5 minutes
-      const nano = new Nano(transport);
-
-      console.log(`Created new ledger thing? `, nano);
-      return nano.getAppConfiguration()
-        .then(conf => {
-          console.log(`Got configuration? `, conf);
-          if (conf.version !== "1.0.0") {
-            return Promise.reject("Incompatible application version");
-          }
-          return nano;
-        })
-        .catch(err => {
-          console.log(`errrrr`, err);
-        })
-    }).catch(err => {
-      console.log(`transport error: `, err);
-    })
-
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     if (this.wallet.locked && this.wallet.pending.gt(0)) {
       this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });

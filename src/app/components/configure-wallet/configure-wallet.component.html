@@ -79,6 +79,26 @@
         <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="Your Nano Backup Mnemonic Phrase"></textarea>
       </div>
     </div>
+    <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Make sure you have the Nano app installed, then connect your ledger device via USB (Chrome/Opera only).<br>
+          <br>
+        </p>
+        <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED" class="uk-alert uk-alert-warning">
+          <b>Ledger Device Not Connected</b><br>
+          Connect your ledger device via USB and make sure you have the Nano app installed, then press the button below to retry
+        </div>
+        <div *ngIf="ledger.status === ledgerStatus.LOCKED" class="uk-alert uk-alert-warning">
+          <b>Ledger Device Locked</b><br>
+          Unlock your Ledger device, then press the button below to retry
+        </div>
+        <div *ngIf="ledger.status === ledgerStatus.READY" class="uk-alert uk-alert-success">
+          <b>Ledger Device Ready</b><br>
+          Press the import button below to use your ledger wallet
+        </div>
+      </div>
+    </div>
   </div>
   <div class="uk-card-footer uk-text-right">
     <div *ngIf="selectedImportOption === 'file'" class="js-upload" uk-form-custom style="display: inline-block;">
@@ -87,6 +107,7 @@
     </div>
     <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Mnemonic Phrase</button>
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
+    <button *ngIf="selectedImportOption === 'ledger'" class="uk-button uk-button-primary" (click)="importLedgerWallet()">Import From Ledger</button>
   </div>
 </div>
 
@@ -165,6 +186,9 @@
   </div>
 </div>
 
-<div *ngIf="activePanel == 4 || activePanel == 5" class="uk-alert-primary" uk-alert>
+<div *ngIf="(activePanel == 4 || activePanel == 5) && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><b>ProTip:</b> If you lose your password, you can always restore your wallet using your seed.</p>
+</div>
+<div *ngIf="activePanel == 5 && walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
+  <p><b>ProTip:</b> Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.</p>
 </div>

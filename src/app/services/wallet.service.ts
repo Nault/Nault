@@ -10,6 +10,9 @@ import {NanoBlockService} from "./nano-block.service";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {PriceService} from "./price.service";
+import {LedgerService} from "../ledger.service";
+
+export type WalletType = "seed" | "ledger" | "privateKey";
 
 export interface WalletAccount {
   id: string;
@@ -27,6 +30,7 @@ export interface WalletAccount {
   useStateBlocks: boolean;
 }
 export interface FullWallet {
+  type: WalletType;
   seedBytes: any;
   seed: string|null;
   balance: BigNumber;
@@ -47,6 +51,7 @@ export class WalletService {
   storeKey = `nanovault-wallet`;
 
   wallet: FullWallet = {
+    type: 'seed',
     seedBytes: null,
     seed: '',
     balance: new BigNumber(0),
@@ -74,6 +79,7 @@ export class WalletService {
     private workPool: WorkPoolService,
     private websocket: WebsocketService,
     private nanoBlock: NanoBlockService,
+    private ledgerService: LedgerService,
     private notifications: NotificationService)
   {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
@@ -141,14 +147,24 @@ export class WalletService {
     if (!walletData) return this.wallet;
 
     const walletJson = JSON.parse(walletData);
-    this.wallet.seed = walletJson.seed;
-    this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
-    this.wallet.locked = walletJson.locked;
-    this.wallet.password = walletJson.password || null;
+    const walletType = walletJson.type || 'seed';
+    this.wallet.type = walletType;
+    if (walletType === 'seed') {
+      this.wallet.seed = walletJson.seed;
+      this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
+    }
+    if (walletType === 'seed' || walletType === 'privateKey') {
+      this.wallet.locked = walletJson.locked;
+      this.wallet.password = walletJson.password || null;
+    }
+    if (walletType === 'ledger') {
+      // Check ledger status?
+    }
+
     this.wallet.accountsIndex = walletJson.accountsIndex || 0;
 
     if (walletJson.accounts && walletJson.accounts.length) {
-      if (this.wallet.locked) {
+      if (walletType === 'ledger' || this.wallet.locked) {
         // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
         walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
       } else {
@@ -162,6 +178,10 @@ export class WalletService {
     }
 
     await this.reloadBalances(true);
+
+    if (walletType === 'ledger') {
+      this.ledgerService.loadLedger(true);
+    }
 
     return this.wallet;
   }
@@ -345,6 +365,65 @@ export class WalletService {
     return this.wallet.seed;
   }
 
+  createLedgerWallet() {
+    this.resetWallet();
+
+    this.wallet.type = 'ledger';
+    const newAccount = this.addWalletAccount(0);
+
+    return this.wallet;
+  }
+
+  async createLedgerAccount(index) {
+    const account = await this.ledgerService.getLedgerAccount(index);
+
+    const accountID = account.address;
+    const addressBookName = this.addressBook.getAccountName(accountID);
+
+    const newAccount: WalletAccount = {
+      id: accountID,
+      frontier: null,
+      secret: null,
+      keyPair: null,
+      balance: new BigNumber(0),
+      pending: new BigNumber(0),
+      balanceRaw: new BigNumber(0),
+      pendingRaw: new BigNumber(0),
+      balanceFiat: 0,
+      pendingFiat: 0,
+      index: index,
+      addressBookName,
+      useStateBlocks: true,
+    };
+
+    return newAccount;
+  }
+
+  async createSeedAccount(index) {
+    const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
+    const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+    const accountName = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+    const addressBookName = this.addressBook.getAccountName(accountName);
+
+    const newAccount: WalletAccount = {
+      id: accountName,
+      frontier: null,
+      secret: accountBytes,
+      keyPair: accountKeyPair,
+      balance: new BigNumber(0),
+      pending: new BigNumber(0),
+      balanceRaw: new BigNumber(0),
+      pendingRaw: new BigNumber(0),
+      balanceFiat: 0,
+      pendingFiat: 0,
+      index: index,
+      addressBookName,
+      useStateBlocks: false,
+    };
+
+    return newAccount;
+  }
+
   /**
    * Reset wallet to a base state, without changing reference to the main object
    */
@@ -352,6 +431,7 @@ export class WalletService {
     if (this.wallet.accounts.length) {
       this.websocket.unsubscribeAccounts(this.wallet.accounts.map(a => a.id)); // Unsubscribe from old accounts
     }
+    this.wallet.type = 'seed';
     this.wallet.password = '';
     this.wallet.locked = false;
     this.wallet.seed = '';
@@ -362,6 +442,26 @@ export class WalletService {
     this.wallet.pending = new BigNumber(0);
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
+  }
+
+  isConfigured() {
+    switch (this.wallet.type) {
+      case 'seed': return !!this.wallet.seed;
+      case 'ledger': return true; // ?
+      case 'privateKey': return false;
+    }
+  }
+
+  isLocked() {
+    switch (this.wallet.type) {
+      case 'privateKey':
+      case 'seed': return this.wallet.locked;
+      case 'ledger': return false;
+    }
+  }
+
+  isLedgerWallet() {
+    return this.wallet.type === 'ledger';
   }
 
   reloadFiatBalances() {
@@ -464,7 +564,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
-      useStateBlocks: false,
+      useStateBlocks: true,
     };
 
     this.wallet.accounts.push(newAccount);
@@ -476,6 +576,7 @@ export class WalletService {
   async addWalletAccount(accountIndex: number|null = null, reloadBalances: boolean = true) {
     // if (!this.wallet.seedBytes) return;
     let index = accountIndex;
+    let nextIndex = index + 1;
     if (index === null) {
       index = this.wallet.accountsIndex; // Use the existing number, then increment it
 
@@ -483,39 +584,26 @@ export class WalletService {
       while (this.wallet.accounts.find(a => a.index === index)) index++;
 
       // Find the next available index
-      let nextIndex = index + 1;
+      nextIndex = index + 1;
       while (this.wallet.accounts.find(a => a.index === nextIndex)) nextIndex++;
       this.wallet.accountsIndex = nextIndex;
     }
 
-    const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
-    const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
-    const accountName = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
-    const addressBookName = this.addressBook.getAccountName(accountName);
+    let newAccount: WalletAccount|null;
 
-    const newAccount: WalletAccount = {
-      id: accountName,
-      frontier: null,
-      secret: accountBytes,
-      keyPair: accountKeyPair,
-      balance: new BigNumber(0),
-      pending: new BigNumber(0),
-      balanceRaw: new BigNumber(0),
-      pendingRaw: new BigNumber(0),
-      balanceFiat: 0,
-      pendingFiat: 0,
-      index: index,
-      addressBookName,
-      useStateBlocks: false,
-    };
-
-    // Todo, make sure this account isnt already in our list?
+    if (this.wallet.type === 'privateKey') {
+      throw new Error(`Cannot add another account in private key mode`);
+    } else if (this.wallet.type === 'seed') {
+      newAccount = await this.createSeedAccount(index);
+    } else if (this.wallet.type === 'ledger') {
+      newAccount = await this.createLedgerAccount(index);
+    }
 
     this.wallet.accounts.push(newAccount);
 
     if (reloadBalances) await this.reloadBalances();
 
-    this.websocket.subscribeAccounts([accountName]);
+    this.websocket.subscribeAccounts([newAccount.id]);
 
     this.saveWalletExport();
 
@@ -585,7 +673,7 @@ export class WalletService {
     const walletAccount = this.getWalletAccount(nextBlock.account);
     if (!walletAccount) return; // Dispose of the block, no matching account
 
-    const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash);
+    const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash, this.isLedgerWallet());
     if (newHash) {
       if (this.successfulBlocks.length >= 15) this.successfulBlocks.shift();
       this.successfulBlocks.push(nextBlock.hash);
@@ -624,13 +712,20 @@ export class WalletService {
   }
 
   generateWalletExport() {
-    const data = {
-      seed: this.wallet.seed,
-      locked: this.wallet.locked,
-      password: this.wallet.locked ? '' : this.wallet.password,
+    let data: any = {
+      type: this.wallet.type,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
       accountsIndex: this.wallet.accountsIndex,
     };
+
+    if (this.wallet.type === 'ledger') {
+    }
+
+    if (this.wallet.type === 'seed') {
+      data.seed = this.wallet.seed;
+      data.locked = this.wallet.locked;
+      data.password = this.wallet.locked ? '' : this.wallet.password;
+    }
 
     return data;
   }

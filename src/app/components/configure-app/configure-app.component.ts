@@ -6,6 +6,9 @@ import {PriceService} from "../../services/price.service";
 import {PowService} from "../../services/pow.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AddressBookService} from "../../services/address-book.service";
+import {ApiService} from "../../services/api.service";
+import {LedgerService, LedgerStatus} from "../../ledger.service";
+import BigNumber from "bignumber.js";
 
 @Component({
   selector: 'app-configure-app',
@@ -103,6 +106,8 @@ export class ConfigureAppComponent implements OnInit {
     private appSettings: AppSettingsService,
     private addressBook: AddressBookService,
     private pow: PowService,
+    private api: ApiService,
+    private ledgerService: LedgerService,
     private workPool: WorkPoolService,
     private price: PriceService) { }
 

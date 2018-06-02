@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
+import {LedgerService, LedgerStatus} from "../../ledger.service";
 
 @Component({
   selector: 'app-wallet-widget',
@@ -10,19 +11,28 @@ import {NotificationService} from "../../services/notification.service";
 export class WalletWidgetComponent implements OnInit {
   wallet = this.walletService.wallet;
 
+  ledgerStatus = 'not-connected';
+
   unlockPassword = '';
 
   modal: any = null;
 
-  constructor(private walletService: WalletService, private notificationService: NotificationService) { }
+  constructor(public walletService: WalletService, private notificationService: NotificationService, public ledgerService: LedgerService) { }
 
   ngOnInit() {
     const UIkit = (window as any).UIkit;
     const modal = UIkit.modal(document.getElementById('unlock-wallet-modal'));
     this.modal = modal;
+
+    this.ledgerService.ledgerStatus$.subscribe((ledgerStatus: string) => {
+      this.ledgerStatus = ledgerStatus;
+    })
   }
 
   async lockWallet() {
+    if (this.wallet.type === 'ledger') {
+      return; // No need to lock a ledger wallet, no password saved
+    }
     if (!this.wallet.password) {
       return this.notificationService.sendWarning(`You must set a password on your wallet - it is currently blank!`);
     }
@@ -32,6 +42,10 @@ export class WalletWidgetComponent implements OnInit {
     } else {
       this.notificationService.sendError(`Unable to lock wallet`);
     }
+  }
+
+  reloadLedger() {
+    this.ledgerService.loadLedger();
   }
 
   async unlockWallet() {

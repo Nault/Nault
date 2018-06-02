@@ -2,7 +2,7 @@
   <div class="uk-width-1-1">
     <h2>Manage Wallet</h2>
 
-    <div class="uk-card uk-card-default uk-margin">
+    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Change Wallet Password</h3>
       </div>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin">
+    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Backup Wallet</h3>
       </div>
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin">
+    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Export NanoVault Wallet</h3>
       </div>

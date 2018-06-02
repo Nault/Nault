@@ -26,7 +26,7 @@ export class ManageWalletComponent implements OnInit {
   addressBookQRExportImg = '';
 
   constructor(
-    private walletService: WalletService,
+    public walletService: WalletService,
     private addressBookService: AddressBookService,
     public notifications: NotificationService,
     private router: Router) { }

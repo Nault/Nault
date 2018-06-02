@@ -287,7 +287,7 @@ export class RepresentativesComponent implements OnInit {
       if (!walletAccount) continue; // Unable to find account in the wallet? wat?
 
       try {
-        const changed = await this.nanoBlock.generateChange(walletAccount, newRep);
+        const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.wallet.isLedgerWallet());
         if (!changed) {
           this.notifications.sendError(`Error changing representative for ${account.id}, please try again`);
         }

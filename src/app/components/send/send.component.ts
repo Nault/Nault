@@ -203,7 +203,7 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = true;
 
     try {
-      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount);
+      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet());
       if (newHash) {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
         this.activePanel = 'send';

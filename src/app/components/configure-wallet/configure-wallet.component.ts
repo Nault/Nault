@@ -3,6 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as bip from 'bip39';
+import {LedgerService, LedgerStatus} from "../../ledger.service";
 
 @Component({
   selector: 'app-configure-wallet',
@@ -27,13 +28,26 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'NanoVault Wallet File', value: 'file' },
   ];
 
-  constructor(private router: ActivatedRoute, private walletService: WalletService, private notifications: NotificationService, private route: Router) { }
+  ledgerStatus = LedgerStatus;
+  ledger = this.ledgerService.ledger;
+
+  constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) { }
 
   async ngOnInit() {
+    const params = this.router.snapshot.queryParams;
+    if (params && params.ledger) {
+      this.importOptions.push({ name: 'Ledger Nano S', value: 'ledger' });
+    }
+
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
       this.activePanel = 1;
     }
+
+    this.ledgerService.loadLedger(true);
+    this.ledgerService.ledgerStatus$.subscribe(newStatus => {
+      // this.updateLedgerStatus();
+    })
   }
 
   async importExistingWallet() {
@@ -66,6 +80,26 @@ export class ConfigureWalletComponent implements OnInit {
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
+  }
+
+  async importLedgerWallet() {
+    // what is our ledger status? show a warning?
+    await this.ledgerService.loadLedger(true);
+
+    if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
+      return this.notifications.sendWarning(`No ledger device detected, make sure it is connected and you are using Chrome/Opera`);
+    }
+
+    if (this.ledger.status === LedgerStatus.LOCKED) {
+      return this.notifications.sendWarning(`Unlock your ledger device and open the Nano app to continue`);
+    }
+
+    const newWallet = await this.walletService.createLedgerWallet();
+
+    // We skip the password panel
+    this.activePanel = 5;
+    this.notifications.sendSuccess(`Successfully loaded ledger device!`);
+
   }
 
   async createNewWallet() {
