@@ -43,6 +43,9 @@ export interface LedgerData {
 export class LedgerService {
   walletPrefix = `44'/165'/`;
 
+  waitTimeout = 300000;
+  normalTimeout = 5000;
+
   ledger: LedgerData = {
     status: LedgerStatus.NOT_CONNECTED,
     nano: null,
@@ -65,7 +68,7 @@ export class LedgerService {
       if (!this.ledger.transport) {
         try {
           this.ledger.transport = await TransportU2F.open(null);
-          this.ledger.transport.setExchangeTimeout(300000); // 5 minutes
+          this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         } catch (err) {
           if (err.statusText == 'UNKNOWN_ERROR') {
             this.resetLedger();
@@ -171,6 +174,7 @@ export class LedgerService {
     if (this.ledger.status !== LedgerStatus.READY) {
       await this.loadLedger(); // Make sure ledger is ready
     }
+    this.ledger.transport.setExchangeTimeout(this.waitTimeout);
     return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
   }
 
@@ -179,7 +183,12 @@ export class LedgerService {
   }
 
   async getLedgerAccount(accountIndex: number) {
-    return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex));
+    this.ledger.transport.setExchangeTimeout(this.normalTimeout);
+    try {
+      return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex));
+    } catch (err) {
+      throw err;
+    }
   }
 
 

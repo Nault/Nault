@@ -596,7 +596,13 @@ export class WalletService {
     } else if (this.wallet.type === 'seed') {
       newAccount = await this.createSeedAccount(index);
     } else if (this.wallet.type === 'ledger') {
-      newAccount = await this.createLedgerAccount(index);
+      try {
+        newAccount = await this.createLedgerAccount(index);
+      } catch (err) {
+        this.notifications.sendWarning(`Unable to load account from ledger.  Make sure it is connected`);
+        throw err;
+      }
+
     }
 
     this.wallet.accounts.push(newAccount);
@@ -684,7 +690,10 @@ export class WalletService {
       // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
       await this.reloadBalances();
     } else {
-      this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+      if (this.isLedgerWallet()) {
+        return null; // Denied to receive, stop processing
+      }
+      return this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
     }
 
     this.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
