@@ -108,9 +108,11 @@ export class ReceiveComponent implements OnInit {
     const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
     if (newBlock) {
-      this.notificationService.sendSuccess(`Successfully received XRB!`);
+      this.notificationService.sendSuccess(`Successfully received Nano!`);
     } else {
-      this.notificationService.sendError(`There was an error receiving the transaction`)
+      if (!this.walletService.isLedgerWallet()) {
+        this.notificationService.sendError(`There was an error receiving the transaction`)
+      }
     }
 
     pendingBlock.loading = false;
