@@ -26,6 +26,7 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Nano Seed', value: 'seed' },
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
     { name: 'NanoVault Wallet File', value: 'file' },
+    { name: 'Ledger Nano S', value: 'ledger' },
   ];
 
   ledgerStatus = LedgerStatus;
@@ -34,11 +35,6 @@ export class ConfigureWalletComponent implements OnInit {
   constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) { }
 
   async ngOnInit() {
-    const params = this.router.snapshot.queryParams;
-    if (params && params.ledger) {
-      this.importOptions.push({ name: 'Ledger Nano S', value: 'ledger' });
-    }
-
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
       this.activePanel = 1;
