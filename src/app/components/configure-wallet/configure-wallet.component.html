@@ -107,7 +107,8 @@
     </div>
     <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Mnemonic Phrase</button>
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
-    <button *ngIf="selectedImportOption === 'ledger'" class="uk-button uk-button-primary" (click)="importLedgerWallet()">Import From Ledger</button>
+    <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet()">Import From Ledger</button>
+    <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
   </div>
 </div>
 

@@ -44,8 +44,16 @@ export class WalletWidgetComponent implements OnInit {
     }
   }
 
-  reloadLedger() {
-    this.ledgerService.loadLedger();
+  async reloadLedger() {
+    this.notificationService.sendInfo(`Checking Ledger Status...`, { identifier: 'ledger-status', length: 0 })
+    try {
+      const loaded = await this.ledgerService.loadLedger();
+      this.notificationService.removeNotification('ledger-status');
+      if (loaded) {
+        this.notificationService.sendSuccess(`Successfully connected to Ledger device`);
+      }
+    } catch (err) {
+    }
   }
 
   async unlockWallet() {

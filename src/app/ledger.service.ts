@@ -45,6 +45,9 @@ export class LedgerService {
 
   waitTimeout = 300000;
   normalTimeout = 5000;
+  pollInterval = 15000;
+
+  pollingLedger = false;
 
   ledger: LedgerData = {
     status: LedgerStatus.NOT_CONNECTED,
@@ -102,8 +105,9 @@ export class LedgerService {
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
         this.ledgerStatus$.next(this.ledger.status);
         if (!hideNotifications) {
-          this.notifications.sendWarning(`Unable to connect to Nano app on Ledger device`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the Nano application is open`);
         }
+        resolved = true;
         return resolve(false);
       }, 2500);
 
@@ -120,7 +124,7 @@ export class LedgerService {
         if (err.statusText == 'HALTED') {
           this.resetLedger();
         }
-        if (!hideNotifications) {
+        if (!hideNotifications && !resolved) {
           this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
         }
         return resolve(false);
@@ -131,6 +135,11 @@ export class LedgerService {
         const accountDetails = await this.getLedgerAccount(0);
         this.ledger.status = LedgerStatus.READY;
         this.ledgerStatus$.next(this.ledger.status);
+
+        if (!this.pollingLedger) {
+          this.pollingLedger = true;
+          this.pollLedgerStatus();
+        }
       } catch (err) {
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
           if (!hideNotifications) {
@@ -182,13 +191,37 @@ export class LedgerService {
     return `${this.walletPrefix}${accountIndex}'`;
   }
 
-  async getLedgerAccount(accountIndex: number) {
-    this.ledger.transport.setExchangeTimeout(this.normalTimeout);
+  async getLedgerAccount(accountIndex: number, showOnScreen = false) {
+    this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
     try {
-      return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex));
+      return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
     } catch (err) {
       throw err;
     }
+  }
+
+  pollLedgerStatus() {
+    if (!this.pollingLedger) return;
+    setTimeout(async () => {
+      await this.checkLedgerStatus();
+      this.pollLedgerStatus();
+    }, this.pollInterval);
+  }
+
+  async checkLedgerStatus() {
+    if (this.ledger.status != LedgerStatus.READY) {
+      return;
+    }
+
+    try {
+      const accountDetails = await this.getLedgerAccount(0);
+      this.ledger.status = LedgerStatus.READY;
+    } catch (err) {
+      this.ledger.status = LedgerStatus.NOT_CONNECTED;
+      this.pollingLedger = false;
+    }
+
+    this.ledgerStatus$.next(this.ledger.status);
   }
 
 

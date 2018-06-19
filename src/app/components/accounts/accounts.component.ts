@@ -3,6 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {AppSettingsService} from "../../services/app-settings.service";
+import {LedgerService, LedgerStatus} from "../../ledger.service";
 
 @Component({
   selector: 'app-accounts',
@@ -11,8 +12,14 @@ import {AppSettingsService} from "../../services/app-settings.service";
 })
 export class AccountsComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
+  isLedgerWallet = this.walletService.isLedgerWallet();
 
-  constructor(private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, public settings: AppSettingsService) { }
+  constructor(
+    private walletService: WalletService,
+    private notificationService: NotificationService,
+    public modal: ModalService,
+    public settings: AppSettingsService,
+    private ledger: LedgerService) { }
 
   async ngOnInit() {
   }
@@ -44,6 +51,20 @@ export class AccountsComponent implements OnInit {
     } catch (err) {
       this.notificationService.sendError(`Unable to delete account: ${err.message}`);
     }
+  }
+
+  async showLedgerAddress(account) {
+    if (this.ledger.ledger.status !== LedgerStatus.READY) {
+      return this.notificationService.sendWarning(`Ledger device must be ready`);
+    }
+    this.notificationService.sendInfo(`Confirming account address on Ledger device...`, { identifier: 'ledger-account', length: 0 });
+    try {
+      await this.ledger.getLedgerAccount(account.index, true);
+      this.notificationService.sendSuccess(`Account address confirmed on Ledger`);
+    } catch (err) {
+      this.notificationService.sendError(`Account address denied - if it is wrong do not use the wallet!`);
+    }
+    this.notificationService.removeNotification('ledger-account');
   }
 
 }
