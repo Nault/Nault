@@ -148,7 +148,8 @@
             <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
               <thead>
               <tr>
-                <th class="uk-width-3-5@m uk-width-1-2">Account</th>
+                <th class="uk-width-1-6@m uk-width-1-6">Date</th>
+                <th class="uk-width-2-5@m uk-width-1-3">Account</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
               </tr>
@@ -177,6 +178,8 @@
               </tr>
 
               <tr *ngFor="let history of accountHistory">
+                <td class="uk-text-truncate" *ngIf="history.timestamp">{{ history.timestamp | date: 'short' }}</td>
+                <td class="uk-text-truncate uk-text-muted" *ngIf="!history.timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
