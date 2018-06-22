@@ -157,6 +157,8 @@
               <tbody>
 
               <tr *ngFor="let pending of pendingBlocks" class="uk-text-muted">
+                <td class="uk-text-truncate" *ngIf="pending.timestamp">{{ pending.timestamp | date: 'short' }}</td>
+                <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
