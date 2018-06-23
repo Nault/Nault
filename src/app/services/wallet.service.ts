@@ -27,7 +27,6 @@ export interface WalletAccount {
   balanceFiat: number;
   pendingFiat: number;
   addressBookName: string|null;
-  useStateBlocks: boolean;
 }
 export interface FullWallet {
   type: WalletType;
@@ -118,15 +117,12 @@ export class WalletService {
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
 
-      walletAccount.useStateBlocks = true;
       this.addPendingBlock(walletAccount.id, transaction.hash, new BigNumber(0));
       await this.processPendingBlocks();
     } else {
       // Not a send to us, which means it was a block posted by us.  We shouldnt need to do anything...
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
-
-      walletAccount.useStateBlocks = true; // Should already be set?
     }
   }
 
@@ -393,7 +389,6 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
-      useStateBlocks: true,
     };
 
     return newAccount;
@@ -418,7 +413,6 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
-      useStateBlocks: false,
     };
 
     return newAccount;
@@ -487,11 +481,11 @@ export class WalletService {
     const accountIDs = this.wallet.accounts.map(a => a.id);
     const accounts = await this.api.accountsBalances(accountIDs);
     const frontiers = await this.api.accountsFrontiers(accountIDs);
-    const allFrontiers = [];
-    for (const account in frontiers.frontiers) {
-      allFrontiers.push({ account, frontier: frontiers.frontiers[account] });
-    }
-    const frontierBlocks = await this.api.blocksInfo(allFrontiers.map(f => f.frontier));
+    // const allFrontiers = [];
+    // for (const account in frontiers.frontiers) {
+    //   allFrontiers.push({ account, frontier: frontiers.frontiers[account] });
+    // }
+    // const frontierBlocks = await this.api.blocksInfo(allFrontiers.map(f => f.frontier));
 
     let walletBalance = new BigNumber(0);
     let walletPending = new BigNumber(0);
@@ -513,13 +507,13 @@ export class WalletService {
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
 
       // Look at the accounts latest block to determine if they are using state blocks
-      if (walletAccount.frontier && frontierBlocks.blocks[walletAccount.frontier]) {
-        const frontierBlock = frontierBlocks.blocks[walletAccount.frontier];
-        const frontierBlockData = JSON.parse(frontierBlock.contents);
-        if (frontierBlockData.type === 'state') {
-          walletAccount.useStateBlocks = true;
-        }
-      }
+      // if (walletAccount.frontier && frontierBlocks.blocks[walletAccount.frontier]) {
+      //   const frontierBlock = frontierBlocks.blocks[walletAccount.frontier];
+      //   const frontierBlockData = JSON.parse(frontierBlock.contents);
+      //   if (frontierBlockData.type === 'state') {
+      //     walletAccount.useStateBlocks = true;
+      //   }
+      // }
 
       walletBalance = walletBalance.plus(walletAccount.balance);
       walletPending = walletPending.plus(walletAccount.pending);
@@ -564,7 +558,6 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
-      useStateBlocks: true,
     };
 
     this.wallet.accounts.push(newAccount);

@@ -15,7 +15,6 @@ const STATE_BLOCK_PREAMBLE = '00000000000000000000000000000000000000000000000000
 @Injectable()
 export class NanoBlockService {
   representativeAccount = 'xrb_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
-  // shouldGenStateBlocks = true; // Generate state blocks instead of legacy blocks
 
   constructor(
     private api: ApiService,
@@ -30,71 +29,48 @@ export class NanoBlockService {
     if (!toAcct) throw new Error(`Account must have an open block first`);
 
     let blockData;
-    if (this.settings.settings.useStateBlocks || walletAccount.useStateBlocks) {
-      const balance = new BigNumber(toAcct.balance);
-      const balanceDecimal = balance.toString(10);
-      let balancePadded = balance.toString(16);
-      while (balancePadded.length < 32) balancePadded = '0' + balancePadded; // Left pad with 0's
-      let link = '0000000000000000000000000000000000000000000000000000000000000000';
+    const balance = new BigNumber(toAcct.balance);
+    const balanceDecimal = balance.toString(10);
+    let balancePadded = balance.toString(16);
+    while (balancePadded.length < 32) balancePadded = '0' + balancePadded; // Left pad with 0's
+    let link = '0000000000000000000000000000000000000000000000000000000000000000';
 
-      let signature = null;
-      if (ledger) {
-        const ledgerBlock = {
-          previousBlock: toAcct.frontier,
-          representative: representativeAccount,
-          balance: balanceDecimal,
-        };
-        try {
-          this.sendLedgerNotification();
-          await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
-          const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-          this.clearLedgerNotification();
-          signature = sig.signature;
-        } catch (err) {
-          this.clearLedgerNotification();
-          this.sendLedgerDeniedNotification();
-          return;
-        }
-      } else {
-        signature = this.signChangeBlock(walletAccount, toAcct, representativeAccount, balancePadded, link);
-      }
-
-      if (!this.workPool.workExists(toAcct.frontier)) {
-        this.notifications.sendInfo(`Generating Proof of Work...`);
-      }
-
-      blockData = {
-        type: 'state',
-        account: walletAccount.id,
-        previous: toAcct.frontier,
+    let signature = null;
+    if (ledger) {
+      const ledgerBlock = {
+        previousBlock: toAcct.frontier,
         representative: representativeAccount,
         balance: balanceDecimal,
-        link: link,
-        signature: signature,
-        work: await this.workPool.getWork(toAcct.frontier),
       };
-    } else {
-      let context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(toAcct.frontier));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(representativeAccount)));
-      const hashBytes = blake.blake2bFinal(context);
-
-      const privKey = walletAccount.keyPair.secretKey;
-      const signed = nacl.sign.detached(hashBytes, privKey);
-      const signature = this.util.hex.fromUint8(signed);
-
-      if (!this.workPool.workExists(toAcct.frontier)) {
-        this.notifications.sendInfo(`Generating Proof of Work...`);
+      try {
+        this.sendLedgerNotification();
+        await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
+        const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
+        this.clearLedgerNotification();
+        signature = sig.signature;
+      } catch (err) {
+        this.clearLedgerNotification();
+        this.sendLedgerDeniedNotification();
+        return;
       }
-
-      blockData = {
-        type: 'change',
-        previous: toAcct.frontier,
-        representative: representativeAccount,
-        signature: signature,
-        work: await this.workPool.getWork(toAcct.frontier),
-      };
+    } else {
+      signature = this.signChangeBlock(walletAccount, toAcct, representativeAccount, balancePadded, link);
     }
+
+    if (!this.workPool.workExists(toAcct.frontier)) {
+      this.notifications.sendInfo(`Generating Proof of Work...`);
+    }
+
+    blockData = {
+      type: 'state',
+      account: walletAccount.id,
+      previous: toAcct.frontier,
+      representative: representativeAccount,
+      balance: balanceDecimal,
+      link: link,
+      signature: signature,
+      work: await this.workPool.getWork(toAcct.frontier),
+    };
 
     const processResponse = await this.api.process(blockData);
     if (processResponse && processResponse.hash) {
@@ -117,70 +93,45 @@ export class NanoBlockService {
     while (remainingPadded.length < 32) remainingPadded = '0' + remainingPadded; // Left pad with 0's
 
     let blockData;
-    if (this.settings.settings.useStateBlocks || walletAccount.useStateBlocks) {
-      const representative = fromAccount.representative || this.representativeAccount;
+    const representative = fromAccount.representative || this.representativeAccount;
 
-      let signature = null;
-      if (ledger) {
-        const ledgerBlock = {
-          previousBlock: fromAccount.frontier,
-          representative: representative,
-          balance: remainingDecimal,
-          recipient: toAccountID,
-        };
-        try {
-          this.sendLedgerNotification();
-          await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier);
-          const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-          this.clearLedgerNotification();
-          signature = sig.signature;
-        } catch (err) {
-          this.clearLedgerNotification();
-          this.sendLedgerDeniedNotification();
-          return;
-        }
-      } else {
-        signature = this.signSendBlock(walletAccount, fromAccount, representative, remainingPadded, toAccountID);
-      }
-
-      if (!this.workPool.workExists(fromAccount.frontier)) {
-        this.notifications.sendInfo(`Generating Proof of Work...`);
-      }
-
-      blockData = {
-        type: 'state',
-        account: walletAccount.id,
-        previous: fromAccount.frontier,
+    let signature = null;
+    if (ledger) {
+      const ledgerBlock = {
+        previousBlock: fromAccount.frontier,
         representative: representative,
         balance: remainingDecimal,
-        link: this.util.account.getAccountPublicKey(toAccountID),
-        work: await this.workPool.getWork(fromAccount.frontier),
-        signature: signature,
+        recipient: toAccountID,
       };
-    } else {
-      const context = blake.blake2bInit(32, null);
-      blake.blake2bUpdate(context, this.util.hex.toUint8(fromAccount.frontier));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(toAccountID)));
-      blake.blake2bUpdate(context, this.util.hex.toUint8(remainingPadded));
-      const hashBytes = blake.blake2bFinal(context);
-
-      // Sign the hash bytes with the account priv key bytes
-      const signed = nacl.sign.detached(hashBytes, walletAccount.keyPair.secretKey);
-      const signature = this.util.hex.fromUint8(signed);
-
-      if (!this.workPool.workExists(fromAccount.frontier)) {
-        this.notifications.sendInfo(`Generating Proof of Work...`);
+      try {
+        this.sendLedgerNotification();
+        await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier);
+        const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
+        this.clearLedgerNotification();
+        signature = sig.signature;
+      } catch (err) {
+        this.clearLedgerNotification();
+        this.sendLedgerDeniedNotification();
+        return;
       }
-
-      blockData = {
-        type: 'send',
-        previous: fromAccount.frontier,
-        destination: toAccountID,
-        balance: remainingPadded,
-        work: await this.workPool.getWork(fromAccount.frontier),
-        signature: signature,
-      };
+    } else {
+      signature = this.signSendBlock(walletAccount, fromAccount, representative, remainingPadded, toAccountID);
     }
+
+    if (!this.workPool.workExists(fromAccount.frontier)) {
+      this.notifications.sendInfo(`Generating Proof of Work...`);
+    }
+
+    blockData = {
+      type: 'state',
+      account: walletAccount.id,
+      previous: fromAccount.frontier,
+      representative: representative,
+      balance: remainingDecimal,
+      link: this.util.account.getAccountPublicKey(toAccountID),
+      work: await this.workPool.getWork(fromAccount.frontier),
+      signature: signature,
+    };
 
     const processResponse = await this.api.process(blockData);
     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
@@ -199,102 +150,56 @@ export class NanoBlockService {
 
     const openEquiv = !toAcct || !toAcct.frontier;
 
-    if (this.settings.settings.useStateBlocks || walletAccount.useStateBlocks) {
-      const previousBlock = toAcct.frontier || "0000000000000000000000000000000000000000000000000000000000000000";
-      const representative = toAcct.representative || this.representativeAccount;
+    const previousBlock = toAcct.frontier || "0000000000000000000000000000000000000000000000000000000000000000";
+    const representative = toAcct.representative || this.representativeAccount;
 
-      const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
-      const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].amount);
-      const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
-      const newBalanceDecimal = newBalance.toString(10);
-      let newBalancePadded = newBalance.toString(16);
-      while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
+    const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
+    const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].amount);
+    const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
+    const newBalanceDecimal = newBalance.toString(10);
+    let newBalancePadded = newBalance.toString(16);
+    while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
 
-      // We have everything we need, we need to obtain a signature
-      let signature = null;
-      if (ledger) {
-        const ledgerBlock: any = {
-          representative: representative,
-          balance: newBalanceDecimal,
-          sourceBlock: sourceBlock,
-        };
-        if (!openEquiv) {
-          ledgerBlock.previousBlock = toAcct.frontier;
-        }
-        try {
-          this.sendLedgerNotification();
-          // On new accounts, we do not need to cache anything
-          if (!openEquiv) {
-            await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
-          }
-          const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-          this.notifications.removeNotification('ledger-sign');
-          signature = sig.signature.toUpperCase();
-        } catch (err) {
-          this.notifications.removeNotification('ledger-sign');
-          this.notifications.sendWarning(`Transaction denied on Ledger device`);
-          return;
-        }
-      } else {
-        signature = this.signOpenBlock(walletAccount, previousBlock, sourceBlock, newBalancePadded, representative);
-      }
-
-      workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : previousBlock;
-      blockData = {
-        type: 'state',
-        account: walletAccount.id,
-        previous: previousBlock,
+    // We have everything we need, we need to obtain a signature
+    let signature = null;
+    if (ledger) {
+      const ledgerBlock: any = {
         representative: representative,
         balance: newBalanceDecimal,
-        link: sourceBlock,
-        signature: signature,
-        work: null
+        sourceBlock: sourceBlock,
       };
-    } else {
-      if (openEquiv) {
-        // This is an open block!
-        const context = blake.blake2bInit(32, null);
-        blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-        blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(this.representativeAccount)));
-        blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(walletAccount.id)));
-        const hashBytes = blake.blake2bFinal(context);
-
-        const privKey = walletAccount.keyPair.secretKey;
-        const signed = nacl.sign.detached(hashBytes, privKey);
-        const signature = this.util.hex.fromUint8(signed);
-        const PK = this.util.account.getAccountPublicKey(walletAccount.id);
-
-        workBlock = PK;
-        blockData = {
-          type: 'open',
-          account: walletAccount.id,
-          representative: this.representativeAccount,
-          source: sourceBlock,
-          signature: signature,
-          work: null,
-        };
-      } else {
-        // This is a receive block
-        const previousBlock = toAcct.frontier;
-        const context = blake.blake2bInit(32, null);
-        blake.blake2bUpdate(context, this.util.hex.toUint8(previousBlock));
-        blake.blake2bUpdate(context, this.util.hex.toUint8(sourceBlock));
-        const hashBytes = blake.blake2bFinal(context);
-
-        const privKey = walletAccount.keyPair.secretKey;
-        const signed = nacl.sign.detached(hashBytes, privKey);
-        const signature = this.util.hex.fromUint8(signed);
-
-        workBlock = previousBlock;
-        blockData = {
-          type: 'receive',
-          previous: previousBlock,
-          source: sourceBlock,
-          signature: signature,
-          work: null,
-        };
+      if (!openEquiv) {
+        ledgerBlock.previousBlock = toAcct.frontier;
       }
+      try {
+        this.sendLedgerNotification();
+        // On new accounts, we do not need to cache anything
+        if (!openEquiv) {
+          await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
+        }
+        const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
+        this.notifications.removeNotification('ledger-sign');
+        signature = sig.signature.toUpperCase();
+      } catch (err) {
+        this.notifications.removeNotification('ledger-sign');
+        this.notifications.sendWarning(`Transaction denied on Ledger device`);
+        return;
+      }
+    } else {
+      signature = this.signOpenBlock(walletAccount, previousBlock, sourceBlock, newBalancePadded, representative);
     }
+
+    workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : previousBlock;
+    blockData = {
+      type: 'state',
+      account: walletAccount.id,
+      previous: previousBlock,
+      representative: representative,
+      balance: newBalanceDecimal,
+      link: sourceBlock,
+      signature: signature,
+      work: null
+    };
 
     if (!this.workPool.workExists(workBlock)) {
       this.notifications.sendInfo(`Generating Proof of Work...`);
@@ -310,11 +215,6 @@ export class NanoBlockService {
     } else {
       return null;
     }
-
-  }
-
-  signLedgerBlock() {
-
   }
 
   signOpenBlock(walletAccount, previousBlock, sourceBlock, newBalancePadded, representative) {

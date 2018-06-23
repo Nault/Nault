@@ -60,17 +60,10 @@ export class WebsocketService {
         if (newEvent.event === 'newTransaction') {
           this.newTransactions$.next(newEvent.data);
         }
-        if (newEvent.event === 'useStateBlocks') {
-          this.setStateBlocks(); // Forcefully use state blocks, second canary has been released
-        }
       } catch (err) {
         console.log(`Error parsing message`, err);
       }
     }
-  }
-
-  setStateBlocks() {
-    this.appSettings.setAppSetting('useStateBlocks', true);
   }
 
   attemptReconnect() {

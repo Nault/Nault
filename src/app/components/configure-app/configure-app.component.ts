@@ -135,9 +135,7 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
-
-    this.selectedBlockOption = settings.useStateBlocks;
-  }
+    }
 
   async updateDisplaySettings() {
     const newCurrency = this.selectedCurrency;
@@ -176,7 +174,6 @@ export class ConfigureAppComponent implements OnInit {
       lockOnClose: new Number(this.selectedLockOption),
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
-      useStateBlocks: this.selectedBlockOption,
     };
 
     this.appSettings.setAppSettings(newSettings);
