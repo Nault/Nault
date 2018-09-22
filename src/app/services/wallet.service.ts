@@ -363,6 +363,7 @@ export class WalletService {
 
   createLedgerWallet() {
     this.resetWallet();
+    console.log(`Creating ledger wallet.... ?`);
 
     this.wallet.type = 'ledger';
     const newAccount = this.addWalletAccount(0);
@@ -371,8 +372,10 @@ export class WalletService {
   }
 
   async createLedgerAccount(index) {
+    console.log(`Creating ledger account at index... `, index);
     const account = await this.ledgerService.getLedgerAccount(index);
 
+    console.log(`Got account!`, account);
     const accountID = account.address;
     const addressBookName = this.addressBook.getAccountName(accountID);
 
@@ -590,6 +593,7 @@ export class WalletService {
       newAccount = await this.createSeedAccount(index);
     } else if (this.wallet.type === 'ledger') {
       try {
+        console.log(`Creating ledger account at index: `, index);
         newAccount = await this.createLedgerAccount(index);
       } catch (err) {
         this.notifications.sendWarning(`Unable to load account from ledger.  Make sure it is connected`);

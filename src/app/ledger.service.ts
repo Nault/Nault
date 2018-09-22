@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import Nano from "hw-app-nano";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
+// import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import {Subject} from "rxjs/Subject";
 import {ApiService} from "./services/api.service";
 import {NotificationService} from "./services/notification.service";
+import { environment } from "../environments/environment";
+import {DesktopService} from "./services/desktop.service";
 
 export const STATUS_CODES = {
   /**
@@ -55,9 +58,19 @@ export class LedgerService {
     transport: null,
   };
 
-  ledgerStatus$ = new Subject();
+  isDesktop = true;
+  // isDesktop = environment.desktop;
 
-  constructor(private api: ApiService, private notifications: NotificationService) { }
+  ledgerStatus$: Subject<any> = new Subject();
+  desktopMessage$ = new Subject();
+
+  constructor(private api: ApiService,
+              private desktop: DesktopService,
+              private notifications: NotificationService) {
+    if (this.isDesktop) {
+      this.configureDesktop();
+    }
+  }
 
   resetLedger() {
     // console.log(`Resetting ledger device`);
@@ -65,12 +78,165 @@ export class LedgerService {
     this.ledger.nano = null;
   }
 
+  configureDesktop() {
+    this.desktop.on('ledger', (event, message) => {
+      // message.event
+      console.log(`Got ledger event from desktop: `, message);
+      if (!message || !message.event) return;
+      switch (message.event) {
+        case 'ledger-status':
+          this.ledger.status = message.data.status;
+          this.ledgerStatus$.next({ status: message.data.status, statusText: message.data.statusText });
+          // Show an error message?
+          // this.notifications.sendSuccess(`Got new status from ledger: ${message.data.statusText} (${message.data.status})`);
+          break;
+        case 'account-details':
+          console.log(`Got new account details? `, message.data);
+
+          // send a next message down the main pipeline that gets filtered?
+          this.desktopMessage$.next(message);
+          break;
+        case 'cache-block':
+          console.log(`Got cache block details? `, message.data);
+
+          // send a next message down the main pipeline that gets filtered?
+          this.desktopMessage$.next(message);
+          break;
+        case 'sign-block':
+          console.log(`Got signed block details? `, message.data);
+
+          // send a next message down the main pipeline that gets filtered?
+          this.desktopMessage$.next(message);
+          break;
+      }
+    })
+
+  }
+
+  async getDesktopResponse(eventType, filterFn = undefined) {
+    console.log(`Getting desktop response for.... `, eventType);
+    return new Promise((resolve, reject) => {
+      const sub = this.desktopMessage$
+        // .asObservable().filter((m: any) => {
+        //   console.log(`desktop response, filtering msg: `, m);
+        //   console.log(`Must be type: `, eventType);
+        //   return m.event == eventType;
+        // })
+        .subscribe((response: any) => {
+          console.log(`Account details FIRST, got response: `, response);
+          console.log(`Checking event type: `, response.event, eventType);
+          if (response.event !== eventType) {
+            return; // Not the event we want.
+          }
+          console.log(`Filtering fn? `, filterFn);
+          if (filterFn) {
+            const shouldSkip = filterFn(response.data);
+            console.log(`Should we skip? `, response.data, shouldSkip);
+            if (!shouldSkip) return; // This is not the message the subscriber wants
+          }
+          if (response.data && response.data.error === true) {
+            // Request failed!
+            return reject(new Error(response.data.errorMessage));
+          }
+          console.log(`Got the right event.... `, eventType);
+          resolve(response.data);
+          sub.unsubscribe();
+        }, err => {
+          console.log(`Account details got error!`, err);
+          reject(err);
+        })
+    })
+
+  }
+
+  async getLedgerAccountDesktop(accountIndex, showOnScreen) {
+    console.log(`Requesting account details from desktop... `, accountIndex);
+    this.desktop.send('ledger', { event: 'account-details', data: { accountIndex, showOnScreen } });
+    console.log(`Waiting for first desktop response....`);
+    const details = await this.getDesktopResponse('account-details', a => a.accountIndex === accountIndex);
+    console.log(`Got account details response from desktop! `, details);
+
+    return details;
+  }
+
+  async updateCacheDesktop(accountIndex, cacheData, signature) {
+    console.log(`Caching block... `, accountIndex, cacheData, signature);
+    this.desktop.send('ledger', { event: 'cache-block', data: { accountIndex, cacheData, signature } });
+    console.log(`Waiting for first desktop response....`);
+    try {
+      const details = await this.getDesktopResponse('cache-block', a => a.accountIndex === accountIndex);
+      console.log(`Got cache response from desktop! `, details);
+
+      return details;
+    } catch (err) {
+      throw new Error(`Error caching block: ${err.message}`);
+    }
+
+  }
+
+  async signBlockDesktop(accountIndex, blockData) {
+    console.log(`Requesting block sign from desktop... `, accountIndex, blockData);
+    this.desktop.send('ledger', { event: 'sign-block', data: { accountIndex, blockData } });
+    console.log(`Waiting for first desktop response....`);
+    try {
+      const details = await this.getDesktopResponse('sign-block', a => a.accountIndex === accountIndex);
+      console.log(`Got sign block response from desktop! `, details);
+
+      return details;
+    } catch (err) {
+      throw new Error(`Error signing block: ${err.message}`);
+    }
+
+  }
+
+
   async loadLedger(hideNotifications = false) {
     return new Promise(async (resolve, reject) => {
+      if (this.isDesktop) {
+        // Send request to desktop for status, listen for the next async response
+        this.desktop.send('ledger', { event: 'get-ledger-status' });
+        console.log(`Requesting ledger status from desktop...`);
+        // const response = await this.getDesktopResponse('ledger-status');
+        // if (response && response.)
+        let sub = this.ledgerStatus$.subscribe(newStatus => {
+          console.log(`Got new status from desktop, setting: `, newStatus);
+          sub.unsubscribe();
+
+          if (newStatus.status === LedgerStatus.READY) {
+            resolve(true);
+          } else {
+            reject(new Error(newStatus.statusText || `Unable to load desktop Ledger device`));
+          }
+
+          // console.log(`Resolving ledger load : `, newStatus.status === LedgerStatus.READY);
+          // resolve(newStatus.status === LedgerStatus.READY);
+          // if (newStatus === LedgerStatus.READY) {
+          //   resolve(true);
+          // } else {
+          //   re
+          // }
+          // resolve(true);
+        }, reject);
+        return;
+      }
+
       // Load the transport object
       if (!this.ledger.transport) {
+
+        console.log('Looking for ledger, checking for window property');
+
+        const desktopLedger = window['LedgerTransport'];
+        console.log(`Got desktop ledger~ ', `, desktopLedger);
+
+
         try {
-          this.ledger.transport = await TransportU2F.open(null);
+          if (desktopLedger) {
+            this.ledger.transport = await desktopLedger.open(null);
+            console.log(`Started desktop connection?! `, this.ledger.transport);
+          } else {
+            this.ledger.transport = await TransportU2F.open(null);
+            // this.ledger.transport = await TransportU2F.open(null);
+          }
           this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         } catch (err) {
           if (err.statusText == 'UNKNOWN_ERROR') {
@@ -152,8 +318,11 @@ export class LedgerService {
     }).catch(err => {
       console.log(`error when loading ledger `, err);
       if (!hideNotifications) {
-        this.notifications.sendWarning(`Error loading Ledger device: `, err.message);
+        console.log(`Showing warning notification with: `, err);
+        this.notifications.sendWarning(`Error loading Ledger device: ${typeof err === 'string' ? err : err.message}`, { length: 6000 });
       }
+
+      return null;
     })
 
   }
@@ -174,30 +343,56 @@ export class LedgerService {
       sourceBlock: blockData.contents.link,
     };
 
-    const cacheResponse = await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.contents.signature);
+    if (this.isDesktop) {
+      return await this.updateCacheDesktop(accountIndex, cacheData, blockData.contents.signature);
+    } else {
+      return await this.ledger.nano.cacheBlock(accountIndex, cacheData, blockData.contents.signature);
+    }
 
-    return cacheResponse;
+    // const cacheResponse = await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.contents.signature);
+    //
+    // return cacheResponse;
   }
 
   async signBlock(accountIndex: number, blockData: any) {
     if (this.ledger.status !== LedgerStatus.READY) {
       await this.loadLedger(); // Make sure ledger is ready
     }
-    this.ledger.transport.setExchangeTimeout(this.waitTimeout);
-    return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
+    if (this.isDesktop) {
+      return this.signBlockDesktop(accountIndex, blockData);
+    } else {
+      this.ledger.transport.setExchangeTimeout(this.waitTimeout);
+      return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
+    }
   }
 
   ledgerPath(accountIndex: number) {
     return `${this.walletPrefix}${accountIndex}'`;
   }
 
-  async getLedgerAccount(accountIndex: number, showOnScreen = false) {
+  async getLedgerAccountWeb(accountIndex: number, showOnScreen = false) {
     this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
     try {
       return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
     } catch (err) {
       throw err;
     }
+  }
+
+  async getLedgerAccount(accountIndex: number, showOnScreen = false) {
+    console.log(`Getting new account details....`, accountIndex);
+    if (this.isDesktop) {
+      return await this.getLedgerAccountDesktop(accountIndex, showOnScreen);
+    } else {
+      return await this.getLedgerAccountWeb(accountIndex, showOnScreen);
+    }
+
+    // this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
+    // try {
+    //   return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
+    // } catch (err) {
+    //   throw err;
+    // }
   }
 
   pollLedgerStatus() {

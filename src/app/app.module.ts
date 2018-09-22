@@ -43,6 +43,7 @@ import {RepresentativeService} from "./services/representative.service";
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
 import {NodeService} from "./services/node.service";
 import {LedgerService} from "./ledger.service";
+import {DesktopService} from "./services/desktop.service";
 
 
 @NgModule({
@@ -94,6 +95,7 @@ import {LedgerService} from "./ledger.service";
     RepresentativeService,
     NodeService,
     LedgerService,
+    DesktopService,
   ],
   bootstrap: [AppComponent]
 })

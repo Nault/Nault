@@ -84,6 +84,7 @@ export class ConfigureWalletComponent implements OnInit {
     await this.ledgerService.loadLedger(true);
     this.notifications.removeNotification('ledger-status');
 
+    console.log(`Importing ledger device.....`);
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
       return this.notifications.sendWarning(`No ledger device detected, make sure it is connected and you are using Chrome/Opera`);
     }
@@ -95,7 +96,8 @@ export class ConfigureWalletComponent implements OnInit {
     if (refreshOnly) {
       return;
     }
-    
+
+    console.log(`Import: creating ledger wallet`);
     const newWallet = await this.walletService.createLedgerWallet();
 
     // We skip the password panel

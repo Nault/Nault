@@ -4,3 +4,10 @@
 
 // Allow fetch to call a local file (for pow.wasm)
 require('electron').webFrame.registerURLSchemeAsPrivileged('file', { bypassCSP: true });
+
+
+const Transport = require('@ledgerhq/hw-transport-u2f').default;
+
+window.LedgerTransport = Transport;
+
+console.log('Set the ledger transport on the window! ', window.LedgerTransport)

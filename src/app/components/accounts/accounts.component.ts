@@ -13,6 +13,7 @@ import {LedgerService, LedgerStatus} from "../../ledger.service";
 export class AccountsComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
   isLedgerWallet = this.walletService.isLedgerWallet();
+  viewAdvanced = false;
 
   constructor(
     private walletService: WalletService,

@@ -12,6 +12,7 @@ import {RepresentativeService} from "./services/representative.service";
 import {NodeService} from "./services/node.service";
 import Nano from "hw-app-nano";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
+import {DesktopService} from "./services/desktop.service";
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
+    private desktop: DesktopService,
     public price: PriceService) { }
 
   async ngOnInit() {
@@ -53,6 +55,12 @@ export class AppComponent implements OnInit {
     this.websocket.connect();
 
     await this.updateFiatPrices();
+
+    this.desktop.send('msg', { foo: 'bar', baz: 'bim' });
+
+    this.desktop.on('ledger', (data, data2) => {
+      console.log(`Received message from desktop! `, data, data2);
+    })
 
     this.representative.loadRepresentativeList();
 

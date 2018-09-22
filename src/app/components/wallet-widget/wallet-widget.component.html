@@ -3,7 +3,7 @@
     <div uk-grid>
       <div class="uk-width-1-1">
         <div *ngIf="walletService.isLedgerWallet()">
-          <div *ngIf="ledgerStatus === 'not-connected'">
+          <div *ngIf="ledgerStatus === 'not-connected' || !ledgerStatus">
             <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-warning" uk-tooltip title="Reload Ledger status">
               <span uk-icon="icon: refresh" style="float: right; margin-right: 15px;" class="uk-text-muted"></span>
               <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom">Ledger Disconnected</span>

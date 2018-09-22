@@ -3,9 +3,22 @@
     <div uk-grid>
       <div class="uk-width-1-2"><h2>Accounts</h2></div>
       <div class="uk-width-1-2 uk-text-right">
-        <button class="uk-button uk-button-secondary" (click)="createAccount()">
-          Add New Account
-        </button>
+        <div uk-grid>
+          <!--<div class="uk-width-1-2@m">-->
+            <!--<input type="number" class="uk-input uk-width-1-1" placeholder="Manual Account Index">-->
+
+          <!--</div>-->
+          <div class="uk-width-1-1">
+            <input type="number" class="uk-input uk-form-width-small" placeholder="Account #" *ngIf="viewAdvanced">
+            <button class="uk-button uk-button-secondary" (click)="createAccount()">
+              Add New Account
+            </button>
+          </div>
+        </div>
+        <!--<input type="text" class="uk-input" placeholder="Manual Account Index">-->
+        <!--<button class="uk-button uk-button-secondary" (click)="createAccount()">-->
+          <!--Add New Account-->
+        <!--</button>-->
       </div>
     </div>
 
@@ -23,12 +36,16 @@
           <td class="uk-visible-toggle">
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
+                <span class="account-index" *ngIf="viewAdvanced">
+                  {{ account.index }}
+                </span>
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
                   <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
                 </a>
               </div>
               <div class="uk-width-auto" style="padding-left: 10px;">
                 <ul class="uk-hidden-hover uk-iconnav">
+                  <!--<li class="account-index">#{{ account.index }}</li>-->
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
                 </ul>
@@ -66,6 +83,9 @@
     </div>
 
     <p class="uk-text-center uk-text-small">Click on an account to view more details!</p>
+    <p class="uk-text-right uk-text-small">
+      <a (click)="viewAdvanced = !viewAdvanced">{{ viewAdvanced ? 'Basic View' : 'Advanced View' }}</a>
+    </p>
 
 
   </div>
