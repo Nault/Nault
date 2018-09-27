@@ -25,7 +25,7 @@
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "build -wml --x64 -p always",
-    "release": "electron-builder -p onTag"
+    "release": "electron-builder"
   },
   "private": true,
   "dependencies": {
