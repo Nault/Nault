@@ -21,11 +21,12 @@
     "wallet:dev-ssl": "ng serve --open --ssl 1 --ssl-key \"assets/dev-cert/key.pem\" --ssl-cert \"assets/dev-cert/cert.pem\"",
     "wallet:build": "ng build --prod",
     "wallet:build-desktop": "ng build --env=desktop --base-href ",
+    "desktop:build": "npm run wallet:build-desktop && cd desktop-app && tsc && cd ..",
     "desktop:dev": "cd desktop-app && tsc && electron dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "build -wml --x64 -p always",
-    "release": "electron-builder"
+    "release": "npm run desktop:build && electron-builder"
   },
   "private": true,
   "dependencies": {
