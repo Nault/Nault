@@ -1,6 +1,6 @@
 {
   "name": "NanoVault",
-  "version": "1.0.5-alpha",
+  "version": "1.0.51-alpha",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "Andrew Steele",
