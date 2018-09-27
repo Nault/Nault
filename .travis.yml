@@ -27,7 +27,7 @@ script:
         -v ~/.cache/electron:/root/.cache/electron \
         -v ~/.cache/electron-builder:/root/.cache/electron-builder \
         electronuserland/builder:wine \
-        /bin/bash -c "apt-get update && apt-get install --no-install-recommends -y build-essential libudev-dev libusb-1.0-0 libusb-1.0-0-dev libopenjp2-tools gcc-multilib g++-multilib && npm install -g node-gyp && yarn --link-duplicates --pure-lockfile && cd node_modules/node-hid && git submodule update --init --recursive && npm install && cd ../.. && yarn release --linux --win"
+        /bin/bash -c "apt-get update && apt-get install --no-install-recommends -y build-essential libudev-dev libusb-1.0-0 libusb-1.0-0-dev libopenjp2-tools gcc-multilib g++-multilib && npm install -g node-gyp && yarn --link-duplicates --pure-lockfile && cd node_modules/node-hid && git submodule update --init --recursive && npm install && cd ../usb && npm install && cd ../.. && yarn release --linux --win"
     else
       yarn release
     fi
