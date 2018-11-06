@@ -40,6 +40,7 @@
     "@angular/router": "^5.0.0",
     "@ledgerhq/hw-transport-u2f": "^4.7.3",
     "@types/crypto-js": "^3.1.38",
+    "babel-polyfill": "^6.26.0",
     "bignumber.js": "^5.0.0",
     "bip39": "^2.5.0",
     "blakejs": "^1.1.0",
