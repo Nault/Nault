@@ -11,6 +11,10 @@ interface AppSettings {
   lockOnClose: number;
   lockInactivityMinutes: number;
   powSource: PoWSource;
+  serverName: string;
+  serverAPI: string | null;
+  serverNode: string | null;
+  serverWS: string | null;
 }
 
 @Injectable()
@@ -24,6 +28,10 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
+    serverName: 'nanovault',
+    serverAPI: null,
+    serverNode: null,
+    serverWS: null,
   };
 
   constructor() { }
@@ -70,6 +78,10 @@ export class AppSettingsService {
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',
+      serverName: 'nanovault',
+      serverNode: null,
+      serverAPI: null,
+      serverWS: null,
     };
   }
 

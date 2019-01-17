@@ -56,12 +56,6 @@ export class AppComponent implements OnInit {
 
     await this.updateFiatPrices();
 
-    this.desktop.send('msg', { foo: 'bar', baz: 'bim' });
-
-    this.desktop.on('ledger', (data, data2) => {
-      console.log(`Received message from desktop! `, data, data2);
-    })
-
     this.representative.loadRepresentativeList();
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
@@ -72,15 +66,11 @@ export class AppComponent implements OnInit {
     // When the page closes, determine if we should lock the wallet
     window.addEventListener("beforeunload",  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
-      if (this.settings.settings.lockOnClose == 1) {
-        this.walletService.lockWallet();
-      }
+      this.walletService.lockWallet();
     });
     window.addEventListener("unload",  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
-      if (this.settings.settings.lockOnClose == 1) {
-        this.walletService.lockWallet();
-      }
+      this.walletService.lockWallet();
     });
 
     // Listen for an xrb: protocol link, triggered by the desktop application

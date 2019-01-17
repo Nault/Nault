@@ -2,49 +2,32 @@ import { app, BrowserWindow, shell, Menu, protocol, webFrame, ipcMain } from 'el
 import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
-// const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid');
+import { initialize } from './lib/ledger';
 
 app.setAsDefaultProtocolClient('xrb'); // Register handler for xrb: links
 
-console.log(`Starting ledger@!`);
-
-import { initialize } from './lib/ledger';
-
-// const ledger = require('./src-desktop/ledger');
-
+// Initialize Ledger device detection
 initialize();
 
-// const Ledger = new ledger();
-
-// Ledger.loadLedger();
-
 let mainWindow;
-
-// global['LedgerTransport'] = TransportNodeHid;
 
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false, devTools: true } });
-  // const options = { extraHeaders: "pragma: no-cache\n" };
-  // mainWindow.loadURL('https://nanovault.io', options);
-  // mainWindow.loadURL('http://localhost:4200/');
+
+  // mainWindow.loadURL('http://localhost:4200/'); // Only use this for development
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../../dist/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
-  // mainWindow.LedgerTransport = TransportU2F;
-  // mainWindow.webContents.
-
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   });
 
+  // Detect link clicks to new windows and open them in the default browser
   mainWindow.webContents.on('new-window', function(e, url) {
     e.preventDefault();
     shell.openExternal(url);

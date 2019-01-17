@@ -1,6 +1,6 @@
 {
   "name": "NanoVault",
-  "version": "1.0.51-alpha",
+  "version": "1.1.0-alpha",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "Andrew Steele",
@@ -87,9 +87,9 @@
   },
   "build": {
     "appId": "com.electron.nanovault",
-    "buildVersion": "1.0.4",
+    "buildVersion": "1.1.0",
     "productName": "NanoVault",
-    "copyright": "Copyright © 2018 Andrew Steele",
+    "copyright": "Copyright © 2019 Andrew Steele",
     "directories": {
       "output": "dist-desktop",
       "app": "./"

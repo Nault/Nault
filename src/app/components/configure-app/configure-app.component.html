@@ -60,23 +60,6 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Lock On Exit <span uk-icon="icon: info;" uk-tooltip title="Change if your wallet should be locked automatically when you exit or reload NanoVault"></span></label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedLockOption">
-                      <option *ngFor="let option of lockOptions" [value]="option.value">{{ option.name }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
                 <label class="uk-form-label">Lock After Inactivity <span uk-icon="icon: info;" uk-tooltip title="Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"></span></label>
                 <div class="uk-form-controls">
 
@@ -128,6 +111,102 @@
       </div>
       <div class="uk-card-footer uk-text-right">
         <button (click)="updateWalletSettings()" class="uk-button uk-button-secondary">Update Wallet Settings</button>
+      </div>
+    </div>
+
+
+    <div class="uk-card uk-card-default uk-margin">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Server Settings</h3>
+      </div>
+      <div class="uk-card-body">
+        <div uk-grid>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Server Configuration <span uk-icon="icon: info;" uk-tooltip title="Change which server is used to communicate with the Nano network"></span></label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedServer" id="form-horizontal-select">
+                    <option *ngFor="let server of serverOptions" [value]="server.value">{{ server.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+              <div class="">
+                <label class="uk-form-label uk-text-right">API Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to load, cache, and enhance results from the Nano node"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
+                    <strong>https://nanovault.io/api/node-api</strong>
+                  </div>
+                  <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
+                    <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://nanovault.io/api/node-api">
+                    <span class="uk-text-meta">
+                      This server must be running the <a href="https://github.com/cronoh/nanovault-server" target="_blank">NanoVault Server</a> application, or an API compliant with it.<br>
+                      Timestamps in the application are dependant on this server's access to them.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+              <div class="">
+                <label class="uk-form-label uk-text-right">Override Nano Node <span uk-icon="icon: info;" uk-tooltip title="Override which node is used by the API Server to communicate with the Nano network"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
+                      <strong>N/A</strong>
+                    </div>
+
+                    <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
+                      <input [(ngModel)]="serverNode" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://125.32.211.54:7076">
+                      <span class="uk-text-meta">
+                        This server must be exposing the <a href="https://developers.nano.org/docs/rpc/" target="_blank">Nano RPC</a> to the API server used above.<br>
+                        Requests will still be sent to the API server, but this node will be used to communicate with the network.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+              <div class="">
+                <label class="uk-form-label uk-text-right">Updates Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
+                    <strong>wss://ws.nanovault.io/</strong>
+                  </div>
+
+                  <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
+                    <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="wss://ws.nanovault.io/">
+                    <span class="uk-text-meta">
+                      This server must be running the <a href="https://github.com/cronoh/nanovault-ws" target="_blank">NanoVault Websocket</a> application, or a WebSocket API compliant with it.<br>
+                      <i>Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="uk-card-footer uk-text-right">
+        <button (click)="updateServerSettings()" class="uk-button uk-button-secondary">Update Server Settings</button>
       </div>
     </div>
 

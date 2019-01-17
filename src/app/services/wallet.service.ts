@@ -373,7 +373,7 @@ export class WalletService {
 
   async createLedgerAccount(index) {
     console.log(`Creating ledger account at index... `, index);
-    const account = await this.ledgerService.getLedgerAccount(index);
+    const account: any = await this.ledgerService.getLedgerAccount(index);
 
     console.log(`Got account!`, account);
     const accountID = account.address;
@@ -572,17 +572,11 @@ export class WalletService {
   async addWalletAccount(accountIndex: number|null = null, reloadBalances: boolean = true) {
     // if (!this.wallet.seedBytes) return;
     let index = accountIndex;
-    let nextIndex = index + 1;
     if (index === null) {
-      index = this.wallet.accountsIndex; // Use the existing number, then increment it
+      index = 0; // Use the existing number, then increment it
 
       // Make sure the index is not being used (ie. if you delete acct 3/5, then press add twice, it goes 3, 6, 7)
       while (this.wallet.accounts.find(a => a.index === index)) index++;
-
-      // Find the next available index
-      nextIndex = index + 1;
-      while (this.wallet.accounts.find(a => a.index === nextIndex)) nextIndex++;
-      this.wallet.accountsIndex = nextIndex;
     }
 
     let newAccount: WalletAccount|null;
@@ -596,13 +590,18 @@ export class WalletService {
         console.log(`Creating ledger account at index: `, index);
         newAccount = await this.createLedgerAccount(index);
       } catch (err) {
-        this.notifications.sendWarning(`Unable to load account from ledger.  Make sure it is connected`);
+        // this.notifications.sendWarning(`Unable to load account from ledger.  Make sure it is connected`);
         throw err;
       }
 
     }
 
     this.wallet.accounts.push(newAccount);
+
+    // Set new accountsIndex - used when importing wallets.  Only count from 0, won't include custom added ones
+    let nextIndex = 0;
+    while (this.wallet.accounts.find(a => a.index === nextIndex)) nextIndex++;
+    this.wallet.accountsIndex = nextIndex;
 
     if (reloadBalances) await this.reloadBalances();
 
@@ -728,9 +727,14 @@ export class WalletService {
     }
 
     if (this.wallet.type === 'seed') {
-      data.seed = this.wallet.seed;
+      // Forcefully encrypt the seed so an unlocked wallet is never saved
+      if (!this.wallet.locked) {
+        const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password || '');
+        data.seed = encryptedSeed.toString();
+      } else {
+        data.seed = this.wallet.seed;
+      }
       data.locked = this.wallet.locked;
-      data.password = this.wallet.locked ? '' : this.wallet.password;
     }
 
     return data;

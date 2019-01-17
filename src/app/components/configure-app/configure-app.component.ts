@@ -9,6 +9,7 @@ import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
 import {LedgerService, LedgerStatus} from "../../ledger.service";
 import BigNumber from "bignumber.js";
+import {WebsocketService} from "../../services/websocket.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -80,12 +81,6 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
-  lockOptions = [
-    { name: 'Lock Wallet On Close', value: 1 },
-    { name: 'Do Not Lock Wallet On Close', value: 0 },
-  ];
-  selectedLockOption = 1;
-
   powOptions = [
     { name: 'Best Option Available', value: 'best' },
     { name: 'Client Side - WebGL (Chrome/Firefox)', value: 'clientWebGL' },
@@ -94,11 +89,17 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPoWOption = this.powOptions[0].value;
 
-  blockOptions = [
-    { name: 'Legacy Blocks', value: false },
-    { name: 'State Blocks', value: true },
+  serverOptions = [
+    { name: 'NanoVault Default', value: 'nanovault' },
+    { name: 'Custom', value: 'custom' },
   ];
-  selectedBlockOption = this.blockOptions[0].value;
+  selectedServer = this.serverOptions[0].value;
+
+  serverAPI = null;
+  serverNode = null;
+  serverWS = null;
+
+  showServerConfigs = () => this.selectedServer === 'custom';
 
   constructor(
     private walletService: WalletService,
@@ -108,6 +109,7 @@ export class ConfigureAppComponent implements OnInit {
     private pow: PowService,
     private api: ApiService,
     private ledgerService: LedgerService,
+    private websocket: WebsocketService,
     private workPool: WorkPoolService,
     private price: PriceService) { }
 
@@ -130,12 +132,16 @@ export class ConfigureAppComponent implements OnInit {
     const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value == settings.lockInactivityMinutes);
     this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
 
-    const matchingLockOption = this.lockOptions.find(d => d.value === settings.lockOnClose);
-    this.selectedLockOption = matchingLockOption ? matchingLockOption.value : this.lockOptions[0].value;
-
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
-    }
+
+    const matchingServerOption = this.serverOptions.find(d => d.value === settings.serverName);
+    this.selectedServer = matchingServerOption ? matchingServerOption.value : this.serverOptions[0].value;
+
+    this.serverAPI = settings.serverAPI;
+    this.serverNode = settings.serverNode;
+    this.serverWS = settings.serverWS;
+  }
 
   async updateDisplaySettings() {
     const newCurrency = this.selectedCurrency;
@@ -171,7 +177,6 @@ export class ConfigureAppComponent implements OnInit {
 
     const newSettings = {
       walletStore: newStorage,
-      lockOnClose: new Number(this.selectedLockOption),
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
     };
@@ -181,6 +186,74 @@ export class ConfigureAppComponent implements OnInit {
 
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
+    }
+  }
+
+  async updateServerSettings() {
+    if (this.selectedServer === 'nanovault') {
+      const newSettings = {
+        serverName: 'nanovault',
+        serverAPI: null,
+        serverNode: null,
+        serverWS: null,
+      };
+      this.appSettings.setAppSettings(newSettings);
+    } else {
+      const newSettings = {
+        serverName: 'custom',
+        serverAPI: null,
+        serverNode: null,
+        serverWS: null,
+      };
+
+      // Custom... do some basic validation
+      if (this.serverAPI != null && this.serverAPI.trim().length > 1) {
+        if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
+          newSettings.serverAPI = this.serverAPI;
+        } else {
+          return this.notifications.sendWarning(`Custom API Server has an invalid address.  Make sure to use the full address ie: https://nanovault.io/api/node-api`);
+        }
+      }
+
+      if (this.serverNode != null && this.serverNode.trim().length > 1) {
+        if (this.serverNode.startsWith('https://') || this.serverNode.startsWith('http://')) {
+          newSettings.serverNode = this.serverNode;
+        } else {
+          return this.notifications.sendWarning(`Custom Node Server has an invalid address.  Make sure to use the full address ie: http://127.0.0.1:7076`);
+        }
+      }
+
+      if (this.serverWS != null && this.serverWS.trim().length > 1) {
+        if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
+          newSettings.serverWS = this.serverWS;
+        } else {
+          return this.notifications.sendWarning(`Custom Update Server has an invalid address.  Make sure to use the full address ie: wss://ws.nanovault.io/`);
+        }
+      }
+
+      this.appSettings.setAppSettings(newSettings);
+    }
+
+    this.notifications.sendSuccess(`Server settings successfully updated, refreshing balances`);
+
+    // Reload some things to show new statuses?
+    await this.walletService.reloadBalances();
+    this.websocket.forceReconnect();
+
+  }
+
+  serverAPIStatus = 0;
+  serverNodeStatus = 0;
+  serverWSStatus = 0;
+  validateServerAPI() {
+    if (this.serverAPI != null) {
+      if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
+        this.serverAPIStatus = 1;
+      } else {
+        this.serverAPIStatus = -1;
+      }
+    } else {
+      this.serverAPIStatus = 0;
     }
   }
 

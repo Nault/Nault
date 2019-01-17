@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NodeService} from "./node.service";
+import {AppSettingsService} from "./app-settings.service";
 
 @Injectable()
 export class ApiService {
@@ -8,11 +9,15 @@ export class ApiService {
   rpcUrl = `https://nanovault.io/api/node-api`;
   // rpcUrl = `http://localhost:9950/api/node-api`;
 
-  constructor(private http: HttpClient, private node: NodeService) { }
+  constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
   private async request(action, data): Promise<any> {
     data.action = action;
-    return await this.http.post(this.rpcUrl, data).toPromise()
+    let apiUrl = this.appSettings.settings.serverAPI || this.rpcUrl;
+    if (this.appSettings.settings.serverNode) {
+      apiUrl += `?node=${this.appSettings.settings.serverNode}`;
+    }
+    return await this.http.post(apiUrl, data).toPromise()
       .then(res => {
         this.node.setOnline();
         return res;
