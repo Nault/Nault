@@ -13,7 +13,7 @@ init:
 install:
   - ps: Install-Product node 8 x64
   - yarn
-  - npm install -g tsc
+  - npm install -g typescript
 
 build_script:
   - yarn release
