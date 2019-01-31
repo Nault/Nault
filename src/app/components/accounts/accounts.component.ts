@@ -3,7 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {AppSettingsService} from "../../services/app-settings.service";
-import {LedgerService, LedgerStatus} from "../../ledger.service";
+import {LedgerService, LedgerStatus} from "../../services/ledger.service";
 
 @Component({
   selector: 'app-accounts',
@@ -46,6 +46,7 @@ export class AccountsComponent implements OnInit {
     try {
       const newAccount = await this.walletService.addWalletAccount(accountIndex);
       this.notificationService.sendSuccess(`Successfully created new account ${newAccount.id}`);
+      this.newAccountIndex = null;
     } catch (err) {
       this.notificationService.sendError(`Unable to add new account: ${err.message}`);
     }

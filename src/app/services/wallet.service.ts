@@ -10,7 +10,7 @@ import {NanoBlockService} from "./nano-block.service";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {PriceService} from "./price.service";
-import {LedgerService} from "../ledger.service";
+import {LedgerService} from "./ledger.service";
 
 export type WalletType = "seed" | "ledger" | "privateKey";
 

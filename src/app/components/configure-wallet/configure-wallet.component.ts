@@ -3,7 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as bip from 'bip39';
-import {LedgerService, LedgerStatus} from "../../ledger.service";
+import {LedgerService, LedgerStatus} from "../../services/ledger.service";
 
 @Component({
   selector: 'app-configure-wallet',

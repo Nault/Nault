@@ -42,7 +42,7 @@ import { RepresentativesComponent } from './components/representatives/represent
 import {RepresentativeService} from "./services/representative.service";
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
 import {NodeService} from "./services/node.service";
-import {LedgerService} from "./ledger.service";
+import {LedgerService} from "./services/ledger.service";
 import {DesktopService} from "./services/desktop.service";
 
 

@@ -7,7 +7,7 @@ import BigNumber from "bignumber.js";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {WalletService} from "./wallet.service";
-import {LedgerService} from "../ledger.service";
+import {LedgerService} from "./ledger.service";
 const nacl = window['nacl'];
 
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';

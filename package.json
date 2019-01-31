@@ -1,6 +1,6 @@
 {
   "name": "NanoVault",
-  "version": "1.1.0-alpha",
+  "version": "1.1.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "Andrew Steele",
@@ -17,16 +17,21 @@
     "dist": "electron-builder",
     "dist-full": "electron-builder -wml --x64",
     "publish": "build -wml --x64 -p always",
+    "release": "npm run desktop:build && electron-builder",
+
     "wallet:dev": "ng serve --open",
     "wallet:dev-ssl": "ng serve --open --ssl 1 --ssl-key \"assets/dev-cert/key.pem\" --ssl-cert \"assets/dev-cert/cert.pem\"",
     "wallet:build": "ng build --prod",
     "wallet:build-desktop": "ng build --env=desktop --base-href ",
-    "desktop:build": "npm run wallet:build-desktop && cd desktop-app && tsc && cd ..",
-    "desktop:dev": "cd desktop-app && tsc && electron dist/desktop-app.js",
+
+    "desktop:compile": "cd desktop-app && tsc && cd ..",
+    "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
+    "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "build -wml --x64 -p always",
-    "release": "npm run desktop:build && electron-builder"
+
+    "server:copy-wallet": "cd .. && rm -rf nanovault-server/static && cp nanovault/dist nanovault-server/static"
   },
   "private": true,
   "dependencies": {
@@ -92,7 +97,8 @@
     "productName": "NanoVault",
     "copyright": "Copyright © 2019 Andrew Steele",
     "directories": {
-      "output": "dist-desktop",
+      "output": "desktop-app/build",
+      "buildResources": "desktop-app/assets",
       "app": "./"
     },
     "mac": {
@@ -109,7 +115,10 @@
       }
     },
     "linux": {
-      "target": "AppImage"
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "publish": [
       {

@@ -87,7 +87,7 @@ export class LedgerService {
 
     let resolved = false;
     if (this.ledger.status === LedgerStatus.READY) {
-      this.ledgerStatus$.next({ status: this.ledger.status, message: 'Ledger device already ready' });
+      this.ledgerStatus$.next({ status: this.ledger.status, statusText: 'Ledger device already ready' });
       return true; // Already ready?
     }
 
