@@ -5,7 +5,7 @@
         <h2>Welcome to NanoVault!</h2>
         <span class="uk-text-lead">The "no strings attached" open source wallet for <a href="https://nano.org" class="uk-link-text" target="_blank">Nano</a></span><br>
       </div>
-      <div class="uk-width-1-1" *ngIf="!wallet.seed">
+      <div class="uk-width-1-1" *ngIf="!isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 60px;">
             <span class="uk-text-small">To get started, choose an option below to configure your wallet</span>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="uk-width-1-1" *ngIf="wallet.seed">
+      <div class="uk-width-1-1" *ngIf="isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 60px;">
             <span class="uk-text-small">Welcome back!  It looks like your wallet is already configured.</span>

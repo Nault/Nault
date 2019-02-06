@@ -328,7 +328,7 @@ export class LedgerService {
     if (this.isDesktop) {
       return await this.updateCacheDesktop(accountIndex, cacheData, blockData.contents.signature);
     } else {
-      return await this.ledger.nano.cacheBlock(accountIndex, cacheData, blockData.contents.signature);
+      return await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.contents.signature);
     }
   }
 

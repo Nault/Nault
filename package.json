@@ -31,7 +31,7 @@
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "build -wml --x64 -p always",
 
-    "server:copy-wallet": "cd .. && rm -rf nanovault-server/static && cp nanovault/dist nanovault-server/static"
+    "server:copy-wallet": "cd .. && rm -rf nanovault-server/static && cp -R nanovault/dist nanovault-server/static"
   },
   "private": true,
   "dependencies": {
