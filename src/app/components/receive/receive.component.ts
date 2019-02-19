@@ -39,7 +39,13 @@ export class ReceiveComponent implements OnInit {
   async loadPendingForAll() {
     this.pendingBlocks = [];
 
-    const pending = await this.api.accountsPending(this.accounts.map(a => a.id));
+    let pending;
+    if (this.settings.settings.minimumReceive) {
+      const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
+      pending = await this.api.accountsPendingLimit(this.accounts.map(a => a.id), minAmount.toString(10));
+    } else {
+      pending = await this.api.accountsPending(this.accounts.map(a => a.id));
+    }
     if (!pending || !pending.blocks) return;
 
     for (let account in pending.blocks) {
@@ -74,7 +80,13 @@ export class ReceiveComponent implements OnInit {
   async loadPendingForAccount(account) {
     this.pendingBlocks = [];
 
-    const pending = await this.api.pending(account, 50);
+    let pending;
+    if (this.settings.settings.minimumReceive) {
+      const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
+      pending = await this.api.pendingLimit(account, 50, minAmount.toString(10));
+    } else {
+      pending = await this.api.pending(account, 50);
+    }
     if (!pending || !pending.blocks) return;
 
     for (let block in pending.blocks) {

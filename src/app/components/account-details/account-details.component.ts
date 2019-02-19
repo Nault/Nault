@@ -87,7 +87,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
-      const pending = await this.api.pending(this.accountID, 25);
+      // Take minimum receive into account
+      let pending;
+      if (this.settings.settings.minimumReceive) {
+        const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
+        pending = await this.api.pendingLimit(this.accountID, 50, minAmount.toString(10));
+      } else {
+        pending = await this.api.pending(this.accountID, 50);
+      }
+
       if (pending && pending.blocks) {
         for (let block in pending.blocks) {
           if (!pending.blocks.hasOwnProperty(block)) continue;

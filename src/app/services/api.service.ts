@@ -39,6 +39,9 @@ export class ApiService {
   async accountsPending(accounts: string[], count: number = 50): Promise<{blocks: any }> {
     return await this.request('accounts_pending', { accounts, count, source: true });
   }
+  async accountsPendingLimit(accounts: string[], threshold: string, count: number = 50): Promise<{blocks: any }> {
+    return await this.request('accounts_pending', { accounts, count, threshold, source: true });
+  }
   async delegatorsCount(account: string): Promise<{ count: string }> {
     return await this.request('delegators_count', { account });
   }
@@ -69,5 +72,8 @@ export class ApiService {
   }
   async pending(account, count): Promise<any> {
     return await this.request('pending', { account, count, source: true });
+  }
+  async pendingLimit(account, count, threshold): Promise<any> {
+    return await this.request('pending', { account, count, threshold, source: true });
   }
 }

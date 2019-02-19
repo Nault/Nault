@@ -98,6 +98,7 @@ export class ConfigureAppComponent implements OnInit {
   serverAPI = null;
   serverNode = null;
   serverWS = null;
+  minimumReceive = null;
 
   showServerConfigs = () => this.selectedServer === 'custom';
 
@@ -141,6 +142,8 @@ export class ConfigureAppComponent implements OnInit {
     this.serverAPI = settings.serverAPI;
     this.serverNode = settings.serverNode;
     this.serverWS = settings.serverWS;
+
+    this.minimumReceive = settings.minimumReceive;
   }
 
   async updateDisplaySettings() {
@@ -163,6 +166,7 @@ export class ConfigureAppComponent implements OnInit {
     let newPoW = this.selectedPoWOption;
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
+    const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive;
 
     if (this.appSettings.settings.powSource !== newPoW) {
       if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
@@ -179,6 +183,7 @@ export class ConfigureAppComponent implements OnInit {
       walletStore: newStorage,
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
+      minimumReceive: this.minimumReceive || null,
     };
 
     this.appSettings.setAppSettings(newSettings);
@@ -186,6 +191,9 @@ export class ConfigureAppComponent implements OnInit {
 
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
+    }
+    if (reloadPending) {
+      this.walletService.reloadBalances(true);
     }
   }
 

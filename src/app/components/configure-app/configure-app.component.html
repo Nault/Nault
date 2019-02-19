@@ -107,6 +107,32 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Minimum Receive Amount <span uk-icon="icon: info;" uk-tooltip title="Transactions below this amount will be ignored by the wallet.  Set to blank or 0 to accept all transactions."></span></label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-3-5">
+                      <div class="uk-inline uk-width-1-1">
+                        <input [(ngModel)]="minimumReceive" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="0.000001">
+                      </div>
+
+                    </div>
+
+                    <div class="uk-width-2-5">
+                      <div class="uk-inline uk-width-1-1">
+                        <button class="uk-button uk-button-primary uk-width-1-1" type="button" style="text-transform: none;">NANO</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">

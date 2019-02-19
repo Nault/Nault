@@ -15,6 +15,7 @@ interface AppSettings {
   serverAPI: string | null;
   serverNode: string | null;
   serverWS: string | null;
+  minimumReceive: string | null;
 }
 
 @Injectable()
@@ -32,6 +33,7 @@ export class AppSettingsService {
     serverAPI: null,
     serverNode: null,
     serverWS: null,
+    minimumReceive: null,
   };
 
   constructor() { }
@@ -82,6 +84,7 @@ export class AppSettingsService {
       serverNode: null,
       serverAPI: null,
       serverWS: null,
+      minimumReceive: null,
     };
   }
 

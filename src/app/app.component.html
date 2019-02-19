@@ -33,13 +33,13 @@
       <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
         <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Accounts</a></li>
         <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Send</a></li>
-        <li *ngIf="wallet.pending.gt(0)">
+        <li *ngIf="walletService.hasPendingTransactions()">
           <div uk-grid>
             <div class="uk-width-3-4">
               <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Receive</a>
             </div>
             <div class="uk-width-1-4 uk-text-center">
-              <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
+              <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
             </div>
           </div>
         </li>
@@ -112,7 +112,7 @@
               <span class="balance" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && wallet.seed }" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
             </div>
 
-            <div *ngIf="wallet.pending.gt(0)">
+            <div *ngIf="walletService.hasPendingTransactions()">
               <div style="display: inline-block; text-align: right;" class="uk-text-muted">
                 <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Pending </span>
                 <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
@@ -129,13 +129,13 @@
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
           <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
           <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
-          <li *ngIf="wallet.pending.gt(0)">
+          <li *ngIf="walletService.hasPendingTransactions()">
             <div uk-grid>
               <div class="uk-width-3-4">
                 <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
               </div>
               <div class="uk-width-1-4 uk-text-center">
-                <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
               </div>
             </div>
           </li>

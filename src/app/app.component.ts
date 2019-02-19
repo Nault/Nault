@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     this.representative.loadRepresentativeList();
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
-    if (this.wallet.locked && this.wallet.pending.gt(0)) {
+    if (this.wallet.locked && this.walletService.hasPendingTransactions()) {
       this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
     }
 
