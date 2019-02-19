@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   searchData = '';
 
   constructor(
-    private walletService: WalletService,
+    public walletService: WalletService,
     private addressBook: AddressBookService,
     public settings: AppSettingsService,
     private websocket: WebsocketService,
