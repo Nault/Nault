@@ -17,6 +17,9 @@ export class ApiService {
     if (this.appSettings.settings.serverNode) {
       apiUrl += `?node=${this.appSettings.settings.serverNode}`;
     }
+    if (this.node.node.status === false) {
+      this.node.setLoading();
+    }
     return await this.http.post(apiUrl, data).toPromise()
       .then(res => {
         this.node.setOnline();

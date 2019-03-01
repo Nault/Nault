@@ -142,7 +142,7 @@
 
 
     <div class="uk-card uk-card-default uk-margin">
-      <div class="uk-card-header">
+      <div class="uk-card-header" id="server-settings">
         <h3 class="uk-card-title">Server Settings</h3>
       </div>
       <div class="uk-card-body">
@@ -154,7 +154,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">Server Configuration <span uk-icon="icon: info;" uk-tooltip title="Change which server is used to communicate with the Nano network"></span></label>
                 <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="selectedServer" id="form-horizontal-select">
+                  <select class="uk-select" [(ngModel)]="selectedServer" (change)="serverConfigChange(selectedServer)" id="form-horizontal-select">
                     <option *ngFor="let server of serverOptions" [value]="server.value">{{ server.name }}</option>
                   </select>
                 </div>
@@ -170,7 +170,7 @@
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>https://nanovault.io/api/node-api</strong>
+                    <strong>{{ serverAPI || 'https://nanovault.io/api/node-api' }}</strong>
                   </div>
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://nanovault.io/api/node-api">
@@ -192,7 +192,7 @@
 
                   <div class="uk-inline uk-width-1-1">
                     <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                      <strong>N/A</strong>
+                      <strong>{{ serverNode || 'N/A' }}</strong>
                     </div>
 
                     <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
@@ -214,7 +214,7 @@
                 <label class="uk-form-label uk-text-right">Updates Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>wss://ws.nanovault.io/</strong>
+                    <strong>{{ serverWS || 'wss://ws.nanovault.io/' }}</strong>
                   </div>
 
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">

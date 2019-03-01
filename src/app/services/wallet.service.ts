@@ -377,7 +377,6 @@ export class WalletService {
 
   createLedgerWallet() {
     this.resetWallet();
-    console.log(`Creating ledger wallet.... ?`);
 
     this.wallet.type = 'ledger';
     const newAccount = this.addWalletAccount(0);
@@ -386,10 +385,8 @@ export class WalletService {
   }
 
   async createLedgerAccount(index) {
-    console.log(`Creating ledger account at index... `, index);
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
-    console.log(`Got account!`, account);
     const accountID = account.address;
     const addressBookName = this.addressBook.getAccountName(accountID);
 
@@ -542,34 +539,24 @@ export class WalletService {
 
     // Check if there is a pending balance at all
     if (walletPending.gt(0)) {
-      console.log(`Reload Balance: Found pending balance > 0 - checking minimum receive`);
       // If we have a minimum receive amount, check accounts for actual receivable transactions
       if (this.appSettings.settings.minimumReceive) {
-        console.log(`Minimum receive set, getting pending for all accounts with limit`);
         const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
         const pending = await this.api.accountsPendingLimit(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
 
-        console.log(`GOT Pending response: `, pending);
         if (pending && pending.blocks) {
           for (let block in pending.blocks) {
-            console.log(`Checking Block: `, block);
             if (!pending.blocks.hasOwnProperty(block)) continue;
             if (pending.blocks[block]) {
-              console.log(`Found block: ${block} - setting pending true`);
               hasPending = true;
             } else {
-              console.log(`No value for block ${block} - skipping`);
             }
           }
-
         }
       } else {
-        console.log(`No minimum, setting pending true`);
         hasPending = true; // No minimum receive, but pending balance, set true
       }
     }
-
-    console.log(`Fin pend`);
 
     // Make sure any frontiers are in the work pool
     // If they have no frontier, we want to use their pub key?
@@ -587,7 +574,6 @@ export class WalletService {
 
     // tslint:disable-next-line
     this.wallet.hasPending = hasPending;
-    console.log(`Reload balances, set has pending: `, hasPending);
 
     // If there is a pending balance, search for the actual pending transactions
     if (reloadPending && walletPending.gt(0)) {
@@ -640,7 +626,6 @@ export class WalletService {
       newAccount = await this.createSeedAccount(index);
     } else if (this.wallet.type === 'ledger') {
       try {
-        console.log(`Creating ledger account at index: `, index);
         newAccount = await this.createLedgerAccount(index);
       } catch (err) {
         // this.notifications.sendWarning(`Unable to load account from ledger.  Make sure it is connected`);
@@ -792,7 +777,6 @@ export class WalletService {
     if (this.wallet.type === 'seed') {
       // Forcefully encrypt the seed so an unlocked wallet is never saved
       if (!this.wallet.locked) {
-        console.log('Encrypting seed for save', this.wallet.seed, this.wallet.password);
         const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password || '');
         data.seed = encryptedSeed.toString();
       } else {

@@ -10,6 +10,7 @@ import {ApiService} from "../../services/api.service";
 import {LedgerService, LedgerStatus} from "../../services/ledger.service";
 import BigNumber from "bignumber.js";
 import {WebsocketService} from "../../services/websocket.service";
+import {NodeService} from "../../services/node.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -83,7 +84,7 @@ export class ConfigureAppComponent implements OnInit {
 
   powOptions = [
     { name: 'Best Option Available', value: 'best' },
-    { name: 'Client Side - WebGL (Chrome/Firefox)', value: 'clientWebGL' },
+    { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
     { name: 'Client Side - CPU', value: 'clientCPU' },
     { name: 'Server - NanoVault Server', value: 'server' },
   ];
@@ -91,16 +92,36 @@ export class ConfigureAppComponent implements OnInit {
 
   serverOptions = [
     { name: 'NanoVault Default', value: 'nanovault' },
+    { name: 'NanoCrawler', value: 'nanocrawler' },
+    { name: 'My Nano Ninja', value: 'mynano' },
     { name: 'Custom', value: 'custom' },
   ];
   selectedServer = this.serverOptions[0].value;
+
+  serverConfigurations = [
+    {
+      name: 'nanovault',
+      api: null,
+      ws: null,
+    },
+    {
+      name: 'nanocrawler',
+      api: 'https://vault.nanocrawler.cc/api/node-api',
+      ws: 'wss://ws.nanocrawler.cc',
+    },
+    {
+      name: 'mynano',
+      api: 'https://vault-api.mynano.ninja/api/node-api',
+      ws: null,
+    },
+  ];
 
   serverAPI = null;
   serverNode = null;
   serverWS = null;
   minimumReceive = null;
 
-  showServerConfigs = () => this.selectedServer === 'custom';
+  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   constructor(
     private walletService: WalletService,
@@ -112,6 +133,7 @@ export class ConfigureAppComponent implements OnInit {
     private ledgerService: LedgerService,
     private websocket: WebsocketService,
     private workPool: WorkPoolService,
+    private node: NodeService,
     private price: PriceService) { }
 
   async ngOnInit() {
@@ -198,70 +220,55 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateServerSettings() {
-    if (this.selectedServer === 'nanovault') {
-      const newSettings = {
-        serverName: 'nanovault',
-        serverAPI: null,
-        serverNode: null,
-        serverWS: null,
-      };
-      this.appSettings.setAppSettings(newSettings);
-    } else {
-      const newSettings = {
-        serverName: 'custom',
-        serverAPI: null,
-        serverNode: null,
-        serverWS: null,
-      };
+    const newSettings = {
+      serverName: this.selectedServer,
+      serverAPI: null,
+      serverNode: null,
+      serverWS: null,
+    };
 
-      // Custom... do some basic validation
-      if (this.serverAPI != null && this.serverAPI.trim().length > 1) {
-        if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
-          newSettings.serverAPI = this.serverAPI;
-        } else {
-          return this.notifications.sendWarning(`Custom API Server has an invalid address.  Make sure to use the full address ie: https://nanovault.io/api/node-api`);
-        }
+    // Custom... do some basic validation
+    if (this.serverAPI != null && this.serverAPI.trim().length > 1) {
+      if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
+        newSettings.serverAPI = this.serverAPI;
+      } else {
+        return this.notifications.sendWarning(`Custom API Server has an invalid address.  Make sure to use the full address ie: https://nanovault.io/api/node-api`);
       }
-
-      if (this.serverNode != null && this.serverNode.trim().length > 1) {
-        if (this.serverNode.startsWith('https://') || this.serverNode.startsWith('http://')) {
-          newSettings.serverNode = this.serverNode;
-        } else {
-          return this.notifications.sendWarning(`Custom Node Server has an invalid address.  Make sure to use the full address ie: http://127.0.0.1:7076`);
-        }
-      }
-
-      if (this.serverWS != null && this.serverWS.trim().length > 1) {
-        if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
-          newSettings.serverWS = this.serverWS;
-        } else {
-          return this.notifications.sendWarning(`Custom Update Server has an invalid address.  Make sure to use the full address ie: wss://ws.nanovault.io/`);
-        }
-      }
-
-      this.appSettings.setAppSettings(newSettings);
     }
 
-    this.notifications.sendSuccess(`Server settings successfully updated, refreshing balances`);
+    if (this.serverNode != null && this.serverNode.trim().length > 1) {
+      if (this.serverNode.startsWith('https://') || this.serverNode.startsWith('http://')) {
+        newSettings.serverNode = this.serverNode;
+      } else {
+        return this.notifications.sendWarning(`Custom Node Server has an invalid address.  Make sure to use the full address ie: http://127.0.0.1:7076`);
+      }
+    }
 
-    // Reload some things to show new statuses?
+    if (this.serverWS != null && this.serverWS.trim().length > 1) {
+      if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
+        newSettings.serverWS = this.serverWS;
+      } else {
+        return this.notifications.sendWarning(`Custom Update Server has an invalid address.  Make sure to use the full address ie: wss://ws.nanovault.io/`);
+      }
+    }
+
+    this.appSettings.setAppSettings(newSettings);
+
+    this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
+
+    this.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
+
+    // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
-
   }
 
-  serverAPIStatus = 0;
-  serverNodeStatus = 0;
-  serverWSStatus = 0;
-  validateServerAPI() {
-    if (this.serverAPI != null) {
-      if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
-        this.serverAPIStatus = 1;
-      } else {
-        this.serverAPIStatus = -1;
-      }
-    } else {
-      this.serverAPIStatus = 0;
+  // When changing the Server Config option, prefill values
+  serverConfigChange(newServer) {
+    const custom = this.serverConfigurations.find(c => c.name == newServer);
+    if (custom) {
+      this.serverAPI = custom.api;
+      this.serverWS = custom.ws;
     }
   }
 

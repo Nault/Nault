@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
   windowHeight = 1000;
   showSearchBar = false;
   searchData = '';
+  isConfigured = this.walletService.isConfigured;
 
   constructor(
     public walletService: WalletService,
@@ -120,6 +121,11 @@ export class AppComponent implements OnInit {
 
   updateIdleTime() {
     this.inactiveSeconds = 0; // Action has happened, reset the inactivity timer
+  }
+
+  retryConnection() {
+    this.walletService.reloadBalances(true);
+    this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
   }
 
   async updateFiatPrices() {
