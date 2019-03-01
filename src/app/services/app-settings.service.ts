@@ -9,6 +9,7 @@ interface AppSettings {
   // displayPrefix: string | null;
   walletStore: string;
   displayCurrency: string;
+  defaultRepresentative: string | null;
   lockOnClose: number;
   lockInactivityMinutes: number;
   powSource: PoWSource;
@@ -28,6 +29,7 @@ export class AppSettingsService {
     // displayPrefix: 'xrb',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
+    defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
@@ -80,6 +82,7 @@ export class AppSettingsService {
       // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
+      defaultRepresentative: null,
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',

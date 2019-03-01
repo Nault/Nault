@@ -12,6 +12,8 @@ import BigNumber from "bignumber.js";
 import {WebsocketService} from "../../services/websocket.service";
 import {NodeService} from "../../services/node.service";
 import {UtilService} from "../../services/util.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {RepresentativeService} from "../../services/representative.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -105,6 +107,11 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedServer = this.serverOptions[0].value;
 
+  defaultRepresentative = null;
+  representativeResults$ = new BehaviorSubject([]);
+  showRepresentatives = false;
+  representativeListMatch = '';
+
   serverConfigurations = [
     {
       name: 'nanovault',
@@ -140,6 +147,7 @@ export class ConfigureAppComponent implements OnInit {
     private ledgerService: LedgerService,
     private websocket: WebsocketService,
     private workPool: WorkPoolService,
+    private repService: RepresentativeService,
     private node: NodeService,
     private util: UtilService,
     private price: PriceService) { }
@@ -174,6 +182,10 @@ export class ConfigureAppComponent implements OnInit {
     this.serverWS = settings.serverWS;
 
     this.minimumReceive = settings.minimumReceive;
+    this.defaultRepresentative = settings.defaultRepresentative;
+    if (this.defaultRepresentative) {
+      this.validateRepresentative();
+    }
   }
 
   async updateDisplaySettings() {
@@ -213,6 +225,13 @@ export class ConfigureAppComponent implements OnInit {
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
     const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive;
 
+    if (this.defaultRepresentative && this.defaultRepresentative.length) {
+      const valid = await this.api.validateAccountNumber(this.defaultRepresentative);
+      if (!valid || valid.valid !== '1') {
+        return this.notifications.sendWarning(`Default representative is not a valid account`);
+      }
+    }
+
     if (this.appSettings.settings.powSource !== newPoW) {
       if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
         this.notifications.sendWarning(`WebGL support not available, set PoW to Best`);
@@ -229,6 +248,7 @@ export class ConfigureAppComponent implements OnInit {
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
       minimumReceive: this.minimumReceive || null,
+      defaultRepresentative: this.defaultRepresentative || null,
     };
 
     this.appSettings.setAppSettings(newSettings);
@@ -284,6 +304,37 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
+  }
+
+  searchRepresentatives() {
+    this.showRepresentatives = true;
+    const search = this.defaultRepresentative || '';
+    const representatives = this.repService.getSortedRepresentatives();
+
+    const matches = representatives
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      .slice(0, 5);
+
+    this.representativeResults$.next(matches);
+  }
+
+  selectRepresentative(rep) {
+    this.showRepresentatives = false;
+    this.defaultRepresentative = rep;
+    this.searchRepresentatives();
+    this.validateRepresentative();
+  }
+
+  validateRepresentative() {
+    setTimeout(() => this.showRepresentatives = false, 400);
+    this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+    const rep = this.repService.getRepresentative(this.defaultRepresentative);
+
+    if (rep) {
+      this.representativeListMatch = rep.name;
+    } else {
+      this.representativeListMatch = '';
+    }
   }
 
   // When changing the Server Config option, prefill values
