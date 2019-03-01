@@ -11,6 +11,7 @@ import {LedgerService, LedgerStatus} from "../../services/ledger.service";
 import BigNumber from "bignumber.js";
 import {WebsocketService} from "../../services/websocket.service";
 import {NodeService} from "../../services/node.service";
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -90,6 +91,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPoWOption = this.powOptions[0].value;
 
+  // prefixOptions = [
+  //   { name: 'xrb_', value: 'xrb' },
+  //   { name: 'nano_', value: 'nano' },
+  // ];
+  // selectedPrefix = this.prefixOptions[0].value;
+
   serverOptions = [
     { name: 'NanoVault Default', value: 'nanovault' },
     { name: 'NanoCrawler', value: 'nanocrawler' },
@@ -134,6 +141,7 @@ export class ConfigureAppComponent implements OnInit {
     private websocket: WebsocketService,
     private workPool: WorkPoolService,
     private node: NodeService,
+    private util: UtilService,
     private price: PriceService) { }
 
   async ngOnInit() {
@@ -170,6 +178,7 @@ export class ConfigureAppComponent implements OnInit {
 
   async updateDisplaySettings() {
     const newCurrency = this.selectedCurrency;
+    // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
     this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
@@ -180,6 +189,20 @@ export class ConfigureAppComponent implements OnInit {
       this.appSettings.setAppSetting('displayCurrency', newCurrency);
       this.walletService.reloadFiatBalances();
     }
+
+    // if (updatePrefixes) {
+    //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
+      // Go through accounts?
+      // this.wallet.accounts.forEach(account => {
+      //   account.id = this.util.account.setPrefix(account.id, this.selectedPrefix);
+      // });
+      // this.walletService.saveWalletExport();
+      //
+      // this.addressBook.addressBook.forEach(entry => {
+      //   entry.account = this.util.account.setPrefix(entry.account, this.selectedPrefix);
+      // });
+      // this.addressBook.saveAddressBook();
+    // }
 
   }
 

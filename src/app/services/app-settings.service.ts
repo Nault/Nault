@@ -6,6 +6,7 @@ export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
 
 interface AppSettings {
   displayDenomination: string;
+  // displayPrefix: string | null;
   walletStore: string;
   displayCurrency: string;
   lockOnClose: number;
@@ -24,6 +25,7 @@ export class AppSettingsService {
 
   settings: AppSettings = {
     displayDenomination: 'mnano',
+    // displayPrefix: 'xrb',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     lockOnClose: 1,
@@ -75,6 +77,7 @@ export class AppSettingsService {
     localStorage.removeItem(this.storeKey);
     this.settings = {
       displayDenomination: 'mnano',
+      // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       lockOnClose: 1,
