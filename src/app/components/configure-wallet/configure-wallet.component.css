@@ -30,8 +30,13 @@ pre.mnemonic span.mnemonic-word::before {
                                   supported by Chrome and Opera */
 }
 
+.mne-box {
+  max-width: 410px;
+}
+
 .mne-cont {
   display: block;
+  border-bottom: 1px dashed #449af373;
 }
 
 .mne-word {
