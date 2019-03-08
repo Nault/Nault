@@ -98,7 +98,7 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
       const reps = await this.api.representativesOnline();
       for (let representative in reps.representatives) {
         if (!reps.representatives.hasOwnProperty(representative)) continue;
-        representatives.push(representative);
+        representatives.push(reps.representatives[representative]);
       }
     } catch (err) {
       this.notificationService.sendWarning(`Unable to determine online status of representatives`);

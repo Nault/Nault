@@ -7,6 +7,9 @@ export class DesktopService {
   _ipc: any;
 
   constructor(private notifications: NotificationService) {
+  }
+
+  connect() {
     console.log('Desktop service loading');
     if (window.require) {
       try {

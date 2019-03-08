@@ -10,9 +10,7 @@ import {WorkPoolService} from "./services/work-pool.service";
 import {Router} from "@angular/router";
 import {RepresentativeService} from "./services/representative.service";
 import {NodeService} from "./services/node.service";
-import Nano from "hw-app-nano";
-import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import {DesktopService} from "./services/desktop.service";
+
 
 @Component({
   selector: 'app-root',
@@ -44,7 +42,6 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
-    private desktop: DesktopService,
     public price: PriceService) { }
 
   async ngOnInit() {
