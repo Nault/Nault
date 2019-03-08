@@ -59,7 +59,7 @@ export class ConfigureWalletComponent implements OnInit {
       const mnemonic = this.importSeedMnemonicModel.toLowerCase().trim().replace(/\n/g, ``);
 
       const words = mnemonic.split(' ');
-      if (words.length < 24) return this.notifications.sendError(`Mnemonic is too short, double check it!`);
+      if (words.length < 20) return this.notifications.sendError(`Mnemonic is too short, double check it!`);
 
       // Try and decode the mnemonic
       try {
