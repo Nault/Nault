@@ -6,8 +6,10 @@ export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
 
 interface AppSettings {
   displayDenomination: string;
+  // displayPrefix: string | null;
   walletStore: string;
   displayCurrency: string;
+  defaultRepresentative: string | null;
   lockOnClose: number;
   lockInactivityMinutes: number;
   powSource: PoWSource;
@@ -15,6 +17,7 @@ interface AppSettings {
   serverAPI: string | null;
   serverNode: string | null;
   serverWS: string | null;
+  minimumReceive: string | null;
 }
 
 @Injectable()
@@ -23,8 +26,10 @@ export class AppSettingsService {
 
   settings: AppSettings = {
     displayDenomination: 'mnano',
+    // displayPrefix: 'xrb',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
+    defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
@@ -32,6 +37,7 @@ export class AppSettingsService {
     serverAPI: null,
     serverNode: null,
     serverWS: null,
+    minimumReceive: null,
   };
 
   constructor() { }
@@ -73,8 +79,10 @@ export class AppSettingsService {
     localStorage.removeItem(this.storeKey);
     this.settings = {
       displayDenomination: 'mnano',
+      // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
+      defaultRepresentative: null,
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',
@@ -82,6 +90,7 @@ export class AppSettingsService {
       serverNode: null,
       serverAPI: null,
       serverWS: null,
+      minimumReceive: null,
     };
   }
 

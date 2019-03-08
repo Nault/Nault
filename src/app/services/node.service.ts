@@ -24,4 +24,8 @@ export class NodeService {
     this.notifications.removeNotification('node-offline');
   }
 
+  setLoading() {
+    this.node.status = null;
+  }
+
 }

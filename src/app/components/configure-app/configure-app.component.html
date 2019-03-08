@@ -41,6 +41,23 @@
             </div>
           </div>
 
+          <!--<div class="uk-width-1-1">-->
+            <!--<div class="uk-form-horizontal">-->
+
+              <!--<div class="uk-margin">-->
+                <!--<label class="uk-form-label">Account Prefix <span uk-icon="icon: info;" uk-tooltip title="Change the Nano account prefix used throughout the application.  Both are valid when sending"></span></label>-->
+                <!--<div class="uk-form-controls">-->
+
+                  <!--<div class="uk-inline uk-width-1-1">-->
+                    <!--<select class="uk-select" [(ngModel)]="selectedPrefix">-->
+                      <!--<option *ngFor="let prefix of prefixOptions" [value]="prefix.value">{{ prefix.name }}</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">
@@ -107,6 +124,68 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Minimum Receive Amount <span uk-icon="icon: info;" uk-tooltip title="Transactions below this amount will be ignored by the wallet.  Set to blank or 0 to accept all transactions."></span></label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-3-5">
+                      <div class="uk-inline uk-width-1-1">
+                        <input [(ngModel)]="minimumReceive" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="0.000001">
+                      </div>
+
+                    </div>
+
+                    <div class="uk-width-2-5">
+                      <div class="uk-inline uk-width-1-1">
+                        <button class="uk-button uk-button-primary uk-width-1-1" type="button" style="text-transform: none;">NANO</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Default Representative <span uk-icon="icon: info;" uk-tooltip title="This representative will be used when creating the initial open block on a new account"></span></label>
+
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" type="text" placeholder="Leave blank to use NanoVault" #repInput>
+
+                    <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                      <ul class="uk-nav uk-nav-default">
+                        <li class="uk-nav-header">Representative List Results</li>
+                        <li class="uk-nav-divider"></li>
+                        <li *ngFor="let rep of representativeResults$ | async">
+                          <a (click)="selectRepresentative(rep.id)">
+                            {{ rep.name }}
+                            <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
+                            <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="uk-form-controls" *ngIf="representativeListMatch">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-label">{{ representativeListMatch }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">
@@ -116,7 +195,7 @@
 
 
     <div class="uk-card uk-card-default uk-margin">
-      <div class="uk-card-header">
+      <div class="uk-card-header" id="server-settings">
         <h3 class="uk-card-title">Server Settings</h3>
       </div>
       <div class="uk-card-body">
@@ -128,7 +207,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">Server Configuration <span uk-icon="icon: info;" uk-tooltip title="Change which server is used to communicate with the Nano network"></span></label>
                 <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="selectedServer" id="form-horizontal-select">
+                  <select class="uk-select" [(ngModel)]="selectedServer" (change)="serverConfigChange(selectedServer)" id="form-horizontal-select">
                     <option *ngFor="let server of serverOptions" [value]="server.value">{{ server.name }}</option>
                   </select>
                 </div>
@@ -144,7 +223,7 @@
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>https://nanovault.io/api/node-api</strong>
+                    <strong>{{ serverAPI || 'https://nanovault.io/api/node-api' }}</strong>
                   </div>
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://nanovault.io/api/node-api">
@@ -166,7 +245,7 @@
 
                   <div class="uk-inline uk-width-1-1">
                     <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                      <strong>N/A</strong>
+                      <strong>{{ serverNode || 'N/A' }}</strong>
                     </div>
 
                     <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
@@ -188,7 +267,7 @@
                 <label class="uk-form-label uk-text-right">Updates Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>wss://ws.nanovault.io/</strong>
+                    <strong>{{ serverWS || 'wss://ws.nanovault.io/' }}</strong>
                   </div>
 
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">

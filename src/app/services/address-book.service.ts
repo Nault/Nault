@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 
+
+interface AddressBookEntry {
+  account: string;
+  name: string;
+}
+
+
 @Injectable()
 export class AddressBookService {
   storeKey = `nanovault-addressbook`;
 
-  addressBook = [];
+  addressBook: AddressBookEntry[] = [];
 
   addressBook$ = new BehaviorSubject([]);
 

@@ -8,16 +8,30 @@
         <div class="uk-margin-left" style="padding-bottom: 15px; color: #666;">
           <div uk-grid>
             <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
-            <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="wallet.seed">
+            <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
               <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
               <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
             </div>
           </div>
 
-          <div style="display: inline-block; text-align: right;" class="uk-text-truncate">
+          <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
             <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
             <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-            <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && wallet.seed }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+            <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+          </div>
+
+          <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
+            <div class="uk-width-1-2 uk-text-left">
+              <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+            </div>
+            <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0; color: #666;">
+              <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server" style="color: #666 !important;"></a>
+              <a routerLink="/configure-app" fragment="server-settings" uk-toggle="target: #mobile-nav" uk-icon="icon: cog" style="color: #409cff !important;" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
+            </div>
+            <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
+              <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node" style="color: #999;">CONNECTING</span>
+              <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
+            </div>
           </div>
 
           <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="wallet.pending.gt(0)">
@@ -33,13 +47,13 @@
       <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
         <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Accounts</a></li>
         <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Send</a></li>
-        <li *ngIf="wallet.pending.gt(0)">
+        <li *ngIf="walletService.hasPendingTransactions()">
           <div uk-grid>
             <div class="uk-width-3-4">
               <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Receive</a>
             </div>
             <div class="uk-width-1-4 uk-text-center">
-              <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
+              <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
             </div>
           </div>
         </li>
@@ -100,19 +114,35 @@
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <div uk-grid>
               <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
-              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="wallet.seed">
+              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
                 <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
                 <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
               </div>
             </div>
 
-            <div style="display: inline-block; text-align: right;" class="uk-text-truncate">
+            <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
               <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
               <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && wallet.seed }" style="clear: left; text-align: left;">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
+              <span class="balance" style="clear: left; text-align: left;">
+                {{ wallet.balance | rai: settings.settings.displayDenomination }}
+              </span>
             </div>
 
-            <div *ngIf="wallet.pending.gt(0)">
+            <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
+              <div class="uk-width-1-2 uk-text-left">
+                <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+              </div>
+              <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0;">
+                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" style="" uk-tooltip title="Reconnect to server"></a>
+                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" style="" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
+              </div>
+              <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
+                <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node">CONNECTING</span>
+                <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
+              </div>
+            </div>
+
+            <div *ngIf="walletService.hasPendingTransactions()">
               <div style="display: inline-block; text-align: right;" class="uk-text-muted">
                 <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Pending </span>
                 <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
@@ -129,13 +159,13 @@
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
           <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
           <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
-          <li *ngIf="wallet.pending.gt(0)">
+          <li *ngIf="walletService.hasPendingTransactions()">
             <div uk-grid>
               <div class="uk-width-3-4">
                 <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
               </div>
               <div class="uk-width-1-4 uk-text-center">
-                <span *ngIf="wallet.pending.gt(0)" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
               </div>
             </div>
           </li>

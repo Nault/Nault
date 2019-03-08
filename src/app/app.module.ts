@@ -44,6 +44,7 @@ import {ManageRepresentativesComponent} from "./components/manage-representative
 import {NodeService} from "./services/node.service";
 import {LedgerService} from "./services/ledger.service";
 import {DesktopService} from "./services/desktop.service";
+import { AccountPipe } from './pipes/account.pipe';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import {DesktopService} from "./services/desktop.service";
     CurrencySymbolPipe,
     RepresentativesComponent,
     ManageRepresentativesComponent,
+    AccountPipe,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 <h2>Configure Wallet</h2>
 <p>Use the options below to import an existing wallet or create a new one.</p>
 
-<div *ngIf="wallet.seed && (activePanel != 3 && activePanel != 4 && activePanel != 5)" class="uk-alert uk-alert-danger">
+<div *ngIf="isConfigured() && (activePanel != 3 && activePanel != 4 && activePanel != 5)" class="uk-alert uk-alert-danger">
   <b>You already have a wallet configured</b><br>
   Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
   Without it, <b>any funds you have will become completely unrecoverable!</b>
@@ -120,24 +120,31 @@
   </div>
   <div class="uk-card-body">
     <p>
-      Your new Nano wallet has been created!  Below is the mnemonic phrase and seed for your wallet, you can use whichever you prefer.
+      Your new Nano wallet has been created!  Below is the seed and mnemonic phrase for your wallet, you can use whichever you prefer.
     </p>
     <div class="uk-alert uk-alert-primary">
       Make sure to write down your mnemonic phrase/seed or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
       It is the master key to all of your accounts, and the only way to recover your funds in an emergency.
     </div>
+
     <div uk-grid>
-      <div class="uk-width-1-4">Wallet Mnemonic Phrase</div>
-      <div class="uk-width-3-4">
-        {{ newWalletMnemonic }}<br>
-        <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="newWalletMnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
-      </div>
-    </div>
-    <div uk-grid>
-      <div class="uk-width-1-4">Wallet Seed</div>
+      <div class="uk-width-1-4">Nano Seed</div>
       <div class="uk-width-3-4 uk-text-truncate">
         {{ newWalletSeed }}<br>
         <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy seed to clipboard</a>
+      </div>
+    </div>
+
+    <hr class="uk-divider-icon">
+
+    <div uk-grid>
+      <div class="uk-width-1-4@m">
+        Mnemonic Phrase<br>
+        <span class="uk-text-small uk-text-muted">(Uses <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" class="uk-link-text" target="_blank">BIP39 Standard</a>)</span>
+      </div>
+      <div class="uk-width-3-4@m">
+        <pre class=""><span *ngFor="let line of newWalletMnemonicLines; let l = index" class="mne-cont"><span *ngFor="let word of line; let i = index" class="mne-word"><span class="mne-num">{{ (l * 4) + i + 1 }}</span> {{ word }}</span></span></pre>
+        <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="newWalletMnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
       </div>
     </div>
   </div>

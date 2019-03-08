@@ -71,6 +71,7 @@ export class LedgerService {
    * Dispatches new messages via the main Observables
    */
   configureDesktop() {
+    this.desktop.connect();
     this.desktop.on('ledger', (event, message) => {
       if (!message || !message.event) return;
       switch (message.event) {
