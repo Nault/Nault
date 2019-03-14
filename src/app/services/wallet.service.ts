@@ -174,12 +174,12 @@ export class WalletService {
     this.wallet.accountsIndex = walletJson.accountsIndex || 0;
 
     if (walletJson.accounts && walletJson.accounts.length) {
-      if (walletType === 'ledger' || this.wallet.locked) {
+      // if (walletType === 'ledger' || this.wallet.locked) {
         // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
         walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
-      } else {
-        await Promise.all(walletJson.accounts.map(async (account) => await this.addWalletAccount(account.index, false)));
-      }
+      // } else {
+      //   await Promise.all(walletJson.accounts.map(async (account) => await this.addWalletAccount(account.index, false)));
+      // }
     } else {
       // Loading from accounts index
       if (!this.wallet.locked) {
