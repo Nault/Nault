@@ -74,6 +74,18 @@ export class SendComponent implements OnInit {
     }
 
     this.addressBookService.loadAddressBook();
+
+    // Set default From account
+    this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
+
+    // We want to look for the first account in the wallet that has a balance
+
+    // If the wallet balance is zero, this might be an initial load to the send page
+    // If it is, we want to load balances before we try to find the right account
+    if (this.walletService.wallet.balance.isZero()) {
+      await this.walletService.reloadBalances();
+    }
+
     // Look for the first account that has a balance
     const accountIDWithBalance = this.accounts.reduce((previous, current) => {
       if (previous) return previous;
@@ -83,8 +95,6 @@ export class SendComponent implements OnInit {
 
     if (accountIDWithBalance) {
       this.fromAccountID = accountIDWithBalance;
-    } else {
-      this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
     }
   }
 
@@ -172,6 +182,7 @@ export class SendComponent implements OnInit {
     this.toAccount = to;
 
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
+    console.log(`RAW AMOUNT: `, rawAmount.toString(10));
     this.rawAmount = rawAmount.plus(this.amountRaw);
 
     const nanoAmount = this.rawAmount.div(this.nano);
