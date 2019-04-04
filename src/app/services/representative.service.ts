@@ -29,6 +29,13 @@ export class RepresentativeService {
     return list;
   }
 
+  // Reset representatives list to the default one
+  resetRepresentativeList() {
+    localStorage.removeItem(this.storeKey);
+    this.representatives = this.defaultRepresentatives;
+    this.loaded = false;
+  }
+
   getRepresentative(id) {
     return this.representatives.find(rep => rep.id == id);
   }
