@@ -376,6 +376,7 @@ export class ConfigureAppComponent implements OnInit {
       this.workPool.deleteCache();
       this.addressBook.clearAddressBook();
       this.appSettings.clearAppSettings();
+      this.repService.resetRepresentativeList();
 
       this.loadFromSettings();
 
