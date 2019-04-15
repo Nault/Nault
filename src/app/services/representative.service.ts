@@ -246,6 +246,14 @@ export class RepresentativeService {
     return this.representatives.find(rep => rep.id == id);
   }
 
+  // Reset representatives list to the default one
+  resetRepresentativeList() {
+    localStorage.removeItem(this.storeKey);
+    this.representatives = this.defaultRepresentatives;
+    this.loaded = false;
+  }
+
+
   saveRepresentative(accountID, name, trusted = false, warn = false): void {
     const newRepresentative: any = {
       id: accountID,
