@@ -57,7 +57,6 @@ export class LedgerService {
     if (this.isDesktop) {
       this.configureDesktop();
     }
-    console.log(`Ledger load... is desktop? `, this.isDesktop);
   }
 
   // Scraps binding to any existing transport/nano object
@@ -359,7 +358,6 @@ export class LedgerService {
   }
 
   async getLedgerAccount(accountIndex: number, showOnScreen = false) {
-    console.log(`Getting new account details....`, accountIndex);
     if (this.isDesktop) {
       return await this.getLedgerAccountDesktop(accountIndex, showOnScreen);
     } else {

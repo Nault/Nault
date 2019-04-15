@@ -1,9 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ModalService} from "../../services/modal.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {LedgerService, LedgerStatus} from "../../services/ledger.service";
+import {Subject} from "rxjs/Subject";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {timer} from "rxjs/observable/timer";
+import {debounce} from "rxjs/operators";
+import {
+  AppSettingsService,
+  LedgerService,
+  LedgerStatus,
+  ModalService,
+  NotificationService,
+  RepresentativeService,
+  WalletService
+} from "../../services";
 
 @Component({
   selector: 'app-accounts',
@@ -16,14 +25,22 @@ export class AccountsComponent implements OnInit {
   viewAdvanced = false;
   newAccountIndex = null;
 
+  // When we change the accounts, redetect changable reps (Debounce by 5 seconds)
+  accountsChanged$ = new Subject();
+  reloadRepWarning$ = this.accountsChanged$.pipe(debounce(() => timer(5000)));
+
   constructor(
     private walletService: WalletService,
     private notificationService: NotificationService,
     public modal: ModalService,
     public settings: AppSettingsService,
+    private representatives: RepresentativeService,
     private ledger: LedgerService) { }
 
   async ngOnInit() {
+    this.reloadRepWarning$.subscribe(a => {
+      this.representatives.detectChangeableReps();
+    })
   }
 
   async createAccount() {
@@ -47,6 +64,7 @@ export class AccountsComponent implements OnInit {
       const newAccount = await this.walletService.addWalletAccount(accountIndex);
       this.notificationService.sendSuccess(`Successfully created new account ${newAccount.id}`);
       this.newAccountIndex = null;
+      this.accountsChanged$.next(newAccount.id);
     } catch (err) {
       this.notificationService.sendError(`Unable to add new account: ${err.message}`);
     }
@@ -75,6 +93,7 @@ export class AccountsComponent implements OnInit {
     try {
       await this.walletService.removeWalletAccount(account.id);
       this.notificationService.sendSuccess(`Successfully removed account ${account.id}`);
+      this.accountsChanged$.next(account.id);
     } catch (err) {
       this.notificationService.sendError(`Unable to delete account: ${err.message}`);
     }

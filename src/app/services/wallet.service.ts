@@ -45,6 +45,24 @@ export interface FullWallet {
   password: string;
 }
 
+export interface BaseApiAccount {
+  account_version: string;
+  balance: string;
+  block_count: string;
+  frontier: string;
+  modified_timestamp: string;
+  open_block: string;
+  pending: string;
+  representative: string;
+  representative_block: string;
+  weight: string;
+}
+
+export interface WalletApiAccount extends BaseApiAccount {
+  addressBookName?: string|null;
+  id?: string;
+}
+
 @Injectable()
 export class WalletService {
   nano = 1000000000000000000000000;
@@ -788,6 +806,21 @@ export class WalletService {
     }
 
     return data;
+  }
+
+  // Run an accountInfo call for each account in the wallet to get their representatives
+  async getAccountsDetails(): Promise<WalletApiAccount[]> {
+    return await Promise.all(
+      this.wallet.accounts.map(account =>
+        this.api.accountInfo(account.id)
+          .then(res => {
+            res.id = account.id;
+            res.addressBookName = account.addressBookName;
+
+            return res;
+          })
+      )
+    );
   }
 
 }

@@ -1,0 +1,71 @@
+<div class="uk-width-1-1 uk-background-primary wallet-bar uk-animation-slide-left" style="background: #FFF;" *ngIf="representatives.length">
+  <div class="uk-margin-left" style="padding-top: 0; padding-bottom: 6px; color: #FFF;">
+    <div uk-grid>
+      <div class="uk-width-1-1">
+
+        <span style="cursor:pointer" class="uk-text-danger" (click)="showModal()" uk-tooltip title="Some of your representatives should be changed - click to view details">
+          <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom"> Update Representatives</span>
+        </span>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
+  <div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+      <h2 class="uk-modal-title">Representative Change Recommended</h2>
+    </div>
+    <div class="uk-modal-body">
+      <div class="uk-alert-primary uk-text-center" uk-alert>
+        Your representatives vote on transactions on your behalf to secure the Nano network.<br>
+        By changing the representatives below, you will help decentralize the network
+      </div>
+
+      <ul class="" uk-accordion="multiple: true;" >
+        <li *ngFor="let rep of representatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
+          <a class="uk-accordion-title uk-text-truncate" href="#" style="padding-left: 5px; padding-bottom: 5px;"><span *ngIf="rep.label" class="uk-margin-small-right uk-label uk-label-danger">{{ rep.label }}</span> {{ rep.account | squeeze }}</a>
+
+          <div class="uk-accordion-content" style="margin-top: 0; border-top: 1px dotted #ccc;">
+            <ul style="margin-top: 10px; margin-bottom: 10px;" class="uk-text-danger">
+              <li *ngIf="!rep.status.online">Representative is offline</li>
+              <li *ngIf="rep.status.highWeight">Representative has high voting weight (>1%)</li>
+              <li *ngIf="rep.status.warn">Representative is marked as avoid</li>
+            </ul>
+
+            <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
+              <tbody>
+                <tr *ngFor="let account of rep.accounts">
+                  <td class="uk-width-3-4">
+                    <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span>
+                    {{ account.id | squeeze }}
+                  </td>
+                  <td class="uk-width-1-4">{{ account.balance | rai:'mnano' }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </li>
+      </ul>
+
+      <p class="uk-text-center uk-text-small uk-text-muted">To bypass this warning, add your representative as trusted to your known representative list</p>
+
+    </div>
+    <div class="uk-modal-footer">
+      <div uk-grid>
+        <div class="uk-width-1-2 uk-text-left">
+          <button class="uk-button uk-button-danger" type="button" (click)="closeModal()">Cancel</button>
+
+        </div>
+        <div class="uk-width-1-2 uk-text-right">
+          <button class="uk-button uk-button-primary" type="button" (click)="changeReps()">Change Reps</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
