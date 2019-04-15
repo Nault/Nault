@@ -42,6 +42,7 @@
         </div>
       </div>
 
+      <app-change-rep-widget></app-change-rep-widget>
       <app-wallet-widget></app-wallet-widget>
 
       <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
@@ -154,6 +155,7 @@
 
         </div>
 
+        <app-change-rep-widget></app-change-rep-widget>
         <app-wallet-widget></app-wallet-widget>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
@@ -173,7 +175,7 @@
           <li class="uk-parent">
             <a href="#" class="uk-margin-left">Settings</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
               <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
               <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
               <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
@@ -213,6 +215,5 @@
 </div>
 
 <app-notifications></app-notifications>
-
 
 

@@ -1,13 +1,20 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {ApiService} from "../../services/api.service";
+import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
+
 import BigNumber from "bignumber.js";
-import {UtilService} from "../../services/util.service";
-import {RepresentativeService} from "../../services/representative.service";
-import {AppSettingsService} from "../../services/app-settings.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {NotificationService} from "../../services/notification.service";
-import {NanoBlockService} from "../../services/nano-block.service";
+
+import {
+  ApiService,
+  AppSettingsService,
+  FullRepresentativeOverview,
+  NanoBlockService,
+  NotificationService,
+  RepresentativeService,
+  UtilService,
+  WalletService
+} from "../../services";
 
 @Component({
   selector: 'app-representatives',
@@ -15,7 +22,6 @@ import {NanoBlockService} from "../../services/nano-block.service";
   styleUrls: ['./representatives.component.css']
 })
 export class RepresentativesComponent implements OnInit {
-
   @ViewChild('repInput') repInput;
 
   changeAccountID: any = null;
@@ -31,151 +37,52 @@ export class RepresentativesComponent implements OnInit {
   selectedAccounts = [];
   fullAccounts = [];
 
+  recommendedReps = [];
+  recommendedRepsPaginated = [];
+  recommendedRepsLoading = false;
+  selectedRecommendedRep = null;
+  showRecommendedReps = false;
+
+  repsPerPage = 5;
+  currentRepPage = 0;
+
+  hideOverview = false;
+
   constructor(
+    private router: ActivatedRoute,
     public wallet: WalletService,
     private api: ApiService,
     private notifications: NotificationService,
     private nanoBlock: NanoBlockService,
     private util: UtilService,
+    private http: HttpClient,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService) { }
 
   async ngOnInit() {
     this.representativeService.loadRepresentativeList();
-    await this.loadRepresentativeOverview();
-  }
 
-  async loadRepresentativeOverview() {
-    const onlineReps = await this.getOnlineRepresentatives();
-    // TODO: Handling for unopened accounts?
+    // Listen for query parameters that set defaults
+    this.router.queryParams.subscribe(params => {
+      this.hideOverview = params && params.hideOverview;
+      this.showRecommendedReps = params && params.showRecommended;
 
-    const walletAccountInfos = await this.getWalletAccountDetails();
-    this.fullAccounts = walletAccountInfos;
-
-    // Get a unique list of representatives for our accounts
-    const uniqueRepresentatives = this.getAccountRepresentatives(walletAccountInfos);
-
-    // Get full info about each representative
-    const representativesDetails = await this.getRepresentativesDetails(uniqueRepresentatives);
-
-    // Build up the overview object for each representative
-    const totalSupply = new BigNumber(133248289);
-    let representativesOverview = [];
-
-    for (const representative of representativesDetails) {
-      const repOnline = onlineReps.indexOf(representative.account) !== -1;
-      const knownRep = this.representativeService.getRepresentative(representative.account);
-
-      const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(totalSupply).times(100);
-
-      // Determine the status based on some factors
-      let status = 'none';
-      if (knownRep && knownRep.trusted) {
-        status = 'trusted'; // In our list and marked as trusted
-      } else if (knownRep && knownRep.warn) {
-        status = 'alert'; // In our list and marked for avoidance
-      } else if (percent.gte(10)) {
-        status = 'alert'; // Has extremely high voting weight
-      } else if (percent.gte(1)) {
-        status = 'warn'; // Has high voting weight
-      } else if (knownRep) {
-        status = 'known'; // In our list
+      if (params && params.accounts) {
+        this.selectedAccounts = []; // Reset the preselected accounts
+        const accounts = params.accounts.split(',');
+        for (let account of accounts) {
+          this.newAccountID(account);
+        }
       }
+    });
 
-      const repOverview = {
-        id: representative.account,
-        weight: nanoWeight,
-        delegatedWeight: representative.delegatedWeight,
-        percent: percent,
-        status: status,
-        label: knownRep ? knownRep.name : null,
-        online: repOnline,
-        accounts: representative.accounts,
-      };
-
-      representativesOverview.push(repOverview);
-    }
-
+    let repOverview = await this.representativeService.getRepresentativesOverview();
     // Sort by weight delegated
-    representativesOverview = representativesOverview.sort((a, b) => b.delegatedWeight - a.delegatedWeight);
+    repOverview = repOverview.sort((a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber());
+    this.representativeOverview = repOverview;
+    repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
 
-    this.representativeOverview = representativesOverview;
-  }
-
-  async getWalletAccountDetails(): Promise<any> {
-    // Run an accountInfo call for each account in the wallet to get their representatives
-    const walletAccountInfos = await Promise.all(
-      this.wallet.wallet.accounts.map(account =>
-        this.api.accountInfo(account.id)
-          .then(res => {
-            res.id = account.id;
-            res.addressBookName = account.addressBookName;
-
-            return res;
-          })
-      )
-    );
-
-    return walletAccountInfos;
-  }
-
-  async getRepresentativesDetails(representatives): Promise<any> {
-    // Run an accountInfo call for each representative, carry on data.  The uglyness allows for them to run in parallel
-    const repInfos = await Promise.all(
-      representatives.map(rep =>
-        this.api.accountInfo(rep.id)
-          .then(res => {
-            res.account = rep.id;
-            res.delegatedWeight = rep.weight;
-            res.accounts = rep.accounts;
-
-            return res;
-          })
-      )
-    );
-
-    return repInfos;
-  }
-
-  // Make a unique list of representatives used in all accounts
-  getAccountRepresentatives(walletAccountInfos) {
-    const representatives = [];
-    for (let accountInfo of walletAccountInfos) {
-      if (!accountInfo || !accountInfo.representative) continue; // Account doesn't exist yet
-
-      const existingRep = representatives.find(rep => rep.id == accountInfo.representative);
-      if (existingRep) {
-        existingRep.weight = existingRep.weight.plus(new BigNumber(accountInfo.balance));
-        existingRep.accounts.push(accountInfo);
-      } else {
-        const newRep = {
-          id: accountInfo.representative,
-          weight: new BigNumber(accountInfo.balance),
-          accounts: [accountInfo],
-        };
-        representatives.push(newRep);
-      }
-    }
-
-    return representatives;
-  }
-
-  async getOnlineRepresentatives() {
-    const representatives = [];
-    try {
-      const reps = await this.api.representativesOnline();
-      for (let representative in reps.representatives) {
-        if (!reps.representatives.hasOwnProperty(representative)) continue;
-        representatives.push(reps.representatives[representative]);
-      }
-    } catch (err) {
-      this.notifications.sendWarning(`Unable to determine online status of representatives`);
-    }
-
-    console.log(`Online reps are...: `, representatives);
-
-    return representatives;
+    await this.loadRecommendedReps();
   }
 
   addSelectedAccounts(accounts) {
@@ -247,6 +154,59 @@ export class RepresentativesComponent implements OnInit {
     }
   }
 
+  async loadRecommendedReps() {
+    this.recommendedRepsLoading = true;
+    try {
+      const scores = await this.api.recommendedReps() as any[];
+      const totalSupply = new BigNumber(133248289);
+
+      const reps = scores.map(rep => {
+        const nanoWeight = this.util.nano.rawToMnano(rep.votingweight.toString() || 0);
+        const percent = nanoWeight.div(totalSupply).times(100);
+
+        // rep.weight = nanoWeight.toString(10);
+        rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
+        rep.percent = percent.toFixed(3);
+
+        return rep;
+      });
+
+      this.recommendedReps = reps;
+
+      this.calculatePage();
+      this.recommendedRepsLoading = false;
+    } catch (err) {
+      this.recommendedRepsLoading = null;
+    }
+
+  }
+
+  previousReps() {
+    if (this.currentRepPage > 0) {
+      this.currentRepPage--;
+      this.calculatePage();
+    }
+  }
+  nextReps() {
+    if (this.currentRepPage < (this.recommendedReps.length / this.repsPerPage) - 1) {
+      this.currentRepPage++;
+    } else {
+      this.currentRepPage = 0;
+    }
+    this.calculatePage();
+  }
+
+  calculatePage() {
+    this.recommendedRepsPaginated = this.recommendedReps.slice((this.currentRepPage * this.repsPerPage), (this.currentRepPage * this.repsPerPage) + this.repsPerPage);
+  }
+
+  selectRecommendedRep(rep) {
+    this.selectedRecommendedRep = rep;
+    this.toRepresentativeID = rep.account;
+    this.showRecommendedReps = false;
+    this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
+  }
+
   async changeRepresentatives() {
     const accounts = this.selectedAccounts;
     const newRep = this.toRepresentativeID;
@@ -298,15 +258,27 @@ export class RepresentativesComponent implements OnInit {
       }
     }
 
+    // Determine if a recommended rep was selected, if so we save an entry in the rep list
+    if (this.selectedRecommendedRep && this.selectedRecommendedRep.account && this.selectedRecommendedRep.account == newRep) {
+      this.representativeService.saveRepresentative(newRep, this.selectedRecommendedRep.alias, false, false);
+    }
+
     // Good to go!
     this.selectedAccounts = [];
     this.toRepresentativeID = '';
     this.representativeListMatch = '';
     this.changingRepresentatives = false;
+    this.selectedRecommendedRep = null;
 
     this.notifications.sendSuccess(`Successfully updated representatives!`);
 
-    await this.loadRepresentativeOverview();
+    // If the overview panel is displayed, reload its data now
+    if (!this.hideOverview) {
+      this.representativeOverview = await this.representativeService.getRepresentativesOverview();
+    }
+
+    // Detect if any new reps should be changed
+    await this.representativeService.detectChangeableReps();
   }
 
 

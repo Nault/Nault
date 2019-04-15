@@ -45,6 +45,7 @@ import {NodeService} from "./services/node.service";
 import {LedgerService} from "./services/ledger.service";
 import {DesktopService} from "./services/desktop.service";
 import { AccountPipe } from './pipes/account.pipe';
+import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { AccountPipe } from './pipes/account.pipe';
     RepresentativesComponent,
     ManageRepresentativesComponent,
     AccountPipe,
+    ChangeRepWidgetComponent,
   ],
   imports: [
     BrowserModule,

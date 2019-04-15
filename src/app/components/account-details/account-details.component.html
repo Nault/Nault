@@ -117,11 +117,12 @@
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
                         <div class="uk-width-expand uk-text-truncate ">
-                          <span *ngIf="repLabel" class="uk-label">{{ repLabel }}</span> {{ account.representative }}
+                          <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> {{ account.representative }}
                         </div>
                         <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
                           <ul class="uk-hidden-hover uk-iconnav">
-                            <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>
+                            <!--<li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>-->
+                            <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a></li>
                           </ul>
                         </div>
                       </div>
@@ -197,7 +198,8 @@
                   </div>
                 </td>
                 <td [ngClass]="{ 'uk-text-success': history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open', 'uk-text-danger': history.type == 'send' || history.subtype == 'send' }">
-                  {{ (history.type == 'send' || history.subtype == 'send') ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}
+                  <span *ngIf="isNaN(history.amount)">NEW REP</span>
+                  <span *ngIf="!isNaN(history.amount)">{{ (history.type == 'send' || history.subtype == 'send') ? '-' : '+' }}{{ history.amount | rai: settings.settings.displayDenomination }}</span>
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ history.hash }}</a></td>
               </tr>

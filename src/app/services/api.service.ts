@@ -3,11 +3,20 @@ import {HttpClient} from "@angular/common/http";
 import {NodeService} from "./node.service";
 import {AppSettingsService} from "./app-settings.service";
 
+export interface NinjaVerifiedRep {
+  votingweight: number;
+  delegators: number;
+  uptime: number;
+  score: number;
+  account: string;
+  alias: string;
+}
+
 @Injectable()
 export class ApiService {
-
-  rpcUrl = `https://nanovault.io/api/node-api`;
-  // rpcUrl = `http://localhost:9950/api/node-api`;
+  // apiUrl = `http://localhost:9950/api`;
+  apiUrl = `https://nanovault.io/api`;
+  rpcUrl = `${this.apiUrl}/node-api`;
 
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
@@ -31,6 +40,10 @@ export class ApiService {
         }
         throw err;
       });
+  }
+
+  async recommendedReps(): Promise<NinjaVerifiedRep[]> {
+    return await this.http.get(`${this.apiUrl}/recommended-representatives`).toPromise() as NinjaVerifiedRep[];
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {

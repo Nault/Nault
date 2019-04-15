@@ -182,7 +182,6 @@ export class SendComponent implements OnInit {
     this.toAccount = to;
 
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
-    console.log(`RAW AMOUNT: `, rawAmount.toString(10));
     this.rawAmount = rawAmount.plus(this.amountRaw);
 
     const nanoAmount = this.rawAmount.div(this.nano);

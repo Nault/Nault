@@ -10,16 +10,13 @@ export class DesktopService {
   }
 
   connect() {
-    console.log('Desktop service loading');
     if (window.require) {
       try {
         this._ipc = window.require('electron').ipcRenderer;
-        console.log('Loaded ipc ', this._ipc);
       } catch (e) {
         throw e;
       }
     } else {
-      console.warn('Unable to load electrons IPC');
     }
   }
 
