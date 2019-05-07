@@ -187,7 +187,6 @@ export class LedgerService {
    */
   isBrokenBrowser(): boolean {
     if (this.isDesktop) {
-      console.log('Is desktop, skipppppy');
       return false;
     }
     // If we using Chromium and not on desktop - warn about Ledger issue
@@ -199,7 +198,6 @@ export class LedgerService {
     const isIOSChrome = winNav.userAgent.match('CriOS');
 
     if (isIOSChrome) {
-      console.log('ios');
       // is Google Chrome on IOS - Shouldnt be using Ledger but meh
       return true;
     } else if (
@@ -209,11 +207,9 @@ export class LedgerService {
       isOpera === false &&
       isIEedge === false
     ) {
-      console.log('IS CHROME');
       // is Google Chrome
       return true;
     } else {
-      console.log('not chrome?');
       // not Google Chrome
       return false;
     }

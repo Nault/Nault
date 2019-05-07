@@ -104,12 +104,23 @@ export class ConfigureWalletComponent implements OnInit {
       return;
     }
 
-    // With a ledger wallet, it is okay to overwrite the existing data.  Do not use a confirm screen
+    // If a wallet exists already, make sure they know they are overwriting it
+    const confirmed = await this.confirmWalletOverwrite();
+    if (!confirmed) {
+      return;
+    }
+
+    // Create new ledger wallet
     const newWallet = await this.walletService.createLedgerWallet();
 
     // We skip the password panel
     this.activePanel = 5;
     this.notifications.sendSuccess(`Successfully loaded ledger device!`);
+
+    // If they are using Chrome, warn them.
+    if (this.ledgerService.isBrokenBrowser()) {
+      this.notifications.sendLedgerChromeWarning();
+    }
   }
 
   // Send a confirmation dialog to the user if they already have a wallet configured

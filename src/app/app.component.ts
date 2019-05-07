@@ -54,8 +54,6 @@ export class AppComponent implements OnInit {
     await this.walletService.loadStoredWallet();
     this.websocket.connect();
 
-    await this.updateFiatPrices();
-
     this.representative.loadRepresentativeList();
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
@@ -65,7 +63,7 @@ export class AppComponent implements OnInit {
 
     // If they are using a Ledger device with a bad browser, warn them
     if (this.walletService.isLedgerWallet() && this.ledger.isBrokenBrowser()) {
-      this.notifications.sendWarning(`<b>Notice:</b> You may experience issues using a Ledger device with Google Chrome.  If you do please use Brave/Opera browser or <a href="https://github.com/cronoh/nanovault/releases" target="_blank">NanoVault Desktop</a>.  <a href="https://github.com/cronoh/nanovault/issues/69" target="_blank">More Info</a>`, { length: 0, identifier: 'chrome-ledger' });
+      this.notifications.sendLedgerChromeWarning();
     }
 
     // When the page closes, determine if we should lock the wallet
@@ -100,6 +98,13 @@ export class AppComponent implements OnInit {
         this.notifications.sendSuccess(`Wallet locked after ${this.settings.settings.lockInactivityMinutes} minutes of inactivity`);
       }
     }, 1000);
+
+    try {
+      await this.updateFiatPrices();
+    } catch (err) {
+      this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+    }
+
   }
 
   toggleSearch(mobile = false) {

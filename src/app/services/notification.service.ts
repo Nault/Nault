@@ -35,4 +35,15 @@ export class NotificationService {
     this.sendNotification('error', message, options);
   }
 
+  // Custom notification functions - these are re-used in multiple paces through the app
+  sendLedgerChromeWarning() {
+    this.sendWarning(
+      `<b>Notice:</b> You may experience issues using a Ledger device with Google Chrome. ` +
+      `If you do please use Brave/Opera browser or ` +
+      `<a href="https://github.com/cronoh/nanovault/releases" target="_blank">NanoVault Desktop</a>. ` +
+      `&nbsp; <a href="https://github.com/cronoh/nanovault/issues/69" target="_blank">More Info</a>`,
+      { length: 0, identifier: 'chrome-ledger' }
+      );
+  }
+
 }
