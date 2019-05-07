@@ -10,6 +10,7 @@ import {WorkPoolService} from "./services/work-pool.service";
 import {Router} from "@angular/router";
 import {RepresentativeService} from "./services/representative.service";
 import {NodeService} from "./services/node.service";
+import { LedgerService } from './services';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
+    private ledger: LedgerService,
     public price: PriceService) { }
 
   async ngOnInit() {
@@ -59,6 +61,11 @@ export class AppComponent implements OnInit {
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     if (this.wallet.locked && this.walletService.hasPendingTransactions()) {
       this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+    }
+
+    // If they are using a Ledger device with a bad browser, warn them
+    if (this.walletService.isLedgerWallet() && this.ledger.isBrokenBrowser()) {
+      this.notifications.sendWarning(`<b>Notice:</b> You may experience issues using a Ledger device with Google Chrome.  If you do please use Brave/Opera browser or <a href="https://github.com/cronoh/nanovault/releases" target="_blank">NanoVault Desktop</a>.  <a href="https://github.com/cronoh/nanovault/issues/69" target="_blank">More Info</a>`, { length: 0, identifier: 'chrome-ledger' });
     }
 
     // When the page closes, determine if we should lock the wallet

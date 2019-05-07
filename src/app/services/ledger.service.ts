@@ -17,7 +17,7 @@ export const STATUS_CODES = {
 export const LedgerStatus = {
   NOT_CONNECTED: "not-connected",
   LOCKED: "locked",
-  READY: "ready",
+  READY: 'ready',
 };
 
 
@@ -182,6 +182,43 @@ export class LedgerService {
     }
   }
 
+  /**
+   * Determine if a broken browser is being used (Non-desktop Chrome)
+   */
+  isBrokenBrowser(): boolean {
+    if (this.isDesktop) {
+      console.log('Is desktop, skipppppy');
+      return false;
+    }
+    // If we using Chromium and not on desktop - warn about Ledger issue
+    const isChromium = window['chrome'];
+    const winNav = window.navigator;
+    const vendorName = winNav.vendor;
+    const isOpera = typeof window['opr'] !== 'undefined';
+    const isIEedge = winNav.userAgent.indexOf('Edge') > -1;
+    const isIOSChrome = winNav.userAgent.match('CriOS');
+
+    if (isIOSChrome) {
+      console.log('ios');
+      // is Google Chrome on IOS - Shouldnt be using Ledger but meh
+      return true;
+    } else if (
+      isChromium !== null &&
+      typeof isChromium !== 'undefined' &&
+      vendorName === 'Google Inc.' &&
+      isOpera === false &&
+      isIEedge === false
+    ) {
+      console.log('IS CHROME');
+      // is Google Chrome
+      return true;
+    } else {
+      console.log('not chrome?');
+      // not Google Chrome
+      return false;
+    }
+  }
+
 
   /**
    * Main ledger loading function.  Can be called multiple times to attempt a reconnect.
@@ -321,7 +358,7 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.contents.representative,
       balance: blockData.contents.balance,
-      previousBlock: blockData.contents.previous === "0000000000000000000000000000000000000000000000000000000000000000" ? null : blockData.contents.previous,
+      previousBlock: blockData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.contents.previous,
       sourceBlock: blockData.contents.link,
     };
 
