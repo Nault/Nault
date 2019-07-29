@@ -18,6 +18,7 @@ interface AppSettings {
   serverNode: string | null;
   serverWS: string | null;
   minimumReceive: string | null;
+  walletVersion: number | null;
 }
 
 @Injectable()
@@ -38,6 +39,7 @@ export class AppSettingsService {
     serverNode: null,
     serverWS: null,
     minimumReceive: null,
+    walletVersion: 1
   };
 
   constructor() { }
@@ -91,6 +93,7 @@ export class AppSettingsService {
       serverAPI: null,
       serverWS: null,
       minimumReceive: null,
+      walletVersion: 1,
     };
   }
 

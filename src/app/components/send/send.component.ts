@@ -188,7 +188,7 @@ export class SendComponent implements OnInit {
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
     if (nanoAmount.lessThan(1)) return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough NANO`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
     this.amountRaw = this.rawAmount.mod(this.nano);
@@ -212,6 +212,13 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = true;
 
     try {
+      // New stuff to show status of each part of the transaction.
+      // console.log('Sending sub send command....');
+      // this.nanoBlock.subscribeSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet()).subscribe(value => {
+      //   console.log('GOT VALUE!!! ', value)
+      // }, err => {
+      //   console.log('GOT ERROR!!!: ', err);
+      // });
       const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet());
       if (newHash) {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);

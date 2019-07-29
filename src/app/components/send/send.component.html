@@ -26,7 +26,7 @@
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
                     <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
-                    <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to">
+                    <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
@@ -183,6 +183,18 @@
       </div>
     </div>
     <!-- End Confirmation Panel -->
+
+
+    <div uk-grid *ngIf="activePanel == 'status'" class="uk-animation-slide-left">
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
+          <span style="display: block; padding-top: 8px;">You are sending</span>
+          <span style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span style="display:block; font-size: 12px;" *ngIf="amountRaw.gt(0)">+{{ amountRaw.toString(10) }} raw</span>
+          <span style="display:block; font-size: 16px; padding-bottom: 5px;" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }} @ {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</span>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>

@@ -106,6 +106,8 @@ export class WalletService {
 
       // Find out if this is a send, with our account as a destination or not
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
+      // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
+
       if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.destination) !== -1) {
         // Perform an automatic receive
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.destination);
@@ -118,12 +120,15 @@ export class WalletService {
           await this.processPendingBlocks();
         }
       } else if (transaction.block.type == 'state') {
+        if (this.wallet.locked) {
+          this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+        }
+
         await this.processStateBlock(transaction);
       }
 
       // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
-
-      await this.reloadBalances();
+      await this.reloadBalances(false);
     });
 
     this.addressBook.addressBook$.subscribe(newAddressBook => {
@@ -132,21 +137,32 @@ export class WalletService {
   }
 
   async processStateBlock(transaction) {
+    // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
     if (transaction.is_send === 'true' && transaction.block.link_as_account) {
       // This is an incoming send block, we want to perform a receive
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
 
       // Check for a min receive
+      const txAmount = new BigNumber(transaction.amount);
+
+      if (this.wallet.pending.lte(0)) {
+        this.wallet.pending = this.wallet.pending.plus(txAmount);
+        this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
+        this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
+        this.wallet.hasPending = true;
+      }
+
       if (this.appSettings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
-        if (new BigNumber(transaction.amount).gt(minAmount)) {
-          this.addPendingBlock(walletAccount.id, transaction.hash, new BigNumber(0));
+
+        if (txAmount.gt(minAmount)) {
+          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount);
         } else {
           console.log(`Found new pending block that was below minimum receive amount: `, transaction.amount, this.appSettings.settings.minimumReceive);
         }
       } else {
-        this.addPendingBlock(walletAccount.id, transaction.hash, new BigNumber(0));
+        this.addPendingBlock(walletAccount.id, transaction.hash, txAmount);
       }
 
       await this.processPendingBlocks();
@@ -165,6 +181,30 @@ export class WalletService {
 
   getWalletAccount(accountID) {
     return this.wallet.accounts.find(a => a.id == accountID);
+  }
+
+
+  async patchOldSavedData() {
+    // Look for saved accounts using an xrb_ prefix
+    const walletData = localStorage.getItem(this.storeKey);
+    if (!walletData) return true;
+
+    const walletJson = JSON.parse(walletData);
+
+    if (walletJson.accounts) {
+      const newAccounts = walletJson.accounts.map(account => {
+        if (account.id.indexOf('xrb_') !== -1) {
+          account.id = account.id.replace('xrb_', 'nano_');
+        }
+        return account;
+      });
+
+      walletJson.accounts = newAccounts;
+    }
+
+    localStorage.setItem(this.storeKey, JSON.stringify(walletJson));
+
+    return true;
   }
 
   async loadStoredWallet() {
@@ -557,6 +597,11 @@ export class WalletService {
 
     let hasPending: boolean = false;
 
+    // If this is just a normal reload.... do not use the minimum receive setting?
+    if (!reloadPending && walletPending.gt(0)) {
+      hasPending = true; // Temporary override? New incoming transaction on half reload? skip?
+    }
+
     // Check if there is a pending balance at all
     if (walletPending.gt(0)) {
       // If we have a minimum receive amount, check accounts for actual receivable transactions
@@ -566,10 +611,13 @@ export class WalletService {
 
         if (pending && pending.blocks) {
           for (let block in pending.blocks) {
-            if (!pending.blocks.hasOwnProperty(block)) continue;
+            if (!pending.blocks.hasOwnProperty(block)) {
+              continue;
+            }
             if (pending.blocks[block]) {
               hasPending = true;
             } else {
+              console.log('Pendling loop - no match, skipping? ', block);
             }
           }
         }
@@ -725,7 +773,6 @@ export class WalletService {
       }
     }
 
-    // Now, only if we have results, do a unique on the account names, and run account info on all of them?
     if (this.pendingBlocks.length) {
       this.processPendingBlocks();
     }

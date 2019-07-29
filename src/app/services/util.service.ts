@@ -206,7 +206,7 @@ function generateAccountKeyPair(accountSecretKeyBytes) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes);
 }
 
-function getPublicAccountID(accountPublicKeyBytes, prefix = 'xrb') {
+function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));

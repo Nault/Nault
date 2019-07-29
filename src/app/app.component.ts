@@ -49,8 +49,13 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
+
+    // New for v19: Patch saved xrb_ prefixes to nano_
+    await this.patchXrbToNanoPrefixData();
+
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
+
     await this.walletService.loadStoredWallet();
     this.websocket.connect();
 
@@ -107,6 +112,21 @@ export class AppComponent implements OnInit {
 
   }
 
+  /*
+    This is important as it looks through saved data using hardcoded xrb_ prefixes
+    (Your wallet, address book, rep list, etc) and updates them to nano_ prefix for v19 RPC
+   */
+  async patchXrbToNanoPrefixData() {
+    // If wallet is version 2, data has already been patched.  Otherwise, patch all data
+    if (this.settings.settings.walletVersion >= 2) return;
+
+    await this.walletService.patchOldSavedData(); // Change saved xrb_ addresses to nano_
+    this.addressBook.patchXrbPrefixData();
+    this.representative.patchXrbPrefixData();
+
+    this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
+  }
+
   toggleSearch(mobile = false) {
     this.showSearchBar = !this.showSearchBar;
     if (this.showSearchBar) {
@@ -118,7 +138,7 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
-    if (searchData.startsWith('xrb_')) {
+    if (searchData.startsWith('xrb_') || searchData.startsWith('nano_')) {
       this.router.navigate(['account', searchData]);
     } else if (searchData.length === 64) {
       this.router.navigate(['transaction', searchData]);

@@ -8,13 +8,14 @@ import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {WalletService} from "./wallet.service";
 import {LedgerService} from "./ledger.service";
+import {Observable} from "rxjs/Observable";
 const nacl = window['nacl'];
 
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
 
 @Injectable()
 export class NanoBlockService {
-  representativeAccount = 'xrb_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
+  representativeAccount = 'nano_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
 
   constructor(
     private api: ApiService,
@@ -82,6 +83,94 @@ export class NanoBlockService {
       return null;
     }
   }
+
+  // This might be used in the future to send state changes on the blocks instead of normal true/false
+  // subscribeSend(walletAccount, toAccountID, rawAmount, ledger = false): Observable {
+  //   const doSend = async (observable) => {
+  //     console.log(`OBS: Promise resolve, running main send logic.`);
+  //     const startTime = Date.now();
+  //
+  //     console.log(`Observable: Creation event run`);
+  //     observable.next({ step: 0, startTime: startTime });
+  //
+  //
+  //     const fromAccount = await this.api.accountInfo(walletAccount.id);
+  //     if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`);
+  //
+  //     const remaining = new BigNumber(fromAccount.balance).minus(rawAmount);
+  //     const remainingDecimal = remaining.toString(10);
+  //     let remainingPadded = remaining.toString(16);
+  //     while (remainingPadded.length < 32) remainingPadded = '0' + remainingPadded; // Left pad with 0's
+  //
+  //     let blockData;
+  //     const representative = fromAccount.representative || (this.settings.settings.defaultRepresentative || this.representativeAccount);
+  //
+  //     observable.next({ step: 1, startTime: startTime, eventTime: ((Date.now() - startTime) / 1000).toFixed(3) });
+  //
+  //     let signature = null;
+  //     if (ledger) {
+  //       const ledgerBlock = {
+  //         previousBlock: fromAccount.frontier,
+  //         representative: representative,
+  //         balance: remainingDecimal,
+  //         recipient: toAccountID,
+  //       };
+  //       try {
+  //         this.sendLedgerNotification();
+  //         await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier);
+  //         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
+  //         this.clearLedgerNotification();
+  //         signature = sig.signature;
+  //
+  //         observable.next({ step: 2, startTime: startTime, eventTime: ((Date.now() - startTime) / 1000).toFixed(3) });
+  //       } catch (err) {
+  //         this.clearLedgerNotification();
+  //         this.sendLedgerDeniedNotification(err);
+  //         return;
+  //       }
+  //     } else {
+  //       signature = this.signSendBlock(walletAccount, fromAccount, representative, remainingPadded, toAccountID);
+  //       observable.next({ step: 2, startTime: startTime, eventTime: ((Date.now() - startTime) / 1000).toFixed(3) });
+  //     }
+  //
+  //     if (!this.workPool.workExists(fromAccount.frontier)) {
+  //       this.notifications.sendInfo(`Generating Proof of Work...`);
+  //     }
+  //
+  //     blockData = {
+  //       type: 'state',
+  //       account: walletAccount.id,
+  //       previous: fromAccount.frontier,
+  //       representative: representative,
+  //       balance: remainingDecimal,
+  //       link: this.util.account.getAccountPublicKey(toAccountID),
+  //       work: await this.workPool.getWork(fromAccount.frontier),
+  //       signature: signature,
+  //     };
+  //
+  //     observable.next({ step: 3, startTime: startTime, eventTime: ((Date.now() - startTime) / 1000).toFixed(3) });
+  //
+  //     const processResponse = await this.api.process(blockData);
+  //     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
+  //
+  //     observable.next({ step: 4, startTime: startTime, eventTime: ((Date.now() - startTime) / 1000).toFixed(3) });
+  //
+  //     walletAccount.frontier = processResponse.hash;
+  //     this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
+  //     this.workPool.removeFromCache(fromAccount.frontier);
+  //
+  //     observable.complete();
+  //   };
+  //
+  //
+  //   console.log(`Creating observable... on send...`);
+  //   // Create an observable that can be returned instantly.
+  //   return new Observable(observable => {
+  //
+  //     doSend(observable).then(val => console.log(val));
+  //   });
+  //
+  // }
 
   async generateSend(walletAccount, toAccountID, rawAmount, ledger = false) {
     const fromAccount = await this.api.accountInfo(walletAccount.id);
