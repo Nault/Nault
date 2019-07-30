@@ -532,11 +532,12 @@ export class WalletService {
   }
 
   hasPendingTransactions() {
-    if (this.appSettings.settings.minimumReceive) {
-      return this.wallet.hasPending;
-    } else {
-      return this.wallet.pendingRaw.gt(0);
-    }
+    return this.wallet.hasPending;
+    // if (this.appSettings.settings.minimumReceive) {
+    //   return this.wallet.hasPending;
+    // } else {
+    //   return this.wallet.pendingRaw.gt(0);
+    // }
   }
 
   reloadFiatBalances() {
