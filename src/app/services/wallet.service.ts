@@ -446,10 +446,11 @@ export class WalletService {
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
     const accountID = account.address;
-    const addressBookName = this.addressBook.getAccountName(accountID);
+    const nanoAccountID = accountID.replace('xrb_', 'nano_');
+    const addressBookName = this.addressBook.getAccountName(nanoAccountID);
 
     const newAccount: WalletAccount = {
-      id: accountID,
+      id: nanoAccountID,
       frontier: null,
       secret: null,
       keyPair: null,
