@@ -19,6 +19,8 @@ export class ConfigureWalletComponent implements OnInit {
   newWalletMnemonic = '';
   newWalletMnemonicLines = [];
   importSeedModel = '';
+  importPrivateKeyModel = '';
+  importExpandedKeyModel = '';
   importSeedMnemonicModel = '';
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
@@ -29,6 +31,8 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
     { name: 'Nault Wallet File', value: 'file' },
     { name: 'Ledger Nano S', value: 'ledger' },
+    { name: 'Private Key', value: 'privateKey' },
+    { name: 'Expanded Private Key', value: 'expandedKey' },
   ];
 
   ledgerStatus = LedgerStatus;
@@ -81,6 +85,23 @@ export class ConfigureWalletComponent implements OnInit {
     await this.walletService.createWalletFromSeed(importSeed);
 
     this.notifications.removeNotification('importing-loading');
+
+    this.activePanel = 4;
+    this.notifications.sendSuccess(`Successfully imported wallet!`);
+  }
+
+  async importSingleKeyWallet() {
+    // Now, if a wallet is configured, make sure they confirm an overwrite first
+    const confirmed = await this.confirmWalletOverwrite();
+    if (!confirmed) return;
+
+    if (this.selectedImportOption === 'privateKey') {
+      this.walletService.createWalletFromSingleKey(this.importPrivateKeyModel, false);
+    } else if (this.selectedImportOption === 'expandedKey') {
+      this.walletService.createWalletFromSingleKey(this.importExpandedKeyModel, true);
+    } else {
+      return this.notifications.sendError(`Invalid import option`);
+    }
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
