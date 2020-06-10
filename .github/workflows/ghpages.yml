@@ -25,7 +25,7 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          ng build --prod
+          npm run wallet:build
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@releases/v3
