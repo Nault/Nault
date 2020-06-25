@@ -40,7 +40,7 @@ export class ApiService {
   }
 
   async recommendedReps(): Promise<NinjaVerifiedRep[]> {
-    return await this.http.get(`${this.apiUrl}/recommended-representatives`).toPromise() as NinjaVerifiedRep[];
+    return await this.http.get(`https://mynano.ninja/api/accounts/verified`).toPromise() as NinjaVerifiedRep[];
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {
