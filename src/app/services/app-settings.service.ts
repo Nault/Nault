@@ -15,7 +15,6 @@ interface AppSettings {
   powSource: PoWSource;
   serverName: string;
   serverAPI: string | null;
-  serverNode: string | null;
   serverWS: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
@@ -36,7 +35,6 @@ export class AppSettingsService {
     powSource: 'best',
     serverName: 'nanovault',
     serverAPI: null,
-    serverNode: null,
     serverWS: null,
     minimumReceive: null,
     walletVersion: 1
@@ -89,7 +87,6 @@ export class AppSettingsService {
       lockInactivityMinutes: 30,
       powSource: 'best',
       serverName: 'nanovault',
-      serverNode: null,
       serverAPI: null,
       serverWS: null,
       minimumReceive: null,

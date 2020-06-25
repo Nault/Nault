@@ -131,7 +131,6 @@ export class ConfigureAppComponent implements OnInit {
   ];
 
   serverAPI = null;
-  serverNode = null;
   serverWS = null;
   minimumReceive = null;
 
@@ -178,7 +177,6 @@ export class ConfigureAppComponent implements OnInit {
     this.selectedServer = matchingServerOption ? matchingServerOption.value : this.serverOptions[0].value;
 
     this.serverAPI = settings.serverAPI;
-    this.serverNode = settings.serverNode;
     this.serverWS = settings.serverWS;
 
     this.minimumReceive = settings.minimumReceive;
@@ -266,7 +264,6 @@ export class ConfigureAppComponent implements OnInit {
     const newSettings = {
       serverName: this.selectedServer,
       serverAPI: null,
-      serverNode: null,
       serverWS: null,
     };
 
@@ -276,14 +273,6 @@ export class ConfigureAppComponent implements OnInit {
         newSettings.serverAPI = this.serverAPI;
       } else {
         return this.notifications.sendWarning(`Custom API Server has an invalid address.  Make sure to use the full address ie: https://nanovault.io/api/node-api`);
-      }
-    }
-
-    if (this.serverNode != null && this.serverNode.trim().length > 1) {
-      if (this.serverNode.startsWith('https://') || this.serverNode.startsWith('http://')) {
-        newSettings.serverNode = this.serverNode;
-      } else {
-        return this.notifications.sendWarning(`Custom Node Server has an invalid address.  Make sure to use the full address ie: http://127.0.0.1:7076`);
       }
     }
 

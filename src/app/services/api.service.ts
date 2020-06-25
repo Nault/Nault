@@ -23,9 +23,6 @@ export class ApiService {
   private async request(action, data): Promise<any> {
     data.action = action;
     let apiUrl = this.appSettings.settings.serverAPI || this.rpcUrl;
-    if (this.appSettings.settings.serverNode) {
-      apiUrl += `?node=${this.appSettings.settings.serverNode}`;
-    }
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
