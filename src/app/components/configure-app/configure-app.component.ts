@@ -102,7 +102,8 @@ export class ConfigureAppComponent implements OnInit {
   serverOptions = [
     { name: 'NanoVault Default', value: 'nanovault' },
     { name: 'NanoCrawler', value: 'nanocrawler' },
-    { name: 'My Nano Ninja', value: 'mynano' },
+    { name: 'My Nano Ninja', value: 'ninja' },
+    { name: 'Nanos.cc', value: 'nanos' },
     { name: 'Custom', value: 'custom' },
   ];
   selectedServer = this.serverOptions[0].value;
@@ -124,9 +125,14 @@ export class ConfigureAppComponent implements OnInit {
       ws: 'wss://ws.nanocrawler.cc',
     },
     {
-      name: 'mynano',
-      api: 'https://vault-api.mynano.ninja/api/node-api',
-      ws: null,
+      name: 'ninja',
+      api: 'https://mynano.ninja/api/node',
+      ws: 'wss://ws.mynano.ninja',
+    },
+    {
+      name: 'nanos',
+      api: 'https://proxy.nanos.cc/proxy',
+      ws: 'wss://socket.nanos.cc',
     },
   ];
 
