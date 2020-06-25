@@ -19,6 +19,14 @@ jobs:
         with:
           node-version: 12
 
+      - name: Install APT dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential git -y
+          sudo apt-get install libudev-dev -y
+          sudo apt-get install libusb-1.0-0-dev -y
+          sudo apt-get install gcc-4.8 g++-4.8 -y
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
