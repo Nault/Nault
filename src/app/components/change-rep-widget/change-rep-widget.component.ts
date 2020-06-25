@@ -15,11 +15,18 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   constructor(private repService: RepresentativeService, private router: Router) { }
 
   async ngOnInit() {
+    // sleep to show prompt later
+    // and solve a race condition with the wallet accounts
+    await this.sleep(2000);
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(reps => {
       this.representatives = reps;
     });
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   ngAfterViewInit() {
