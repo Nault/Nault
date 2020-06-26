@@ -102,6 +102,7 @@ export class ConfigureAppComponent implements OnInit {
   serverOptions = [
     { name: 'My Nano Ninja', value: 'ninja' },
     { name: 'Nanos.cc', value: 'nanos' },
+    { name: 'Nanex.cc', value: 'nanex' },
     { name: 'NanoCrawler', value: 'nanocrawler' },
     { name: 'NanoVault', value: 'nanovault' },
     { name: 'Custom', value: 'custom' },
@@ -123,6 +124,11 @@ export class ConfigureAppComponent implements OnInit {
       name: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',
       ws: 'wss://socket.nanos.cc',
+    },
+    {
+      name: 'nanex',
+      api: 'https://api.nanex.cc',
+      ws: 'wss://ws.nanocrawler.cc',
     },
     {
       name: 'nanocrawler',
