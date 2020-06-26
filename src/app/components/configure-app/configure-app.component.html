@@ -158,7 +158,7 @@
 
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" type="text" placeholder="Leave blank to use NanoVault" #repInput>
+                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" type="text" placeholder="Leave blank to use a recommended one" #repInput>
 
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
