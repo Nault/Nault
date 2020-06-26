@@ -34,6 +34,8 @@ export class ApiService {
       .catch(err => {
         if (err.status === 500 || err.status === 0) {
           this.node.setOffline(); // Hard error, node is offline
+        } else if(err.status === 429){
+          this.node.setOffline('Too Many Requests to the node, please try again later.')
         }
         throw err;
       });
