@@ -103,14 +103,15 @@ export class WalletService {
   {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
+      console.log('New Transaction', transaction);
 
       // Find out if this is a send, with our account as a destination or not
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
 
-      if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.destination) !== -1) {
+      if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         // Perform an automatic receive
-        const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.destination);
+        const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
         if (walletAccount) {
           // If the wallet is locked, show a notification
           if (this.wallet.locked) {
@@ -137,8 +138,10 @@ export class WalletService {
   }
 
   async processStateBlock(transaction) {
+    console.log('Processing state block', transaction);
+    
     // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
-    if (transaction.is_send === 'true' && transaction.block.link_as_account) {
+    if (transaction.block.subtype == 'send' && transaction.block.link_as_account) {
       // This is an incoming send block, we want to perform a receive
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
