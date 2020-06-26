@@ -323,10 +323,6 @@ export class RepresentativeService {
   // Default representatives list
   defaultRepresentatives = [
     {
-      id: 'nano_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or',
-      name: 'NanoVault Rep',
-    },
-    {
       id: 'nano_3arg3asgtigae3xckabaaewkx3bzsh7nwz7jkmjos79ihyaxwphhm6qgjps4',
       name: 'Official Rep 1',
       warn: true,
@@ -365,41 +361,6 @@ export class RepresentativeService {
       id: 'nano_1hza3f7wiiqa7ig3jczyxj5yo86yegcmqk3criaz838j91sxcckpfhbhhra1',
       name: 'Official Rep 8',
       warn: true,
-    },
-    {
-      id: 'nano_3pczxuorp48td8645bs3m6c3xotxd3idskrenmi65rbrga5zmkemzhwkaznh',
-      name: 'NanoWallet.io Rep',
-    },
-    {
-      id: 'nano_1niabkx3gbxit5j5yyqcpas71dkffggbr6zpd3heui8rpoocm5xqbdwq44oh',
-      name: 'KuCoin 1',
-    },
-    {
-      id: 'nano_1nanode8ngaakzbck8smq6ru9bethqwyehomf79sae1k7xd47dkidjqzffeg',
-      name: 'Nanode Rep',
-      warn: true,
-    },
-    {
-      id: 'nano_39ymww61tksoddjh1e43mprw5r8uu1318it9z3agm7e6f96kg4ndqg9tuds4',
-      name: 'BitGrail 1',
-      warn: true,
-    },
-    {
-      id: 'nano_1brainb3zz81wmhxndsbrjb94hx3fhr1fyydmg6iresyk76f3k7y7jiazoji',
-      name: 'BrainBlocks Rep',
-    },
-    {
-      id: 'nano_1tig1rio7iskejqgy6ap75rima35f9mexjazdqqquthmyu48118jiewny7zo',
-      name: 'OKEx Rep',
-    },
-    {
-      id: 'nano_3jwrszth46rk1mu7rmb4rhm54us8yg1gw3ipodftqtikf5yqdyr7471nsg1k',
-      name: 'Binance Rep',
-      warn: true,
-    },
-    {
-      id: 'nano_16k5pimotz9zehjk795wa4qcx54mtusk8hc5mdsjgy57gnhbj3hj6zaib4ic',
-      name: 'NanoWallet Bot Rep',
     },
   ];
 
