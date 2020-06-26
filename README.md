@@ -1,9 +1,11 @@
-# NanoVault
+# Nault
 
-NanoVault is a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/raiblocks) 
+This is a fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
+
+Nault is a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/raiblocks) 
 on your [desktop](https://github.com/BitDesert/Nault/releases) or [in your browser](https://nanovault.io)
 
-![NanoVault Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/NanoVault-Preview.png)
+![Nault Screenshot](https://s3-us-west-2.amazonaws.com/nanovault.io/Nault-Preview.png)
 ___
 
 # Table of Contents
@@ -15,10 +17,10 @@ ___
 * [Acknowledgements](#acknowledgements)
 
 
-# Install NanoVault
-NanoVault is available on your desktop (Windows/Mac/Linux) - just head over to the [releases section](https://github.com/BitDesert/Nault/releases) and download the latest version for your OS.
+# Install Nault
+Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [releases section](https://github.com/BitDesert/Nault/releases) and download the latest version for your OS.
 
-You can also use NanoVault from any device on the web at [nanovault.io](https://nanovault.io)
+You can also use Nault from any device on the web at [nanovault.io](https://nanovault.io)
 
 
 # Bugs/Feedback
@@ -29,8 +31,8 @@ To get an idea of some of the things that are planned for the near future, check
 
 ___
 
-#### Everything below is only for contributing to the development of NanoVault
-#### To download NanoVault go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nanovault.io](https://nanovault.io)
+#### Everything below is only for contributing to the development of Nault
+#### To download Nault go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nanovault.io](https://nanovault.io)
 
 ___
 
@@ -38,9 +40,9 @@ ___
 
 The application is broken into a few separate pieces:
 
-- [NanoVault](https://github.com/BitDesert/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
-- [NanoVault-Server](https://github.com/BitDesert/Nault-server) - Serves the Wallet UI and brokers public communication between the wallet and the Nano Node.
-- [NanoVault-WS](https://github.com/BitDesert/Nault-ws) - Websocket server that receives new blocks from the Nano node and sends them in real time to the wallet ui.
+- [Nault](https://github.com/BitDesert/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
+- [Nault-Server](https://github.com/BitDesert/Nault-server) - Serves the Wallet UI and brokers public communication between the wallet and the Nano Node.
+- [Nault-WS](https://github.com/BitDesert/Nault-ws) - Websocket server that receives new blocks from the Nano node and sends them in real time to the wallet ui.
 
 
 # Development Prerequisites
@@ -106,4 +108,4 @@ Special thanks to the following!
 - [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
 - [dchest/tweetnacl-js](https://github.com/dchest/tweetnacl-js) - Cryptography Implementation
 
-If you have found NanoVault useful and are feeling generous, you can donate at `xrb_318syypnqcgdouy3p3ekckwmnmmyk5z3dpyq48phzndrmmspyqdqjymoo8hj`
+If you have found Nault useful and are feeling generous, you can donate at `xrb_318syypnqcgdouy3p3ekckwmnmmyk5z3dpyq48phzndrmmspyqdqjymoo8hj`

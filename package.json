@@ -1,5 +1,5 @@
 {
-  "name": "NanoVault",
+  "name": "Nault",
   "version": "1.2.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
@@ -91,7 +91,7 @@
   "build": {
     "appId": "com.electron.nanovault",
     "buildVersion": "1.2.1",
-    "productName": "NanoVault",
+    "productName": "Nault",
     "copyright": "Copyright © 2019 Andrew Steele",
     "directories": {
       "output": "desktop-app/build",

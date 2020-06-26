@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2>Configure NanoVault</h2>
+    <h2>Configure Nault</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
@@ -228,7 +228,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://nanovault.io/api/node-api">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-server" target="_blank">NanoVault Server</a> application, or an API compliant with it.<br>
+                      This server must be running the <a href="https://github.com/BitDesert/Nault-server" target="_blank">Nault Server</a> application, or an API compliant with it.<br>
                       Timestamps in the application are dependant on this server's access to them.
                     </span>
                   </div>
@@ -249,7 +249,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="wss://ws.nanovault.io/">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-ws" target="_blank">NanoVault Websocket</a> application, or a WebSocket API compliant with it.<br>
+                      This server must be running the <a href="https://github.com/BitDesert/Nault-ws" target="_blank">Nault Websocket</a> application, or a WebSocket API compliant with it.<br>
                       <i>Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.</i>
                     </span>
                   </div>

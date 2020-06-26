@@ -89,7 +89,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'Best Option Available', value: 'best' },
     { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
     { name: 'Client Side - CPU', value: 'clientCPU' },
-    { name: 'Server - NanoVault Server', value: 'server' },
+    { name: 'Server - Nault Server', value: 'server' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -100,7 +100,7 @@ export class ConfigureAppComponent implements OnInit {
   // selectedPrefix = this.prefixOptions[0].value;
 
   serverOptions = [
-    { name: 'NanoVault Default', value: 'nanovault' },
+    { name: 'Nault Default', value: 'nanovault' },
     { name: 'NanoCrawler', value: 'nanocrawler' },
     { name: 'My Nano Ninja', value: 'ninja' },
     { name: 'Nanos.cc', value: 'nanos' },
@@ -353,7 +353,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearWalletData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in NanoVault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -364,7 +364,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in NanoVault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 

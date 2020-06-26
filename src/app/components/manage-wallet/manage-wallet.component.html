@@ -39,10 +39,10 @@
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Export NanoVault Wallet</h3>
+        <h3 class="uk-card-title">Export Nault Wallet</h3>
       </div>
       <div class="uk-card-body">
-        Use this export tool to simplify wallet transfer to other devices. Your data will be encrypted by your password, and then imported into NanoVault on your new device!
+        Use this export tool to simplify wallet transfer to other devices. Your data will be encrypted by your password, and then imported into Nault on your new device!
         The export does not contain your address book.<br>
         <div *ngIf="showQRExport" uk-grid>
           <div class="uk-width-1-1">
@@ -53,7 +53,7 @@
             <img [src]="QRExportImg">
           </div>
           <div class="uk-width-1-2@s uk-width-3-4@m">
-            Scan the QR code on any device to load your NanoVault wallet!<br>
+            Scan the QR code on any device to load your Nault wallet!<br>
             <br>
             If you do not have a QR code scanner, you can also import your wallet by using the URL below.<br>
             <input type="text" class="uk-input" value="{{ QRExportUrl }}"><br>
@@ -69,7 +69,7 @@
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">NanoVault Address Book</h3>
+        <h3 class="uk-card-title">Nault Address Book</h3>
       </div>
       <div class="uk-card-body">
         Use this tool to simplify transferring your address book between devices.  Use the options below to import or export your
@@ -83,7 +83,7 @@
             <img [src]="addressBookQRExportImg">
           </div>
           <div class="uk-width-1-2@s uk-width-3-4@m">
-            Scan the QR code on any device to import your NanoVault Address Book!<br>
+            Scan the QR code on any device to import your Nault Address Book!<br>
             <br>
             If you do not have a QR code scanner, you can also import your address book by using the URL below.<br>
             <input type="text" class="uk-input" value="{{ addressBookQRExportUrl }}"><br>
