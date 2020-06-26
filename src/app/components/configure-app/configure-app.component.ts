@@ -100,10 +100,10 @@ export class ConfigureAppComponent implements OnInit {
   // selectedPrefix = this.prefixOptions[0].value;
 
   serverOptions = [
-    { name: 'Nault Default', value: 'nanovault' },
-    { name: 'NanoCrawler', value: 'nanocrawler' },
     { name: 'My Nano Ninja', value: 'ninja' },
     { name: 'Nanos.cc', value: 'nanos' },
+    { name: 'NanoCrawler', value: 'nanocrawler' },
+    { name: 'NanoVault', value: 'nanovault' },
     { name: 'Custom', value: 'custom' },
   ];
   selectedServer = this.serverOptions[0].value;
@@ -115,16 +115,6 @@ export class ConfigureAppComponent implements OnInit {
 
   serverConfigurations = [
     {
-      name: 'nanovault',
-      api: null,
-      ws: null,
-    },
-    {
-      name: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: 'wss://ws.nanocrawler.cc',
-    },
-    {
       name: 'ninja',
       api: 'https://mynano.ninja/api/node',
       ws: 'wss://ws.mynano.ninja',
@@ -133,6 +123,16 @@ export class ConfigureAppComponent implements OnInit {
       name: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',
       ws: 'wss://socket.nanos.cc',
+    },
+    {
+      name: 'nanocrawler',
+      api: 'https://vault.nanocrawler.cc/api/node-api',
+      ws: 'wss://ws.nanocrawler.cc',
+    },
+    {
+      name: 'nanovault',
+      api: null,
+      ws: null,
     },
   ];
 
@@ -278,7 +278,7 @@ export class ConfigureAppComponent implements OnInit {
       if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
         newSettings.serverAPI = this.serverAPI;
       } else {
-        return this.notifications.sendWarning(`Custom API Server has an invalid address.  Make sure to use the full address ie: https://nanovault.io/api/node-api`);
+        return this.notifications.sendWarning(`Custom API Server has an invalid address.`);
       }
     }
 
@@ -286,7 +286,7 @@ export class ConfigureAppComponent implements OnInit {
       if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
         newSettings.serverWS = this.serverWS;
       } else {
-        return this.notifications.sendWarning(`Custom Update Server has an invalid address.  Make sure to use the full address ie: wss://ws.nanovault.io/`);
+        return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
       }
     }
 

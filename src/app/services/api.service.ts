@@ -14,15 +14,11 @@ export interface NinjaVerifiedRep {
 
 @Injectable()
 export class ApiService {
-  // apiUrl = `http://localhost:9950/api`;
-  apiUrl = `https://nanovault.io/api`;
-  rpcUrl = `${this.apiUrl}/node-api`;
-
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
   private async request(action, data): Promise<any> {
     data.action = action;
-    let apiUrl = this.appSettings.settings.serverAPI || this.rpcUrl;
+    let apiUrl = this.appSettings.settings.serverAPI || 'https://mynano.ninja/api/node';
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
