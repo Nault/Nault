@@ -223,7 +223,7 @@
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>{{ serverAPI || 'https://nanovault.io/api/node-api' }}</strong>
+                    <strong>{{ serverAPI }}</strong>
                   </div>
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://nanovault.io/api/node-api">
@@ -243,7 +243,7 @@
                 <label class="uk-form-label uk-text-right">Updates Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>{{ serverWS || 'wss://ws.nanovault.io/' }}</strong>
+                    <strong>{{ serverWS }}</strong>
                   </div>
 
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
