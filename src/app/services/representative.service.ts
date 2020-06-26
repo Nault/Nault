@@ -377,10 +377,12 @@ export class RepresentativeService {
     {
       id: 'nano_1nanode8ngaakzbck8smq6ru9bethqwyehomf79sae1k7xd47dkidjqzffeg',
       name: 'Nanode Rep',
+      warn: true,
     },
     {
       id: 'nano_39ymww61tksoddjh1e43mprw5r8uu1318it9z3agm7e6f96kg4ndqg9tuds4',
       name: 'BitGrail 1',
+      warn: true,
     },
     {
       id: 'nano_1brainb3zz81wmhxndsbrjb94hx3fhr1fyydmg6iresyk76f3k7y7jiazoji',
@@ -393,14 +395,11 @@ export class RepresentativeService {
     {
       id: 'nano_3jwrszth46rk1mu7rmb4rhm54us8yg1gw3ipodftqtikf5yqdyr7471nsg1k',
       name: 'Binance Rep',
+      warn: true,
     },
     {
       id: 'nano_16k5pimotz9zehjk795wa4qcx54mtusk8hc5mdsjgy57gnhbj3hj6zaib4ic',
       name: 'NanoWallet Bot Rep',
-    },
-    {
-      id: 'nano_1nanexadj9takfo4ja958st8oasuosi9tf8ur4hwkmh6dtxfugmmii5d8uho',
-      name: 'Nanex Rep',
     },
   ];
 
