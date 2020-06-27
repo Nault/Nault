@@ -40,7 +40,7 @@ export class WebsocketService {
     if (this.socket.connected && this.socket.ws) return;
     delete this.socket.ws; // Maybe this will erase old connections
 
-    const wsUrl = this.appSettings.settings.serverWS || 'wss://ws.nanovault.io';
+    const wsUrl = this.appSettings.settings.serverWS || 'wss://ws.mynano.ninja';
     const ws = new WebSocket(wsUrl);
     this.socket.ws = ws;
 
@@ -71,9 +71,10 @@ export class WebsocketService {
     ws.onmessage = event => {
       try {
         const newEvent = JSON.parse(event.data);
+        console.log('WS', newEvent);
 
-        if (newEvent.event === 'newTransaction') {
-          this.newTransactions$.next(newEvent.data);
+        if (newEvent.topic === 'confirmation' && newEvent.message.block.subtype === 'send') {
+          this.newTransactions$.next(newEvent.message);
         }
       } catch (err) {
         console.log(`Error parsing message`, err);
@@ -91,7 +92,7 @@ export class WebsocketService {
   keepalive() {
     this.keepaliveSet = true;
     if (this.socket.connected) {
-      this.socket.ws.send(JSON.stringify({ event: 'keepalive' }));
+      this.socket.ws.send(JSON.stringify({ action: 'ping' }));
     }
 
     setTimeout(() => {
@@ -102,7 +103,14 @@ export class WebsocketService {
 
 
   subscribeAccounts(accountIDs: string[]) {
-    const event = { event: 'subscribe', data: accountIDs };
+    const event = { 
+      action: 'subscribe',
+      topic: "confirmation",
+      options: {
+        accounts: accountIDs
+      }
+    };
+    
     accountIDs.forEach(account => {
       if (this.subscribedAccounts.indexOf(account) === -1) {
         this.subscribedAccounts.push(account); // Keep a unique list of subscriptions for reconnecting
@@ -119,7 +127,14 @@ export class WebsocketService {
   }
 
   unsubscribeAccounts(accountIDs: string[]) {
-    const event = { event: 'unsubscribe', data: accountIDs };
+    const event = { 
+      action: 'unsubscribe',
+      topic: "confirmation",
+      options: {
+        accounts: accountIDs
+      }
+    };
+    
     accountIDs.forEach(account => {
       const existingIndex = this.subscribedAccounts.indexOf(account);
       if (existingIndex !== -1) {
