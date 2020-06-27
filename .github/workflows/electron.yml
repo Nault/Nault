@@ -1,4 +1,4 @@
-name: Build/release
+name: Build/release Desktop
 
 on: push
 
@@ -27,6 +27,11 @@ jobs:
           sudo apt-get install libudev-dev -y
           sudo apt-get install libusb-1.0-0-dev -y
           sudo apt-get install gcc-4.8 g++-4.8 -y
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run desktop:build
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
