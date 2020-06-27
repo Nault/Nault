@@ -1,9 +1,10 @@
 # Nault
 
-This is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
+Nault is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
-Nault is a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/raiblocks) 
-on your [desktop](https://github.com/BitDesert/Nault/releases) or [in your browser](https://nanovault.io)
+It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) in your browser either from publicly hosted [nault.cc](https://nault.cc) or by [cloning the site](https://github.com/BitDesert/Nault/tree/gh-pages) and run it locally for example in [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
+
+The main difference compared to the original NanoVault is the "server-less" hosting via [vercel](https://nault.vercel.app), seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained. Those features together will greatly increase the stability, performance and uptime.
 
 ![Nault Screenshot](/assets/nault.png)
 ___
@@ -18,8 +19,7 @@ ___
 
 
 # Install Nault
-Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [releases section](https://github.com/BitDesert/Nault/releases) and download the latest version for your OS.
-
+Nault can be cloned and built from source or [downloaded as latest version](https://github.com/BitDesert/Nault/tree/gh-pages) to be run directly in your own webserver like [this Crome extension](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc/)
 
 
@@ -36,7 +36,8 @@ ___
 
 # Application Structure
 
-- [Nault](https://github.com/BitDesert/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc). Communication with the network is done via Nano RPC and Websocket protocols, private or public.
+- [Nault](https://github.com/BitDesert/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
+- Communication with the network is done via Nano RPC and Websocket protocols, private or public on any nano network.
 
 
 # Development Prerequisites
@@ -70,7 +71,7 @@ npm run wallet:build-desktop
 
 ## Desktop Builds
 
-*All desktop builds require that you have built a desktop version of the wallet before running!*
+*All desktop builds require that you have built a desktop version of the wallet before running! The desktop version is currently not supported/maintained in this project.*
 
 Run the desktop wallet in dev mode:
 ```bash
