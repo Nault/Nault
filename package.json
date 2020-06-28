@@ -89,10 +89,10 @@
     "uikit": "^3.0.0-beta.40"
   },
   "build": {
-    "appId": "com.electron.nanovault",
+    "appId": "cc.nault",
     "buildVersion": "1.2.1",
     "productName": "Nault",
-    "copyright": "Copyright © 2019 Andrew Steele",
+    "copyright": "Copyright © 2020 BitDesert / Andrew Steele",
     "directories": {
       "output": "desktop-app/build",
       "buildResources": "desktop-app/assets",
