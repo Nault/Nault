@@ -158,8 +158,8 @@
               <tbody>
 
               <tr *ngFor="let pending of pendingBlocks" class="uk-text-muted">
-                <td class="uk-text-truncate" *ngIf="pending.timestamp">{{ pending.timestamp | date: 'short' }}</td>
-                <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.timestamp">N/A</td>
+                <td class="uk-text-truncate" *ngIf="pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</td>
+                <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
@@ -181,8 +181,8 @@
               </tr>
 
               <tr *ngFor="let history of accountHistory">
-                <td class="uk-text-truncate" *ngIf="history.timestamp">{{ history.timestamp | date: 'short' }}</td>
-                <td class="uk-text-truncate uk-text-muted" *ngIf="!history.timestamp">N/A</td>
+                <td class="uk-text-truncate" *ngIf="history.local_timestamp">{{ history.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</td>
+                <td class="uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">

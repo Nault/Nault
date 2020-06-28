@@ -6,7 +6,7 @@ import * as url from 'url';
 import * as path from 'path';
 import { initialize } from './lib/ledger';
 
-app.setAsDefaultProtocolClient('xrb'); // Register handler for xrb: links
+app.setAsDefaultProtocolClient('nano'); // Register handler for nano: links
 
 // Initialize Ledger device detection
 initialize();
@@ -45,7 +45,7 @@ app.on('ready', () => {
   // Once the app is ready, launch the wallet window
   createWindow();
 
-  // Detect when the application has been loaded using an xrb: link, send it to the wallet to load
+  // Detect when the application has been loaded using an nano: link, send it to the wallet to load
   app.on('open-url', (event, path) => {
     if (!mainWindow) {
       createWindow();
