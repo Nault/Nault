@@ -1,9 +1,9 @@
 {
-  "name": "Nault",
+  "name": "nault",
   "version": "1.2.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
-  "author": "Andrew Steele",
+  "author": "BitDesert / Andrew Steele",
   "main": "desktop-app/dist/desktop-app.js",
   "scripts": {
     "ng": "ng",
@@ -27,8 +27,7 @@
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
-    "desktop:publish": "build -wml --x64 -p always",
-    "server:copy-wallet": "cd .. && rm -rf nanovault-server/static && cp -R nanovault/dist nanovault-server/static"
+    "desktop:publish": "build -wml --x64 -p always"
   },
   "private": true,
   "dependencies": {
@@ -89,10 +88,10 @@
     "uikit": "^3.0.0-beta.40"
   },
   "build": {
-    "appId": "com.electron.nanovault",
+    "appId": "cc.nault",
     "buildVersion": "1.2.1",
     "productName": "Nault",
-    "copyright": "Copyright © 2019 Andrew Steele",
+    "copyright": "Copyright © 2020 BitDesert / Andrew Steele",
     "directories": {
       "output": "desktop-app/build",
       "buildResources": "desktop-app/assets",
@@ -103,9 +102,9 @@
       "extendInfo": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLName": "xrb",
+            "CFBundleURLName": "nano",
             "CFBundleURLSchemes": [
-              "xrb"
+              "nano"
             ]
           }
         ]
@@ -117,14 +116,14 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "cronoh",
-        "repo": "nanovault"
+        "owner": "bitdesert",
+        "repo": "nault"
       }
     ],
     "protocols": {
-      "name": "xrb",
+      "name": "nano",
       "schemes": [
-        "xrb"
+        "nano"
       ],
       "role": "Viewer"
     }
