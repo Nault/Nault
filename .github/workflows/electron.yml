@@ -32,13 +32,30 @@ jobs:
         run: |
           npm install
           npm run desktop:build
+          
+      - name: Temporarily fix electron-builder
+        # https://github.com/electron-userland/electron-builder/issues/4176
+        if: matrix.os != 'macos-latest'
+        run: |
+          sed -i 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
+        shell: bash
 
+      - name: Temporarily fix electron-builder (MacOS)
+        # https://github.com/electron-userland/electron-builder/issues/4176
+        if: matrix.os == 'macos-latest'
+        run: |
+          sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
+        shell: bash
+        
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # is already built
+          skip_build: true
 
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
