@@ -1,9 +1,9 @@
 {
-  "name": "Nault",
+  "name": "nault",
   "version": "1.2.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
-  "author": "Andrew Steele",
+  "author": "BitDesert / Andrew Steele",
   "main": "desktop-app/dist/desktop-app.js",
   "scripts": {
     "ng": "ng",
@@ -103,9 +103,9 @@
       "extendInfo": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLName": "xrb",
+            "CFBundleURLName": "nano",
             "CFBundleURLSchemes": [
-              "xrb"
+              "nano"
             ]
           }
         ]
@@ -117,14 +117,14 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "cronoh",
-        "repo": "nanovault"
+        "owner": "bitdesert",
+        "repo": "nault"
       }
     ],
     "protocols": {
-      "name": "xrb",
+      "name": "nano",
       "schemes": [
-        "xrb"
+        "nano"
       ],
       "role": "Viewer"
     }
