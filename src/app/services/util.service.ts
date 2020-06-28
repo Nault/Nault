@@ -37,6 +37,7 @@ export class UtilService {
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
     setPrefix: setPrefix,
+    isValidAccount: isValidAccount,
   };
   nano = {
     mnanoToRaw: mnanoToRaw,
@@ -215,17 +216,22 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
   return `${prefix}_${account}${checksum}`;
 }
 
+function isValidAccount(account: string): boolean {
+  if (account.length !== 64) {
+    return false;
+  }
+  if (!account.startsWith('xrb')) {
+    return false;
+  }
+  if (!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) {
+    return false;
+  }
+  return true;
+}
+
 function getAccountPublicKey(account) {
-  if (account.length == 64) {
-    if(!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) {
-      throw new Error(`Invalid NANO Account`);
-    }
-  } else if (account.length == 65) {
-    if(!account.startsWith('nano_1') && !account.startsWith('nano_3')) {
-      throw new Error(`Invalid NANO Account`);
-    }
-  } else {
-    throw new Error(`Invalid NANO Account`);
+  if (!isValidAccount(account)) {
+    throw new Error(`Invalid Mikron Account`);
   }
   const account_crop = account.length == 64 ? account.substring(4,64) : account.substring(5,65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
@@ -325,6 +331,7 @@ const util = {
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
     setPrefix: setPrefix,
+    isValidAccount: isValidAccount,
   },
   nano: {
     mnanoToRaw: mnanoToRaw,

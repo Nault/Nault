@@ -46,7 +46,7 @@ import {LedgerService} from "./services/ledger.service";
 import {DesktopService} from "./services/desktop.service";
 import { AccountPipe } from './pipes/account.pipe';
 import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
-
+import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +74,7 @@ import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-
     ManageRepresentativesComponent,
     AccountPipe,
     ChangeRepWidgetComponent,
+    QrScanComponent,
   ],
   imports: [
     BrowserModule,
