@@ -228,8 +228,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-server" target="_blank" rel="noopener">Nault Server</a> application, or an API compliant with it.<br>
-                      Timestamps in the application are dependant on this server's access to them.
+                      This has to be a valid <a href="https://docs.nano.org/commands/rpc-protocol/" target="_blank" rel="noopener">Nano RPC endpoint</a> or an API compliant with it.
                     </span>
                   </div>
                 </div>
@@ -249,7 +248,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-ws" target="_blank" rel="noopener">Nault Websocket</a> application, or a WebSocket API compliant with it.<br>
+                      This has to be a <a href="https://docs.nano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener">Nano Node Websocket</a> or a WebSocket API compliant with it.<br>
                       <i>Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.</i>
                     </span>
                   </div>
