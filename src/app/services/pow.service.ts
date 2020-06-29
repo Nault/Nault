@@ -2,10 +2,17 @@ import { Injectable } from '@angular/core';
 import {AppSettingsService} from "./app-settings.service";
 import {ApiService} from "./api.service";
 import {NotificationService} from "./notification.service";
-import {queue} from "rxjs/scheduler/queue";
 import { PoWSource } from './app-settings.service'
+import Worker = require('worker-loader!./../../assets/lib/cpupow.js');
 
 const mod = window['Module'];
+//NEW v21 THRESHOLD BELOW TO BE ACTIVATED
+//const webglThreshold = '0xFFFFFFF8'
+const webglThreshold = '0xFFFFFFC0'
+const cpuThreshold = 'fffffff800000000'
+const hardwareConcurrency = window.navigator.hardwareConcurrency || 2
+const workerCount = Math.max(hardwareConcurrency - 1, 1)
+let workerList = []
 
 @Injectable()
 export class PowService {
@@ -172,12 +179,14 @@ export class PowService {
   /**
    * Generate PoW using CPU and WebWorkers
    */
-  getHashCPUWorker(hash) {
-    console.log('Generating work using CPU for', hash);
+  async getHashCPUWorker(hash) {
+    // console.log('Generating work using CPU for', hash);
     
     const response = this.getDeferredPromise();
 
     const start = Date.now();
+    // -- OLD CPU CODE THAT CANT DEFINE THRESHOLD-- //
+    /*
     const NUM_THREADS = navigator.hardwareConcurrency < 4 ? navigator.hardwareConcurrency : 4;
     const workers = window['pow_initiate'](NUM_THREADS, '/assets/lib/pow/');
 
@@ -185,6 +194,32 @@ export class PowService {
       console.log(`CPU Worker: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${NUM_THREADS} Workers]`);
       response.resolve(work);
     });
+    */
+
+    const work = () => new Promise(resolve => {
+      console.log('Generating work using CPU workers for', hash);
+      workerList = []
+      for (let i = 0; i < workerCount; i++) {
+        //const worker = new Worker()
+        const worker = new (Worker as any)();
+        // TODO: Pass cpuThreshold
+        worker.postMessage({
+          blockHash: hash,
+          workerIndex: i,
+          workerCount: workerCount
+        });
+        worker.onmessage = (work) => {
+          console.log(`CPU Worker: Found work (${work.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
+          response.resolve(work.data);
+          for (let workerIndex in workerList) {
+            workerList[workerIndex].terminate();
+          }
+          resolve();
+        };
+        workerList.push(worker);
+      }
+    });
+    await work();
 
     return response.promise;
   }
@@ -203,7 +238,8 @@ export class PowService {
           console.log(`WebGL Worker: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${n} iterations]`);
           response.resolve(work);
         },
-        n => {}
+        n => {},
+        webglThreshold
       );
     } catch(error) {
       if (error.message === 'webgl2_required') {
