@@ -139,6 +139,7 @@ export class ConfigureAppComponent implements OnInit {
   serverWS = null;
   minimumReceive = null;
 
+  showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   constructor(
@@ -287,9 +288,6 @@ export class ConfigureAppComponent implements OnInit {
         return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
       }
     }
-
-    console.log('NEW SETTINGS', newSettings);
-    
 
     this.appSettings.setAppSettings(newSettings);
     this.appSettings.loadAppSettings();
