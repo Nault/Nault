@@ -6,7 +6,7 @@ It's a fully client-side signing wallet for sending and receiving [Nano](https:/
 
 The main difference compared to the original NanoVault is the "server-less" hosting via [vercel](https://nault.vercel.app), seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained. Those features together will greatly increase the stability, performance and uptime.
 
-![Nault Screenshot](/assets/nault.png)
+![Nault Screenshot](/.github/nault.png)
 ___
 
 # Table of Contents
