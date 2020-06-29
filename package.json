@@ -57,9 +57,10 @@
     "node-hid": "^1.3.0",
     "qrcode": "^1.4.4",
     "rxjs": "^6.5.5",
+    "rxjs-compat": "^6.0.0-rc.0",
+    "stream": "0.0.2",
     "tweetnacl": "^1.0.0",
-    "zone.js": "^0.8.29",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
