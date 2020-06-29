@@ -99,15 +99,8 @@ export class ConfigureAppComponent implements OnInit {
   // ];
   // selectedPrefix = this.prefixOptions[0].value;
 
-  serverOptions = [
-    { name: 'My Nano Ninja', value: 'ninja' },
-    { name: 'Nanos.cc', value: 'nanos' },
-    { name: 'Nanex.cc', value: 'nanex' },
-    { name: 'NanoCrawler', value: 'nanocrawler' },
-    { name: 'NanoVault', value: 'nanovault' },
-    { name: 'Custom', value: 'custom' },
-  ];
-  selectedServer = this.serverOptions[Math.floor(Math.random() * (this.serverOptions.length - 1))].value;
+  serverOptions = [];
+  selectedServer = null;
 
   defaultRepresentative = null;
   representativeResults$ = new BehaviorSubject([]);
@@ -137,8 +130,8 @@ export class ConfigureAppComponent implements OnInit {
     },
     {
       name: 'nanovault',
-      api: null,
-      ws: null,
+      api: 'https://nanovault.io/api/node-api',
+      ws: 'wss://ws.nanovault.io',
     },
   ];
 
@@ -185,9 +178,8 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
-    const matchingServerOption = this.serverOptions.find(d => d.value === settings.serverName);
-    this.selectedServer = matchingServerOption ? matchingServerOption.value : this.serverOptions[Math.floor(Math.random() * (this.serverOptions.length - 1))].value;
-
+    this.serverOptions = this.appSettings.serverOptions;
+    this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
     this.serverWS = settings.serverWS;
 
@@ -296,7 +288,11 @@ export class ConfigureAppComponent implements OnInit {
       }
     }
 
+    console.log('NEW SETTINGS', newSettings);
+    
+
     this.appSettings.setAppSettings(newSettings);
+    this.appSettings.loadAppSettings();
 
     this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
 
