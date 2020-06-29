@@ -80,7 +80,7 @@ export class ManageWalletComponent implements OnInit {
 
   exportAddressBookToFile() {
     if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
-    const fileName = `NanoVault-AddressBook.json`;
+    const fileName = `Nault-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
     this.triggerFileDownload(fileName, exportData);
@@ -117,7 +117,7 @@ export class ManageWalletComponent implements OnInit {
   exportToFile() {
     if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
 
-    const fileName = `NanoVault-Wallet.json`;
+    const fileName = `Nault-Wallet.json`;
     const exportData = this.walletService.generateExportData();
     this.triggerFileDownload(fileName, exportData);
 
@@ -134,7 +134,7 @@ export class ManageWalletComponent implements OnInit {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {
-          return this.notifications.sendError(`Bad import data, make sure you selected a NanoVault Address Book export`)
+          return this.notifications.sendError(`Bad import data, make sure you selected a Nault Address Book export`)
         }
 
         const walletEncrypted = btoa(JSON.stringify(importData));

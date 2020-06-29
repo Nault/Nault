@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>NanoVault</title>
+  <title>Nault</title>
   <base href="/">
+
+  <meta property="og:title" content="Nault" />
+  <meta name="author" content="BitDesert" />
+  <meta name="description" content="The no strings attached open source wallet for Nano" />
+  <meta property="og:description" content="The no strings attached open source wallet for Nano" />
+  <link rel="canonical" href="https://nault.cc/" />
+  <meta property="og:url" content="https://nault.cc/" />
+  <meta property="og:site_name" content="Nault" />
+  <meta property="og:image" content="https://nault.cc/assets/img/preview.png" />
 
   <!-- UIkit -->
   <link rel="stylesheet" href="assets/lib/base/uikit.min.css" />
   <script src="assets/lib/base/uikit.min.js"></script>
   <script src="assets/lib/base/uikit-icons.min.js"></script>
 
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet"> 
 
   <script type="text/javascript" src="assets/lib/blake2b/blake2b.js"></script>
   <script type="text/javascript" src="assets/lib/tweetnacl/nacl.js"></script>
@@ -24,8 +32,8 @@
   <link rel="manifest" href="assets/favicon/site.webmanifest">
   <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
-  <meta name="apple-mobile-web-app-title" content="NanoVault">
-  <meta name="application-name" content="NanoVault">
+  <meta name="apple-mobile-web-app-title" content="Nault">
+  <meta name="application-name" content="Nault">
   <meta name="msapplication-TileColor" content="#2b5797">
   <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
@@ -33,12 +41,10 @@
 <body class="body" style="font-family: 'Lato', sans-serif;">
   <app-root>
     <div style="position: absolute; text-align: center; height: 30px; font-size: 30px; margin: auto; top: 25%; left: 0; right: 0;">
-      Loading NanoVault...
+      Loading Nault...
     </div>
   </app-root>
+  <script type="text/javascript" src="assets/lib/pow/startThreads.js" async></script>
+  <script type="text/javascript" src="assets/lib/pow/nano-webgl-pow.js" async></script>
 </body>
-
-<!--<script type="text/javascript" src="assets/lib/pow/pow.js" async></script>-->
-<script type="text/javascript" src="assets/lib/pow/startThreads.js" async></script>
-<script type="text/javascript" src="assets/lib/pow/nano-webgl-pow.js" async></script>
 </html>

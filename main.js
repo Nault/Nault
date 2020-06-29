@@ -5,7 +5,7 @@ const path = require('path');
 
 // const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid');
 
-app.setAsDefaultProtocolClient('xrb'); // Register handler for xrb: links
+app.setAsDefaultProtocolClient('nano'); // Register handler for nano: links
 
 console.log(`Starting ledger@!`);
 
@@ -59,7 +59,7 @@ app.on('ready', () => {
   // Once the app is ready, launch the wallet window
   createWindow();
 
-  // Detect when the application has been loaded using an xrb: link, send it to the wallet to load
+  // Detect when the application has been loaded using an nano: link, send it to the wallet to load
   app.on('open-url', (event, path) => {
     if (!mainWindow) {
       createWindow();
@@ -152,7 +152,7 @@ function getApplicationMenu() {
         {type: 'separator'},
         {
           type: 'normal',
-          label: `NanoVault Version: ${autoUpdater.currentVersion}`,
+          label: `Nault Version: ${autoUpdater.currentVersion}`,
         },
         {
           label: 'View Latest Updates',
@@ -171,7 +171,7 @@ function getApplicationMenu() {
 
   if (process.platform === 'darwin') {
     template.unshift({
-      label: 'NanoVault',
+      label: 'Nault',
       submenu: [
         {role: 'about'},
         {type: 'separator'},

@@ -123,7 +123,7 @@ export class PowService {
     switch (powSource) {
       default:
       case 'server':
-        work = (await this.api.workGenerate(queueItem.hash)).work;
+        work = (await this.api.workGenerate(queueItem.hash).then(work => {return work.work}).catch(async err => {return await this.getHashCPUWorker(queueItem.hash)}));
         break;
       case 'clientCPU':
         work = await this.getHashCPUWorker(queueItem.hash);
@@ -173,6 +173,8 @@ export class PowService {
    * Generate PoW using CPU and WebWorkers
    */
   getHashCPUWorker(hash) {
+    console.log('Generating work using CPU for', hash);
+    
     const response = this.getDeferredPromise();
 
     const start = Date.now();
@@ -191,6 +193,8 @@ export class PowService {
    * Generate PoW using WebGL
    */
   getHashWebGL(hash) {
+    console.log('Generating work using WebGL for', hash);
+
     const response = this.getDeferredPromise();
 
     const start = Date.now();

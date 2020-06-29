@@ -7,7 +7,7 @@
       <div class="title-block">
         <div class="uk-margin-left" style="padding-bottom: 15px; color: #666;">
           <div uk-grid>
-            <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
+            <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
             <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
               <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
               <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
@@ -72,9 +72,9 @@
 
       <div class="footer" uk-grid>
         <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-          <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
-          <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
-          <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+          <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+          <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
+          <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
           <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch(true)"></a>
         </div>
       </div>
@@ -100,7 +100,7 @@
       <div class="uk-width-1-2">
         <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" uk-toggle="target: #mobile-nav;" style="cursor: pointer;">
           <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
-          <span style="font-size: 22px;" >NanoVault</span>
+          <span style="font-size: 22px;" >Nault</span>
         </div>
       </div>
       <div class="uk-width-1-2 " style="text-align: right;">
@@ -113,7 +113,7 @@
         <div class="title-block">
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <div uk-grid>
-              <div class="uk-width-expand"><a routerLink="/" class="title">NanoVault</a></div>
+              <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
               <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
                 <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
                 <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
@@ -186,9 +186,9 @@
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
-            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
-            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
           </div>
         </div>
@@ -204,7 +204,7 @@
 
       </div>
       <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
-        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0;">
+        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>
       </div>

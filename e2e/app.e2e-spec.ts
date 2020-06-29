@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('raivault App', () => {
+describe('Nault App', () => {
   let page: AppPage;
 
   beforeEach(() => {

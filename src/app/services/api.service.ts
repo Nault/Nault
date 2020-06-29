@@ -14,15 +14,11 @@ export interface NinjaVerifiedRep {
 
 @Injectable()
 export class ApiService {
-  // apiUrl = `http://localhost:9950/api`;
-  apiUrl = `https://nanovault.io/api`;
-  rpcUrl = `${this.apiUrl}/node-api`;
-
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
   private async request(action, data): Promise<any> {
     data.action = action;
-    let apiUrl = this.appSettings.settings.serverAPI || this.rpcUrl;
+    let apiUrl = this.appSettings.settings.serverAPI || 'https://mynano.ninja/api/node';
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
@@ -35,7 +31,7 @@ export class ApiService {
         if (err.status === 500 || err.status === 0) {
           this.node.setOffline(); // Hard error, node is offline
         } else if(err.status === 429){
-          this.node.setOffline('Too Many Requests to the node, please try again later.')
+          this.node.setOffline('Too Many Requests to the node. Try again later or choose a different node.')
         }
         throw err;
       });
