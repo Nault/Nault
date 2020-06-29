@@ -8,7 +8,7 @@ import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {WalletService} from "./wallet.service";
 import {LedgerService} from "./ledger.service";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 const nacl = window['nacl'];
 
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';

@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 
 import BigNumber from "bignumber.js";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {BehaviorSubject} from "rxjs";
 
 import {
   ApiService,

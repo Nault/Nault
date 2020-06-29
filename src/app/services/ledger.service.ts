@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Nano from "hw-app-nano";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {ApiService} from "./api.service";
 import {NotificationService} from "./notification.service";
 import { environment } from "../../environments/environment";
