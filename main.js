@@ -25,7 +25,7 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false } });
   // const options = { extraHeaders: "pragma: no-cache\n" };
-  // mainWindow.loadURL('https://nanovault.io', options);
+  // mainWindow.loadURL('https://nault.cc', options);
   mainWindow.loadURL('http://localhost:4200/');
   // mainWindow.loadURL(url.format({
   //   pathname: path.join(__dirname, 'dist/index.html'),
