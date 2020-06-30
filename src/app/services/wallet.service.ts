@@ -12,7 +12,7 @@ import {AppSettingsService} from "./app-settings.service";
 import {PriceService} from "./price.service";
 import {LedgerService} from "./ledger.service";
 
-export type WalletType = "seed" | "ledger" | "privateKey";
+export type WalletType = "seed" | "ledger" | "privateKey" | "expandedKey";
 
 export interface WalletAccount {
   id: string;
@@ -219,12 +219,10 @@ export class WalletService {
     const walletJson = JSON.parse(walletData);
     const walletType = walletJson.type || 'seed';
     this.wallet.type = walletType;
-    if (walletType === 'seed') {
+    if (walletType === 'seed' || walletType === 'privateKey' || walletType === 'expandedKey') {
       this.wallet.seed = walletJson.seed;
       this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
-    }
-    // Remove support for unlocked wallet
-    if (walletType === 'seed' || walletType === 'privateKey') {
+      // Remove support for unlocked wallet
       this.wallet.locked = walletJson.locked;
       this.wallet.password = walletJson.password || null;
     }
@@ -303,7 +301,7 @@ export class WalletService {
     const exportData = this.generateExportData();
     const base64Data = btoa(JSON.stringify(exportData));
 
-    return `https://nanovault.io/import-wallet#${base64Data}`;
+    return `https://nault.cc/import-wallet#${base64Data}`;
   }
 
   lockWallet() {
@@ -336,8 +334,12 @@ export class WalletService {
       this.wallet.seed = decryptedSeed;
       this.wallet.seedBytes = this.util.hex.toUint8(this.wallet.seed);
       this.wallet.accounts.forEach(a => {
-        a.secret = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, a.index);
-        a.keyPair = this.util.account.generateAccountKeyPair(a.secret);
+        if (this.wallet.type === 'seed') {
+          a.secret = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, a.index);
+        } else {
+          a.secret = this.wallet.seedBytes;
+        }
+        a.keyPair = this.util.account.generateAccountKeyPair(a.secret, this.wallet.type === 'expandedKey');
       });
 
       this.wallet.locked = false;
@@ -445,6 +447,19 @@ export class WalletService {
     return this.wallet;
   }
 
+  createWalletFromSingleKey(key: string, expanded: boolean) {
+    this.resetWallet();
+
+    this.wallet.type = expanded ? 'expandedKey' : 'privateKey';
+    this.wallet.seed = key;
+    this.wallet.seedBytes = this.util.hex.toUint8(key);
+
+    this.wallet.accounts.push(this.createSingleKeyAccount(expanded));
+    this.saveWalletExport();
+
+    return this.wallet;
+  }
+
   async createLedgerAccount(index) {
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
@@ -470,9 +485,7 @@ export class WalletService {
     return newAccount;
   }
 
-  async createSeedAccount(index) {
-    const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
-    const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+  createKeyedAccount(index, accountBytes, accountKeyPair) {
     const accountName = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
     const addressBookName = this.addressBook.getAccountName(accountName);
 
@@ -492,6 +505,18 @@ export class WalletService {
     };
 
     return newAccount;
+  }
+
+  async createSeedAccount(index) {
+    const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
+    const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+    return this.createKeyedAccount(index, accountBytes, accountKeyPair);
+  }
+
+  createSingleKeyAccount(expanded: boolean) {
+    const accountBytes = this.wallet.seedBytes;
+    const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes, expanded);
+    return this.createKeyedAccount(0, accountBytes, accountKeyPair);
   }
 
   /**
@@ -517,6 +542,8 @@ export class WalletService {
 
   isConfigured() {
     switch (this.wallet.type) {
+      case 'privateKey':
+      case 'expandedKey':
       case 'seed': return !!this.wallet.seed;
       case 'ledger': return true; // ?
       case 'privateKey': return false;
@@ -526,6 +553,7 @@ export class WalletService {
   isLocked() {
     switch (this.wallet.type) {
       case 'privateKey':
+      case 'expandedKey':
       case 'seed': return this.wallet.locked;
       case 'ledger': return false;
     }
@@ -693,7 +721,7 @@ export class WalletService {
 
     let newAccount: WalletAccount|null;
 
-    if (this.wallet.type === 'privateKey') {
+    if (this.wallet.type === 'privateKey' || this.wallet.type === 'expandedKey') {
       throw new Error(`Cannot add another account in private key mode`);
     } else if (this.wallet.type === 'seed') {
       newAccount = await this.createSeedAccount(index);
@@ -844,9 +872,7 @@ export class WalletService {
     };
 
     if (this.wallet.type === 'ledger') {
-    }
-
-    if (this.wallet.type === 'seed') {
+    } else {
       // Forcefully encrypt the seed so an unlocked wallet is never saved
       if (!this.wallet.locked) {
         const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password || '');

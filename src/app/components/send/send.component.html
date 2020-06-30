@@ -64,7 +64,7 @@
                           <button class="uk-button uk-button-secondary uk-width-1-1" type="button" style="text-transform: none;">{{ selectedAmount.shortName }}</button>
                           <div uk-dropdown>
                             <ul class="uk-nav uk-dropdown-nav">
-                              <li class="uk-active" *ngFor="let amount of amounts" [class]="{ 'uk-active': selectedAmount.value == amount.value }"><a href="#" (click)="selectedAmount = amount; syncNanoPrice();">{{ amount.name }}</a></li>
+                              <li class="uk-active uk-dropdown-spacing" *ngFor="let amount of amounts" (click)="selectedAmount = amount; syncNanoPrice();">{{ amount.name }}</li>
                             </ul>
                           </div>
                         </div>

@@ -11,7 +11,7 @@
         <p>
           When someone sends you Nano, you are also in charge of performing a receive block to actually receive the funds.<br>
           If you have the wallet open when you receive a transaction, this will be performed automatically.<br>
-          Otherwise, select the account you are expecting to receive from below to search for pending transactions.
+          Otherwise, select the account you are expecting to receive from below to search for incoming transactions.
         </p>
       </div>
     </div>
@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="uk-width-1-4@s">
-        <button class="uk-button uk-button-primary uk-width-1-1" (click)="getPending(pendingAccountModel)"> Find Pending</button>
+        <button class="uk-button uk-button-primary uk-width-1-1" (click)="getPending(pendingAccountModel)"> Find Incoming</button>
       </div>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
@@ -74,7 +74,7 @@
               </td>
             </tr>
             <tr *ngIf="!pendingBlocks.length">
-              <td colspan="4" style="text-align: center;">No pending transactions</td>
+              <td colspan="4" style="text-align: center;">No incoming transactions</td>
             </tr>
             </tbody>
           </table>

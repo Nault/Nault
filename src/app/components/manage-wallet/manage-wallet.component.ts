@@ -71,7 +71,7 @@ export class ManageWalletComponent implements OnInit {
       return this.notifications.sendError(`Address books with 25 or more entries need to use the file export method.`);
     }
     const base64Data = btoa(JSON.stringify(exportData));
-    const exportUrl = `https://nanovault.io/import-address-book#${base64Data}`;
+    const exportUrl = `https://nault.cc/import-address-book#${base64Data}`;
 
     this.addressBookQRExportUrl = exportUrl;
     this.addressBookQRExportImg = await QRCode.toDataURL(exportUrl);
