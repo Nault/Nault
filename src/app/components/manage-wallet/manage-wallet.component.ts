@@ -71,7 +71,7 @@ export class ManageWalletComponent implements OnInit {
       return this.notifications.sendError(`Address books with 25 or more entries need to use the file export method.`);
     }
     const base64Data = btoa(JSON.stringify(exportData));
-    const exportUrl = `https://nanovault.io/import-address-book#${base64Data}`;
+    const exportUrl = `https://nault.cc/import-address-book#${base64Data}`;
 
     this.addressBookQRExportUrl = exportUrl;
     this.addressBookQRExportImg = await QRCode.toDataURL(exportUrl);
@@ -130,7 +130,7 @@ export class ManageWalletComponent implements OnInit {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
-      const fileData = event.target['result'];
+      const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {

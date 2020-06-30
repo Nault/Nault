@@ -723,19 +723,23 @@ window.nacl = {};
     return 0;
   }
 
-  function derivePublicFromSecret(sk)
+  function derivePublicFromSecret(sk, expanded)
   {
     var d = new Uint8Array(64);
     var p = [gf(), gf(), gf(), gf()];
     var i;
     var pk = new Uint8Array(32);
     var context = blake2bInit(64);
-    blake2bUpdate(context, sk);
-    d = blake2bFinal(context);
+    if (expanded) {
+      d = sk;
+    } else {
+      blake2bUpdate(context, sk);
+      d = blake2bFinal(context);
 
-    d[0] &= 248;
-    d[31] &= 127;
-    d[31] |= 64;
+      d[0] &= 248;
+      d[31] &= 127;
+      d[31] |= 64;
+    }
 
     scalarbase(p, d);
     pack(pk, p);
@@ -777,12 +781,12 @@ window.nacl = {};
   }
 
 // Note: difference from C - smlen returned, not passed as argument.
-  function crypto_sign(sm, m, n, sk) {
+  function crypto_sign(sm, m, n, sk, expanded) {
     var d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
     var i, j, x = new Float64Array(64);
     var p = [gf(), gf(), gf(), gf()];
 
-    var pk = derivePublicFromSecret(sk);
+    var pk = derivePublicFromSecret(sk, expanded);
 
     var context = blake2bInit(64, null);
     blake2bUpdate(context, sk);
@@ -815,7 +819,7 @@ window.nacl = {};
     for (i = 0; i < 32; i++) x[i] = r[i];
     for (i = 0; i < 32; i++) {
       for (j = 0; j < 32; j++) {
-        x[i+j] += h[i] * d[j];
+        x[i+j] += h[i] * (expanded ? sk[j] : d[j]);
       }
     }
 
@@ -1077,12 +1081,12 @@ window.nacl = {};
   nacl.box.nonceLength = crypto_box_NONCEBYTES;
   nacl.box.overheadLength = nacl.secretbox.overheadLength;
 
-  nacl.sign = function(msg, secretKey) {
+  nacl.sign = function(msg, secretKey, expanded) {
     checkArrayTypes(msg, secretKey);
     if (secretKey.length !== crypto_sign_SECRETKEYBYTES)
       throw new Error('bad secret key size');
     var signedMsg = new Uint8Array(crypto_sign_BYTES+msg.length);
-    crypto_sign(signedMsg, msg, msg.length, secretKey);
+    crypto_sign(signedMsg, msg, msg.length, secretKey, expanded);
     return signedMsg;
   };
 
@@ -1098,8 +1102,8 @@ window.nacl = {};
     return m;
   };
 
-  nacl.sign.detached = function(msg, secretKey) {
-    var signedMsg = nacl.sign(msg, secretKey);
+  nacl.sign.detached = function(msg, secretKey, expanded) {
+    var signedMsg = nacl.sign(msg, secretKey, expanded);
     var sig = new Uint8Array(crypto_sign_BYTES);
     for (var i = 0; i < sig.length; i++) sig[i] = signedMsg[i];
     return sig;
@@ -1126,13 +1130,17 @@ window.nacl = {};
     return {publicKey: pk, secretKey: sk};
   };
 
-  nacl.sign.keyPair.fromSecretKey = function(secretKey) {
+  nacl.sign.keyPair.fromSecretKey = function(secretKey, expanded) {
     checkArrayTypes(secretKey);
     if (secretKey.length !== crypto_sign_SECRETKEYBYTES)
       throw new Error('bad secret key size');
     var pk = new Uint8Array(crypto_sign_PUBLICKEYBYTES);
-    pk = derivePublicFromSecret(secretKey);
-    return {publicKey: pk, secretKey: new Uint8Array(secretKey)};
+    pk = derivePublicFromSecret(secretKey, expanded);
+    return {
+      publicKey: pk,
+      secretKey: new Uint8Array(secretKey),
+      expanded: expanded
+    };
   };
 
   nacl.sign.keyPair.fromSeed = function(seed) {
