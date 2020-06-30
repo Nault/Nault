@@ -3,7 +3,7 @@ import {AppSettingsService} from "./app-settings.service";
 import {ApiService} from "./api.service";
 import {NotificationService} from "./notification.service";
 import { PoWSource } from './app-settings.service'
-import Worker = require('worker-loader!./../../assets/lib/cpupow.js');
+import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
 
 const mod = window['Module'];
 //NEW v21 THRESHOLD BELOW TO BE ACTIVATED
