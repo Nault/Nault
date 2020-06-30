@@ -18,7 +18,7 @@ export class ApiService {
 
   private async request(action, data): Promise<any> {
     data.action = action;
-    let apiUrl = this.appSettings.settings.serverAPI || 'https://mynano.ninja/api/node';
+    const apiUrl = this.appSettings.settings.serverAPI;
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
@@ -30,10 +30,16 @@ export class ApiService {
       .catch(err => {
         if (err.status === 500 || err.status === 0) {
           this.node.setOffline(); // Hard error, node is offline
-        } else if(err.status === 429){
-          this.node.setOffline('Too Many Requests to the node. Try again later or choose a different node.')
+          throw err;
+        } else if (err.status === 429) {
+          if (this.appSettings.settings.serverName === 'random') {
+            console.log('Too many requests, new backend...');
+            this.appSettings.loadServerSettings();
+            return this.request(action, data);
+          } else {
+            this.node.setOffline('Too Many Requests to the node. Try again later or choose a different node.')
+          }
         }
-        throw err;
       });
   }
 

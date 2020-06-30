@@ -216,7 +216,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">API Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to load, cache, and enhance results from the Nano node"></span></label>
@@ -236,7 +236,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">WebSocket Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
