@@ -257,7 +257,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">Auth Header <span uk-icon="icon: info;" uk-tooltip title="If API requires authentication. For example using basic auth: Basic xyz"></span></label>
