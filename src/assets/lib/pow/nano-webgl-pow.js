@@ -3,15 +3,17 @@
 // Author:  numtel <ben@latenightsketches.com>
 // License: MIT
 
-// window.NanoWebglPow(hashHex, callback, progressCallback);
+// window.NanoWebglPow(hashHex, callback, progressCallback, threshold);
 // @param hashHex           String   Previous Block Hash as Hex String
 // @param callback          Function Called when work value found
 //   Receives single string argument, work value as hex
 // @param progressCallback  Function Optional
 //   Receives single argument: n, number of frames so far
 //   Return true to abort
+// @param threshold         String   Optional difficulty threshold (default=0xFFFFFFF8 since v21)
 
 (function(){
+const defaultThreshold = '0xFFFFFFF8'
 
 function array_hex(arr, index, length) {
   let out='';
@@ -29,7 +31,7 @@ function hex_reverse(hex) {
   return out;
 }
 
-function calculate(hashHex, callback, progressCallback) {
+function calculate(hashHex, callback, progressCallback, threshold = defaultThreshold) {
   const canvas = document.createElement('canvas');
 
   canvas.width = window.NanoWebglPow.width;
@@ -212,7 +214,7 @@ function calculate(hashHex, callback, progressCallback) {
 
       // Threshold test, first 4 bytes not significant,
       //  only calculate digest of the second 4 bytes
-      if((BLAKE2B_IV32_1 ^ v[1] ^ v[17]) > 0xFFFFFFC0u) {
+      if((BLAKE2B_IV32_1 ^ v[1] ^ v[17]) > ` + threshold + `u) {
         // Success found, return pixel data so work value can be constructed
         fragColor = vec4(
           float(x_index + 1u)/255., // +1 to distinguish from 0 (unsuccessful) pixels
@@ -287,7 +289,7 @@ function calculate(hashHex, callback, progressCallback) {
 
     gl.uniform4uiv(work0Location, Array.from(work0));
     gl.uniform4uiv(work1Location, Array.from(work1));
-    
+
     // Check with progressCallback every 100 frames
     if(n%100===0 && typeof progressCallback === 'function' && progressCallback(n))
       return;
