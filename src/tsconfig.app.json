@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "commonjs",
     "allowJs": false,
     "types": [],
     "lib": ["dom", "es7", "scripthost"]

@@ -34,7 +34,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // Listen for reordering events
     document.getElementById('address-book-sortable').addEventListener('moved', (e) => {
-      const elements = e.srcElement.children;
+      const element = e.srcElement as HTMLDivElement
+      const elements = element.children;
 
       const result = [].slice.call(elements);
       const datas = result.map(e => e.dataset.account);
