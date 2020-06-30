@@ -4,7 +4,7 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "allowJs": false,
-    "types": [],
+    "types": ["custom"],
     "lib": ["dom", "es7", "scripthost"]
   },
   "files": [
