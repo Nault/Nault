@@ -16,6 +16,7 @@ interface AppSettings {
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
+  serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
 }
@@ -36,6 +37,7 @@ export class AppSettingsService {
     serverName: 'ninja',
     serverAPI: null,
     serverWS: null,
+    serverAuth: null,
     minimumReceive: null,
     walletVersion: 1
   };
@@ -89,6 +91,7 @@ export class AppSettingsService {
       serverName: 'ninja',
       serverAPI: null,
       serverWS: null,
+      serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
     };

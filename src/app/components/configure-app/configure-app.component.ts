@@ -119,31 +119,37 @@ export class ConfigureAppComponent implements OnInit {
       name: 'ninja',
       api: 'https://mynano.ninja/api/node',
       ws: 'wss://ws.mynano.ninja',
+      auth: '',
     },
     {
       name: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',
       ws: 'wss://socket.nanos.cc',
+      auth: '',
     },
     {
       name: 'nanex',
       api: 'https://api.nanex.cc',
       ws: 'wss://ws.nanocrawler.cc',
+      auth: '',
     },
     {
       name: 'nanocrawler',
       api: 'https://vault.nanocrawler.cc/api/node-api',
       ws: 'wss://ws.nanocrawler.cc',
+      auth: '',
     },
     {
       name: 'nanovault',
       api: null,
       ws: null,
+      auth: null,
     },
   ];
 
   serverAPI = null;
   serverWS = null;
+  serverAuth = null;
   minimumReceive = null;
 
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
@@ -190,6 +196,7 @@ export class ConfigureAppComponent implements OnInit {
 
     this.serverAPI = settings.serverAPI;
     this.serverWS = settings.serverWS;
+    this.serverAuth = settings.serverAuth;
 
     this.minimumReceive = settings.minimumReceive;
     this.defaultRepresentative = settings.defaultRepresentative;
@@ -277,6 +284,7 @@ export class ConfigureAppComponent implements OnInit {
       serverName: this.selectedServer,
       serverAPI: null,
       serverWS: null,
+      serverAuth: null,
     };
 
     // Custom... do some basic validation
@@ -294,6 +302,10 @@ export class ConfigureAppComponent implements OnInit {
       } else {
         return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
       }
+    }
+
+    if (this.serverAuth != null && this.serverAuth.trim().length > 1) {
+      newSettings.serverAuth = this.serverAuth;
     }
 
     this.appSettings.setAppSettings(newSettings);
@@ -344,6 +356,7 @@ export class ConfigureAppComponent implements OnInit {
     if (custom) {
       this.serverAPI = custom.api;
       this.serverWS = custom.ws;
+      this.serverAuth = custom.auth;
     }
   }
 

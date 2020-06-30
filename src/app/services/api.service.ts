@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {HttpHeaders} from "@angular/common/http";
 import {NodeService} from "./node.service";
 import {AppSettingsService} from "./app-settings.service";
 
@@ -22,7 +23,15 @@ export class ApiService {
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
-    return await this.http.post(apiUrl, data).toPromise()
+    var header = undefined;
+    if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth != "") {
+      console.log("test")
+      header = {
+        headers: new HttpHeaders()
+          .set('Authorization',  this.appSettings.settings.serverAuth)
+      }
+    }
+    return await this.http.post(apiUrl, data, header).toPromise()
       .then(res => {
         this.node.setOnline();
         return res;
