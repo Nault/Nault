@@ -46,36 +46,42 @@ export class AppSettingsService {
       value: 'random',
       api: null,
       ws: null,
+      shouldRandom: false,
     },
     {
       name: 'My Nano Ninja',
       value: 'ninja',
       api: 'https://mynano.ninja/api/node',
       ws: 'wss://ws.mynano.ninja',
+      shouldRandom: true,
     },
     {
       name: 'Nanos.cc',
       value: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',
       ws: 'wss://socket.nanos.cc',
+      shouldRandom: true,
     },
     {
       name: 'Nanex.cc',
       value: 'nanex',
       api: 'https://api.nanex.cc',
-      ws: 'wss://ws.nanocrawler.cc',
+      ws: null,
+      shouldRandom: false,
     },
     {
       name: 'NanoCrawler',
       value: 'nanocrawler',
       api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: 'wss://ws.nanocrawler.cc',
+      ws: null,
+      shouldRandom: false,
     },
     {
       name: 'Custom',
       value: 'custom',
       api: null,
       ws: null,
+      shouldRandom: false,
     }
   ];
 
@@ -98,7 +104,7 @@ export class AppSettingsService {
     const matchingServerOption = this.serverOptions.find(d => d.value === this.settings.serverName);
 
     if (this.settings.serverName === 'random' || !matchingServerOption) {
-      const availableServers = this.serverOptions.filter(server => server.api !== null);
+      const availableServers = this.serverOptions.filter(server => server.shouldRandom);
       const randomServerOption = availableServers[Math.floor(Math.random() * availableServers.length)];
       console.log('SETTINGS: Random', randomServerOption);
 

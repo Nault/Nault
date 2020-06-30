@@ -107,34 +107,6 @@ export class ConfigureAppComponent implements OnInit {
   showRepresentatives = false;
   representativeListMatch = '';
 
-  serverConfigurations = [
-    {
-      name: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-    },
-    {
-      name: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
-    },
-    {
-      name: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: 'wss://ws.nanocrawler.cc',
-    },
-    {
-      name: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: 'wss://ws.nanocrawler.cc',
-    },
-    {
-      name: 'nanovault',
-      api: 'https://nanovault.io/api/node-api',
-      ws: 'wss://ws.nanovault.io',
-    },
-  ];
-
   serverAPI = null;
   serverWS = null;
   minimumReceive = null;
@@ -334,7 +306,7 @@ export class ConfigureAppComponent implements OnInit {
 
   // When changing the Server Config option, prefill values
   serverConfigChange(newServer) {
-    const custom = this.serverConfigurations.find(c => c.name == newServer);
+    const custom = this.serverOptions.find(c => c.value === newServer);
     if (custom) {
       this.serverAPI = custom.api;
       this.serverWS = custom.ws;
