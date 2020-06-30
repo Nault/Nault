@@ -202,7 +202,7 @@ export class ConfigureWalletComponent implements OnInit {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
-      const fileData = event.target['result'];
+      const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
         if (!importData.seed || !importData.hasOwnProperty('accountsIndex')) {

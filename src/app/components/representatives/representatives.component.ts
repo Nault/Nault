@@ -22,7 +22,7 @@ import {
   styleUrls: ['./representatives.component.css']
 })
 export class RepresentativesComponent implements OnInit {
-  @ViewChild('repInput', { static: false }) repInput;
+  @ViewChild('repInput') repInput;
 
   changeAccountID: any = null;
   toRepresentativeID: string = '';

@@ -7,9 +7,11 @@
     "types": [],
     "lib": ["dom", "es7", "scripthost"]
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts",
-    "app/lib/tweetnacl/*"
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
   ]
 }
