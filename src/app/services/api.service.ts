@@ -25,7 +25,6 @@ export class ApiService {
     }
     var header = undefined;
     if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth != "") {
-      console.log("test")
       header = {
         headers: new HttpHeaders()
           .set('Authorization',  this.appSettings.settings.serverAuth)
