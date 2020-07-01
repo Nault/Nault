@@ -45,11 +45,12 @@ export class ConfigureWalletComponent implements OnInit {
     if (toggleImport) {
       this.activePanel = 1;
     }
+  }
 
-    this.ledgerService.loadLedger(true);
-    this.ledgerService.ledgerStatus$.subscribe(newStatus => {
-      // this.updateLedgerStatus();
-    })
+  onMethodChange(method) {
+    if (method === 'ledger') {
+      this.importLedgerWallet(true)
+    }
   }
 
   async importExistingWallet() {
