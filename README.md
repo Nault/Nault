@@ -78,7 +78,7 @@ Run the desktop wallet in dev mode:
 npm run desktop:dev
 ```
 
-Build the desktop wallet for your local OS (Will be in `dist-desktop`):
+Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 ```bash
 npm run desktop:local
 ```
