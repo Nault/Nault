@@ -45,7 +45,10 @@ export class ConfigureWalletComponent implements OnInit {
     if (toggleImport) {
       this.activePanel = 1;
     }
+  }
 
+  // TODO: Call this somehow when "Ledger" is selected from the dropdown. Right now the user has to click "refresh" to get ledger status.
+  async checkLedger() {
     this.ledgerService.loadLedger(true);
     this.ledgerService.ledgerStatus$.subscribe(newStatus => {
       // this.updateLedgerStatus();
