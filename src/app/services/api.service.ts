@@ -62,10 +62,10 @@ export class ApiService {
     return await this.request('accounts_frontiers', { accounts });
   }
   async accountsPending(accounts: string[], count: number = 50): Promise<{blocks: any }> {
-    return await this.request('accounts_pending', { accounts, count, source: true });
+    return await this.request('accounts_pending', { accounts, count, source: true, sorting: this.appSettings.settings.pendingOption == 1 ? true:false, include_only_confirmed: true });
   }
   async accountsPendingLimit(accounts: string[], threshold: string, count: number = 50): Promise<{blocks: any }> {
-    return await this.request('accounts_pending', { accounts, count, threshold, source: true });
+    return await this.request('accounts_pending', { accounts, count, threshold, source: true, sorting: this.appSettings.settings.pendingOption == 1 ? true:false, include_only_confirmed: true });
   }
   async delegatorsCount(account: string): Promise<{ count: string }> {
     return await this.request('delegators_count', { account });
@@ -96,9 +96,9 @@ export class ApiService {
     return await this.request('validate_account_number', { account });
   }
   async pending(account, count): Promise<any> {
-    return await this.request('pending', { account, count, source: true });
+    return await this.request('pending', { account, count, source: true, sorting: this.appSettings.settings.pendingOption == 1 ? true:false, include_only_confirmed: true });
   }
   async pendingLimit(account, count, threshold): Promise<any> {
-    return await this.request('pending', { account, count, threshold, source: true });
+    return await this.request('pending', { account, count, threshold, source: true, sorting: this.appSettings.settings.pendingOption == 1 ? true:false, include_only_confirmed: true });
   }
 }

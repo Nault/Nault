@@ -811,9 +811,19 @@ export class WalletService {
     }
   }
 
+  sortByAmount(a, b) {
+    var x = new BigNumber(a.amount);
+    var y = new BigNumber(b.amount);
+    return y.comparedTo(x);
+  }
+
   async processPendingBlocks() {
     if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length) return;
-
+    // Sort pending by amount
+    if (this.appSettings.settings.pendingOption == 1) {
+      this.pendingBlocks.sort(this.sortByAmount)
+    }
+    
     this.processingPending = true;
 
     const nextBlock = this.pendingBlocks[0];
