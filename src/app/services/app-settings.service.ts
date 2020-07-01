@@ -16,6 +16,7 @@ interface AppSettings {
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
+  serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
 }
@@ -36,6 +37,7 @@ export class AppSettingsService {
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
+    serverAuth: null,
     minimumReceive: null,
     walletVersion: 1
   };
@@ -46,6 +48,7 @@ export class AppSettingsService {
       value: 'random',
       api: null,
       ws: null,
+      auth: null,
       shouldRandom: false,
     },
     {
@@ -53,6 +56,7 @@ export class AppSettingsService {
       value: 'ninja',
       api: 'https://mynano.ninja/api/node',
       ws: 'wss://ws.mynano.ninja',
+      auth: null,
       shouldRandom: true,
     },
     {
@@ -60,6 +64,7 @@ export class AppSettingsService {
       value: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',
       ws: 'wss://socket.nanos.cc',
+      auth: null,
       shouldRandom: true,
     },
     {
@@ -67,6 +72,7 @@ export class AppSettingsService {
       value: 'nanex',
       api: 'https://api.nanex.cc',
       ws: null,
+      auth: null,
       shouldRandom: false,
     },
     {
@@ -74,6 +80,7 @@ export class AppSettingsService {
       value: 'nanocrawler',
       api: 'https://vault.nanocrawler.cc/api/node-api',
       ws: null,
+      auth: null,
       shouldRandom: false,
     },
     {
@@ -81,6 +88,7 @@ export class AppSettingsService {
       value: 'custom',
       api: null,
       ws: null,
+      auth: null,
       shouldRandom: false,
     }
   ];
@@ -156,6 +164,7 @@ export class AppSettingsService {
       serverName: 'random',
       serverAPI: null,
       serverWS: null,
+      serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
     };

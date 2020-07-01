@@ -109,6 +109,7 @@ export class ConfigureAppComponent implements OnInit {
 
   serverAPI = null;
   serverWS = null;
+  serverAuth = null;
   minimumReceive = null;
 
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
@@ -155,6 +156,7 @@ export class ConfigureAppComponent implements OnInit {
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
     this.serverWS = settings.serverWS;
+    this.serverAuth = settings.serverAuth;
 
     this.minimumReceive = settings.minimumReceive;
     this.defaultRepresentative = settings.defaultRepresentative;
@@ -242,6 +244,7 @@ export class ConfigureAppComponent implements OnInit {
       serverName: this.selectedServer,
       serverAPI: null,
       serverWS: null,
+      serverAuth: null,
     };
 
     // Custom... do some basic validation
@@ -259,6 +262,10 @@ export class ConfigureAppComponent implements OnInit {
       } else {
         return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
       }
+    }
+
+    if (this.serverAuth != null && this.serverAuth.trim().length > 1) {
+      newSettings.serverAuth = this.serverAuth;
     }
 
     this.appSettings.setAppSettings(newSettings);
@@ -310,6 +317,7 @@ export class ConfigureAppComponent implements OnInit {
     if (custom) {
       this.serverAPI = custom.api;
       this.serverWS = custom.ws;
+      this.serverAuth = custom.auth;
     }
   }
 
