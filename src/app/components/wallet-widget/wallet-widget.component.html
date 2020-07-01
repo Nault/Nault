@@ -25,6 +25,7 @@
           <div *ngIf="walletService.isLocked()" class="uk-text-bottom">
             <span style="cursor: pointer;" (click)="modal.show()">
               <span uk-icon="icon: lock" class="uk-text-top"></span> <span class="uk-text-bottom">Wallet Locked</span>
+              <span *ngIf="walletService.hasPendingTransactions()" style="display: block; padding-left: 3px; font-size: 12px;" class="uk-text-bottom">Unlock to Receive Incoming Funds</span>
             </span>
           </div>
           <div *ngIf="!walletService.isLocked()">

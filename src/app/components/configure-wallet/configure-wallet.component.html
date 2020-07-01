@@ -35,8 +35,8 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel == 1">
   <div class="uk-card-body">
     <p>
-      If you already have a Nano wallet, you can import it below.  When you import a wallet, none of your existing
-      wallets or accounts are affected, and your seed is not stored anywhere besides in your local client.  Use the drop
+      If you already have a Nano wallet, you can import it below.  When you import a wallet, it replaces the previous one in the GUI but none of your existing 
+      accounts are affected since the wallet can be restored simply by importing it again. The seed is not stored anywhere besides in your local client so please make sure you have it stored elsewhere.  Use the drop
       down below to select which type of import you want to use.
     </p>
     <div uk-grid>
@@ -99,6 +99,22 @@
         </div>
       </div>
     </div>
+    <div uk-grid *ngIf="selectedImportOption === 'privateKey'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Enter your Nano private key below. These are not to be confused with Nano seeds, which are more common, and produce many private keys.
+        </p>
+        <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importPrivateKeyModel" placeholder="Your Nano Private Key">
+      </div>
+    </div>
+    <div uk-grid *ngIf="selectedImportOption === 'expandedKey'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Enter your expanded private key below. These are rare, and are usually generated from multi-party cryptography magic.
+        </p>
+        <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importExpandedKeyModel" placeholder="Your Nano Expanded Private Key">
+      </div>
+    </div>
   </div>
   <div class="uk-card-footer uk-text-right">
     <div *ngIf="selectedImportOption === 'file'" class="js-upload" uk-form-custom style="display: inline-block;">
@@ -109,6 +125,8 @@
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet()">Import From Ledger</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
+    <button *ngIf="selectedImportOption === 'privateKey'" class="uk-button uk-button-primary" (click)="importSingleKeyWallet()">Import From Private Key</button>
+    <button *ngIf="selectedImportOption === 'expandedKey'" class="uk-button uk-button-primary" (click)="importSingleKeyWallet()">Import From Expanded Private Key</button>
   </div>
 </div>
 

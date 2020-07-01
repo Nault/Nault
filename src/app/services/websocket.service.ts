@@ -24,6 +24,7 @@ export class WebsocketService {
   constructor(private appSettings: AppSettingsService) { }
 
   forceReconnect() {
+    console.log('Reconnecting Websocket...');
     if (this.socket.connected && this.socket.ws) {
       // Override the onclose event so it doesnt try to reconnect the old instance
       this.socket.ws.onclose = event => {
@@ -37,10 +38,17 @@ export class WebsocketService {
   }
 
   connect() {
-    if (this.socket.connected && this.socket.ws) return;
+    if (this.socket.connected && this.socket.ws){
+      // Already connected
+      return;
+    }
+    if (!this.appSettings.settings.serverWS){
+      console.log('No Websocket server available.');
+      return;
+    }
     delete this.socket.ws; // Maybe this will erase old connections
 
-    const wsUrl = this.appSettings.settings.serverWS || 'wss://ws.mynano.ninja';
+    const wsUrl = this.appSettings.settings.serverWS;
     const ws = new WebSocket(wsUrl);
     this.socket.ws = ws;
 
@@ -103,14 +111,14 @@ export class WebsocketService {
 
 
   subscribeAccounts(accountIDs: string[]) {
-    const event = { 
+    const event = {
       action: 'subscribe',
-      topic: "confirmation",
+      topic: 'confirmation',
       options: {
         accounts: accountIDs
       }
     };
-    
+
     accountIDs.forEach(account => {
       if (this.subscribedAccounts.indexOf(account) === -1) {
         this.subscribedAccounts.push(account); // Keep a unique list of subscriptions for reconnecting
@@ -127,14 +135,14 @@ export class WebsocketService {
   }
 
   unsubscribeAccounts(accountIDs: string[]) {
-    const event = { 
+    const event = {
       action: 'unsubscribe',
-      topic: "confirmation",
+      topic: 'confirmation',
       options: {
         accounts: accountIDs
       }
     };
-    
+
     accountIDs.forEach(account => {
       const existingIndex = this.subscribedAccounts.indexOf(account);
       if (existingIndex !== -1) {

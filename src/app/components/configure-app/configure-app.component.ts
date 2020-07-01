@@ -99,53 +99,19 @@ export class ConfigureAppComponent implements OnInit {
   // ];
   // selectedPrefix = this.prefixOptions[0].value;
 
-  serverOptions = [
-    { name: 'My Nano Ninja', value: 'ninja' },
-    { name: 'Nanos.cc', value: 'nanos' },
-    { name: 'Nanex.cc', value: 'nanex' },
-    { name: 'NanoCrawler', value: 'nanocrawler' },
-    { name: 'NanoVault', value: 'nanovault' },
-    { name: 'Custom', value: 'custom' },
-  ];
-  selectedServer = this.serverOptions[0].value;
+  serverOptions = [];
+  selectedServer = null;
 
   defaultRepresentative = null;
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
   representativeListMatch = '';
 
-  serverConfigurations = [
-    {
-      name: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-    },
-    {
-      name: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
-    },
-    {
-      name: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: 'wss://ws.nanocrawler.cc',
-    },
-    {
-      name: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: 'wss://ws.nanocrawler.cc',
-    },
-    {
-      name: 'nanovault',
-      api: null,
-      ws: null,
-    },
-  ];
-
   serverAPI = null;
   serverWS = null;
   minimumReceive = null;
 
+  showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   constructor(
@@ -185,9 +151,8 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
-    const matchingServerOption = this.serverOptions.find(d => d.value === settings.serverName);
-    this.selectedServer = matchingServerOption ? matchingServerOption.value : this.serverOptions[0].value;
-
+    this.serverOptions = this.appSettings.serverOptions;
+    this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
     this.serverWS = settings.serverWS;
 
@@ -297,6 +262,7 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     this.appSettings.setAppSettings(newSettings);
+    this.appSettings.loadAppSettings();
 
     this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
 
@@ -340,7 +306,7 @@ export class ConfigureAppComponent implements OnInit {
 
   // When changing the Server Config option, prefill values
   serverConfigChange(newServer) {
-    const custom = this.serverConfigurations.find(c => c.name == newServer);
+    const custom = this.serverOptions.find(c => c.value === newServer);
     if (custom) {
       this.serverAPI = custom.api;
       this.serverWS = custom.ws;
