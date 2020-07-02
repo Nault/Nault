@@ -16,3 +16,7 @@
 .uk-button-danger:hover {
     background-color: #ee1a41;
 }
+
+.uk-button-large:hover {
+    background-color: #0f7ae5 !important;
+}
