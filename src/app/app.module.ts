@@ -48,6 +48,9 @@ import { AccountPipe } from './pipes/account.pipe';
 import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
 import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 
+// QR code module
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,7 +85,8 @@ import { QrScanComponent } from './components/qr-scan/qr-scan.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ClipboardModule
+    ClipboardModule,
+    ZXingScannerModule
   ],
   providers: [
     UtilService,
