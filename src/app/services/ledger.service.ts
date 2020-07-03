@@ -226,7 +226,9 @@ export class LedgerService {
 
       // Desktop is handled completely differently.  Send a message for status instead of setting anything up
       if (this.isDesktop) {
-        this.desktop.send('ledger', { event: 'get-ledger-status' });
+        if (!this.desktop.send('ledger', { event: 'get-ledger-status' })) {
+          reject(new Error(`Electron\'s IPC was not loaded`));
+        }
 
         // Any response will be handled by the configureDesktop() function, which pipes responses into this observable
         let sub = this.ledgerStatus$.subscribe(newStatus => {

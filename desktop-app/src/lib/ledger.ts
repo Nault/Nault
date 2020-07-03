@@ -216,6 +216,7 @@ let sendingWindow = null;
 
 // Create a copy of the ledger service and register listeners with the browser window
 export function initialize() {
+  console.log("Ledger service inializing")
   const Ledger = new LedgerService();
 
   // When the observable emits a new status, send it to the browser window
