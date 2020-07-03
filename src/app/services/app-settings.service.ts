@@ -16,6 +16,7 @@ interface AppSettings {
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
+  serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
 }
@@ -33,12 +34,64 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
-    serverName: 'ninja',
+    serverName: 'random',
     serverAPI: null,
     serverWS: null,
+    serverAuth: null,
     minimumReceive: null,
     walletVersion: 1
   };
+
+  serverOptions = [
+    {
+      name: 'Random',
+      value: 'random',
+      api: null,
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
+    {
+      name: 'My Nano Ninja',
+      value: 'ninja',
+      api: 'https://mynano.ninja/api/node',
+      ws: 'wss://ws.mynano.ninja',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Nanos.cc',
+      value: 'nanos',
+      api: 'https://proxy.nanos.cc/proxy',
+      ws: 'wss://socket.nanos.cc',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Nanex.cc',
+      value: 'nanex',
+      api: 'https://api.nanex.cc',
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
+    {
+      name: 'NanoCrawler',
+      value: 'nanocrawler',
+      api: 'https://vault.nanocrawler.cc/api/node-api',
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
+    {
+      name: 'Custom',
+      value: 'custom',
+      api: null,
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    }
+  ];
 
   constructor() { }
 
@@ -50,7 +103,29 @@ export class AppSettingsService {
     }
     this.settings = Object.assign(this.settings, settings);
 
+    this.loadServerSettings();
+
     return this.settings;
+  }
+
+  loadServerSettings() {
+    const matchingServerOption = this.serverOptions.find(d => d.value === this.settings.serverName);
+
+    if (this.settings.serverName === 'random' || !matchingServerOption) {
+      const availableServers = this.serverOptions.filter(server => server.shouldRandom);
+      const randomServerOption = availableServers[Math.floor(Math.random() * availableServers.length)];
+      console.log('SETTINGS: Random', randomServerOption);
+
+      this.settings.serverAPI = randomServerOption.api;
+      this.settings.serverWS = randomServerOption.ws;
+    } else if (this.settings.serverName === 'custom') {
+      console.log('SETTINGS: Custom');
+    } else {
+      console.log('SETTINGS: Found', matchingServerOption);
+      this.settings.serverName = matchingServerOption.value;
+      this.settings.serverAPI = matchingServerOption.api;
+      this.settings.serverWS = matchingServerOption.ws;
+    }
   }
 
   saveAppSettings() {
@@ -86,9 +161,10 @@ export class AppSettingsService {
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',
-      serverName: 'ninja',
+      serverName: 'random',
       serverAPI: null,
       serverWS: null,
+      serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
     };

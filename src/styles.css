@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+.uk-button {
+    height: 40px;
+    border-radius: 25px;
+    background-color: #4a90e2;
+}
+.uk-button-secondary {
+    background-color: #333;
+    margin-left: 10px;
+}
+
+.uk-button-danger {
+    background-color: #ee395b;
+}
+
+.uk-button-danger:hover {
+    background-color: #ee1a41;
+}
+
+.uk-button-large:hover {
+    background-color: #0f7ae5 !important;
+}

@@ -9,7 +9,8 @@ const mod = window['Module'];
 //NEW v21 THRESHOLD BELOW TO BE ACTIVATED
 //const webglThreshold = '0xFFFFFFF8'
 const webglThreshold = '0xFFFFFFC0'
-const cpuThreshold = 'fffffff800000000'
+//const cpuThreshold = 'fffffff800000000'
+const cpuThreshold = 'ffffffc000000000'
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2
 const workerCount = Math.max(hardwareConcurrency - 1, 1)
 let workerList = []
@@ -202,11 +203,11 @@ export class PowService {
       for (let i = 0; i < workerCount; i++) {
         //const worker = new Worker()
         const worker = new (Worker as any)();
-        // TODO: Pass cpuThreshold
         worker.postMessage({
           blockHash: hash,
           workerIndex: i,
-          workerCount: workerCount
+          workerCount: workerCount,
+          workThreshold: cpuThreshold,
         });
         worker.onmessage = (work) => {
           console.log(`CPU Worker: Found work (${work.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
