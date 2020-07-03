@@ -5,6 +5,15 @@
   <title>Nault</title>
   <base href="/">
 
+  <meta property="og:title" content="Nault" />
+  <meta name="author" content="BitDesert" />
+  <meta name="description" content="The no strings attached open source wallet for Nano" />
+  <meta property="og:description" content="The no strings attached open source wallet for Nano" />
+  <link rel="canonical" href="https://nault.cc/" />
+  <meta property="og:url" content="https://nault.cc/" />
+  <meta property="og:site_name" content="Nault" />
+  <meta property="og:image" content="https://nault.cc/assets/img/preview.png" />
+
   <!-- UIkit -->
   <link rel="stylesheet" href="assets/lib/base/uikit.min.css" />
   <script src="assets/lib/base/uikit.min.js"></script>
@@ -12,8 +21,7 @@
   <!-- Instascan -->
   <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet"> 
 
   <script type="text/javascript" src="assets/lib/blake2b/blake2b.js"></script>
   <script type="text/javascript" src="assets/lib/tweetnacl/nacl.js"></script>
@@ -24,11 +32,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
   <link rel="manifest" href="assets/favicon/site.webmanifest">
-  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#4a90e2">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
   <meta name="apple-mobile-web-app-title" content="Nault">
   <meta name="application-name" content="Nault">
-  <meta name="msapplication-TileColor" content="#2b5797">
+  <meta name="msapplication-TileColor" content="#4a90e2">
   <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 </head>
@@ -38,9 +46,7 @@
       Loading Nault...
     </div>
   </app-root>
+  <script type="text/javascript" src="assets/lib/pow/startThreads.js" async></script>
+  <script type="text/javascript" src="assets/lib/pow/nano-webgl-pow.js" async></script>
 </body>
-
-<!--<script type="text/javascript" src="assets/lib/pow/pow.js" async></script>-->
-<script type="text/javascript" src="assets/lib/pow/startThreads.js" async></script>
-<script type="text/javascript" src="assets/lib/pow/nano-webgl-pow.js" async></script>
 </html>

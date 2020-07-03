@@ -19,6 +19,8 @@ export class ConfigureWalletComponent implements OnInit {
   newWalletMnemonic = '';
   newWalletMnemonicLines = [];
   importSeedModel = '';
+  importPrivateKeyModel = '';
+  importExpandedKeyModel = '';
   importSeedMnemonicModel = '';
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
@@ -29,6 +31,8 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
     { name: 'Nault Wallet File', value: 'file' },
     { name: 'Ledger Nano S', value: 'ledger' },
+    { name: 'Private Key', value: 'privateKey' },
+    { name: 'Expanded Private Key', value: 'expandedKey' },
   ];
 
   ledgerStatus = LedgerStatus;
@@ -41,11 +45,12 @@ export class ConfigureWalletComponent implements OnInit {
     if (toggleImport) {
       this.activePanel = 1;
     }
+  }
 
-    this.ledgerService.loadLedger(true);
-    this.ledgerService.ledgerStatus$.subscribe(newStatus => {
-      // this.updateLedgerStatus();
-    })
+  onMethodChange(method) {
+    if (method === 'ledger') {
+      this.importLedgerWallet(true)
+    }
   }
 
   async importExistingWallet() {
@@ -81,6 +86,23 @@ export class ConfigureWalletComponent implements OnInit {
     await this.walletService.createWalletFromSeed(importSeed);
 
     this.notifications.removeNotification('importing-loading');
+
+    this.activePanel = 4;
+    this.notifications.sendSuccess(`Successfully imported wallet!`);
+  }
+
+  async importSingleKeyWallet() {
+    // Now, if a wallet is configured, make sure they confirm an overwrite first
+    const confirmed = await this.confirmWalletOverwrite();
+    if (!confirmed) return;
+
+    if (this.selectedImportOption === 'privateKey') {
+      this.walletService.createWalletFromSingleKey(this.importPrivateKeyModel, false);
+    } else if (this.selectedImportOption === 'expandedKey') {
+      this.walletService.createWalletFromSingleKey(this.importExpandedKeyModel, true);
+    } else {
+      return this.notifications.sendError(`Invalid import option`);
+    }
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
@@ -129,7 +151,7 @@ export class ConfigureWalletComponent implements OnInit {
 
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>overwrite your existing wallet</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed before continuing</b><br><br>Without it - <b>ALL FUNDS WILL BE UNRECOVERABLE</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local cache</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed before continuing</b><br><br>Without the seed - <b>ALL FUNDS WILL BE UNRECOVERABLE</b></p>');
       return true;
     } catch (err) {
       this.notifications.sendInfo(`Use the 'Manage Wallet' page to back up your Nano seed before continuing!`);
@@ -202,7 +224,7 @@ export class ConfigureWalletComponent implements OnInit {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
-      const fileData = event.target['result'];
+      const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
         if (!importData.seed || !importData.hasOwnProperty('accountsIndex')) {

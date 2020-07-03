@@ -15,14 +15,14 @@
           </div>
 
           <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-            <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+            <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
             <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
             <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
           </div>
 
           <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
             <div class="uk-width-1-2 uk-text-left">
-              <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
             </div>
             <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0; color: #666;">
               <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server" style="color: #666 !important;"></a>
@@ -35,7 +35,7 @@
           </div>
 
           <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="walletService.hasPendingTransactions()">
-            <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px; color: #999;">Pending </span>
+            <span class="balance-text" style="text-align: left; float: left; margin-top: 5px; color: #999;">Incoming </span>
             <span style="margin-left: 11px; display: inline-block; font-size: 12px; color: #999;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
             <span class="balance" style="clear: left; text-align: left; color: #999;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
           </div>
@@ -73,9 +73,9 @@
 
       <div class="footer" uk-grid>
         <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-          <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
-          <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
-          <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+          <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+          <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
+          <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
           <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch(true)"></a>
         </div>
       </div>
@@ -122,7 +122,7 @@
             </div>
 
             <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-              <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
               <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
               <span class="balance" style="clear: left; text-align: left;">
                 {{ wallet.balance | rai: settings.settings.displayDenomination }}
@@ -131,11 +131,11 @@
 
             <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
               <div class="uk-width-1-2 uk-text-left">
-                <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Balance </span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
               </div>
               <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0;">
-                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" style="" uk-tooltip title="Reconnect to server"></a>
-                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" style="" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
+                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server"></a>
+                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
               </div>
               <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
                 <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node">CONNECTING</span>
@@ -145,7 +145,7 @@
 
             <div *ngIf="walletService.hasPendingTransactions()">
               <div style="display: inline-block; text-align: right;" class="uk-text-muted">
-                <span class="balance-text" style="display: inline-block; text-align: left; float: left; margin-top: 5px;">Pending </span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Incoming</span>
                 <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
                 <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
               </div>
@@ -188,9 +188,9 @@
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank"></a>
-            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank"></a>
-            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank"></a>
+            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
           </div>
         </div>
@@ -206,7 +206,7 @@
 
       </div>
       <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
-        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0;">
+        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>
       </div>

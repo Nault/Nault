@@ -43,3 +43,7 @@ pre.mnemonic span.mnemonic-word::before {
   display: inline-block;
   min-width: 100px;
 }
+
+.uk-width-1-2 {
+  border-radius: unset;
+}

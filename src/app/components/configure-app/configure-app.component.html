@@ -216,7 +216,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">API Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to load, cache, and enhance results from the Nano node"></span></label>
@@ -226,10 +226,9 @@
                     <strong>{{ serverAPI }}</strong>
                   </div>
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
-                    <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="">
+                    <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://domain.com/path">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-server" target="_blank">Nault Server</a> application, or an API compliant with it.<br>
-                      Timestamps in the application are dependant on this server's access to them.
+                      This has to be a valid <a href="https://docs.nano.org/commands/rpc-protocol/" target="_blank" rel="noopener">Nano RPC endpoint</a> or an API compliant with it.
                     </span>
                   </div>
                 </div>
@@ -237,7 +236,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">WebSocket Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
@@ -247,10 +246,31 @@
                   </div>
 
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
-                    <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="">
+                    <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="wss://domain.com/path">
                     <span class="uk-text-meta">
-                      This server must be running the <a href="https://github.com/BitDesert/Nault-ws" target="_blank">Nault Websocket</a> application, or a WebSocket API compliant with it.<br>
+                      This has to be a <a href="https://docs.nano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener">Nano Node Websocket</a> or a WebSocket API compliant with it.<br>
                       <i>Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1" *ngIf="showServerValues()">
+            <div class="uk-form-horizontal">
+              <div class="">
+                <label class="uk-form-label uk-text-right">Auth Header <span uk-icon="icon: info;" uk-tooltip title="If API requires authentication. For example using basic auth: Basic xyz"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
+                    <strong>{{ serverAuth }}</strong>
+                  </div>
+                  <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
+                    <input [(ngModel)]="serverAuth" class="uk-input uk-margin-small-bottom" type="text" placeholder="Optional">
+                    <span class="uk-text-meta">
+                      This has to be a valid Authorization header.<br>
+                      <i>For example, basic auth defined as "Authorization: Basic base64Encode(username:password)"<br>In that case, enter: Basic dHV0c3BsdXM6MTIzNDU2</i>
                     </span>
                   </div>
                 </div>

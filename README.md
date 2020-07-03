@@ -6,7 +6,7 @@ It's a fully client-side signing wallet for sending and receiving [Nano](https:/
 
 The main difference compared to the original NanoVault is the "server-less" hosting via [vercel](https://nault.vercel.app), seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained. Those features together will greatly increase the stability, performance and uptime.
 
-![Nault Screenshot](/assets/nault.png)
+![Nault Screenshot](/.github/nault.png)
 ___
 
 # Table of Contents
@@ -19,8 +19,8 @@ ___
 
 
 # Install Nault
-Nault can be cloned and built from source or [downloaded as latest version](https://github.com/BitDesert/Nault/tree/gh-pages) to be run directly in your own webserver like [this Crome extension](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
-You can also use Nault from any device on the web at [nault.cc](https://nault.cc/)
+Nault can be cloned and built from source or downloaded as [latest web version](https://github.com/BitDesert/Nault/tree/gh-pages) to be run directly in your own webserver like [this Crome extension](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
+You can also use Nault from any device on the web at [nault.cc](https://nault.cc/) or run it as a [desktop app](https://github.com/BitDesert/Nault/releases) built on electron.
 
 
 # Bugs/Feedback
@@ -30,7 +30,7 @@ We are continually improving and adding new features based on the feedback you p
 ___
 
 #### Everything below is only for contributing to the development of Nault
-#### To download Nault go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc/)
+#### To download Nault as a desktop app go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc/)
 
 ___
 
@@ -71,14 +71,14 @@ npm run wallet:build-desktop
 
 ## Desktop Builds
 
-*All desktop builds require that you have built a desktop version of the wallet before running! The desktop version is currently not supported/maintained in this project.*
+*All desktop builds require that you have built a desktop version of the wallet before running!*
 
 Run the desktop wallet in dev mode:
 ```bash
 npm run desktop:dev
 ```
 
-Build the desktop wallet for your local OS (Will be in `dist-desktop`):
+Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 ```bash
 npm run desktop:local
 ```

@@ -203,8 +203,8 @@ function generateAccountSecretKeyBytes(seedBytes, accountIndex) {
   return newKey;
 }
 
-function generateAccountKeyPair(accountSecretKeyBytes) {
-  return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes);
+function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
+  return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
 function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
