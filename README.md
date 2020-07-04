@@ -58,10 +58,15 @@ npm install
 npm run wallet:dev
 ```
 
+If you want to debug in VS code, first install [debugger for chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
+Then you can just go to the debug screen and choose "Launch Chrome http"
+
 #### Run the wallet in dev mode as https (for example if using the Ledger device)
 ```bash
 npm run wallet:dev-ssl
 ```
+
+To debug in VS code: Go to debug screen and choose "Launch Chrome https"
 
 ## Build Wallet (For Production)
 Build a production version of the wallet for web:
@@ -87,6 +92,9 @@ If electron is not installed globally, you may have run this:
 ```bash
 npm run desktop:dev-path
 ```
+
+If you want to debug in VS code, first install [debugger for chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
+Then you can just go to the debug screen and choose "Electron: Main", "Electron: Renderer", or "Electron: All" for both Main and Renderer threads.
 
 Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 ```bash
