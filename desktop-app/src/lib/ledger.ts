@@ -57,7 +57,7 @@ export class LedgerService {
       TransportNodeHid.create().then(trans => {
 
         this.ledger.transport = trans;
-        this.ledger.transport.setDebugMode(true);
+        this.ledger.transport.setDebugMode(true); //TODO: Deprecated. Replace with @ledgerhq/logs
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
 

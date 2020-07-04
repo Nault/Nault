@@ -11,6 +11,7 @@ export class DesktopService {
     if (window.require) {
       try {
         this._ipc = window.require('electron').ipcRenderer;
+        console.log("IPC loaded")
       } catch (e) {
         throw e;
       }

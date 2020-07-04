@@ -58,6 +58,11 @@ npm install
 npm run wallet:dev
 ```
 
+#### Run the wallet in dev mode as https (for example if using the Ledger device)
+```bash
+npm run wallet:dev-ssl
+```
+
 ## Build Wallet (For Production)
 Build a production version of the wallet for web:
 ```bash
@@ -76,6 +81,11 @@ npm run wallet:build-desktop
 Run the desktop wallet in dev mode:
 ```bash
 npm run desktop:dev
+```
+
+If electron is not installed globally, you may have run this:
+```bash
+npm run desktop:dev-path
 ```
 
 Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
