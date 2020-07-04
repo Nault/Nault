@@ -94,8 +94,8 @@ export class ConfigureAppComponent implements OnInit {
   selectedPoWOption = this.powOptions[0].value;
 
   pendingOptions = [
-    { name: 'Largest Amount First', value: 1 },
-    { name: 'Oldest Transaction First', value: 0 },
+    { name: 'Largest Amount First', value: 'amount' },
+    { name: 'Oldest Transaction First', value: 'date' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
