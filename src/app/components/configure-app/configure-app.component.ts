@@ -93,6 +93,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPoWOption = this.powOptions[0].value;
 
+  pendingOptions = [
+    { name: 'Largest Amount First', value: 'amount' },
+    { name: 'Oldest Transaction First', value: 'date' },
+  ];
+  selectedPendingOption = this.pendingOptions[0].value;
+
   // prefixOptions = [
   //   { name: 'xrb_', value: 'xrb' },
   //   { name: 'nano_', value: 'nano' },
@@ -152,6 +158,9 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
+    const matchingPendingOption = this.pendingOptions.find(d => d.value == settings.pendingOption);
+    this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
+
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
@@ -198,6 +207,7 @@ export class ConfigureAppComponent implements OnInit {
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
+    let pendingOption = this.selectedPendingOption
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
     const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive;
@@ -224,6 +234,7 @@ export class ConfigureAppComponent implements OnInit {
       walletStore: newStorage,
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
+      pendingOption: pendingOption,
       minimumReceive: this.minimumReceive || null,
       defaultRepresentative: this.defaultRepresentative || null,
     };
