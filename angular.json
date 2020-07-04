@@ -124,6 +124,12 @@
             ]
           }
         }
+      },
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "de": "src/locale/messages.de.xlf"
+        }
       }
     },
     "nault-e2e": {

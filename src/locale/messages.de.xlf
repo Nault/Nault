@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="de" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="2ae3b2d9d5a8ac0203b9ede24c86d58221b6ed41" datatype="html">
+        <source>Unable to connect to Nano node.  Your balances may be wrong!</source>
+        <target>Keine Verbindung zum Server. Dein Kontostand kann falsch sein!</target>
+        <note priority="1" from="description">Error message that is shown if the node is not connected.</note>
+        <note priority="1" from="meaning">unable to connect, balances may be wrong</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9afcd1bb2e9a9561a227346024add0b9adf72075" datatype="html">
+        <source>Attempting to connect to Nano node</source>
+        <target>Versuche zum Server zu verbinden</target>
+        <note priority="1" from="description">Message that is shown while the wallet tries to connect to the backend.</note>
+        <note priority="1" from="meaning">Attempting to connect to Nano node</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">175</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0ffb6641df681a14a13cac5c6376150889e4264a" datatype="html">
+        <source>Balance </source>
+        <target>Kontostand</target>
+        <note priority="1" from="description">Identifier to explain the aggregated Balance for all accounts in Nano at the top left.</note>
+        <note priority="1" from="meaning">Balance</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">181</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="46039da13f6a2410a34d3600cf1d90723ee5e350" datatype="html">
+        <source>Last Price: <x id="INTERPOLATION" equiv-text="{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }}"/> / NANO</source>
+        <target>Letzter Preis: <x id="INTERPOLATION" equiv-text="{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }}"/> / NANO</target>
+        <note priority="1" from="description">Show the current price per Nano in the FIAT currency from the settings.</note>
+        <note priority="1" from="meaning">Last Price: {current price} / NANO</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d848bf337755b903beeb592b9aae841e9267f7c8" datatype="html">
+        <source>Reconnect to server</source>
+        <target>Verbinde zum Server</target>
+        <note priority="1" from="description">Tooltip of the button that can be clicked to try reconnecting to the backend manually if the connection to the backend failed.</note>
+        <note priority="1" from="meaning">Reconnect to server</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">198</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="91723d8f84627bf53a13030723df20588053ca22" datatype="html">
+        <source>Configure Server Settings</source>
+        <target>Servereinstellungen ändern</target>
+        <note priority="1" from="description">Tooltip of the button that directly links to the server settings if the connection to the beckend failed.</note>
+        <note priority="1" from="meaning">Configure Server Settings</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">201</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="07f856ff90d7f7208515a8d19ad00c0db99af666" datatype="html">
+        <source>CONNECTING</source>
+        <target>VERBINDEN</target>
+        <note priority="1" from="description">Text that is shown instead of the balance when trying to connect to the backend.</note>
+        <note priority="1" from="meaning">CONNECTING</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">207</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0b8c207c590b9c05f099a5e9741a35ebb9cc4436" datatype="html">
+        <source>Attempting to connect to the Nano node</source>
+        <target>Versuche zum Server zu verbinden</target>
+        <note priority="1" from="description">Tooltip of the text that is shown instead of the balance when trying to connect to the backend.</note>
+        <note priority="1" from="meaning">Attempting to connect to the Backend</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a28e6058394e547bd13783dc3d9e1ff66bed8c54" datatype="html">
+        <source>NODE DISCONNECTED</source>
+        <target>SERVER NICHT VERBUNDEN</target>
+        <note priority="1" from="description">Text that is shown instead of the balance if the connection to the server failed.</note>
+        <note priority="1" from="meaning">NODE DISCONNECTED</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8fb2920d646830a6c4b8ad455490d313d4fb4f15" datatype="html">
+        <source>Unable to connect to the Nano node. Refresh or select a new server</source>
+        <target>Keine Verbindung zum Server. Lade die Seite neu oder wähle einen anderen Server</target>
+        <note priority="1" from="description">Tooltip of the text that is shown instead of the balance if the connection to the server failed.</note>
+        <note priority="1" from="meaning">Unable to connect to server. Refresh or select a new server.</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">210</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="43a0b083bb201a7e60961ed72d42ec92f05d72f3" datatype="html">
+        <source>Accounts</source>
+        <target>Konten</target>
+        <note priority="1" from="description">Link to the accounts page of the wallet.</note>
+        <note priority="1" from="meaning">Accounts Link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">234</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cf3a9160e60639b084495bc661f8d1cdd4752cb7" datatype="html">
+        <source>Send</source>
+        <target>Senden</target>
+        <note priority="1" from="description">Link to the page where you can send nano from your accounts.</note>
+        <note priority="1" from="meaning">Send Link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4486cd4606fdc31b855e7c578f8527aa639419fd" datatype="html">
+        <source>Receive</source>
+        <target>Empfangen</target>
+        <note priority="1" from="description">Link to the page where you can manually receive transactions if there are pending transactions to your account.</note>
+        <note priority="1" from="meaning">Receive Link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">244</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1e43c85eb8ea92778ac73b481dc638a633eef1f5" datatype="html">
+        <source>New</source>
+        <target>Neu</target>
+        <note priority="1" from="description">Text of the small badge that is shown next to the &apos;Receive&apos; link to put more emphasis on it.</note>
+        <note priority="1" from="meaning">New</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">248</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="72941404e19f7c450dbf225c54f650d1445b87d8" datatype="html">
+        <source>Address Book</source>
+        <target>Kontakte</target>
+        <note priority="1" from="description">Link to the page where you can manage you address book.</note>
+        <note priority="1" from="meaning">Address Book Link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">254</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c3deed0e96fa87d95870bd8bb84051b8019ed7bd" datatype="html">
+        <source>Settings</source>
+        <target>Einstellungen</target>
+        <note priority="1" from="description">Text of the button which opens the settings menu in the navigation bar.</note>
+        <note priority="1" from="meaning">Settings button</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">258</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="df9366287db9308dca9bc1b180afb776358a60cd" datatype="html">
+        <source>Representatives</source>
+        <target>Vertreter</target>
+        <note priority="1" from="description">Link to the page where you configure the representatives.</note>
+        <note priority="1" from="meaning">Representatives Link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">262</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4b9c01f6e87d32937f507054c62fffe8349c4f72" datatype="html">
+        <source>App Settings</source>
+        <target>Allgemeine Einstellungen</target>
+        <note priority="1" from="description">Link to the settings where you configure the general app behaviour.</note>
+        <note priority="1" from="meaning">App Settings link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">266</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a16cd4b3afa3a77f9dcc47b3b358b2acb2922413" datatype="html">
+        <source>Manage Wallet</source>
+        <target>Konten verwalten</target>
+        <note priority="1" from="description">Link to the wallet configuration page.</note>
+        <note priority="1" from="meaning">Manage Wallet link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bc298570e9c5c492feae3e82118813866537e18d" datatype="html">
+        <source>Configure New Wallet</source>
+        <target>Neue Bank einrichten</target>
+        <note priority="1" from="description">Link to the page where you can create a new wallet.</note>
+        <note priority="1" from="meaning">Configure New Wallet link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">274</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f96a4eefaef94b6209e9946d1a6aad9b4adca83d" datatype="html">
+        <source>View our GitHub</source>
+        <target>Besuche uns auf Github</target>
+        <note priority="1" from="description">The tooltip of the icon that links to the github page.</note>
+        <note priority="1" from="meaning">Tooltip link to github</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">286</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c902e36bf9241c99592ea312bbf2b47178c159ff" datatype="html">
+        <source>Chat with us on Twitter</source>
+        <target>Schreib mit uns auf Twitter</target>
+        <note priority="1" from="description">The tooltip of the icon that links to the Nanocenter twitter account.</note>
+        <note priority="1" from="meaning">Tooltip link to twitter</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">289</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3fa039cb5d374c5df0150345801d57a0c6e88f9f" datatype="html">
+        <source>Join our community on Discord</source>
+        <target>Trete unsere Community auf Discord bei</target>
+        <note priority="1" from="description">The tooltip of the icon that links to the nanocenter discord.</note>
+        <note priority="1" from="meaning">Tooltip discord link</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">292</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="751e99ac6eb4fa1a94cdbe7abe5ee4ab94523789" datatype="html">
+        <source>View an account or transaction</source>
+        <target>Gucke dir ein Konto oder eine Transaktion an</target>
+        <note priority="1" from="description">Tooltip of the icon that toggles the visibility of the search field for the built-in block/account explorer.</note>
+        <note priority="1" from="meaning">Toggle Explorer search</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="26844f1f4c678004ab04b90e3b056a39da01e88d" datatype="html">
+        <source>Nano account or transaction hash</source>
+        <target>Nano Konto oder Transaktions-ID</target>
+        <note priority="1" from="description">Placeholder of the search input field for the built-in block/account explorer.</note>
+        <note priority="1" from="meaning">Placeholder search for account/transaction</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">305</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="536c1b422bee275fa3a37caff1b9b0cde8dc6ca5" datatype="html">
+        <source>Incoming</source>
+        <target>Eingehend</target>
+        <note priority="1" from="description">Label for incoming transactions shown below the current balance.</note>
+        <note priority="1" from="meaning">Incoming Balance label</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
