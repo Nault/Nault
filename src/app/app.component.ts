@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   windowHeight = 1000;
+  navExpanded = false;
   showSearchBar = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
@@ -44,7 +45,9 @@ export class AppComponent implements OnInit {
     private router: Router,
     private workPool: WorkPoolService,
     private ledger: LedgerService,
-    public price: PriceService) { }
+    public price: PriceService) { 
+      router.events.subscribe(() => { this.navExpanded = false })
+    }
 
   async ngOnInit() {
     this.windowHeight = window.innerHeight;
@@ -125,6 +128,10 @@ export class AppComponent implements OnInit {
     this.representative.patchXrbPrefixData();
 
     this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
+  }
+
+  toggleNav() {
+    this.navExpanded = !this.navExpanded
   }
 
   toggleSearch(mobile = false) {
