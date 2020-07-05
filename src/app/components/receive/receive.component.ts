@@ -127,9 +127,6 @@ export class ReceiveComponent implements OnInit {
       if (this.util.account.isValidNanoAmount(amount)) {
         this.qrAmount = this.util.nano.mnanoToRaw(amount);
       }
-      else {
-        return
-      }
     }
     if (this.qrAccount.length > 1) {
       qrCode = await QRCode.toDataURL("nano:"+this.qrAccount + (this.qrAmount ? "?amount="+this.qrAmount.toString(10):""));
