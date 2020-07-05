@@ -3,13 +3,12 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {ApiService} from "../../services/api.service";
-import * as blake from 'blakejs';
-import BigNumber from "bignumber.js";
 import {UtilService} from "../../services/util.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {NanoBlockService} from "../../services/nano-block.service";
-const nacl = window['nacl'];
+import * as QRCode from 'qrcode';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-receive',
@@ -21,6 +20,9 @@ export class ReceiveComponent implements OnInit {
 
   pendingAccountModel = 0;
   pendingBlocks = [];
+  qrCodeImage = null;
+  qrAccount = "";
+  qrAmount:BigNumber = null;
 
   constructor(
     private walletService: WalletService,
@@ -105,6 +107,33 @@ export class ReceiveComponent implements OnInit {
       await this.loadPendingForAll();
     } else {
       await this.loadPendingForAccount(account);
+    }
+  }
+
+  async changeQRAccount(account) {
+    this.qrAccount = "";
+    var qrCode = null;
+    if (account.length > 1) {
+      this.qrAccount = account;
+      qrCode = await QRCode.toDataURL("nano:"+account + (this.qrAmount ? "?amount="+this.qrAmount.toString(10):""));
+    }
+    this.qrCodeImage = qrCode;
+  }
+
+  async changeQRAmount(amount) {
+    this.qrAmount = null;
+    var qrCode = null;
+    if (amount != "") {
+      if (this.util.account.isValidNanoAmount(amount)) {
+        this.qrAmount = this.util.nano.mnanoToRaw(amount);
+      }
+      else {
+        return
+      }
+    }
+    if (this.qrAccount.length > 1) {
+      qrCode = await QRCode.toDataURL("nano:"+this.qrAccount + (this.qrAmount ? "?amount="+this.qrAmount.toString(10):""));
+      this.qrCodeImage = qrCode;
     }
   }
 

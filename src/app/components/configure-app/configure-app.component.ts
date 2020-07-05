@@ -208,6 +208,10 @@ export class ConfigureAppComponent implements OnInit {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
     let pendingOption = this.selectedPendingOption
+    let minReceive = null
+    if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
+      minReceive = this.minimumReceive
+    }
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
     const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive;
@@ -235,7 +239,7 @@ export class ConfigureAppComponent implements OnInit {
       lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
       powSource: newPoW,
       pendingOption: pendingOption,
-      minimumReceive: this.minimumReceive || null,
+      minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
     };
 
