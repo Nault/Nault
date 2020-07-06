@@ -1,0 +1,8 @@
+.narrow-div {
+    margin-top: 10px;
+}
+textarea {
+    height: auto;
+    line-height: 20px;
+    padding: 5px 10px 20px 10px;
+}

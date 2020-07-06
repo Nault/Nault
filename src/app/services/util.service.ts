@@ -14,6 +14,7 @@ export class UtilService {
     toUint4: hexToUint4,
     fromUint8: uint8ToHex,
     toUint8: hexToUint8,
+    isHex: isHex,
   };
   uint4 = {
     toUint5: uint4ToUint5,
@@ -29,6 +30,12 @@ export class UtilService {
   };
   dec = {
     toHex: decToHex,
+  };
+  big = {
+    add: bigAdd,
+  };
+  string = {
+    isNumeric: isNumeric,
   };
   account = {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
@@ -64,6 +71,15 @@ function hexToUint8(hexValue) {
   for (let i = 0; i < length; i++) uint8[i] = parseInt(hexValue.substr(i * 2, 2), 16);
 
   return uint8;
+}
+
+// Check if string is hexdecimal
+function isHex(h) {
+  let re = /^[0-9a-fA-F]+$/
+  if (re.test(h)) {
+    return true
+  }
+  return false
 }
 
 
@@ -179,6 +195,12 @@ function decToHex(decValue, bytes = null) {
   return hex;
 }
 
+// BigNumber functions
+function bigAdd(input,value) {
+  let insert = new BigNumber(input)
+  let val = new BigNumber(value)
+  return insert.plus(val).toString(10)
+}
 
 /** String Functions **/
 function stringToUint5(string) {
@@ -188,6 +210,17 @@ function stringToUint5(string) {
   var uint5 = new Uint8Array(length);
   for (let i = 0; i < length; i++)	uint5[i] = letter_list.indexOf(string_array[i]);
   return uint5;
+}
+
+function isNumeric(val) {
+  //numerics and last character is not a dot and number of dots is 0 or 1
+  let isnum = /^-?\d*\.?\d*$/.test(val) && val != ''
+  if (isnum && String(val).slice(-1) !== '.') {
+    return true
+  }
+  else {
+    return false
+  }
 }
 
 
@@ -302,6 +335,7 @@ const util = {
     toUint4: hexToUint4,
     fromUint8: uint8ToHex,
     toUint8: hexToUint8,
+    isHex: isHex,
   },
   uint4: {
     toUint5: uint4ToUint5,
@@ -317,6 +351,12 @@ const util = {
   },
   dec: {
     toHex: decToHex,
+  },
+  big: {
+    add: bigAdd,
+  },
+  string: {
+    isNumeric: isNumeric,
   },
   account: {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,

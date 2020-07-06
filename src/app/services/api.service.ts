@@ -84,7 +84,7 @@ export class ApiService {
     return await this.request('work_generate', { hash });
   }
   async process(block): Promise<{ hash: string, error?: string }> {
-    return await this.request('process', { block: JSON.stringify(block) });
+    return await this.request('process', { block: JSON.stringify(block), watch_work:"false" });
   }
   async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
     return await this.request('account_history', { account, count, raw });
@@ -100,5 +100,11 @@ export class ApiService {
   }
   async pendingLimit(account, count, threshold): Promise<any> {
     return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true });
+  }
+  async pendingSorted(account, count): Promise<any> {
+    return await this.request('pending', { account, count, source: true, include_only_confirmed: true, sorting: true });
+  }
+  async pendingLimitSorted(account, count, threshold): Promise<any> {
+    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true, sorting: true });
   }
 }
