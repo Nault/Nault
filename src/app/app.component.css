@@ -88,6 +88,9 @@
   font-size: 10px;
 }
 
+.content-container {
+  z-index: 1;
+}
 
 @media (max-width: 12450px) {
   .content-container {
@@ -99,5 +102,18 @@
   .content-container {
     padding-left: 30px;
     padding-right: inherit;
+    transition: transform 0.5s ease;
+  }
+
+  .content-container.nav-expanded {
+    transform: translateX(350px);
+  }
+}
+
+@media (max-width: 639px) {
+  .nav-container {
+    position: absolute;
+    width: 350px;
+    height: 100%;
   }
 }
