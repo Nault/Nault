@@ -14,6 +14,7 @@ import {TransactionDetailsComponent} from "./components/transaction-details/tran
 import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import {RepresentativesComponent} from "./components/representatives/representatives.component";
+import {SweeperComponent} from "./components/sweeper/sweeper.component";
 
 import { environment } from '../environments/environment';
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'representatives', component: RepresentativesComponent },
   { path: 'manage-representatives', component: ManageRepresentativesComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
+  { path: 'sweeper', component: SweeperComponent },
 ];
 
 @NgModule({

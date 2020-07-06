@@ -1,0 +1,72 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+    <div uk-grid>
+      <div class="uk-width-1-1">
+        <h2>Wallet Sweeper</h2>
+      </div>
+    </div>
+
+    <div uk-grid>
+      <div class="uk-width-1-1">
+        <p>
+          This lets you collect all funds from all accounts in a given wallet and transfer them to any destination.<br>
+          Could be used to load a paper wallet into some of your existing accounts, transfer another wallet or even empty your existing Nault wallet and transfer it somewhere else.<br>
+          <strong>Please use with caution if you are using an external destination. Make sure you have access to the seed on the receiving side!</strong>
+        </p>
+      </div>
+    </div>
+
+    <div uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label">My Accounts <span uk-icon="icon: info;" uk-tooltip title="My Nault accounts that can be used as destination for the swept funds."></span></label>
+            <div class="uk-form-controls">
+              <select class="uk-select" [(ngModel)]="myAccountModel">
+                <option [value]="0">Select as Destination (Optional)</option>
+                <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uk-width-1-1">
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label">Source Wallet <span uk-icon="icon: info;" uk-tooltip title="The wallet to empty/sweep into the destination. WARNING: This wallet will be emptied."></span></label>
+            <div class="uk-form-controls">
+              <div uk-grid>
+                <div class="uk-width-1-1">
+                  <div class="uk-inline uk-width-1-1">
+                    <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="Nano seed, private key or 24-word passphrase">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uk-width-1-1">
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label">Destination Account <span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be your own Nault account or any remote account."></span></label>
+            <div class="uk-form-controls">
+              <div uk-grid>
+                <div class="uk-width-1-1">
+                  <div class="uk-inline uk-width-1-1">
+                    <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="nano_abc..123">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
