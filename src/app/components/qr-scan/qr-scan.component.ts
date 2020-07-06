@@ -7,9 +7,6 @@ import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
 
-// for using Instascan library (from instascan.min.js)
-declare var Instascan: any;
-
 @Component({
   selector: 'app-qr-scan',
   templateUrl: './qr-scan.component.html',
@@ -41,6 +38,7 @@ export class QrScanComponent implements OnInit {
     private utilService: UtilService,
     private notifcationService: NotificationService,
     private settings: AppSettingsService,
+    private util: UtilService,
   ) { }
 
   ngOnInit(): void { }
@@ -49,22 +47,40 @@ export class QrScanComponent implements OnInit {
     this.qrResultString = null;
   }
 
-  onCamerasFound(devices: MediaDeviceInfo[]): void {
-    console.log('DEVICES:', devices);
-    
+  onCamerasFound(devices: MediaDeviceInfo[]): void {    
     this.availableDevices = devices;
     this.hasDevices = Boolean(devices && devices.length);
   }
 
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
-    console.log('SCAN:', resultString);
-    
+
+    const nano_scheme = /^(nano|nanorep):(nano_[13][13-9a-km-uw-z]{59}).*$/g
 
     if(nanocurrency.checkAddress(resultString)){
       console.log('Got address, routing to send...');
-      
       this.router.navigate(['send'], {queryParams: {to: resultString}});
+
+    } else if(nano_scheme.test(resultString)) {
+      var url = new URL(resultString)
+
+      if(url.protocol === 'nano:'){
+        var amount = url.searchParams.get('amount');
+        this.router.navigate(['send'], { queryParams: {
+          to: url.pathname,
+          amount: amount ? this.util.nano.rawToMnano(amount) : null
+        }});
+
+      } else if (url.protocol === 'nanorep:') {
+        this.router.navigate(['representatives'], { queryParams: { 
+          hideOverview: true,
+          accounts: 'all',
+          representative: url.pathname
+        }});
+      }
+      
+    } else {
+      this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' })
     }
   }
 

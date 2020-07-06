@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js'
+import { checkAddress } from 'nanocurrency';
 
 const nacl = window['nacl'];
 
@@ -217,16 +218,7 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
 }
 
 function isValidAccount(account: string): boolean {
-  if (account.length !== 64) {
-    return false;
-  }
-  if (!account.startsWith('xrb')) {
-    return false;
-  }
-  if (!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) {
-    return false;
-  }
-  return true;
+  return checkAddress(account);
 }
 
 function getAccountPublicKey(account) {
