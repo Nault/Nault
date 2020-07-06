@@ -12,7 +12,6 @@ import { wallet } from 'nanocurrency-web'
 import * as bip39 from 'bip39'
 import { utils } from 'protractor';
 
-const INDEX_MIN = 0; //seed index
 const INDEX_MAX = 4294967295; //seed index
 const SWEEP_MAX_INDEX = 100; //max index keys to sweep
 const SWEEP_MAX_PENDING = 100; // max pending blocks to process per run
@@ -25,6 +24,8 @@ const SWEEP_MAX_PENDING = 100; // max pending blocks to process per run
 
 export class SweeperComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
+  indexMax = INDEX_MAX;
+  incomingMax = SWEEP_MAX_PENDING;
 
   myAccountModel = 0;
   sourceWallet = "";
@@ -45,7 +46,8 @@ export class SweeperComponent implements OnInit {
   keys = [];
   keyCount = 0;
   pendingCallback = null;
-  pendingBlocks = [];
+  totalSwept = '0';
+  customAccountSelected = true;
 
   validSeed = false;
   validDestination = false;
@@ -74,8 +76,13 @@ export class SweeperComponent implements OnInit {
   }
 
   setDestination(account) {
-    if (account || account != 0) {
+    if (account != '0') {
       this.destinationAccount = account;
+      this.customAccountSelected = false;
+    }
+    else {
+      this.destinationAccount = '';
+      this.customAccountSelected = true;
     }
     this.destinationChange(account)
   }
@@ -245,8 +252,14 @@ export class SweeperComponent implements OnInit {
       // publish block for each iteration
       let data = await this.api.process(block.block)
       if (data.hash) {
-        this.notificationService.sendInfo(`An account was swept and funds transferred to the destination!`, { length: 0 });
-        this.appendLog("Funds transferred: "+data.hash)
+        let blockInfo = await this.api.blockInfo(data.hash)
+        var nanoAmountSent = null
+        if (blockInfo.amount) {
+          nanoAmountSent = this.util.nano.rawToMnano(blockInfo.amount)
+          this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent)
+        }
+        this.notificationService.sendInfo("Account "+ address + " was swept and " + (nanoAmountSent ? (nanoAmountSent.toString(10) + " Nano"):"") + " transferred to " + this.destinationAccount, {length: 10000});
+        this.appendLog("Funds transferred "+ (nanoAmountSent ? ("("+nanoAmountSent.toString(10) + " Nano)"):"") + ": "+data.hash)
         console.log(this.adjustedBalance + " raw transferred to " + this.destinationAccount)
       }
       else {
@@ -449,7 +462,9 @@ export class SweeperComponent implements OnInit {
       }
       // all private keys have been processed
       else {
-        this.appendLog("Finished!")
+        this.appendLog("Finished processing all accounts")
+        this.appendLog(this.totalSwept + " Nano transferred")
+        this.notificationService.sendInfo("Finished processing all accounts. " + this.totalSwept + " Nano transferred", {length: 0});
         this.sweeping = false
       }
     }.bind(this))
@@ -457,6 +472,7 @@ export class SweeperComponent implements OnInit {
 
   sweepContinue () {
     this.sweeping = true
+    this.totalSwept = '0'
 
     let keyType = this.checkMasterKey(this.sourceWallet)
     if (this.validEndIndex && this.validStartIndex && this.validMaxIncoming) {

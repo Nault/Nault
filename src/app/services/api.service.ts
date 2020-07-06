@@ -77,6 +77,9 @@ export class ApiService {
   async blocksInfo(blocks): Promise<{blocks: any, error?: string}> {
     return await this.request('blocks_info', { hashes: blocks, pending: true, source: true });
   }
+  async blockInfo(hash): Promise<any> {
+    return await this.request('block_info', { hash: hash });
+  }
   async blockCount(): Promise<{count: number, unchecked: number }> {
     return await this.request('block_count', { });
   }

@@ -6,155 +6,116 @@
       </div>
     </div>
 
-    <div uk-grid>
-      <div class="uk-width-1-1">
-        <p>
-          This lets you collect all funds from all accounts in a given wallet and transfer them to any destination.<br>
-          Could be used to load a paper wallet into some of your existing accounts, transfer a wallet or even empty your existing Nault wallet and transfer it somewhere else.<br>
-          Even a passphrase from a Ledger hardware wallet can be recovered using this tool.<br>
-          <strong>Please use with caution if you are using an external destination. Make sure you have access to the seed on the receiving side!</strong>
-        </p>
+    <div class="uk-width-1-1">
+      <p><br>
+        This lets you collect all funds from all accounts in a given wallet and transfer them to any destination.<br>
+        Could be used to load a paper wallet into some of your existing accounts, transfer a wallet or even empty your existing Nault wallet and transfer it somewhere else.<br>
+        Even a passphrase from a Ledger hardware wallet can be recovered using this tool.<br>
+        <strong>Please use with caution if you are using an external destination. Make sure you have access to the seed on the receiving side!</strong>
+      </p>
+    </div>
+
+    <div class="uk-card uk-card-default">
+      <div class="uk-card-body">
+        <div uk-grid>
+          <div class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Source Wallet <span uk-icon="icon: info;" uk-tooltip title="The wallet to empty/sweep into the destination. WARNING: This wallet and all coresponding accounts will be emptied."></span></label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-1-1">
+                      <div class="uk-inline uk-width-1-1">
+                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 24-word passphrase">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Local Destination<span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
+                    <option [value]="0">Custom Destination</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="customAccountSelected" class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Custom Destination<span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be any remote account."></span></label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-1-1">
+                      <div class="uk-inline uk-width-1-1">
+                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Start Index <span uk-icon="icon: info;" uk-tooltip title="The account index to start looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="0 to {{indexMax}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">End Index <span uk-icon="icon: info;" uk-tooltip title="The account index to stop looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="0 to {{indexMax}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1 narrow-div">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Max Incoming Tx's <span uk-icon="icon: info;" uk-tooltip title="Maximum number of incoming transactions to receive on each source account before sweeping. You can also use the 'Min Receive' in the app settings to get rid of spam. If not enough, you can just run the process multiple times."></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="0 to {{incomingMax}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1 narrow-div">
+            <button *ngIf="!sweeping" class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sweep()">START SWEEPING</button>
+            <button *ngIf="sweeping" class="uk-button uk-button-primary uk-disabled uk-width-1-1" type="button"><span class="uk-margin-right" uk-spinner></span> PROCESSING...</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div uk-grid>
-      <div class="uk-width-1-1">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">My Accounts <span uk-icon="icon: info;" uk-tooltip title="My Nault accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
-            <div class="uk-form-controls">
-              <select class="uk-select" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
-                <option [value]="0">Select as Destination (Optional)</option>
-                <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">Source Wallet <span uk-icon="icon: info;" uk-tooltip title="The wallet to empty/sweep into the destination. WARNING: This wallet and all coresponding accounts will be emptied."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-1-1">
-                  <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 24-word passphrase">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">Destination Account <span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be your own Nault account or any remote account."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-1-1">
-                  <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">Start Index <span uk-icon="icon: info;" uk-tooltip title="The account index to start looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-3-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="number">
-                  </div>
-                </div>
-                <div class="uk-width-2-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="setMin()" style="text-transform: none;">Set Min</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">End Index <span uk-icon="icon: info;" uk-tooltip title="The account index to stop looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-3-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="number">
-                  </div>
-                </div>
-                <div class="uk-width-2-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="setMax()" style="text-transform: none;">Set Max</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">Max Incoming Tx's <span uk-icon="icon: info;" uk-tooltip title="Maximum number of incoming transactions to receive on each source account before sweeping. You can also use the 'Min Receive' in the app settings to get rid of spam. If not enough, you can just run the process multiple times."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-3-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="number">
-                  </div>
-                </div>
-                <div class="uk-width-2-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="setMaxIncoming()" style="text-transform: none;">Set Max</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-width-1-1 narrow-div">
-        <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sweep()" style="text-transform: none;">START SWEEPING</button>
-      </div>
-
-      <div class="uk-width-1-1">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label">Output Log <span uk-icon="icon: info;" uk-tooltip title="For troubleshooting and result. Copy this if contacting support."></span></label>
-            <div class="uk-form-controls">
-              <div uk-grid>
-                <div class="uk-width-1-1">
-                  <div class="uk-inline uk-width-1-1">
-                    <textarea [(ngModel)]="output" rows="4" readOnly #outputarea class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" placeholder=""></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="uk-width-1-1">
+      <textarea [(ngModel)]="output" rows="4" readOnly #outputarea class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" placeholder="The output log will be visible here"></textarea>   
     </div>
-
   </div>
 </div>
 
