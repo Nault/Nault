@@ -23,7 +23,7 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false } });
+  mainWindow = new BrowserWindow({width: 1000, height: 600, nodeIntegration: true, webPreferences: { webSecurity: false, nodeIntegration: true } });
   // const options = { extraHeaders: "pragma: no-cache\n" };
   // mainWindow.loadURL('https://nault.cc', options);
   mainWindow.loadURL('http://localhost:4200/');

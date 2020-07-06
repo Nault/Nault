@@ -11,7 +11,7 @@ import {UtilService} from "../../services/util.service";
 import * as QRCode from 'qrcode';
 import BigNumber from "bignumber.js";
 import {RepresentativeService} from "../../services/representative.service";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-account-details',

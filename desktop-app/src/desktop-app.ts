@@ -15,7 +15,7 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false, devTools: true } });
+  mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false, devTools: true, nodeIntegration: true } });
 
   // mainWindow.loadURL('http://localhost:4200/'); // Only use this for development
   mainWindow.loadURL(url.format({

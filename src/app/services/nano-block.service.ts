@@ -8,7 +8,7 @@ import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {WalletService} from "./wallet.service";
 import {LedgerService} from "./ledger.service";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 const nacl = window['nacl'];
 
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
@@ -200,7 +200,6 @@ export class NanoBlockService {
       signature: null,
     };
 
-    let signature = null;
     if (ledger) {
       const ledgerBlock = {
         previousBlock: fromAccount.frontier,
@@ -213,7 +212,7 @@ export class NanoBlockService {
         await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier);
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
-        signature = sig.signature;
+        blockData.signature = sig.signature;
       } catch (err) {
         this.clearLedgerNotification();
         this.sendLedgerDeniedNotification(err);
@@ -267,7 +266,6 @@ export class NanoBlockService {
     };
 
     // We have everything we need, we need to obtain a signature
-    let signature = null;
     if (ledger) {
       const ledgerBlock: any = {
         representative: representative,
@@ -285,7 +283,7 @@ export class NanoBlockService {
         }
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.notifications.removeNotification('ledger-sign');
-        signature = sig.signature.toUpperCase();
+        blockData.signature = sig.signature.toUpperCase();
       } catch (err) {
         this.notifications.removeNotification('ledger-sign');
         this.notifications.sendWarning(err.message || `Transaction denied on Ledger device`);

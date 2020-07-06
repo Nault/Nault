@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import BigNumber from "bignumber.js";
 import {AddressBookService} from "../../services/address-book.service";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {BehaviorSubject} from "rxjs";
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ApiService} from "../../services/api.service";

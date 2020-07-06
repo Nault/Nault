@@ -3,14 +3,15 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "commonjs",
     "allowJs": false,
-    "types": [],
+    "types": ["custom"],
     "lib": ["dom", "es7", "scripthost"]
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts",
-    "app/lib/tweetnacl/*"
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
   ]
 }

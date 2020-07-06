@@ -14,6 +14,7 @@ interface AppSettings {
   lockOnClose: number;
   lockInactivityMinutes: number;
   powSource: PoWSource;
+  pendingOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -35,6 +36,7 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     powSource: 'best',
+    pendingOption: 'amount',
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
@@ -162,6 +164,7 @@ export class AppSettingsService {
       lockOnClose: 1,
       lockInactivityMinutes: 30,
       powSource: 'best',
+      pendingOption: 'amount',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,
