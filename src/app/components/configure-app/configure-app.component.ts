@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {PriceService} from "../../services/price.service";
-import {PowService} from "../../services/pow.service";
-import {WorkPoolService} from "../../services/work-pool.service";
-import {AddressBookService} from "../../services/address-book.service";
-import {ApiService} from "../../services/api.service";
-import {LedgerService, LedgerStatus} from "../../services/ledger.service";
-import BigNumber from "bignumber.js";
-import {WebsocketService} from "../../services/websocket.service";
-import {NodeService} from "../../services/node.service";
-import {UtilService} from "../../services/util.service";
+import {WalletService} from "../../services";
+import {NotificationService} from "../../services";
+import {AppSettingsService} from "../../services";
+import {PriceService} from "../../services";
+import {PowService} from "../../services";
+import {WorkPoolService} from "../../services";
+import {AddressBookService} from "../../services";
+import {ApiService} from "../../services";
+import {LedgerService} from "../../services";
+import {WebsocketService} from "../../services";
+import {NodeService} from "../../services";
+import {UtilService} from "../../services";
 import {BehaviorSubject} from "rxjs";
-import {RepresentativeService} from "../../services/representative.service";
+import {RepresentativeService} from "../../services";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-configure-app',
@@ -73,6 +73,12 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'ZAR - South African Rand', value: 'ZAR' },
   ];
   selectedCurrency = this.currencies[0].value;
+
+  languages = [
+    { name: 'English', value: "en" },
+    { name: 'Deutsch', value: 'de' }
+  ]
+  selectedLanguage = this.languages[0].value;
 
   inactivityOptions = [
     { name: 'Never', value: 0 },
@@ -134,7 +140,8 @@ export class ConfigureAppComponent implements OnInit {
     private repService: RepresentativeService,
     private node: NodeService,
     private util: UtilService,
-    private price: PriceService) { }
+    private price: PriceService,
+    private activatedRoute: ActivatedRoute) { }
 
   async ngOnInit() {
     this.loadFromSettings();
@@ -142,6 +149,9 @@ export class ConfigureAppComponent implements OnInit {
 
   loadFromSettings() {
     const settings = this.appSettings.settings;
+
+    const matchingLanguage = this.languages.find(language => language.value === settings.language);
+    this.selectedLanguage = matchingLanguage.value || this.languages[0].value;
 
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
@@ -178,8 +188,15 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
+    const languageChanged = this.appSettings.settings.language !== this.selectedLanguage;
     this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
+    this.appSettings.setAppSetting('language', this.selectedLanguage);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
+
+    if (languageChanged) {
+      // redirect to the new language
+      location.replace("/" + this.appSettings.settings.language + "/" + this.activatedRoute.snapshot.url.join("/"));
+    }
 
     if (reloadFiat) {
       // Reload prices with our currency, then call to reload fiat balances.

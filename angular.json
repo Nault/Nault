@@ -72,6 +72,18 @@
                   "with": "src/environments/environment.desktop.ts"
                 }
               ]
+            },
+            "i18n": {
+              "assets": [
+                {
+                  "glob": "index.html",
+                  "input": "src/locale/redirect",
+                  "output": "../"
+                },
+                "src/assets",
+                "src/pow.wasm"
+              ],
+              "localize": true
             }
           }
         },
