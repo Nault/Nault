@@ -67,14 +67,16 @@
           <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
           <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
           <li>
-            <div uk-grid>
-              <div class="uk-width-3-4">
-                <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">Receive</a>
+            <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
+              <div uk-grid>
+                <div class="uk-width-3-4">
+                  Receive
+                </div>
+                <div class="uk-width-1-4 uk-text-center">
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                </div>
               </div>
-              <div class="uk-width-1-4 uk-text-center">
-                <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
-              </div>
-            </div>
+            </a>
           </li>
           <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
           <li class="uk-parent">
