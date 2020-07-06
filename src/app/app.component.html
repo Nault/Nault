@@ -1,104 +1,10 @@
-<div uk-grid class="app uk-offcanvas-content" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
-
-  <!-- Mobile Offcanvas Nav -->
-  <div id="mobile-nav" uk-offcanvas="mode: reveal; overlay: false;">
-    <div class="uk-offcanvas-bar" style="padding: 0; background: #2C3E50;">
-
-      <div class="title-block">
-        <div class="uk-margin-left" style="padding-bottom: 15px; color: #666;">
-          <div uk-grid>
-            <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
-            <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
-              <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
-              <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
-            </div>
-          </div>
-
-          <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-            <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-            <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-            <span class="balance" style="clear: left; text-align: left;" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }">{{ wallet.balance | rai: settings.settings.displayDenomination }}</span>
-          </div>
-
-          <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
-            <div class="uk-width-1-2 uk-text-left">
-              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-            </div>
-            <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0; color: #666;">
-              <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server" style="color: #666 !important;"></a>
-              <a routerLink="/configure-app" fragment="server-settings" uk-toggle="target: #mobile-nav" uk-icon="icon: cog" style="color: #409cff !important;" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
-            </div>
-            <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
-              <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node" style="color: #999;">CONNECTING</span>
-              <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
-            </div>
-          </div>
-
-          <div style="display: inline-block; text-align: right;" class="uk-text-muted" *ngIf="walletService.hasPendingTransactions()">
-            <span class="balance-text" style="text-align: left; float: left; margin-top: 5px; color: #999;">Incoming </span>
-            <span style="margin-left: 11px; display: inline-block; font-size: 12px; color: #999;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
-            <span class="balance" style="clear: left; text-align: left; color: #999;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
-          </div>
-        </div>
-      </div>
-
-      <app-change-rep-widget></app-change-rep-widget>
-      <app-wallet-widget></app-wallet-widget>
-
-      <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-        <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Accounts</a></li>
-        <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Send</a></li>
-        <li>
-          <div uk-grid>
-            <div class="uk-width-3-4">
-              <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Receive</a>
-            </div>
-            <div class="uk-width-1-4 uk-text-center">
-              <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top" style="font-size: 16px; padding-bottom: 2px;">New</span>
-            </div>
-          </div>
-        </li>
-        <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Address Book</a></li>
-        <li class="uk-parent">
-          <a href="#" class="uk-margin-left">Settings</a>
-          <ul class="uk-nav-sub">
-            <li><a routerLink="/representatives" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
-            <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">App Settings</a></li>
-            <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Manage Wallet</a></li>
-            <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left " uk-toggle="target: #mobile-nav">Configure New Wallet</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="footer" uk-grid>
-        <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-          <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
-          <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
-          <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
-          <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch(true)"></a>
-        </div>
-      </div>
-
-      <div uk-grid style="margin-top: 15px;" *ngIf="showSearchBar">
-        <div class="uk-width-1-1" style="padding-left: 60px; padding-right: 20px;">
-          <form class="uk-search uk-search-default uk-width-1-1">
-            <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input uk-width-1-1" id="search-input-mobile" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
-          </form>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <!-- End Mobile OffCanvas Nav -->
-
-
+<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
   <div class="uk-width-1-1">
 
     <!-- Mobile top bar -->
     <div uk-grid class=" uk-hidden@s uk-background-secondary" style="color: #FFF;">
       <div class="uk-width-1-2">
-        <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" uk-toggle="target: #mobile-nav;" style="cursor: pointer;">
+        <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" (click)="toggleNav()" style="cursor: pointer;">
           <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
           <span style="font-size: 22px;" >Nault</span>
         </div>
@@ -108,8 +14,8 @@
     </div>
 
     <!-- Main content container-->
-    <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0;">
-      <div class="uk-width-1-4 uk-visible@s" style="background: #2C3E50">
+    <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
+      <div class="uk-width-1-4 nav-container" style="background: #2C3E50">
         <div class="title-block">
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <div uk-grid>
@@ -203,7 +109,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
+      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="navExpanded = false;" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>
