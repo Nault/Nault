@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<div *ngIf="hasPermission === undefined" class="uk-alert uk-alert-info">
+<div *ngIf="hasPermission === undefined && hasDevices === undefined" class="uk-alert uk-alert-info">
   <b>Waiting for permissions.</b><br>
   If your device does not has cameras, no permissions will be asked.
 </div>
@@ -47,7 +47,7 @@
   We can't scan anything without it. 😪
 </div>
 
-<div *ngIf="hasDevices === undefined" class="uk-alert uk-alert-danger">
+<div *ngIf="hasDevices === null || hasPermission === null" class="uk-alert uk-alert-danger">
   <b>Couldn't check for devices.</b><br>
   This may be caused by some security error.
 </div>

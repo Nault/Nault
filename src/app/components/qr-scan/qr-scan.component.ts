@@ -5,7 +5,7 @@ import { NotificationService } from "../../services/notification.service";
 import { AppSettingsService } from "../../services/app-settings.service";
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
-import * as nanocurrency from 'nanocurrency';
+import { checkAddress } from 'nanocurrency';
 
 @Component({
   selector: 'app-qr-scan',
@@ -57,7 +57,7 @@ export class QrScanComponent implements OnInit {
 
     const nano_scheme = /^(nano|nanorep):(nano_[13][13-9a-km-uw-z]{59}).*$/g
 
-    if(nanocurrency.checkAddress(resultString)){
+    if(checkAddress(resultString)){
       console.log('Got address, routing to send...');
       this.router.navigate(['send'], {queryParams: {to: resultString}});
 
