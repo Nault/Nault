@@ -100,7 +100,7 @@ defaultLocale will be used.
 
   if (saveLocale === true) {
     if (enableLog) console.log('storing locale: ' + locale);
-    localStorage.setItem('locale', locale);
+    localStorage.setItem('nanovault-appsettings', JSON.stringify({language: locale}));
   }
 
   if (locale == null) {
