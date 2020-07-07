@@ -18,6 +18,11 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
+              {
+                "glob": "index.html",
+                "input": "src/locale/redirect",
+                "output": "../"
+              },
               "src/assets",
               "src/pow.wasm"
             ],
@@ -40,6 +45,7 @@
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
+              "localize": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -72,18 +78,6 @@
                   "with": "src/environments/environment.desktop.ts"
                 }
               ]
-            },
-            "i18n": {
-              "assets": [
-                {
-                  "glob": "index.html",
-                  "input": "src/locale/redirect",
-                  "output": "../"
-                },
-                "src/assets",
-                "src/pow.wasm"
-              ],
-              "localize": true
             }
           }
         },
