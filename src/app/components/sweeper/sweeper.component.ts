@@ -27,11 +27,11 @@ export class SweeperComponent implements OnInit {
   indexMax = INDEX_MAX;
   incomingMax = SWEEP_MAX_PENDING;
 
-  myAccountModel = 0;
+  myAccountModel = this.accounts.length > 0 ? this.accounts[0].id:0;
   sourceWallet = "";
   destinationAccount = "";
   startIndex = "0";
-  endIndex = "0";
+  endIndex = "5";
   maxIncoming = SWEEP_MAX_PENDING.toString();
   
   output = "";
@@ -47,7 +47,7 @@ export class SweeperComponent implements OnInit {
   keyCount = 0;
   pendingCallback = null;
   totalSwept = '0';
-  customAccountSelected = true;
+  customAccountSelected = this.accounts.length == 0;
 
   validSeed = false;
   validDestination = false;

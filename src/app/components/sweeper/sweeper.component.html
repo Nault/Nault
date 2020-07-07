@@ -41,8 +41,8 @@
                 <label class="uk-form-label">Local Destination<span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
-                    <option [value]="0">Custom Destination</option>
                     <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+                    <option [value]="0">Custom Destination</option>
                   </select>
                 </div>
               </div>
@@ -57,7 +57,7 @@
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
+                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
                       </div>
                     </div>
                   </div>
@@ -72,7 +72,7 @@
                 <label class="uk-form-label">Start Index <span uk-icon="icon: info;" uk-tooltip title="The account index to start looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="0 to {{indexMax}}">
+                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="0 to {{indexMax}}">
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
                 <label class="uk-form-label">End Index <span uk-icon="icon: info;" uk-tooltip title="The account index to stop looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="0 to {{indexMax}}">
+                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="0 to {{indexMax}}">
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@
                 <label class="uk-form-label">Max Incoming Tx's <span uk-icon="icon: info;" uk-tooltip title="Maximum number of incoming transactions to receive on each source account before sweeping. You can also use the 'Min Receive' in the app settings to get rid of spam. If not enough, you can just run the process multiple times."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="0 to {{incomingMax}}">
+                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="0 to {{incomingMax}}">
                   </div>
                 </div>
               </div>
@@ -114,7 +114,7 @@
     </div>
 
     <div class="uk-width-1-1">
-      <textarea [(ngModel)]="output" rows="4" readOnly #outputarea class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" placeholder="The output log will be visible here"></textarea>   
+      <textarea [(ngModel)]="output" rows="4" readOnly #outputarea class="uk-input uk-margin-small-bottom" placeholder="The output log will be visible here"></textarea>   
     </div>
   </div>
 </div>
