@@ -74,6 +74,9 @@ export class RepresentativesComponent implements OnInit {
           this.newAccountID(account);
         }
       }
+      if (params && params.representative) {
+        this.selectRepresentative(params.representative);
+      }
     });
 
     let repOverview = await this.representativeService.getRepresentativesOverview();

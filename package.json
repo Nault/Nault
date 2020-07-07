@@ -46,6 +46,7 @@
     "@ledgerhq/hw-transport-node-hid": "^5.19.0",
     "@ledgerhq/hw-transport-u2f": "^5.19.0",
     "@types/crypto-js": "^3.1.38",
+    "@zxing/ngx-scanner": "^3.0.0",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^5.0.0",
