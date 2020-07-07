@@ -13,6 +13,26 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
+                <label class="uk-form-label" for="languageselector" i18n="Language Label|Label of the Language selection field in the app settings.">
+                  Language
+                  <span uk-icon="icon: info;" uk-tooltip
+                        i18n-title="Language setting Tooltip|Tooltip that is shown when hovering above the info icon on the settings page for the language selection."
+                        title="Change the language of Nault."></span>
+                </label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedLanguage" id="languageselector">
+                    <option *ngFor="let language of languages" [value]="language.value">{{ language.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedCurrency" id="form-horizontal-select">

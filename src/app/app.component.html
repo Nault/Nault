@@ -21,14 +21,21 @@
             <div uk-grid>
               <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
               <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
-                <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
-                <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
+                <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip
+                      i18n-title="unable to connect, balances may be wrong|Error message that is shown if the node is not connected."
+                      title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
+                <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip
+                     i18n-title="Attempting to connect to Nano node|Message that is shown while the wallet tries to connect to the backend."
+                     title="Attempting to connect to Nano node"></div>
               </div>
             </div>
 
             <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
+              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;"
+                    i18n="Balance|Identifier to explain the aggregated Balance for all accounts in Nano at the top left.">Balance </span>
+              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip
+                    i18n-title="Last Price: {current price} / NANO|Show the current price per Nano in the FIAT currency from the settings."
+                    title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
               <span class="balance" style="clear: left; text-align: left;">
                 {{ wallet.balance | rai: settings.settings.displayDenomination }}
               </span>
@@ -36,21 +43,33 @@
 
             <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
               <div class="uk-width-1-2 uk-text-left">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;"
+                      i18n="Balance|Identifier to explain the aggregated Balance for all accounts in Nano at the top left.">Balance </span>
               </div>
               <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0;">
-                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server"></a>
-                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
+                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip
+                   i18n-title="Reconnect to server|Tooltip of the button that can be clicked to try reconnecting to the backend manually if the connection to the backend failed."
+                   title="Reconnect to server"></a>
+                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" uk-tooltip
+                   i18n-title="Configure Server Settings|Tooltip of the button that directly links to the server settings if the connection to the beckend failed."
+                   title="Configure Server Settings" class="uk-text-primary"></a>
               </div>
               <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
-                <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node">CONNECTING</span>
-                <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
+                <span *ngIf="node.status === null" uk-tooltip
+                      i18n-title="Attempting to connect to the Backend|Tooltip of the text that is shown instead of the balance when trying to connect to the backend."
+                      title="Attempting to connect to the Nano node"
+                      i18n="CONNECTING|Text that is shown instead of the balance when trying to connect to the backend.">CONNECTING</span>
+                <span *ngIf="node.status === false" uk-tooltip
+                      i18n-title="Unable to connect to server. Refresh or select a new server.|Tooltip of the text that is shown instead of the balance if the connection to the server failed."
+                      title="Unable to connect to the Nano node. Refresh or select a new server"
+                      i18n="NODE DISCONNECTED|Text that is shown instead of the balance if the connection to the server failed.">NODE DISCONNECTED</span>
               </div>
             </div>
 
             <div *ngIf="walletService.hasPendingTransactions()">
               <div style="display: inline-block; text-align: right;" class="uk-text-muted">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Incoming</span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;"
+                      i18n="Incoming Balance label|Label for incoming transactions shown below the current balance.">Incoming</span>
                 <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
                 <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
               </div>
@@ -64,29 +83,53 @@
         <app-wallet-widget></app-wallet-widget>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+          <li routerLink="/accounts" routerLinkActive="uk-active">
+            <a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left"
+               i18n="Accounts Link|Link to the accounts page of the wallet.">Accounts</a>
+          </li>
+          <li>
+            <a routerLink="/send" routerLinkActive="active" class="uk-margin-left"
+               i18n="Send Link|Link to the page where you can send nano from your accounts.">Send</a>
+          </li>
           <li>
             <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
               <div uk-grid>
-                <div class="uk-width-3-4">
+                <div class="uk-width-3-4"
+                     i18n="Receive Link|Link to the page where you can manually receive transactions if there are pending transactions to your account.">
                   Receive
                 </div>
                 <div class="uk-width-1-4 uk-text-center">
-                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;"
+                        i18n="New|Text of the small badge that is shown next to the 'Receive' link to put more emphasis on it.">New</span>
                 </div>
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
           <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-margin-left ">Scan QR Code</a></li>
+          <li>
+            <a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left"
+               i18n="Address Book Link|Link to the page where you can manage you address book.">Address Book</a>
+          </li>
           <li class="uk-parent">
-            <a href="#" class="uk-margin-left">Settings</a>
+            <a href="#" class="uk-margin-left"
+               i18n="Settings button|Text of the button which opens the settings menu in the navigation bar.">Settings</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
-              <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
-              <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
+              <li>
+                <a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left"
+                   i18n="Representatives Link|Link to the page where you configure the representatives.">Representatives</a>
+              </li>
+              <li>
+                <a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left"
+                   i18n="App Settings link|Link to the settings where you configure the general app behaviour.">App Settings</a>
+              </li>
+              <li>
+                <a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left"
+                   i18n="Manage Wallet link|Link to the wallet configuration page.">Manage Wallet</a>
+              </li>
+              <li>
+                <a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left"
+                   i18n="Configure New Wallet link|Link to the page where you can create a new wallet.">Configure New Wallet</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -95,10 +138,18 @@
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
-            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
-            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
-            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
-            <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
+            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip
+               i18n-title="Tooltip link to github|The tooltip of the icon that links to the github page."
+               title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip
+               i18n-title="Tooltip link to twitter|The tooltip of the icon that links to the Nanocenter twitter account."
+               title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip
+               i18n-title="Tooltip discord link|The tooltip of the icon that links to the nanocenter discord."
+               title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip
+               i18n-title="Toggle Explorer search|Tooltip of the icon that toggles the visibility of the search field for the built-in block/account explorer."
+               title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
           </div>
         </div>
 
@@ -106,7 +157,9 @@
           <div class="uk-width-1-1" style="padding-left: 60px; padding-right: 20px;">
             <form class="uk-search uk-search-default uk-width-1-1">
               <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-              <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
+              <input class="uk-search-input uk-width-1-1" id="search-input" type="search"
+                     i18n-placeholder="Placeholder search for account/transaction|Placeholder of the search input field for the built-in block/account explorer."
+                     placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
             </form>
           </div>
         </div>
