@@ -3,9 +3,10 @@ import { Router } from "@angular/router";
 import { UtilService } from '../../services/util.service';
 import { NotificationService } from "../../services/notification.service";
 import { AppSettingsService } from "../../services/app-settings.service";
+import { WalletService } from "../../services/wallet.service";
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
-import { checkAddress } from 'nanocurrency';
+import { checkAddress, checkSeed } from 'nanocurrency';
 
 @Component({
   selector: 'app-qr-scan',
@@ -33,12 +34,15 @@ export class QrScanComponent implements OnInit {
   torchAvailable$ = new BehaviorSubject<boolean>(false);
   tryHarder = false;
 
+  hasAccounts = this.walletService.wallet.accounts.length > 0;
+
   constructor(
     private router: Router,
     private utilService: UtilService,
     private notifcationService: NotificationService,
     private settings: AppSettingsService,
     private util: UtilService,
+    private walletService: WalletService,
   ) { }
 
   ngOnInit(): void { }
@@ -55,32 +59,53 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    const nano_scheme = /^(nano|nanorep):(nano_[13][13-9a-km-uw-z]{59}).*$/g
+    const nano_scheme = /^(nano|nanorep|nanoseed):.+$/g
 
     if(checkAddress(resultString)){
-      console.log('Got address, routing to send...');
+      // Got address, routing to send...
       this.router.navigate(['send'], {queryParams: {to: resultString}});
 
+    } else if(checkSeed(resultString)){
+      // Seed
+      this.handleSeed(resultString);
+
     } else if(nano_scheme.test(resultString)) {
+      // This is a valid Nano scheme URI
       var url = new URL(resultString)
 
-      if(url.protocol === 'nano:'){
+      if(url.protocol === 'nano:' && checkAddress(url.pathname)){
+        // Got address, routing to send...
         var amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
           to: url.pathname,
           amount: amount ? this.util.nano.rawToMnano(amount) : null
         }});
 
-      } else if (url.protocol === 'nanorep:') {
+      } else if (url.protocol === 'nanorep:' && checkAddress(url.pathname)) {
+        // Representative change
         this.router.navigate(['representatives'], { queryParams: { 
           hideOverview: true,
           accounts: 'all',
           representative: url.pathname
         }});
+
+      } else if (url.protocol === 'nanoseed:' && checkSeed(url.pathname)) {
+        // Seed
+        this.handleSeed(url.pathname);
       }
       
     } else {
       this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' })
+    }
+  }
+
+  handleSeed(seed){
+    if (this.hasAccounts) {
+      // Wallet already set up, sweeping...
+      this.router.navigate(['sweeper'], { state: { seed: seed } });
+    } else {
+      // No wallet set up, new wallet...
+      this.router.navigate(['configure-wallet'], { state: { seed: seed }});
     }
   }
 
