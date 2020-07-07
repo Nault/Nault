@@ -32,7 +32,7 @@
       </div>
       <div *ngIf="qrCodeImage" class="uk-width-1-1@s narrow-div">
         <img [src]="qrCodeImage"><br>
-        <span>{{pendingAccountModel}}</span><a ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a><a href="nano:{{pendingAccountModel}}" uk-icon="icon: sign-in" title="Open in another wallet" uk-tooltip></a>
+        <span>{{pendingAccountModel}}</span><a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a><a class="span-icon" [href]="sanitize('nano:'+pendingAccountModel)" uk-icon="icon: sign-in" title="Open in another wallet" uk-tooltip></a>
       </div>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
