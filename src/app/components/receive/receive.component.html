@@ -9,22 +9,30 @@
     <div uk-grid>
       <div class="uk-width-1-1">
         <p>
-          When someone sends you Nano, you are also in charge of performing a receive block to actually receive the funds.<br>
-          If you have the wallet open when you receive a transaction, this will be performed automatically.<br>
-          Otherwise, select the account you are expecting to receive from below to search for incoming transactions.
+          Select an account to show the deposit QR.<br>
+          Funds should be received automatically if the wallet is unlocked. If not, you can try find them and receive manually.<br>
+          You can also find full transaction history under <a routerLink="/accounts" routerLinkActive="active">Accounts</a>
         </p>
       </div>
     </div>
 
     <div uk-grid>
       <div class="uk-width-3-4@s">
-        <select class="uk-select" [(ngModel)]="pendingAccountModel">
+        <select class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
           <option [value]="0">All Accounts</option>
           <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
         </select>
       </div>
       <div class="uk-width-1-4@s">
         <button class="uk-button uk-button-primary uk-width-1-1" (click)="getPending(pendingAccountModel)"> Find Incoming</button>
+      </div>
+              
+      <div *ngIf="qrCodeImage" class="uk-width-3-4@s narrow-div">
+        <input [(ngModel)]="receiveAmount" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="changeQRAmount(receiveAmount)" title="Amount to be included in the QR and read by the sending wallet." placeholder="Optional Nano amount">
+      </div>
+      <div *ngIf="qrCodeImage" class="uk-width-1-1@s narrow-div">
+        <img [src]="qrCodeImage"><br>
+        <span>{{pendingAccountModel}}</span><a ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a><a href="nano:{{pendingAccountModel}}" uk-icon="icon: sign-in" title="Open in another wallet" uk-tooltip></a>
       </div>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">

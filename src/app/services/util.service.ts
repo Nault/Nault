@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
-import {BigNumber} from 'bignumber.js'
-import { checkAddress } from 'nanocurrency';
+import {BigNumber} from 'bignumber.js';
+import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
 
@@ -39,6 +39,7 @@ export class UtilService {
     getAccountPublicKey: getAccountPublicKey,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
+    isValidNanoAmount: isValidNanoAmount,
   };
   nano = {
     mnanoToRaw: mnanoToRaw,
@@ -218,7 +219,7 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
 }
 
 function isValidAccount(account: string): boolean {
-  return checkAddress(account);
+  return nanocurrency.checkAddress(account);
 }
 
 function getAccountPublicKey(account) {
@@ -295,6 +296,23 @@ function generateSeedBytes() {
   return nacl.randomBytes(32);
 }
 
+// Check if a string is a numeric and larger than 0 but less than Nano supply
+function isValidNanoAmount(val:string) {
+  //numerics and last character is not a dot and number of dots is 0 or 1
+  let isnum = /^-?\d*\.?\d*$/.test(val)
+  if (isnum && String(val).slice(-1) !== '.') {
+    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  else {
+    return false
+  }
+}
+
 const util = {
   hex: {
     toUint4: hexToUint4,
@@ -324,6 +342,7 @@ const util = {
     getAccountPublicKey: getAccountPublicKey,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
+    isValidNanoAmount: isValidNanoAmount,
   },
   nano: {
     mnanoToRaw: mnanoToRaw,
