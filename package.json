@@ -9,7 +9,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:i18n": "ng build --configuration=i18n",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

@@ -21,7 +21,7 @@ defaultLocale will be used.
     "de": '/de'
   };
 
-  let enableLog = true;
+  let enableLog = false;
 
   /////////////////
   /// FUNCTIONS ///
@@ -83,9 +83,10 @@ defaultLocale will be used.
   let locale = getQueryParam('locale');
   let saveLocale = true;
   if (enableLog) console.log('url locale: ' + locale);
+  const LOCALSTORAGE_KEY = 'nanovault-appsettings';
+  let settings = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
 
   if (locale == null) {
-    const settings = JSON.parse(localStorage.getItem('nanovault-appsettings'));
     if (settings != null) {
       locale = settings["language"];
     }
@@ -98,14 +99,18 @@ defaultLocale will be used.
     if (enableLog) console.log('browser locale: ' + locale);
   }
 
-  if (saveLocale === true) {
-    if (enableLog) console.log('storing locale: ' + locale);
-    localStorage.setItem('locale', locale);
-  }
-
   if (locale == null) {
     if (enableLog) console.log('will use default ' + defaultLocale);
     locale = defaultLocale;
+  }
+
+  if (saveLocale === true) {
+    if (enableLog) console.log('storing locale: ' + locale);
+    if (settings == null) {
+      settings = {};
+    }
+    settings["language"] = locale;
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(settings));
   }
 
   locale = locale.toLowerCase();
