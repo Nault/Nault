@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               {
-                "glob": "index.html",
+                "glob": "**",
                 "input": "src/locale/redirect",
                 "output": "../"
               },
@@ -69,6 +69,7 @@
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
+              "localize": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -132,9 +133,15 @@
         }
       },
       "i18n": {
-        "sourceLocale": "en",
+        "sourceLocale": {
+          "baseHref": "",
+          "code": "en"
+        },
         "locales": {
-          "de": "src/locale/messages.de.xlf"
+          "de": {
+            "baseHref": "",
+            "translation": "src/locale/messages.de.xlf"
+          }
         }
       }
     },
