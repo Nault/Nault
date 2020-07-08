@@ -1,0 +1,12 @@
+.narrow-div {
+    margin-top: 0px;
+}
+textarea {
+    margin-top: 20px;
+    height: auto;
+    line-height: 20px;
+    padding: 5px 10px 20px 10px;
+}
+.bad-value {
+    color: #e24a4a;
+}
