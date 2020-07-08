@@ -7,10 +7,9 @@ import {NotificationService} from "../../services/notification.service";
 import {ApiService} from "../../services/api.service";
 import {UtilService} from "../../services/util.service";
 
-import * as blake from 'blakejs';
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
-import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {PriceService} from "../../services/price.service";
 import {NanoBlockService} from "../../services/nano-block.service";
 

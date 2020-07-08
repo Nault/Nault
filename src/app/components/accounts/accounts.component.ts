@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Subject, BehaviorSubject, Observable, timer} from "rxjs";
+import {Subject, timer} from "rxjs";
 import {debounce} from "rxjs/operators";
 import {
   AppSettingsService,

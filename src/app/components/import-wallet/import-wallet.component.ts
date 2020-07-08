@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {NotificationService} from "../../services/notification.service";
 import * as CryptoJS from "crypto-js";
 import {WalletService} from "../../services/wallet.service";

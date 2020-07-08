@@ -8,7 +8,6 @@ import {WorkPoolService} from "../../services/work-pool.service";
 import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
 import {LedgerService, LedgerStatus} from "../../services/ledger.service";
-import BigNumber from "bignumber.js";
 import {WebsocketService} from "../../services/websocket.service";
 import {NodeService} from "../../services/node.service";
 import {UtilService} from "../../services/util.service";
