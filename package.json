@@ -22,7 +22,7 @@
     "wallet:dev": "ng serve --open",
     "wallet:dev-ssl": "ng serve --ssl --open",
     "wallet:build": "ng build --prod",
-    "wallet:build-desktop": "ng build --configuration=desktop --base-href ",
+    "wallet:build-desktop": "ng build --configuration=desktop --base-href ./",
     "desktop:compile": "cd desktop-app && tsc && cd ..",
     "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
     "desktop:build-local": "npm run desktop:build && npm run desktop:local",

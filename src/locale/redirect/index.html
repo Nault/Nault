@@ -1,116 +1,17 @@
-<!--
-File is based on https://gist.github.com/bvandenbon/dae62a7008d34ab0895e42d9dc5131fa
+<!doctype html>
+<html lang="en">
 
-Basically it just redirects the client to the paths configured in the CONFIG part of the file depending on the locale
-that is setup in the localstorage under the locale key. If there is none the redirect is done using the browser settings.
-If no browser setting can be found or the selected locale does not exist in the configuration the configured
-defaultLocale will be used.
--->
-<!DOCTYPE html>
-<html>
-<body>
-<script type="text/javascript">
+<head>
+  <meta charset="utf-8">
+  <title>Nault</title>
+</head>
 
-  //////////////
-  /// CONFIG ///
-  //////////////
-
-  let defaultLocale = 'en';
-  let routing = {
-    "en": '/en',
-    "de": '/de'
-  };
-
-  let enableLog = true;
-
-  /////////////////
-  /// FUNCTIONS ///
-  /////////////////
-
-  function getBrowserLanguage() {
-    if (!navigator) return null;
-    if (navigator.language != null) return navigator.language;
-    if (navigator.languages && navigator.languages.length > 0) return navigator.languages[0];
-    if (navigator.userLanguage) return navigator.userLanguage;
-    if (navigator.browserLanguage) return navigator.browserLanguage;
-    return null;
-  }
-
-  function getSubPath() {
-    let url = window.location.href;
-    let domainNameIndex = url.indexOf("//");
-    let firstSlashIndex = url.indexOf("/", domainNameIndex + 2);
-    if (firstSlashIndex === -1) return null;
-    return url.substring(firstSlashIndex + 1);
-  }
-
-  function getQueryParam(name) {
-    let url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-  }
-
-  function redirectToRoute(locale, subPath) {
-    if (enableLog) console.log('matching locale ' + locale + ' ...');
-    let route = routing[locale];
-    if (route != null) {
-      if (enableLog) console.log('will redirect to ' + route);
-      if (subPath) {
-        if (!route.endsWith('/')) route += '/';
-        route += subPath;
-        if (enableLog) console.log('full url will be ' + route);
-      }
-      route += "/index.html";
-      window.location.href = route;
-      return;
-    }
-
-    let parts = locale.split('-');
-    if (parts == null || parts.length <= 1) return;
-
-    if (enableLog) console.log("will try to use just the language");
-    redirectToRoute(parts[0], subPath);
-  }
-
-  ////////////////
-  /// REDIRECT ///
-  ////////////////
-
-  let locale = getQueryParam('locale');
-  let saveLocale = true;
-  if (enableLog) console.log('url locale: ' + locale);
-
-  if (locale == null) {
-    const settings = JSON.parse(localStorage.getItem('nanovault-appsettings'));
-    if (settings != null) {
-      locale = settings["language"];
-    }
-    if (enableLog) console.log('stored locale: ' + locale);
-    if (locale != null) saveLocale = false;
-  }
-
-  if (locale == null) {
-    locale = getBrowserLanguage();
-    if (enableLog) console.log('browser locale: ' + locale);
-  }
-
-  if (saveLocale === true) {
-    if (enableLog) console.log('storing locale: ' + locale);
-    localStorage.setItem('nanovault-appsettings', JSON.stringify({language: locale}));
-  }
-
-  if (locale == null) {
-    if (enableLog) console.log('will use default ' + defaultLocale);
-    locale = defaultLocale;
-  }
-
-  locale = locale.toLowerCase();
-  let subPath = getSubPath();
-  redirectToRoute(locale, subPath);
-</script>
+<body style="font-family: 'Lato, Arial', sans-serif;">
+  <div
+    style="position: absolute; text-align: center; height: 30px; font-size: 30px; margin: auto; top: 25%; left: 0; right: 0;">
+    Loading Nault...
+  </div>
+  <script type="text/javascript" src="index.js"></script>
 </body>
+
 </html>
