@@ -101,13 +101,24 @@ export class ConfigureWalletComponent implements OnInit {
     const confirmed = await this.confirmWalletOverwrite();
     if (!confirmed) return;
 
+    let isExpanded;
     if (this.selectedImportOption === 'privateKey') {
-      this.walletService.createWalletFromSingleKey(this.importPrivateKeyModel, false);
+      isExpanded = false;
     } else if (this.selectedImportOption === 'expandedKey') {
-      this.walletService.createWalletFromSingleKey(this.importExpandedKeyModel, true);
+      isExpanded = true;
     } else {
       return this.notifications.sendError(`Invalid import option`);
     }
+
+    let keyString = isExpanded ? this.importExpandedKeyModel : this.importPrivateKeyModel;
+    keyString = keyString.trim();
+    if (isExpanded && keyString.length === 128) {
+      // includes deterministic R value material which we ignore
+      keyString = keyString.substring(0, 64);
+    } else if (keyString.length !== 64) {
+      return this.notifications.sendError(`Private key is invalid, double check it!`);
+    }
+    this.walletService.createWalletFromSingleKey(keyString, isExpanded);
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
