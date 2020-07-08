@@ -120,10 +120,18 @@ export class WalletService {
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
           await this.processPendingBlocks();
         }
-      } else if (transaction.block.type == 'state') {
+      } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (this.wallet.locked) {
           this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
         }
+
+        await this.processStateBlock(transaction);
+
+      }else if (transaction.block.type == 'state') {
+        /* Don't understand when this is ever needed / Json
+        if (this.wallet.locked) {
+          this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+        }*/
 
         await this.processStateBlock(transaction);
       }
