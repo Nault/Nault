@@ -10,7 +10,7 @@ import {NanoBlockService} from "../../services/nano-block.service";
 import * as nanocurrency from 'nanocurrency'
 import { wallet } from 'nanocurrency-web'
 import * as bip39 from 'bip39'
-import { utils } from 'protractor';
+import {Router} from "@angular/router";
 
 const INDEX_MAX = 4294967295; //seed index
 const SWEEP_MAX_INDEX = 100; //max index keys to sweep
@@ -29,7 +29,7 @@ export class SweeperComponent implements OnInit {
 
   myAccountModel = this.accounts.length > 0 ? this.accounts[0].id:0;
   sourceWallet = "";
-  destinationAccount = "";
+  destinationAccount = this.accounts.length > 0 ? this.accounts[0].id:"";
   startIndex = "0";
   endIndex = "5";
   maxIncoming = SWEEP_MAX_PENDING.toString();
@@ -50,7 +50,7 @@ export class SweeperComponent implements OnInit {
   customAccountSelected = this.accounts.length == 0;
 
   validSeed = false;
-  validDestination = false;
+  validDestination = this.myAccountModel != 0 ? true:false;
   validStartIndex = true;
   validEndIndex = true;
   validMaxIncoming = true;
@@ -66,7 +66,13 @@ export class SweeperComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
-    private util: UtilService) { }
+    private util: UtilService,
+    private route: Router) {
+      if(this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){   
+        this.sourceWallet = this.route.getCurrentNavigation().extras.state.seed;
+        this.validSeed = true;
+      }
+    }
 
   async ngOnInit() {
   }
@@ -133,7 +139,7 @@ export class SweeperComponent implements OnInit {
 
   startIndexChange(index) {
     var invalid = false
-    if (this.util.string.isNumeric(index)) {
+    if (this.util.string.isNumeric(index) && index % 1 === 0) {
       index = parseInt(index)
       if (!nanocurrency.checkIndex(index)) {
         invalid = true
@@ -160,7 +166,7 @@ export class SweeperComponent implements OnInit {
 
   endIndexChange(index) {
     var invalid = false
-    if (this.util.string.isNumeric(index)) {
+    if (this.util.string.isNumeric(index) && index % 1 === 0) {
       index = parseInt(index)
       if (!nanocurrency.checkIndex(index)) {
         invalid = true
@@ -186,7 +192,7 @@ export class SweeperComponent implements OnInit {
   }
 
   maxIncomingChange(value) {
-    if (!this.util.string.isNumeric(value)) {
+    if (!this.util.string.isNumeric(value) || value % 1 !== 0) {
       this.validMaxIncoming = false
       return
     }
@@ -258,7 +264,7 @@ export class SweeperComponent implements OnInit {
           nanoAmountSent = this.util.nano.rawToMnano(blockInfo.amount)
           this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent)
         }
-        this.notificationService.sendInfo("Account "+ address + " was swept and " + (nanoAmountSent ? (nanoAmountSent.toString(10) + " Nano"):"") + " transferred to " + this.destinationAccount, {length: 10000});
+        this.notificationService.sendInfo("Account "+ address + " was swept and " + (nanoAmountSent ? (nanoAmountSent.toString(10) + " Nano"):"") + " transferred to " + this.destinationAccount, {length: 15000});
         this.appendLog("Funds transferred "+ (nanoAmountSent ? ("("+nanoAmountSent.toString(10) + " Nano)"):"") + ": "+data.hash)
         console.log(this.adjustedBalance + " raw transferred to " + this.destinationAccount)
       }
@@ -269,9 +275,7 @@ export class SweeperComponent implements OnInit {
       sendCallback()
     }
     else {
-      if (this.destinationAccount !== '') {
-        this.notificationService.sendError(`The destination address is not valid.`);
-      }
+      this.notificationService.sendError(`The destination address is not valid.`);
       sendCallback()
     }
   }

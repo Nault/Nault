@@ -79,10 +79,7 @@ function hexToUint8(hexValue) {
 // Check if string is hexdecimal
 function isHex(h) {
   let re = /^[0-9a-fA-F]+$/
-  if (re.test(h)) {
-    return true
-  }
-  return false
+  return re.test(h)
 }
 
 
@@ -218,12 +215,7 @@ function stringToUint5(string) {
 function isNumeric(val) {
   //numerics and last character is not a dot and number of dots is 0 or 1
   let isnum = /^-?\d*\.?\d*$/.test(val) && val != ''
-  if (isnum && String(val).slice(-1) !== '.') {
-    return true
-  }
-  else {
-    return false
-  }
+  return isnum && String(val).slice(-1) !== '.'
 }
 
 

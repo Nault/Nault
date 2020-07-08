@@ -21,12 +21,12 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Source Wallet <span uk-icon="icon: info;" uk-tooltip title="The wallet to empty/sweep into the destination. WARNING: This wallet and all coresponding accounts will be emptied."></span></label>
+                <label class="uk-form-label" for="source-wallet">Source Wallet <span uk-icon="icon: info;" uk-tooltip title="The wallet to empty/sweep into the destination. WARNING: This wallet and all coresponding accounts will be emptied."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 24-word passphrase">
+                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'bad-value'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 24-word passphrase" autocomplete="off">
                       </div>
                     </div>
                   </div>
@@ -38,10 +38,10 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Local Destination<span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
+                <label class="uk-form-label" for="destination-account">Local Destination<span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
                 <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+                  <select class="uk-select" id="destination-account" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
+                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName + ' - ' : '' }} {{ account.id }}</option>
                     <option [value]="0">Custom Destination</option>
                   </select>
                 </div>
@@ -52,12 +52,12 @@
           <div *ngIf="customAccountSelected" class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Custom Destination<span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be any remote account."></span></label>
+                <label class="uk-form-label" for="custom-destination">Custom Destination<span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be any remote account."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
+                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom {{validDestination ? '':'bad-value'}}" id="custom-destination" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
                       </div>
                     </div>
                   </div>
@@ -69,10 +69,10 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Start Index <span uk-icon="icon: info;" uk-tooltip title="The account index to start looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
+                <label class="uk-form-label" for="start-index">Start Index <span uk-icon="icon: info;" uk-tooltip title="The account index to start looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="0 to {{indexMax}}">
+                    <input [(ngModel)]="startIndex" class="uk-input uk-margin-small-bottom {{validStartIndex ? '':'bad-value'}}" id="start-index" type="text" maxLength="10" (ngModelChange)="startIndexChange(startIndex)" placeholder="0 to {{indexMax}}" autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -82,10 +82,10 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">End Index <span uk-icon="icon: info;" uk-tooltip title="The account index to stop looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
+                <label class="uk-form-label" for="end-index">End Index <span uk-icon="icon: info;" uk-tooltip title="The account index to stop looking for funds. The first account in any wallet is usually 0. Ignored if using private key as source. The maximum number of indexes to check in each run is 100."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="0 to {{indexMax}}">
+                    <input [(ngModel)]="endIndex" class="uk-input uk-margin-small-bottom {{validEndIndex ? '':'bad-value'}}" id="end-index" type="text" maxLength="10" (ngModelChange)="endIndexChange(endIndex)" placeholder="0 to {{indexMax}}" autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -95,10 +95,10 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Max Incoming Tx's <span uk-icon="icon: info;" uk-tooltip title="Maximum number of incoming transactions to receive on each source account before sweeping. You can also use the 'Min Receive' in the app settings to get rid of spam. If not enough, you can just run the process multiple times."></span></label>
+                <label class="uk-form-label" for="max-incoming">Max Incoming Tx's <span uk-icon="icon: info;" uk-tooltip title="Maximum number of incoming transactions to receive on each source account before sweeping. 0 is allowed. You can also use the 'Min Receive' in the app settings to get rid of spam. If not enough, you can just run the process multiple times."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="0 to {{incomingMax}}">
+                    <input [(ngModel)]="maxIncoming" class="uk-input uk-margin-small-bottom {{validMaxIncoming ? '':'bad-value'}}" id="max-incoming" type="text" maxLength="10" (ngModelChange)="maxIncomingChange(maxIncoming)" placeholder="0 to {{incomingMax}}" autocomplete="off">
                   </div>
                 </div>
               </div>
