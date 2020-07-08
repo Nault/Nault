@@ -9,6 +9,7 @@ interface AppSettings {
   displayDenomination: string;
   // displayPrefix: string | null;
   walletStore: string;
+  language: string;
   displayCurrency: string;
   defaultRepresentative: string | null;
   lockOnClose: number;
@@ -25,12 +26,15 @@ interface AppSettings {
 
 @Injectable()
 export class AppSettingsService {
+  // Attention: When changing this value src/locale/redirect/index.html needs to be adjusted accordingly
   storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
     displayDenomination: 'mnano',
     // displayPrefix: 'xrb',
     walletStore: 'localStorage',
+    // Attention: When changing the name of this value src/locale/redirect/index.html needs to be adjusted accordingly
+    language: 'en',
     displayCurrency: 'USD',
     defaultRepresentative: null,
     lockOnClose: 1,
@@ -159,6 +163,7 @@ export class AppSettingsService {
       displayDenomination: 'mnano',
       // displayPrefix: 'xrb',
       walletStore: 'localStorage',
+      language: 'en',
       displayCurrency: 'USD',
       defaultRepresentative: null,
       lockOnClose: 1,

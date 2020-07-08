@@ -18,6 +18,11 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
+              {
+                "glob": "index.html",
+                "input": "src/locale/redirect",
+                "output": "../"
+              },
               "src/assets",
               "src/pow.wasm"
             ],
@@ -40,6 +45,7 @@
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
+              "localize": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -123,6 +129,12 @@
               "**/node_modules/**"
             ]
           }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "de": "src/locale/messages.de.xlf"
         }
       }
     },
