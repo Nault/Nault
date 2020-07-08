@@ -15,6 +15,7 @@ import {ImportWalletComponent} from "./components/import-wallet/import-wallet.co
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import {RepresentativesComponent} from "./components/representatives/representatives.component";
 import {SweeperComponent} from "./components/sweeper/sweeper.component";
+import {QrScanComponent} from "./components/qr-scan/qr-scan.component";
 
 import { environment } from '../environments/environment';
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'import-address-book', component: ImportAddressBookComponent },
   { path: 'import-wallet', component: ImportWalletComponent },
   { path: 'manage-wallet', component: ManageWalletComponent },
+  { path: 'qr-scan', component: QrScanComponent },
   { path: 'send', component: SendComponent },
   { path: 'receive', component: ReceiveComponent },
   { path: 'representatives', component: RepresentativesComponent },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
@@ -15,6 +16,9 @@ import BigNumber from 'bignumber.js';
   templateUrl: './receive.component.html',
   styleUrls: ['./receive.component.css']
 })
+
+
+
 export class ReceiveComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
 
@@ -32,10 +36,16 @@ export class ReceiveComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
+    private sanitizer:DomSanitizer,
     private util: UtilService) { }
 
   async ngOnInit() {
     await this.loadPendingForAll();
+  }
+
+  // To allow unsafe url like deeplink nano:nano_123
+  sanitize(url:string){
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   async loadPendingForAll() {

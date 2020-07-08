@@ -47,7 +47,10 @@ import {DesktopService} from "./services/desktop.service";
 import { AccountPipe } from './pipes/account.pipe';
 import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
 import { SweeperComponent } from './components/sweeper/sweeper.component';
+import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 
+// QR code module
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 @NgModule({
   declarations: [
@@ -76,6 +79,7 @@ import { SweeperComponent } from './components/sweeper/sweeper.component';
     AccountPipe,
     ChangeRepWidgetComponent,
     SweeperComponent,
+    QrScanComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,8 @@ import { SweeperComponent } from './components/sweeper/sweeper.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ClipboardModule
+    ClipboardModule,
+    ZXingScannerModule
   ],
   providers: [
     UtilService,

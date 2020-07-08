@@ -38,7 +38,12 @@ export class ConfigureWalletComponent implements OnInit {
   ledgerStatus = LedgerStatus;
   ledger = this.ledgerService.ledger;
 
-  constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) { }
+  constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) {
+    if(this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
+      this.activePanel = 1;      
+      this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
+    }
+  }
 
   async ngOnInit() {
     const toggleImport = this.router.snapshot.queryParams.import;

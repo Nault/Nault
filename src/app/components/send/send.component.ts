@@ -65,6 +65,8 @@ export class SendComponent implements OnInit {
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
+    console.log(params);
+    
     if (params && params.amount) {
       this.amount = params.amount;
     }

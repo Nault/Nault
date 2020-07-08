@@ -30,8 +30,9 @@
       <div *ngIf="qrCodeImage" class="uk-width-3-4@s narrow-div">
         <input [(ngModel)]="receiveAmount" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="changeQRAmount(receiveAmount)" title="Amount to be included in the QR and read by the sending wallet." placeholder="Optional Nano amount">
       </div>
-      <div class="uk-width-1-1@s narrow-div">
-        <img *ngIf="qrCodeImage" [src]="qrCodeImage"><br />
+      <div *ngIf="qrCodeImage" class="uk-width-1-1@s narrow-div">
+        <img [src]="qrCodeImage"><br>
+        <span>{{pendingAccountModel}}</span><a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a><a class="span-icon" [href]="sanitize('nano:'+pendingAccountModel)" uk-icon="icon: sign-in" title="Open in another wallet" uk-tooltip></a>
       </div>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
