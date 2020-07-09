@@ -21,7 +21,7 @@
               {
                 "glob": "**",
                 "input": "src/locale/redirect",
-                "output": "../"
+                "output": "./"
               },
               "src/assets",
               "src/pow.wasm"
