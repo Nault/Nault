@@ -28,7 +28,7 @@
 
             <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
               <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
+              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
               <span class="balance" style="clear: left; text-align: left;">
                 {{ wallet.balance | rai: settings.settings.displayDenomination }}
               </span>
