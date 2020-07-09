@@ -21,7 +21,7 @@
     "release": "npm run desktop:build && electron-builder",
     "wallet:dev": "ng serve --open",
     "wallet:dev-ssl": "ng serve --ssl --open",
-    "wallet:build": "ng build --prod",
+    "wallet:build": "ng build --prod --base-href && npm run i18n:cp-redirect",
     "wallet:build-desktop": "ng build --configuration=desktop --base-href ./",
     "desktop:compile": "cd desktop-app && tsc && cd ..",
     "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
@@ -30,7 +30,8 @@
     "desktop:dev-path": "npm run desktop:compile && ./node_modules/.bin/electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
-    "desktop:publish": "build -wml --x64 -p always"
+    "desktop:publish": "build -wml --x64 -p always",
+    "i18n:cp-redirect": "cp ./src/locale/redirect/* ./dist"
   },
   "private": true,
   "dependencies": {

@@ -18,11 +18,6 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              {
-                "glob": "**",
-                "input": "src/locale/redirect",
-                "output": "./"
-              },
               "src/assets",
               "src/pow.wasm"
             ],
