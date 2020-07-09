@@ -21,17 +21,19 @@
     "release": "npm run desktop:build && electron-builder",
     "wallet:dev": "ng serve --open",
     "wallet:dev-ssl": "ng serve --ssl --open",
-    "wallet:build": "ng build --prod --base-href && npm run i18n:cp-redirect",
+    "wallet:build": "ng build --prod --base-href && npm run i18n:redirect",
     "wallet:build-desktop": "ng build --configuration=desktop --base-href ./",
     "desktop:compile": "cd desktop-app && tsc && cd ..",
-    "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
+    "desktop:build": "npm run wallet:build-desktop && npm run i18n:redirect && npm run desktop:compile",
     "desktop:build-local": "npm run desktop:build && npm run desktop:local",
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
     "desktop:dev-path": "npm run desktop:compile && ./node_modules/.bin/electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "build -wml --x64 -p always",
-    "i18n:cp-redirect": "cp ./src/locale/redirect/* ./dist"
+    "i18n:redirect": "npm run i18n:redirect-compile && npm run i18n:redirect-cp",
+    "i18n:redirect-compile": "tsc src/locale/redirect/redirect.ts --outFile dist/redirect.js",
+    "i18n:redirect-cp": "cp ./src/locale/redirect/index.html ./dist"
   },
   "private": true,
   "dependencies": {
