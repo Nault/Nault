@@ -36,21 +36,21 @@
 
             <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
               <div class="uk-width-1-2 uk-text-left">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;" translate>Balance </span>
               </div>
               <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0;">
                 <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server"></a>
                 <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
               </div>
               <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
-                <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node">CONNECTING</span>
-                <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
+                <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node" translate>CONNECTING</span>
+                <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server" translate>NODE DISCONNECTED</span>
               </div>
             </div>
 
             <div *ngIf="walletService.hasPendingTransactions()">
               <div style="display: inline-block; text-align: right;" class="uk-text-muted">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Incoming</span>
+                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;" translate>Incoming</span>
                 <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
                 <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
               </div>
@@ -64,30 +64,30 @@
         <app-wallet-widget></app-wallet-widget>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left" translate>Accounts</a></li>
+          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left" translate>Send</a></li>
           <li>
             <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
               <div uk-grid>
-                <div class="uk-width-3-4">
+                <div class="uk-width-3-4" translate>
                   Receive
                 </div>
                 <div class="uk-width-1-4 uk-text-center">
-                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;" translate>New</span>
                 </div>
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-margin-left ">Scan QR Code</a></li>
+          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left" translate>Address Book</a></li>
+          <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-margin-left " translate>Scan QR Code</a></li>
           <li class="uk-parent">
-            <a href="#" class="uk-margin-left">Settings</a>
+            <a href="#" class="uk-margin-left" translate>Settings</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
-              <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
-              <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
-              <li><a routerLink="/sweeper" routerLinkActive="active" class="uk-margin-left">Wallet Sweeper</a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left" translate>Representatives</a></li>
+              <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left" translate>App Settings</a></li>
+              <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left" translate>Manage Wallet</a></li>
+              <li><a routerLink="/sweeper" routerLinkActive="active" class="uk-margin-left" translate>Wallet Sweeper</a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left" translate>Configure New Wallet</a></li>
             </ul>
           </li>
         </ul>
@@ -96,6 +96,9 @@
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
+            <select #langSelect (change)="translate.use(langSelect.value)">
+              <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
             <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
@@ -111,7 +114,7 @@
             </form>
           </div>
         </div>
-
+        
       </div>
       <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="navExpanded = false;" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">

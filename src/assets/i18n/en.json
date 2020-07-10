@@ -1,0 +1,18 @@
+{
+  "Balance": "Balance",
+  "CONNECTING": "CONNECTING",
+  "NODE DISCONNECTED": "NODE DISCONNECTED",
+  "Incoming": "Incoming",
+  "Accounts": "Accounts",
+  "Send": "Send",
+  "Receive": "Receive",
+  "New": "New",
+  "Address Book": "Address Book",
+  "Scan QR Code": "Scan QR Code",
+  "Representatives": "Representatives",
+  "App Settings": "App Settings",
+  "Manage Wallet": "Manage Wallet",
+  "Wallet Sweeper": "Wallet Sweeper",
+  "Configure New Wallet": "Configure New Wallet",
+  "Settings": "Settings"
+}

@@ -1,0 +1,18 @@
+{
+  "Balance": "Guthaben",
+  "CONNECTING": "VERBINDEN",
+  "NODE DISCONNECTED": "NODE GETRENNT",
+  "Incoming": "Eingehend",
+  "Accounts": "Konten",
+  "Send": "Senden",
+  "Receive": "Empfangen",
+  "New": "Neu",
+  "Address Book": "Addressbuch",
+  "Scan QR Code": "QR Code Scanner",
+  "Representatives": "Vertreter",
+  "App Settings": "Einstellungen",
+  "Manage Wallet": "Konten verwalten",
+  "Wallet Sweeper": "Kontensammler",
+  "Configure New Wallet": "Neues Konto konfigurieren",
+  "Settings": "Einstellungen"
+}

@@ -47,14 +47,14 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService,
-    private translate: TranslateService) { 
-      router.events.subscribe(() => { this.navExpanded = false })
-      
-      // this language will be used as a fallback when a translation isn't found in the current language
+    public translate: TranslateService) {
+      router.events.subscribe(() => { this.navExpanded = false; });
+
+      translate.addLangs(['en', 'de']);
       translate.setDefaultLang('en');
 
-       // the lang to use, if the lang isn't available, it will use the current loader to get them
-      translate.use('en');
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|de/) ? browserLang : 'en');
     }
 
   async ngOnInit() {
