@@ -2,7 +2,7 @@
 
 Nault is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
-It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) in your browser either from publicly hosted [nault.cc](https://nault.cc) or by [cloning the site](https://github.com/BitDesert/Nault/tree/gh-pages) and run it locally for example in [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
+It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/BitDesert/Nault/releases/latest).
 
 The main difference compared to the original NanoVault is the "server-less" hosting via [vercel](https://nault.vercel.app), seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained. Those features together will greatly increase the stability, performance and uptime.
 
@@ -19,9 +19,9 @@ ___
 
 
 # Install Nault
-Nault can be cloned and built from source or downloaded as [latest web version](https://github.com/BitDesert/Nault/tree/gh-pages) to be run directly in your own webserver like [this Crome extension](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en).
-You can also use Nault from any device on the web at [nault.cc](https://nault.cc/) or run it as a [desktop app](https://github.com/BitDesert/Nault/releases) built on electron.
+Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [latest release](https://github.com/BitDesert/Nault/releases/latest) and download the version for your OS.
 
+You can also use Nault from any device on the web at [nault.cc](https://nault.cc/)
 
 # Bugs/Feedback
 If you run into any issues, please use the [GitHub Issue Tracker](https://github.com/BitDesert/Nault/issues) or head over to the [TNC Discord Server](http://discord.nanocenter.org/)!  

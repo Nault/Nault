@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, ChildActivationEnd, Router} from "@angular/router";
+import {ActivatedRoute, ChildActivationEnd, Router} from "@angular/router";
 import {ApiService} from "../../services/api.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import BigNumber from "bignumber.js";
