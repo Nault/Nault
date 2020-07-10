@@ -50,11 +50,14 @@ export class AppComponent implements OnInit {
     public translate: TranslateService) {
       router.events.subscribe(() => { this.navExpanded = false; });
 
-      translate.addLangs(['en', 'de']);
+      translate.addLangs(['en', 'de', 'sv-se']);
       translate.setDefaultLang('en');
 
       const browserLang = translate.getBrowserLang();
-      translate.use(browserLang.match(/en|de/) ? browserLang : 'en');
+      console.log('Browser language:', browserLang);
+      console.log('Browser culture:', translate.getBrowserCultureLang());
+
+      translate.use(browserLang.match(/en|de|sv-se/) ? browserLang : 'en');
     }
 
   async ngOnInit() {
