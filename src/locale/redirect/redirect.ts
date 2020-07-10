@@ -23,8 +23,8 @@ function redirectToRoute(locale) {
 }
 
 let locale = defaultLocale;
-const settings = JSON.parse(localStorage.getItem(storagePath));
-if (settings != null) {
+let settings = JSON.parse(localStorage.getItem(storagePath));
+if (settings != null && settings["language"]) {
   locale = settings["language"];
   console.log('stored locale: ' + locale);
   
@@ -40,7 +40,12 @@ if (settings != null) {
   locale = locale.toLowerCase();
 
   console.log('storing locale: ' + locale);
-  localStorage.setItem(storagePath, JSON.stringify({ language: locale }));
+  if(settings){
+    settings.language = locale;
+  } else {
+    settings = { language: locale };
+  }
+  localStorage.setItem(storagePath, JSON.stringify(settings));
 }
 
 redirectToRoute(routing[locale]);
