@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 import {RepresentativeService} from "./services/representative.service";
 import {NodeService} from "./services/node.service";
 import { LedgerService } from './services';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -45,8 +46,15 @@ export class AppComponent implements OnInit {
     private router: Router,
     private workPool: WorkPoolService,
     private ledger: LedgerService,
-    public price: PriceService) { 
+    public price: PriceService,
+    private translate: TranslateService) { 
       router.events.subscribe(() => { this.navExpanded = false })
+      
+      // this language will be used as a fallback when a translation isn't found in the current language
+      translate.setDefaultLang('en');
+
+       // the lang to use, if the lang isn't available, it will use the current loader to get them
+      translate.use('en');
     }
 
   async ngOnInit() {

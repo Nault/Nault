@@ -29,7 +29,9 @@
     "desktop:dev-path": "npm run desktop:compile && ./node_modules/.bin/electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
-    "desktop:publish": "build -wml --x64 -p always"
+    "desktop:publish": "build -wml --x64 -p always",
+    "i18n:init": "ngx-translate-extract --input ./src --output ./src/assets/i18n/template.json --key-as-default-value --replace --format json",
+    "i18n:extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{en,da,de,fi,nb,nl,sv}.json --clean --format json"  
   },
   "private": true,
   "dependencies": {
@@ -44,6 +46,8 @@
     "@angular/router": "^9.1.11",
     "@ledgerhq/hw-transport-node-hid": "^5.19.0",
     "@ledgerhq/hw-transport-u2f": "^5.19.0",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@types/crypto-js": "^3.1.38",
     "@zxing/ngx-scanner": "^3.0.0",
     "babel-polyfill": "^6.26.0",
@@ -71,6 +75,7 @@
     "@angular/cli": "^9.1.9",
     "@angular/compiler-cli": "^9.1.11",
     "@angular/language-service": "^9.1.11",
+    "@biesbjerg/ngx-translate-extract": "^7.0.2",
     "@types/bip39": "^2.4.0",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
