@@ -24,7 +24,8 @@ function redirectToRoute(locale) {
 
 let locale = defaultLocale;
 let settings = JSON.parse(localStorage.getItem(storagePath));
-if (settings != null && settings["language"]) {
+// localStorage item exists + language in localStorage exists + language is available
+if (settings != null && settings['language'] && Object.keys(routing).includes(settings['language'])) {
   locale = settings["language"];
   console.log('stored locale: ' + locale);
   
