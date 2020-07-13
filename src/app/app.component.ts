@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService,
-    public translate: TranslateService) {
+    private translate: TranslateService) {
       router.events.subscribe(() => { this.navExpanded = false; });
 
       translate.addLangs(['en', 'de', 'sv-se']);

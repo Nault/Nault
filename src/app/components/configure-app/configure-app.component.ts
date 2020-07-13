@@ -13,6 +13,7 @@ import {NodeService} from "../../services/node.service";
 import {UtilService} from "../../services/util.service";
 import {BehaviorSubject} from "rxjs";
 import {RepresentativeService} from "../../services/representative.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-configure-app',
@@ -139,7 +140,8 @@ export class ConfigureAppComponent implements OnInit {
     private repService: RepresentativeService,
     private node: NodeService,
     private util: UtilService,
-    private price: PriceService) { }
+    private price: PriceService,
+    private translate: TranslateService) { }
 
   async ngOnInit() {
     this.loadFromSettings();
@@ -188,6 +190,8 @@ export class ConfigureAppComponent implements OnInit {
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
     this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
     this.appSettings.setAppSetting('language', this.selectedLanguage);
+
+    this.translate.use(this.selectedLanguage);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
