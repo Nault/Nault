@@ -105,6 +105,7 @@
       "app": "./"
     },
     "mac": {
+      "target": "dmg",
       "category": "public.app-category.finance",
       "extendInfo": {
         "CFBundleURLTypes": [
