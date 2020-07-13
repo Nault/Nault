@@ -50,22 +50,15 @@ export class AppComponent implements OnInit {
     private translate: TranslateService) {
       router.events.subscribe(() => { this.navExpanded = false; });
 
+      // available languages
       translate.addLangs(['en', 'de', 'sv-se']);
       translate.setDefaultLang('en');
-
-      const browserLang = translate.getBrowserLang();
-      console.log('Browser language:', browserLang);
-      console.log('Browser culture:', translate.getBrowserCultureLang());
-
-      translate.use(browserLang.match(/en|de|sv-se/) ? browserLang : 'en');
     }
 
   async ngOnInit() {
     this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
-
-    // New for v19: Patch saved xrb_ prefixes to nano_
-    await this.patchXrbToNanoPrefixData();
+    this.translate.use(this.settings.settings.language);
 
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();

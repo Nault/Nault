@@ -99,7 +99,6 @@ export function createTranslateLoader(http: HttpClient) {
     ClipboardModule,
     ZXingScannerModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'en',
       loader: {
           provide: TranslateLoader,
           useFactory: (createTranslateLoader),
