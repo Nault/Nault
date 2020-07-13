@@ -22,6 +22,12 @@ import {RepresentativeService} from "../../services/representative.service";
 export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
+  languages = [
+    { name: 'English', value: 'en' },
+    { name: 'Deutsch', value: 'de' }
+  ];
+  selectedLanguage = this.languages[0].value;
+
   denominations = [
     { name: 'NANO (1 Mnano)', value: 'mnano' },
     { name: 'knano (0.001 Mnano)', value: 'knano' },
@@ -142,6 +148,9 @@ export class ConfigureAppComponent implements OnInit {
   loadFromSettings() {
     const settings = this.appSettings.settings;
 
+    const matchingLanguage = this.languages.find(language => language.value === settings.language);
+    this.selectedLanguage = matchingLanguage.value || this.languages[0].value;
+
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
@@ -178,6 +187,7 @@ export class ConfigureAppComponent implements OnInit {
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
     this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
+    this.appSettings.setAppSetting('language', this.selectedLanguage);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
