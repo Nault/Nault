@@ -26,6 +26,8 @@ export class ReceiveComponent implements OnInit {
   qrCodeImage = null;
   qrAccount = "";
   qrAmount:BigNumber = null;
+  currentPending = [];
+  shouldLoop = false;
 
   constructor(
     private walletService: WalletService,
@@ -38,7 +40,44 @@ export class ReceiveComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
+    this.shouldLoop = true;
+    this.updateList();
     await this.loadPendingForAll();
+  }
+
+  ngOnDestroy() {
+    // stop checking the list when not in this view
+    this.shouldLoop = false;
+  }
+
+  // check for new pending in any account every 2sec and update list if needed
+  async updateList() {
+    let accounts = this.walletService.wallet.accounts;
+    var tempPending = [];
+    var anyAccountChanged = false;
+    // save each account in an array to compare next time
+    accounts.forEach(async function(account) {
+      tempPending.push({id:account.id, pending:account.pending});
+      this.currentPending.forEach(async function(entry) {
+        // a certain account pending has changed from last check
+        if (entry.id == account.id && entry.pending.comparedTo(account.pending) != 0) {
+          anyAccountChanged = true;
+          // process chosen single account
+          if (this.pendingAccountModel != 0 && this.pendingAccountModel == entry.id) {
+            await this.loadPendingForAccount(this.pendingAccountModel);
+          }
+        }
+      }.bind(this))
+    }.bind(this))
+    if (this.pendingAccountModel == 0 && anyAccountChanged) {
+      await this.loadPendingForAll();
+    }
+
+    this.currentPending = tempPending;
+    
+    if (this.shouldLoop) {
+      setTimeout(() => this.updateList(), 1000);
+    }
   }
 
   async loadPendingForAll() {
@@ -159,7 +198,7 @@ export class ReceiveComponent implements OnInit {
     pendingBlock.loading = false;
 
     await this.walletService.reloadBalances();
-    await this.loadPendingForAll();
+    //await this.loadPendingForAll();
   }
 
   copied() {

@@ -114,15 +114,21 @@ export class WalletService {
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
         if (walletAccount) {
           // If the wallet is locked, show a notification
-          if (this.wallet.locked) {
-            this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+          if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+          }
+          else if (this.appSettings.settings.pendingOption === 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 5000, identifier: 'pending-locked' });
           }
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
           await this.processPendingBlocks();
         }
       } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
-        if (this.wallet.locked) {
-          this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+        if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
+          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+        }
+        else if (this.appSettings.settings.pendingOption === 'manual') {
+          this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 5000, identifier: 'pending-locked' });
         }
 
         await this.processStateBlock(transaction);
@@ -130,7 +136,7 @@ export class WalletService {
       }else if (transaction.block.type == 'state') {
         /* Don't understand when this is ever needed / Json
         if (this.wallet.locked) {
-          this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
         }*/
 
         await this.processStateBlock(transaction);
@@ -826,7 +832,7 @@ export class WalletService {
   }
 
   async processPendingBlocks() {
-    if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length) return;
+    if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length || this.appSettings.settings.pendingOption === 'manual') return;
 
     // Sort pending by amount
     if (this.appSettings.settings.pendingOption === 'amount') {

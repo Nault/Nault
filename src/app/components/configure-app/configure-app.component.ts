@@ -95,6 +95,7 @@ export class ConfigureAppComponent implements OnInit {
   pendingOptions = [
     { name: 'Largest Amount First', value: 'amount' },
     { name: 'Oldest Transaction First', value: 'date' },
+    { name: 'Manual Receive', value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
@@ -213,7 +214,9 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
-    const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive;
+
+    // reload pending if threshold changes or if receive priority changes from manual to auto
+    const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive || (pendingOption !== 'manual' && pendingOption != this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
       const valid = await this.api.validateAccountNumber(this.defaultRepresentative);

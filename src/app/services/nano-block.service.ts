@@ -51,7 +51,6 @@ export class NanoBlockService {
       work: null,
     };
 
-    let signature = null;
     if (ledger) {
       const ledgerBlock = {
         previousBlock: toAcct.frontier,
@@ -63,7 +62,7 @@ export class NanoBlockService {
         await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
-        signature = sig.signature;
+        blockData.signature = sig.signature;
       } catch (err) {
         this.clearLedgerNotification();
         this.sendLedgerDeniedNotification();

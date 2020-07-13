@@ -10,7 +10,7 @@
       <div class="uk-width-1-1">
         <p>
           Select an account to show the deposit QR.<br>
-          Funds should be received automatically if the wallet is unlocked. If not, you can try find them and receive manually.<br>
+          Depending on app setting, funds are received automatically if the wallet is unlocked. If not, you can find them and receive manually.<br>
           You can also find full transaction history under <a routerLink="/accounts" routerLinkActive="active">Accounts</a>
         </p>
       </div>
@@ -51,7 +51,7 @@
                 <div uk-grid>
                   <div class="uk-width-expand uk-text-truncate">
                     <a [routerLink]="'/account/' + block.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.account }}
+                      {{ block.account | squeeze }}
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">
@@ -65,7 +65,7 @@
                 <div uk-grid>
                   <div class="uk-width-expand uk-text-truncate">
                     <a [routerLink]="'/account/' + block.source" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.source }}
+                      {{ block.source | squeeze }}
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">
