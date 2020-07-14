@@ -47,8 +47,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   routerSub = null;
   priceSub = null;
 
-  currentPending = [];
-  shouldLoop = false;
+  statsRefreshEnabled = true;
 
   constructor(
     private router: ActivatedRoute,
@@ -61,7 +60,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private wallet: WalletService,
     private util: UtilService,
     public settings: AppSettingsService,
-    
     private nanoBlock: NanoBlockService) { }
 
   async ngOnInit() {
@@ -76,35 +74,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     });
 
     await this.loadAccountDetails();
-    this.shouldLoop = true;
-    this.updateList();
   }
 
-  // check for new pending in the main wallet and update list if needed
-  async updateList() {
-    let accounts = this.wallet.wallet.accounts;
-    var tempPending = [];
-    let currentAccount = this.router.snapshot.params.account;
-    // save each account in an array to compare next time
-    accounts.forEach(async function(account) {
-      tempPending.push({id:account.id, pending:account.pending});
-      this.currentPending.forEach(async function(entry) {
-        // a certain account pending has changed from last check
-        if (entry.id == account.id && entry.pending.comparedTo(account.pending) != 0 && currentAccount == entry.id) {
-          // reload details
-          await this.loadAccountDetails();
-        }
-      }.bind(this))
-    }.bind(this))
+  async loadAccountDetails(refresh=false) {
+    if (refresh && !this.statsRefreshEnabled) return
+    this.statsRefreshEnabled = false;
+    setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
-    this.currentPending = tempPending;
-    
-    if (this.shouldLoop) {
-      setTimeout(() => this.updateList(), 5000);
-    }
-  }
-
-  async loadAccountDetails() {
     this.pendingBlocks = [];
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
@@ -165,8 +141,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (this.priceSub) {
       this.priceSub.unsubscribe();
     }
-
-    this.shouldLoop = false;
   }
 
   async getAccountHistory(account, resetPage = true) {
