@@ -148,7 +148,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateNodeStats(refresh=false) {
-    if (this.serverAPIUpdated != this.appSettings.settings.serverAPI || (refresh && !this.statsRefreshEnabled)) return
+    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled)) return
     this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
@@ -166,7 +166,7 @@ export class ConfigureAppComponent implements OnInit {
     }
     catch {console.warn("Failed to get node stats: version")}
 
-    setTimeout(() => this.statsRefreshEnabled = true, 10000);
+    setTimeout(() => this.statsRefreshEnabled = true, 5000);
   }
 
   loadFromSettings() {
@@ -365,6 +365,7 @@ export class ConfigureAppComponent implements OnInit {
     const custom = this.serverOptions.find(c => c.value === newServer);
     if (custom) {
       this.serverAPI = custom.api;
+      this.serverAPIUpdated = custom.api;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
     }
@@ -376,8 +377,9 @@ export class ConfigureAppComponent implements OnInit {
     this.nodeUncemented = 'N/A';
     this.nodeVendor = 'N/A';
     this.nodeNetwork = 'N/A';
-    this.serverAPIUpdated = null;
-    this.statsRefreshEnabled = false;
+    this.statsRefreshEnabled = newServer == 'random' ? false:true;
+
+    this.updateNodeStats()
   }
 
   async clearWorkCache() {

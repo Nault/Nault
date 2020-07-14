@@ -1,5 +1,7 @@
 #node-stats {
     cursor: pointer;
+    position: relative;
+    bottom: 2px;
 }
 .node-stats-disabled {
     color: #bbb;
