@@ -7,7 +7,6 @@ import {PowService} from "../../services/pow.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
-import {LedgerService, LedgerStatus} from "../../services/ledger.service";
 import {WebsocketService} from "../../services/websocket.service";
 import {NodeService} from "../../services/node.service";
 import {UtilService} from "../../services/util.service";
@@ -120,6 +119,13 @@ export class ConfigureAppComponent implements OnInit {
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
+  nodeBlockCount = 'N/A';
+  nodeUnchecked = 'N/A';
+  nodeCemented = 'N/A';
+  nodeVendor = 'N/A';
+  nodeNetwork = 'N/A';
+  statsLastUpdated = Date.now();
+
   constructor(
     private walletService: WalletService,
     private notifications: NotificationService,
@@ -127,7 +133,6 @@ export class ConfigureAppComponent implements OnInit {
     private addressBook: AddressBookService,
     private pow: PowService,
     private api: ApiService,
-    private ledgerService: LedgerService,
     private websocket: WebsocketService,
     private workPool: WorkPoolService,
     private repService: RepresentativeService,
@@ -137,6 +142,26 @@ export class ConfigureAppComponent implements OnInit {
 
   async ngOnInit() {
     this.loadFromSettings();
+    this.updateNodeStats();
+  }
+
+  async updateNodeStats(refresh=false) {
+    if (this.serverAPI != this.appSettings.settings.serverAPI || (refresh && Date.now() < this.statsLastUpdated + 10000)) return
+    this.statsLastUpdated = Date.now() // for reducing the possible update frequency
+    try {
+      let blockCount = await this.api.blockCount()
+      this.nodeBlockCount = this.util.string.addCommas(blockCount.count.toString())
+      this.nodeUnchecked = this.util.string.addCommas(blockCount.unchecked.toString())
+      this.nodeCemented = this.util.string.addCommas(blockCount.cemented.toString())
+    }
+    catch {console.warn("Failed to get node stats: block count")}
+    
+    try {
+      let version = await this.api.version()
+      this.nodeVendor = version.node_vendor
+      this.nodeNetwork = version.network
+    }
+    catch {console.warn("Failed to get node stats: version")}
   }
 
   loadFromSettings() {
@@ -292,6 +317,8 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
+    this.serverAPI = this.appSettings.settings.serverAPI; //this is updated after setting server to random and doing recheck of wallet balance
+    this.updateNodeStats();
   }
 
   searchRepresentatives() {
@@ -333,6 +360,13 @@ export class ConfigureAppComponent implements OnInit {
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
     }
+
+    // reset server stats until updated
+    this.nodeBlockCount = 'N/A';
+    this.nodeUnchecked = 'N/A';
+    this.nodeCemented = 'N/A';
+    this.nodeVendor = 'N/A';
+    this.nodeNetwork = 'N/A';
   }
 
   async clearWorkCache() {

@@ -295,6 +295,62 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+              <div>
+                <label class="uk-form-label uk-text-right">Node Stats <span id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-text-meta">
+                      <table id="node-stats-table">
+                        <td>
+                          <tr>
+                            <strong>Server</strong>
+                          </tr>
+                          <tr>
+                            <strong>Block Count</strong>
+                          </tr>
+                          <tr>
+                            <strong>Unchecked Blocks</strong>
+                          </tr>
+                          <tr>
+                            <strong>Cemented Blocks</strong>
+                          </tr>
+                          <tr>
+                            <strong>Node Version</strong>
+                          </tr>
+                          <tr>
+                            <strong>Network</strong>
+                          </tr>
+                        </td>
+                        <td>
+                          <tr>
+                            {{serverAPI ? serverAPI:'Save settings to update'}}
+                          </tr>
+                          <tr>
+                            {{nodeBlockCount}}
+                          </tr>
+                          <tr>
+                            {{nodeUnchecked}}
+                          </tr>
+                          <tr>
+                            {{nodeCemented}}
+                          </tr>
+                          <tr>
+                            {{nodeVendor}}
+                          </tr>
+                          <tr>
+                            {{nodeNetwork}}
+                          </tr>
+                        </td>
+                      </table>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right">
