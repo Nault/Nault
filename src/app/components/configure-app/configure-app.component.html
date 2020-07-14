@@ -298,7 +298,7 @@
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
               <div>
-                <label class="uk-form-label uk-text-right">Node Stats <span id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
+                <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-text-meta">
@@ -311,10 +311,10 @@
                             <strong>Block Count</strong>
                           </tr>
                           <tr>
-                            <strong>Unchecked Blocks</strong>
+                            <strong>Cemented Blocks</strong>
                           </tr>
                           <tr>
-                            <strong>Cemented Blocks</strong>
+                            <strong>Uncemented Blocks</strong>
                           </tr>
                           <tr>
                             <strong>Node Version</strong>
@@ -325,16 +325,16 @@
                         </td>
                         <td>
                           <tr>
-                            {{serverAPI ? serverAPI:'Save settings to update'}}
+                            {{serverAPIUpdated ? serverAPI:'Save settings to update'}}
                           </tr>
                           <tr>
                             {{nodeBlockCount}}
                           </tr>
                           <tr>
-                            {{nodeUnchecked}}
+                            {{nodeCemented}}
                           </tr>
                           <tr>
-                            {{nodeCemented}}
+                            {{nodeUncemented}}
                           </tr>
                           <tr>
                             {{nodeVendor}}

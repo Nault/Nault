@@ -112,6 +112,7 @@ export class ConfigureAppComponent implements OnInit {
   representativeListMatch = '';
 
   serverAPI = null;
+  serverAPIUpdated = null;
   serverWS = null;
   serverAuth = null;
   minimumReceive = null;
@@ -122,9 +123,10 @@ export class ConfigureAppComponent implements OnInit {
   nodeBlockCount = 'N/A';
   nodeUnchecked = 'N/A';
   nodeCemented = 'N/A';
+  nodeUncemented = 'N/A';
   nodeVendor = 'N/A';
   nodeNetwork = 'N/A';
-  statsLastUpdated = Date.now();
+  statsRefreshEnabled = true;
 
   constructor(
     private walletService: WalletService,
@@ -146,13 +148,14 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateNodeStats(refresh=false) {
-    if (this.serverAPI != this.appSettings.settings.serverAPI || (refresh && Date.now() < this.statsLastUpdated + 10000)) return
-    this.statsLastUpdated = Date.now() // for reducing the possible update frequency
+    if (this.serverAPIUpdated != this.appSettings.settings.serverAPI || (refresh && !this.statsRefreshEnabled)) return
+    this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
       this.nodeBlockCount = this.util.string.addCommas(blockCount.count.toString())
       this.nodeUnchecked = this.util.string.addCommas(blockCount.unchecked.toString())
       this.nodeCemented = this.util.string.addCommas(blockCount.cemented.toString())
+      this.nodeUncemented = (parseInt(this.nodeBlockCount) - parseInt(this.nodeCemented)).toString()
     }
     catch {console.warn("Failed to get node stats: block count")}
     
@@ -162,6 +165,8 @@ export class ConfigureAppComponent implements OnInit {
       this.nodeNetwork = version.network
     }
     catch {console.warn("Failed to get node stats: version")}
+
+    setTimeout(() => this.statsRefreshEnabled = true, 10000);
   }
 
   loadFromSettings() {
@@ -188,6 +193,7 @@ export class ConfigureAppComponent implements OnInit {
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
+    this.serverAPIUpdated = this.serverAPI;
     this.serverWS = settings.serverWS;
     this.serverAuth = settings.serverAuth;
 
@@ -317,7 +323,9 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
-    this.serverAPI = this.appSettings.settings.serverAPI; //this is updated after setting server to random and doing recheck of wallet balance
+    this.serverAPIUpdated = this.appSettings.settings.serverAPI; //this is updated after setting server to random and doing recheck of wallet balance
+    this.serverAPI = this.serverAPIUpdated;
+    this.statsRefreshEnabled = true;
     this.updateNodeStats();
   }
 
@@ -365,8 +373,11 @@ export class ConfigureAppComponent implements OnInit {
     this.nodeBlockCount = 'N/A';
     this.nodeUnchecked = 'N/A';
     this.nodeCemented = 'N/A';
+    this.nodeUncemented = 'N/A';
     this.nodeVendor = 'N/A';
     this.nodeNetwork = 'N/A';
+    this.serverAPIUpdated = null;
+    this.statsRefreshEnabled = false;
   }
 
   async clearWorkCache() {
