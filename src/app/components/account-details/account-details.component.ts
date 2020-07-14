@@ -80,7 +80,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.updateList();
   }
 
-  // check for new pending in any account every 2sec and update list if needed
+  // check for new pending in the main wallet and update list if needed
   async updateList() {
     let accounts = this.wallet.wallet.accounts;
     var tempPending = [];

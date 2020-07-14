@@ -95,7 +95,7 @@ export class ConfigureAppComponent implements OnInit {
   pendingOptions = [
     { name: 'Largest Amount First', value: 'amount' },
     { name: 'Oldest Transaction First', value: 'date' },
-    { name: 'Manual Receive', value: 'manual' },
+    { name: 'Manual', value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 

@@ -118,7 +118,7 @@ export class WalletService {
             this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
           }
           else if (this.appSettings.settings.pendingOption === 'manual') {
-            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 5000, identifier: 'pending-locked' });
+            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
           }
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
           await this.processPendingBlocks();
@@ -128,7 +128,7 @@ export class WalletService {
           this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
         }
         else if (this.appSettings.settings.pendingOption === 'manual') {
-          this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 5000, identifier: 'pending-locked' });
+          this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
         }
 
         await this.processStateBlock(transaction);

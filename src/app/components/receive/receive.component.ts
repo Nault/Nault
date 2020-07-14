@@ -50,7 +50,7 @@ export class ReceiveComponent implements OnInit {
     this.shouldLoop = false;
   }
 
-  // check for new pending in any account every 2sec and update list if needed
+  // check for new pending in the main wallet and update list if needed
   async updateList() {
     let accounts = this.walletService.wallet.accounts;
     var tempPending = [];
