@@ -38,7 +38,9 @@ export class ReceiveComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
-    await this.loadPendingForAll();
+    setTimeout(() => {
+      this.getPending();
+    }, 100);
   }
 
   async loadPendingForAll() {
@@ -57,6 +59,8 @@ export class ReceiveComponent implements OnInit {
   }
 
   async getPending() {
+    // clear the list of pending blocks. Updated again with reloadBalances()
+    this.walletService.clearPendingBlocks()
     await this.walletService.reloadBalances(true)
     await this.loadPendingForAll();
   }
@@ -98,7 +102,7 @@ export class ReceiveComponent implements OnInit {
 
     if (newBlock) {
       this.notificationService.sendSuccess(`Successfully received Nano!`);
-      // clear the list of pending blocks
+      // clear the list of pending blocks. Updated again with reloadBalances()
       this.walletService.clearPendingBlocks()
     } else {
       if (!this.walletService.isLedgerWallet()) {
