@@ -12,6 +12,7 @@ import * as QRCode from 'qrcode';
 import BigNumber from "bignumber.js";
 import {RepresentativeService} from "../../services/representative.service";
 import {BehaviorSubject} from "rxjs";
+import * as nanocurrency from 'nanocurrency'
 
 @Component({
   selector: 'app-account-details',
@@ -47,6 +48,32 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   routerSub = null;
   priceSub = null;
 
+  // Remote signing
+  accounts = this.wallet.wallet.accounts;
+  addressBookResults$ = new BehaviorSubject([]);
+  showAddressBook = false;
+  addressBookMatch = '';
+  amounts = [
+    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
+    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
+    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+  ];
+  selectedAmount = this.amounts[0];
+
+  amount = null;
+  amountRaw: BigNumber = new BigNumber(0);
+  amountFiat: number|null = null;
+  rawAmount: BigNumber = new BigNumber(0);
+  fromAccount: any = {};
+  toAccount: any = false;
+  toAccountID: string = '';
+  toAddressBook = '';
+  toAccountStatus = null;
+  qrCodeImageBlock = null;
+  blockHash = null;
+  remoteVisible = false;
+  // End remote signing
+
   constructor(
     private router: ActivatedRoute,
     private route: Router,
@@ -72,6 +99,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     });
 
     await this.loadAccountDetails();
+    this.addressBook.loadAddressBook();
   }
 
   async loadAccountDetails() {
@@ -284,5 +312,159 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   copied() {
     this.notifications.sendSuccess(`Successfully copied to clipboard!`);
   }
+
+  // Remote signing methods
+  // An update to the Nano amount, sync the fiat value
+  syncFiatPrice() {
+    const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
+    if (rawAmount.lte(0)) {
+      this.amountFiat = 0;
+      return;
+    }
+
+    // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
+    const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+
+    // Determine fiat value of the amount
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    this.amountFiat = fiatAmount;
+  }
+
+  // An update to the fiat amount, sync the nano value based on currently selected denomination
+  syncNanoPrice() {
+    const fiatAmount = this.amountFiat || 0;
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(fiatAmount).div(this.price.price.lastPrice));
+    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
+
+    this.amount = nanoAmount.toNumber();
+  }
+
+  searchAddressBook() {
+    this.showAddressBook = true;
+    const search = this.toAccountID || '';
+    const addressBook = this.addressBook.addressBook;
+
+    const matches = addressBook
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      .slice(0, 5);
+
+    this.addressBookResults$.next(matches);
+  }
+
+  selectBookEntry(account) {
+    this.showAddressBook = false;
+    this.toAccountID = account;
+    this.searchAddressBook();
+    this.validateDestination();
+  }
+
+  async validateDestination() {
+    // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
+    setTimeout(() => this.showAddressBook = false, 400);
+
+    // Remove spaces from the account id
+    this.toAccountID = this.toAccountID.replace(/ /g, '');
+
+    this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
+
+    // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
+    const accountInfo = await this.api.accountInfo(this.toAccountID);
+    if (accountInfo.error) {
+      if (accountInfo.error == 'Account not found') {
+        this.toAccountStatus = 1;
+      } else {
+        this.toAccountStatus = 0;
+      }
+    }
+    if (accountInfo && accountInfo.frontier) {
+      this.toAccountStatus = 2;
+    }
+  }
+
+  setMaxAmount() {
+    this.amountRaw = this.account.balance ? this.account.balance:'0';
+    const nanoVal = this.util.nano.rawToNano(this.amountRaw ).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
+    this.amount = maxAmount.toNumber();
+    this.syncFiatPrice();
+  }
+
+  getAmountBaseValue(value) {
+
+    switch (this.selectedAmount.value) {
+      default:
+      case 'nano': return this.util.nano.nanoToRaw(value);
+      case 'knano': return this.util.nano.knanoToRaw(value);
+      case 'mnano': return this.util.nano.mnanoToRaw(value);
+    }
+  }
+
+  getAmountValueFromBase(value) {
+    switch (this.selectedAmount.value) {
+      default:
+      case 'nano': return this.util.nano.rawToNano(value);
+      case 'knano': return this.util.nano.rawToKnano(value);
+      case 'mnano': return this.util.nano.rawToMnano(value);
+    }
+  }
+
+  async generateSend() {
+    const isValid = await this.api.validateAccountNumber(this.toAccountID);
+    if (!isValid || isValid.valid == '0') return this.notifications.sendWarning(`To account address is not valid`);
+    if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
+
+    const from = await this.api.accountInfo(this.accountID);
+    const to = await this.api.accountInfo(this.toAccountID);
+    if (!from) return this.notifications.sendError(`From account not found`);
+
+    from.balanceBN = new BigNumber(from.balance || 0);
+    to.balanceBN = new BigNumber(to.balance || 0);
+
+    this.fromAccount = from;
+    this.toAccount = to;
+
+    const rawAmount = this.getAmountBaseValue(this.amount || 0);
+    this.rawAmount = rawAmount.plus(this.amountRaw);
+
+    const nanoAmount = this.rawAmount.div(this.nano);
+
+    if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
+    if (nanoAmount.lessThan(1)) return this.notifications.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough NANO`);
+
+    // Determine a proper raw amount to show in the UI, if a decimal was entered
+    this.amountRaw = this.rawAmount.mod(this.nano);
+
+    // Determine fiat value of the amount
+    this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
+
+    const remaining = new BigNumber(from.balance).minus(rawAmount);
+    const remainingDecimal = remaining.toString(10);
+
+    const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
+    let blockData = {
+      type: 'state',
+      account: this.accountID,
+      previous: from.frontier,
+      representative: representative,
+      balance: remainingDecimal,
+      link: this.util.account.getAccountPublicKey(this.toAccountID),
+      work: null,
+      signature: null,
+    };
+    this.blockHash = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
+    console.log("Created block",blockData)
+    console.log("Block hash: " + this.blockHash)
+
+    const qrCode = await QRCode.toDataURL('nanoblock:'+JSON.stringify(blockData, null, 2), { errorCorrectionLevel: 'H', scale: 8 });
+    this.qrCodeImageBlock = qrCode;
+  }
+
+  showRemote(state:boolean) {
+    this.remoteVisible = !state;
+  }
+
+  // End remote signing methods
 
 }
