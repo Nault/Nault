@@ -5,9 +5,14 @@
     letter-spacing: 0.5px;
     padding-top: 20px;
     padding-bottom: 20px;
-    width: 300px;
+    max-width: 320px;
 }
 
 .uk-button-large:hover {
     background-color: #3379ca !important;
+}
+
+.uk-description-list>dt {
+    color: inherit;
+    font-weight: 600;
 }
