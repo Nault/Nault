@@ -3,7 +3,7 @@
 }
 
 .app {
-  background: #f0f1f1;
+  background: #000034;
 }
 
 .title-block {
@@ -101,6 +101,12 @@
   z-index: 1;
 }
 
+.page-container {
+    min-height: calc(100vh);
+    height: calc(100vh - 53px);
+    overflow: scroll;
+  }
+
 @media (max-width: 12450px) {
   .content-container {
     padding-left: 15px;
@@ -124,5 +130,6 @@
     position: absolute;
     width: 350px;
     height: 100%;
+    overflow: scroll;
   }
 }
