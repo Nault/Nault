@@ -7,6 +7,19 @@ html {
   font-family: 'Montserrat', sans-serif !important;
 }
 
+.form-icon-btn {
+    background: #4a90e2;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 0 10px;
+    color: white;
+}
+
+.form-icon-btn:focus, .form-icon-btn:hover {
+    background: #3379ca;
+    color: white;
+}
+
 .uk-button {
     min-height: 40px;
     border-radius: 25px;
@@ -39,19 +52,6 @@ html {
 
 .uk-button-danger:hover {
     background-color: #ee1a41;
-}
-
-.uk-form-icon-btn {
-    background: #4a90e2;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 0 10px;
-    color: white;
-}
-
-.uk-form-icon-btn:focus, .uk-form-icon-btn:hover {
-    background: #3379ca;
-    color: white;
 }
 
 .uk-nav>li>a {
