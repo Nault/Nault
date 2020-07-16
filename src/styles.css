@@ -54,6 +54,10 @@ html {
     background-color: #ee1a41;
 }
 
+.uk-label {
+    background: #4a90e2;
+}
+
 .uk-nav>li>a {
     padding: 10px 0;
 }
@@ -107,6 +111,11 @@ html {
 .uk-form-danger, .uk-form-danger:focus {
     color: #f0506e;
     border-color: #f0506e;
+}
+
+.uk-form-success, .uk-form-success:focus {
+    color: #32d296;
+    border-color: #32d296;
 }
 
 .uk-h2, h2 {
