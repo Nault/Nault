@@ -1,17 +1,19 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
     <div uk-grid>
-      <div class="uk-width-1-2">
+      <div class="uk-width-1-2@s uk-width-1-1">
         <h2>
           Accounts
           <a (click)="viewAdvanced = !viewAdvanced" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BASIC' : 'ADVANCED' }}</a>
         </h2>
       </div>
-      <div class="uk-width-1-2 uk-text-right">
-        <div uk-grid>
-          <div class="uk-width-1-1">
-            <input type="number" class="uk-input uk-form-width-small" [(ngModel)]="newAccountIndex" placeholder="Account #" *ngIf="viewAdvanced">
-            <button class="uk-button uk-button-secondary" (click)="createAccount()">
+      <div class="uk-width-1-2@s uk-width-1-1 uk-text-right">
+        <div class="uk-grid-small uk-child-width-expand" uk-grid>
+          <div>
+            <input type="number" class="uk-input uk-form-width-small uk-width-1-1@m" [(ngModel)]="newAccountIndex" placeholder="Account #" *ngIf="viewAdvanced">
+          </div>
+          <div class="uk-width-auto@m">
+            <button class="uk-button uk-button-secondary uk-width-1-1@m" (click)="createAccount()">
               Add New Account
             </button>
           </div>
@@ -19,7 +21,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin-top">
+    <div class="uk-card uk-card-default uk-margin-top uk-overflow-auto">
       <table class="uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
@@ -34,7 +36,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
-          <td class="uk-visible-toggle">
+          <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
                 <span class="account-index" *ngIf="viewAdvanced">
@@ -53,7 +55,7 @@
               </div>
             </div>
           </td>
-          <td class=" uk-text-right">
+          <td class="uk-text-right">
             {{ account.balance | rai: settings.settings.displayDenomination }}
             <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
               +{{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
@@ -65,7 +67,7 @@
               +{{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
             </div>
           </td>
-          <td class=" uk-text-left">
+          <td class="uk-text-left@m uk-text-right">
             {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
