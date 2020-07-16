@@ -6,7 +6,7 @@
       <div class="uk-width-1-2">
         <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" (click)="toggleNav()" style="cursor: pointer;">
           <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
-          <span style="font-size: 22px;" >Nault</span>
+          <span style="font-size: 22px; font-weight: 500;" >Nault</span>
         </div>
       </div>
       <div class="uk-width-1-2 " style="text-align: right;">
@@ -15,11 +15,11 @@
 
     <!-- Main content container-->
     <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
-      <div class="uk-width-1-4 nav-container" style="background: #2C3E50">
+      <div class="uk-width-1-4 nav-container" style="background: #000034">
         <div class="title-block">
           <div class="uk-margin-left" style="padding-bottom: 15px;">
             <div uk-grid>
-              <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
+              <div class="uk-width-expand"><a routerLink="/" class="title uk-align-left"><img src="assets/img/nault-logo.svg" width="150px" style="display: block; margin: 0 auto 20px auto;" alt="Nault"/></a></div>
               <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
                 <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
                 <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
@@ -113,7 +113,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="navExpanded = false;" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
+      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="navExpanded = false;" style="background: #fff;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>
@@ -123,5 +123,3 @@
 </div>
 
 <app-notifications></app-notifications>
-
-
