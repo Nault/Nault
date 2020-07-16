@@ -101,12 +101,6 @@
   z-index: 1;
 }
 
-.page-container {
-    min-height: calc(100vh);
-    height: calc(100vh - 53px);
-    overflow: scroll;
-  }
-
 @media (max-width: 12450px) {
   .content-container {
     padding-left: 15px;
