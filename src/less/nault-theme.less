@@ -1,0 +1,51 @@
+@import "components/_import.less";
+
+@nlt-intro-margin:                        40px;
+
+// extensions
+// ========================================================================
+
+h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt, .uk-table th, .uk-form-label, .uk-form-icon, .title-block {
+	font-family: @global-secondary-font-family;
+}
+
+h2:not(.uk-card-title):not(.uk-modal-title) {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+@media (min-width: 639px) {
+	h2:not(.uk-card-title):not(.uk-modal-title) {
+	  	border-bottom: 2px solid @global-border;
+	  	margin-bottom: @nlt-intro-margin!important;
+	}
+}
+
+.uk-card, .uk-card-default {
+	border-radius: @global-border-radius-medium;
+}
+
+.uk-description-list dt {
+    font-weight: 700;
+    color: @global-color;
+}
+
+.uk-panel-scrollable {
+    resize: none;
+  }
+
+
+// custom classes
+// ========================================================================
+
+.form-icon-btn {
+    background: @global-primary-background;
+    border-bottom-right-radius: @global-border-radius-small;
+    border-top-right-radius: @global-border-radius-small;
+    padding: 0 10px;
+    color: #fff;
+}
+
+.nlt-page-intro {
+	margin-bottom: @nlt-intro-margin;
+}

@@ -2,10 +2,6 @@
   background: #000;
 }
 
-.app {
-  background: #000034;
-}
-
 .title-block {
   background: #f4faff;
 }
@@ -40,17 +36,8 @@
 }
 
 .left-nav .active {
-  color: #4a90e2;
   font-weight: 500;
   text-decoration: underline;
-}
-
-.left-nav a {
-  color: #FFF;
-}
-
-.left-nav a:hover {
-  color: #4a90e2;
 }
 
 .left-nav>li.uk-parent li {

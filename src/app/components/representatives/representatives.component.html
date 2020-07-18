@@ -1,16 +1,16 @@
 <div uk-grid>
   <div class="uk-width-1-1">
     <div uk-grid>
-      <div class="uk-width-3-5@s uk-width-1-1">
+      <div class="uk-width-expand@s uk-width-1-1">
         <h2>Representatives Overview</h2>
       </div>
-      <div class="uk-width-2-5@s uk-width-1-1 uk-text-right">
+      <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
         <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Reps</a>
       </div>
     </div>
 
     <!-- Send Panel -->
-    <div uk-grid class="uk-animation-slide-left-small">
+    <div uk-grid class="uk-animation-slide-left-small uk-margin-remove-top">
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-card-default" *ngIf="!hideOverview">
