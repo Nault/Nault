@@ -120,12 +120,12 @@ export class ConfigureAppComponent implements OnInit {
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
-  nodeBlockCount = 'N/A';
-  nodeUnchecked = 'N/A';
-  nodeCemented = 'N/A';
-  nodeUncemented = 'N/A';
-  nodeVendor = 'N/A';
-  nodeNetwork = 'N/A';
+  nodeBlockCount = null;
+  nodeUnchecked = null;
+  nodeCemented = null;
+  nodeUncemented = null;
+  nodeVendor = null;
+  nodeNetwork = null;
   statsRefreshEnabled = true;
 
   constructor(

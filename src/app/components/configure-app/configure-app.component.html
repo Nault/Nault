@@ -325,16 +325,16 @@
                             {{serverAPIUpdated ? serverAPI:'Save settings to update'}}
                           </tr>
                           <tr>
-                            {{nodeBlockCount}}
+                            {{nodeBlockCount || 'N/A'}}
                           </tr>
                           <tr>
-                            {{nodeUncemented}}
+                            {{nodeUncemented || 'N/A'}}
                           </tr>
                           <tr>
-                            {{nodeVendor}}
+                            {{nodeVendor || 'N/A'}}
                           </tr>
                           <tr>
-                            {{nodeNetwork}}
+                            {{nodeNetwork || 'N/A'}}
                           </tr>
                         </td>
                       </table>
