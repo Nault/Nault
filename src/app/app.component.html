@@ -69,10 +69,10 @@
           <li>
             <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
               <div uk-grid>
-                <div class="uk-width-3-4">
+                <div class="uk-width-expand">
                   Receive
                 </div>
-                <div class="uk-width-1-4 uk-text-center">
+                <div class="uk-width-auto uk-text-center">
                   <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
                 </div>
               </div>

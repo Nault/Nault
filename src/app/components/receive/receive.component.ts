@@ -38,36 +38,13 @@ export class ReceiveComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
-    await this.loadPendingForAll();
+    setTimeout(() => {
+      this.getPending();
+    }, 100);
   }
 
   async loadPendingForAll() {
-    this.pendingBlocks = [];
-
-    let pending;
-    if (this.settings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
-      pending = await this.api.accountsPendingLimit(this.accounts.map(a => a.id), minAmount.toString(10));
-    } else {
-      pending = await this.api.accountsPending(this.accounts.map(a => a.id));
-    }
-    if (!pending || !pending.blocks) return;
-
-    for (let account in pending.blocks) {
-      if (!pending.blocks.hasOwnProperty(account)) continue;
-      for (let block in pending.blocks[account]) {
-        if (!pending.blocks[account].hasOwnProperty(block)) continue;
-        const pendingTx = {
-          block: block,
-          amount: pending.blocks[account][block].amount,
-          source: pending.blocks[account][block].source,
-          account: account,
-        };
-        // Account should be one of ours, so we should maybe know the frontier block for it?
-
-        this.pendingBlocks.push(pendingTx);
-      }
-    }
+    this.pendingBlocks = this.walletService.wallet.pendingBlocks
 
     // Now, only if we have results, do a unique on the account names, and run account info on all of them?
     if (this.pendingBlocks.length) {
@@ -79,38 +56,13 @@ export class ReceiveComponent implements OnInit {
         }
       }
     }
-
   }
 
-  async loadPendingForAccount(account) {
-    this.pendingBlocks = [];
-
-    let pending;
-    if (this.settings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
-      pending = await this.api.pendingLimit(account, 50, minAmount.toString(10));
-    } else {
-      pending = await this.api.pending(account, 50);
-    }
-    if (!pending || !pending.blocks) return;
-
-    for (let block in pending.blocks) {
-      const pendingTx = {
-        block: block,
-        amount: pending.blocks[block].amount,
-        source: pending.blocks[block].source,
-        account: account,
-      };
-      this.pendingBlocks.push(pendingTx);
-    }
-  }
-
-  async getPending(account) {
-    if (!account || account == 0) {
-      await this.loadPendingForAll();
-    } else {
-      await this.loadPendingForAccount(account);
-    }
+  async getPending() {
+    // clear the list of pending blocks. Updated again with reloadBalances()
+    this.walletService.clearPendingBlocks()
+    await this.walletService.reloadBalances(true)
+    await this.loadPendingForAll();
   }
 
   async changeQRAccount(account) {
@@ -138,7 +90,7 @@ export class ReceiveComponent implements OnInit {
   }
 
   async receivePending(pendingBlock) {
-    const sourceBlock = pendingBlock.block;
+    const sourceBlock = pendingBlock.hash;
 
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id == pendingBlock.account);
     if (!walletAccount) throw new Error(`unable to find receiving account in wallet`);
@@ -150,6 +102,8 @@ export class ReceiveComponent implements OnInit {
 
     if (newBlock) {
       this.notificationService.sendSuccess(`Successfully received Nano!`);
+      // clear the list of pending blocks. Updated again with reloadBalances()
+      this.walletService.clearPendingBlocks()
     } else {
       if (!this.walletService.isLedgerWallet()) {
         this.notificationService.sendError(`There was an error receiving the transaction`)
@@ -159,7 +113,6 @@ export class ReceiveComponent implements OnInit {
     pendingBlock.loading = false;
 
     await this.walletService.reloadBalances();
-    await this.loadPendingForAll();
   }
 
   copied() {
