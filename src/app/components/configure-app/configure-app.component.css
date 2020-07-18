@@ -1,0 +1,11 @@
+#node-stats {
+    cursor: pointer;
+    position: relative;
+    bottom: 2px;
+}
+.node-stats-disabled {
+    color: #bbb;
+}
+#node-stats-table td {
+    padding-right: 20px;
+}
