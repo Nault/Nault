@@ -152,10 +152,10 @@ export class ConfigureAppComponent implements OnInit {
     this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
-      this.nodeBlockCount = this.util.string.addCommas(blockCount.count.toString())
-      this.nodeUnchecked = this.util.string.addCommas(blockCount.unchecked.toString())
-      this.nodeCemented = this.util.string.addCommas(blockCount.cemented.toString())
-      this.nodeUncemented = (parseInt(this.nodeBlockCount) - parseInt(this.nodeCemented)).toString()
+      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US')
+      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US')
+      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US')
+      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US')
     }
     catch {console.warn("Failed to get node stats: block count")}
     

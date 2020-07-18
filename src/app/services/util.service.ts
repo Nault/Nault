@@ -37,7 +37,6 @@ export class UtilService {
   };
   string = {
     isNumeric: isNumeric,
-    addCommas: addCommas,
   };
   account = {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
@@ -213,19 +212,6 @@ function stringToUint5(string) {
   return uint5;
 }
 
-//thousand separator
-function addCommas(nStr) {
-  nStr += '';
-  var x = nStr.split('.');
-  var x1 = x[0];
-  var x2 = x.length > 1 ? '.' + x[1] : '';
-  var rgx = /(\d+)(\d{3})/;
-  while (rgx.test(x1)) {
-      x1 = x1.replace(rgx, '$1,$2');
-  }
-  return x1 + x2;
-}
-
 function isNumeric(val) {
   //numerics and last character is not a dot and number of dots is 0 or 1
   let isnum = /^-?\d*\.?\d*$/.test(val) && val != ''
@@ -379,7 +365,6 @@ const util = {
   },
   string: {
     isNumeric: isNumeric,
-    addCommas: addCommas,
   },
   account: {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
