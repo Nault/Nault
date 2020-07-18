@@ -48,6 +48,7 @@ import { AccountPipe } from './pipes/account.pipe';
 import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
 import { SweeperComponent } from './components/sweeper/sweeper.component';
 import { QrScanComponent } from './components/qr-scan/qr-scan.component';
+import {SignComponent} from "./components/sign/sign.component";
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -80,6 +81,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     ChangeRepWidgetComponent,
     SweeperComponent,
     QrScanComponent,
+    SignComponent,
   ],
   imports: [
     BrowserModule,

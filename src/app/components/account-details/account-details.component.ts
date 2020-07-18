@@ -444,20 +444,32 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
     let blockData = {
-      type: 'state',
       account: this.accountID,
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
       link: this.util.account.getAccountPublicKey(this.toAccountID),
-      work: null,
-      signature: null,
     };
     this.blockHash = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
-    console.log("Created block",blockData)
-    console.log("Block hash: " + this.blockHash)
+    console.log("Created block",blockData);
+    console.log("Block hash: " + this.blockHash);
 
-    const qrCode = await QRCode.toDataURL('nanoblock:'+JSON.stringify(blockData, null, 2), { errorCorrectionLevel: 'H', scale: 8 });
+    // Previous block info
+    const previousBlockInfo = await this.api.blockInfo(blockData.previous);
+    if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
+    const jsonBlock = JSON.parse(previousBlockInfo.contents)
+    let blockDataPrevious = {
+      account: jsonBlock.account,
+      previous: jsonBlock.previous,
+      representative: jsonBlock.representative,
+      balance: jsonBlock.balance,
+      link: jsonBlock.link,
+    };
+
+    // Nano signing standard (just invented it with feedback from the nano foundation)
+    let qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+
+    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'M', scale: 8 });
     this.qrCodeImageBlock = qrCode;
   }
 

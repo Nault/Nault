@@ -5,7 +5,7 @@ import { NotificationService } from "../../services/notification.service";
 import { WalletService } from "../../services/wallet.service";
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
-import { checkAddress, checkSeed } from 'nanocurrency';
+import { checkAddress, checkSeed, checkHash, checkAmount } from 'nanocurrency';
 
 @Component({
   selector: 'app-qr-scan',
@@ -56,7 +56,7 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    const nano_scheme = /^(nano|nanorep|nanoseed):.+$/g
+    const nano_scheme = /^(nano|nanorep|nanoseed|nanosign|nanoblock):.+$/g
 
     if(checkAddress(resultString)){
       // Got address, routing to send...
@@ -89,6 +89,30 @@ export class QrScanComponent implements OnInit {
       } else if (url.protocol === 'nanoseed:' && checkSeed(url.pathname)) {
         // Seed
         this.handleSeed(url.pathname);
+      } else if (url.protocol === 'nanosign:' && this.checkSignBlock(url.pathname)) {
+        try {
+          let data = JSON.parse(url.pathname);
+          // Block to sign
+          this.router.navigate(['sign'], { queryParams: { 
+            n_account: data.block.account,
+            n_previous: data.block.previous,
+            n_representative: data.block.representative,
+            n_balance: data.block.balance,
+            n_link: data.block.link,
+            p_account: data.previous.account,
+            p_previous: data.previous.previous,
+            p_representative: data.previous.representative,
+            p_balance: data.previous.balance,
+            p_link: data.previous.link
+          }});
+        }
+        catch (error) {
+          this.notifcationService.sendWarning('Block sign data detected but not correct format.', { length: 5000, identifier: 'qr-not-recognized' })
+        }
+        
+      } else if (url.protocol === 'nanoblock:' && this.checkProcessBlock(url.pathname)) {
+        // Block to process
+        
       }
       
     } else {
@@ -125,5 +149,28 @@ export class QrScanComponent implements OnInit {
 
   toggleTryHarder(): void {
     this.tryHarder = !this.tryHarder;
+  }
+
+  checkSignBlock(stringdata:string) {
+    try {
+      let data = JSON.parse(stringdata);
+      return (checkAddress(data.block.account) &&
+        checkAddress(data.previous.account) &&
+        checkAddress(data.block.representative) &&
+        checkAddress(data.previous.representative) &&
+        checkAmount(data.block.balance.toString(10)) &&
+        checkAmount(data.previous.balance.toString(10)) &&
+        checkHash(data.block.previous) &&
+        checkHash(data.previous.previous) &&
+        checkHash(data.block.link) &&
+        checkHash(data.previous.link))
+    }
+    catch (error) {
+      return false
+    }
+  }
+
+  checkProcessBlock(data) {
+    return true
   }
 }
