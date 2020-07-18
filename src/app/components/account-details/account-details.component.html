@@ -236,7 +236,7 @@
 
         <div uk-grid style="margin-top: 25px;">
           <div class="uk-width-1-1">
-            <h3 class="uk-heading-divider uk-text-center" style="margin-bottom: 0;">Recent Transactions<span></span></h3>
+            <h3 class="uk-heading-divider uk-text-center" style="margin-bottom: 0;">Recent Transactions<span class="{{statsRefreshEnabled ? '':'refresh-disabled'}}" id="refresh" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></span></h3>
 
 
             <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
