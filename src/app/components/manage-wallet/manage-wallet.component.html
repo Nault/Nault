@@ -1,6 +1,7 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2>Manage Wallet</h2>
+
+    <h2 class="uk-heading-divider">Manage Wallet</h2>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
@@ -16,8 +17,8 @@
           </div>
         </div>
       </div>
-      <div class="uk-card-footer uk-text-right">
-        <button (click)="changePassword()" class="uk-button uk-button-primary">Update Password</button>
+      <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+        <button (click)="changePassword()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Password</button>
       </div>
     </div>
 
@@ -61,9 +62,9 @@
           </div>
         </div>
       </div>
-      <div class="uk-card-footer uk-text-right">
-        <button (click)="exportToFile()" class="uk-button uk-button-secondary">Export As File</button>
-        <button (click)="exportWallet()" class="uk-button uk-button-secondary">Export QR Code</button>
+      <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+        <button (click)="exportToFile()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export As File</button>
+        <button (click)="exportWallet()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export QR Code</button>
       </div>
     </div>
 
@@ -91,13 +92,13 @@
           </div>
         </div>
       </div>
-      <div class="uk-card-footer uk-text-right">
-        <div class="js-upload uk-text-left" style="display: inline-block;" uk-form-custom>
+      <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+        <div class="js-upload uk-text-left uk-width-auto@s uk-width-1-1" style="display: inline-block;" uk-form-custom>
           <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-          <button class="uk-button uk-button-primary" type="button" tabindex="-1">Import Address Book</button>
+          <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import Address Book</button>
         </div>
-        <button (click)="exportAddressBookToFile()" class="uk-button uk-button-secondary">Export As File</button>
-        <button (click)="exportAddressBook()" class="uk-button uk-button-secondary">Export QR Code</button>
+        <button (click)="exportAddressBookToFile()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export As File</button>
+        <button (click)="exportAddressBook()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export QR Code</button>
       </div>
     </div>
 

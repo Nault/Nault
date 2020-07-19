@@ -9,20 +9,19 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	font-family: @global-secondary-font-family;
 }
 
-h2:not(.uk-card-title):not(.uk-modal-title) {
-		padding-top: 10px;
-		padding-bottom: 10px;
-	}
-
-@media (min-width: 639px) {
-	h2:not(.uk-card-title):not(.uk-modal-title) {
-	  	border-bottom: 2px solid @global-border;
-	  	margin-bottom: @nlt-intro-margin!important;
-	}
+.uk-card, .uk-card-default, .uk-table {
+	border-radius: @global-border-radius-medium;
 }
 
-.uk-card, .uk-card-default {
-	border-radius: @global-border-radius-medium;
+@media (max-width: @breakpoint-small) {
+	
+	button, .uk-button {
+		margin-bottom: @nlt-intro-margin / 2!important;
+	}
+
+	h2:not(.uk-card-title):not(.uk-modal-title) {
+	  	border-bottom: none!important;
+	}
 }
 
 .uk-description-list dt {
@@ -48,4 +47,10 @@ h2:not(.uk-card-title):not(.uk-modal-title) {
 
 .nlt-page-intro {
 	margin-bottom: @nlt-intro-margin;
+}
+
+@media (min-width: @breakpoint-xsmall-max) {
+	.nlt-button-group button {
+		margin-left: @global-margin;
+	}
 }

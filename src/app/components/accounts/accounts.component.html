@@ -1,8 +1,9 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <div uk-grid>
+    
+    <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2>
+        <h2 class="uk-heading-divider">
           Accounts
           <a (click)="viewAdvanced = !viewAdvanced" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BASIC' : 'ADVANCED' }}</a>
         </h2>
@@ -21,7 +22,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-overflow-auto">
+    <div class="uk-card uk-overflow-auto">
       <table class="uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
