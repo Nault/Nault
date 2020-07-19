@@ -135,6 +135,10 @@ export class AppComponent implements OnInit {
     this.navExpanded = !this.navExpanded
   }
 
+  closeNav() {
+    this.navExpanded = false;
+  }
+
   toggleSearch(mobile = false) {
     this.showSearchBar = !this.showSearchBar;
     if (this.showSearchBar) {
