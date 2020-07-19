@@ -1,2 +1,5 @@
-<span style="color: #506577;">{{ firstCharacters }}</span>...<span style="color: #cba644;">{{ lastCharacters }}</span>
-<!--<span style="color: #506577; font-weight: bold;">{{ firstCharacters }}</span>...<span style="color: #506577; font-weight: bold;">{{ lastCharacters }}</span>-->
+<span [class]="middle === 'auto' ? 'uk-flex' : ''">
+    <span style="color: #4A90E2;">{{ firstCharacters }}</span>
+    <span [class]="middle === 'auto' ? 'uk-text-truncate' : ''">{{ middleCharacters || '...'}}</span>
+    <span style="color: #cba644;">{{ lastCharacters }}</span>
+</span>

@@ -25,11 +25,15 @@
               <div class="uk-width-1-1">
                 <div *ngIf="addressBookEntry">
                     <h3 class="uk-card-title">{{ addressBookEntry }}</h3>
-                    <div class="uk-text-small uk-text-truncate">{{ accountID }}</div>
+                    <div class="uk-text-small uk-text-truncate">
+                      <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                    </div>
                 </div>
 
                 <div *ngIf="!addressBookEntry">
-                  <h3 class="uk-card-title uk-text-truncate" style="margin-bottom: 0;">{{ accountID }}</h3>
+                  <h3 class="uk-card-title uk-text-truncate" style="margin-bottom: 0;">
+                    <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                  </h3>
                 </div>
               </div>
             </div>
@@ -117,7 +121,8 @@
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
                         <div class="uk-width-expand uk-text-truncate ">
-                          <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> {{ account.representative }}
+                          <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
+                          <app-nano-account-id [accountID]="account.representative"></app-nano-account-id>
                         </div>
                         <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
                           <ul class="uk-hidden-hover uk-iconnav">
@@ -164,7 +169,8 @@
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
                       <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> {{ pending.account }}
+                        <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> 
+                        <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
@@ -187,7 +193,8 @@
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
                       <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.link_as_account || history.account }}
+                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> 
+                        <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
