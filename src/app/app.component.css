@@ -84,6 +84,7 @@
 }
 
 .content-container {
+  min-height: 100%;
   border-top: 1px solid rgb(220, 233, 249);
   z-index: 1;
 }
