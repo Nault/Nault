@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    
+
       <h2>Receive Nano</h2>
 
       <div class="uk-width-1-1 nlt-page-intro">
@@ -26,7 +26,7 @@
         <button class="uk-button uk-button-primary uk-width-1-1" (click)="getPending(pendingAccountModel)"> Find Incoming</button>
       </div>
               
-      <div *ngIf="qrCodeImage" class="uk-width-3-4@s narrow-div">
+      <div *ngIf="qrCodeImage" class="uk-width-1-1@s narrow-div">
         <input [(ngModel)]="receiveAmount" class="uk-input uk-margin-small-bottom" type="text" (ngModelChange)="changeQRAmount(receiveAmount)" title="Amount to be included in the QR and read by the sending wallet." placeholder="Optional Nano amount">
       </div>
       <div *ngIf="qrCodeImage" class="uk-width-1-1@s narrow-div">
