@@ -2,34 +2,6 @@
   background: #000;
 }
 
-.title-block {
-  background: #f4faff;
-}
-
-.title-block .title {
-  font-size: 24px;
-  display: block;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-right: 0;
-  color: #4a90e2;
-}
-
-.title-block .title:hover {
-  text-decoration: none;
-}
-
-.title-block .balance-text {
-  display: block;
-  font-size: 12px;
-}
-
-.title-block .balance {
-  display: block;
-  font-size: 18px;
-  margin-top: -8px;
-}
-
 .left-nav {
   font-size: 18px;
   font-weight: 500;

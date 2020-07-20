@@ -16,22 +16,43 @@
     <!-- Main content container-->
     <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
       <div class="uk-width-1-4 nav-container">
-        <div class="title-block">
-          <div class="uk-margin-left" style="padding-bottom: 15px;">
+        <div class="nav-header">
+
             <div uk-grid>
-              <div class="uk-width-expand"><a routerLink="/" class="title uk-align-left"><img src="assets/img/nault-logo.svg" width="150px" style="display: block; margin: 0 auto 20px auto;" alt="Nault"/></a></div>
-              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
-                <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
-                <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
+              <div class="uk-width-expand">
+                <div class="nav-nano-card">
+                  <div class="logo"></div>
+                  <div class="account-name-container">
+                    <div class="name">Primary Account</div>
+                    <a routerLink="/accounts" class="select-button">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                    </a>
+                  </div>
+                  <div class="account-balances" *ngIf="node.status || !isConfigured()">
+                    <div class="balance-container primary">
+                      <div class="currency-name">NANO</div>
+                      <div class="amount-container">
+                        <div class="amount-integer">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 0 }}</div>
+                        <div class="amount-fractional">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                      </div>
+                    </div>
+                    <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
+                      <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
+                      <div class="amount-container">
+                        <div class="amount-integer">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
+                        <div class="amount-fractional">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" style="clear: left; text-align: left;">
-                {{ wallet.balance | rai: settings.settings.displayDenomination }}
-              </span>
+            <div class="uk-width-1-6 uk-padding-remove-left uk-margin-left" *ngIf="isConfigured()">
+              <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
+              <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
             </div>
 
             <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
@@ -55,8 +76,6 @@
                 <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
               </div>
             </div>
-
-          </div>
 
         </div>
 

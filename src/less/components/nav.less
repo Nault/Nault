@@ -14,12 +14,177 @@
 @nav-default-sublist-item-hover-color:          @global-link-color;
 
 .nav-container {
-	background: #000034;
+	background: #1F1F26;
 	min-height: 100vh;
+	min-width: 350px;
 }
 
 .nav-container .uk-background-secondary {
 	background: @global-secondary-background-alt;
+}
+
+.nav-container .nav-nano-card {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	margin: 20px;
+	border-radius: 10px;
+	background: #4E91E0;
+	position: relative;
+	overflow: hidden;
+
+	height: 150px;
+	@media (min-width: 640px) {
+		height: 11vw;
+		min-height: 150px;
+	}
+
+	> .logo {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: url('../../assets/img/nano-mark.svg');
+		background-size: 170%;
+		background-position: 29% 30%;
+		background-repeat: no-repeat;
+	}
+
+	> .account-name-container {
+		display: flex;
+		align-items: center;
+		margin: 15px 12px 6px 17px;
+		z-index: 2;
+
+		> .name {
+			color: #FFF;
+			margin-right: 10px;
+
+			font-size: 14px;
+			@media (min-width: 1500px) {
+				font-size: 18px;
+			}
+		}
+
+		> .select-button {
+			display: flex;
+			margin-top: 1px;
+			padding: 9px 8px 9px 5px;
+			cursor: pointer;
+			border: 2px solid transparent;
+			border-radius: 20px;
+			transition: border-color 100ms ease-in-out;
+
+			&:hover, &:focus {
+				border: 2px solid #FFF;
+			}
+
+			> .circle {
+				width: 5px;
+				height: 5px;
+				border-radius: 100%;
+				background: #FFF;
+				margin-left: 3px;
+			}
+		}
+	}
+
+	> .account-balances {
+		z-index: 2;
+	}
+
+	> .account-balances > .balance-container {
+		display: flex;
+		align-items: flex-end;
+		margin: 0 12px 20px 17px;
+
+		&.primary {
+			margin-bottom: 2px;
+			color: #FFF;
+
+			> .currency-name {
+				margin-bottom: -1px;
+
+				font-size: 18px;
+				@media (min-width: 1500px) {
+					font-size: 22px;
+				}
+			}
+
+			> .amount-container {
+				> .amount-integer {
+					font-weight: 700;
+					margin-bottom: -4px;
+
+					font-size: 26px;
+					@media (min-width: 1500px) {
+						font-size: 32px;
+					}
+				}
+
+				> .amount-fractional {
+					font-size: 16px;
+					@media (min-width: 1500px) {
+						font-size: 21px;
+					}
+				}
+			}
+		}
+
+		&.converted {
+			color: #DEEDFF;
+
+			> .currency-name {
+				font-size: 12px;
+				margin-bottom: 0;
+				@media (min-width: 1500px) {
+					font-size: 12px;
+					margin-bottom: 2px;
+				}
+
+				> .estimate-symbol {
+					margin-right: 2px;
+				}
+			}
+
+			> .amount-container {
+				> .amount-integer {
+					margin-right: 1px;
+
+					font-size: 16px;
+					margin-bottom: -2px;
+					@media (min-width: 1500px) {
+						font-size: 18px;
+						margin-bottom: -1px;
+					}
+				}
+
+				> .amount-fractional {
+					font-size: 15px;
+
+					font-size: 12px;
+					@media (min-width: 1500px) {
+						font-size: 15px;
+					}
+				}
+			}
+		}
+
+		> .currency-name {
+			width: 55px;
+			@media (min-width: 1500px) {
+				width: 70px;
+			}
+
+			margin-right: 15px;
+			font-weight: 300;
+			text-align: right;
+		}
+
+		> .amount-container {
+			display: flex;
+			align-items: flex-end;
+		}
+	}
 }
 
 .left-nav .active {
