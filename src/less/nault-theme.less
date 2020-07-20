@@ -9,19 +9,36 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	font-family: @global-secondary-font-family;
 }
 
+h3, h4, h5 {
+	color: @global-color;
+}
+
 .uk-card, .uk-card-default, .uk-table {
 	border-radius: @global-border-radius-medium;
 }
 
-@media (max-width: @breakpoint-small) {
+@media (max-width: @breakpoint-xsmall-max) {
 	
+	.nav-container {
+	    width: 100vw!important;
+	    left: 0;
+    	padding: 0;
+    }
+
+	.content-container.nav-expanded {
+		transform: translateX(100vw)!important;
+	    left: 30px;
+	    position: relative;
+	}
+
+	.content-container {
+		height: 100vh!important;
+	}
+
 	button, .uk-button {
 		margin-bottom: @nlt-intro-margin / 2!important;
 	}
 
-	h2:not(.uk-card-title):not(.uk-modal-title) {
-	  	border-bottom: none!important;
-	}
 }
 
 .uk-description-list dt {
@@ -33,6 +50,9 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     resize: none;
   }
 
+app-configure-app>.uk-grid, app-configure-wallet {
+    margin-bottom: @global-margin;
+}
 
 // custom classes
 // ========================================================================
@@ -49,8 +69,12 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	margin-bottom: @nlt-intro-margin;
 }
 
-@media (min-width: @breakpoint-xsmall-max) {
+@media (min-width: @breakpoint-small) {
 	.nlt-button-group button {
 		margin-left: @global-margin;
+	}
+
+	.nlt-nav-close {
+		display: none;
 	}
 }

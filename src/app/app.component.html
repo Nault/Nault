@@ -17,7 +17,12 @@
     <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
       <div class="uk-width-1-4 nav-container">
         <div class="title-block">
-          <div class="uk-margin-left" style="padding-bottom: 15px;">
+          <div class="uk-margin-left uk-position-relative" style="padding-bottom: 15px;">
+
+            <div class="uk-position-top-right uk-padding-small nlt-nav-close" (click)="toggleNav()" style="cursor: pointer;">
+              <span uk-icon="icon: close;" style="vertical-align: text-bottom;"></span>
+            </div>
+
             <div uk-grid>
               <div class="uk-width-expand"><a routerLink="/" class="title uk-align-left"><img src="assets/img/nault-logo.svg" width="150px" style="display: block; margin: 0 auto 20px auto;" alt="Nault"/></a></div>
               <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
