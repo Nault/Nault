@@ -1,26 +1,13 @@
 import { Injectable } from '@angular/core';
 import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
-import * as blake from 'blakejs';
+import {UtilService, StateBlock, TxType} from "./util.service";
 import {WorkPoolService} from "./work-pool.service";
 import BigNumber from "bignumber.js";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {LedgerService} from "./ledger.service";
-import { WalletAccount, Block } from './wallet.service';
+import { WalletAccount } from './wallet.service';
 const nacl = window['nacl'];
-
-export interface StateBlock {
-  account: string;
-  previous: string;
-  representative: string;
-  balance: string;
-  link: string;
-  signature: string;
-  work: string;
-}
-
-export enum TxType {"send", "receive", "open", "change"};
 
 @Injectable()
 export class NanoBlockService {

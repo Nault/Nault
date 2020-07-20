@@ -4,11 +4,11 @@ import {AddressBookService} from "../../services/address-book.service";
 import {BehaviorSubject} from "rxjs";
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
-import {UtilService} from "../../services/util.service";
+import {UtilService, StateBlock, TxType} from "../../services/util.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {ActivatedRoute} from "@angular/router";
-import {NanoBlockService, StateBlock, TxType} from "../../services/nano-block.service";
+import {NanoBlockService} from "../../services/nano-block.service";
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39'
 import * as bip39Wallet from 'nanocurrency-web'

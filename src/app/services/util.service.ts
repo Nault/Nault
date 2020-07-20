@@ -2,10 +2,21 @@ import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
 import * as nanocurrency from 'nanocurrency';
-import {StateBlock} from "./nano-block.service";
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
+
+export interface StateBlock {
+  account: string;
+  previous: string;
+  representative: string;
+  balance: string;
+  link: string;
+  signature: string;
+  work: string;
+}
+
+export enum TxType {"send", "receive", "open", "change"};
 
 @Injectable()
 export class UtilService {
