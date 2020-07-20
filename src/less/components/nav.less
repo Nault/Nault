@@ -184,6 +184,13 @@
 		> .amount-container {
 			display: flex;
 			align-items: flex-end;
+			overflow: hidden;
+
+			> .amount-fractional {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 }
