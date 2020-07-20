@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
 import * as nanocurrency from 'nanocurrency';
+import {StateBlock} from "./nano-block.service";
 
 const nacl = window['nacl'];
+const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
 
 @Injectable()
 export class UtilService {
@@ -47,6 +49,7 @@ export class UtilService {
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
+    isValidAmount: isValidAmount,
   };
   nano = {
     mnanoToRaw: mnanoToRaw,
@@ -55,6 +58,10 @@ export class UtilService {
     rawToMnano: rawToMnano,
     rawToKnano: rawToKnano,
     rawToNano: rawToNano,
+    hashStateBlock: hashStateBlock,
+    isValidSeed: isValidSeed,
+    isValidHash: isValidHash,
+    isValidIndex: isValidIndex,
   };
 
 }
@@ -247,6 +254,27 @@ function isValidAccount(account: string): boolean {
   return nanocurrency.checkAddress(account);
 }
 
+// Check if a string is a numeric and larger than 0 but less than Nano supply
+function isValidNanoAmount(val:string) {
+  //numerics and last character is not a dot and number of dots is 0 or 1
+  let isnum = /^-?\d*\.?\d*$/.test(val)
+  if (isnum && String(val).slice(-1) !== '.') {
+    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  else {
+    return false
+  }
+}
+
+function isValidAmount(val:string) {
+  return nanocurrency.checkAmount(val);
+}
+
 function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
     throw new Error(`Invalid Mikron Account`);
@@ -298,7 +326,37 @@ function rawToNano(value) {
   return new BigNumber(value).div(nano);
 }
 
+/**
+ * Nano functions
+ */
+function isValidSeed(val:string) {
+  return nanocurrency.checkSeed(val);
+}
 
+function isValidHash(val:string) {
+  return nanocurrency.checkHash(val);
+}
+
+function isValidIndex(val:number) {
+  return nanocurrency.checkIndex(val);
+}
+
+function hashStateBlock(block:StateBlock) {
+  const balance = new BigNumber(block.balance);
+  if (balance.isNegative() || balance.isNaN()) {
+    throw new Error(`Negative or NaN balance`);
+  }
+  let balancePadded = balance.toString(16);
+  while (balancePadded.length < 32) balancePadded = '0' + balancePadded; // Left pad with 0's
+  const context = blake.blake2bInit(32, null);
+  blake.blake2bUpdate(context, hexToUint8(STATE_BLOCK_PREAMBLE));
+  blake.blake2bUpdate(context, hexToUint8(getAccountPublicKey(block.account)));
+  blake.blake2bUpdate(context, hexToUint8(block.previous));
+  blake.blake2bUpdate(context, hexToUint8(getAccountPublicKey(block.representative)));
+  blake.blake2bUpdate(context, hexToUint8(balancePadded));
+  blake.blake2bUpdate(context, hexToUint8(block.link));
+  return blake.blake2bFinal(context);
+}
 
 
 function array_crop (array) {
@@ -319,23 +377,6 @@ function equal_arrays (array1, array2) {
 
 function generateSeedBytes() {
   return nacl.randomBytes(32);
-}
-
-// Check if a string is a numeric and larger than 0 but less than Nano supply
-function isValidNanoAmount(val:string) {
-  //numerics and last character is not a dot and number of dots is 0 or 1
-  let isnum = /^-?\d*\.?\d*$/.test(val)
-  if (isnum && String(val).slice(-1) !== '.') {
-    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
-      return true
-    }
-    else {
-      return false
-    }
-  }
-  else {
-    return false
-  }
 }
 
 const util = {
@@ -375,6 +416,7 @@ const util = {
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
+    isValidAmount: isValidNanoAmount,
   },
   nano: {
     mnanoToRaw: mnanoToRaw,
@@ -383,5 +425,9 @@ const util = {
     rawToMnano: rawToMnano,
     rawToKnano: rawToKnano,
     rawToNano: rawToNano,
+    hashStateBlock: hashStateBlock,
+    isValidSeed: isValidSeed,
+    isValidHash: isValidHash,
+    isValidIndex: isValidIndex,
   }
 };

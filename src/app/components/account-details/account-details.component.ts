@@ -472,7 +472,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       link: jsonBlock.link,
     };
 
-    // Nano signing standard (just invented it with feedback from the nano foundation)
+    // Nano signing standard (invented with feedback from the nano foundation)
     let qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
 
     const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'M', scale: 8 });

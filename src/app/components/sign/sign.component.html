@@ -6,8 +6,10 @@
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
-          <span style="display: block; padding-top: 8px;">You are about to sign a block to send</span>
-          <span style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span *ngIf="!qrCodeImageBlock" style="display: block; padding-top: 8px;">You are about to sign a block to {{txTypeMessage}}</span>
+          <span *ngIf="qrCodeImageBlock" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
+          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
         </div>
         <br>
         <div uk-grid *ngIf="fromAccountID && toAccountID">
@@ -19,10 +21,10 @@
                   <div *ngIf="fromAddressBook">
                     <span class="confirm-title">{{ fromAddressBook }}</span>
                     <span class="confirm-subtitle">From Account</span>
-                    <span class="uk-text-small uk-text-truncate">{{ fromAccountID }}</span>
+                    <span class="uk-text-small uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID }}</span>
                   </div>
                   <div *ngIf="!fromAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ fromAccountID }}</span>
+                    <span class="confirm-title uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID }}</span>
                     <span class="confirm-subtitle">From Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -50,10 +52,10 @@
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="uk-text-small uk-text-truncate">{{ toAccountID }}</span>
+                    <span class="uk-text-small uk-text-truncate" title="{{toAccountID}}">{{ toAccountID }}</span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ toAccountID }}</span>
+                    <span class="confirm-title uk-text-truncate" title="{{toAccountID}}">{{ toAccountID }}</span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -75,35 +77,102 @@
         </div>
         <br>
 
-        <div class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
-          <span><strong>Signing Method</strong></span><br>
-          <input type="radio" value="wallet" name="method" ngModel> Nault Wallet
-          <input type="radio" value="seed" name="method" ngModel> Seed+Index
-          <input type="radio" value="key" name="method" ngModel> Private key
+        <div *ngIf="!qrCodeImageBlock" class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
+          <span><strong>Signing Method</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block is signed with a private key. If using the build-in wallet, it first needs to be created using any of the available methods."></span><br>
+          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[0]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[0]}}</label>
+          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[1]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[1]}}</label>
+          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[2]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[2]}}</label>
+          <br><br>
+          <span><strong>Proof of Work</strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published."></span><br>
+          <label class="uk-margin-medium-right"><input class="uk-checkbox" type="checkbox" name="pow" value='pow' [(ngModel)]="shouldGenWork" (change)="powChange()"> Include</label><br><br>
+
+          <!-- Seed and index-->
+          <div *ngIf="signTypeSelected === signTypes[1]">
+            <div class="uk-width-1-1 narrow-div">
+              <div class="uk-form-horizontal">
+                <div class="uk-margin">
+                  <label class="uk-form-label" for="source-wallet">Signing Wallet <span uk-icon="icon: info;" uk-tooltip title="The seed or mnemonic that contains the account you are signing for."></span></label>
+                  <div class="uk-form-controls">
+                    <div uk-grid>
+                      <div class="uk-width-1-1">
+                        <div class="uk-inline uk-width-1-1">
+                          <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, bip39 seed or 24-word passphrase" autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="uk-width-1-1 narrow-div">
+              <div class="uk-form-horizontal">
+                <div class="uk-margin">
+                  <label class="uk-form-label" for="start-index">Account Index <span uk-icon="icon: info;" uk-tooltip title="The index at where the account you are signing for is located in the seed. Maximum 4,294,967,295."></span></label>
+                  <div class="uk-form-controls">
+                    <div class="uk-inline uk-width-1-1">
+                      <input [(ngModel)]="index" class="uk-input uk-margin-small-bottom {{validIndex ? '':'uk-form-danger'}}" id="start-index" type="text" maxLength="10" (ngModelChange)="indexChange(index)" placeholder="0 to 4294967295" autocomplete="off">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END Seed and index-->
+
+          <!-- Private key-->
+          <div *ngIf="signTypeSelected === signTypes[2]">
+            <div class="uk-width-1-1 narrow-div">
+              <div class="uk-form-horizontal">
+                <div class="uk-margin">
+                  <label class="uk-form-label" for="source-wallet">Private Key <span uk-icon="icon: info;" uk-tooltip title="The private key that derive the account you are signing for."></span></label>
+                  <div class="uk-form-controls">
+                    <div uk-grid>
+                      <div class="uk-width-1-1">
+                        <div class="uk-inline uk-width-1-1">
+                          <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="privkeyChange(sourcePriv)" placeholder="Private key or Expanded private key" autocomplete="off">
+                          <label><input class="uk-checkbox" type="checkbox" name="expanded" value='expanded' [(ngModel)]="privateKeyExpanded" (change)="privkeyChange(sourcePriv)"> Expanded private key</label><span uk-icon="icon: info;" uk-tooltip title="If using a 64 or 128 char expanded key."></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END Private key-->
+
+          <span class="uk-text-danger">{{signatureMessage}}</span>
+          <span class="uk-text-success">{{signatureMessageSuccess}}</span>
+
         </div>
         <br>
 
-        <div uk-grid>
+        <div *ngIf="!qrCodeImageBlock" uk-grid>
           <div class="uk-width-1-2@s">
-            <button (click)="activePanel = 'cancel'" class="uk-button uk-button-danger uk-width-1-1">Cancel</button>
+            <a class="uk-button uk-button-danger uk-width-1-1" routerLink="/qr-scan" routerLinkActive="active">Cancel</a>
           </div>
           <div class="uk-width-1-2@s">
             <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
             <button *ngIf="confirmingTransaction" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- End Confirmation Panel -->
 
-
-    <div uk-grid *ngIf="activePanel == 'cancel'" class="uk-animation-slide-left">
-      <div class="uk-width-1-1">
-        <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
-          <span style="display: block; padding-top: 8px;">Block signing cancelled!<br/></span>
+        <div *ngIf="qrCodeImageBlock" class="uk-text-center">
+          <span><strong>Scan the QR in an online Nault (or compatible wallet) to process the block</strong></span><br><br>
+          <div class="uk-width-1-1@s uk-width-3-4@m uk-width-1-2@l uk-text-center block-qr">
+            <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock"><br />
+          </div>
+          <div *ngIf="currentBlock.signature" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+            <span class="uk-text-small" uk-tooltip title="Signature" style="overflow-wrap: anywhere;">{{currentBlock.signature | squeeze}}</span>
+            <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+              <li><a ngxClipboard [cbContent]="currentBlock.signature" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    <!-- End Confirmation Panel -->
 
     <div uk-grid *ngIf="activePanel == 'error'" class="uk-animation-slide-left">
       <div class="uk-width-1-1">
