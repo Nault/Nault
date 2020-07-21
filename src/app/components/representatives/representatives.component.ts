@@ -103,7 +103,7 @@ export class RepresentativesComponent implements OnInit {
 
     // add the localReps to the list
     const localReps = this.representativeService.getSortedRepresentatives();
-    this.representativeList.concat(localReps);
+    this.representativeList.push(...localReps);
 
     await this.loadRecommendedReps();
   }
