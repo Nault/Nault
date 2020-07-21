@@ -20,7 +20,6 @@ export class NinjaService {
         return res;
       })
       .catch(err => {
-        console.error(err);
         return;
       });
   }

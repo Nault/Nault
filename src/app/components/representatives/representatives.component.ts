@@ -13,7 +13,8 @@ import {
   NotificationService,
   RepresentativeService,
   UtilService,
-  WalletService
+  WalletService,
+  NinjaService
 } from "../../services";
 
 @Component({
@@ -48,6 +49,8 @@ export class RepresentativesComponent implements OnInit {
 
   hideOverview = false;
 
+  representativeList = []
+
   constructor(
     private router: ActivatedRoute,
     public wallet: WalletService,
@@ -57,7 +60,8 @@ export class RepresentativesComponent implements OnInit {
     private util: UtilService,
     private http: HttpClient,
     private representativeService: RepresentativeService,
-    public settings: AppSettingsService) { }
+    public settings: AppSettingsService,
+    private ninja: NinjaService) { }
 
   async ngOnInit() {
     this.representativeService.loadRepresentativeList();
@@ -84,6 +88,22 @@ export class RepresentativesComponent implements OnInit {
     repOverview = repOverview.sort((a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber());
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
+
+    // populate representative list
+    const verifiedReps = await this.ninja.verifiedRandomized();
+
+    for (const representative of verifiedReps) {
+      const temprep = {
+        id: representative.account,
+        name: representative.alias
+      };
+
+      this.representativeList.push(temprep);
+    }
+
+    // add the localReps to the list
+    const localReps = this.representativeService.getSortedRepresentatives();
+    this.representativeList.concat(localReps);
 
     await this.loadRecommendedReps();
   }
@@ -129,9 +149,8 @@ export class RepresentativesComponent implements OnInit {
   searchRepresentatives() {
     this.showRepresentatives = true;
     const search = this.toRepresentativeID || '';
-    const representatives = this.representativeService.getSortedRepresentatives();
 
-    const matches = representatives
+    const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
@@ -145,13 +164,22 @@ export class RepresentativesComponent implements OnInit {
     this.validateRepresentative();
   }
 
-  validateRepresentative() {
+  async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
     this.toRepresentativeID = this.toRepresentativeID.replace(/ /g, '');
+
+    if (this.toRepresentativeID === '') {
+      this.representativeListMatch = '';
+      return;
+    }
+
     const rep = this.representativeService.getRepresentative(this.toRepresentativeID);
+    const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
     if (rep) {
       this.representativeListMatch = rep.name;
+    } else if (ninjaRep) {
+      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
     }

@@ -51,6 +51,7 @@ import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NinjaService } from './services';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     NodeService,
     LedgerService,
     DesktopService,
+    NinjaService,
   ],
   bootstrap: [AppComponent]
 })
