@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import set = Reflect.set;
 import * as url from 'url';
 
 export type WalletStore = 'localStorage'|'none';

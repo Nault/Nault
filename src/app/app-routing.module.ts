@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ConfigureWalletComponent} from "./components/configure-wallet/configure-wallet.component";
@@ -14,6 +13,7 @@ import {TransactionDetailsComponent} from "./components/transaction-details/tran
 import {ImportWalletComponent} from "./components/import-wallet/import-wallet.component";
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import {RepresentativesComponent} from "./components/representatives/representatives.component";
+import {SweeperComponent} from "./components/sweeper/sweeper.component";
 import {QrScanComponent} from "./components/qr-scan/qr-scan.component";
 
 import { environment } from '../environments/environment';
@@ -35,6 +35,7 @@ const routes: Routes = [
   { path: 'representatives', component: RepresentativesComponent },
   { path: 'manage-representatives', component: ManageRepresentativesComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
+  { path: 'sweeper', component: SweeperComponent },
 ];
 
 @NgModule({

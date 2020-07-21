@@ -17,7 +17,7 @@ export interface NinjaVerifiedRep {
 export class ApiService {
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
-  private async request(action, data): Promise<any> {
+  private async request(action, data, skipError=false): Promise<any> {
     data.action = action;
     const apiUrl = this.appSettings.settings.serverAPI;
     if (this.node.node.status === false) {
@@ -36,6 +36,7 @@ export class ApiService {
         return res;
       })
       .catch(err => {
+        if (skipError) return;
         if (err.status === 500 || err.status === 0) {
           this.node.setOffline(); // Hard error, node is offline
           throw err;
@@ -77,14 +78,17 @@ export class ApiService {
   async blocksInfo(blocks): Promise<{blocks: any, error?: string}> {
     return await this.request('blocks_info', { hashes: blocks, pending: true, source: true });
   }
-  async blockCount(): Promise<{count: number, unchecked: number }> {
-    return await this.request('block_count', { });
+  async blockInfo(hash): Promise<any> {
+    return await this.request('block_info', { hash: hash });
+  }
+  async blockCount(): Promise<{count: number, unchecked: number, cemented: number }> {
+    return await this.request('block_count', { include_cemented: "true"});
   }
   async workGenerate(hash): Promise<{ work: string }> {
     return await this.request('work_generate', { hash });
   }
   async process(block): Promise<{ hash: string, error?: string }> {
-    return await this.request('process', { block: JSON.stringify(block) });
+    return await this.request('process', { block: JSON.stringify(block), watch_work:"false" });
   }
   async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
     return await this.request('account_history', { account, count, raw });
@@ -100,5 +104,14 @@ export class ApiService {
   }
   async pendingLimit(account, count, threshold): Promise<any> {
     return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true });
+  }
+  async pendingSorted(account, count): Promise<any> {
+    return await this.request('pending', { account, count, source: true, include_only_confirmed: true, sorting: true });
+  }
+  async pendingLimitSorted(account, count, threshold): Promise<any> {
+    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true, sorting: true });
+  }
+  async version(): Promise<{rpc_version: number, store_version: number, protocol_version: number, node_vendor: string, network: string, network_identifier: string, build_info: string }> {
+    return await this.request('version', { }, true);
   }
 }

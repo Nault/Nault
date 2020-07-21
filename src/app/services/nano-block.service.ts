@@ -6,9 +6,7 @@ import {WorkPoolService} from "./work-pool.service";
 import BigNumber from "bignumber.js";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
-import {WalletService} from "./wallet.service";
 import {LedgerService} from "./ledger.service";
-import {Observable} from "rxjs";
 const nacl = window['nacl'];
 
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
@@ -53,7 +51,6 @@ export class NanoBlockService {
       work: null,
     };
 
-    let signature = null;
     if (ledger) {
       const ledgerBlock = {
         previousBlock: toAcct.frontier,
@@ -65,7 +62,7 @@ export class NanoBlockService {
         await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
-        signature = sig.signature;
+        blockData.signature = sig.signature;
       } catch (err) {
         this.clearLedgerNotification();
         this.sendLedgerDeniedNotification();

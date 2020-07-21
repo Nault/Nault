@@ -128,7 +128,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Receive Priority <span uk-icon="icon: info;" uk-tooltip title="If receiving incoming transactions with the largest amount first or chronological from recorded time."></span></label>
+                <label class="uk-form-label">Receive Method <span uk-icon="icon: info;" uk-tooltip title="If automatically receiving incoming transactions with the largest amount first or chronological from recorded time. Manual will allow you to pick your own transactions from the receive screen."></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -288,6 +288,56 @@
                     <span class="uk-text-meta">
                       This has to be a valid Authorization header.<br>
                       <i>For example, basic auth defined as "Authorization: Basic base64Encode(username:password)"<br>In that case, enter: Basic dHV0c3BsdXM6MTIzNDU2</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+              <div>
+                <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-text-meta">
+                      <table id="node-stats-table">
+                        <td>
+                          <tr>
+                            <strong>Server</strong>
+                          </tr>
+                          <tr>
+                            <strong>Block Count</strong>
+                          </tr>
+                          <tr>
+                            <strong>Uncemented Blocks</strong>
+                          </tr>
+                          <tr>
+                            <strong>Node Version</strong>
+                          </tr>
+                          <tr>
+                            <strong>Network</strong>
+                          </tr>
+                        </td>
+                        <td>
+                          <tr>
+                            {{serverAPIUpdated ? serverAPI:'Save settings to update'}}
+                          </tr>
+                          <tr>
+                            {{nodeBlockCount || 'N/A'}}
+                          </tr>
+                          <tr>
+                            {{nodeUncemented || 'N/A'}}
+                          </tr>
+                          <tr>
+                            {{nodeVendor || 'N/A'}}
+                          </tr>
+                          <tr>
+                            {{nodeNetwork || 'N/A'}}
+                          </tr>
+                        </td>
+                      </table>
                     </span>
                   </div>
                 </div>

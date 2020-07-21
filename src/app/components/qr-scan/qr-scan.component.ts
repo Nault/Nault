@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { UtilService } from '../../services/util.service';
 import { NotificationService } from "../../services/notification.service";
-import { AppSettingsService } from "../../services/app-settings.service";
 import { WalletService } from "../../services/wallet.service";
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
@@ -38,9 +37,7 @@ export class QrScanComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private utilService: UtilService,
     private notifcationService: NotificationService,
-    private settings: AppSettingsService,
     private util: UtilService,
     private walletService: WalletService,
   ) { }

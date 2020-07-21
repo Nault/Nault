@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
-import {LedgerService, LedgerStatus} from "../../services/ledger.service";
+import {LedgerService} from "../../services/ledger.service";
+import {AppSettingsService} from "../../services/app-settings.service";
 
 @Component({
   selector: 'app-wallet-widget',
@@ -17,7 +18,11 @@ export class WalletWidgetComponent implements OnInit {
 
   modal: any = null;
 
-  constructor(public walletService: WalletService, private notificationService: NotificationService, public ledgerService: LedgerService) { }
+  constructor(
+    public walletService: WalletService,
+    private notificationService: NotificationService,
+    public ledgerService: LedgerService,
+    public settings: AppSettingsService) { }
 
   ngOnInit() {
     const UIkit = (window as any).UIkit;

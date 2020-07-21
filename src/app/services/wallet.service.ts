@@ -28,6 +28,14 @@ export interface WalletAccount {
   pendingFiat: number;
   addressBookName: string|null;
 }
+
+export interface Block {
+  account: string;
+  hash: string;
+  amount: string;
+  source: string;
+}
+
 export interface FullWallet {
   type: WalletType;
   seedBytes: any;
@@ -43,6 +51,7 @@ export interface FullWallet {
   accountsIndex: number;
   locked: boolean;
   password: string;
+  pendingBlocks: Block[];
 }
 
 export interface BaseApiAccount {
@@ -83,10 +92,10 @@ export class WalletService {
     accountsIndex: 0,
     locked: false,
     password: '',
+    pendingBlocks: [],
   };
 
   processingPending = false;
-  pendingBlocks = [];
   successfulBlocks = [];
 
   constructor(
@@ -114,16 +123,30 @@ export class WalletService {
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
         if (walletAccount) {
           // If the wallet is locked, show a notification
-          if (this.wallet.locked) {
-            this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+          if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
           }
-          this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount);
+          else if (this.appSettings.settings.pendingOption === 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+          }
+          this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount, transaction.block.link_as_account);
           await this.processPendingBlocks();
         }
-      } else if (transaction.block.type == 'state') {
-        if (this.wallet.locked) {
-          this.notifications.sendWarning(`New incoming transaction - unlock the wallet to receive it!`, { length: 0, identifier: 'pending-locked' });
+      } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+        if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
+          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
         }
+        else if (this.appSettings.settings.pendingOption === 'manual') {
+          this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+        }
+
+        await this.processStateBlock(transaction);
+
+      }else if (transaction.block.type == 'state') {
+        /* Don't understand when this is ever needed / Json
+        if (this.wallet.locked) {
+          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+        }*/
 
         await this.processStateBlock(transaction);
       }
@@ -160,12 +183,12 @@ export class WalletService {
         const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
 
         if (txAmount.gt(minAmount)) {
-          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount);
+          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
         } else {
           console.log(`Found new pending block that was below minimum receive amount: `, transaction.amount, this.appSettings.settings.minimumReceive);
         }
       } else {
-        this.addPendingBlock(walletAccount.id, transaction.hash, txAmount);
+        this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
       }
 
       await this.processPendingBlocks();
@@ -774,13 +797,24 @@ export class WalletService {
     return true;
   }
 
-  addPendingBlock(accountID, blockHash, amount) {
+  addPendingBlock(accountID, blockHash, amount, source) {
     if (this.successfulBlocks.indexOf(blockHash) !== -1) return; // Already successful with this block
-    const existingHash = this.pendingBlocks.find(b => b.hash == blockHash);
+    const existingHash = this.wallet.pendingBlocks.find(b => b.hash == blockHash);
     if (existingHash) return; // Already added
 
-    this.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount });
+    this.wallet.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount, source: source });
     this.wallet.hasPending = true;
+  }
+
+  // Remove a pending account from the pending list
+  async removePendingBlock(blockHash) {
+    let index = this.wallet.pendingBlocks.findIndex(b => b.hash == blockHash)
+    this.wallet.pendingBlocks.splice(index, 1);
+  }
+
+  // Clear the list of pending blocks
+  async clearPendingBlocks() {
+    this.wallet.pendingBlocks.splice(0, this.wallet.pendingBlocks.length);
   }
 
   async loadPendingBlocksForWallet() {
@@ -802,11 +836,11 @@ export class WalletService {
         if (!pending.blocks[account].hasOwnProperty(block)) continue;
         if (pending.blocks[account] == '') continue; // Accounts show up as nothing with threshold there...
 
-        this.addPendingBlock(account, block, pending.blocks[account][block].amount);
+        this.addPendingBlock(account, block, pending.blocks[account][block].amount, pending.blocks[account][block].source);
       }
     }
 
-    if (this.pendingBlocks.length) {
+    if (this.wallet.pendingBlocks.length) {
       this.processPendingBlocks();
     }
   }
@@ -818,16 +852,16 @@ export class WalletService {
   }
 
   async processPendingBlocks() {
-    if (this.processingPending || this.wallet.locked || !this.pendingBlocks.length) return;
+    if (this.processingPending || this.wallet.locked || !this.wallet.pendingBlocks.length || this.appSettings.settings.pendingOption === 'manual') return;
 
     // Sort pending by amount
     if (this.appSettings.settings.pendingOption === 'amount') {
-      this.pendingBlocks.sort(this.sortByAmount);
+      this.wallet.pendingBlocks.sort(this.sortByAmount);
     }
 
     this.processingPending = true;
 
-    const nextBlock = this.pendingBlocks[0];
+    const nextBlock = this.wallet.pendingBlocks[0];
     if (this.successfulBlocks.find(b => b.hash == nextBlock.hash)) {
       return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
     }
@@ -851,7 +885,7 @@ export class WalletService {
       return this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
     }
 
-    this.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
+    this.wallet.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
     this.processingPending = false;
 
     setTimeout(() => this.processPendingBlocks(), 1500);
@@ -911,5 +945,4 @@ export class WalletService {
       )
     );
   }
-
 }

@@ -20,3 +20,7 @@
 .uk-button-large:hover {
     background-color: #0f7ae5 !important;
 }
+
+.uk-panel-scrollable {
+    resize: none;
+}

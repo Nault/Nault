@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {AppSettingsService} from "../services/app-settings.service";
 
 @Pipe({
   name: 'rai'
