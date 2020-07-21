@@ -1,15 +1,15 @@
-title: Geekyll Starter Blog
+title: Nault
 markdown: kramdown
 url: ""
-baseurl: "/geekyll-starter-blog"
+baseurl: "/nault"
 
 # for atom feed
 author:
-  name: Sharad Raj
-  email: iamsharadraj@gmail.com
+  name: Nault
+  email: github@nault.cc
   image: "https://avatars1.githubusercontent.com/u/36638057?s=460&u=b7ea83b7f3172f4517c653cefd5d0713853561b2&v=4"
   bio: Developed by <b>Sharad Raj</b> who lives in India building useful things for the world.
-  github: "sharadcodes"
+  github: "nault"
 
 plugins:
   - jemoji
