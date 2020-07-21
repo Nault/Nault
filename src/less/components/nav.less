@@ -59,11 +59,14 @@
 	> .card-contents > .account-name-container {
 		display: flex;
 		align-items: center;
-		margin: 15px 12px 6px 17px;
+		margin: 15px 12px 14px 17px;
 
 		> .name {
 			color: #FFF;
 			margin-right: 10px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			font-size: 14px;
 			@media (min-width: 1500px) {
@@ -107,28 +110,30 @@
 		display: flex;
 		align-items: flex-end;
 		margin: 0 12px 20px 17px;
+		line-height: 1;
 
 		&.primary {
-			margin-bottom: 2px;
+			margin-bottom: 12px;
 			color: #FFF;
 
 			> .currency-name {
-				margin-bottom: -1px;
-
 				font-size: 18px;
+				margin-bottom: -1px;
 				@media (min-width: 1500px) {
 					font-size: 22px;
+					margin-bottom: 0;
 				}
 			}
 
 			> .amount-container {
 				> .amount-integer {
 					font-weight: 700;
-					margin-bottom: -4px;
 
 					font-size: 26px;
+					margin-bottom: -2px;
 					@media (min-width: 1500px) {
 						font-size: 32px;
+						margin-bottom: -1px;
 					}
 				}
 
@@ -149,7 +154,7 @@
 				margin-bottom: 0;
 				@media (min-width: 1500px) {
 					font-size: 12px;
-					margin-bottom: 2px;
+					margin-bottom: 1px;
 				}
 
 				> .estimate-symbol {
@@ -160,12 +165,11 @@
 			> .amount-container {
 				> .amount-integer {
 					margin-right: 1px;
+					margin-bottom: -1px;
 
 					font-size: 16px;
-					margin-bottom: -2px;
 					@media (min-width: 1500px) {
 						font-size: 18px;
-						margin-bottom: -1px;
 					}
 				}
 
