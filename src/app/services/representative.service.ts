@@ -324,42 +324,42 @@ export class RepresentativeService {
   defaultRepresentatives = [
     {
       id: 'nano_3arg3asgtigae3xckabaaewkx3bzsh7nwz7jkmjos79ihyaxwphhm6qgjps4',
-      name: 'Official Rep 1',
+      name: 'Nano Foundation #1',
       warn: true,
     },
     {
       id: 'nano_1stofnrxuz3cai7ze75o174bpm7scwj9jn3nxsn8ntzg784jf1gzn1jjdkou',
-      name: 'Official Rep 2',
+      name: 'Nano Foundation #2',
       warn: true,
     },
     {
       id: 'nano_1q3hqecaw15cjt7thbtxu3pbzr1eihtzzpzxguoc37bj1wc5ffoh7w74gi6p',
-      name: 'Official Rep 3',
+      name: 'Nano Foundation #3',
       warn: true,
     },
     {
       id: 'nano_3dmtrrws3pocycmbqwawk6xs7446qxa36fcncush4s1pejk16ksbmakis78m',
-      name: 'Official Rep 4',
+      name: 'Nano Foundation #4',
       warn: true,
     },
     {
       id: 'nano_3hd4ezdgsp15iemx7h81in7xz5tpxi43b6b41zn3qmwiuypankocw3awes5k',
-      name: 'Official Rep 5',
+      name: 'Nano Foundation #5',
       warn: true,
     },
     {
       id: 'nano_1awsn43we17c1oshdru4azeqjz9wii41dy8npubm4rg11so7dx3jtqgoeahy',
-      name: 'Official Rep 6',
+      name: 'Nano Foundation #6',
       warn: true,
     },
     {
       id: 'nano_1anrzcuwe64rwxzcco8dkhpyxpi8kd7zsjc1oeimpc3ppca4mrjtwnqposrs',
-      name: 'Official Rep 7',
+      name: 'Nano Foundation #7',
       warn: true,
     },
     {
       id: 'nano_1hza3f7wiiqa7ig3jczyxj5yo86yegcmqk3criaz838j91sxcckpfhbhhra1',
-      name: 'Official Rep 8',
+      name: 'Nano Foundation #8',
       warn: true,
     },
   ];
