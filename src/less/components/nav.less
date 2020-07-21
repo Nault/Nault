@@ -16,7 +16,8 @@
 .nav-container {
 	background: #1F1F26;
 	min-height: 100vh;
-	min-width: 350px;
+	min-width: 360px;
+	color: #8786B0;
 }
 
 .nav-container .uk-background-secondary {
@@ -33,10 +34,10 @@
 	position: relative;
 	overflow: hidden;
 
-	height: 150px;
+	height: 155px;
 	@media (min-width: 640px) {
 		height: 11vw;
-		min-height: 150px;
+		min-height: 155px;
 	}
 
 	> .logo {
@@ -79,7 +80,7 @@
 			border-radius: 20px;
 			transition: border-color 100ms ease-in-out;
 
-			&:hover, &:focus {
+			&:hover {
 				border: 2px solid #FFF;
 			}
 
@@ -97,8 +98,8 @@
 		display: flex;
 		margin: 25px 12px 20px 17px;
 
-		.uk-spinner > svg > circle {
-			stroke: #FFF;
+		.uk-spinner {
+			color: #FFF;
 		}
 	}
 
@@ -204,13 +205,42 @@
 	}
 }
 
-.nav-container .nav-app-status {
+.nav-container .nav-status-row {
 	display: flex;
 	align-items: center;
-	margin: -10px 20px 20px 20px;
+	margin: 0 20px 20px 20px;
+
+	&.interactable {
+		text-decoration: none;
+		cursor: pointer;
+
+		> .status-labels > .label {
+			border-bottom: 2px solid transparent;
+			transition: border-color 100ms ease-in-out;
+			padding: 4px 0 1px 0;
+		}
+
+		&:hover > .status-labels {
+			> .label.uk-text-success {
+				border-bottom: 2px solid #32D296;
+			}
+
+			> .label.uk-text-warning {
+				border-bottom: 2px solid #FAA05A;
+			}
+
+			> .label.half-muted {
+				border-bottom: 2px solid #B7B6D5;
+			}
+		}
+	}
+
+	&.half-muted {
+		color: #B7B6D5;
+	}
 
 	> .status-icon {
-		margin-right: 10px;
+		width: 33px;
 	}
 
 	> .status-labels {
@@ -223,8 +253,24 @@
 
 		> .secondary {
 			font-size: 13px;
+
+			> a {
+				text-decoration: none;
+				border-bottom: 2px solid transparent;
+				transition: border-color 100ms ease-in-out;
+				padding: 4px 0 1px 0;
+
+				&:hover {
+					color: #4A90E2;
+					border-bottom: 2px solid #4A90E2;
+				}
+			}
 		}
 	}
+}
+
+.nav-nano-card + .nav-status-row {
+	margin-top: -10px;
 }
 
 .left-nav .active {

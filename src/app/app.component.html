@@ -58,17 +58,18 @@
                 </div>
               </div>
 
-              <div class="nav-app-status">
-                <ng-container *ngIf="(node.status === false) && isConfigured()">
-                  <div class="status-icon">
-                    <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
-                  </div>
-                  <div class="status-labels">
-                    <div class="label primary uk-text-danger">Unable to connect to the server</div>
-                    <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
-                  </div>
-                </ng-container>
+              <div class="nav-status-row" *ngIf="(node.status === false) && isConfigured()">
+                <div class="status-icon">
+                  <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
+                </div>
+                <div class="status-labels">
+                  <div class="label primary uk-text-danger">Unable to connect to the server</div>
+                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                </div>
               </div>
+
+              <app-change-rep-widget></app-change-rep-widget>
+              <app-wallet-widget></app-wallet-widget>
 
             </div>
           </div>
@@ -93,9 +94,6 @@
           </div>
 
         </div>
-
-        <app-change-rep-widget></app-change-rep-widget>
-        <app-wallet-widget></app-wallet-widget>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
           <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
