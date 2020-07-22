@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   representatives = this.repService.changeableReps;
+  showRepHelp = false;
   modalElement = null;
 
   constructor(private repService: RepresentativeService, private router: Router) { }
@@ -40,6 +41,10 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   closeModal() {
     this.modalElement.hide();
+  }
+
+  navigateToRepChangePage() {
+    this.router.navigate(['/representatives']);
   }
 
   changeReps() {

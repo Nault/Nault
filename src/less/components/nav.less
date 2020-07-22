@@ -7,6 +7,7 @@
 @nav-sublist-item-padding-vertical:             8px;
 
 @nav-border-color:                              #383844;
+@nav-half-muted-color:                          #B7B6D5;
 
 @nav-default-item-color:                        #FFF;
 @nav-default-item-hover-color:                  @global-link-color;
@@ -228,12 +229,18 @@
 	border-bottom: 1px solid @nav-border-color;
 	padding: 0px 20px 20px 20px;
 	margin-bottom: 15px;
+	position: relative;
+
+	&:hover > .representative-name-row > .name {
+		border-bottom-style: dotted;
+		border-color: #8786B0;
+	}
 
 	> h2 {
 		text-transform: uppercase;
 		font-size: 12px;
 		font-weight: 500;
-		color: #B7B6D5;
+		color: @nav-half-muted-color;
 		margin-bottom: 5px;
 	}
 
@@ -247,7 +254,18 @@
 			font-weight: 600;
 			font-size: 18px;
 			margin-right: 6px;
+			text-decoration: none;
+			border-bottom: 2px dotted transparent;
+			border-bottom-color: transparent;
+			transition: border-color 100ms ease-in-out;
+			padding: 0 0 3px 0;
+			margin-bottom: -5px;
 			.truncated-text();
+
+			&:hover {
+				border-bottom-style: solid;
+				border-color: #FFF;
+			}
 		}
 
 		> .weight-total {
@@ -255,25 +273,27 @@
 			color: #FFF;
 			font-weight: 400;
 			font-size: 17px;
+			margin-bottom: 1px;
 		}
 	}
 
 	> .representative-health-row {
 		display: flex;
 		align-items: center;
+		margin-top: 5px;
 
 		&.health-green {
-			@health-state-color: #AFFA57;
+			@health-state-color: #32D296;
 			.health-state-apply-colors();
 		}
 
 		&.health-yellow {
-			@health-state-color: #FACA57;
+			@health-state-color: #FAA05A;
 			.health-state-apply-colors();
 		}
 
 		&.health-red {
-			@health-state-color: #FF6363;
+			@health-state-color: #F0506E;
 			.health-state-apply-colors();
 		}
 
@@ -288,6 +308,71 @@
 		> .label {
 			font-size: 14px;
 			margin-bottom: -1px;
+		}
+	}
+
+	> .representative-help-tooltip {
+		display: flex;
+		flex-direction: column;
+		width: calc(100% - 75px);
+		max-width: 320px;
+		position: absolute;
+		top: 95%;
+		border: 2px solid @nav-half-muted-color;
+		background: #343440;
+		border-radius: 10px;
+		padding: 10px 20px 10px 12px;
+		z-index: 2;
+		color: @nav-half-muted-color;
+		line-height: 1;
+		opacity: 0;
+		transition: opacity 200ms ease-in-out;
+		pointer-events: none;
+
+		&.visible {
+			opacity: 1;
+		}
+
+		> .header-row {
+			display: flex;
+			align-items: center;
+			margin-bottom: 8px;
+
+			> h2 {
+				font-size: 12px;
+				text-transform: uppercase;
+				color: #D8D7EC;
+				margin: 0 10px;
+			}
+
+			> .separator {
+				flex: 1;
+				height: 1px;
+				background: #52516C;
+			}
+		}
+
+		> p {
+			line-height: 1.4em;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+			font-size: 0.9rem;
+
+			&.primary {
+				font-size: 1rem;
+			}
+
+			> .uk-icon {
+				margin-right: 7px;
+				vertical-align: 1px;
+			}
+		}
+
+		> * + p {
+			margin-top: 0;
 		}
 	}
 }
@@ -311,21 +396,21 @@
 
 		&:hover > .status-labels {
 			> .label.uk-text-success {
-				border-bottom: 2px solid #32D296;
+				border-color: #32D296;
 			}
 
 			> .label.uk-text-warning {
-				border-bottom: 2px solid #FAA05A;
+				border-color: #FAA05A;
 			}
 
 			> .label.half-muted {
-				border-bottom: 2px solid #B7B6D5;
+				border-color: @nav-half-muted-color;
 			}
 		}
 	}
 
 	&.half-muted {
-		color: #B7B6D5;
+		color: @nav-half-muted-color;
 	}
 
 	> .status-icon {
@@ -351,7 +436,7 @@
 
 				&:hover {
 					color: #4A90E2;
-					border-bottom: 2px solid #4A90E2;
+					border-color: #4A90E2;
 				}
 			}
 		}
@@ -363,5 +448,5 @@
 }
 
 .left-nav .active {
-    color: @nav-default-item-active-color;
+	color: @nav-default-item-active-color;
 }
