@@ -23,4 +23,9 @@
 
 .uk-panel-scrollable {
     resize: none;
-  }
+}
+
+a.uk-link-text:hover {
+    color: #777;
+    filter: brightness(1.25);
+}
