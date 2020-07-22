@@ -69,10 +69,10 @@
           <li>
             <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
               <div uk-grid>
-                <div class="uk-width-3-4">
+                <div class="uk-width-expand">
                   Receive
                 </div>
-                <div class="uk-width-1-4 uk-text-center">
+                <div class="uk-width-auto uk-text-center">
                   <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
                 </div>
               </div>
@@ -113,7 +113,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="navExpanded = false;" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
+      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>

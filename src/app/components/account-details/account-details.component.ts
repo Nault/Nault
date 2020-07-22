@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, ChildActivationEnd, Router} from "@angular/router";
+import {ActivatedRoute, ChildActivationEnd, Router} from "@angular/router";
 import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
 import {NotificationService} from "../../services/notification.service";
@@ -47,6 +47,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   routerSub = null;
   priceSub = null;
 
+  statsRefreshEnabled = true;
+
   constructor(
     private router: ActivatedRoute,
     private route: Router,
@@ -74,7 +76,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.loadAccountDetails();
   }
 
-  async loadAccountDetails() {
+  async loadAccountDetails(refresh=false) {
+    if (refresh && !this.statsRefreshEnabled) return
+    this.statsRefreshEnabled = false;
+    setTimeout(() => this.statsRefreshEnabled = true, 5000);
+
     this.pendingBlocks = [];
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
