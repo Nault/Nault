@@ -55,7 +55,6 @@ export class RepresentativesComponent implements OnInit {
     private notifications: NotificationService,
     private nanoBlock: NanoBlockService,
     private util: UtilService,
-    private http: HttpClient,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService) { }
 
@@ -220,8 +219,8 @@ export class RepresentativesComponent implements OnInit {
 
     this.changingRepresentatives = true;
 
-    const valid = await this.api.validateAccountNumber(newRep);
-    if (!valid || valid.valid !== '1') {
+    const valid = this.util.account.isValidAccount(newRep);
+    if (!valid) {
       this.changingRepresentatives = false;
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }

@@ -9,6 +9,22 @@
     }
 }
 
+.modal-qr {
+    width: 80%;
+    max-width: 650px !important;
+    padding: 20px 0 0 0;
+}
+
+@media only screen and (max-width: 1200px) {
+    .modal-qr {
+        width: 100%;
+        max-width: 1200px !important;
+    }
+    .modal-qr-body {
+        padding: 30px 5px;
+    }
+}
+
 #remote {
     cursor: pointer;
     margin-left: 10px;

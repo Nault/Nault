@@ -21,6 +21,7 @@ import * as nanocurrency from 'nanocurrency'
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
   nano = 1000000000000000000000000;
+  zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
   accountHistory: any[] = [];
   pendingBlocks = [];
@@ -72,7 +73,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   toAddressBook = '';
   toAccountStatus = null;
   qrCodeImageBlock = null;
+  qrCodeImageBlockReceive = null;
   blockHash = null;
+  blockHashReceive = null;
   remoteVisible = false;
   // End remote signing
 
@@ -231,8 +234,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!this.walletAccount) return;
     const repAccount = this.representativeModel;
 
-    const valid = await this.api.validateAccountNumber(repAccount);
-    if (!valid || valid.valid !== '1') return this.notifications.sendWarning(`Account ID is not a valid account`);
+    const valid = this.util.account.isValidAccount(repAccount);
+    if (!valid) return this.notifications.sendWarning(`Account ID is not a valid account`);
 
     try {
       const changed = await this.nanoBlock.generateChange(this.walletAccount, repAccount, this.wallet.isLedgerWallet());
@@ -416,8 +419,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async generateSend() {
-    const isValid = await this.api.validateAccountNumber(this.toAccountID);
-    if (!isValid || isValid.valid == '0') return this.notifications.sendWarning(`To account address is not valid`);
+    const isValid = this.util.account.isValidAccount(this.toAccountID);
+    if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
 
     const from = await this.api.accountInfo(this.accountID);
@@ -436,7 +439,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const nanoAmount = this.rawAmount.div(this.nano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
-    if (nanoAmount.lessThan(1)) return this.notifications.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
+    if (nanoAmount.lessThan(1)) return this.notifications.sendWarning(`Transactions for less than 0.000001 Nano will be ignored by the node.`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough NANO`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
@@ -472,11 +475,63 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       link: jsonBlock.link,
     };
 
-    // Nano signing standard (invented with feedback from the nano foundation)
+    // Nano signing standard
     let qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
-
-    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'M', scale: 8 });
+    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
+  }
+
+  async generateReceive(pendingHash) {
+    const toAcct = await this.api.accountInfo(this.accountID);
+
+    const openEquiv = !toAcct || !toAcct.frontier; // if open block
+
+    const previousBlock = toAcct.frontier || this.zeroHash; // set to zeroes if open block
+    const representative = toAcct.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
+
+    const srcBlockInfo = await this.api.blocksInfo([pendingHash]);
+    const srcAmount = new BigNumber(srcBlockInfo.blocks[pendingHash].amount);
+    const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
+    const newBalanceDecimal = newBalance.toString(10);
+
+    let blockData = {
+      account: this.accountID,
+      previous: previousBlock,
+      representative: representative,
+      balance: newBalanceDecimal,
+      link: pendingHash,
+    };
+
+    this.blockHashReceive = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
+    console.log("Created block",blockData);
+    console.log("Block hash: " + this.blockHashReceive);
+
+    // Previous block info
+    var blockDataPrevious = null;
+    if (!openEquiv) {
+      const previousBlockInfo = await this.api.blockInfo(blockData.previous);
+      if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
+      const jsonBlock = JSON.parse(previousBlockInfo.contents)
+      blockDataPrevious = {
+        account: jsonBlock.account,
+        previous: jsonBlock.previous,
+        representative: jsonBlock.representative,
+        balance: jsonBlock.balance,
+        link: jsonBlock.link,
+      };
+    }
+
+    // Nano signing standard
+    var qrString = null;
+    if (blockDataPrevious) qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    else qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + '}';
+    
+    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+    this.qrCodeImageBlockReceive = qrCode;
+
+    const UIkit = window['UIkit'];
+    var modal = UIkit.modal("#receive-modal");
+    modal.show();
   }
 
   showRemote(state:boolean) {

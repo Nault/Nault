@@ -250,8 +250,8 @@ export class ConfigureAppComponent implements OnInit {
     const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive || (pendingOption !== 'manual' && pendingOption != this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
-      const valid = await this.api.validateAccountNumber(this.defaultRepresentative);
-      if (!valid || valid.valid !== '1') {
+      const valid = this.util.account.isValidAccount(this.defaultRepresentative);
+      if (!valid) {
         return this.notifications.sendWarning(`Default representative is not a valid account`);
       }
     }

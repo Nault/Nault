@@ -73,6 +73,8 @@ export class UtilService {
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,
     isValidIndex: isValidIndex,
+    isValidSignature: isValidSignature,
+    isValidWork: isValidWork,
   };
 
 }
@@ -352,6 +354,14 @@ function isValidIndex(val:number) {
   return nanocurrency.checkIndex(val);
 }
 
+function isValidSignature(val:string) {
+  return nanocurrency.checkSignature(val);
+}
+
+function isValidWork(val:string) {
+  return nanocurrency.checkWork(val);
+}
+
 function hashStateBlock(block:StateBlock) {
   const balance = new BigNumber(block.balance);
   if (balance.isNegative() || balance.isNaN()) {
@@ -440,5 +450,7 @@ const util = {
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,
     isValidIndex: isValidIndex,
+    isValidSignature: isValidSignature,
+    isValidWork: isValidWork,
   }
 };

@@ -142,17 +142,17 @@
         </div>
 
         <!--REMOTE SIGNING-->
-        <div uk-grid style="margin-top: 25px;">
+        <div uk-grid style="margin-top: 5px;">
           <div class="uk-width-1-1">
             <div class="uk-card-body">
-              <h3 class="uk-heading-divider uk-text-center">Remote Signing<span *ngIf="remoteVisible" id="remote" uk-icon="icon: shrink;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span><span *ngIf="!remoteVisible" id="remote" uk-icon="icon: expand;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span></h3>
+              <h3 class="uk-heading-divider uk-text-center">Remote Signing (Send or Change Rep)<span *ngIf="remoteVisible" id="remote" uk-icon="icon: shrink;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span><span *ngIf="!remoteVisible" id="remote" uk-icon="icon: expand;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span></h3>
               <div *ngIf="remoteVisible">
                 <div class="uk-form-horizontal">
                   <div class="uk-margin">
                     <ol>
-                      <li>Generate a send block</li>
-                      <li>Scan the QR with a remote wallet (for example an offline Nault) to sign it using a wallet owning to the account above</li>
-                      <li><a routerLink="/qr-scan" routerLinkActive="active">Scan the resulting QR code</a>. Then confirm to publish the block!</li>
+                      <li>Generate a Nano block</li>
+                      <li>Scan the unsigned QR with a remote wallet (for example an offline Nault). Sign it using the methods provided.</li>
+                      <li><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a>. Then confirm to publish the block!</li>
                     </ol>
                     <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
                     <div class="uk-form-controls">
@@ -224,7 +224,7 @@
                 <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock"><br />
               </div>
               <div *ngIf="blockHash" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
-                <span class="uk-text-small" uk-tooltip title="Block Hash" style="overflow-wrap: anywhere;">{{blockHash}}</span>
+                <span class="uk-text-small" uk-tooltip title="Block Hash" style="overflow-wrap: anywhere;">{{blockHash | squeeze}}</span>
                 <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
                   <li><a ngxClipboard [cbContent]="blockHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
                 </ul>
@@ -243,9 +243,10 @@
               <thead>
               <tr>
                 <th class="uk-width-1-6@m uk-width-1-6">Date</th>
-                <th class="uk-width-2-5@m uk-width-1-3">Account</th>
+                <th class="uk-width-1-5@m uk-width-1-4">Account</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
+                <th class="uk-width-1-5@m uk-width-1-4">Incoming</th>
               </tr>
               </thead>
               <tbody>
@@ -257,7 +258,7 @@
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
                       <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> {{ pending.account }}
+                        <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> {{ pending.account | squeeze }}
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
@@ -271,6 +272,7 @@
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
+                <td><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
               </tr>
 
               <tr *ngFor="let history of accountHistory">
@@ -280,7 +282,7 @@
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
                       <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.link_as_account || history.account }}
+                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> {{ history.link_as_account || history.account | squeeze }}
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
@@ -317,5 +319,30 @@
       * Incoming Transaction
     </div>
 
+  </div>
+</div>
+
+<!-- Modal for remote receive incoming -->
+<div id="receive-modal" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body modal-qr">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-header">
+        <h2 class="uk-modal-title">Remote Signing of Incoming Block</h2>
+    </div>
+    <div class="uk-modal-body modal-qr-body">
+      <ol>
+        <li>Scan the unsigned QR with a remote wallet (for example an offline Nault). Sign it using the methods provided.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a>. Then confirm to publish the block!</li>
+      </ol>
+      <div class="uk-width-1-1 uk-text-center">
+        <img *ngIf="qrCodeImageBlockReceive" [src]="qrCodeImageBlockReceive"><br />
+      </div>
+      <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+        <span class="uk-text-small" uk-tooltip title="Block Hash" style="overflow-wrap: anywhere;">{{blockHashReceive | squeeze}}</span>
+        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+          <li><a ngxClipboard [cbContent]="blockHashReceive" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

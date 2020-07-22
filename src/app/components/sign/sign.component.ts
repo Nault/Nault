@@ -9,6 +9,7 @@ import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {ActivatedRoute} from "@angular/router";
 import {NanoBlockService} from "../../services/nano-block.service";
+import {ApiService} from "../../services/api.service";
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39'
 import * as bip39Wallet from 'nanocurrency-web'
@@ -23,7 +24,7 @@ const INDEX_MAX = 4294967295;
 
 export class SignComponent implements OnInit {
   activePanel = 'error';
-
+  shouldSign: boolean = null; // if a block has been scanned for signing (or if it is a block to process)
   accounts = this.walletService.wallet.accounts;
   addressBookResults$ = new BehaviorSubject([]);
   showAddressBook = false;
@@ -61,6 +62,7 @@ export class SignComponent implements OnInit {
   index = '0';
   privateKey = null; // the final private key to sign with if using manual entry
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
+  processedHash:string = null;
 
   constructor(
     private router: ActivatedRoute,
@@ -70,19 +72,27 @@ export class SignComponent implements OnInit {
     private nanoBlock: NanoBlockService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
+    private api: ApiService,
     private util: UtilService) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     console.log(params);
+    this.signTypeSelected = this.walletService.isConfigured() ? this.signTypes[0]:this.signTypes[1];
     
-    if ('n_account' in params && 'n_previous' in params && 'n_representative' in params && 'n_balance' in params && 'n_link' in params &&
-    'p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
-      this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative, 'balance': params.n_balance, 'link': params.n_link, signature: null, work: null};
-      this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative, 'balance': params.p_balance, 'link': params.p_link, signature: null, work: null};
+    if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params && 'n_balance' in params && 'n_link' in params) {
+      this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative, 'balance': params.n_balance, 'link': params.n_link, signature: 'n_signature' in params ? params.n_signature:null, work: 'n_work' in params ? params.n_work:null};
+
+      // previous block won't be included with open block (or maybe if another wallet implement this feature)
+      if ('p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
+        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative, 'balance': params.p_balance, 'link': params.p_link, signature: null, work: null};
+      }
+      
+      this.shouldSign = params.sign == 1 ? true:false;
+      this.shouldGenWork = this.currentBlock.work === null && !this.shouldSign;
 
       // check if both new block and previous block hashes matches (balances has not been tampered with) and have valid parameters
-      if (this.verifyBlocks(this.currentBlock, this.previousBlock)) {
+      if (this.previousBlock && this.verifyBlock(this.currentBlock) && this.verifyBlock(this.previousBlock)) {
         // it's a send block
         if (new BigNumber(this.previousBlock.balance).gt(new BigNumber(this.currentBlock.balance))) {
           this.txType = TxType.send;
@@ -106,37 +116,54 @@ export class SignComponent implements OnInit {
           this.fromAccountBalance = new BigNumber(this.currentBlock.balance);
           this.toAccountBalance = new BigNumber(this.currentBlock.balance);
         }
-        // it's an open block
-        else if (new BigNumber(this.previousBlock.balance).lt(new BigNumber(this.currentBlock.balance)) && this.currentBlock.previous === this.nullBlock) {
-          this.txType = TxType.open;
-          this.txTypeMessage = 'receive';
-          this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance));
-          this.fromAccountID = this.util.account.getPublicAccountID(this.util.hex.toUint8(this.currentBlock.link));
-          this.toAccountID = this.currentBlock.account;
-          this.toAccountBalance = new BigNumber(this.previousBlock.balance);
-            // sending to itself
-          if (this.fromAccountID === this.toAccountID) {
-            this.fromAccountBalance = this.toAccountBalance;
-          }
-        }
         // it's a receive block
         else if (new BigNumber(this.previousBlock.balance).lt(new BigNumber(this.currentBlock.balance)) && this.currentBlock.previous !== this.nullBlock) {
           this.txType = TxType.receive;
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance));
-          this.fromAccountID = this.util.account.getPublicAccountID(this.util.hex.toUint8(this.currentBlock.link));
+
+          // get from-account info if online
+          var recipientInfo = null;
+          try {
+            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
+          }
+          catch {}
+          if (recipientInfo && 'block_account' in recipientInfo) this.fromAccountID = recipientInfo.block_account;
+          else this.fromAccountID = null;
+
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(this.previousBlock.balance);
-            // sending to itself
-          if (this.fromAccountID === this.toAccountID) {
-            this.fromAccountBalance = this.toAccountBalance;
-          }
         }
         else {
           return this.notificationService.sendError(`Meaningless block. The balance and representative are unchanged!`, {length: 0})
         }
+        
         this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
         this.prepareTransaction()
+      }
+
+      // No previous block present (open block)
+      // TODO: Make all block subtypes also possible to sign even if previous block is missing, but with less displayed data
+      else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
+        // it's an open block
+        if (this.currentBlock.previous === this.nullBlock) {
+          this.txType = TxType.open;
+          this.txTypeMessage = 'receive';
+          this.rawAmount = new BigNumber(this.currentBlock.balance);
+
+          // get from-account info if online
+          var recipientInfo = null;
+          try {
+            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
+          }
+          catch {}
+          
+          if (recipientInfo && 'block_account' in recipientInfo) this.fromAccountID = recipientInfo.block_account;
+          else this.fromAccountID = null;
+
+          this.toAccountID = this.currentBlock.account;
+          this.toAccountBalance = new BigNumber(0);
+        }
       }
       else {
         return
@@ -148,32 +175,30 @@ export class SignComponent implements OnInit {
     }
 
     this.addressBookService.loadAddressBook();
-    this.signTypeSelected = this.signTypes[0];
   }
 
-  verifyBlocks(currentBlock:StateBlock, previousBlock:StateBlock) {
-    var previousHash = null;
-    if (this.util.account.isValidAccount(currentBlock.account) &&
-      this.util.account.isValidAccount(previousBlock.account) &&
-      this.util.account.isValidAccount(currentBlock.representative) &&
-      this.util.account.isValidAccount(previousBlock.representative) &&
-      this.util.account.isValidAmount(currentBlock.balance) &&
-      this.util.account.isValidAmount(previousBlock.balance) &&
-      this.util.nano.isValidHash(currentBlock.previous) &&
-      this.util.nano.isValidHash(previousBlock.previous) &&
-      this.util.nano.isValidHash(currentBlock.link) &&
-      this.util.nano.isValidHash(previousBlock.link))
+  verifyBlock(block:StateBlock) {
+    if (this.util.account.isValidAccount(block.account) &&
+      this.util.account.isValidAccount(block.representative) &&
+      this.util.account.isValidAmount(block.balance) &&
+      this.util.nano.isValidHash(block.previous) &&
+      this.util.nano.isValidHash(block.link))
     {
-      let block:StateBlock = {account:previousBlock.account, link:previousBlock.link, previous:previousBlock.previous, representative: previousBlock.representative, balance: previousBlock.balance, signature: null, work: null};
-      previousHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
-      if (!currentBlock.previous || previousHash !== currentBlock.previous) {
-        this.notificationService.sendError(`The hash of the previous block does not match the frontier in the new block!`, {length: 0})
-      }
+      return true;
     }
     else {
       this.notificationService.sendError(`The provided blocks contain invalid values!`, {length: 0})
+      return false;
     }
-    return currentBlock.previous && previousHash === currentBlock.previous 
+  }
+
+  verifyBlockHash(currentBlock:StateBlock, previousBlock:StateBlock) {
+    let block:StateBlock = {account:previousBlock.account, link:previousBlock.link, previous:previousBlock.previous, representative: previousBlock.representative, balance: previousBlock.balance, signature: null, work: null};
+    let previousHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
+    if (!currentBlock.previous || previousHash !== currentBlock.previous) {
+      this.notificationService.sendError(`The hash of the previous block does not match the frontier in the new block!`, {length: 0})
+    }
+    return currentBlock.previous && previousHash === currentBlock.previous
   }
 
   searchAddressBook() {
@@ -233,16 +258,19 @@ export class SignComponent implements OnInit {
       this.prepareWork()
     }
 
-    if (this.txType === TxType.send) {
+    if (this.txType === TxType.send || this.txType === TxType.change) {
       this.signatureAccount = this.fromAccountID;
     }
-    else if (this.txType === TxType.receive) {
+    else if (this.txType === TxType.receive || this.txType === TxType.open) {
       this.signatureAccount = this.toAccountID;
     }
 
-    this.signTypeChange();
+    if (this.shouldSign) {
+      this.signTypeChange();
+    }
   }
 
+  // Create signature for the block
   async confirmTransaction() {
     var walletAccount = this.walletAccount;
     var isLedger = this.walletService.isLedgerWallet();
@@ -270,16 +298,91 @@ export class SignComponent implements OnInit {
     console.log('Signature: ' + block.signature || 'Error')
     console.log('Work: ' + block.work || 'Not applied')
 
-    if (!block.signature) return this.notificationService.sendError('The block could not be signed!',{lenth: 0});
-    let qrString = 'nanoblock:{"block":' + JSON.stringify(block) + '}'
-    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'M', scale: 8 });
-    this.qrCodeImageBlock = qrCode;
+    if (!block.signature) {
+      this.confirmingTransaction = false;
+      return this.notificationService.sendError('The block could not be signed!',{lenth: 0});
+    }
+
+    try {
+      this.clean(block)
+      this.clean(this.previousBlock)
+      let qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}'
+      const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+      this.qrCodeImageBlock = qrCode;
+    }
+    catch (error) {
+      this.confirmingTransaction = false;
+      console.log(error);
+      return this.notificationService.sendError('The block could not be signed!',{lenth: 0});
+    }
+    
     this.confirmingTransaction = false;
     this.notificationService.sendSuccess('The block has been signed and can be sent to the network!');
   }
 
+  // Send signed block to the network
+  async confirmBlock() {
+    this.confirmingTransaction = true;
+    let workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+    if (this.shouldGenWork) {
+      // For open blocks which don't have a frontier, use the public key of the account
+      if (!this.workPool.workExists(workBlock)) {
+        this.notificationService.sendInfo(`Generating Proof of Work...`);
+      }
+  
+      this.currentBlock.work = await this.workPool.getWork(workBlock);
+      this.workPool.removeFromCache(workBlock);
+    }
+
+    // Validate that frontier is still the same and the previous balance is correct
+    if (this.txType !== TxType.open) {
+      const accountInfo = await this.api.accountInfo(this.signatureAccount);
+      if ('frontier' in accountInfo && accountInfo.frontier !== this.currentBlock.previous) {
+        this.confirmingTransaction = false;
+        return this.notificationService.sendError('The block can\'t be processed because the account frontier has changed!',{lenth: 0});
+      }
+      if ('balance' in accountInfo && accountInfo.balance !== this.previousBlock.balance) {
+        this.confirmingTransaction = false;
+        return this.notificationService.sendError('The block can\'t be processed because the current account balance does not match the previous block!',{lenth: 0});
+      }
+    }
+
+    if (!this.currentBlock.signature) {
+      this.confirmingTransaction = false;
+      return this.notificationService.sendError('The block can\'t be processed because the signature is missing!',{lenth: 0});
+    }
+
+    if (!this.currentBlock.work) {
+      this.confirmingTransaction = false;
+      return this.notificationService.sendError('The block can\'t be processed because work is missing!',{lenth: 0});
+    }
+
+    // Process block
+    var blockData:any = this.currentBlock;
+    blockData.type = 'state';
+    const processResponse = await this.api.process(blockData);
+    if (processResponse && processResponse.hash) {
+      //this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool but does not make much sense for this case
+      this.workPool.removeFromCache(workBlock);
+      this.processedHash = processResponse.hash;
+      this.notificationService.sendSuccess('Successfully processed the block!');
+    } else {
+      console.log(processResponse)
+      this.notificationService.sendError('There was an error while processing the block! Please see the console.',{lenth: 0});
+    }
+    this.confirmingTransaction = false;
+  }
+
   copied() {
     this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+  }
+
+  clean(obj) {
+    for (var propName in obj) { 
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
   }
 
   seedChange(input) {

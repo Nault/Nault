@@ -96,9 +96,6 @@ export class ApiService {
   async accountInfo(account): Promise<any> {
     return await this.request('account_info', { account, pending: true, representative: true, weight: true });
   }
-  async validateAccountNumber(account): Promise<{ valid: '1'|'0' }> {
-    return await this.request('validate_account_number', { account });
-  }
   async pending(account, count): Promise<any> {
     return await this.request('pending', { account, count, source: true, include_only_confirmed: true });
   }

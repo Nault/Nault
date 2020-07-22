@@ -1,40 +1,45 @@
 <div uk-grid>
   <div class="uk-width-1-1">
-    <h2>Sign Nano Block</h2>
+    <h2 *ngIf="shouldSign">Sign Nano Block</h2>
+    <h2 *ngIf="!shouldSign">Process Nano Block</h2>
 
     <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
-          <span *ngIf="!qrCodeImageBlock" style="display: block; padding-top: 8px;">You are about to sign a block to {{txTypeMessage}}</span>
-          <span *ngIf="qrCodeImageBlock" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
+          <span *ngIf="!qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You are about to sign a block to {{txTypeMessage}}</span>
+          <span *ngIf="qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
+          <span *ngIf="!blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You are about to {{txTypeMessage}}</span>
+          <span *ngIf="blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You have processed a block to {{txTypeMessage}}</span>
           <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
           <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
         </div>
         <br>
-        <div uk-grid *ngIf="fromAccountID && toAccountID">
+        <div uk-grid>
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-left" style="padding: 20px 20px;">
-
+              <div class="uk-card-header uk-text-left" style="padding: 20px 20px; line-height: 22px;">
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="fromAddressBook">
-                    <span class="confirm-title">{{ fromAddressBook }}</span>
+                    <span class="confirm-title">{{ fromAddressBook}}</span>
                     <span class="confirm-subtitle">From Account</span>
-                    <span class="uk-text-small uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID }}</span>
+                    <span class="uk-text-small uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID || 'N/A' }}</span>
                   </div>
                   <div *ngIf="!fromAddressBook">
-                    <span class="confirm-title uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID }}</span>
+                    <span class="confirm-title uk-text-truncate" title="{{fromAccountID}}">{{ fromAccountID || 'N/A' }}</span>
                     <span class="confirm-subtitle">From Account</span>
                     <br class="br-spacer" />
                   </div>
                 </span>
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                </ul>
               </div>
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ fromAccountBalance || 0 | rai: 'mnano'}}</span>
-                    <span class="confirm-subtitle">Current Balance</span>
+                    <span class="confirm-currency">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano'): 'N/A'}}</span>
+                    <span class="confirm-subtitle">Balance when block was created</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
                     <span class="confirm-currency uk-text-danger">-{{ rawAmount | rai: 'mnano' }}</span>
@@ -46,26 +51,29 @@
 
           <div class="uk-width-1-2@m">
             <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-right" style="padding: 20px 20px;">
+              <div class="uk-card-header uk-text-right" style="padding: 20px 20px; line-height: 22px;">
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="uk-text-small uk-text-truncate" title="{{toAccountID}}">{{ toAccountID }}</span>
+                    <span class="uk-text-small uk-text-truncate" title="{{toAccountID}}">{{ toAccountID || 'N/A'}}</span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="confirm-title uk-text-truncate" title="{{toAccountID}}">{{ toAccountID }}</span>
+                    <span class="confirm-title uk-text-truncate" title="{{toAccountID}}">{{ toAccountID || 'N/A' }}</span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>
                 </span>
+                <ul class="uk-iconnav">
+                <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                </ul>
               </div>
               <div class="uk-card-body" style="padding: 20px 20px;">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ toAccountBalance || 0 | rai: 'mnano'}}</span>
-                    <span class="confirm-subtitle">Current Balance</span>
+                    <span class="confirm-currency">{{ toAccountBalance ? (toAccountBalance | rai: 'mnano'): 'N/A' }}</span>
+                    <span class="confirm-subtitle">Balance when block was created</span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
                     <span class="confirm-currency uk-text-success">+{{ rawAmount | rai: 'mnano' }}</span>
@@ -77,7 +85,7 @@
         </div>
         <br>
 
-        <div *ngIf="!qrCodeImageBlock" class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
+        <div *ngIf="!qrCodeImageBlock && shouldSign" class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
           <span><strong>Signing Method</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block is signed with a private key. If using the build-in wallet, it first needs to be created using any of the available methods."></span><br>
           <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[0]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[0]}}</label>
           <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[1]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[1]}}</label>
@@ -148,17 +156,34 @@
         </div>
         <br>
 
-        <div *ngIf="!qrCodeImageBlock" uk-grid>
+        <div *ngIf="processedHash" class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="padding: 20px 20px;">
+          <div class="uk-visible-toggle">
+            <div uk-grid class="uk-width-auto">
+              <div class="uk-width-expand uk-text-truncate">
+                <span class="uk-text-success">Successfully processed block: </span><a [routerLink]="'/transaction/' + processedHash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ processedHash }}</a>
+              </div>
+              <div class="uk-width-auto" style="padding-left: 10px;">
+                <ul class="uk-hidden-hover uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="processedHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Block Hash" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!qrCodeImageBlock && !processedHash" uk-grid>
           <div class="uk-width-1-2@s">
             <a class="uk-button uk-button-danger uk-width-1-1" routerLink="/qr-scan" routerLinkActive="active">Cancel</a>
           </div>
           <div class="uk-width-1-2@s">
-            <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
-            <button *ngIf="confirmingTransaction" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
+            <button *ngIf="!confirmingTransaction && shouldSign" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
+            <button *ngIf="confirmingTransaction && shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
+            <button *ngIf="!confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmBlock()">Confirm & Process</button>
+            <button *ngIf="confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
           </div>
         </div>
 
-        <div *ngIf="qrCodeImageBlock" class="uk-text-center">
+        <div *ngIf="qrCodeImageBlock && shouldSign" class="uk-text-center">
           <span><strong>Scan the QR in an online Nault (or compatible wallet) to process the block</strong></span><br><br>
           <div class="uk-width-1-1@s uk-width-3-4@m uk-width-1-2@l uk-text-center block-qr">
             <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock"><br />
