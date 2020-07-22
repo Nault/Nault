@@ -13,7 +13,7 @@
       <div class="health-icon"></div>
       <div class="label">Medium Health</div>
     </div>
-    <div class="representative-health-row health-red" *ngSwitchCase="true">
+    <div class="representative-health-row health-red" *ngSwitchCase="false">
       <div class="health-icon"></div>
       <div class="label">Poor Health</div>
     </div>
@@ -30,22 +30,22 @@
       <h2>Health</h2>
       <div class="separator"></div>
     </div>
-    <p class="uk-text-danger" *ngIf="true">
+    <p class="uk-text-danger" *ngIf="false">
        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 2%).
     </p>
     <p class="uk-text-warning" *ngIf="false">
        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
     </p>
-    <p class="uk-text-success" *ngIf="false">
+    <p *ngIf="true">
       <span uk-spinner="ratio: 0.5;"></span>Retrieving total weight...
     </p>
     <p class="uk-text-danger" *ngIf="false"> <!-- uptime less than 90% -->
        <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> (89.2% uptime).
     </p>
-    <p class="uk-text-warning" *ngIf="true"> <!-- uptime less than 99% -->
+    <p class="uk-text-warning" *ngIf="false"> <!-- uptime less than 99% -->
        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> (95.2% uptime).
     </p>
-    <p class="uk-text-success" *ngIf="false">
+    <p *ngIf="true">
       <span uk-spinner="ratio: 0.5;"></span>Retrieving uptime...
     </p>
     <p class="uk-text-warning" *ngIf="representatives.length"> <!-- no issues with this rep, but have issues with other reps -->
@@ -54,13 +54,13 @@
     <p class="uk-text-success" *ngIf="false"> <!-- no issues with this rep, but have issues with other reps -->
        <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
     </p>
-    <p *ngIf="true"> <!-- at least one issue exists (on this account) -->
+    <p *ngIf="false"> <!-- at least one issue exists (on this account) -->
        It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
     </p>
   </div>
 </div>
 
-<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="true || representatives.length">
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="representatives.length">
   <div class="status-icon">
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
