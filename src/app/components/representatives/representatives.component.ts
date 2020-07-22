@@ -90,7 +90,7 @@ export class RepresentativesComponent implements OnInit {
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
 
     // populate representative list
-    const verifiedReps = await this.ninja.verifiedRandomized();
+    const verifiedReps = await this.ninja.recommendedRandomized();
 
     for (const representative of verifiedReps) {
       const temprep = {
@@ -188,7 +188,7 @@ export class RepresentativesComponent implements OnInit {
   async loadRecommendedReps() {
     this.recommendedRepsLoading = true;
     try {
-      const scores = await this.api.recommendedReps() as any[];
+      const scores = await this.ninja.recommended() as any[];
       const totalSupply = new BigNumber(133248289);
 
       const reps = scores.map(rep => {

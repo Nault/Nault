@@ -2,6 +2,8 @@
 .uk-button {
     height: 40px;
     border-radius: 25px;
+}
+.uk-button-primary {
     background-color: #4a90e2;
 }
 .uk-button-secondary {

@@ -48,18 +48,18 @@ export class NinjaService {
     return newlist;
   }
 
-  async verified(): Promise<any> {
+  async recommended(): Promise<any> {
     return await this.request('accounts/verified');
   }
 
-  async verifiedRandomized(): Promise<any> {
-    const replist = await this.verified();
+  async recommendedRandomized(): Promise<any> {
+    const replist = await this.recommended();
     return this.randomizeByScore(replist);
   }
 
   async getSuggestedRep(): Promise<any> {
-    const replist = await this.verifiedRandomized();
-    return replist[0].account;
+    const replist = await this.recommendedRandomized();
+    return replist[0];
   }
 
   async getAccount(account: string): Promise<any> {
