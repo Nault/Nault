@@ -6,12 +6,20 @@
 @nav-sublist-padding-vertical:                  10px;
 @nav-sublist-item-padding-vertical:             8px;
 
-@nav-default-item-color:                        #fff;
+@nav-border-color:                              #383844;
+
+@nav-default-item-color:                        #FFF;
 @nav-default-item-hover-color:                  @global-link-color;
 @nav-default-item-active-color:                 @global-link-color;
 
-@nav-default-sublist-item-color:                #fff;
+@nav-default-sublist-item-color:                #FFF;
 @nav-default-sublist-item-hover-color:          @global-link-color;
+
+.truncated-text() {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
 .nav-container {
 	background: #1F1F26;
@@ -64,9 +72,7 @@
 		> .name {
 			color: #FFF;
 			margin-right: 10px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+			.truncated-text();
 
 			font-size: 14px;
 			@media (min-width: 1500px) {
@@ -201,10 +207,87 @@
 			overflow: hidden;
 
 			> .amount-fractional {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
+				.truncated-text();
 			}
+		}
+	}
+}
+
+.health-state-apply-colors() {
+	color: @health-state-color;
+
+	> .health-icon {
+		background-color: @health-state-color;
+	}
+}
+
+.nav-container .nav-representative-info {
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+	border-bottom: 1px solid @nav-border-color;
+	padding: 0px 20px 20px 20px;
+	margin-bottom: 15px;
+
+	> h2 {
+		text-transform: uppercase;
+		font-size: 12px;
+		font-weight: 500;
+		color: #B7B6D5;
+		margin-bottom: 5px;
+	}
+
+	> .representative-name-row {
+		display: flex;
+		align-items: flex-end;
+		margin-bottom: 8px;
+
+		> .name {
+			color: #FFF;
+			font-weight: 600;
+			font-size: 18px;
+			margin-right: 6px;
+			.truncated-text();
+		}
+
+		> .weight-total {
+			min-width: 40px;
+			color: #FFF;
+			font-weight: 400;
+			font-size: 17px;
+		}
+	}
+
+	> .representative-health-row {
+		display: flex;
+		align-items: center;
+
+		&.health-green {
+			@health-state-color: #AFFA57;
+			.health-state-apply-colors();
+		}
+
+		&.health-yellow {
+			@health-state-color: #FACA57;
+			.health-state-apply-colors();
+		}
+
+		&.health-red {
+			@health-state-color: #FF6363;
+			.health-state-apply-colors();
+		}
+
+		> .health-icon {
+			display: flex;
+			width: 15px;
+			height: 15px;
+			border-radius: 100%;
+			margin-right: 6px;
+		}
+
+		> .label {
+			font-size: 14px;
+			margin-bottom: -1px;
 		}
 	}
 }
@@ -212,7 +295,9 @@
 .nav-container .nav-status-row {
 	display: flex;
 	align-items: center;
-	margin: 0 20px 20px 20px;
+	border-bottom: 1px solid @nav-border-color;
+	padding: 0px 20px 16px 20px;
+	margin-bottom: 15px;
 
 	&.interactable {
 		text-decoration: none;

@@ -1,17 +1,11 @@
-<div class="uk-width-1-1 uk-background-primary wallet-bar uk-animation-slide-left" style="background: #FFF;" *ngIf="representatives.length">
-  <div class="uk-margin-left" style="padding-top: 0; padding-bottom: 6px; color: #FFF;">
-    <div uk-grid>
-      <div class="uk-width-1-1">
-
-        <span style="cursor:pointer" class="uk-text-danger" (click)="showModal()" uk-tooltip title="Some of your representatives should be changed - click to view details">
-          <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom"> Update Representatives</span>
-        </span>
-
-      </div>
-    </div>
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="representatives.length">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Update Representatives</div>
   </div>
 </div>
-
 
 <div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
   <div class="uk-modal-dialog">

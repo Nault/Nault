@@ -68,6 +68,32 @@
                 </div>
               </div>
 
+              <div class="nav-representative-info" *ngIf="(node.status === true) && isConfigured()">
+                <h2>Representative</h2>
+                <div class="representative-name-row">
+                  <div class="name">Example Representative</div>
+                  <div class="weight-total">0.5%</div>
+                </div>
+                <ng-container [ngSwitch]="true">
+                  <div class="representative-health-row health-green" *ngSwitchCase="false">
+                    <div class="health-icon"></div>
+                    <div class="label">Good Health</div>
+                  </div>
+                  <div class="representative-health-row health-yellow" *ngSwitchCase="false">
+                    <div class="health-icon"></div>
+                    <div class="label">Medium Health</div>
+                  </div>
+                  <div class="representative-health-row health-red" *ngSwitchCase="false">
+                    <div class="health-icon"></div>
+                    <div class="label">Poor Health</div>
+                  </div>
+                  <div class="representative-health-row health-unknown" *ngSwitchDefault>
+                    <div class="health-icon"><div uk-spinner="ratio: 0.5;"></div></div>
+                    <div class="label">Checking Health...</div>
+                  </div>
+                </ng-container>
+              </div>
+
               <app-change-rep-widget></app-change-rep-widget>
               <app-wallet-widget></app-wallet-widget>
 
