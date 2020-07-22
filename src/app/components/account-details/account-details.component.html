@@ -147,13 +147,19 @@
             <div class="uk-card-body">
               <h3 class="uk-heading-divider uk-text-center">Remote Signing (Send or Change Rep)<span *ngIf="remoteVisible" id="remote" uk-icon="icon: shrink;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span><span *ngIf="!remoteVisible" id="remote" uk-icon="icon: expand;" (click)="showRemote(remoteVisible)" uk-tooltip title="Start Remote Signing"></span></h3>
               <div *ngIf="remoteVisible">
-                <div class="uk-form-horizontal">
+                <ol>
+                  <li>Generate a Nano block</li>
+                  <li>Scan the unsigned QR with a remote wallet (for example an offline Nault). Sign it using the methods provided.</li>
+                  <li><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a>. Then confirm to publish the block!</li>
+                </ol>
+
+                <span><strong>Block Type</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Recent Transactions below."></span><br>
+                <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[0]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[0]}}</label>
+                <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[1]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[1]}}</label>
+                <br><br>
+
+                <div *ngIf="blockTypeSelected === blockTypes[0]" class="uk-form-horizontal">
                   <div class="uk-margin">
-                    <ol>
-                      <li>Generate a Nano block</li>
-                      <li>Scan the unsigned QR with a remote wallet (for example an offline Nault). Sign it using the methods provided.</li>
-                      <li><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a>. Then confirm to publish the block!</li>
-                    </ol>
                     <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
                     <div class="uk-form-controls">
                       <div class="uk-inline uk-width-1-1">
@@ -211,12 +217,45 @@
                           </div>
 
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </div>
-                <button class="uk-button uk-button-primary uk-text-center uk-width-1-1" type="button" style="margin-bottom: 20px;" (click)="generateSend()">Generate Send Block</button>
+
+                <div *ngIf="blockTypeSelected === blockTypes[1]" class="uk-form-horizontal">
+                  <div class="uk-margin">
+                    <label class="uk-form-label" for="form-horizontal-text3">Representative</label>
+                    <div class="uk-form-controls">
+                      <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
+                        <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+                        <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
+                        
+                        <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                          <ul class="uk-nav uk-nav-default">
+                            <li class="uk-nav-header">Recommended Representatives</li>
+                            <li class="uk-nav-divider"></li>
+                            <li *ngFor="let rep of representativeResults$ | async">
+                              <a (click)="selectRepresentative(rep.id)">
+                                {{ rep.name }}
+                                <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
+                                <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="uk-form-controls" *ngIf="representativeListMatch">
+                      <div class="uk-inline uk-width-1-1">
+                        <span class="uk-label uk-label-danger">{{ representativeListMatch }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <button *ngIf="blockTypeSelected === blockTypes[0]" class="uk-button uk-button-primary uk-text-center uk-width-1-1" type="button" style="margin-bottom: 20px;" (click)="generateSend()">Generate Send Block</button>
+                <button *ngIf="blockTypeSelected === blockTypes[1]" class="uk-button uk-button-primary uk-text-center uk-width-1-1" type="button" style="margin-bottom: 20px;" (click)="generateChange()">Generate Change Block</button>
               </div>
             </div>
             <div *ngIf="remoteVisible">

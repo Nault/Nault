@@ -72,11 +72,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   toAccountID: string = '';
   toAddressBook = '';
   toAccountStatus = null;
+  repStatus = null;
   qrCodeImageBlock = null;
   qrCodeImageBlockReceive = null;
   blockHash = null;
   blockHashReceive = null;
   remoteVisible = false;
+  blockTypes: string[] = ['Send Nano', 'Change Representative'];
+  blockTypeSelected: string = this.blockTypes[0];
   // End remote signing
 
   constructor(
@@ -306,7 +309,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.validateRepresentative();
   }
 
-  validateRepresentative() {
+  async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
     this.representativeModel = this.representativeModel.replace(/ /g, '');
     const rep = this.repService.getRepresentative(this.representativeModel);
@@ -315,6 +318,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.representativeListMatch = rep.name;
     } else {
       this.representativeListMatch = '';
+    }
+
+    // validate actual account
+    if (!this.util.account.isValidAccount(this.representativeModel)) return this.repStatus = 0
+    const accountInfo = await this.api.accountInfo(this.representativeModel);
+    if (accountInfo.error) {
+      if (accountInfo.error == 'Account not found') {
+        this.repStatus = 1;
+      } else {
+        this.repStatus = 0;
+      }
+    }
+    if (accountInfo && accountInfo.frontier) {
+      this.repStatus = 2;
     }
   }
 
@@ -378,6 +395,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
+    if (!this.util.account.isValidAccount(this.toAccountID)) return this.toAccountStatus = 0
     const accountInfo = await this.api.accountInfo(this.toAccountID);
     if (accountInfo.error) {
       if (accountInfo.error == 'Account not found') {
@@ -532,6 +550,48 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const UIkit = window['UIkit'];
     var modal = UIkit.modal("#receive-modal");
     modal.show();
+  }
+
+  async generateChange() {
+    if (!this.util.account.isValidAccount(this.representativeModel)) return this.notifications.sendError(`Not a valid representative account`);
+    const account = await this.api.accountInfo(this.accountID);
+
+    if (!account || !('frontier' in account)) return this.notifications.sendError(`Account must be opened first!`);
+
+    const balance = new BigNumber(account.balance);
+    const balanceDecimal = balance.toString(10);
+    let blockData = {
+      account: this.accountID,
+      previous: account.frontier,
+      representative: this.representativeModel,
+      balance: balanceDecimal,
+      link: this.zeroHash,
+    };
+
+    this.blockHash = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
+    console.log("Created block",blockData);
+    console.log("Block hash: " + this.blockHash);
+
+    // Previous block info
+    const previousBlockInfo = await this.api.blockInfo(blockData.previous);
+    if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
+    const jsonBlock = JSON.parse(previousBlockInfo.contents)
+    let blockDataPrevious = {
+      account: jsonBlock.account,
+      previous: jsonBlock.previous,
+      representative: jsonBlock.representative,
+      balance: jsonBlock.balance,
+      link: jsonBlock.link,
+    };
+    this.blockHashReceive = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
+    console.log("Created block",blockData);
+    console.log("Block hash: " + this.blockHashReceive);
+
+    // Nano signing standard
+    var qrString = null;
+    qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+    this.qrCodeImageBlock = qrCode;
   }
 
   showRemote(state:boolean) {
