@@ -77,7 +77,7 @@
     <div class="uk-modal-body">
       <div class="uk-alert-primary uk-text-center" uk-alert>
         Your representatives vote on transactions on your behalf to secure the Nano network.<br>
-        By changing the representatives below, you will help decentralize the network
+        By changing the representatives below, you will help decentralize the network.
       </div>
 
       <ul class="" uk-accordion="multiple: true;" >
@@ -107,18 +107,24 @@
         </li>
       </ul>
 
-      <p class="uk-text-center uk-text-small uk-text-muted">To bypass this warning, add your representative as trusted to your known representative list</p>
+      <p class="uk-text-center uk-text-small uk-text-muted">To bypass this warning, add your representative as trusted to your known representative list.</p>
+
+      <p class="uk-text-center uk-text-small uk-text-muted">
+        By clicking "change" you change to the suggested representative: <span *ngIf="suggestedRep.alias" class="uk-margin-small-right uk-label uk-label-default">{{ suggestedRep.alias }}</span><br>
+        Click "manual" to choose your new representative yourself.
+      </p>
 
     </div>
     <div class="uk-modal-footer">
       <div uk-grid>
         <div class="uk-width-1-2 uk-text-left">
           <button class="uk-button uk-button-danger" type="button" (click)="closeModal()">Cancel</button>
-
         </div>
         <div class="uk-width-1-2 uk-text-right">
-          <button class="uk-button uk-button-primary" type="button" (click)="changeReps()">Change Reps</button>
-
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-default uk-margin-small-right" type="button" (click)="changeReps()">Manual</button>
+            <button class="uk-button uk-button-primary" type="button" (click)="changeToRep(suggestedRep.account)">Change</button>
+          </div>
         </div>
       </div>
     </div>
