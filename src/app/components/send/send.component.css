@@ -15,6 +15,16 @@
   font-size: 10px;
 }
 
+.dropdown-nav-container {
+    background: white;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08) !important;
+}
+
+.uk-nav-header {
+    font-weight: 500;
+}
 
 @media (max-width: 12450px) {
   .br-spacer {

@@ -1,17 +1,73 @@
-<div class="uk-width-1-1 uk-background-primary wallet-bar uk-animation-slide-left" style="background: #FFF;" *ngIf="representatives.length">
-  <div class="uk-margin-left" style="padding-top: 0; padding-bottom: 6px; color: #FFF;">
-    <div uk-grid>
-      <div class="uk-width-1-1">
-
-        <span style="cursor:pointer" class="uk-text-danger" (click)="showModal()" uk-tooltip title="Some of your representatives should be changed - click to view details">
-          <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom"> Update Representatives</span>
-        </span>
-
-      </div>
+<div class="nav-representative-info" (mouseover)="showRepHelp=true" (mouseout)="showRepHelp=false">
+  <h2>Representative</h2>
+  <div class="representative-name-row">
+    <a (click)="representatives.length ? showModal() : navigateToRepChangePage()" class="name">Example Representative</a>
+    <div class="weight-total">0.5%</div>
+  </div>
+  <ng-container [ngSwitch]="true">
+    <div class="representative-health-row health-green" *ngSwitchCase="false">
+      <div class="health-icon"></div>
+      <div class="label">Good Health</div>
     </div>
+    <div class="representative-health-row health-yellow" *ngSwitchCase="false">
+      <div class="health-icon"></div>
+      <div class="label">Medium Health</div>
+    </div>
+    <div class="representative-health-row health-red" *ngSwitchCase="false">
+      <div class="health-icon"></div>
+      <div class="label">Poor Health</div>
+    </div>
+    <div class="representative-health-row health-unknown" *ngSwitchDefault>
+      <div class="health-icon"><div uk-spinner="ratio: 0.5;"></div></div>
+      <div class="label">Checking Health...</div>
+    </div>
+  </ng-container>
+  <div [class]="[ 'representative-help-tooltip', showRepHelp ? 'visible' : 'hidden' ]">
+    <p class="primary"><b>Example Representative</b> represents your account in the Nano consensus protocol by voting on your behalf.</p>
+    <p>You can change representative at any time by clicking on its name above.</p>
+    <div class="header-row">
+      <div class="separator"></div>
+      <h2>Health</h2>
+      <div class="separator"></div>
+    </div>
+    <p class="uk-text-danger" *ngIf="false">
+       <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 2%).
+    </p>
+    <p class="uk-text-warning" *ngIf="false">
+       <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
+    </p>
+    <p *ngIf="true">
+      <span uk-spinner="ratio: 0.5;"></span>Retrieving total weight...
+    </p>
+    <p class="uk-text-danger" *ngIf="false"> <!-- uptime less than 90% -->
+       <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> (89.2% uptime).
+    </p>
+    <p class="uk-text-warning" *ngIf="false"> <!-- uptime less than 99% -->
+       <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> (95.2% uptime).
+    </p>
+    <p *ngIf="true">
+      <span uk-spinner="ratio: 0.5;"></span>Retrieving uptime...
+    </p>
+    <p class="uk-text-warning" *ngIf="representatives.length"> <!-- no issues with this rep, but have issues with other reps -->
+       <span uk-icon="icon: warning;"></span>We've found issues with representatives on your other accounts.
+    </p>
+    <p class="uk-text-success" *ngIf="false"> <!-- no issues with this rep, but have issues with other reps -->
+       <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
+    </p>
+    <p *ngIf="false"> <!-- at least one issue exists (on this account) -->
+       It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
+    </p>
   </div>
 </div>
 
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="representatives.length">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Update Representatives</div>
+  </div>
+</div>
 
 <div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
   <div class="uk-modal-dialog">

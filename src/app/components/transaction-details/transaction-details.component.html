@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2>Transaction Details</h2>
+    <h2 class="uk-heading-divider">Transaction Details</h2>
 
     <div class="uk-alert uk-alert-primary" *ngIf="!transaction">
       Unable to load the transaction, double check that the hash is correct and try again!
@@ -24,7 +24,7 @@
         <div class="uk-width-1-2@s">
           <div class="uk-card uk-card-default">
 
-            <div class="uk-card-header uk-text-truncate" style="padding: 20px 20px;">
+            <div class="uk-text-truncate" style="padding: 20px 20px;">
 
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
@@ -38,7 +38,7 @@
         </div>
         <div class="uk-width-1-2@s">
           <div class="uk-card uk-card-default">
-            <div class="uk-card-header uk-text-truncate" style="padding: 20px 20px;">
+            <div class="uk-text-truncate" style="padding: 20px 20px;">
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
                   <span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID }}

@@ -2,53 +2,6 @@
   background: #000;
 }
 
-.app {
-  font-family: 'Lato', sans-serif;
-  background: #f0f1f1;
-  /*height: 100%;*/
-}
-
-.title-block {
-  background: #fff;
-}
-
-.title-block .title {
-  font-size: 24px;
-  display: block;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: #666;
-}
-.title-block .title:hover {
-  text-decoration: none;
-}
-.title-block .balance-text {
-  display: block;
-  font-size: 12px;
-}
-
-.title-block .balance {
-  display: block;
-  font-size: 18px;
-  margin-top: -8px;
-}
-
-.left-nav {
-  font-size: 18px;
-}
-
-.left-nav .active {
-  color: #6ccff5;
-}
-
-.left-nav a {
-  color: #FFF;
-}
-
-.left-nav a:hover {
-  color: #6ccff5;
-}
-
 .wallet-bar a {
   color: #fff;
 }
@@ -89,6 +42,8 @@
 }
 
 .content-container {
+  min-height: 100%;
+  border-top: 1px solid rgb(220, 233, 249);
   z-index: 1;
 }
 
@@ -106,7 +61,7 @@
   }
 
   .content-container.nav-expanded {
-    transform: translateX(350px);
+    transform: translateX(360px);
   }
 }
 
@@ -115,5 +70,6 @@
     position: absolute;
     width: 350px;
     height: 100%;
+    overflow: scroll;
   }
 }

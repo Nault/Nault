@@ -62,7 +62,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   seedMnemonic() {
-    return bip.entropyToMnemonic(this.wallet.seed);
+    if (this.wallet && this.wallet.seed ) {
+      return bip.entropyToMnemonic(this.wallet.seed);
+    }
   }
 
   async exportAddressBook() {

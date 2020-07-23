@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {WalletService} from "./services/wallet.service";
 import {AddressBookService} from "./services/address-book.service";
 import {AppSettingsService} from "./services/app-settings.service";
@@ -21,6 +21,19 @@ export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event']) onResize (e) {
     this.windowHeight = e.target.innerHeight;
   };
+
+  @ViewChild('selectButton') selectButton: ElementRef;
+  @ViewChild('accountsDropdown') accountsDropdown: ElementRef;
+
+  @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
+    if(
+            ( this.selectButton.nativeElement.contains(event.target) === false )
+          && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
+      ) {
+        this.showAccountsDropdown = false;
+    }
+  }
+
   wallet = this.walletService.wallet;
   node = this.nodeService.node;
   nanoPrice = this.price.price;
@@ -29,6 +42,7 @@ export class AppComponent implements OnInit {
   windowHeight = 1000;
   navExpanded = false;
   showSearchBar = false;
+  showAccountsDropdown = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
 
@@ -137,6 +151,16 @@ export class AppComponent implements OnInit {
 
   closeNav() {
     this.navExpanded = false;
+  }
+
+  toggleAccountsDropdown() {
+    if(this.showAccountsDropdown === true) {
+      this.showAccountsDropdown = false
+      return
+    }
+
+    this.showAccountsDropdown = true
+    this.accountsDropdown.nativeElement.scrollTop = 0
   }
 
   toggleSearch(mobile = false) {
