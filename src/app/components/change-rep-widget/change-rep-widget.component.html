@@ -58,6 +58,7 @@
   </div>
 </div>
 
+<!--
 <div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="changeableRepresentatives.length">
   <div class="status-icon">
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
@@ -66,6 +67,7 @@
     <div class="label primary uk-text-warning">Update Representatives</div>
   </div>
 </div>
+-->
 
 <div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
   <div class="uk-modal-dialog">
@@ -79,7 +81,7 @@
       </div>
 
       <ul class="" uk-accordion="multiple: true;" >
-        <li *ngFor="let rep of representatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
+        <li *ngFor="let rep of changeableRepresentatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
           <a class="uk-accordion-title uk-text-truncate" href="#" style="padding-left: 5px; padding-bottom: 5px;"><span *ngIf="rep.label" class="uk-margin-small-right uk-label uk-label-danger">{{ rep.label }}</span> {{ rep.account | squeeze }}</a>
 
           <div class="uk-accordion-content" style="margin-top: 0; border-top: 1px dotted #ccc;">

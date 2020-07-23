@@ -27,15 +27,21 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
-    console.log(this.representatives);
+
+    this.repService.walletReps$.subscribe(async reps => {
+      this.representatives = reps;
+      console.log('GOT REPS: ', this.representatives);
+    });
+
+    console.log('INITIAL REPS:', this.representatives);
 
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
       this.changeableRepresentatives = reps;
 
-      if(reps.length > 0){
-        this.suggestedRep = await this.ninja.getSuggestedRep()
+      if (reps.length > 0) {
+        this.suggestedRep = await this.ninja.getSuggestedRep();
       }
     });
   }

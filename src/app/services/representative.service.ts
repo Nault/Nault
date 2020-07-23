@@ -50,6 +50,9 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
+  walletReps$ = new BehaviorSubject([]);
+  walletReps = [];
+
   changeableReps$ = new BehaviorSubject([]);
   changeableReps = [];
 
@@ -69,6 +72,8 @@ export class RepresentativeService {
    * @returns {Promise<FullRepresentativeOverview[]>}
    */
   async detectChangeableReps(): Promise<FullRepresentativeOverview[]> {
+    console.log('Detecting changeable reps...');
+    
     const representatives = await this.getRepresentativesOverview();
 
     // Now based on some of their properties, we filter them out
@@ -168,6 +173,9 @@ export class RepresentativeService {
       const fullRep = { ...representative, ...additionalData };
       allReps.push(fullRep);
     }
+
+    this.walletReps = allReps;
+    this.walletReps$.next(allReps);
 
     return allReps;
   }
