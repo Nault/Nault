@@ -146,30 +146,36 @@
         </div>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">Accounts</div></a></li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">Send</div></a></li>
           <li>
-            <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
+            <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
                 <div class="uk-width-3-4">
-                  Receive
+                  <div class="label">Receive</div>
                 </div>
-                <div class="uk-width-1-4 uk-text-center">
-                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                <div class="uk-width-1-4 uk-text-center label-new">
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center"><div class="label">New</div></span>
                 </div>
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-margin-left ">Scan QR Code</a></li>
+          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
+          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
           <li class="uk-parent">
-            <a href="#" class="uk-margin-left">Settings</a>
+            <a href="#">Advanced Tools</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active" class="uk-margin-left">Representatives</a></li>
-              <li><a routerLink="/configure-app" routerLinkActive="active" class="uk-margin-left">App Settings</a></li>
-              <li><a routerLink="/manage-wallet" routerLinkActive="active" class="uk-margin-left">Manage Wallet</a></li>
-              <li><a routerLink="/sweeper" routerLinkActive="active" class="uk-margin-left">Wallet Sweeper</a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active" class="uk-margin-left">Configure New Wallet</a></li>
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+            </ul>
+          </li>
+          <li class="uk-parent">
+            <a href="#">Settings</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
+              <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">App Settings</div></a></li>
+              <li><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
         </ul>
@@ -186,7 +192,7 @@
         </div>
 
         <div uk-grid *ngIf="showSearchBar" style="margin-top: 15px;">
-          <div class="uk-width-1-1" style="padding-left: 60px; padding-right: 20px;">
+          <div class="uk-width-1-1" style="padding-left: 55px; padding-right: 15px;">
             <form class="uk-search uk-search-default uk-width-1-1">
               <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
               <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">

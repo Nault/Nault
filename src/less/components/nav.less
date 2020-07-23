@@ -19,8 +19,8 @@
 @nav-default-sublist-item-hover-color:          @global-link-color;
 
 @keyframes move-up-down {
-    0% { transform: translateY(1px) scaleX(1); }
-    100% { transform: translateY(-1px) scaleX(0.9); }
+	0% { transform: translateY(1px) scaleX(1); }
+	100% { transform: translateY(-1px) scaleX(0.9); }
 }
 
 .truncated-text() {
@@ -33,7 +33,7 @@
 	background: #1F1F26;
 	min-height: 100vh;
 	min-width: 360px;
-	color: #8786B0;
+	color: #868AB0;
 }
 
 .nav-container .uk-background-secondary {
@@ -418,7 +418,7 @@
 
 	&:hover > .representative-name-row > .name {
 		border-bottom-style: dotted;
-		border-color: #8786B0;
+		border-color: #868AB0;
 	}
 
 	> h2 {
@@ -632,6 +632,106 @@
 	margin-top: -10px;
 }
 
-.left-nav .active {
-	color: @nav-default-item-active-color;
+.left-nav {
+	margin-top: -15px;
+
+	> li {
+		font-size: 16px;
+		font-weight: 500;
+		color: #FFF;
+		padding: 0;
+
+		&.uk-parent > a::after {
+			margin-right: 10px;
+		}
+
+		&.uk-parent.uk-open > a {
+			border-bottom: none;
+			border-left-color: #868AB0;
+			color: #868AB0;
+		}
+
+		> a {
+			text-decoration: none;
+			color: #FFF;
+			padding-left: 20px;
+			border-left: 4px solid transparent;
+			border-top: 1px solid transparent;
+			border-bottom: 1px solid #383844;
+			transition: color 100ms ease-in-out, border-left-color 100ms ease-in-out;
+
+			&:focus {
+				color: #FFF;
+			}
+
+			&:hover {
+				border-left-color: #868AB0;
+				color: #868AB0;
+			}
+
+			&.active {
+				border-left-color: #4E91E0;
+				color: #4E91E0;
+			}
+		}
+
+		.label-new {
+			padding: 10px;
+			margin: -10px 0px -10px -9px;
+
+			> .uk-badge {
+				font-size: 16px;
+				padding-bottom: 2px;
+			}
+		}
+
+		.uk-nav-sub {
+			border-left: 4px solid #868AB0;
+			border-bottom: 1px solid @nav-border-color;
+			padding: 0 0 5px 40px;
+			font-weight: 400;
+			font-size: 16px;
+			position: relative;
+
+			&::after {
+				content: '';
+				display: block;
+				position: absolute;
+				height: calc(100% - 23px);
+				background: #484854;
+				width: 1px;
+				top: 0;
+				left: 20px;
+			}
+
+			> li {
+				position: relative;
+
+				&::after {
+					content: '';
+					background-color: #484854;
+					display: block;
+					width: 8px;
+					height: 1px;
+					position: absolute;
+					left: -19px;
+					top: 18px;
+				}
+
+				> a {
+					padding: 6px 0;
+					color: #FFF;
+					transition: color 100ms ease-in-out;
+
+					&:hover {
+						color: #868AB0;
+					}
+
+					&.active {
+						color: #4E91E0;
+					}
+				}
+			}
+		}
+	}
 }

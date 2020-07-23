@@ -2,20 +2,6 @@
   background: #000;
 }
 
-.left-nav {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.left-nav .active {
-  font-weight: 500;
-  text-decoration: underline;
-}
-
-.left-nav>li.uk-parent li {
-  font-weight: 300;
-}
-
 .wallet-bar a {
   color: #fff;
 }
