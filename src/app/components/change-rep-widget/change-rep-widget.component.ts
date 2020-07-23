@@ -9,7 +9,8 @@ import {Router} from "@angular/router";
 })
 export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
-  representatives = this.repService.changeableReps;
+  changeableRepresentatives = this.repService.changeableReps;
+  representatives = []
   showRepHelp = false;
   modalElement = null;
 
@@ -22,8 +23,12 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(reps => {
-      this.representatives = reps;
+      this.changeableRepresentatives = reps;
     });
+
+    this.representatives = await this.repService.getRepresentativesOverview();
+    console.log(this.representatives);
+    
   }
 
   sleep(ms) {
@@ -48,7 +53,7 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   }
 
   changeReps() {
-    const allAccounts = this.representatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
+    const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
 
     this.modalElement.hide();
 

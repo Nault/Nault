@@ -1,4 +1,4 @@
-<div class="nav-representative-info" (mouseover)="showRepHelp=true" (mouseout)="showRepHelp=false">
+<div *ngIf="representatives" class="nav-representative-info" (mouseover)="showRepHelp=true" (mouseout)="showRepHelp=false">
   <h2>Representative</h2>
   <div class="representative-name-row">
     <a (click)="representatives.length ? showModal() : navigateToRepChangePage()" class="name">Example Representative</a>
@@ -60,7 +60,7 @@
   </div>
 </div>
 
-<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="representatives.length">
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="changeableRepresentatives.length">
   <div class="status-icon">
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
