@@ -319,6 +319,10 @@ export class SignComponent implements OnInit {
 
       const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
+
+      const UIkit = window['UIkit'];
+      var modal = UIkit.modal("#signed-modal");
+      modal.show();
     }
     catch (error) {
       this.confirmingTransaction = false;

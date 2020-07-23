@@ -96,6 +96,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private nanoBlock: NanoBlockService) { }
 
   async ngOnInit() {
+    const params = this.router.snapshot.queryParams;
+    if ('sign' in params) {
+      this.remoteVisible = params.sign == 1 
+    }
+
     this.routerSub = this.route.events.subscribe(event => {
       if (event instanceof ChildActivationEnd) {
         this.loadAccountDetails(); // Reload the state when navigating to itself from the transactions page
@@ -604,6 +609,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   showRemote(state:boolean) {
     this.remoteVisible = !state;
+  }
+
+  showRemoteModal() {
+    const UIkit = window['UIkit'];
+    var modal = UIkit.modal("#block-modal");
+    modal.show();
   }
 
   // End remote signing methods

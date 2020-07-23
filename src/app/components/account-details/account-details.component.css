@@ -1,5 +1,6 @@
 .block-qr {
     margin:auto;
+    width: 100%;
     max-width: 600px;
 }
 
@@ -23,6 +24,16 @@
     .modal-qr-body {
         padding: 30px 5px;
     }
+
+    .modal-block-body {
+        padding: 30px 20px;
+    }
+}
+
+.modal-block {
+    width: 100%;
+    max-width: 1200px !important;
+    padding: 20px 0 0 0;
 }
 
 #remote {

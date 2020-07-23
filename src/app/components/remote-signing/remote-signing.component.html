@@ -8,22 +8,22 @@
           <div class="uk-card-body">
             <p><strong>Remote signing allows you to transact on the Nano network with extra security.</strong></p>
             <ol>
-              <li>Create a block <strong>online</strong> using the latest information from the network. No login needed.</li>
+              <li>Create a block <strong>online</strong> using the latest information from the network.</li>
               <li>Sign the block hash on an <strong>offline</strong> device using a private key corresponding to the account from step 1.</li>
               <li>Embed the signature and process the final block <strong>online</strong>.</li>
             </ol>
             <p>This way the private key avoid any exposure to the Internet and only non sensitive data is tranferred between the devices.</p>
 
             <h3>STEP 1 (Online Device)</h3>
-            <p><strong>Use an account in "watch-only" mode. Create a SEND, CHANGE or RECEIVE block.</strong><br>
-              An incoming transaction need to be present to create a RECEIVE.</p>
+            <p><strong>Start with an account in "watch-only" mode. No login is needed.</strong><br>
+              Remote Signing will be enabled for you to create new blocks.</p>
             <div class="uk-inline uk-width-1-1">
               <div class="uk-grid-large" uk-grid>
                 <div class="uk-width-expand@m uk-width-1-1">
                   <input (keyup)="validateDestination()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="Account to create a block for" autocomplete="off">
                 </div>
                 <div class="uk-width-1-6@m uk-width-1-1">
-                  <a class="uk-button uk-button-primary" routerLink="{{toAccountID ? '/account/'+toAccountID:''}}" routerLinkActive="active">GO</a>
+                  <a class="uk-button uk-button-primary" routerLink="{{toAccountID ? '/account/'+toAccountID:''}}" [queryParams]="{ sign: 1 }" routerLinkActive="active">GO</a>
                 </div>
               </div>
             </div>
