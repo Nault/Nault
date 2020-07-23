@@ -441,6 +441,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
 
+    this.qrCodeImageBlock = null;
+
     const from = await this.api.accountInfo(this.accountID);
     const to = await this.api.accountInfo(this.toAccountID);
     if (!from) return this.notifications.sendError(`From account not found`);
@@ -491,6 +493,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
       link: jsonBlock.link,
+      signature: jsonBlock.signature,
     };
 
     // Nano signing standard
@@ -500,6 +503,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async generateReceive(pendingHash) {
+    this.qrCodeImageBlockReceive = null;
     const toAcct = await this.api.accountInfo(this.accountID);
 
     const openEquiv = !toAcct || !toAcct.frontier; // if open block
@@ -536,6 +540,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
         link: jsonBlock.link,
+        signature: jsonBlock.signature,
       };
     }
 
@@ -554,6 +559,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async generateChange() {
     if (!this.util.account.isValidAccount(this.representativeModel)) return this.notifications.sendError(`Not a valid representative account`);
+    this.qrCodeImageBlock = null;
+
     const account = await this.api.accountInfo(this.accountID);
 
     if (!account || !('frontier' in account)) return this.notifications.sendError(`Account must be opened first!`);
@@ -582,6 +589,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
       link: jsonBlock.link,
+      signature: jsonBlock.signature,
     };
     this.blockHashReceive = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
     console.log("Created block",blockData);

@@ -108,6 +108,7 @@ export class QrScanComponent implements OnInit {
               p_representative: data.previous.representative,
               p_balance: data.previous.balance,
               p_link: data.previous.link,
+              p_signature: data.previous.signature,
             }}
           }
           this.router.navigate(['sign'], { queryParams: paramsSign});
@@ -195,7 +196,8 @@ export class QrScanComponent implements OnInit {
         this.util.nano.isValidHash(data.block.previous) &&
         data.previous ? this.util.nano.isValidHash(data.previous.previous):true &&
         this.util.nano.isValidHash(data.block.link) &&
-        data.previous ? this.util.nano.isValidHash(data.previous.link):true)
+        data.previous ? this.util.nano.isValidHash(data.previous.link):true &&
+        data.previous ? this.util.nano.isValidSignature(data.previous.signature):true)
     }
     catch (error) {
       return false

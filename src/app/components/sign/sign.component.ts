@@ -85,7 +85,7 @@ export class SignComponent implements OnInit {
 
       // previous block won't be included with open block (or maybe if another wallet implement this feature)
       if ('p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
-        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative, 'balance': params.p_balance, 'link': params.p_link, signature: null, work: null};
+        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative, 'balance': params.p_balance, 'link': params.p_link, signature: 'p_signature' in params ? params.p_signature:null, work: null};
       }
       
       this.shouldSign = params.sign == 1 ? true:false;
@@ -164,6 +164,13 @@ export class SignComponent implements OnInit {
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(0);
         }
+
+        else {
+          return this.notificationService.sendError(`Only OPEN block is currently supported when previous block is missing`, {length: 0})
+        }
+
+        this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
+        this.prepareTransaction()
       }
       else {
         return
@@ -294,7 +301,7 @@ export class SignComponent implements OnInit {
     this.confirmingTransaction = true;
 
     // sign the block
-    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.txType, this.shouldGenWork, isLedger);
+    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, isLedger);
     console.log('Signature: ' + block.signature || 'Error')
     console.log('Work: ' + block.work || 'Not applied')
 
@@ -305,8 +312,11 @@ export class SignComponent implements OnInit {
 
     try {
       this.clean(block)
-      this.clean(this.previousBlock)
-      let qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}'
+      if (this.previousBlock) this.clean(this.previousBlock)
+      var qrString = null;
+      if (this.previousBlock) qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}';
+      else qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
+
       const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
     }

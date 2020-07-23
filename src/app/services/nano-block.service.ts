@@ -307,7 +307,7 @@ export class NanoBlockService {
   }
 
   // for signing block when offline
-  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, type:TxType, genWork:boolean, ledger = false) {
+  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, prevBlock:StateBlock, type:TxType, genWork:boolean, ledger = false) {
     // special treatment if open block
     const openEquiv = type === TxType.open;
     console.log("Signing block of subtype: " + TxType[type]);
@@ -322,7 +322,7 @@ export class NanoBlockService {
           recipient: this.util.account.getPublicAccountID(this.util.hex.toUint8(block.link)),
         };
       }
-      else if (type === TxType.receive) {
+      else if (type === TxType.receive || type === TxType.open) {
         ledgerBlock = {
           representative: block.representative,
           balance: block.balance,
@@ -344,7 +344,12 @@ export class NanoBlockService {
         this.sendLedgerNotification();
         // On new accounts, we do not need to cache anything
         if (!openEquiv) {
-          await this.ledgerService.updateCache(walletAccount.index, block.previous);
+          try {
+            //await this.ledgerService.updateCache(walletAccount.index, block.previous);
+            await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock);
+          }
+          // this will fail when working offline, but no problem
+          catch(err){console.log(err)} 
         }
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
