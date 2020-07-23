@@ -1,0 +1,19 @@
+// Variables
+// ========================================================================
+
+@form-background:                               #fff;
+@form-focus-background:							#fff;
+
+.uk-form-label {
+	color: @global-color;
+}
+
+.uk-input, .uk-select, .uk-textarea {
+	border-radius: @global-border-radius-small;
+}
+
+.uk-input:not(.uk-form-danger):not(.uk-form-success):focus, 
+.uk-select:not(.uk-form-danger):not(.uk-form-success):focus, 
+.uk-textarea:not(.uk-form-danger):not(.uk-form-success):focus {
+	border-color: @global-primary-background;
+}

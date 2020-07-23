@@ -33,6 +33,7 @@ import { AccountDetailsComponent } from './components/account-details/account-de
 import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
 import {PriceService} from "./services/price.service";
 import { FiatPipe } from './pipes/fiat.pipe';
+import { AmountSplitPipe } from './pipes/amount-split.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
 import {PowService} from "./services/pow.service";
@@ -70,6 +71,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     AccountDetailsComponent,
     TransactionDetailsComponent,
     FiatPipe,
+    AmountSplitPipe,
     ImportWalletComponent,
     NanoAccountIdComponent,
     ImportAddressBookComponent,

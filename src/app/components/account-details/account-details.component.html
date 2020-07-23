@@ -1,7 +1,7 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
 
-    <h2>Account Details</h2>
+    <h2 class="uk-heading-divider">Account Details</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header uk-visible-toggle">
@@ -149,6 +149,7 @@
         <div uk-grid style="margin-top: 25px;">
           <div class="uk-width-1-1">
             <h3 class="uk-heading-divider uk-text-center" style="margin-bottom: 0;">Recent Transactions<span class="{{statsRefreshEnabled ? '':'refresh-disabled'}}" id="refresh" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></span></h3>
+          <div class="uk-overflow-auto">
 
 
             <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
@@ -220,6 +221,7 @@
               </tr>
               </tbody>
             </table>
+          </div>
           </div>
 
         </div>

@@ -1,0 +1,58 @@
+@import "components/_import.less";
+
+@nlt-intro-margin:                        40px;
+
+// extensions
+// ========================================================================
+
+h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
+.uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
+.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li {
+	font-family: @global-secondary-font-family;
+}
+
+.uk-card, .uk-card-default, .uk-table {
+	border-radius: @global-border-radius-medium;
+}
+
+@media (max-width: @breakpoint-small) {
+	
+	button, .uk-button {
+		margin-bottom: @nlt-intro-margin / 2!important;
+	}
+
+	h2:not(.uk-card-title):not(.uk-modal-title) {
+	  	border-bottom: none!important;
+	}
+}
+
+.uk-description-list dt {
+    font-weight: 700;
+    color: @global-color;
+}
+
+.uk-panel-scrollable {
+    resize: none;
+  }
+
+
+// custom classes
+// ========================================================================
+
+.form-icon-btn {
+    background: @global-primary-background;
+    border-bottom-right-radius: @global-border-radius-small;
+    border-top-right-radius: @global-border-radius-small;
+    padding: 0 10px;
+    color: #fff;
+}
+
+.nlt-page-intro {
+	margin-bottom: @nlt-intro-margin;
+}
+
+@media (min-width: @breakpoint-xsmall-max) {
+	.nlt-button-group button {
+		margin-left: @global-margin;
+	}
+}
