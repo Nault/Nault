@@ -75,7 +75,7 @@
   }
 
   .content-container.nav-expanded {
-    transform: translateX(350px);
+    transform: translateX(360px);
   }
 }
 
