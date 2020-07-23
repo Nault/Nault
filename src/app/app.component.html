@@ -13,6 +13,7 @@
       </div>
     </div>
 
+    <!-- Accounts dropdown -->
     <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
       <div class="header">Currently Selected</div>
       <div class="account active" *ngIf="false"> <!-- active address should always appear first, don't show if active account is "total" -->
@@ -35,14 +36,14 @@
           <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
-      <div class="account" *ngFor="let accountIdx of [1, 2, 3, 4, 5, 6, 7, 8, 9]; let i = index">
+      <div class="account" *ngFor="let account of wallet.accounts">
         <div class="name-column">
-          <div class="name">Account #{{ accountIdx }}</div>
-          <div class="address">nano_1abcde...</div>
+          <div class="name">Account #{{ account.index }}</div>
+          <div class="address">{{ account.id }}</div>
         </div>
         <div class="balance-column">
-          <div class="balance primary">0.000000 NANO</div>
-          <div class="balance converted">$0.00</div>
+          <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
     </div>
