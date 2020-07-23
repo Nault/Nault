@@ -8,10 +8,13 @@ import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
+  veryHighWeight: boolean;
   highWeight: boolean;
   trusted: boolean;
   warn: boolean;
   known: boolean;
+  uptime: Number;
+  score: Number;
 }
 
 export interface RepresentativeOverview {
@@ -72,8 +75,6 @@ export class RepresentativeService {
    * @returns {Promise<FullRepresentativeOverview[]>}
    */
   async detectChangeableReps(): Promise<FullRepresentativeOverview[]> {
-    console.log('Detecting changeable reps...');
-    
     const representatives = await this.getRepresentativesOverview();
 
     // Now based on some of their properties, we filter them out
@@ -120,10 +121,13 @@ export class RepresentativeService {
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
+        veryHighWeight: false,
         highWeight: false,
         trusted: false,
         warn: false,
         known: false,
+        uptime: null,
+        score: null
       };
 
       // Determine the status based on some factors
@@ -132,14 +136,14 @@ export class RepresentativeService {
 
       if (percent.gte(10)) {
         status = 'alert'; // Has extremely high voting weight
-        repStatus.highWeight = true;
+        repStatus.veryHighWeight = true;
       } else if (percent.gte(1)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
 
       if (knownRep) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
@@ -151,8 +155,10 @@ export class RepresentativeService {
           repStatus.warn = true;
         }
       } else if (knownRepNinja) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
+        repStatus.uptime = knownRepNinja.uptime;
+        repStatus.score = knownRepNinja.score;
         if (knownRepNinja.score < 70) {
           status = 'alert';
           repStatus.warn = true;
