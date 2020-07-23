@@ -18,6 +18,11 @@
 @nav-default-sublist-item-color:                #FFF;
 @nav-default-sublist-item-hover-color:          @global-link-color;
 
+@keyframes move-up-down {
+    0% { transform: translateY(1px) scaleX(1); }
+    100% { transform: translateY(-1px) scaleX(0.9); }
+}
+
 .truncated-text() {
 	white-space: nowrap;
 	overflow: hidden;
@@ -35,6 +40,39 @@
 	background: @global-secondary-background-alt;
 }
 
+.nav-container .nav-action-receive {
+	display: flex;
+	padding: 0 20px;
+	flex-direction: column;
+	align-items: center;
+	margin: -12px 0 -8px 0;
+		
+	&.user-action-required > .icon {
+		animation: move-up-down 1s ease-in-out infinite alternate;
+	}
+
+	> .icon {
+		margin-bottom: -3px;
+		animation: move-up-down 2s ease-in-out infinite alternate;
+	}
+
+	> .label {
+		color: @nav-half-muted-color;
+		font-weight: 500;
+		font-size: 13px;
+
+		> .uk-spinner {
+			margin-right: 6px;
+			vertical-align: 1px;
+		}
+	}
+}
+
+.nav-container .nav-separator-top {
+	border-top: 1px solid @nav-border-color;
+	padding-top: 20px;
+}
+
 .nav-container .nav-nano-card {
 	flex: 1;
 	display: flex;
@@ -49,6 +87,12 @@
 	@media (min-width: 640px) {
 		height: 11vw;
 		min-height: 155px;
+	}
+
+	&.incoming-card {
+		background: rgba(78, 145, 224, 0.2);
+		min-height: 125px;
+		height: 125px;
 	}
 
 	> .logo {
