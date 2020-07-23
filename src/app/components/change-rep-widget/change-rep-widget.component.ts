@@ -11,7 +11,7 @@ import { NinjaService } from "../../services/ninja.service";
 export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   changeableRepresentatives = this.repService.changeableReps;
-  representatives = []
+  representatives = [];
   showRepHelp = false;
   modalElement = null;
   suggestedRep = {
@@ -20,15 +20,15 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    private repService: RepresentativeService, 
+    private repService: RepresentativeService,
     private router: Router,
     private ninja: NinjaService
     ) { }
 
   async ngOnInit() {
-    // sleep to show prompt later
-    // and solve a race condition with the wallet accounts
-    await this.sleep(2000);
+    this.representatives = await this.repService.getRepresentativesOverview();
+    console.log(this.representatives);
+
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
@@ -38,10 +38,6 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
         this.suggestedRep = await this.ninja.getSuggestedRep()
       }
     });
-
-    this.representatives = await this.repService.getRepresentativesOverview();
-    console.log(this.representatives);
-    
   }
 
   sleep(ms) {
@@ -74,7 +70,7 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   }
 
   changeToRep(representative) {
-    const allAccounts = this.representatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
+    const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
 
     this.modalElement.hide();
 

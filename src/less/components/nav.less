@@ -412,7 +412,7 @@
 	flex-direction: column;
 	line-height: 1;
 	border-bottom: 1px solid @nav-border-color;
-	padding: 0px 20px 20px 20px;
+	padding: 0px 20px 0px 20px;
 	margin-bottom: 15px;
 	position: relative;
 
@@ -429,7 +429,7 @@
 		margin-bottom: 5px;
 	}
 
-	> .representative-name-row {
+	> div > .representative-name-row {
 		display: flex;
 		align-items: flex-end;
 		margin-bottom: 8px;
@@ -462,10 +462,11 @@
 		}
 	}
 
-	> .representative-health-row {
+	> div > .representative-health-row {
 		display: flex;
 		align-items: center;
 		margin-top: 5px;
+		margin-bottom: 15px;
 
 		&.health-green {
 			@health-state-color: #32D296;
@@ -496,7 +497,7 @@
 		}
 	}
 
-	> .representative-help-tooltip {
+	> div > .representative-help-tooltip {
 		display: flex;
 		flex-direction: column;
 		width: calc(100% - 75px);
