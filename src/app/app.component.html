@@ -50,7 +50,7 @@
                 <div class="card-contents">
                   <div class="account-name-container">
                     <div class="name">Primary Account</div>
-                    <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="showAccountsDropdown = (showAccountsDropdown === false)">
+                    <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
                       <div class="circle"></div>

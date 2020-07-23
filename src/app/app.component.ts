@@ -148,6 +148,16 @@ export class AppComponent implements OnInit {
     this.navExpanded = !this.navExpanded
   }
 
+  toggleAccountsDropdown() {
+    if(this.showAccountsDropdown === true) {
+      this.showAccountsDropdown = false
+      return
+    }
+
+    this.showAccountsDropdown = true
+    this.accountsDropdown.nativeElement.scrollTop = 0
+  }
+
   toggleSearch(mobile = false) {
     this.showSearchBar = !this.showSearchBar;
     if (this.showSearchBar) {
