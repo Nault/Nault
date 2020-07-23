@@ -53,7 +53,10 @@
 
       <p class="uk-text-center uk-text-small uk-text-muted">To bypass this warning, add your representative as trusted to your known representative list.</p>
 
-      <p class="uk-text-center uk-text-small uk-text-muted">By clicking "change" you change to the suggested representative: <span *ngIf="suggestedRep.alias" class="uk-margin-small-right uk-label uk-label-default">{{ suggestedRep.alias }}</span></p>
+      <p class="uk-text-center uk-text-small uk-text-muted">
+        By clicking "change" you change to the suggested representative: <span *ngIf="suggestedRep.alias" class="uk-margin-small-right uk-label uk-label-default">{{ suggestedRep.alias }}</span><br>
+        Click "manual" to choose your new representative yourself.
+      </p>
 
     </div>
     <div class="uk-modal-footer">
