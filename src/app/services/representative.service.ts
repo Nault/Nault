@@ -59,6 +59,8 @@ export class RepresentativeService {
   changeableReps$ = new BehaviorSubject([]);
   changeableReps = [];
 
+  onlineStakeTotal = new BigNumber(115202418);
+
   loaded = false;
 
   constructor(
@@ -106,8 +108,11 @@ export class RepresentativeService {
     const uniqueReps = this.getUniqueRepresentatives(accounts);
     const representatives = await this.getRepresentativesDetails(uniqueReps);
     const onlineReps = await this.getOnlineRepresentatives();
+    const quorum = await this.api.confirmationQuorum();
 
-    const totalSupply = new BigNumber(133248289);
+    const online_stake_total = this.util.nano.rawToMnano(quorum.online_stake_total);
+    this.onlineStakeTotal = new BigNumber(online_stake_total);
+
     const allReps = [];
 
     // Now, loop through each representative and determine some details about it
@@ -117,7 +122,7 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(totalSupply).times(100);
+      const percent = nanoWeight.div(this.onlineStakeTotal).times(100);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
