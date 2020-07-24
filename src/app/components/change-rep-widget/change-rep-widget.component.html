@@ -42,10 +42,10 @@
       <p class="uk-text-warning" *ngIf="rep.status.score < 80">
         <span uk-icon="icon: warning;"></span>This representative has a <b>low score</b> ({{ rep.status.score }} out of 100).
       </p>
-      <p class="uk-text-success" *ngIf="rep.statusText =='ok'"> <!-- no issues with this rep, but have issues with other reps -->
+      <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
         <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
       </p>
-      <p *ngIf="false"> <!-- at least one issue exists (on this account) -->
+      <p *ngIf="rep.statusText != 'ok'">
         It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
       </p>
     </div>
