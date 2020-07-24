@@ -91,8 +91,14 @@
 
 	&.incoming-card {
 		background: rgba(78, 145, 224, 0.2);
+
 		min-height: 125px;
 		height: 125px;
+
+		@media (min-width: 1500px) {
+			min-height: 140px;
+			height: 140px;
+		}
 	}
 
 	> .logo {
