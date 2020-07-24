@@ -1,6 +1,6 @@
 <div *ngIf="representatives.length > 0" class="nav-representative-info">
-  <h2>Representative</h2>
-  <div *ngFor="let rep of representatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+  <h2>Representative{{ representatives.length > 1 ? 's' : '' }}</h2>
+  <div class="representative" *ngFor="let rep of representatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
     <div class="representative-name-row">
       <a (click)="representatives.length ? showModal() : navigateToRepChangePage()" class="name">{{ rep.label || 'Unknown' }}</a>
       <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>

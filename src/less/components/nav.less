@@ -416,11 +416,6 @@
 	margin-bottom: 15px;
 	position: relative;
 
-	&:hover > div > .representative-name-row > .name {
-		border-bottom-style: dotted;
-		border-color: #868AB0;
-	}
-
 	> h2 {
 		text-transform: uppercase;
 		font-size: 12px;
@@ -429,7 +424,17 @@
 		margin-bottom: 5px;
 	}
 
-	> div > .representative-name-row {
+	> .representative {
+		display: flex;
+		flex-direction: column;
+
+		&:hover > .representative-name-row > .name {
+			border-bottom-style: dotted;
+			border-color: #868AB0;
+		}
+	}
+
+	> .representative > .representative-name-row {
 		display: flex;
 		align-items: flex-end;
 		margin-bottom: 8px;
