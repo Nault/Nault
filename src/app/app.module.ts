@@ -54,6 +54,7 @@ import {RemoteSignService} from "./services/remote-sign.service";
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NinjaService } from './services';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     LedgerService,
     DesktopService,
     RemoteSignService,
+    NinjaService,
   ],
   bootstrap: [AppComponent]
 })

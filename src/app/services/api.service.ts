@@ -4,15 +4,6 @@ import {HttpHeaders} from "@angular/common/http";
 import {NodeService} from "./node.service";
 import {AppSettingsService} from "./app-settings.service";
 
-export interface NinjaVerifiedRep {
-  votingweight: number;
-  delegators: number;
-  uptime: number;
-  score: number;
-  account: string;
-  alias: string;
-}
-
 @Injectable()
 export class ApiService {
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
@@ -50,10 +41,6 @@ export class ApiService {
           }
         }
       });
-  }
-
-  async recommendedReps(): Promise<NinjaVerifiedRep[]> {
-    return await this.http.get(`https://mynano.ninja/api/accounts/verified`).toPromise() as NinjaVerifiedRep[];
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {

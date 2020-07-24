@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {RepresentativeService} from "../../services/representative.service";
 import {Router} from "@angular/router";
+import { NinjaService } from "../../services/ninja.service";
 
 @Component({
   selector: 'app-change-rep-widget',
@@ -11,8 +12,16 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   representatives = this.repService.changeableReps;
   modalElement = null;
+  suggestedRep = {
+    alias: '',
+    account: ''
+  };
 
-  constructor(private repService: RepresentativeService, private router: Router) { }
+  constructor(
+    private repService: RepresentativeService, 
+    private router: Router,
+    private ninja: NinjaService
+    ) { }
 
   async ngOnInit() {
     // sleep to show prompt later
@@ -20,8 +29,12 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
     await this.sleep(2000);
     await this.repService.detectChangeableReps();
 
-    this.repService.changeableReps$.subscribe(reps => {
+    this.repService.changeableReps$.subscribe(async reps => {
       this.representatives = reps;
+
+      if(reps.length > 0){
+        this.suggestedRep = await this.ninja.getSuggestedRep()
+      }
     });
   }
 
@@ -48,6 +61,14 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
     this.modalElement.hide();
 
     this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: allAccounts, showRecommended: true } });
+  }
+
+  changeToRep(representative) {
+    const allAccounts = this.representatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
+
+    this.modalElement.hide();
+
+    this.router.navigate(['/representatives'], { queryParams: { accounts: allAccounts, representative: representative } });
   }
 
 }

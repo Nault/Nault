@@ -14,3 +14,4 @@ export * from './util.service';
 export * from './wallet.service';
 export * from './websocket.service';
 export * from './work-pool.service';
+export * from './ninja.service';
