@@ -13,6 +13,7 @@ import BigNumber from "bignumber.js";
 import {RepresentativeService} from "../../services/representative.service";
 import {BehaviorSubject} from "rxjs";
 import * as nanocurrency from 'nanocurrency'
+import {NinjaService} from "../../services/ninja.service";
 
 @Component({
   selector: 'app-account-details',
@@ -81,6 +82,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   remoteVisible = false;
   blockTypes: string[] = ['Send Nano', 'Change Representative'];
   blockTypeSelected: string = this.blockTypes[0];
+  representativeList = [];
   // End remote signing
 
   constructor(
@@ -94,7 +96,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private wallet: WalletService,
     private util: UtilService,
     public settings: AppSettingsService,
-    private nanoBlock: NanoBlockService) { }
+    private nanoBlock: NanoBlockService,
+    private ninja: NinjaService) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
@@ -114,6 +117,22 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
+
+    // populate representative list
+    const verifiedReps = await this.ninja.recommendedRandomized();
+
+    for (const representative of verifiedReps) {
+      const temprep = {
+        id: representative.account,
+        name: representative.alias
+      };
+
+      this.representativeList.push(temprep);
+    }
+
+    // add the localReps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
   }
 
   async loadAccountDetails(refresh=false) {
@@ -299,9 +318,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   searchRepresentatives() {
     this.showRepresentatives = true;
     const search = this.representativeModel || '';
-    const representatives = this.repService.getSortedRepresentatives();
 
-    const matches = representatives
+    const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
@@ -318,26 +336,21 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
     this.representativeModel = this.representativeModel.replace(/ /g, '');
+
+    if (this.representativeModel === '') {
+      this.representativeListMatch = '';
+      return;
+    }
+
     const rep = this.repService.getRepresentative(this.representativeModel);
+    const ninjaRep = await this.ninja.getAccount(this.representativeModel);
 
     if (rep) {
       this.representativeListMatch = rep.name;
+    } else if (ninjaRep) {
+      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
-    }
-
-    // validate actual account
-    if (!this.util.account.isValidAccount(this.representativeModel)) return this.repStatus = 0
-    const accountInfo = await this.api.accountInfo(this.representativeModel);
-    if (accountInfo.error) {
-      if (accountInfo.error == 'Account not found') {
-        this.repStatus = 1;
-      } else {
-        this.repStatus = 0;
-      }
-    }
-    if (accountInfo && accountInfo.frontier) {
-      this.repStatus = 2;
     }
   }
 
