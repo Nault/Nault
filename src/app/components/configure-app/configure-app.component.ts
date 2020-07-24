@@ -149,7 +149,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateNodeStats(refresh=false) {
-    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled)) return
+    if ((!this.serverAPIUpdated || (this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random')) || (refresh && !this.statsRefreshEnabled)) return
     this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
@@ -368,7 +368,7 @@ export class ConfigureAppComponent implements OnInit {
     const custom = this.serverOptions.find(c => c.value === newServer);
     if (custom) {
       this.serverAPI = custom.api;
-      this.serverAPIUpdated = custom.api;
+      this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
     }
@@ -381,8 +381,6 @@ export class ConfigureAppComponent implements OnInit {
     this.nodeVendor = 'N/A';
     this.nodeNetwork = 'N/A';
     this.statsRefreshEnabled = newServer == 'random' ? false:true;
-
-    this.updateNodeStats()
   }
 
   async clearWorkCache() {
