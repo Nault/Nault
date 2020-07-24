@@ -52,6 +52,7 @@ export class SignComponent implements OnInit {
   signatureMessageSuccess: string = '';
   walletAccount = null;
   nullBlock = '0000000000000000000000000000000000000000000000000000000000000000';
+  qrString = null;
   qrCodeImage = null;
   qrCodeImageBlock = null;
   validSeed = false;
@@ -313,11 +314,10 @@ export class SignComponent implements OnInit {
     try {
       this.clean(block)
       if (this.previousBlock) this.clean(this.previousBlock)
-      var qrString = null;
-      if (this.previousBlock) qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}';
-      else qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
+      if (this.previousBlock) this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}';
+      else this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
 
-      const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+      const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
 
       const UIkit = window['UIkit'];

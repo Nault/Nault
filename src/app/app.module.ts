@@ -50,6 +50,7 @@ import { SweeperComponent } from './components/sweeper/sweeper.component';
 import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 import {SignComponent} from "./components/sign/sign.component";
 import {RemoteSigningComponent} from "./components/remote-signing/remote-signing.component";
+import {RemoteSignService} from "./services/remote-sign.service";
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -111,6 +112,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     NodeService,
     LedgerService,
     DesktopService,
+    RemoteSignService,
   ],
   bootstrap: [AppComponent]
 })

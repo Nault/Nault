@@ -15,24 +15,47 @@
 
             <h3>STEP 1 (Online Device)</h3>
             <p><strong>Start with an account in "watch-only" mode. No login is needed.</strong></p>
+
             <div class="uk-inline uk-width-1-1">
               <div class="uk-grid-large" uk-grid>
                 <div class="uk-width-expand@m uk-width-1-1">
                   <input (keyup)="validateDestination()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="Account to create a block for" autocomplete="off">
                 </div>
                 <div class="uk-width-1-6@m uk-width-1-1">
-                  <a class="uk-button uk-button-primary" routerLink="{{toAccountID ? '/account/'+toAccountID:''}}" [queryParams]="{ sign: 1 }" routerLinkActive="active">GO</a>
+                  <button class="uk-button uk-button-primary" (click)="start()">CREATE</button>
                 </div>
               </div>
             </div>
 
             <h3>STEP 2 (Offline Device)</h3>
-            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the unsigned QR code</a> from Step 1.</strong><br>
-              Confirm and Sign it using any of the methods provided. Seed, Mnemonic, Private key or Ledger hardware wallet. Proof of Work is optional.</p>
+            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the unsigned QR code</a> from Step 1 OR paste the block text below.</strong></p>
+
+            <div class="uk-inline uk-width-1-1">
+              <div class="uk-grid-large" uk-grid>
+                <div class="uk-width-expand@m uk-width-1-1">
+                  <input (keyup)="validateUnsigned(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="Unsigned block from step 1 as raw text" autocomplete="off">
+                </div>
+                <div class="uk-width-1-6@m uk-width-1-1">
+                  <button class="uk-button uk-button-primary" (click)="navigateBlock(unsignedBlock)">SIGN</button>
+                </div>
+              </div>
+            </div>
+
+            
 
             <h3>STEP 3 (Online Device)</h3>
-            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a> from Step 2.</strong><br>
-              Confirm and Send the block to the live network! Proof of Work will be made if not done in Step 2.</p>
+            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a> from Step 2 OR paste the block text below.</strong></p>
+
+            <div class="uk-inline uk-width-1-1">
+              <div class="uk-grid-large" uk-grid>
+                <div class="uk-width-expand@m uk-width-1-1">
+                  <input (keyup)="validateSigned(signedBlock)" [(ngModel)]="signedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': signedStatus === 1, 'uk-form-danger': signedStatus === 0 }" type="text" placeholder="Signed block from step 2 as raw text" autocomplete="off">
+                </div>
+                <div class="uk-width-1-6@m uk-width-1-1">
+                  <button class="uk-button uk-button-primary" (click)="navigateBlock(signedBlock)">PROCESS</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

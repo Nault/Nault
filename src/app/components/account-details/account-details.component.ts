@@ -73,6 +73,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   toAddressBook = '';
   toAccountStatus = null;
   repStatus = null;
+  qrString = null;
   qrCodeImageBlock = null;
   qrCodeImageBlockReceive = null;
   blockHash = null;
@@ -502,8 +503,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     };
 
     // Nano signing standard
-    let qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
-    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+    this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+    const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
   }
 
@@ -550,11 +551,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     // Nano signing standard
-    var qrString = null;
-    if (blockDataPrevious) qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
-    else qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + '}';
+    if (blockDataPrevious) this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    else this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + '}';
     
-    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+    const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlockReceive = qrCode;
 
     const UIkit = window['UIkit'];
@@ -601,9 +601,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     console.log("Block hash: " + this.blockHashReceive);
 
     // Nano signing standard
-    var qrString = null;
-    qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
-    const qrCode = await QRCode.toDataURL(qrString, { errorCorrectionLevel: 'L', scale: 16 });
+    this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
+    const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
   }
 

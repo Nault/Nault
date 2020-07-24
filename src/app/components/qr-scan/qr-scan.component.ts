@@ -5,6 +5,7 @@ import { NotificationService } from "../../services/notification.service";
 import { WalletService } from "../../services/wallet.service";
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
+import { RemoteSignService } from "../../services/remote-sign.service";
 
 @Component({
   selector: 'app-qr-scan',
@@ -39,6 +40,7 @@ export class QrScanComponent implements OnInit {
     private notifcationService: NotificationService,
     private util: UtilService,
     private walletService: WalletService,
+    private remoteSignService: RemoteSignService,
   ) { }
 
   ngOnInit(): void { }
@@ -88,64 +90,11 @@ export class QrScanComponent implements OnInit {
       } else if (url.protocol === 'nanoseed:' && this.util.nano.isValidSeed(url.pathname)) {
         // Seed
         this.handleSeed(url.pathname);
-      } else if (url.protocol === 'nanosign:' && this.checkSignBlock(url.pathname)) {
-        try {
-          let data = JSON.parse(url.pathname);
-          // Block to sign
-          var paramsSign = {
-            sign: 1,
-            n_account: data.block.account,
-            n_previous: data.block.previous,
-            n_representative: data.block.representative,
-            n_balance: data.block.balance,
-            n_link: data.block.link,
-          }
-          // only include if it exist
-          if (data.previous) {
-            paramsSign = {...paramsSign,...{
-              p_account: data.previous.account,
-              p_previous: data.previous.previous,
-              p_representative: data.previous.representative,
-              p_balance: data.previous.balance,
-              p_link: data.previous.link,
-              p_signature: data.previous.signature,
-            }}
-          }
-          this.router.navigate(['sign'], { queryParams: paramsSign});
-        }
-        catch (error) {
-          this.notifcationService.sendWarning('Block sign data detected but not correct format.', { length: 5000, identifier: 'qr-not-recognized' })
-        }
+      } else if (url.protocol === 'nanosign:') {
+          this.remoteSignService.navigateSignBlock(url);
         
-      } else if (url.protocol === 'nanoprocess:' && this.checkSignBlock(url.pathname) && this.checkProcessBlock(url.pathname)) {
-        try {
-          let data = JSON.parse(url.pathname);
-          // Block to process
-          var paramsProcess = {
-            sign: 0,
-            n_account: data.block.account,
-            n_previous: data.block.previous,
-            n_representative: data.block.representative,
-            n_balance: data.block.balance,
-            n_link: data.block.link,
-            n_signature: data.block.signature,
-            n_work: data.block.work,
-          }
-          // only include if it exist
-          if (data.previous) {
-            paramsProcess = {...paramsProcess,...{
-              p_account: data.previous.account,
-              p_previous: data.previous.previous,
-              p_representative: data.previous.representative,
-              p_balance: data.previous.balance,
-              p_link: data.previous.link,
-            }}
-          }
-          this.router.navigate(['sign'], { queryParams: paramsProcess});
-        }
-        catch (error) {
-          this.notifcationService.sendWarning('Block process data detected but not correct format.', { length: 5000, identifier: 'qr-not-recognized' })
-        }
+      } else if (url.protocol === 'nanoprocess:') {
+          this.remoteSignService.navigateProcessBlock(url);
       }
       
     } else {
@@ -182,36 +131,5 @@ export class QrScanComponent implements OnInit {
 
   toggleTryHarder(): void {
     this.tryHarder = !this.tryHarder;
-  }
-
-  checkSignBlock(stringdata:string) {
-    try {
-      let data = JSON.parse(stringdata);
-      return (this.util.account.isValidAccount(data.block.account) &&
-        data.previous ? this.util.account.isValidAccount(data.previous.account):true &&
-        this.util.account.isValidAccount(data.block.representative) &&
-        data.previous ? this.util.account.isValidAccount(data.previous.representative):true &&
-        this.util.account.isValidAmount(data.block.balance) &&
-        data.previous ? this.util.account.isValidAmount(data.previous.balance):true &&
-        this.util.nano.isValidHash(data.block.previous) &&
-        data.previous ? this.util.nano.isValidHash(data.previous.previous):true &&
-        this.util.nano.isValidHash(data.block.link) &&
-        data.previous ? this.util.nano.isValidHash(data.previous.link):true &&
-        data.previous ? this.util.nano.isValidSignature(data.previous.signature):true)
-    }
-    catch (error) {
-      return false
-    }
-  }
-
-  checkProcessBlock(stringdata:string) {
-    try {
-      let data = JSON.parse(stringdata);
-      return (this.util.nano.isValidSignature(data.block.signature) &&
-        data.block.work ? this.util.nano.isValidWork(data.block.work):true)
-    }
-    catch (error) {
-      return false
-    }
   }
 }
