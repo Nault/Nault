@@ -159,10 +159,10 @@ export class RepresentativeService {
         label = knownRepNinja.alias;
         repStatus.uptime = knownRepNinja.uptime;
         repStatus.score = knownRepNinja.score;
-        if (knownRepNinja.score < 70) {
+        if (knownRepNinja.uptime < 80) {
           status = 'alert';
           repStatus.warn = true;
-        } else if (knownRepNinja.score < 80) {
+        } else if (knownRepNinja.uptime < 90) {
           status = 'warn';
           repStatus.warn = true;
         }

@@ -2,7 +2,7 @@
   <h2>Representative{{ representatives.length > 1 ? 's' : '' }}</h2>
   <div class="representative" *ngFor="let rep of representatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
     <div class="representative-name-row">
-      <a (click)="representatives.length ? showModal() : navigateToRepChangePage()" class="name">{{ rep.label || 'Unknown' }}</a>
+      <a (click)="rep.statusText == 'ok' ? navigateToRepChangePage() : changeToRep(suggestedRep.account)" class="name">{{ rep.label || 'Unknown' }}</a>
       <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
@@ -21,7 +21,8 @@
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
       <p class="primary"><b>{{ rep.label || 'Unknown' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
-      <p>You can change representative at any time by clicking on its name above.</p>
+      <p *ngIf="rep.statusText == 'ok'">You can change representative at any time by clicking on its name above.</p>
+      <p *ngIf="rep.statusText != 'ok'">Click to change to the suggested representative <b>{{ suggestedRep.alias }}</b>.</p>
       <div class="header-row">
         <div class="separator"></div>
         <h2>Health</h2>
@@ -36,11 +37,11 @@
       <p class="uk-text-danger" *ngIf="!rep.status.online">
         <span uk-icon="icon: warning;"></span>This representative is <b>offline</b>.
       </p>
-      <p class="uk-text-danger" *ngIf="rep.status.uptime < 90">
+      <p class="uk-text-danger" *ngIf="rep.status.uptime < 80">
         <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime }}% uptime).
       </p>
-      <p class="uk-text-warning" *ngIf="rep.status.score < 80">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>low score</b> ({{ rep.status.score }} out of 100).
+      <p class="uk-text-danger" *ngIf="rep.status.uptime < 90">
+        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime }}% uptime).
       </p>
       <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
         <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
