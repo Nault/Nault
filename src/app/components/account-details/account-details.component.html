@@ -376,7 +376,7 @@
             <div class="uk-inline uk-width-1-1">
               <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
               <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
-              <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
+              <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" (keyup.enter)="generateChange()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
               
               <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                 <ul class="uk-nav uk-nav-default">

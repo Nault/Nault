@@ -7,54 +7,56 @@
         <div class="uk-card uk-card-default">
           <div class="uk-card-body">
             <p><strong>An extremely secure way of transacting on the Nano network without exposing your private keys to the Internet, ensuring only non-sensitive data is transferred between devices.</strong></p>
-            <ol>
-              <li>Create a block <strong>online</strong> using the latest information from the network.</li>
-              <li>Sign the block hash on an <strong>offline</strong> device using a private key corresponding to the account from step 1.</li>
-              <li>Return the signature and process the final block <strong>online</strong>.</li>
-            </ol>
 
-            <h3>STEP 1 (Online Device)</h3>
-            <p><strong>Start with an account in "watch-only" mode. No login is needed.</strong></p>
+            <h4>STEP 1 - Create Block (Online Device)</h4>
+            <p>Create a SEND, RECEIVE or CHANGE block from a "watch-only" account. No login is needed.</p>
 
-            <div class="uk-inline uk-width-1-1">
-              <div class="uk-grid-large" uk-grid>
-                <div class="uk-width-expand@m uk-width-1-1">
-                  <input (keyup)="validateDestination()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="Account to create a block for" autocomplete="off">
-                </div>
-                <div class="uk-width-1-6@m uk-width-1-1">
-                  <button class="uk-button uk-button-primary" (click)="start()">CREATE</button>
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Account to create a block for</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (keyup)="validateDestination()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_abc..123" autocomplete="off">
+                  </div>
                 </div>
               </div>
             </div>
-
-            <h3>STEP 2 (Offline Device)</h3>
-            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the unsigned QR code</a> from Step 1 OR paste the block text below.</strong></p>
-
             <div class="uk-inline uk-width-1-1">
-              <div class="uk-grid-large" uk-grid>
-                <div class="uk-width-expand@m uk-width-1-1">
-                  <input (keyup)="validateUnsigned(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="Unsigned block from step 1 as raw text" autocomplete="off">
-                </div>
-                <div class="uk-width-1-6@m uk-width-1-1">
-                  <button class="uk-button uk-button-primary" (click)="navigateBlock(unsignedBlock)">SIGN</button>
-                </div>
-              </div>
+              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="start()">CREATE</button>
             </div>
 
+            <h4>STEP 2 - Sign Block (Offline Device)</h4>
+            <p><a routerLink="/qr-scan" routerLinkActive="active">Scan the unsigned QR code</a> from Step 1 <strong>OR</strong> paste the block below. Sign it using a key owning the account from step 1.</p>
             
-
-            <h3>STEP 3 (Online Device)</h3>
-            <p><strong><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a> from Step 2 OR paste the block text below.</strong></p>
-
-            <div class="uk-inline uk-width-1-1">
-              <div class="uk-grid-large" uk-grid>
-                <div class="uk-width-expand@m uk-width-1-1">
-                  <input (keyup)="validateSigned(signedBlock)" [(ngModel)]="signedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': signedStatus === 1, 'uk-form-danger': signedStatus === 0 }" type="text" placeholder="Signed block from step 2 as raw text" autocomplete="off">
-                </div>
-                <div class="uk-width-1-6@m uk-width-1-1">
-                  <button class="uk-button uk-button-primary" (click)="navigateBlock(signedBlock)">PROCESS</button>
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Unsigned block from step 1</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (keyup)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="navigateBlock(unsignedBlock)">SIGN</button>
+            </div>
+
+            <h4>STEP 3 - Process Block (Online Device)</h4>
+            <p><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a> from Step 2 <strong>OR</strong> paste the block below. Confirm and send it to the live network!</p>
+
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Signed block from step 2</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (keyup)="validateSigned(signedBlock)" (keyup.enter)="navigateBlock(signedBlock)" [(ngModel)]="signedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': signedStatus === 1, 'uk-form-danger': signedStatus === 0 }" type="text" placeholder="nanoprocess:{abc..}" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="navigateBlock(signedBlock)">PROCESS</button>
             </div>
           </div>
         </div>
