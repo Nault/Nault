@@ -380,7 +380,7 @@
               
               <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                 <ul class="uk-nav uk-nav-default">
-                  <li class="uk-nav-header">Recommended Representatives</li>
+                  <li class="uk-nav-header">Representative List Results</li>
                   <li class="uk-nav-divider"></li>
                   <li *ngFor="let rep of representativeResults$ | async">
                     <a (click)="selectRepresentative(rep.id)">
