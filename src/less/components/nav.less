@@ -91,8 +91,14 @@
 
 	&.incoming-card {
 		background: rgba(78, 145, 224, 0.2);
+
 		min-height: 125px;
 		height: 125px;
+
+		@media (min-width: 1500px) {
+			min-height: 140px;
+			height: 140px;
+		}
 	}
 
 	> .logo {
@@ -295,7 +301,7 @@
 .accounts-dropdown {
 	position: absolute;
 	width: 30%;
-	min-width: 400px;
+	min-width: 300px;
 	max-width: 600px;
 	max-height: 400px;
 	border: 2px solid #FFF;
@@ -416,11 +422,6 @@
 	margin-bottom: 15px;
 	position: relative;
 
-	&:hover > div > .representative-name-row > .name {
-		border-bottom-style: dotted;
-		border-color: #868AB0;
-	}
-
 	> h2 {
 		text-transform: uppercase;
 		font-size: 12px;
@@ -429,7 +430,17 @@
 		margin-bottom: 5px;
 	}
 
-	> div > .representative-name-row {
+	> .representative {
+		display: flex;
+		flex-direction: column;
+
+		&:hover > .representative-name-row > .name {
+			border-bottom-style: dotted;
+			border-color: #868AB0;
+		}
+	}
+
+	> .representative > .representative-name-row {
 		display: flex;
 		align-items: flex-end;
 		margin-bottom: 8px;
@@ -509,7 +520,7 @@
 		border-radius: 10px;
 		padding: 10px 20px 10px 12px;
 		z-index: 2;
-		color: @nav-half-muted-color;
+		color: #DBDFEC;
 		line-height: 1;
 		opacity: 0;
 		transition: opacity 200ms ease-in-out;
