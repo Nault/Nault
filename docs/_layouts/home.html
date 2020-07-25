@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    <main>
+      {% include header.html %}
+      <section class="posts">
+        {% for post in site.posts %}
+        <div class="post">
+          <a href="{{site.baseurl}}{{post.url}}"><h3>{{post.title}}</h3></a>
+          <small>{{post.date|date_to_string}}</small>
+          <p>
+            {{post.content|truncate: 120}}
+          </p>
+        </div>
+        {% endfor %}
+      </section>
+      {% include footer.html %}
+    </main>
+  </body>
+</html>
