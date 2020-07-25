@@ -41,7 +41,8 @@
                   {{ account.index }}
                 </span>
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
-                  <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> {{ account.id }}
+                  <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
+                  <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
                 </a>
               </div>
               <div class="uk-width-auto" style="padding-left: 10px;">

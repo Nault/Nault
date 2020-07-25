@@ -3,8 +3,7 @@ import {AddressBookService} from "../../services/address-book.service";
 import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
-import {ApiService} from "../../services/api.service";
-import {Router} from "@angular/router";
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-address-book',
@@ -24,8 +23,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     private walletService: WalletService,
     private notificationService: NotificationService,
     public modal: ModalService,
-    private router: Router,
-    private nodeApi: ApiService) { }
+    private util: UtilService) { }
 
   async ngOnInit() {
     this.addressBookService.loadAddressBook();
@@ -65,8 +63,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     }
 
     // Make sure the address is valid
-    const valid = await this.nodeApi.validateAccountNumber(this.newAddressAccount);
-    if (!valid || valid.valid !== '1') return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    const valid = this.util.account.isValidAccount(this.newAddressAccount);
+    if (!valid) return this.notificationService.sendWarning(`Account ID is not a valid account`);
 
     try {
       await this.addressBookService.saveAddress(this.newAddressAccount, this.newAddressName);

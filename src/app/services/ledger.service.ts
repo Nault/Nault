@@ -367,6 +367,25 @@ export class LedgerService {
     }
   }
 
+  async updateCacheOffline(accountIndex, blockData) {
+    if (this.ledger.status !== LedgerStatus.READY) {
+      await this.loadLedger(); // Make sure ledger is ready
+    }
+
+    const cacheData = {
+      representative: blockData.representative,
+      balance: blockData.balance,
+      previousBlock: blockData.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.previous,
+      sourceBlock: blockData.link,
+    };
+
+    if (this.isDesktop) {
+      return await this.updateCacheDesktop(accountIndex, cacheData, blockData.signature);
+    } else {
+      return await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.signature);
+    }
+  }
+
   async signBlock(accountIndex: number, blockData: any) {
     if (this.ledger.status !== LedgerStatus.READY) {
       await this.loadLedger(); // Make sure ledger is ready

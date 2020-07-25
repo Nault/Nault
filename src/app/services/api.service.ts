@@ -4,15 +4,6 @@ import {HttpHeaders} from "@angular/common/http";
 import {NodeService} from "./node.service";
 import {AppSettingsService} from "./app-settings.service";
 
-export interface NinjaVerifiedRep {
-  votingweight: number;
-  delegators: number;
-  uptime: number;
-  score: number;
-  account: string;
-  alias: string;
-}
-
 @Injectable()
 export class ApiService {
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
@@ -20,6 +11,10 @@ export class ApiService {
   private async request(action, data, skipError=false): Promise<any> {
     data.action = action;
     const apiUrl = this.appSettings.settings.serverAPI;
+    if (!apiUrl) {
+      this.node.setOffline(null); // offline mode
+      return;
+    }
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
@@ -50,10 +45,6 @@ export class ApiService {
           }
         }
       });
-  }
-
-  async recommendedReps(): Promise<NinjaVerifiedRep[]> {
-    return await this.http.get(`https://mynano.ninja/api/accounts/verified`).toPromise() as NinjaVerifiedRep[];
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {
@@ -95,9 +86,6 @@ export class ApiService {
   }
   async accountInfo(account): Promise<any> {
     return await this.request('account_info', { account, pending: true, representative: true, weight: true });
-  }
-  async validateAccountNumber(account): Promise<{ valid: '1'|'0' }> {
-    return await this.request('validate_account_number', { account });
   }
   async pending(account, count): Promise<any> {
     return await this.request('pending', { account, count, source: true, include_only_confirmed: true });

@@ -168,8 +168,8 @@ export class SendComponent implements OnInit {
   }
 
   async sendTransaction() {
-    const isValid = await this.nodeApi.validateAccountNumber(this.toAccountID);
-    if (!isValid || isValid.valid == '0') return this.notificationService.sendWarning(`To account address is not valid`);
+    const isValid = this.util.account.isValidAccount(this.toAccountID);
+    if (!isValid) return this.notificationService.sendWarning(`To account address is not valid`);
     if (!this.fromAccountID || !this.toAccountID) return this.notificationService.sendWarning(`From and to account are required`);
 
     const from = await this.nodeApi.accountInfo(this.fromAccountID);

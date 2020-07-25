@@ -8,7 +8,7 @@ import {ModalService} from "../../services/modal.service";
 import {ApiService} from "../../services/api.service";
 import {Router} from "@angular/router";
 import {RepresentativeService} from "../../services/representative.service";
-
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-manage-representatives',
@@ -36,13 +36,10 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private api: ApiService,
-    private addressBookService: AddressBookService,
-    private walletService: WalletService,
     private notificationService: NotificationService,
     public modal: ModalService,
     private repService: RepresentativeService,
-    private router: Router,
-    private nodeApi: ApiService) { }
+    private util: UtilService) { }
 
   async ngOnInit() {
     this.repService.loadRepresentativeList();
@@ -70,8 +67,8 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
     this.newRepAccount = this.newRepAccount.replace(/ /g, ''); // Remove spaces
 
     // Make sure the address is valid
-    const valid = await this.nodeApi.validateAccountNumber(this.newRepAccount);
-    if (!valid || valid.valid !== '1') return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    const valid = this.util.account.isValidAccount(this.newRepAccount);
+    if (!valid) return this.notificationService.sendWarning(`Account ID is not a valid account`);
 
     try {
       await this.repService.saveRepresentative(this.newRepAccount, this.newRepName, this.newRepTrusted, this.newRepWarn);

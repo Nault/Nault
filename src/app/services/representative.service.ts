@@ -4,6 +4,7 @@ import {BaseApiAccount, WalletApiAccount, WalletService} from "./wallet.service"
 import BigNumber from "bignumber.js";
 import {ApiService} from "./api.service";
 import {UtilService} from "./util.service";
+import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
@@ -58,6 +59,7 @@ export class RepresentativeService {
     private wallet: WalletService,
     private api: ApiService,
     private util: UtilService,
+    private ninja: NinjaService
   ) {
     this.representatives = this.defaultRepresentatives;
   }
@@ -106,6 +108,7 @@ export class RepresentativeService {
     for (const representative of representatives) {
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
+      const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
       const percent = nanoWeight.div(totalSupply).times(100);
@@ -120,6 +123,7 @@ export class RepresentativeService {
 
       // Determine the status based on some factors
       let status = 'none';
+      let label;
 
       if (percent.gte(10)) {
         status = 'alert'; // Has extremely high voting weight
@@ -131,6 +135,7 @@ export class RepresentativeService {
 
       if (knownRep) {
         status = status = 'none' ? 'known' : status; // In our list
+        label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
           status = 'trusted'; // In our list and marked as trusted
@@ -140,13 +145,23 @@ export class RepresentativeService {
           status = 'alert'; // In our list and marked for avoidance
           repStatus.warn = true;
         }
+      } else if (knownRepNinja) {
+        status = status = 'none' ? 'known' : status; // In our list
+        label = knownRepNinja.alias;
+        if (knownRepNinja.score < 70) {
+          status = 'alert';
+          repStatus.warn = true;
+        } else if (knownRepNinja.score < 80) {
+          status = 'warn';
+          repStatus.warn = true;
+        }
       }
 
       const additionalData = {
         id: representative.account,
         percent: percent,
         statusText: status,
-        label: knownRep ? knownRep.name : null,
+        label: label,
         status: repStatus,
       };
 
@@ -192,6 +207,7 @@ export class RepresentativeService {
   async getOnlineRepresentatives(): Promise<string[]> {
     const representatives = [];
     const reps = await this.api.representativesOnline();
+    if (!reps) return representatives;
     for (let representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);
@@ -321,6 +337,7 @@ export class RepresentativeService {
   }
 
   // Default representatives list
+  // tslint:disable-next-line:member-ordering
   defaultRepresentatives = [
     {
       id: 'nano_3arg3asgtigae3xckabaaewkx3bzsh7nwz7jkmjos79ihyaxwphhm6qgjps4',

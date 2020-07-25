@@ -48,9 +48,13 @@ import { AccountPipe } from './pipes/account.pipe';
 import { ChangeRepWidgetComponent } from './components/change-rep-widget/change-rep-widget.component';
 import { SweeperComponent } from './components/sweeper/sweeper.component';
 import { QrScanComponent } from './components/qr-scan/qr-scan.component';
+import {SignComponent} from "./components/sign/sign.component";
+import {RemoteSigningComponent} from "./components/remote-signing/remote-signing.component";
+import {RemoteSignService} from "./services/remote-sign.service";
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NinjaService } from './services';
 
 @NgModule({
   declarations: [
@@ -80,6 +84,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     ChangeRepWidgetComponent,
     SweeperComponent,
     QrScanComponent,
+    SignComponent,
+    RemoteSigningComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,6 +113,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     NodeService,
     LedgerService,
     DesktopService,
+    RemoteSignService,
+    NinjaService,
   ],
   bootstrap: [AppComponent]
 })

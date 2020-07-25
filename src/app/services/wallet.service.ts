@@ -629,6 +629,7 @@ export class WalletService {
     let walletBalance = new BigNumber(0);
     let walletPending = new BigNumber(0);
 
+    if (!accounts) return;
     for (const accountID in accounts.balances) {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
       // Find the account, update it
@@ -937,8 +938,11 @@ export class WalletService {
       this.wallet.accounts.map(account =>
         this.api.accountInfo(account.id)
           .then(res => {
-            res.id = account.id;
-            res.addressBookName = account.addressBookName;
+            try {
+              res.id = account.id;
+              res.addressBookName = account.addressBookName;
+            }
+            catch {return null;}
 
             return res;
           })
