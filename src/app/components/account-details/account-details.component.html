@@ -59,11 +59,11 @@
                     Account Balance
                   </div>
                   <div class="uk-width-1-3 uk-text-right">
-                    {{ account.balance || 0 | rai: settings.settings.displayDenomination }}
-                    <span *ngIf="account.balanceRaw && account.balanceRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.balanceRaw.toString(10) }} raw</span>
+                    {{ !account? 0:(account.balance || 0 | rai: settings.settings.displayDenomination) }}
+                    <span *ngIf="account && account.balanceRaw && account.balanceRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ !account? 0:(account.balanceRaw.toString(10)) }} raw</span>
                   </div>
                   <div class="uk-width-1-3 uk-text-left">
-                    {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+                    {{ !account? 0:(account.balanceFiat | fiat: settings.settings.displayCurrency) }}
                   </div>
                 </div>
               </div>
@@ -74,16 +74,16 @@
                     Incoming Amount
                   </div>
                   <div class="uk-width-1-3 uk-text-right">
-                    {{ account.pending || 0 | rai: settings.settings.displayDenomination }}
-                    <span *ngIf="account.pendingRaw && account.pendingRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.pendingRaw.toString(10) }} raw</span>
+                    {{ !account? 0:(account.pending || 0 | rai: settings.settings.displayDenomination) }}
+                    <span *ngIf="account && account.pendingRaw && account.pendingRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ !account? 0:(account.pendingRaw.toString(10)) }} raw</span>
                   </div>
                   <div class="uk-width-1-3 uk-text-left">
-                    {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+                    {{ !account? 0:(account.pendingFiat | fiat: settings.settings.displayCurrency) }}
                   </div>
                 </div>
               </div>
 
-              <div class="uk-width-1-1" *ngIf="account.representative">
+              <div class="uk-width-1-1" *ngIf="account && account.representative">
                 <div uk-grid>
                   <div class="uk-width-1-3 uk-text-right">
                     Representative
@@ -122,9 +122,9 @@
                       <div uk-grid>
                         <div class="uk-width-expand uk-text-truncate ">
                           <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
-                          <app-nano-account-id [accountID]="account.representative"></app-nano-account-id>
+                          <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
-                        <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
+                        <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
                           <ul class="uk-hidden-hover uk-iconnav">
                             <!--<li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>-->
                             <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a></li>
@@ -138,7 +138,7 @@
                 </div>
               </div>
 
-              <div class="uk-width-1-1">
+              <div *ngIf="settings.settings.serverAPI" class="uk-width-1-1">
                 <div uk-grid>
                   <div class="uk-width-1-3 uk-text-right">
                     <label>Enable Remote Signing</label>

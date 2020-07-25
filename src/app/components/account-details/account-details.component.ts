@@ -119,6 +119,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBook.loadAddressBook();
 
     // populate representative list
+    if (!this.settings.settings.serverAPI) return;
     const verifiedReps = await this.ninja.recommendedRandomized();
 
     for (const representative of verifiedReps) {
@@ -147,6 +148,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
 
+    if (!this.account) return
     const knownRepresentative = this.repService.getRepresentative(this.account.representative);
     this.repLabel = knownRepresentative ? knownRepresentative.name : null;
 

@@ -11,6 +11,10 @@ export class ApiService {
   private async request(action, data, skipError=false): Promise<any> {
     data.action = action;
     const apiUrl = this.appSettings.settings.serverAPI;
+    if (!apiUrl) {
+      this.node.setOffline(null); // offline mode
+      return;
+    }
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
