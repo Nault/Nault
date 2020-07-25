@@ -10,7 +10,9 @@ import { NinjaService } from "../../services/ninja.service";
 })
 export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
-  representatives = this.repService.changeableReps;
+  changeableRepresentatives = this.repService.changeableReps;
+  representatives = [];
+  showRepHelp = false;
   modalElement = null;
   suggestedRep = {
     alias: '',
@@ -18,22 +20,28 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    private repService: RepresentativeService, 
+    private repService: RepresentativeService,
     private router: Router,
     private ninja: NinjaService
     ) { }
 
   async ngOnInit() {
-    // sleep to show prompt later
-    // and solve a race condition with the wallet accounts
-    await this.sleep(2000);
+    this.representatives = await this.repService.getRepresentativesOverview();
+
+    this.repService.walletReps$.subscribe(async reps => {
+      this.representatives = reps;
+      console.log('GOT REPS: ', this.representatives);
+    });
+
+    console.log('INITIAL REPS:', this.representatives);
+
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
-      this.representatives = reps;
+      this.changeableRepresentatives = reps;
 
-      if(reps.length > 0){
-        this.suggestedRep = await this.ninja.getSuggestedRep()
+      if (reps.length > 0) {
+        this.suggestedRep = await this.ninja.getSuggestedRep();
       }
     });
   }
@@ -55,8 +63,12 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
     this.modalElement.hide();
   }
 
+  navigateToRepChangePage() {
+    this.router.navigate(['/representatives']);
+  }
+
   changeReps() {
-    const allAccounts = this.representatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
+    const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
 
     this.modalElement.hide();
 
@@ -64,7 +76,7 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
   }
 
   changeToRep(representative) {
-    const allAccounts = this.representatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
+    const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
 
     this.modalElement.hide();
 

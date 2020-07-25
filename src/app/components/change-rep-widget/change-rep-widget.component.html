@@ -1,17 +1,68 @@
-<div class="uk-width-1-1 uk-background-primary wallet-bar uk-animation-slide-left" style="background: #FFF;" *ngIf="representatives.length">
-  <div class="uk-margin-left" style="padding-top: 0; padding-bottom: 6px; color: #FFF;">
-    <div uk-grid>
-      <div class="uk-width-1-1">
-
-        <span style="cursor:pointer" class="uk-text-danger" (click)="showModal()" uk-tooltip title="Some of your representatives should be changed - click to view details">
-          <span uk-icon="icon: warning" class="uk-text-top"></span> <span class="uk-text-bottom"> Update Representatives</span>
-        </span>
-
+<div *ngIf="representatives.length > 0" class="nav-representative-info">
+  <h2>Representative{{ representatives.length > 1 ? 's' : '' }}</h2>
+  <div class="representative" *ngFor="let rep of representatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+    <div class="representative-name-row">
+      <a (click)="rep.statusText == 'ok' ? navigateToRepChangePage() : changeToRep(suggestedRep.account)" class="name">{{ rep.label || 'Unknown' }}</a>
+      <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>
+    </div>
+    <ng-container [ngSwitch]="true">
+      <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
+        <div class="health-icon"></div>
+        <div class="label">Medium</div>
       </div>
+      <div class="representative-health-row health-red" *ngSwitchCase="rep.statusText == 'alert'">
+        <div class="health-icon"></div>
+        <div class="label">Poor</div>
+      </div>
+      <div class="representative-health-row health-green" *ngSwitchDefault>
+        <div class="health-icon"></div>
+        <div class="label">Good</div>
+      </div>
+    </ng-container>
+    <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
+      <p class="primary"><b>{{ rep.label || 'Unknown' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
+      <p *ngIf="rep.statusText == 'ok'">You can change representative at any time by clicking on its name above.</p>
+      <p *ngIf="rep.statusText != 'ok'">Click to change to the suggested representative <b>{{ suggestedRep.alias }}</b>.</p>
+      <div class="header-row">
+        <div class="separator"></div>
+        <h2>Health</h2>
+        <div class="separator"></div>
+      </div>
+      <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
+        <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 10%).
+      </p>
+      <p class="uk-text-warning" *ngIf="rep.status.highWeight">
+        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
+      </p>
+      <p class="uk-text-danger" *ngIf="!rep.status.online">
+        <span uk-icon="icon: warning;"></span>This representative is <b>offline</b>.
+      </p>
+      <p class="uk-text-danger" *ngIf="rep.status.uptime < 80">
+        <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime }}% uptime).
+      </p>
+      <p class="uk-text-danger" *ngIf="rep.status.uptime < 90">
+        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime }}% uptime).
+      </p>
+      <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
+        <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
+      </p>
+      <p *ngIf="rep.statusText != 'ok'">
+        It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
+      </p>
     </div>
   </div>
 </div>
 
+<!--
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="changeableRepresentatives.length">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Update Representatives</div>
+  </div>
+</div>
+-->
 
 <div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
   <div class="uk-modal-dialog">
@@ -25,7 +76,7 @@
       </div>
 
       <ul class="" uk-accordion="multiple: true;" >
-        <li *ngFor="let rep of representatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
+        <li *ngFor="let rep of changeableRepresentatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
           <a class="uk-accordion-title uk-text-truncate" href="#" style="padding-left: 5px; padding-bottom: 5px;"><span *ngIf="rep.label" class="uk-margin-small-right uk-label uk-label-danger">{{ rep.label }}</span> {{ rep.account | squeeze }}</a>
 
           <div class="uk-accordion-content" style="margin-top: 0; border-top: 1px dotted #ccc;">

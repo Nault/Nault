@@ -8,10 +8,13 @@ import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
+  veryHighWeight: boolean;
   highWeight: boolean;
   trusted: boolean;
   warn: boolean;
   known: boolean;
+  uptime: Number;
+  score: Number;
 }
 
 export interface RepresentativeOverview {
@@ -50,8 +53,13 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
+  walletReps$ = new BehaviorSubject([]);
+  walletReps = [];
+
   changeableReps$ = new BehaviorSubject([]);
   changeableReps = [];
+
+  onlineStakeTotal = new BigNumber(115202418);
 
   loaded = false;
 
@@ -100,8 +108,11 @@ export class RepresentativeService {
     const uniqueReps = this.getUniqueRepresentatives(accounts);
     const representatives = await this.getRepresentativesDetails(uniqueReps);
     const onlineReps = await this.getOnlineRepresentatives();
+    const quorum = await this.api.confirmationQuorum();
 
-    const totalSupply = new BigNumber(133248289);
+    const online_stake_total = this.util.nano.rawToMnano(quorum.online_stake_total);
+    this.onlineStakeTotal = new BigNumber(online_stake_total);
+
     const allReps = [];
 
     // Now, loop through each representative and determine some details about it
@@ -111,14 +122,17 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(totalSupply).times(100);
+      const percent = nanoWeight.div(this.onlineStakeTotal).times(100);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
+        veryHighWeight: false,
         highWeight: false,
         trusted: false,
         warn: false,
         known: false,
+        uptime: null,
+        score: null
       };
 
       // Determine the status based on some factors
@@ -127,14 +141,14 @@ export class RepresentativeService {
 
       if (percent.gte(10)) {
         status = 'alert'; // Has extremely high voting weight
-        repStatus.highWeight = true;
+        repStatus.veryHighWeight = true;
       } else if (percent.gte(1)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
 
       if (knownRep) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
@@ -146,12 +160,14 @@ export class RepresentativeService {
           repStatus.warn = true;
         }
       } else if (knownRepNinja) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
-        if (knownRepNinja.score < 70) {
+        repStatus.uptime = knownRepNinja.uptime;
+        repStatus.score = knownRepNinja.score;
+        if (knownRepNinja.uptime < 80) {
           status = 'alert';
           repStatus.warn = true;
-        } else if (knownRepNinja.score < 80) {
+        } else if (knownRepNinja.uptime < 90) {
           status = 'warn';
           repStatus.warn = true;
         }
@@ -168,6 +184,9 @@ export class RepresentativeService {
       const fullRep = { ...representative, ...additionalData };
       allReps.push(fullRep);
     }
+
+    this.walletReps = allReps;
+    this.walletReps$.next(allReps);
 
     return allReps;
   }

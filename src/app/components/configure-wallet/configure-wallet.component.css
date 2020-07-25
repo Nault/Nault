@@ -1,12 +1,15 @@
 pre.mnemonic {
   white-space: pre-wrap;
 }
+
 pre.mnemonic:before {
   counter-reset: listing;
 }
+
 pre.mnemonic span.mnemonic-word {
   counter-increment: listing;
 }
+
 pre.mnemonic span.mnemonic-word::before {
   content: counter(listing) ". ";
   display: inline-block;
@@ -15,6 +18,7 @@ pre.mnemonic span.mnemonic-word::before {
   margin-left: auto;  /* doesn't work */
   text-align: right;  /* doesn't work */
 }
+
 .mne-num {
   color: #CCC;
   display: inline-block;
@@ -46,4 +50,6 @@ pre.mnemonic span.mnemonic-word::before {
 
 .uk-width-1-2 {
   border-radius: unset;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }

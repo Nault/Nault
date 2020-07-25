@@ -1,0 +1,84 @@
+// Breakpoints
+// ========================================================================
+
+// Phone Portrait:   Galaxy (360x640), iPhone 6 (375x667), iPhone 6+ (414x736)
+// Phone Landscape:  Galaxy (640x360), iPhone 6 (667x375), iPhone 6+ (736x414)
+// Tablet Portrait:  iPad (768x1024), Galaxy Tab (800x1280),
+// Tablet Landscape: iPad (1024x768), iPad Pro (1024x1366),
+// Desktop:          Galaxy Tab (1280x800), iPad Pro (1366x1024)
+
+@breakpoint-small:                             640px;  // Phone landscape
+@breakpoint-medium:                            960px;  // Tablet Landscape
+@breakpoint-large:                             1200px; // Desktop
+@breakpoint-xlarge:                            1600px; // Large Screens
+
+@breakpoint-xsmall-max:                        (@breakpoint-small - 1);
+@breakpoint-small-max:                         (@breakpoint-medium - 1);
+@breakpoint-medium-max:                        (@breakpoint-large - 1);
+@breakpoint-large-max:                         (@breakpoint-xlarge - 1);
+
+
+// Global variables
+// ========================================================================
+
+//
+// Typography
+//
+
+@global-font-family:                            'Open Sans', Arial, Helvetica, sans-serif;
+@global-secondary-font-family:                  'Montserrat', Arial, Helvetica, sans-serif;
+@global-font-size:                              1rem;
+@global-line-height:                            1.5;      // 24px
+
+@global-2xlarge-font-size:                      2.625rem; // 42px
+@global-xlarge-font-size:                       2rem;     // 32px
+@global-large-font-size:                        1.5rem;   // 24px
+@global-medium-font-size:                       1.25rem;  // 20px
+@global-small-font-size:                        0.875rem; // 14px
+
+//
+// Colors
+//
+
+@global-color:                                  #676686;
+@global-emphasis-color:                         #4a90e2;
+@global-muted-color:                            #999;
+
+@global-link-color:                             #4a90e2;
+@global-link-hover-color:                       #3379ca;
+
+@global-inverse-color:                          #fff;
+
+//
+// Backgrounds
+//
+
+@global-background:                             #f4faff;
+
+@global-muted-background:                       #e0ebfa;
+@global-primary-background:                     #4a90e2;
+@global-secondary-background:                   #dce9f9;
+@global-secondary-background-alt:				#222;
+
+@global-success-background:                     #32d296;
+@global-warning-background:                     #faa05a;
+@global-danger-background:                      #f0506e;
+
+//
+// Borders
+//
+
+@global-border-width:                           1px;
+@global-border:                                 #dce9f9;
+@global-border-radius:							50px;
+@global-border-radius-small:					5px;
+@global-border-radius-medium:					10px;
+
+//
+// Box-Shadows
+//
+
+@global-small-box-shadow:                       0 0 0 rgba(0,0,0,0.08);
+@global-medium-box-shadow:                      0 0 0 rgba(0,0,0,0.08);
+@global-large-box-shadow:                       0 0 0 rgba(0,0,0,0.08);
+@global-xlarge-box-shadow:                      0 0 0 rgba(0,0,0,0.08);

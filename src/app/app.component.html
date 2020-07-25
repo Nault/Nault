@@ -1,85 +1,175 @@
 <div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
-  <div class="uk-width-1-1">
+  <div class="uk-width-1-1" style="position: relative;">
 
     <!-- Mobile top bar -->
-    <div uk-grid class=" uk-hidden@s uk-background-secondary" style="color: #FFF;">
+    <div uk-grid class=" uk-hidden@s uk-background-primary" style="color: #FFF;">
       <div class="uk-width-1-2">
         <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" (click)="toggleNav()" style="cursor: pointer;">
           <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
-          <span style="font-size: 22px;" >Nault</span>
+          <span style="font-size: 22px; font-weight: 500;" >Nault</span>
         </div>
       </div>
       <div class="uk-width-1-2 " style="text-align: right;">
       </div>
     </div>
 
+    <!-- Accounts dropdown -->
+    <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
+      <div class="header">Currently Selected</div>
+      <div class="account active" *ngIf="false"> <!-- active address should always appear first, don't show if active account is "total" -->
+        <div class="name-column">
+          <div class="name">Total Balance</div>
+          <div class="address"> </div>
+        </div>
+        <div class="balance-column">
+          <div class="balance primary">0.000000 NANO</div>
+          <div class="balance converted">$0.00</div>
+        </div>
+      </div>
+      <div [class]="[ 'account', true ? 'active' : '' ]" *ngIf="true"> <!-- replaces previous element if active account is "total" -->
+        <div class="name-column">
+          <div class="name">Total Balance</div>
+          <div class="address"> </div>
+        </div>
+        <div class="balance-column">
+          <div class="balance primary">{{ wallet.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+        </div>
+      </div>
+      <div class="account" *ngFor="let account of wallet.accounts">
+        <div class="name-column">
+          <div class="name">Account #{{ account.index }}</div>
+          <div class="address">{{ account.id }}</div>
+        </div>
+        <div class="balance-column">
+          <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main content container-->
     <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
-      <div class="uk-width-1-4 nav-container" style="background: #2C3E50">
-        <div class="title-block">
-          <div class="uk-margin-left" style="padding-bottom: 15px;">
-            <div uk-grid>
-              <div class="uk-width-expand"><a routerLink="/" class="title">Nault</a></div>
-              <div class="uk-width-1-6 uk-padding-remove-left" style="padding-top: 15px;" *ngIf="isConfigured()">
-                <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;" *ngIf="node.status === false" uk-tooltip title="Unable to connect to Nano node.  Your balances may be wrong!"></span>
-                <div uk-spinner="ratio: 0.6;" *ngIf="node.status === null" uk-tooltip title="Attempting to connect to Nano node"></div>
-              </div>
-            </div>
+      <div class="uk-width-1-4 nav-container">
+        <div class="nav-header">
 
-            <div style="display: inline-block; text-align: right;" class="uk-text-truncate" *ngIf="node.status || !isConfigured()">
-              <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
-              <span class="" style="margin-left: 11px; color: #62a25b; display: inline-block; font-size: 12px;" title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</span>
-              <span class="balance" style="clear: left; text-align: left;">
-                {{ wallet.balance | rai: settings.settings.displayDenomination }}
-              </span>
-            </div>
+          <div uk-grid>
+            <div class="uk-width-expand">
 
-            <div uk-grid style="margin-top: 0;" *ngIf="!node.status && isConfigured()">
-              <div class="uk-width-1-2 uk-text-left">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Balance </span>
+              <div class="nav-nano-card">
+                <div class="logo"></div>
+                <div class="card-contents">
+                  <div class="account-name-container">
+                    <div class="name">Total Balance</div>
+                    <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                  <div class="account-balances">
+                    <ng-container *ngIf="node.status || !isConfigured()">
+                      <div class="balance-container primary">
+                        <div class="currency-name">NANO</div>
+                        <div class="amount-container">
+                          <div class="amount-integer">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                        </div>
+                      </div>
+                      <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
+                        <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
+                        <div class="amount-container">
+                          <div class="amount-integer">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="isConfigured() && (node.status === null)">
+                      <div class="spinner-container">
+                        <div uk-spinner="ratio: 0.6;" uk-tooltip title="Attempting to connect to Nano node"></div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
               </div>
-              <div class="uk-width-1-2 uk-text-right" style="padding-right: 15px; padding-left: 0;">
-                <a (click)="retryConnection()" *ngIf="node.status === false" uk-icon="icon: refresh" uk-tooltip title="Reconnect to server"></a>
-                <a routerLink="/configure-app" fragment="server-settings" uk-icon="icon: cog" uk-tooltip title="Configure Server Settings" class="uk-text-primary"></a>
-              </div>
-              <div class="uk-width-1-1" [ngClass]="{ 'uk-text-danger': node.status === false, 'uk-text-muted': node.status === null && isConfigured() }" style="margin-top: 0; padding-bottom: 7px;">
-                <span *ngIf="node.status === null" uk-tooltip title="Attempting to connect to the Nano node">CONNECTING</span>
-                <span *ngIf="node.status === false" uk-tooltip title="Unable to connect to the Nano node. Refresh or select a new server">NODE DISCONNECTED</span>
-              </div>
-            </div>
 
-            <div *ngIf="walletService.hasPendingTransactions()">
-              <div style="display: inline-block; text-align: right;" class="uk-text-muted">
-                <span class="balance-text" style="text-align: left; float: left; margin-top: 5px;">Incoming</span>
-                <span style="margin-left: 11px; display: inline-block; font-size: 12px;">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency }}</span>
-                <span class="balance" style="clear: left; text-align: left;">{{ wallet.pending | rai: settings.settings.displayDenomination }}</span>
-              </div>
-            </div>
+              <ng-container *ngIf="walletService.hasPendingTransactions()">
+                <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
+                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                  <div class="label">Unlock Wallet to Receive</div>
+                </div>
+                <div class="nav-action-receive" *ngIf="!walletService.isLocked()">
+                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                  <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
+                </div>
+                <div class="nav-nano-card incoming-card uk-animation-slide-left">
+                  <div class="card-contents">
+                    <div class="account-name-container">
+                      <div class="name">Incoming Balance</div>
+                    </div>
+                    <div class="account-balances">
+                      <div class="balance-container primary">
+                        <div class="currency-name">NANO</div>
+                        <div class="amount-container">
+                          <div class="amount-integer">{{ wallet.pending | rai: 'mnano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ wallet.pending | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                        </div>
+                      </div>
+                      <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
+                        <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
+                        <div class="amount-container">
+                          <div class="amount-integer">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="nav-separator-top"></div>
+              </ng-container>
 
+              <div class="nav-status-row" *ngIf="(node.status === false) && isConfigured()">
+                <div class="status-icon">
+                  <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
+                </div>
+                <div class="status-labels">
+                  <div class="label primary uk-text-danger">Unable to connect to the server</div>
+                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                </div>
+              </div>
+
+              <app-change-rep-widget *ngIf="(node.status === true) && isConfigured()"></app-change-rep-widget>
+              <app-wallet-widget></app-wallet-widget>
+
+            </div>
           </div>
 
         </div>
 
-        <app-change-rep-widget></app-change-rep-widget>
-        <app-wallet-widget></app-wallet-widget>
-
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li routerLink="/accounts" routerLinkActive="uk-active"><a routerLink="/accounts" routerLinkActive="active" class="uk-margin-left">Accounts</a></li>
-          <li><a routerLink="/send" routerLinkActive="active" class="uk-margin-left">Send</a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">Accounts</div></a></li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">Send</div></a></li>
           <li>
-            <a routerLink="/receive" routerLinkActive="active" class="uk-margin-left">
+            <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
-                <div class="uk-width-expand">
-                  Receive
+                <div class="uk-width-3-4">
+                  <div class="label">Receive</div>
                 </div>
-                <div class="uk-width-auto uk-text-center">
-                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center" style="font-size: 16px; padding-bottom: 2px;">New</span>
+                <div class="uk-width-1-4 uk-text-center label-new">
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center"><div class="label">New</div></span>
                 </div>
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active" class="uk-margin-left">Address Book</a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-margin-left ">Scan QR Code</a></li>
+          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
+          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
+          <li class="uk-parent">
+            <a href="#">Advanced Tools</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+            </ul>
+          </li>
           <li class="uk-parent">
             <a href="#" class="uk-margin-left">Advanced Tools</a>
             <ul class="uk-nav-sub">
@@ -101,7 +191,7 @@
 
 
         <div class="footer uk-margin-remove-top" uk-grid>
-          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px;">
+          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
             <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
@@ -110,7 +200,7 @@
         </div>
 
         <div uk-grid *ngIf="showSearchBar" style="margin-top: 15px;">
-          <div class="uk-width-1-1" style="padding-left: 60px; padding-right: 20px;">
+          <div class="uk-width-1-1" style="padding-left: 55px; padding-right: 15px;">
             <form class="uk-search uk-search-default uk-width-1-1">
               <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
               <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
@@ -119,7 +209,7 @@
         </div>
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #f0f1f1;" [style.height]="windowHeight + 'px'">
+      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #fff;" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>
@@ -129,5 +219,3 @@
 </div>
 
 <app-notifications></app-notifications>
-
-
