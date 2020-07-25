@@ -264,8 +264,8 @@
     </div>
     <div class="uk-modal-body modal-qr-body">
       <ol>
-        <li><a routerLink="/qr-scan" routerLinkActive="active">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active">Step 2</a>.</li>
-        <li><a routerLink="/qr-scan" routerLinkActive="active">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active">Step 3</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 2</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</li>
       </ol>
 
       <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
@@ -296,8 +296,8 @@
     <div class="uk-modal-body modal-block-body">
       <ol>
         <li>Generate a Nano block below. No wallet login needed.</li>
-        <li><a routerLink="/qr-scan" routerLinkActive="active">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active">Step 2</a>.</li>
-        <li><a routerLink="/qr-scan" routerLinkActive="active">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active">Step 3</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 2</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</li>
       </ol>
 
       <span><strong>Block Type</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Recent Transactions below."></span><br>
