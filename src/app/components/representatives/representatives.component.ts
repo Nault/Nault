@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 
 import BigNumber from "bignumber.js";
@@ -58,7 +57,6 @@ export class RepresentativesComponent implements OnInit {
     private notifications: NotificationService,
     private nanoBlock: NanoBlockService,
     private util: UtilService,
-    private http: HttpClient,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,
     private ninja: NinjaService) { }
@@ -248,8 +246,8 @@ export class RepresentativesComponent implements OnInit {
 
     this.changingRepresentatives = true;
 
-    const valid = await this.api.validateAccountNumber(newRep);
-    if (!valid || valid.valid !== '1') {
+    const valid = this.util.account.isValidAccount(newRep);
+    if (!valid) {
       this.changingRepresentatives = false;
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }
