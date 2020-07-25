@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  update_release_draft:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
