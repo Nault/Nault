@@ -75,7 +75,7 @@
             },
             "banano": {
               "styles": [
-                "src/styles.less"
+                "src/styles.banano.less"
               ],
               "fileReplacements": [
                 {

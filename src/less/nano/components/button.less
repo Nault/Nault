@@ -1,0 +1,39 @@
+.uk-button:not(.uk-button-secondary):not(.uk-button-default) {
+	color: #fff;
+}
+
+.uk-button {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    line-height: @global-line-height;
+}
+
+.uk-button-primary {
+    color: #fff;
+    border-radius: @global-border-radius;
+    background: @global-primary-background;
+    box-shadow: 0 10px 20px 0 #4a90e240;
+}
+
+.uk-button-primary:focus, .uk-button-primary:hover,
+.form-icon-btn:focus, .form-icon-btn:hover {
+	color: #fff;
+	background: @global-link-hover-color;
+}
+
+.uk-button-secondary, .uk-button-default {
+    color: @global-primary-background;
+    border: 1px solid @global-secondary-background;
+    border-radius: @global-border-radius;
+    background: transparent;
+}
+
+.uk-button-secondary:focus, .uk-button-secondary:hover,
+.uk-button-default:focus, .uk-button-default:hover {
+	background: @global-secondary-background;
+    color: @global-link-hover-color;
+}
+
+.uk-button {
+    border-radius: @global-border-radius;
+}
