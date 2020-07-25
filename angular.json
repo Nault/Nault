@@ -72,6 +72,29 @@
                   "with": "src/environments/environment.desktop.ts"
                 }
               ]
+            },
+            "banano": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.banano.ts"
+                }
+              ]
             }
           }
         },
@@ -86,6 +109,9 @@
             },
             "desktop": {
               "browserTarget": "nault:build:desktop"
+            },
+            "banano": {
+              "browserTarget": "nault:build:banano"
             }
           }
         },
