@@ -44,7 +44,10 @@ export class WorkPoolService {
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash) {
     const cached = this.workCache.find(p => p.hash == hash);
-    if (cached && cached.work) return cached.work;
+    if (cached && cached.work) {
+      console.log('Using cached work: ' + cached.work)
+      return cached.work;
+    }
 
     const work = await this.pow.getPow(hash);
     if (!work) {
@@ -52,6 +55,7 @@ export class WorkPoolService {
       return null;
     }
 
+    console.log('Work found: ' + work)
     this.workCache.push({ hash, work });
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
     this.saveWorkCache();

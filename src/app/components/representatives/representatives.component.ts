@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 
 import BigNumber from "bignumber.js";
@@ -13,7 +12,8 @@ import {
   NotificationService,
   RepresentativeService,
   UtilService,
-  WalletService
+  WalletService,
+  NinjaService
 } from "../../services";
 
 @Component({
@@ -48,6 +48,8 @@ export class RepresentativesComponent implements OnInit {
 
   hideOverview = false;
 
+  representativeList = []
+
   constructor(
     private router: ActivatedRoute,
     public wallet: WalletService,
@@ -55,9 +57,9 @@ export class RepresentativesComponent implements OnInit {
     private notifications: NotificationService,
     private nanoBlock: NanoBlockService,
     private util: UtilService,
-    private http: HttpClient,
     private representativeService: RepresentativeService,
-    public settings: AppSettingsService) { }
+    public settings: AppSettingsService,
+    private ninja: NinjaService) { }
 
   async ngOnInit() {
     this.representativeService.loadRepresentativeList();
@@ -84,6 +86,22 @@ export class RepresentativesComponent implements OnInit {
     repOverview = repOverview.sort((a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber());
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
+
+    // populate representative list
+    const verifiedReps = await this.ninja.recommendedRandomized();
+
+    for (const representative of verifiedReps) {
+      const temprep = {
+        id: representative.account,
+        name: representative.alias
+      };
+
+      this.representativeList.push(temprep);
+    }
+
+    // add the localReps to the list
+    const localReps = this.representativeService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
 
     await this.loadRecommendedReps();
   }
@@ -129,9 +147,8 @@ export class RepresentativesComponent implements OnInit {
   searchRepresentatives() {
     this.showRepresentatives = true;
     const search = this.toRepresentativeID || '';
-    const representatives = this.representativeService.getSortedRepresentatives();
 
-    const matches = representatives
+    const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
@@ -145,13 +162,22 @@ export class RepresentativesComponent implements OnInit {
     this.validateRepresentative();
   }
 
-  validateRepresentative() {
+  async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
     this.toRepresentativeID = this.toRepresentativeID.replace(/ /g, '');
+
+    if (this.toRepresentativeID === '') {
+      this.representativeListMatch = '';
+      return;
+    }
+
     const rep = this.representativeService.getRepresentative(this.toRepresentativeID);
+    const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
     if (rep) {
       this.representativeListMatch = rep.name;
+    } else if (ninjaRep) {
+      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
     }
@@ -160,7 +186,7 @@ export class RepresentativesComponent implements OnInit {
   async loadRecommendedReps() {
     this.recommendedRepsLoading = true;
     try {
-      const scores = await this.api.recommendedReps() as any[];
+      const scores = await this.ninja.recommended() as any[];
       const totalSupply = new BigNumber(133248289);
 
       const reps = scores.map(rep => {
@@ -220,8 +246,8 @@ export class RepresentativesComponent implements OnInit {
 
     this.changingRepresentatives = true;
 
-    const valid = await this.api.validateAccountNumber(newRep);
-    if (!valid || valid.valid !== '1') {
+    const valid = this.util.account.isValidAccount(newRep);
+    if (!valid) {
       this.changingRepresentatives = false;
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }

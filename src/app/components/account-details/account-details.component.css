@@ -1,3 +1,48 @@
+.block-qr {
+    margin:auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .block-qr {
+        max-width: 1200px;
+    }
+}
+
+.modal-qr {
+    width: 80%;
+    max-width: 750px !important;
+    padding: 20px 0 0 0;
+}
+
+@media only screen and (max-width: 1200px) {
+    .modal-qr {
+        width: 100%;
+        max-width: 1200px !important;
+    }
+    .modal-qr-body {
+        padding: 30px 5px;
+    }
+
+    .modal-block-body {
+        padding: 30px 20px;
+    }
+}
+
+.modal-block {
+    width: 100%;
+    max-width: 1200px !important;
+    padding: 20px 0 0 0;
+}
+
+#remote {
+    cursor: pointer;
+    margin-left: 10px;
+    position: relative;
+    bottom: 3px;
+}
+
 #refresh {
     cursor: pointer;
     margin-left: 10px;

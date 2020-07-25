@@ -116,10 +116,10 @@
                   <div *ngIf="fromAddressBook">
                     <span class="confirm-title">{{ fromAddressBook }}</span>
                     <span class="confirm-subtitle">From Account</span>
-                    <span class="uk-text-small uk-text-truncate">{{ fromAccountID | squeeze }}</span>
+                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!fromAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ fromAccountID | squeeze }}</span>
+                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                     <span class="confirm-subtitle">From Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -147,10 +147,10 @@
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="uk-text-small uk-text-truncate">{{ toAccountID | squeeze }}</span>
+                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ toAccountID | squeeze }}</span>
+                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>
