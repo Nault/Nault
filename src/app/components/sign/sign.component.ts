@@ -64,6 +64,7 @@ export class SignComponent implements OnInit {
   privateKey = null; // the final private key to sign with if using manual entry
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash:string = null;
+  finalSignature:string = null;
   //TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
   thresholds = [
     { name: '1x', value: 1 },
@@ -333,6 +334,16 @@ export class SignComponent implements OnInit {
       return this.notificationService.sendError('The block could not be signed!',{lenth: 0});
     }
 
+    this.qrString = null;
+    this.qrCodeImageBlock = null;
+    this.finalSignature = null;
+
+    const UIkit = window['UIkit'];
+    var modal = UIkit.modal("#signed-modal");
+    modal.show();
+
+    this.finalSignature = block.signature;
+
     try {
       this.clean(block)
       if (this.previousBlock) this.clean(this.previousBlock)
@@ -341,10 +352,6 @@ export class SignComponent implements OnInit {
 
       const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
-
-      const UIkit = window['UIkit'];
-      var modal = UIkit.modal("#signed-modal");
-      modal.show();
     }
     catch (error) {
       this.confirmingTransaction = false;

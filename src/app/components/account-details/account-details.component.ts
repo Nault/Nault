@@ -160,9 +160,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.qrCodeImageBlockReceive = null;
     this.blockHash = null;
     this.blockHashReceive = null;
-    this.remoteVisible = false;
     this.blockTypeSelected = this.blockTypes[0];
-    this.representativeList = [];
+    this.representativeModel = '';
+    this.representativeListMatch = '';
   }
 
   async loadAccountDetails(refresh=false) {
@@ -347,6 +347,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   searchRepresentatives() {
+    if (this.representativeModel != '' && !this.util.account.isValidAccount(this.representativeModel)) this.repStatus = 0;
+    else this.repStatus = null;
+
     this.showRepresentatives = true;
     const search = this.representativeModel || '';
 
@@ -460,8 +463,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   setMaxAmount() {
-    this.amountRaw = this.account.balance ? this.account.balance:'0';
-    const nanoVal = this.util.nano.rawToNano(this.amountRaw ).floor();
+    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano):new BigNumber(0);
+    const nanoVal = this.util.nano.rawToNano(this.account.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
@@ -518,7 +521,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
-    const remaining = new BigNumber(from.balance).minus(rawAmount);
+    const remaining = new BigNumber(from.balance).minus(this.rawAmount);
     const remainingDecimal = remaining.toString(10);
 
     const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
@@ -660,6 +663,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const UIkit = window['UIkit'];
     var modal = UIkit.modal("#block-modal");
     modal.show();
+    this.clearRemoteVars();
   }
 
   // End remote signing methods
