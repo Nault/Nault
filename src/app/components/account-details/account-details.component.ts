@@ -494,7 +494,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
     let blockData = {
-      account: this.accountID,
+      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
@@ -509,7 +509,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents)
     let blockDataPrevious = {
-      account: jsonBlock.account,
+      account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -525,6 +525,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async generateReceive(pendingHash) {
     this.qrCodeImageBlockReceive = null;
+    this.qrString = null;
+    this.blockHashReceive = null;
+
+    const UIkit = window['UIkit'];
+    var modal = UIkit.modal("#receive-modal");
+    modal.show();
+
     const toAcct = await this.api.accountInfo(this.accountID);
 
     const openEquiv = !toAcct || !toAcct.frontier; // if open block
@@ -538,7 +545,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const newBalanceDecimal = newBalance.toString(10);
 
     let blockData = {
-      account: this.accountID,
+      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
       previous: previousBlock,
       representative: representative,
       balance: newBalanceDecimal,
@@ -556,7 +563,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
       const jsonBlock = JSON.parse(previousBlockInfo.contents)
       blockDataPrevious = {
-        account: jsonBlock.account,
+        account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
         previous: jsonBlock.previous,
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
@@ -571,15 +578,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlockReceive = qrCode;
-
-    const UIkit = window['UIkit'];
-    var modal = UIkit.modal("#receive-modal");
-    modal.show();
   }
 
   async generateChange() {
     if (!this.util.account.isValidAccount(this.representativeModel)) return this.notifications.sendError(`Not a valid representative account`);
     this.qrCodeImageBlock = null;
+    this.blockHash = null;
+    this.qrString = null;
 
     const account = await this.api.accountInfo(this.accountID);
 
@@ -588,7 +593,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const balance = new BigNumber(account.balance);
     const balanceDecimal = balance.toString(10);
     let blockData = {
-      account: this.accountID,
+      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
       previous: account.frontier,
       representative: this.representativeModel,
       balance: balanceDecimal,
@@ -604,16 +609,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents)
     let blockDataPrevious = {
-      account: jsonBlock.account,
+      account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
       link: jsonBlock.link,
       signature: jsonBlock.signature,
     };
-    this.blockHashReceive = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
-    console.log("Created block",blockData);
-    console.log("Block hash: " + this.blockHashReceive);
 
     // Nano signing standard
     this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';

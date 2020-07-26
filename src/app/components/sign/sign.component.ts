@@ -228,7 +228,7 @@ export class SignComponent implements OnInit {
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
-        this.walletAccount = this.accounts.find(a => a.id == this.signatureAccount);
+        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_','nano_') == this.signatureAccount);
         if (!this.walletAccount) return this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
         else this.signatureMessageSuccess = 'A matching account found!';
         break;
@@ -267,10 +267,10 @@ export class SignComponent implements OnInit {
     }
 
     if (this.txType === TxType.send || this.txType === TxType.change) {
-      this.signatureAccount = this.fromAccountID;
+      this.signatureAccount = this.fromAccountID.replace('xrb_','nano_').toLowerCase();
     }
     else if (this.txType === TxType.receive || this.txType === TxType.open) {
-      this.signatureAccount = this.toAccountID;
+      this.signatureAccount = this.toAccountID.replace('xrb_','nano_').toLowerCase();
     }
 
     if (this.shouldSign) {
