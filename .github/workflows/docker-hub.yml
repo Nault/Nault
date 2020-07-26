@@ -2,6 +2,11 @@ name: Docker Hub
 
 on:
   push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
 
 jobs:
   build_and_push:
