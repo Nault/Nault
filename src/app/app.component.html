@@ -94,14 +94,26 @@
               </div>
 
               <ng-container *ngIf="walletService.hasPendingTransactions()">
-                <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
-                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                  <div class="label">Unlock Wallet to Receive</div>
-                </div>
-                <div class="nav-action-receive" *ngIf="!walletService.isLocked()">
-                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                  <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
-                </div>
+                <ng-container *ngIf="walletService.processingPending else notProcessingPending">
+                  <div class="nav-action-receive" *ngIf="walletService.processingPending">
+                    <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                    <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
+                  </div>
+                </ng-container>
+                <ng-template #notProcessingPending>
+                  <ng-container *ngIf=" (settings.settings.pendingOption !== 'manual') else manuallyReceivingPending ">
+                    <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
+                      <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                      <div class="label">Unlock Wallet to Receive</div>
+                    </div>
+                  </ng-container>
+                  <ng-template #manuallyReceivingPending>
+                    <div class="nav-action-receive uk-animation-slide-left">
+                      <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                      <div class="label">Set to Receive Manually</div>
+                    </div>
+                  </ng-template>
+                </ng-template>
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
