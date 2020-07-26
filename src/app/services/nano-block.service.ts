@@ -307,7 +307,7 @@ export class NanoBlockService {
   }
 
   // for signing block when offline
-  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, prevBlock:StateBlock, type:TxType, genWork:boolean, ledger = false) {
+  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, prevBlock:StateBlock, type:TxType, genWork:boolean, multiplier:number, ledger = false) {
     // special treatment if open block
     const openEquiv = type === TxType.open;
     console.log("Signing block of subtype: " + TxType[type]);
@@ -370,7 +370,7 @@ export class NanoBlockService {
         this.notifications.sendInfo(`Generating Proof of Work...`);
       }
   
-      block.work = await this.workPool.getWork(workBlock);
+      block.work = await this.workPool.getWork(workBlock, multiplier);
       this.workPool.removeFromCache(workBlock);
     }
     return block; //return signed block (with or without work)

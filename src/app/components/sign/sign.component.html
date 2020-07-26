@@ -91,8 +91,14 @@
           <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[1]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[1]}}</label>
           <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[2]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[2]}}</label>
           <br><br>
-          <span><strong>Proof of Work</strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published."></span><br>
-          <label class="uk-margin-medium-right"><input class="uk-checkbox" type="checkbox" name="pow" value='pow' [(ngModel)]="shouldGenWork" (change)="powChange()"> Include</label><br><br>
+          <span><strong>Proof of Work</strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published. The threshold of 1x is normally ok but you may need higher if the network is saturated with transactions and you want it prioritized. Custom multiplier only works for local PoW source CPU/GPU."></span><br>
+          <div class="uk-inline uk-width-auto">
+            <select class="uk-select" [(ngModel)]="selectedThreshold" (change)="changeThreshold()">
+              <option *ngFor="let option of thresholds" [value]="option.value">{{ option.name }}</option>
+            </select>
+          </div>
+          <label class="uk-margin-small-left"><input class="uk-checkbox" type="checkbox" name="pow" value='pow' [(ngModel)]="shouldGenWork" (change)="powChange()"> Include</label>
+          <br><br>
 
           <!-- Seed and index-->
           <div *ngIf="signTypeSelected === signTypes[1]">

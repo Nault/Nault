@@ -75,6 +75,7 @@ export class UtilService {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    difficultyFromMultiplier: difficultyFromMultiplier,
   };
   array = {
     shuffle: shuffle
@@ -381,6 +382,15 @@ function hashStateBlock(block:StateBlock) {
   blake.blake2bUpdate(context, hexToUint8(block.link));
   return blake.blake2bFinal(context);
 }
+
+// Determine new difficulty from base difficulty (hexadecimal string) and a multiplier (float). Returns hex string
+export function difficultyFromMultiplier(multiplier, base_difficulty) {
+  let big64 = new BigNumber(2).pow(64);
+  let big_multiplier = new BigNumber(multiplier);
+  let big_base = new BigNumber(base_difficulty,16);
+  return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16);
+}
+
 // shuffle any array
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -473,5 +483,6 @@ const util = {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    difficultyFromMultiplier: difficultyFromMultiplier,
   }
 };
