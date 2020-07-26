@@ -10,6 +10,8 @@ export interface RepresentativeStatus {
   online: boolean;
   veryHighWeight: boolean;
   highWeight: boolean;
+  veryLowUptime: boolean;
+  lowUptime: boolean;
   trusted: boolean;
   warn: boolean;
   known: boolean;
@@ -86,9 +88,15 @@ export class RepresentativeService {
         continue; // Reps marked as trusted are good no matter their status
       }
 
-      // If we have high weight, marked as warn, or it is offline, then we need to change
-      if (rep.status.highWeight || rep.status.warn || !rep.status.online) {
-        needsChange.push(rep);
+      // If we have high weight, low uptime or marked as warn, then we need to change
+      if (
+            rep.status.highWeight
+          || rep.status.veryHighWeight
+          || rep.status.lowUptime
+          || rep.status.veryLowUptime
+          || rep.status.warn
+        ) {
+          needsChange.push(rep);
       }
     }
 
@@ -128,6 +136,8 @@ export class RepresentativeService {
         online: repOnline,
         veryHighWeight: false,
         highWeight: false,
+        veryLowUptime: false,
+        lowUptime: false,
         trusted: false,
         warn: false,
         known: false,
@@ -139,7 +149,7 @@ export class RepresentativeService {
       let status = 'none';
       let label;
 
-      if (percent.gte(10)) {
+      if (percent.gte(3)) {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
       } else if (percent.gte(1)) {
@@ -164,11 +174,15 @@ export class RepresentativeService {
         label = knownRepNinja.alias;
         repStatus.uptime = knownRepNinja.uptime;
         repStatus.score = knownRepNinja.score;
-        if (knownRepNinja.uptime < 80) {
+        if (knownRepNinja.uptime < 90) {
           status = 'alert';
+          repStatus.veryLowUptime = true;
           repStatus.warn = true;
-        } else if (knownRepNinja.uptime < 90) {
-          status = 'warn';
+        } else if (knownRepNinja.uptime < 99) {
+          if (status !== 'alert') {
+            status = 'warn';
+          }
+          repStatus.lowUptime = true;
           repStatus.warn = true;
         }
       }
