@@ -64,6 +64,18 @@ export class SignComponent implements OnInit {
   privateKey = null; // the final private key to sign with if using manual entry
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash:string = null;
+  //TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
+  thresholds = [
+    { name: '1x', value: 1 },
+    { name: '2x', value: 2 },
+    { name: '4x', value: 4 },
+    { name: '8x', value: 8 },
+    { name: '16x', value: 16 },
+    { name: '32x', value: 32 },
+    { name: '64x', value: 64 },
+  ];
+  selectedThreshold = this.thresholds[0].value;
+  selectedThresholdOld = this.selectedThreshold;
 
   constructor(
     private router: ActivatedRoute,
@@ -247,12 +259,22 @@ export class SignComponent implements OnInit {
     if (this.shouldGenWork) this.prepareWork();
   }
 
+  changeThreshold() {
+    // multiplier has changed, clear the cache and recalculate
+    if (this.selectedThreshold !== this.selectedThresholdOld) {
+      let workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+      this.workPool.removeFromCache(workBlock);
+      console.log("PoW multiplier changed: Clearing cache")
+      this.powChange();
+    }
+  }
+
   prepareWork() {
     // The block has been verified
     if (this.toAccountID) {
       console.log('Precomputing work...')
       let workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
-      this.workPool.addWorkToCache(workBlock);
+      this.workPool.addWorkToCache(workBlock, this.selectedThreshold);
     }
   }
 
@@ -302,7 +324,7 @@ export class SignComponent implements OnInit {
     this.confirmingTransaction = true;
 
     // sign the block
-    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, isLedger);
+    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
     console.log('Signature: ' + block.signature || 'Error')
     console.log('Work: ' + block.work || 'Not applied')
 

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, ChildActivationEnd, Router} from "@angular/router";
+import {ActivatedRoute, ChildActivationEnd, Router, NavigationEnd} from "@angular/router";
 import {AddressBookService} from "../../services/address-book.service";
 import {ApiService} from "../../services/api.service";
 import {NotificationService} from "../../services/notification.service";
@@ -97,7 +97,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private util: UtilService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
-    private ninja: NinjaService) { }
+    private ninja: NinjaService) { 
+      // to detect when the account changes if the view is already active
+      route.events.subscribe((val) => {
+        if (val instanceof NavigationEnd) {
+          this.clearRemoteVars(); // reset the modal content for remote signing
+        }
+      });
+  }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
@@ -134,6 +141,28 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // add the localReps to the list
     const localReps = this.repService.getSortedRepresentatives();
     this.representativeList.push(...localReps);
+  }
+
+  clearRemoteVars() {
+    this.selectedAmount = this.amounts[0];
+    this.amount = null;
+    this.amountRaw = new BigNumber(0);
+    this.amountFiat = null;
+    this.rawAmount = new BigNumber(0);
+    this.fromAccount = {};
+    this.toAccount = false;
+    this.toAccountID = '';
+    this.toAddressBook = '';
+    this.toAccountStatus = null;
+    this.repStatus = null;
+    this.qrString = null;
+    this.qrCodeImageBlock = null;
+    this.qrCodeImageBlockReceive = null;
+    this.blockHash = null;
+    this.blockHashReceive = null;
+    this.remoteVisible = false;
+    this.blockTypeSelected = this.blockTypes[0];
+    this.representativeList = [];
   }
 
   async loadAccountDetails(refresh=false) {
