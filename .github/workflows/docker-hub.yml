@@ -1,5 +1,6 @@
 name: Docker Hub
 
+# on all branches, tags, PRs
 on:
   push:
     branches:
