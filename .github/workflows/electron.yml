@@ -1,4 +1,4 @@
-name: Build/release Desktop
+name: Electron App
 
 on: push
 
