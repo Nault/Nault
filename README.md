@@ -20,18 +20,18 @@ ___
 
 
 # How To Use
-Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [latest release](https://github.com/BitDesert/Nault/releases/latest) and download the version for your OS.
+Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS.
 
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc)
 
 # Bugs/Feedback
-If you run into any issues, please use the [GitHub Issue Tracker](https://github.com/BitDesert/Nault/issues) or head over to the [TNC Discord Server](http://discord.nanocenter.org/)!  
+If you run into any issues, please use the [GitHub Issue Tracker](https://github.com/Nault/Nault/issues) or head over to the [TNC Discord Server](http://discord.nanocenter.org/)!  
 We are continually improving and adding new features based on the feedback you provide, so please let your opinions be known!
 
 ___
 
 #### Everything below is only for contributing to the development of Nault
-#### To download Nault as a desktop app go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc)
+#### To download Nault as a desktop app go to the [releases section](https://github.com/Nault/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 # Development Guide
 #### Clone repository and install dependencies
 ```bash
-git clone https://github.com/BitDesert/Nault
+git clone https://github.com/Nault/Nault
 cd Nault
 npm install
 ```
