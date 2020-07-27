@@ -15,7 +15,16 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false, devTools: true, nodeIntegration: true } });
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 600,
+    webPreferences:
+    {
+      webSecurity: false,
+      devTools: true,
+      nodeIntegration: true
+    }
+  });
 
   // mainWindow.loadURL('http://localhost:4200/'); // Only use this for development
   mainWindow.loadURL(url.format({
@@ -26,13 +35,13 @@ function createWindow () {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    mainWindow = null
+    mainWindow = null;
   });
 
   // Detect link clicks to new windows and open them in the default browser
-  mainWindow.webContents.on('new-window', function(e, url) {
+  mainWindow.webContents.on('new-window', function(e, externalurl) {
     e.preventDefault();
-    shell.openExternal(url);
+    shell.openExternal(externalurl);
   });
 
   const menuTemplate = getApplicationMenu();
@@ -46,15 +55,15 @@ app.on('ready', () => {
   createWindow();
 
   // Detect when the application has been loaded using an nano: link, send it to the wallet to load
-  app.on('open-url', (event, path) => {
+  app.on('open-url', (event, eventpath) => {
     if (!mainWindow) {
       createWindow();
     }
     if (!mainWindow.webContents.isLoading()) {
-      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${path}' }));`);
+      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${eventpath}' }));`);
     }
     mainWindow.webContents.once('did-finish-load', () => {
-      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${path}' }));`);
+      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${eventpath}' }));`);
     });
     event.preventDefault();
   });
@@ -68,7 +77,7 @@ app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
 });
 
@@ -76,7 +85,7 @@ app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
 });
 
@@ -129,11 +138,11 @@ function getApplicationMenu() {
       submenu: [
         {
           label: 'View GitHub',
-          click () { loadExternal('https://github.com/Nault/Nault') }
+          click () { loadExternal('https://github.com/Nault/Nault'); }
         },
         {
           label: 'Submit Issue',
-          click () { loadExternal('https://github.com/Nault/Nault/issues/new') }
+          click () { loadExternal('https://github.com/Nault/Nault/issues/new'); }
         },
         {type: 'separator'},
         {
@@ -142,7 +151,7 @@ function getApplicationMenu() {
         },
         {
           label: 'View Latest Updates',
-          click () { loadExternal('https://github.com/Nault/Nault/releases') }
+          click () { loadExternal('https://github.com/Nault/Nault/releases'); }
         },
         {type: 'separator'},
         {
@@ -203,6 +212,6 @@ function getApplicationMenu() {
   return template;
 }
 
-function loadExternal(url) {
-  shell.openExternal(url);
+function loadExternal(externalurl: string) {
+  shell.openExternal(externalurl);
 }
