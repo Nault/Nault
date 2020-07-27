@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RepresentativeService} from "../../services/representative.service";
 import {Router} from "@angular/router";
 import { NinjaService } from "../../services/ninja.service";
@@ -8,7 +8,7 @@ import { NinjaService } from "../../services/ninja.service";
   templateUrl: './change-rep-widget.component.html',
   styleUrls: ['./change-rep-widget.component.css']
 })
-export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
+export class ChangeRepWidgetComponent implements OnInit {
 
   changeableRepresentatives = this.repService.changeableReps;
   displayedRepresentatives = [];
