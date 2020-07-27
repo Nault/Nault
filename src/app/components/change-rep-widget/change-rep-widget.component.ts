@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RepresentativeService} from "../../services/representative.service";
 import {Router} from "@angular/router";
 import { NinjaService } from "../../services/ninja.service";
@@ -8,12 +8,12 @@ import { NinjaService } from "../../services/ninja.service";
   templateUrl: './change-rep-widget.component.html',
   styleUrls: ['./change-rep-widget.component.css']
 })
-export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
+export class ChangeRepWidgetComponent implements OnInit {
 
   changeableRepresentatives = this.repService.changeableReps;
+  displayedRepresentatives = [];
   representatives = [];
   showRepHelp = false;
-  modalElement = null;
   suggestedRep = {
     alias: '',
     account: ''
@@ -27,9 +27,11 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
+    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
+      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
       console.log('GOT REPS: ', this.representatives);
     });
 
@@ -46,41 +48,47 @@ export class ChangeRepWidgetComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getDisplayedRepresentatives(representatives : any[]) {
+    if(this.representatives.length === 0) {
+      return []
+    }
+
+    // todo: when not in total balance view, pass [ representative ] of the currently selected address
+
+    let sortedRepresentatives: any[] = [...representatives]
+
+    sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
+
+    return [ Object.assign( {}, sortedRepresentatives[0] ) ]
+  }
+
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  ngAfterViewInit() {
-    const UIkit = window['UIkit'];
-    this.modalElement = UIkit.modal('#change-rep-modal');
+  showRepSelectionForSpecificRepId(requiredRepId : number) {
+    // in total balance view we want to pass each account that delegates to this rep
+    const allAccountsWithThisRep =
+      this.representatives
+        .filter(
+          (rep) =>
+            (rep.id == requiredRepId)
+        )
+        .map(
+          (rep) =>
+            rep.accounts.map(a => a.id).join(',')
+        )
+        .join(',');
+
+    // todo: when not in total balance view, pass currently selected address in "accounts"
+
+    this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: allAccountsWithThisRep, showRecommended: true } });
   }
 
-  showModal() {
-    this.modalElement.show();
-  }
-
-  closeModal() {
-    this.modalElement.hide();
-  }
-
-  navigateToRepChangePage() {
-    this.router.navigate(['/representatives']);
-  }
-
-  changeReps() {
+  showRepSelectionForAllChangeableReps() {
     const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
-
-    this.modalElement.hide();
 
     this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: allAccounts, showRecommended: true } });
-  }
-
-  changeToRep(representative) {
-    const allAccounts = this.changeableRepresentatives.map(rep => rep.accounts.map(a => a.id).join(',')).join(',');
-
-    this.modalElement.hide();
-
-    this.router.navigate(['/representatives'], { queryParams: { accounts: allAccounts, representative: representative } });
   }
 
 }

@@ -89,6 +89,26 @@
 		min-height: 155px;
 	}
 
+	&.is-wallet {
+		background: #506279;
+
+		> .logo {
+			filter: saturate(0.5) brightness(0.75);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: calc(100% - 10px);
+			height: calc(100% - 10px);
+			display: block;
+			border: 1px dashed #1F1F26;
+			margin: 4px;
+			border-radius: 10px;
+			pointer-events: none;
+		}
+	}
+
 	&.incoming-card {
 		background: rgba(78, 145, 224, 0.2);
 
