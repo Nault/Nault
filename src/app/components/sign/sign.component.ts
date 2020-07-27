@@ -64,6 +64,19 @@ export class SignComponent implements OnInit {
   privateKey = null; // the final private key to sign with if using manual entry
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash:string = null;
+  finalSignature:string = null;
+  //TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
+  thresholds = [
+    { name: '1x', value: 1 },
+    { name: '2x', value: 2 },
+    { name: '4x', value: 4 },
+    { name: '8x', value: 8 },
+    { name: '16x', value: 16 },
+    { name: '32x', value: 32 },
+    { name: '64x', value: 64 },
+  ];
+  selectedThreshold = this.thresholds[0].value;
+  selectedThresholdOld = this.selectedThreshold;
 
   constructor(
     private router: ActivatedRoute,
@@ -228,7 +241,7 @@ export class SignComponent implements OnInit {
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
-        this.walletAccount = this.accounts.find(a => a.id == this.signatureAccount);
+        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_','nano_') == this.signatureAccount);
         if (!this.walletAccount) return this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
         else this.signatureMessageSuccess = 'A matching account found!';
         break;
@@ -247,12 +260,22 @@ export class SignComponent implements OnInit {
     if (this.shouldGenWork) this.prepareWork();
   }
 
+  changeThreshold() {
+    // multiplier has changed, clear the cache and recalculate
+    if (this.selectedThreshold !== this.selectedThresholdOld) {
+      let workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+      this.workPool.removeFromCache(workBlock);
+      console.log("PoW multiplier changed: Clearing cache")
+      this.powChange();
+    }
+  }
+
   prepareWork() {
     // The block has been verified
     if (this.toAccountID) {
       console.log('Precomputing work...')
       let workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
-      this.workPool.addWorkToCache(workBlock);
+      this.workPool.addWorkToCache(workBlock, this.selectedThreshold);
     }
   }
 
@@ -267,10 +290,10 @@ export class SignComponent implements OnInit {
     }
 
     if (this.txType === TxType.send || this.txType === TxType.change) {
-      this.signatureAccount = this.fromAccountID;
+      this.signatureAccount = this.fromAccountID.replace('xrb_','nano_').toLowerCase();
     }
     else if (this.txType === TxType.receive || this.txType === TxType.open) {
-      this.signatureAccount = this.toAccountID;
+      this.signatureAccount = this.toAccountID.replace('xrb_','nano_').toLowerCase();
     }
 
     if (this.shouldSign) {
@@ -302,7 +325,7 @@ export class SignComponent implements OnInit {
     this.confirmingTransaction = true;
 
     // sign the block
-    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, isLedger);
+    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
     console.log('Signature: ' + block.signature || 'Error')
     console.log('Work: ' + block.work || 'Not applied')
 
@@ -310,6 +333,16 @@ export class SignComponent implements OnInit {
       this.confirmingTransaction = false;
       return this.notificationService.sendError('The block could not be signed!',{lenth: 0});
     }
+
+    this.qrString = null;
+    this.qrCodeImageBlock = null;
+    this.finalSignature = null;
+
+    const UIkit = window['UIkit'];
+    var modal = UIkit.modal("#signed-modal");
+    modal.show();
+
+    this.finalSignature = block.signature;
 
     try {
       this.clean(block)
@@ -319,10 +352,6 @@ export class SignComponent implements OnInit {
 
       const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
-
-      const UIkit = window['UIkit'];
-      var modal = UIkit.modal("#signed-modal");
-      modal.show();
     }
     catch (error) {
       this.confirmingTransaction = false;
