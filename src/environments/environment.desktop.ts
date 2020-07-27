@@ -7,8 +7,7 @@ export const environment = {
     ticker: 'NANO',
     precision: 30,
     maxSupply: 133248289,
-    prefixes: ['xrb', 'nano'],
-    qrPrefix: 'xrb',
+    prefix: 'nano',
     supportsMyNanoNinja: true
   },
   backends: [
