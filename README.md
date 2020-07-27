@@ -2,26 +2,27 @@
 
 Nault is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
-It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/BitDesert/Nault/releases/latest).
+It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
 
-The main difference compared to the original NanoVault is the "server-less" hosting via [vercel](https://nault.vercel.app), seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained. Those features together will greatly increase the stability, performance and uptime.
+Seamless integration with any Nano compatible RPC backend/websocket and the aim to be more frequently maintained are some of the main features. Those together will greatly increase the stability, performance and uptime.
 
-![Nault Screenshot](/.github/nault.png)
+![Nault Screenshot](/src/assets/img/preview.png)
 ___
 
 # Table of Contents
-* [Install](#install-nanovault)
+* [How To Use](#how-to-use)
 * [Bugs/Feedback](#bugsfeedback)
 * [Application Structure](#application-structure)
 * [Development Prerequisites](#development-prerequisites)
 * [Development Guide](#development-guide)
 * [Acknowledgements](#acknowledgements)
+* [Donations](#donations)
 
 
-# Install Nault
+# How To Use
 Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [latest release](https://github.com/BitDesert/Nault/releases/latest) and download the version for your OS.
 
-You can also use Nault from any device on the web at [nault.cc](https://nault.cc/)
+You can also use Nault from any device on the web at [nault.cc](https://nault.cc)
 
 # Bugs/Feedback
 If you run into any issues, please use the [GitHub Issue Tracker](https://github.com/BitDesert/Nault/issues) or head over to the [TNC Discord Server](http://discord.nanocenter.org/)!  
@@ -30,18 +31,18 @@ We are continually improving and adding new features based on the feedback you p
 ___
 
 #### Everything below is only for contributing to the development of Nault
-#### To download Nault as a desktop app go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc/)
+#### To download Nault as a desktop app go to the [releases section](https://github.com/BitDesert/Nault/releases), or use the web wallet at [nault.cc](https://nault.cc)
 
 ___
 
 # Application Structure
 
-- [Nault](https://github.com/BitDesert/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
+- [Nault](https://github.com/Nault/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
 - Communication with the network is done via Nano RPC and Websocket protocols, private or public on any nano network.
 
 
 # Development Prerequisites
-- Node Package Manager: [Install NPM](https://www.npmjs.com/get-npm)
+- [NodeJS](https://nodejs.org) v12.x + NPM v6.x
 - Angular CLI: `npm install -g @angular/cli`
 
 
@@ -122,4 +123,8 @@ Special thanks to the following!
 - [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
 - [dchest/tweetnacl-js](https://github.com/dchest/tweetnacl-js) - Cryptography Implementation
 
-If you have found Nault useful and are feeling generous, you can donate at `nano_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`
+# Donations
+If you have found Nault useful and are feeling generous, you can donate at 
+`nano_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`
+
+Thanks a lot!
