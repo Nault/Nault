@@ -118,7 +118,7 @@ export class ConfigureAppComponent implements OnInit {
   serverAuth = null;
   minimumReceive = null;
 
-  showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
+  showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   nodeBlockCount = null;
@@ -149,7 +149,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateNodeStats(refresh=false) {
-    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled)) return
+    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled) || this.selectedServer === 'offline') return
     this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
@@ -250,8 +250,8 @@ export class ConfigureAppComponent implements OnInit {
     const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive || (pendingOption !== 'manual' && pendingOption != this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
-      const valid = await this.api.validateAccountNumber(this.defaultRepresentative);
-      if (!valid || valid.valid !== '1') {
+      const valid = this.util.account.isValidAccount(this.defaultRepresentative);
+      if (!valid) {
         return this.notifications.sendWarning(`Default representative is not a valid account`);
       }
     }

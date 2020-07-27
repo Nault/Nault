@@ -16,8 +16,8 @@ export class WorkPoolService {
   }
 
   // A simple helper, which doesn't wait for a response (Used for pre-loading work)
-  public addWorkToCache(hash) {
-    this.getWork(hash);
+  public addWorkToCache(hash, multiplier=1) {
+    this.getWork(hash, multiplier);
   }
 
   // Remove a hash from from the cache
@@ -42,16 +42,20 @@ export class WorkPoolService {
   }
 
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
-  public async getWork(hash) {
+  public async getWork(hash, multiplier=1) {
     const cached = this.workCache.find(p => p.hash == hash);
-    if (cached && cached.work) return cached.work;
+    if (cached && cached.work) {
+      console.log('Using cached work: ' + cached.work)
+      return cached.work;
+    }
 
-    const work = await this.pow.getPow(hash);
+    const work = await this.pow.getPow(hash, multiplier);
     if (!work) {
       this.notifications.sendWarning(`Failed to retrieve work for ${hash}.  Try a different PoW method.`);
       return null;
     }
 
+    console.log('Work found: ' + work)
     this.workCache.push({ hash, work });
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
     this.saveWorkCache();

@@ -4,6 +4,19 @@ import {BigNumber} from 'bignumber.js';
 import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
+const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
+
+export interface StateBlock {
+  account: string;
+  previous: string;
+  representative: string;
+  balance: string;
+  link: string;
+  signature: string;
+  work: string;
+}
+
+export enum TxType {"send", "receive", "open", "change"};
 
 @Injectable()
 export class UtilService {
@@ -47,6 +60,7 @@ export class UtilService {
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
+    isValidAmount: isValidAmount,
   };
   nano = {
     mnanoToRaw: mnanoToRaw,
@@ -55,6 +69,13 @@ export class UtilService {
     rawToMnano: rawToMnano,
     rawToKnano: rawToKnano,
     rawToNano: rawToNano,
+    hashStateBlock: hashStateBlock,
+    isValidSeed: isValidSeed,
+    isValidHash: isValidHash,
+    isValidIndex: isValidIndex,
+    isValidSignature: isValidSignature,
+    isValidWork: isValidWork,
+    difficultyFromMultiplier: difficultyFromMultiplier,
   };
   array = {
     shuffle: shuffle
@@ -250,6 +271,27 @@ function isValidAccount(account: string): boolean {
   return nanocurrency.checkAddress(account);
 }
 
+// Check if a string is a numeric and larger than 0 but less than Nano supply
+function isValidNanoAmount(val:string) {
+  //numerics and last character is not a dot and number of dots is 0 or 1
+  let isnum = /^-?\d*\.?\d*$/.test(val)
+  if (isnum && String(val).slice(-1) !== '.') {
+    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  else {
+    return false
+  }
+}
+
+function isValidAmount(val:string) {
+  return nanocurrency.checkAmount(val);
+}
+
 function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
     throw new Error(`Invalid Mikron Account`);
@@ -301,6 +343,53 @@ function rawToNano(value) {
   return new BigNumber(value).div(nano);
 }
 
+/**
+ * Nano functions
+ */
+function isValidSeed(val:string) {
+  return nanocurrency.checkSeed(val);
+}
+
+function isValidHash(val:string) {
+  return nanocurrency.checkHash(val);
+}
+
+function isValidIndex(val:number) {
+  return nanocurrency.checkIndex(val);
+}
+
+function isValidSignature(val:string) {
+  return nanocurrency.checkSignature(val);
+}
+
+function isValidWork(val:string) {
+  return nanocurrency.checkWork(val);
+}
+
+function hashStateBlock(block:StateBlock) {
+  const balance = new BigNumber(block.balance);
+  if (balance.isNegative() || balance.isNaN()) {
+    throw new Error(`Negative or NaN balance`);
+  }
+  let balancePadded = balance.toString(16);
+  while (balancePadded.length < 32) balancePadded = '0' + balancePadded; // Left pad with 0's
+  const context = blake.blake2bInit(32, null);
+  blake.blake2bUpdate(context, hexToUint8(STATE_BLOCK_PREAMBLE));
+  blake.blake2bUpdate(context, hexToUint8(getAccountPublicKey(block.account)));
+  blake.blake2bUpdate(context, hexToUint8(block.previous));
+  blake.blake2bUpdate(context, hexToUint8(getAccountPublicKey(block.representative)));
+  blake.blake2bUpdate(context, hexToUint8(balancePadded));
+  blake.blake2bUpdate(context, hexToUint8(block.link));
+  return blake.blake2bFinal(context);
+}
+
+// Determine new difficulty from base difficulty (hexadecimal string) and a multiplier (float). Returns hex string
+export function difficultyFromMultiplier(multiplier, base_difficulty) {
+  let big64 = new BigNumber(2).pow(64);
+  let big_multiplier = new BigNumber(multiplier);
+  let big_base = new BigNumber(base_difficulty,16);
+  return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16);
+}
 
 // shuffle any array
 function shuffle(array) {
@@ -342,23 +431,6 @@ function generateSeedBytes() {
   return nacl.randomBytes(32);
 }
 
-// Check if a string is a numeric and larger than 0 but less than Nano supply
-function isValidNanoAmount(val:string) {
-  //numerics and last character is not a dot and number of dots is 0 or 1
-  let isnum = /^-?\d*\.?\d*$/.test(val)
-  if (isnum && String(val).slice(-1) !== '.') {
-    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
-      return true
-    }
-    else {
-      return false
-    }
-  }
-  else {
-    return false
-  }
-}
-
 const util = {
   hex: {
     toUint4: hexToUint4,
@@ -396,6 +468,7 @@ const util = {
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
+    isValidAmount: isValidNanoAmount,
   },
   nano: {
     mnanoToRaw: mnanoToRaw,
@@ -404,5 +477,12 @@ const util = {
     rawToMnano: rawToMnano,
     rawToKnano: rawToKnano,
     rawToNano: rawToNano,
+    hashStateBlock: hashStateBlock,
+    isValidSeed: isValidSeed,
+    isValidHash: isValidHash,
+    isValidIndex: isValidIndex,
+    isValidSignature: isValidSignature,
+    isValidWork: isValidWork,
+    difficultyFromMultiplier: difficultyFromMultiplier,
   }
 };

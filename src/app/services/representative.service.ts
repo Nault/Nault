@@ -240,6 +240,7 @@ export class RepresentativeService {
   async getOnlineRepresentatives(): Promise<string[]> {
     const representatives = [];
     const reps = await this.api.representativesOnline();
+    if (!reps) return representatives;
     for (let representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);

@@ -1,4 +1,4 @@
-name: Build and Deploy GH Pages
+name: GitHub Pages
 
 on:
   push:
@@ -31,9 +31,9 @@ jobs:
           npm install
           npm run wallet:build
 
-      # - name: Deploy to gh-pages
-      #   uses: JamesIves/github-pages-deploy-action@releases/v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     BRANCH: gh-pages # The branch the action should deploy to.
-      #     FOLDER: dist # The folder the action should deploy.
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist # The folder the action should deploy.

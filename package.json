@@ -1,6 +1,6 @@
 {
   "name": "nault",
-  "version": "1.5.2",
+  "version": "1.6.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "BitDesert / Andrew Steele",
@@ -96,7 +96,7 @@
   },
   "build": {
     "appId": "cc.nault",
-    "buildVersion": "1.5.2",
+    "buildVersion": "1.6.1",
     "productName": "Nault",
     "copyright": "Copyright © 2020 BitDesert / Andrew Steele",
     "directories": {
@@ -124,7 +124,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "bitdesert",
+        "owner": "nault",
         "repo": "nault"
       }
     ],

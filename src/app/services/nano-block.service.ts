@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
-import * as blake from 'blakejs';
+import {UtilService, StateBlock, TxType} from "./util.service";
 import {WorkPoolService} from "./work-pool.service";
 import BigNumber from "bignumber.js";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {LedgerService} from "./ledger.service";
+import { WalletAccount } from './wallet.service';
 const nacl = window['nacl'];
-
-const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
 
 @Injectable()
 export class NanoBlockService {
@@ -308,6 +306,76 @@ export class NanoBlockService {
     }
   }
 
+  // for signing block when offline
+  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, prevBlock:StateBlock, type:TxType, genWork:boolean, multiplier:number, ledger = false) {
+    // special treatment if open block
+    const openEquiv = type === TxType.open;
+    console.log("Signing block of subtype: " + TxType[type]);
+
+    if (ledger) {
+      var ledgerBlock = null;
+      if (type === TxType.send) {
+        ledgerBlock = {
+          previousBlock: block.previous,
+          representative: block.representative,
+          balance: block.balance,
+          recipient: this.util.account.getPublicAccountID(this.util.hex.toUint8(block.link)),
+        };
+      }
+      else if (type === TxType.receive || type === TxType.open) {
+        ledgerBlock = {
+          representative: block.representative,
+          balance: block.balance,
+          sourceBlock: block.link,
+        };
+        if (!openEquiv) {
+          ledgerBlock.previousBlock = block.previous;
+        }
+      }
+
+      else if (type === TxType.change) {
+        ledgerBlock = {
+          previousBlock: block.previous,
+          representative: block.representative,
+          balance: block.balance,
+        };
+      }
+      try {
+        this.sendLedgerNotification();
+        // On new accounts, we do not need to cache anything
+        if (!openEquiv) {
+          try {
+            //await this.ledgerService.updateCache(walletAccount.index, block.previous);
+            await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock);
+          }
+          // this will fail when working offline, but no problem
+          catch(err){console.log(err)} 
+        }
+        const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
+        this.clearLedgerNotification();
+        block.signature = sig.signature;
+      } catch (err) {
+        this.clearLedgerNotification();
+        this.sendLedgerDeniedNotification(err);
+        return null;
+      }
+    } else {
+      this.signStateBlock(walletAccount, block);
+    }
+
+    if (genWork) {
+      // For open blocks which don't have a frontier, use the public key of the account
+      let workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : block.previous;
+      if (!this.workPool.workExists(workBlock)) {
+        this.notifications.sendInfo(`Generating Proof of Work...`);
+      }
+  
+      block.work = await this.workPool.getWork(workBlock, multiplier);
+      this.workPool.removeFromCache(workBlock);
+    }
+    return block; //return signed block (with or without work)
+  }
+
   async validateAccount(accountInfo) {
     if (!accountInfo) return;
     if (!accountInfo.frontier || accountInfo.frontier === this.zeroHash) {
@@ -329,31 +397,14 @@ export class NanoBlockService {
     if (blockData.contents.type !== 'state') {
       throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`);
     }
-    if (this.util.hex.fromUint8(this.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
+    if (this.util.hex.fromUint8(this.util.nano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
       throw new Error(`Frontier hash didn't match block data`);
     }
   }
 
-  hashStateBlock(block) {
-    const balance = new BigNumber(block.balance);
-    if (balance.isNegative() || balance.isNaN()) {
-      throw new Error(`Negative or NaN balance`);
-    }
-    let balancePadded = balance.toString(16);
-    while (balancePadded.length < 32) balancePadded = '0' + balancePadded; // Left pad with 0's
-    const context = blake.blake2bInit(32, null);
-    blake.blake2bUpdate(context, this.util.hex.toUint8(STATE_BLOCK_PREAMBLE));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(block.account)));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(block.previous));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(this.util.account.getAccountPublicKey(block.representative)));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(balancePadded));
-    blake.blake2bUpdate(context, this.util.hex.toUint8(block.link));
-    return blake.blake2bFinal(context);
-  }
-
   // Sign a state block, and insert the signature into the block.
   signStateBlock(walletAccount, blockData) {
-    const hashBytes = this.hashStateBlock(blockData);
+    const hashBytes = this.util.nano.hashStateBlock(blockData);
     const privKey = walletAccount.keyPair.secretKey;
     const signed = nacl.sign.detached(hashBytes, privKey, walletAccount.keyPair.expanded);
     blockData.signature = this.util.hex.fromUint8(signed);

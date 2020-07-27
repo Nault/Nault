@@ -15,6 +15,8 @@ import { ImportAddressBookComponent } from './components/import-address-book/imp
 import {RepresentativesComponent} from "./components/representatives/representatives.component";
 import {SweeperComponent} from "./components/sweeper/sweeper.component";
 import {QrScanComponent} from "./components/qr-scan/qr-scan.component";
+import {SignComponent} from "./components/sign/sign.component";
+import {RemoteSigningComponent} from "./components/remote-signing/remote-signing.component";
 
 import { environment } from '../environments/environment';
 import {ManageRepresentativesComponent} from "./components/manage-representatives/manage-representatives.component";
@@ -36,6 +38,8 @@ const routes: Routes = [
   { path: 'manage-representatives', component: ManageRepresentativesComponent },
   { path: 'transaction/:transaction', component: TransactionDetailsComponent },
   { path: 'sweeper', component: SweeperComponent },
+  { path: 'sign', component: SignComponent },
+  { path: 'remote-signing', component: RemoteSigningComponent },
 ];
 
 @NgModule({

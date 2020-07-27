@@ -59,11 +59,11 @@
                     Account Balance
                   </div>
                   <div class="uk-width-1-3 uk-text-right">
-                    {{ account.balance || 0 | rai: settings.settings.displayDenomination }}
-                    <span *ngIf="account.balanceRaw && account.balanceRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.balanceRaw.toString(10) }} raw</span>
+                    {{ !account? 0:(account.balance || 0 | rai: settings.settings.displayDenomination) }}
+                    <span *ngIf="account && account.balanceRaw && account.balanceRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ !account? 0:(account.balanceRaw.toString(10)) }} raw</span>
                   </div>
                   <div class="uk-width-1-3 uk-text-left">
-                    {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+                    {{ !account? 0:(account.balanceFiat | fiat: settings.settings.displayCurrency) }}
                   </div>
                 </div>
               </div>
@@ -74,16 +74,16 @@
                     Incoming Amount
                   </div>
                   <div class="uk-width-1-3 uk-text-right">
-                    {{ account.pending || 0 | rai: settings.settings.displayDenomination }}
-                    <span *ngIf="account.pendingRaw && account.pendingRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ account.pendingRaw.toString(10) }} raw</span>
+                    {{ !account? 0:(account.pending || 0 | rai: settings.settings.displayDenomination) }}
+                    <span *ngIf="account && account.pendingRaw && account.pendingRaw > 0" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ !account? 0:(account.pendingRaw.toString(10)) }} raw</span>
                   </div>
                   <div class="uk-width-1-3 uk-text-left">
-                    {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+                    {{ !account? 0:(account.pendingFiat | fiat: settings.settings.displayCurrency) }}
                   </div>
                 </div>
               </div>
 
-              <div class="uk-width-1-1" *ngIf="account.representative">
+              <div class="uk-width-1-1" *ngIf="account && account.representative">
                 <div uk-grid>
                   <div class="uk-width-1-3 uk-text-right">
                     Representative
@@ -122,9 +122,9 @@
                       <div uk-grid>
                         <div class="uk-width-expand uk-text-truncate ">
                           <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
-                          <app-nano-account-id [accountID]="account.representative"></app-nano-account-id>
+                          <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
-                        <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account.representative">
+                        <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
                           <ul class="uk-hidden-hover uk-iconnav">
                             <!--<li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>-->
                             <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a></li>
@@ -138,11 +138,30 @@
                 </div>
               </div>
 
+              <div *ngIf="settings.settings.serverAPI" class="uk-width-1-1">
+                <div uk-grid>
+                  <div class="uk-width-1-3 uk-text-right">
+                    <label>Enable Remote Signing</label>
+                  </div>
+                  <div class="uk-width-1-3 uk-text-right">
+                    <input class="uk-checkbox uk-margin-medium-left" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="remoteVisible">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="uk-width-2-5@s uk-width-1-4@m uk-text-center">
             <img *ngIf="qrCodeImage" [src]="qrCodeImage"><br />
             <span class="uk-text-small">Deposit Address</span>
+          </div>
+        </div>
+
+        <div *ngIf="remoteVisible" uk-grid>
+          <div class="uk-width-1-1">
+            <div class="uk-width-1-1 uk-margin-medium-left">
+              <p>Create a new SEND or CHANGE block below. For any incoming transaction in the table: Use REMOTE SIGN.</p>
+              <button class="uk-button uk-button-primary" (click)="showRemoteModal()">CREATE NEW BLOCK</button>
+            </div>
           </div>
         </div>
 
@@ -156,9 +175,10 @@
               <thead>
               <tr>
                 <th class="uk-width-1-6@m uk-width-1-6">Date</th>
-                <th class="uk-width-2-5@m uk-width-1-3">Account</th>
+                <th class="uk-width-1-5@m uk-width-1-4">Account</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
                 <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
+                <th *ngIf="remoteVisible" class="uk-width-1-5@m uk-width-1-4">Incoming</th>
               </tr>
               </thead>
               <tbody>
@@ -185,6 +205,7 @@
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
+                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
               </tr>
 
               <tr *ngFor="let history of accountHistory">
@@ -233,5 +254,171 @@
       * Incoming Transaction
     </div>
 
+  </div>
+</div>
+
+<!-- Modal for remote receive incoming -->
+<div id="receive-modal" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body modal-qr">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-header">
+        <h2 class="uk-modal-title">Unsigned Incoming Block</h2>
+    </div>
+    <div class="uk-modal-body modal-qr-body">
+      <ol>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 2</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</li>
+      </ol>
+
+      <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+        <span class="uk-text-small" uk-tooltip title="Unsigned block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Unsigned Block</strong></span>
+        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+          <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+        </ul>
+        <span class="uk-text-small" uk-tooltip title="Final block hash to be signed or verified" style="overflow-wrap: anywhere; margin-left: 50px;"><strong>Block Hash</strong></span>
+        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+          <li><a ngxClipboard [cbContent]="blockHashReceive" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+        </ul>
+      </div>
+
+      <div class="uk-width-1-1 uk-text-center">
+        <img *ngIf="qrCodeImageBlockReceive" [src]="qrCodeImageBlockReceive" class="block-qr"><br />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for creating send and change block for remote signing-->
+<div id="block-modal" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body modal-block">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-header">
+        <h2 class="uk-modal-title">Create Block for Remote Signing</h2>
+    </div>
+    <div class="uk-modal-body modal-block-body">
+      <ol>
+        <li>Generate a Nano block below. No wallet login needed.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the unsigned QR with an offline Nault, or copy the "Unsigned Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 2</a>.</li>
+        <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</li>
+      </ol>
+
+      <span><strong>Block Type</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Recent Transactions below."></span><br>
+      <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[0]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[0]}}</label>
+      <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[1]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[1]}}</label>
+      <br><br>
+
+      <div *ngIf="blockTypeSelected === blockTypes[0]" class="uk-form-horizontal">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
+          <div class="uk-form-controls">
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
+              <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+              <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
+
+              <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                <ul class="uk-nav uk-nav-default">
+                  <li class="uk-nav-header">Address Book Results</li>
+                  <li class="uk-nav-divider"></li>
+                  <li *ngFor="let book of addressBookResults$ | async">
+                    <a (click)="selectBookEntry(book.account)">{{ book.name }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-form-controls" *ngIf="addressBookMatch">
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-label uk-label-primary">{{ addressBookMatch }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div uk-grid>
+          <div class="uk-width-1-1">
+            <label class="uk-form-label" for="form-horizontal-text">Amount</label>
+            <div class="uk-form-controls">
+              <div uk-grid>
+                <div class="uk-width-3-5">
+                  <div class="uk-inline uk-width-1-1">
+                    <a class="uk-form-icon uk-form-icon-flip" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
+                    <input [(ngModel)]="amount" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to send">
+                  </div>
+
+                </div>
+                <div class="uk-width-2-5">
+                  <div class="uk-inline uk-width-1-1">
+                    <button class="uk-button uk-button-secondary uk-width-1-1" type="button" style="text-transform: none;">{{ selectedAmount.shortName }}</button>
+                    <div uk-dropdown>
+                      <ul class="uk-nav uk-dropdown-nav">
+                        <li class="uk-active uk-dropdown-spacing" *ngFor="let amount of amounts" (click)="selectedAmount = amount; syncNanoPrice();">{{ amount.name }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="uk-width-1-1 uk-width-3-5@s" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                  <div class="uk-width-1-1 uk-inline">
+                    <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                    <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px; border: 0; border-bottom: 1px solid #e5e5e5;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="blockTypeSelected === blockTypes[1]" class="uk-form-horizontal">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-horizontal-text3">Representative</label>
+          <div class="uk-form-controls">
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
+              <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+              <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" (keyup.enter)="generateChange()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
+              
+              <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                <ul class="uk-nav uk-nav-default">
+                  <li class="uk-nav-header">Representative List Results</li>
+                  <li class="uk-nav-divider"></li>
+                  <li *ngFor="let rep of representativeResults$ | async">
+                    <a (click)="selectRepresentative(rep.id)">
+                      {{ rep.name }}
+                      <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
+                      <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="uk-form-controls" *ngIf="representativeListMatch">
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-label uk-label-danger">{{ representativeListMatch }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <button *ngIf="blockTypeSelected === blockTypes[0]" class="uk-button uk-button-primary uk-text-center uk-width-1-1" type="button" style="margin-bottom: 20px;" (click)="generateSend()">Generate Send Block</button>
+      <button *ngIf="blockTypeSelected === blockTypes[1]" class="uk-button uk-button-primary uk-text-center uk-width-1-1" type="button" style="margin-bottom: 20px;" (click)="generateChange()">Generate Change Block</button>
+
+      <div *ngIf="blockHash" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+        <span class="uk-text-small" uk-tooltip title="Unsigned block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Unsigned Block</strong></span>
+        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+          <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+        </ul>
+        <span class="uk-text-small" uk-tooltip title="Final block hash to be signed or verified" style="overflow-wrap: anywhere; margin-left: 50px;"><strong>Block Hash</strong></span>
+        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+          <li><a ngxClipboard [cbContent]="blockHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
+        </ul>
+      </div>
+      <div class="uk-width-1-1 uk-text-center">
+        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr"><br />
+      </div>
+    </div>
   </div>
 </div>

@@ -11,6 +11,10 @@ export class ApiService {
   private async request(action, data, skipError=false): Promise<any> {
     data.action = action;
     const apiUrl = this.appSettings.settings.serverAPI;
+    if (!apiUrl) {
+      this.node.setOffline(null); // offline mode
+      return;
+    }
     if (this.node.node.status === false) {
       this.node.setLoading();
     }
@@ -82,9 +86,6 @@ export class ApiService {
   }
   async accountInfo(account): Promise<any> {
     return await this.request('account_info', { account, pending: true, representative: true, weight: true });
-  }
-  async validateAccountNumber(account): Promise<{ valid: '1'|'0' }> {
-    return await this.request('validate_account_number', { account });
   }
   async pending(account, count): Promise<any> {
     return await this.request('pending', { account, count, source: true, include_only_confirmed: true });
