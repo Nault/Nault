@@ -16,7 +16,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install
-          ng build --prod -c banano
+          npm run wallet:build -- -c banano
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
