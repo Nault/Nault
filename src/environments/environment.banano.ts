@@ -6,13 +6,14 @@
 export const environment = {
   production: false,
   desktop: false,
-  'currency': {
-    'name': 'Banano',
-    'shortName': 'BAN',
-    'precision': 29,
-    'maxSupply': 3402823669.2,
-    'prefixes': ['ban'],
-    'qrPrefix': 'ban',
-    'supportsMyNanoNinja': false
+  currency: {
+    id: 'banano',
+    name: 'Banano',
+    ticker: 'BAN',
+    precision: 29,
+    maxSupply: 3402823669.2,
+    prefixes: ['ban'],
+    qrPrefix: 'ban',
+    supportsMyNanoNinja: false
   },
 };
