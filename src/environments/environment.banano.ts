@@ -12,8 +12,29 @@ export const environment = {
     ticker: 'BAN',
     precision: 29,
     maxSupply: 3402823669.2,
-    prefixes: ['ban'],
-    qrPrefix: 'ban',
+    prefix: 'ban',
     supportsMyNanoNinja: false
   },
+  backends: [
+    {
+      name: 'AppDitto',
+      value: 'appditto',
+      api: 'https://kaliumapi.appditto.com/api',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'BananoVault',
+      value: 'bananovault',
+      api: 'https://vault.banano.cc/api/node-api',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+  ],
+  representativeAccounts: [
+    'ban_1cake36ua5aqcq1c5i3dg7k8xtosw7r9r7qbbf5j15sk75csp9okesz87nfn', // Official Rep - Cake
+    'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj', // Official Rep - FOMO
+  ]
 };

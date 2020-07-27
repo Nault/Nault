@@ -44,6 +44,7 @@
     "@angular/router": "^9.1.11",
     "@ledgerhq/hw-transport-node-hid": "^5.19.0",
     "@ledgerhq/hw-transport-u2f": "^5.19.0",
+    "@thelamer/nanocurrency": "^2.5.1",
     "@types/crypto-js": "^3.1.38",
     "@zxing/ngx-scanner": "^3.0.0",
     "babel-polyfill": "^6.26.0",

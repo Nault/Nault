@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as url from 'url';
+import { environment } from '../../environments/environment';
 
 export type WalletStore = 'localStorage'|'none';
 export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
@@ -54,38 +55,6 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
       name: 'Custom',
       value: 'custom',
       api: null,
@@ -103,7 +72,9 @@ export class AppSettingsService {
     }
   ];
 
-  constructor() { }
+  constructor() {
+    this.serverOptions = this.serverOptions.concat(environment.backends);
+  }
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;
