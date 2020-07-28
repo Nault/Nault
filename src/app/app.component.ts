@@ -168,6 +168,7 @@ export class AppComponent implements OnInit {
   }
 
   selectAccount(account){
+    // note: account is null when user is switching to 'Total Balance'
     this.wallet.selectedAccount = account;
     this.toggleAccountsDropdown();
   }

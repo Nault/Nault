@@ -16,7 +16,17 @@
     <!-- Accounts dropdown -->
     <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
       <div class="header">Currently Selected</div>
-      <div class="account active" *ngIf="false"> <!-- active address should always appear first, don't show if active account is "total" -->
+      <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active nano_ account -->
+        <div class="name-column">
+          <div class="name">{{ 'Account #' + wallet.selectedAccount.index }}</div>
+          <div class="address">{{ wallet.selectedAccount.id }}</div>
+        </div>
+        <div class="balance-column">
+          <div class="balance primary">{{ wallet.selectedAccount.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ wallet.selectedAccount.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+        </div>
+      </div>
+      <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)"> <!-- active/inactive total balance -->
         <div class="name-column">
           <div class="name">Total Balance</div>
           <div class="address"> </div>
@@ -26,26 +36,18 @@
           <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
-      <div [class]="[ 'account', true ? 'active' : '' ]" *ngIf="true"> <!-- replaces previous element if active account is "total" -->
-        <div class="name-column">
-          <div class="name">Total Balance</div>
-          <div class="address"> </div>
+      <ng-container *ngFor="let account of wallet.accounts"> <!-- inactive accounts -->
+        <div class="account inactive" (click)="selectAccount(account)" *ngIf="( (wallet.selectedAccount === null) || (wallet.selectedAccount.id !== account.id) )">
+          <div class="name-column">
+            <div class="name">Account #{{ account.index }}</div>
+            <div class="address">{{ account.id }}</div>
+          </div>
+          <div class="balance-column">
+            <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+            <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+          </div>
         </div>
-        <div class="balance-column">
-          <div class="balance primary">{{ wallet.balance | rai: settings.settings.displayDenomination }}</div>
-          <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
-        </div>
-      </div>
-      <div class="account" *ngFor="let account of wallet.accounts" (click)="selectAccount(account)">
-        <div class="name-column">
-          <div class="name">Account #{{ account.index }}</div>
-          <div class="address">{{ account.id }}</div>
-        </div>
-        <div class="balance-column">
-          <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
-          <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
-        </div>
-      </div>
+      </ng-container>
     </div>
 
     <!-- Main content container-->
@@ -60,7 +62,7 @@
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">{{ wallet.selectedAccount !== null ? 'Account #' + wallet.selectedAccount.index : 'Total Balance' }}</div>
+                    <div class="name">{{ (wallet.selectedAccount !== null) ? ('Account #' + wallet.selectedAccount.index) : 'Total Balance' }}</div>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
