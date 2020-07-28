@@ -18,7 +18,7 @@
       <div class="header">Currently Selected</div>
       <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active nano_ account -->
         <div class="name-column">
-          <div class="name">{{ 'Account #' + wallet.selectedAccount.index }}</div>
+          <div class="name">{{ wallet.selectedAccount.addressBookName ? wallet.selectedAccount.addressBookName : ('Account #' + wallet.selectedAccount.index) }}</div>
           <div class="address">{{ wallet.selectedAccount.id }}</div>
         </div>
         <div class="balance-column">
@@ -39,7 +39,7 @@
       <ng-container *ngFor="let account of wallet.accounts"> <!-- inactive accounts -->
         <div class="account inactive" (click)="selectAccount(account)" *ngIf="( (wallet.selectedAccount === null) || (wallet.selectedAccount.id !== account.id) )">
           <div class="name-column">
-            <div class="name">Account #{{ account.index }}</div>
+            <div class="name">{{ account.addressBookName ? account.addressBookName : ('Account #' + account.index) }}</div>
             <div class="address">{{ account.id }}</div>
           </div>
           <div class="balance-column">
@@ -62,7 +62,15 @@
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">{{ (wallet.selectedAccount !== null) ? ('Account #' + wallet.selectedAccount.index) : 'Total Balance' }}</div>
+                    <div class="name">{{
+                        (wallet.selectedAccount !== null)
+                      ? (
+                          wallet.selectedAccount.addressBookName
+                        ? wallet.selectedAccount.addressBookName
+                        : ('Account #' + wallet.selectedAccount.index)
+                      )
+                      : 'Total Balance'
+                    }}</div>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
