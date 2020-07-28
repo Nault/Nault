@@ -12,10 +12,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "desktop": "electron main.js",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "dist-full": "electron-builder -wml --x64",
     "publish": "build -wml --x64 -p always",
     "release": "npm run desktop:build && electron-builder",
     "wallet:dev": "ng serve --open",
@@ -26,10 +22,9 @@
     "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
     "desktop:build-local": "npm run desktop:build && npm run desktop:local",
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
-    "desktop:dev-path": "npm run desktop:compile && ./node_modules/.bin/electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
-    "desktop:publish": "build -wml --x64 -p always"
+    "desktop:publish": "electron-builder -wml --x64 -p always"
   },
   "private": true,
   "dependencies": {

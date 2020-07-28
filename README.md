@@ -89,11 +89,6 @@ Run the desktop wallet in dev mode:
 npm run desktop:dev
 ```
 
-If electron is not installed globally, you may have run this:
-```bash
-npm run desktop:dev-path
-```
-
 If you want to debug in VS code, first install [debugger for chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
 Then you can just go to the debug screen and choose "Electron: Main", "Electron: Renderer", or "Electron: All" for both Main and Renderer threads.
 
