@@ -72,7 +72,7 @@ export class AppSettingsService {
     {
       name: 'VoxPopuli',
       value: 'voxpopuli',
-      api: 'https://voxpopuli.network',
+      api: 'https://voxpopuli.network/api',
       ws: 'wss://voxpopuli.network/websocket',
       auth: null,
       shouldRandom: true,

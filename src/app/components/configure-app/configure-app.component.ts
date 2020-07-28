@@ -125,9 +125,12 @@ export class ConfigureAppComponent implements OnInit {
   nodeUnchecked = null;
   nodeCemented = null;
   nodeUncemented = null;
+  peersStakeReq = null;
+  peersStakeTotal = null;
   nodeVendor = null;
   nodeNetwork = null;
   statsRefreshEnabled = true;
+  shouldRandom = null;
 
   constructor(
     private walletService: WalletService,
@@ -159,6 +162,13 @@ export class ConfigureAppComponent implements OnInit {
       this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US')
     }
     catch {console.warn("Failed to get node stats: block count")}
+
+    try {
+      let quorumData = await this.api.confirmationQuorum()
+      this.peersStakeReq = Number(this.util.nano.rawToMnano(quorumData.peers_stake_required)).toLocaleString('en-US')
+      this.peersStakeTotal = Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US')
+    }
+    catch {console.warn("Failed to get node stats: confirmation quorum")}
     
     try {
       let version = await this.api.version()
@@ -371,15 +381,18 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
+      this.shouldRandom = custom.shouldRandom ? 'Yes':'No';
     }
 
     // reset server stats until updated
-    this.nodeBlockCount = 'N/A';
-    this.nodeUnchecked = 'N/A';
-    this.nodeCemented = 'N/A';
-    this.nodeUncemented = 'N/A';
-    this.nodeVendor = 'N/A';
-    this.nodeNetwork = 'N/A';
+    this.nodeBlockCount = null;
+    this.nodeUnchecked = null;
+    this.nodeCemented = null;
+    this.nodeUncemented = null;
+    this.peersStakeReq = null;
+    this.peersStakeTotal = null;
+    this.nodeVendor = null;
+    this.nodeNetwork = null;
     this.statsRefreshEnabled = newServer == 'random' ? false:true;
   }
 
