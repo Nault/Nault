@@ -49,6 +49,7 @@ export interface FullWallet {
   hasPending: boolean;
   accounts: WalletAccount[];
   accountsIndex: number;
+  selectedAccount: WalletAccount|null;
   locked: boolean;
   password: string;
   pendingBlocks: Block[];
@@ -90,6 +91,7 @@ export class WalletService {
     hasPending: false,
     accounts: [],
     accountsIndex: 0,
+    selectedAccount: null,
     locked: false,
     password: '',
     pendingBlocks: [],

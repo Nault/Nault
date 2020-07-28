@@ -22,8 +22,8 @@
           <div class="address"> </div>
         </div>
         <div class="balance-column">
-          <div class="balance primary">0.000000 NANO</div>
-          <div class="balance converted">$0.00</div>
+          <div class="balance primary">{{ wallet.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
       <div [class]="[ 'account', true ? 'active' : '' ]" *ngIf="true"> <!-- replaces previous element if active account is "total" -->
@@ -36,7 +36,7 @@
           <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
-      <div class="account" *ngFor="let account of wallet.accounts">
+      <div class="account" *ngFor="let account of wallet.accounts" (click)="selectAccount(account)">
         <div class="name-column">
           <div class="name">Account #{{ account.index }}</div>
           <div class="address">{{ account.id }}</div>
@@ -56,11 +56,11 @@
           <div uk-grid>
             <div class="uk-width-expand">
 
-              <div class="nav-nano-card">
+              <div [class]="[ 'nav-nano-card', true ? 'is-wallet' : '' ]">
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">Total Balance</div>
+                    <div class="name">{{ wallet.selectedAccount !== null ? 'Account #' + wallet.selectedAccount.index : 'Total Balance' }}</div>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
@@ -72,15 +72,15 @@
                       <div class="balance-container primary">
                         <div class="currency-name">NANO</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 1 }}</div>
                         </div>
                       </div>
                       <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
                         <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balanceFiat : wallet.balanceFiat) | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balanceFiat : wallet.balanceFiat) | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
                         </div>
                       </div>
                     </ng-container>
@@ -94,14 +94,26 @@
               </div>
 
               <ng-container *ngIf="walletService.hasPendingTransactions()">
-                <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
-                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                  <div class="label">Unlock Wallet to Receive</div>
-                </div>
-                <div class="nav-action-receive" *ngIf="!walletService.isLocked()">
-                  <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                  <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
-                </div>
+                <ng-container *ngIf="walletService.processingPending else notProcessingPending">
+                  <div class="nav-action-receive" *ngIf="walletService.processingPending">
+                    <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                    <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
+                  </div>
+                </ng-container>
+                <ng-template #notProcessingPending>
+                  <ng-container *ngIf=" (settings.settings.pendingOption !== 'manual') else manuallyReceivingPending ">
+                    <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
+                      <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                      <div class="label">Unlock Wallet to Receive</div>
+                    </div>
+                  </ng-container>
+                  <ng-template #manuallyReceivingPending>
+                    <div class="nav-action-receive uk-animation-slide-left">
+                      <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
+                      <div class="label">Set to Receive Manually</div>
+                    </div>
+                  </ng-template>
+                </ng-template>
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
@@ -185,7 +197,7 @@
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
-            <a href="https://github.com/BitDesert/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
+            <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>

@@ -125,7 +125,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "mynanoninja",
+        "owner": "nault",
         "repo": "nault"
       }
     ],
