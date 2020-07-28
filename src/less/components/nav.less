@@ -31,9 +31,20 @@
 
 .nav-container {
 	background: #1F1F26;
-	min-height: 100vh;
-	min-width: 360px;
 	color: #868AB0;
+	padding-left: 0;
+	min-width: 360px;
+	min-height: 100vh;
+	max-height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	@media (max-width: 639px) {
+		position: absolute;
+		width: 360px;
+		height: calc(100vh);
+		overflow: scroll;
+	}
 }
 
 .nav-container .uk-background-secondary {

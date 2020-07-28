@@ -1,12 +1,12 @@
 <div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
-  <div class="uk-width-1-1" style="position: relative;">
+  <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
-    <div uk-grid class=" uk-hidden@s uk-background-primary" style="color: #FFF;">
+    <div uk-grid class="mobile-top-bar uk-hidden@s uk-background-primary">
       <div class="uk-width-1-2">
-        <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" (click)="toggleNav()" style="cursor: pointer;">
-          <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
-          <span style="font-size: 22px; font-weight: 500;" >Nault</span>
+        <div class="nav-button" (click)="toggleNav()" style="cursor: pointer;">
+          <span uk-icon="icon: menu;"></span>
+          <span class="app-name">Nault</span>
         </div>
       </div>
       <div class="uk-width-1-2 " style="text-align: right;">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Main content container-->
-    <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
+    <div uk-grid class="app-grid">
       <div class="uk-width-1-4 nav-container">
         <div class="nav-header">
 

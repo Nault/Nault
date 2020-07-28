@@ -7,7 +7,7 @@
 
 h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
 .uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
-.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li {
+.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar {
 	font-family: @global-secondary-font-family;
 }
 
@@ -37,6 +37,64 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .uk-card-body > ul > li > a {
 	color: #676686;
+}
+
+@mobile-top-bar-height: 50px;
+
+.mobile-top-bar {
+	height: @mobile-top-bar-height;
+	color: #FFF;
+
+	.nav-button {
+		display: flex;
+		align-items: center;
+		margin: 9px 0 8px 14px;
+
+		> .uk-icon {
+			margin-right: 10px;
+		}
+
+		> .app-name {
+			font-size: 22px;
+			font-weight: 400;
+		}
+	}
+}
+
+.app-grid {
+	margin-top: 0;
+	overflow: hidden;
+	margin-left: 0;
+	min-height: calc(100vh);
+	max-height: calc(100vh);
+
+	@media (max-width: 639px) {
+		min-height: calc(100vh - @mobile-top-bar-height);
+		max-height: calc(100vh - @mobile-top-bar-height);
+	}
+}
+
+.content-container {
+	min-height: 100%;
+	border-top: 1px solid rgb(220, 233, 249);
+	padding: 0;
+	z-index: 1;
+
+	> .uk-panel {
+		padding: 15px 20px;
+	}
+
+	@media (max-width: 639px) {
+		transition: transform 0.5s ease;
+
+		&.nav-expanded {
+			transform: translateX(360px);
+		}
+
+		> .uk-panel {
+			padding: 15px;
+		}
+	}
 }
 
 // custom classes
