@@ -74,6 +74,9 @@ export class AppComponent implements OnInit {
     await this.walletService.loadStoredWallet();
     this.websocket.connect();
 
+    console.log(this.wallet);
+    
+
     this.representative.loadRepresentativeList();
 
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet (if not receive priority is set to manual)
@@ -162,6 +165,11 @@ export class AppComponent implements OnInit {
 
     this.showAccountsDropdown = true
     this.accountsDropdown.nativeElement.scrollTop = 0
+  }
+
+  selectAccount(account){
+    this.wallet.selectedAccount = account;
+    this.toggleAccountsDropdown();
   }
 
   toggleSearch(mobile = false) {

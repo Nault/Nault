@@ -32,10 +32,7 @@ export class ChangeRepWidgetComponent implements OnInit {
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
       this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
-      console.log('GOT REPS: ', this.representatives);
     });
-
-    console.log('INITIAL REPS:', this.representatives);
 
     await this.repService.detectChangeableReps();
 
