@@ -31,9 +31,39 @@
 
 .nav-container {
 	background: #1F1F26;
-	min-height: 100vh;
-	min-width: 360px;
 	color: #868AB0;
+	padding-left: 0;
+	min-width: 360px;
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	@mobile-top-bar-height: 50px;
+
+	@media (max-width: 639px) {
+		position: absolute;
+		width: 360px;
+		height: calc(100vh - @mobile-top-bar-height);
+	}
+
+	// Scrollbar - Gecko (Firefox)
+	scrollbar-width: thin;
+	scrollbar-color: #4E4E5F #1F1F26;
+
+	// Scrollbar - WebKit (Chrome, Edge)
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #1F1F26;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #4E4E5F;
+		border-radius: 9px;
+		border: 2px solid #1F1F26;
+	}
 }
 
 .nav-container .uk-background-secondary {
@@ -765,5 +795,21 @@
 				}
 			}
 		}
+	}
+}
+
+.nav-search {
+	background: rgba(56, 56, 68, 0.3);
+	padding: 3px 15px 3px 18px;
+	border-bottom: 1px solid @nav-border-color;
+	font-size: 14px;
+
+	.uk-search-icon {
+		width: 30px;
+		margin-right: -8px;
+	}
+
+	input {
+		color: @nav-half-muted-color;
 	}
 }

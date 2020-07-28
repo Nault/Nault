@@ -205,7 +205,7 @@
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
-                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
+                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px; padding-top: 0;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
               </tr>
 
               <tr *ngFor="let history of accountHistory">

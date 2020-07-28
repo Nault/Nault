@@ -27,6 +27,9 @@
         <h2>Health</h2>
         <div class="separator"></div>
       </div>
+      <p class="uk-text-danger" *ngIf="rep.status.markedToAvoid">
+        <span uk-icon="icon: warning;"></span>This representative is <b>marked as "avoid"</b> in the list of known reps.
+      </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
         <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
       </p>

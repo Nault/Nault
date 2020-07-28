@@ -12,6 +12,7 @@ export interface RepresentativeStatus {
   highWeight: boolean;
   veryLowUptime: boolean;
   lowUptime: boolean;
+  markedToAvoid: boolean;
   trusted: boolean;
   warn: boolean;
   known: boolean;
@@ -138,6 +139,7 @@ export class RepresentativeService {
         highWeight: false,
         veryLowUptime: false,
         lowUptime: false,
+        markedToAvoid: false,
         trusted: false,
         warn: false,
         known: false,
@@ -167,6 +169,7 @@ export class RepresentativeService {
         }
         if (knownRep.warn) {
           status = 'alert'; // In our list and marked for avoidance
+          repStatus.markedToAvoid = true;
           repStatus.warn = true;
         }
       } else if (knownRepNinja) {

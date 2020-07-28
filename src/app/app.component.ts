@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
   inactiveSeconds = 0;
   windowHeight = 1000;
   navExpanded = false;
-  showSearchBar = false;
   showAccountsDropdown = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
@@ -168,15 +167,10 @@ export class AppComponent implements OnInit {
   }
 
   selectAccount(account){
+    // note: account is null when user is switching to 'Total Balance'
     this.wallet.selectedAccount = account;
+    this.wallet.selectedAccount$.next(account);
     this.toggleAccountsDropdown();
-  }
-
-  toggleSearch(mobile = false) {
-    this.showSearchBar = !this.showSearchBar;
-    if (this.showSearchBar) {
-      setTimeout(() => document.getElementById(mobile ? 'search-input-mobile' : 'search-input').focus(), 150);
-    }
   }
 
   performSearch() {
