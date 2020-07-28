@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {WalletService} from "../../services/wallet.service";
 import {RepresentativeService} from "../../services/representative.service";
 import {Router} from "@angular/router";
 import { NinjaService } from "../../services/ninja.service";
@@ -18,8 +19,10 @@ export class ChangeRepWidgetComponent implements OnInit {
     alias: '',
     account: ''
   };
+  selectedAccount = null;
 
   constructor(
+    private walletService: WalletService,
     private repService: RepresentativeService,
     private router: Router,
     private ninja: NinjaService
@@ -27,11 +30,16 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
-    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
+    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
-      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
+      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+    });
+
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      this.selectedAccount = acc;
+      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
     });
 
     await this.repService.detectChangeableReps();
@@ -47,16 +55,32 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   getDisplayedRepresentatives(representatives : any[]) {
     if(this.representatives.length === 0) {
-      return []
+      return [];
     }
 
-    // todo: when not in total balance view, pass [ representative ] of the currently selected address
+    if(this.selectedAccount !== null) {
+      const selectedAccountRep =
+        this.representatives
+          .filter(
+            (rep) =>
+              rep.accounts.some(
+                (a) =>
+                  (a.id === this.selectedAccount.id)
+              )
+          )[0];
 
-    let sortedRepresentatives: any[] = [...representatives]
+      if(selectedAccountRep == null) {
+        return [];
+      }
 
-    sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
+      return [ Object.assign( {}, selectedAccountRep ) ];
+    }
 
-    return [ Object.assign( {}, sortedRepresentatives[0] ) ]
+    let sortedRepresentatives: any[] = [...representatives];
+
+    sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight));
+
+    return [ Object.assign( {}, sortedRepresentatives[0] ) ];
   }
 
   sleep(ms) {
@@ -64,22 +88,24 @@ export class ChangeRepWidgetComponent implements OnInit {
   }
 
   showRepSelectionForSpecificRepId(requiredRepId : number) {
-    // in total balance view we want to pass each account that delegates to this rep
-    const allAccountsWithThisRep =
-      this.representatives
-        .filter(
-          (rep) =>
-            (rep.id == requiredRepId)
-        )
-        .map(
-          (rep) =>
-            rep.accounts.map(a => a.id).join(',')
-        )
-        .join(',');
+    const accountsToChangeRepFor = (
+        (this.selectedAccount !== null)
+      ? this.selectedAccount.id
+      : ( // all accounts that delegate to this rep
+        this.representatives
+          .filter(
+            (rep) =>
+              (rep.id == requiredRepId)
+          )
+          .map(
+            (rep) =>
+              rep.accounts.map(a => a.id).join(',')
+          )
+          .join(',')
+      )
+    );
 
-    // todo: when not in total balance view, pass currently selected address in "accounts"
-
-    this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: allAccountsWithThisRep, showRecommended: true } });
+    this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: accountsToChangeRepFor, showRecommended: true } });
   }
 
   showRepSelectionForAllChangeableReps() {

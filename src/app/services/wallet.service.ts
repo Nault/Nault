@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 import {UtilService} from "./util.service";
 import {ApiService} from "./api.service";
 import {BigNumber} from 'bignumber.js';
@@ -50,6 +51,7 @@ export interface FullWallet {
   accounts: WalletAccount[];
   accountsIndex: number;
   selectedAccount: WalletAccount|null;
+  selectedAccount$: BehaviorSubject<WalletAccount|null>;
   locked: boolean;
   password: string;
   pendingBlocks: Block[];
@@ -92,6 +94,7 @@ export class WalletService {
     accounts: [],
     accountsIndex: 0,
     selectedAccount: null,
+    selectedAccount$: new BehaviorSubject(null),
     locked: false,
     password: '',
     pendingBlocks: [],
