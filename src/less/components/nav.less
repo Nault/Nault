@@ -42,8 +42,28 @@
 	@media (max-width: 639px) {
 		position: absolute;
 		width: 360px;
-		height: calc(100vh);
+		min-height: calc(100vh - 33px);
+		max-height: calc(100vh - 33px);
 		overflow: scroll;
+	}
+
+	// Scrollbar - Gecko (Firefox)
+	scrollbar-width: thin;
+	scrollbar-color: #4E4E5F #1F1F26;
+
+	// Scrollbar - WebKit (Chrome, Edge)
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #1F1F26;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #4E4E5F;
+		border-radius: 9px;
+		border: 2px solid #1F1F26;
 	}
 }
 
