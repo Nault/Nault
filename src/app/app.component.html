@@ -203,25 +203,21 @@
           </li>
         </ul>
 
-
+        <div class="nav-search">
+          <form class="uk-search uk-search-default uk-width-1-1">
+            <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
+            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
+          </form>
+        </div>
 
         <div class="footer uk-margin-remove-top" uk-grid>
           <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
             <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
-            <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
           </div>
         </div>
 
-        <div uk-grid *ngIf="showSearchBar" style="margin-top: 15px;">
-          <div class="uk-width-1-1" style="padding-left: 55px; padding-right: 15px;">
-            <form class="uk-search uk-search-default uk-width-1-1">
-              <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-              <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
-            </form>
-          </div>
-        </div>
 
       </div>
       <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #fff;" [style.height]="windowHeight + 'px'">
