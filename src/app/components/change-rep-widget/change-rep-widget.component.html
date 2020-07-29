@@ -8,15 +8,15 @@
     <ng-container [ngSwitch]="true">
       <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
         <div class="health-icon"></div>
-        <div class="label">Medium</div>
+        <div class="label">Medium Representative</div>
       </div>
       <div class="representative-health-row health-red" *ngSwitchCase="rep.statusText == 'alert'">
         <div class="health-icon"></div>
-        <div class="label">Poor</div>
+        <div class="label">Bad Representative</div>
       </div>
       <div class="representative-health-row health-green" *ngSwitchDefault>
         <div class="health-icon"></div>
-        <div class="label">Good</div>
+        <div class="label">Good Representative</div>
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
@@ -60,6 +60,6 @@
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
   <div class="status-labels">
-    <div class="label primary uk-text-warning">Update Representatives</div>
+    <div class="label primary uk-text-warning">Representative Change Required</div>
   </div>
 </div>
