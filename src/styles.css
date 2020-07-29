@@ -31,3 +31,17 @@ a.uk-link-text:hover {
     color: #777;
     filter: brightness(1.25);
 }
+
+.scanner-modal .modal-dialog {
+    max-width: 700px;
+}
+
+.scanner-modal .scanner-modal-sub {
+    max-width: 95%;
+}
+
+@media (max-width: 639px) {
+    .scanner-modal .modal-dialog {
+        max-width: 100%;
+    }
+  }

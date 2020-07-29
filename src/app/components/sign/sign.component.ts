@@ -13,6 +13,7 @@ import {ApiService} from "../../services/api.service";
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39'
 import * as bip39Wallet from 'nanocurrency-web'
+import { QrModalService } from "../../services/qr-modal.service";
 
 const INDEX_MAX = 4294967295;
 
@@ -87,7 +88,8 @@ export class SignComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private api: ApiService,
-    private util: UtilService) { }
+    private util: UtilService,
+    private qrModalService: QrModalService) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
@@ -576,5 +578,23 @@ export class SignComponent implements OnInit {
     else {
       return null;
     }
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'seed1':
+          this.sourceSecret = data.content;
+          this.seedChange(data.content);
+          break;
+        case 'priv1':
+          this.sourcePriv = data.content;
+          this.privkeyChange(data.content);
+          break;
+      }
+    }, () => {}
+    );
   }
 }

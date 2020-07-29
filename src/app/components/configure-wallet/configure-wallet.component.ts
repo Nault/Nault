@@ -4,6 +4,7 @@ import {NotificationService} from "../../services/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as bip from 'bip39';
 import {LedgerService, LedgerStatus} from "../../services/ledger.service";
+import { QrModalService } from "../../services/qr-modal.service";
 
 @Component({
   selector: 'app-configure-wallet',
@@ -38,10 +39,22 @@ export class ConfigureWalletComponent implements OnInit {
   ledgerStatus = LedgerStatus;
   ledger = this.ledgerService.ledger;
 
-  constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) {
+  constructor(
+    private router: ActivatedRoute,
+    public walletService: WalletService,
+    private notifications: NotificationService,
+    private route: Router,
+    private ledgerService:LedgerService,
+    private qrModalService: QrModalService,
+    ) {
     if(this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
       this.activePanel = 1;      
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
+    }
+    else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key){
+      this.activePanel = 1;      
+      this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
+      this.selectedImportOption = 'privateKey';
     }
   }
 
@@ -255,6 +268,28 @@ export class ConfigureWalletComponent implements OnInit {
     };
 
     reader.readAsText(file);
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'seed1':
+          this.importSeedModel = data.content;
+          break;
+        case 'mnemo1':
+          this.importSeedMnemonicModel = data.content;
+          break;
+        case 'priv1':
+          this.importPrivateKeyModel = data.content;
+          break;
+        case 'expanded1':
+          this.importExpandedKeyModel = data.content;
+          break;
+      }
+    }, () => {}
+    );
   }
 
 }
