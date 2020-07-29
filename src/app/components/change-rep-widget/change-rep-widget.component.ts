@@ -31,6 +31,8 @@ export class ChangeRepWidgetComponent implements OnInit {
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
     this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+    console.log(this.displayedRepresentatives);
+    
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;

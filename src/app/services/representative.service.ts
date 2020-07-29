@@ -175,13 +175,13 @@ export class RepresentativeService {
       } else if (knownRepNinja) {
         status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
-        repStatus.uptime = knownRepNinja.uptime;
+        repStatus.uptime = knownRepNinja.uptime_over.week;
         repStatus.score = knownRepNinja.score;
-        if (knownRepNinja.uptime < 90) {
+        if (knownRepNinja.uptime_over.week < 90) {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
-        } else if (knownRepNinja.uptime < 99) {
+        } else if (knownRepNinja.uptime_over.week < 99) {
           if (status !== 'alert') {
             status = 'warn';
           }

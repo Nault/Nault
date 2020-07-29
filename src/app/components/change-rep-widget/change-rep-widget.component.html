@@ -8,7 +8,7 @@
     <ng-container [ngSwitch]="true">
       <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
         <div class="health-icon"></div>
-        <div class="label">Medium Representative</div>
+        <div class="label">Acceptable Representative</div>
       </div>
       <div class="representative-health-row health-red" *ngSwitchCase="rep.statusText == 'alert'">
         <div class="health-icon"></div>
@@ -36,14 +36,17 @@
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
         <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
       </p>
-      <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime">
+      <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.online">
         <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
-      <p class="uk-text-warning" *ngIf="rep.status.lowUptime">
+      <p class="uk-text-warning" *ngIf="rep.status.lowUptime && rep.status.online">
         <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
       <p class="uk-text-warning" *ngIf="!rep.status.veryLowUptime && !rep.status.lowUptime && !rep.status.online">
         <span uk-icon="icon: warning;"></span>This representative is <b>currently offline</b><ng-container *ngIf="rep.status.uptime !== null"> ({{ rep.status.uptime.toFixed(1) }}% uptime)</ng-container>.
+      </p>
+      <p class="uk-text-danger" *ngIf="!rep.status.online">
+        <span uk-icon="icon: warning;"></span>This representative is <b>offline</b>.
       </p>
       <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
         <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
