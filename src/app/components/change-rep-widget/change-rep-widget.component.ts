@@ -20,8 +20,7 @@ export class ChangeRepWidgetComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private repService: RepresentativeService,
-    private router: Router,
-    private ninja: NinjaService
+    private router: Router
     ) { }
 
   async ngOnInit() {
