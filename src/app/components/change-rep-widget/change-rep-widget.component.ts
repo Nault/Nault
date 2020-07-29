@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {WalletService} from "../../services/wallet.service";
 import {RepresentativeService} from "../../services/representative.service";
 import {Router} from "@angular/router";
-import { NinjaService } from "../../services/ninja.service";
 
 @Component({
   selector: 'app-change-rep-widget',
