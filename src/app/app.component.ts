@@ -71,10 +71,7 @@ export class AppComponent implements OnInit {
     this.workPool.loadWorkCache();
 
     await this.walletService.loadStoredWallet();
-    this.websocket.connect();
-
-    console.log(this.wallet);
-    
+    this.websocket.connect();    
 
     this.representative.loadRepresentativeList();
 
