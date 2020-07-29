@@ -15,10 +15,6 @@ export class ChangeRepWidgetComponent implements OnInit {
   displayedRepresentatives = [];
   representatives = [];
   showRepHelp = false;
-  suggestedRep = {
-    alias: '',
-    account: ''
-  };
   selectedAccount = null;
 
   constructor(
@@ -46,10 +42,6 @@ export class ChangeRepWidgetComponent implements OnInit {
 
     this.repService.changeableReps$.subscribe(async reps => {
       this.changeableRepresentatives = reps;
-
-      if (reps.length > 0) {
-        this.suggestedRep = await this.ninja.getSuggestedRep();
-      }
     });
   }
 
