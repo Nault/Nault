@@ -3,7 +3,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {ApiService} from "../../services/api.service";
-import {UtilService} from "../../services/util.service";
+import {UtilService, TxType} from "../../services/util.service";
 import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {NanoBlockService} from "../../services/nano-block.service";
@@ -256,7 +256,7 @@ export class SweeperComponent implements OnInit {
       block.block.link_as_account = block.block.link_as_account.replace('xrb', 'nano')
 
       // publish block for each iteration
-      let data = await this.api.process(block.block)
+      let data = await this.api.process(block.block, TxType.send)
       if (data.hash) {
         let blockInfo = await this.api.blockInfo(data.hash)
         var nanoAmountSent = null
@@ -309,13 +309,17 @@ export class SweeperComponent implements OnInit {
       this.previous = block.hash
 
       // publish block for each iteration
-      let data = await this.api.process(block.block)
+      let data = await this.api.process(block.block, this.subType === 'open' ? TxType.open:TxType.receive)
       if (data.hash) {
         this.appendLog("Processed pending: "+data.hash)
 
         // continue with the next pending
         this.keyCount += 1
         if (this.keyCount < this.keys.length) {
+          // if last block was open, the next one will be a receive
+          if (this.subType === 'open') {
+            this.subType = 'receive'
+          }
           this.processPending(this.blocks, this.keys, this.keyCount)
         }
         // all pending done, now we process the final send block

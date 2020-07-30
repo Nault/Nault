@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {HttpHeaders} from "@angular/common/http";
 import {NodeService} from "./node.service";
 import {AppSettingsService} from "./app-settings.service";
+import { TxType } from './util.service';
 
 @Injectable()
 export class ApiService {
@@ -78,8 +79,8 @@ export class ApiService {
   async workGenerate(hash): Promise<{ work: string }> {
     return await this.request('work_generate', { hash });
   }
-  async process(block): Promise<{ hash: string, error?: string }> {
-    return await this.request('process', { block: JSON.stringify(block), watch_work:"false" });
+  async process(block, subtype:TxType): Promise<{ hash: string, error?: string }> {
+    return await this.request('process', { block: JSON.stringify(block), watch_work:"false", subtype: TxType[subtype] });
   }
   async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
     return await this.request('account_history', { account, count, raw });

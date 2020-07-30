@@ -77,7 +77,7 @@ export class NanoBlockService {
 
     blockData.work = await this.workPool.getWork(toAcct.frontier);
 
-    const processResponse = await this.api.process(blockData);
+    const processResponse = await this.api.process(blockData, TxType.change);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
       this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
@@ -224,7 +224,7 @@ export class NanoBlockService {
 
     blockData.work = await this.workPool.getWork(fromAccount.frontier);
 
-    const processResponse = await this.api.process(blockData);
+    const processResponse = await this.api.process(blockData, TxType.send);
     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
 
     walletAccount.frontier = processResponse.hash;
@@ -295,7 +295,7 @@ export class NanoBlockService {
     }
 
     blockData.work = await this.workPool.getWork(workBlock);
-    const processResponse = await this.api.process(blockData);
+    const processResponse = await this.api.process(blockData, openEquiv? TxType.open:TxType.receive);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
       this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
