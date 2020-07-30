@@ -58,6 +58,11 @@ export class AppComponent implements OnInit {
     private ledger: LedgerService,
     public price: PriceService) { 
       router.events.subscribe(() => { this.navExpanded = false })
+      let path = localStorage.getItem('path');
+      if(path) {
+        localStorage.removeItem('path');
+        this.router.navigate([path]);
+      }
     }
 
   async ngOnInit() {
