@@ -107,12 +107,9 @@
                 <div class="uk-margin">
                   <label class="uk-form-label" for="source-wallet">Signing Wallet <span uk-icon="icon: info;" uk-tooltip title="The seed or mnemonic that contains the account you are signing for."></span></label>
                   <div class="uk-form-controls">
-                    <div uk-grid>
-                      <div class="uk-width-1-1">
-                        <div class="uk-inline uk-width-1-1">
-                          <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, bip39 seed or 24-word passphrase" autocomplete="off">
-                        </div>
-                      </div>
+                    <div class="uk-inline uk-width-1-1" style="height: 40px;">
+                      <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','generic')" uk-tooltip title="Scan from QR code"></a>
+                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, bip39 seed or 24-word passphrase" autocomplete="off">
                     </div>
                   </div>
                 </div>
@@ -141,13 +138,12 @@
                 <div class="uk-margin">
                   <label class="uk-form-label" for="source-wallet">Private Key <span uk-icon="icon: info;" uk-tooltip title="The private key that derive the account you are signing for."></span></label>
                   <div class="uk-form-controls">
-                    <div uk-grid>
-                      <div class="uk-width-1-1">
-                        <div class="uk-inline uk-width-1-1">
-                          <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="privkeyChange(sourcePriv)" placeholder="Private key or Expanded private key" autocomplete="off">
-                          <label><input class="uk-checkbox" type="checkbox" name="expanded" value='expanded' [(ngModel)]="privateKeyExpanded" (change)="privkeyChange(sourcePriv)"> Expanded private key</label><span uk-icon="icon: info;" uk-tooltip title="If using a 64 or 128 char expanded key."></span>
-                        </div>
+                    <div class="uk-width-1-1">
+                      <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
+                        <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
+                        <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="privkeyChange(sourcePriv)" placeholder="Private key or Expanded private key" autocomplete="off">
                       </div>
+                      <label><input class="uk-checkbox" type="checkbox" name="expanded" value='expanded' [(ngModel)]="privateKeyExpanded" (change)="privkeyChange(sourcePriv)"> Expanded private key</label><span uk-icon="icon: info;" uk-tooltip title="If using a 64 or 128 char expanded key."></span>
                     </div>
                   </div>
                 </div>

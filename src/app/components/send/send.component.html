@@ -24,8 +24,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
-                    <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="dropdown-nav-container uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">

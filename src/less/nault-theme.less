@@ -112,8 +112,31 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	margin-bottom: @nlt-intro-margin;
 }
 
+.scanner-modal .modal-dialog {
+	max-width: 100%;
+	margin-top: 0;
+}
+
+.scanner-modal .scanner-modal-sub {
+    max-width: 98%;
+}
+
 @media (min-width: @breakpoint-xsmall-max) {
 	.nlt-button-group button {
 		margin-left: @global-margin;
 	}
+	.scanner-modal {
+        max-width: @breakpoint-xsmall-max;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 30px;
+    }
+}
+
+@media (min-width: @breakpoint-small-max) {
+	.scanner-modal {
+		margin-left: auto;
+		margin-right: 30px;
+		margin-top: 30px;
+    }
 }

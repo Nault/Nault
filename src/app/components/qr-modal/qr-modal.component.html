@@ -1,0 +1,62 @@
+<div role="document" class="modal-dialog scanner-modal-sub">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Scan a QR</h4>
+            <button class="uk-modal-close-default" type="button" uk-close (click)="activeModal.dismiss('QR scanner dismissed')"></button>
+        </div>
+        <div class="modal-body">
+            <ng-content></ng-content>
+            <div uk-grid>
+                <div class="uk-width-1-1 uk-animation-slide-left-small">
+                  <div uk-grid class="uk-margin-top">
+                    <div class="uk-width-1-1@m" [hidden]="!hasDevices">
+                      <div class="uk-width-1-1">
+                        <div class="uk-form-horizontal">
+              
+                          <div class="uk-margin">
+                            <label class="uk-form-label">Device</label>
+                            <div class="uk-form-controls">
+                              <select class="uk-select" (change)="onDeviceSelectChange($event.target.value)">
+                                <option value="" [selected]="!currentDevice">No Device Selected</option>
+                                <option *ngFor="let device of availableDevices" [value]="device.deviceId"
+                                  [selected]="currentDevice && device.deviceId === currentDevice.deviceId">{{device.label}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+              
+                      <div class="uk-card uk-card-default uk-card-small">
+                        <div class="uk-card-body uk-center">
+                          <zxing-scanner [torch]="torchEnabled" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
+                            [formats]="formatsEnabled" [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
+                            (camerasFound)="onCamerasFound($event)" (torchCompatible)="onTorchCompatible($event)"></zxing-scanner>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="hasPermission === undefined && hasDevices === undefined" class="uk-alert uk-alert-info">
+                <b>Waiting for permissions.</b><br>
+                If your device does not has cameras, no permissions will be asked.
+              </div>
+              
+              <div *ngIf="hasPermission === false" class="uk-alert uk-alert-danger">
+                <b>You denied the camera permission.</b><br>
+                We can't scan anything without it. 😪
+              </div>
+              
+              <div *ngIf="hasDevices === null || hasPermission === null" class="uk-alert uk-alert-danger">
+                <b>Couldn't check for devices.</b><br>
+                This may be caused by some security error.
+              </div>
+              
+              <div *ngIf="hasDevices === false" class="uk-alert uk-alert-danger">
+                <b>No devices were found.</b><br>
+                I believe your device has no media devices attached to.
+              </div>
+        </div>
+    </div>
+</div>

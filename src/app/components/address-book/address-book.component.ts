@@ -4,6 +4,7 @@ import {WalletService} from "../../services/wallet.service";
 import {NotificationService} from "../../services/notification.service";
 import {ModalService} from "../../services/modal.service";
 import {UtilService} from "../../services/util.service";
+import { QrModalService } from "../../services/qr-modal.service";
 
 @Component({
   selector: 'app-address-book',
@@ -23,7 +24,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     private walletService: WalletService,
     private notificationService: NotificationService,
     public modal: ModalService,
-    private util: UtilService) { }
+    private util: UtilService,
+    private qrModalService: QrModalService) { }
 
   async ngOnInit() {
     this.addressBookService.loadAddressBook();
@@ -97,6 +99,19 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     } catch (err) {
       this.notificationService.sendError(`Unable to delete entry: ${err.message}`)
     }
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'account1':
+          this.newAddressAccount = data.content;
+          break;
+      }
+    }, () => {}
+    );
   }
 
 }

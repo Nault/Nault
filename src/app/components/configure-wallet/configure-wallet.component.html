@@ -68,7 +68,10 @@
         <p>
           Enter your 64 character seed from any Nano wallet to import it below.
         </p>
-        <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
+        <div class="uk-inline uk-width-1-1">
+          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','hash')" uk-tooltip title="Scan from QR code"></a>
+          <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
+        </div>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
@@ -76,7 +79,10 @@
         <p>
           Enter your wallet mnemonic phrase generated from any Nano wallet to import it below.
         </p>
-        <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="Your Nano Backup Mnemonic Phrase"></textarea>
+        <div class="uk-inline uk-width-1-1">
+          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
+          <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="Your Nano Backup Mnemonic Phrase"></textarea>
+        </div>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
@@ -104,7 +110,10 @@
         <p>
           Enter your Nano private key below. These are not to be confused with Nano seeds, which are more common, and produce many private keys.
         </p>
-        <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importPrivateKeyModel" placeholder="Your Nano Private Key">
+        <div class="uk-inline uk-width-1-1">
+          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
+          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importPrivateKeyModel" placeholder="Your Nano Private Key">
+        </div>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'expandedKey'" class="uk-margin-top">
@@ -112,7 +121,10 @@
         <p>
           Enter your expanded private key below. These are rare, and are usually generated from multi-party cryptography magic.
         </p>
-        <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importExpandedKeyModel" placeholder="Your Nano Expanded Private Key">
+        <div class="uk-inline uk-width-1-1">
+          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('expanded1','hash')" uk-tooltip title="Scan from QR code"></a>
+          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importExpandedKeyModel" placeholder="Your Nano Expanded Private Key">
+        </div>
       </div>
     </div>
   </div>

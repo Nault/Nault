@@ -12,6 +12,8 @@ import {NodeService} from "../../services/node.service";
 import {UtilService} from "../../services/util.service";
 import {BehaviorSubject} from "rxjs";
 import {RepresentativeService} from "../../services/representative.service";
+import {NinjaService} from "../../services/ninja.service";
+import { QrModalService } from "../../services/qr-modal.service";
 
 @Component({
   selector: 'app-configure-app',
@@ -111,6 +113,8 @@ export class ConfigureAppComponent implements OnInit {
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
   representativeListMatch = '';
+  repStatus = null;
+  representativeList = [];
 
   serverAPI = null;
   serverAPIUpdated = null;
@@ -141,11 +145,30 @@ export class ConfigureAppComponent implements OnInit {
     private repService: RepresentativeService,
     private node: NodeService,
     private util: UtilService,
-    private price: PriceService) { }
+    private price: PriceService,
+    private ninja: NinjaService,
+    private qrModalService: QrModalService) { }
 
   async ngOnInit() {
     this.loadFromSettings();
     this.updateNodeStats();
+
+    // populate representative list
+    if (!this.serverAPI) return;
+    const verifiedReps = await this.ninja.recommendedRandomized();
+
+    for (const representative of verifiedReps) {
+      const temprep = {
+        id: representative.account,
+        name: representative.alias
+      };
+
+      this.representativeList.push(temprep);
+    }
+
+    // add the localReps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
   }
 
   async updateNodeStats(refresh=false) {
@@ -333,11 +356,13 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   searchRepresentatives() {
+    if (this.defaultRepresentative != '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
+    else this.repStatus = null;
+
     this.showRepresentatives = true;
     const search = this.defaultRepresentative || '';
-    const representatives = this.repService.getSortedRepresentatives();
 
-    const matches = representatives
+    const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
@@ -351,13 +376,22 @@ export class ConfigureAppComponent implements OnInit {
     this.validateRepresentative();
   }
 
-  validateRepresentative() {
+  async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
-    this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+    if (this.defaultRepresentative) this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+
+    if (this.defaultRepresentative === '') {
+      this.representativeListMatch = '';
+      return;
+    }
+
     const rep = this.repService.getRepresentative(this.defaultRepresentative);
+    const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
     if (rep) {
       this.representativeListMatch = rep.name;
+    } else if (ninjaRep) {
+      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
     }
@@ -421,5 +455,19 @@ export class ConfigureAppComponent implements OnInit {
 
       this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
     } catch (err) {}
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'rep1':
+          this.defaultRepresentative = data.content;
+          this.validateRepresentative();
+          break;
+      }
+    }, () => {}
+    );
   }
 }

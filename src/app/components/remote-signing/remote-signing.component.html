@@ -16,6 +16,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">Account to create a block for</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (keyup)="validateDestination()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_abc..123" autocomplete="off">
                   </div>
                 </div>

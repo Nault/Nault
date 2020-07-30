@@ -3,6 +3,7 @@ import {UtilService} from "../../services/util.service";
 import { Router } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
 import { RemoteSignService } from "../../services/remote-sign.service";
+import { QrModalService } from "../../services/qr-modal.service";
 
 @Component({
   selector: 'app-send',
@@ -22,7 +23,8 @@ export class RemoteSigningComponent implements OnInit {
     private router: Router,
     private notifcationService: NotificationService,
     private remoteSignService: RemoteSignService,
-    ) { }
+    private qrModalService: QrModalService,
+  ) { }
 
   async ngOnInit() {
 
@@ -93,5 +95,18 @@ export class RemoteSigningComponent implements OnInit {
       badScheme = true;
     }
     if (badScheme) this.notifcationService.sendWarning('Not a recognized block format!', { length: 5000 })
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'account1':
+          this.toAccountID = data.content;
+          break;
+      }
+    }, () => {}
+    );
   }
 }
