@@ -8,10 +8,16 @@ import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
+  veryHighWeight: boolean;
   highWeight: boolean;
+  veryLowUptime: boolean;
+  lowUptime: boolean;
+  markedToAvoid: boolean;
   trusted: boolean;
   warn: boolean;
   known: boolean;
+  uptime: Number;
+  score: Number;
 }
 
 export interface RepresentativeOverview {
@@ -50,8 +56,13 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
+  walletReps$ = new BehaviorSubject([]);
+  walletReps = [];
+
   changeableReps$ = new BehaviorSubject([]);
   changeableReps = [];
+
+  onlineStakeTotal = new BigNumber(115202418);
 
   loaded = false;
 
@@ -78,9 +89,15 @@ export class RepresentativeService {
         continue; // Reps marked as trusted are good no matter their status
       }
 
-      // If we have high weight, marked as warn, or it is offline, then we need to change
-      if (rep.status.highWeight || rep.status.warn || !rep.status.online) {
-        needsChange.push(rep);
+      // If we have high weight, low uptime or marked as warn, then we need to change
+      if (
+            rep.status.highWeight
+          || rep.status.veryHighWeight
+          || rep.status.lowUptime
+          || rep.status.veryLowUptime
+          || rep.status.warn
+        ) {
+          needsChange.push(rep);
       }
     }
 
@@ -100,8 +117,11 @@ export class RepresentativeService {
     const uniqueReps = this.getUniqueRepresentatives(accounts);
     const representatives = await this.getRepresentativesDetails(uniqueReps);
     const onlineReps = await this.getOnlineRepresentatives();
+    const quorum = await this.api.confirmationQuorum();
 
-    const totalSupply = new BigNumber(133248289);
+    const online_stake_total = this.util.nano.rawToMnano(quorum.online_stake_total);
+    this.onlineStakeTotal = new BigNumber(online_stake_total);
+
     const allReps = [];
 
     // Now, loop through each representative and determine some details about it
@@ -111,30 +131,36 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(totalSupply).times(100);
+      const percent = nanoWeight.div(this.onlineStakeTotal).times(100);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
+        veryHighWeight: false,
         highWeight: false,
+        veryLowUptime: false,
+        lowUptime: false,
+        markedToAvoid: false,
         trusted: false,
         warn: false,
         known: false,
+        uptime: null,
+        score: null
       };
 
       // Determine the status based on some factors
       let status = 'none';
       let label;
 
-      if (percent.gte(10)) {
+      if (percent.gte(3)) {
         status = 'alert'; // Has extremely high voting weight
-        repStatus.highWeight = true;
+        repStatus.veryHighWeight = true;
       } else if (percent.gte(1)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
 
       if (knownRep) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
@@ -143,16 +169,23 @@ export class RepresentativeService {
         }
         if (knownRep.warn) {
           status = 'alert'; // In our list and marked for avoidance
+          repStatus.markedToAvoid = true;
           repStatus.warn = true;
         }
       } else if (knownRepNinja) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
-        if (knownRepNinja.score < 70) {
+        repStatus.uptime = knownRepNinja.uptime_over.week;
+        repStatus.score = knownRepNinja.score;
+        if (knownRepNinja.uptime_over.week < 80) {
           status = 'alert';
+          repStatus.veryLowUptime = true;
           repStatus.warn = true;
-        } else if (knownRepNinja.score < 80) {
-          status = 'warn';
+        } else if (knownRepNinja.uptime_over.week < 90) {
+          if (status !== 'alert') {
+            status = 'warn';
+          }
+          repStatus.lowUptime = true;
           repStatus.warn = true;
         }
       }
@@ -168,6 +201,9 @@ export class RepresentativeService {
       const fullRep = { ...representative, ...additionalData };
       allReps.push(fullRep);
     }
+
+    this.walletReps = allReps;
+    this.walletReps$.next(allReps);
 
     return allReps;
   }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
+import {WalletService, NotificationService, RepresentativeService} from "../../services";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as bip from 'bip39';
 import {LedgerService, LedgerStatus} from "../../services/ledger.service";
@@ -38,9 +37,15 @@ export class ConfigureWalletComponent implements OnInit {
   ledgerStatus = LedgerStatus;
   ledger = this.ledgerService.ledger;
 
-  constructor(private router: ActivatedRoute, public walletService: WalletService, private notifications: NotificationService, private route: Router, private ledgerService: LedgerService) {
+  constructor(
+    private router: ActivatedRoute,
+    public walletService: WalletService,
+    private notifications: NotificationService,
+    private route: Router,
+    private ledgerService: LedgerService,
+    private repService: RepresentativeService) {
     if(this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
-      this.activePanel = 1;      
+      this.activePanel = 1;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
     }
   }
@@ -94,6 +99,8 @@ export class ConfigureWalletComponent implements OnInit {
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
+
+    this.repService.detectChangeableReps();
   }
 
   async importSingleKeyWallet() {
