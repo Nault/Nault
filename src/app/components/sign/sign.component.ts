@@ -403,7 +403,7 @@ export class SignComponent implements OnInit {
     // Process block
     var blockData:any = this.currentBlock;
     blockData.type = 'state';
-    const processResponse = await this.api.process(blockData);
+    const processResponse = await this.api.process(blockData, this.txType);
     if (processResponse && processResponse.hash) {
       //this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool but does not make much sense for this case
       this.workPool.removeFromCache(workBlock);
