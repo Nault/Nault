@@ -1,0 +1,142 @@
+@import "components/_import.less";
+
+@nlt-intro-margin:                        40px;
+
+// extensions
+// ========================================================================
+
+h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
+.uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
+.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar {
+	font-family: @global-secondary-font-family;
+}
+
+.uk-card, .uk-card-default, .uk-table {
+	border-radius: @global-border-radius-medium;
+}
+
+@media (max-width: @breakpoint-small) {
+	
+	button, .uk-button {
+		margin-bottom: @nlt-intro-margin / 2!important;
+	}
+
+	h2:not(.uk-card-title):not(.uk-modal-title) {
+	  	border-bottom: none!important;
+	}
+}
+
+.uk-description-list dt {
+    font-weight: 700;
+    color: @global-color;
+}
+
+.uk-panel-scrollable {
+    resize: none;
+  }
+
+.uk-card-body > ul > li > a {
+	color: #676686;
+}
+
+@mobile-top-bar-height: 50px;
+
+.mobile-top-bar {
+	height: @mobile-top-bar-height;
+	color: #FFF;
+
+	.nav-button {
+		display: flex;
+		align-items: center;
+		margin: 9px 0 8px 14px;
+
+		> .uk-icon {
+			margin-right: 10px;
+		}
+
+		> .app-name {
+			font-size: 22px;
+			font-weight: 400;
+		}
+	}
+}
+
+.app-grid {
+	margin-top: 0;
+	overflow: hidden;
+	margin-left: 0;
+	min-height: calc(100vh);
+	max-height: calc(100vh);
+
+	@media (max-width: 639px) {
+		min-height: calc(100vh - @mobile-top-bar-height);
+		max-height: calc(100vh - @mobile-top-bar-height);
+	}
+}
+
+.content-container {
+	min-height: 100%;
+	border-top: 1px solid rgb(220, 233, 249);
+	padding: 0;
+	z-index: 1;
+
+	> .uk-panel {
+		padding: 15px 20px;
+	}
+
+	@media (max-width: 639px) {
+		transition: transform 0.5s ease;
+
+		&.nav-expanded {
+			transform: translateX(360px);
+		}
+
+		> .uk-panel {
+			padding: 15px;
+		}
+	}
+}
+
+// custom classes
+// ========================================================================
+
+.form-icon-btn {
+    background: @global-primary-background;
+    border-bottom-right-radius: @global-border-radius-small;
+    border-top-right-radius: @global-border-radius-small;
+    padding: 0 10px;
+    color: #fff;
+}
+
+.nlt-page-intro {
+	margin-bottom: @nlt-intro-margin;
+}
+
+.scanner-modal .modal-dialog {
+	max-width: 100%;
+	margin-top: 0;
+}
+
+.scanner-modal .scanner-modal-sub {
+    max-width: 98%;
+}
+
+@media (min-width: @breakpoint-xsmall-max) {
+	.nlt-button-group button {
+		margin-left: @global-margin;
+	}
+	.scanner-modal {
+        max-width: @breakpoint-xsmall-max;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 30px;
+    }
+}
+
+@media (min-width: @breakpoint-small-max) {
+	.scanner-modal {
+		margin-left: auto;
+		margin-right: 30px;
+		margin-top: 30px;
+    }
+}

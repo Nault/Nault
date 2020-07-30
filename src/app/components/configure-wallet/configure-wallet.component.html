@@ -1,4 +1,4 @@
-<h2>Configure Wallet</h2>
+<h2 class="uk-heading-divider">Configure Wallet</h2>
 <p>Use the options below to import an existing wallet or create a new one.</p>
 
 <div *ngIf="isConfigured() && (activePanel != 3 && activePanel != 4 && activePanel != 5)" class="uk-alert uk-alert-danger">
@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary" (click)="createNewWallet()">Create Wallet</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="createNewWallet()">Create Wallet</button>
   </div>
 </div>
 
@@ -129,16 +129,16 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <div *ngIf="selectedImportOption === 'file'" class="js-upload" uk-form-custom style="display: inline-block;">
+    <div *ngIf="selectedImportOption === 'file'" class="js-upload uk-width-auto@s uk-width-1-1" uk-form-custom style="display: inline-block;">
       <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-      <button class="uk-button uk-button-primary" type="button" tabindex="-1">Import From File</button>
+      <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import From File</button>
     </div>
-    <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Mnemonic Phrase</button>
-    <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary" (click)="importExistingWallet()">Import From Seed</button>
-    <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet()">Import From Ledger</button>
-    <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.READY" class="uk-button uk-button-primary" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
-    <button *ngIf="selectedImportOption === 'privateKey'" class="uk-button uk-button-primary" (click)="importSingleKeyWallet()">Import From Private Key</button>
-    <button *ngIf="selectedImportOption === 'expandedKey'" class="uk-button uk-button-primary" (click)="importSingleKeyWallet()">Import From Expanded Private Key</button>
+    <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importExistingWallet()">Import From Mnemonic Phrase</button>
+    <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importExistingWallet()">Import From Seed</button>
+    <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.READY" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importLedgerWallet()">Import From Ledger</button>
+    <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.READY" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
+    <button *ngIf="selectedImportOption === 'privateKey'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importSingleKeyWallet()">Import From Private Key</button>
+    <button *ngIf="selectedImportOption === 'expandedKey'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importSingleKeyWallet()">Import From Expanded Private Key</button>
   </div>
 </div>
 
@@ -179,7 +179,7 @@
     </div>
   </div>
   <div class="uk-card-footer">
-    <button class="uk-button uk-button-danger" (click)="confirmNewSeed()">I've Saved My Seed/Mnemonic</button>
+    <button class="uk-button uk-button-danger uk-width-auto@s uk-width-1-1" (click)="confirmNewSeed()">I've Saved My Seed/Mnemonic</button>
   </div>
 </div>
 
@@ -206,7 +206,7 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary" (click)="saveWalletPassword()">Set Wallet Password</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="saveWalletPassword()">Set Wallet Password</button>
   </div>
 </div>
 
@@ -220,7 +220,7 @@
     </p>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button routerLink="/accounts" class="uk-button uk-button-primary">View Accounts</button>
+    <button routerLink="/accounts" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">View Accounts</button>
   </div>
 </div>
 

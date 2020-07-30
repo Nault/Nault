@@ -1,49 +1,59 @@
-<div class="uk-width-1-1 uk-background-secondary wallet-bar">
-  <div class="uk-margin-left" style="padding-top: 6px; padding-bottom: 6px; color: #FFF;">
-    <div uk-grid>
-      <div class="uk-width-1-1">
-        <div *ngIf="walletService.isLedgerWallet()">
-          <div *ngIf="ledgerStatus === 'not-connected' || !ledgerStatus">
-            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-warning" uk-tooltip title="Reload Ledger status">
-              <span uk-icon="icon: refresh" style="float: right; margin-right: 15px;" class="uk-text-muted"></span>
-              <span uk-icon="icon: warning" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Ledger Disconnected</span>
-            </span>
-          </div><div *ngIf="ledgerStatus === 'locked'">
-            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-warning" uk-tooltip title="Reload Ledger status">
-              <span uk-icon="icon: refresh" style="float: right; margin-right: 15px;" class="uk-text-muted"></span>
-              <span uk-icon="icon: warning" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Ledger App Closed</span>
-            </span>
-          </div>
-          <div *ngIf="ledgerStatus === 'ready'">
-            <span style="cursor:pointer" (click)="reloadLedger()" class="uk-text-success">
-              <span uk-icon="icon: bolt" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Ledger Ready</span>
-            </span>
-          </div>
-        </div>
-
-        <div *ngIf="walletService.isConfigured() && !walletService.isLedgerWallet()">
-          <div *ngIf="walletService.isLocked()" class="uk-text-bottom">
-            <span style="cursor: pointer;" (click)="modal.show()">
-              <span uk-icon="icon: lock" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Wallet Locked</span>
-              <span *ngIf="walletService.hasPendingTransactions() && settings.settings.pendingOption !== 'manual'" style="display: block; padding-left: 3px; font-size: 12px;" class="uk-text-bottom">Unlock to Receive Incoming Funds</span>
-            </span>
-          </div>
-          <div *ngIf="!walletService.isLocked()">
-            <span style="cursor:pointer" (click)="lockWallet()">
-              <span uk-icon="icon: unlock" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Wallet Unlocked</span>
-            </span>
-          </div>
-        </div>
-
-        <div *ngIf="!walletService.isConfigured()">
-          <a routerLink="/configure-wallet" class="uk-text-warning">
-            <span uk-icon="icon: warning" class="uk-text-top uk-margin-small-right"></span> <span class="uk-text-bottom">Configure Wallet</span>
-          </a>
-        </div>
-      </div>
+<div *ngIf="walletService.isLedgerWallet()">
+  <div class="nav-status-row" *ngIf="ledgerStatus === 'not-connected' || !ledgerStatus">
+    <div class="status-icon">
+      <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+    </div>
+    <div class="status-labels">
+      <div class="label primary uk-text-warning">Ledger disconnected</div>
+      <div class="label secondary"><a (click)="reloadLedger()">Click here</a> to reconnect</div>
+    </div>
+  </div>
+  <div class="nav-status-row" *ngIf="( ledgerStatus === 'locked' )">
+    <div class="status-icon">
+      <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+    </div>
+    <div class="status-labels">
+      <div class="label primary uk-text-warning">Ledger app was closed</div>
+      <div class="label secondary"><a (click)="reloadLedger()">Click here</a> to reconnect</div>
+    </div>
+  </div>
+  <div class="nav-status-row interactable" (click)="reloadLedger()" *ngIf="( ledgerStatus === 'ready' )">
+    <div class="status-icon">
+      <span class="uk-text-success" uk-icon="icon: bolt; ratio: 1.2;"></span>
+    </div>
+    <div class="status-labels">
+      <div class="label primary uk-text-success">Ledger Ready</div>
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="walletService.isConfigured() && !walletService.isLedgerWallet()">
+  <div class="nav-status-row half-muted interactable" (click)="modal.show()" *ngIf="walletService.isLocked()">
+    <div class="status-icon">
+      <span uk-icon="icon: lock; ratio: 1.2;" class="uk-text-top"></span>
+    </div>
+    <div class="status-labels">
+      <div class="label primary half-muted">Wallet Locked</div>
+    </div>
+  </div>
+  <div class="nav-status-row half-muted interactable" (click)="lockWallet()" *ngIf="!walletService.isLocked()">
+    <div class="status-icon">
+      <span uk-icon="icon: unlock; ratio: 1.2;" class="uk-text-top"></span>
+    </div>
+    <div class="status-labels">
+      <div class="label primary half-muted">Wallet Unlocked</div>
+    </div>
+  </div>
+</ng-container>
+
+<a routerLink="/configure-wallet" class="nav-status-row interactable" *ngIf="!walletService.isConfigured()">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Configure Wallet</div>
+  </div>
+</a>
 
 <div id="unlock-wallet-modal" uk-modal>
   <div class="uk-modal-dialog">
@@ -54,7 +64,7 @@
     <div class="uk-modal-body">
       <input autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()" class="uk-input" placeholder="Enter wallet password">
     </div>
-    <div class="uk-modal-footer uk-text-right">
+    <div class="uk-modal-footer uk-text-right nlt-button-group">
       <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
       <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()">Unlock</button>
     </div>
