@@ -1,8 +1,19 @@
 <div *ngIf="displayedRepresentatives.length > 0" class="nav-representative-info">
-  <h2>Representative{{ displayedRepresentatives.length > 1 ? 's' : '' }}</h2>
-  <div class="representative" *ngFor="let rep of displayedRepresentatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+  <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+      <h2>Representative{{
+          (repIdx !== 0)
+        ? (
+            ' for '
+          + (
+              rep.accounts[0].addressBookName
+            ? ( '"' + rep.accounts[0].addressBookName + '"' )
+            : ( rep.accounts[0].id.slice(0, 10) + '...' )
+          )
+        )
+        : ''
+      }}</h2>
     <div class="representative-name-row">
-      <a (click)="showRepSelectionForSpecificRepId(rep.id)" class="name">{{ rep.label || 'Unknown' }}</a>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown' }}</a>
       <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
@@ -55,7 +66,7 @@
   </div>
 </div>
 
-<div class="nav-status-row interactable uk-animation-slide-left" (click)="showRepSelectionForAllChangeableReps()" *ngIf="changeableRepresentatives.length">
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showRepSelectionForAllChangeableReps()" *ngIf="showRepChangeRequired">
   <div class="status-icon">
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>

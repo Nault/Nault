@@ -14,6 +14,7 @@ export interface RepresentativeStatus {
   lowUptime: boolean;
   markedToAvoid: boolean;
   trusted: boolean;
+  changeRequired: boolean;
   warn: boolean;
   known: boolean;
   uptime: Number;
@@ -141,6 +142,7 @@ export class RepresentativeService {
         lowUptime: false,
         markedToAvoid: false,
         trusted: false,
+        changeRequired: false,
         warn: false,
         known: false,
         uptime: null,
@@ -154,6 +156,7 @@ export class RepresentativeService {
       if (percent.gte(3)) {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
+        repStatus.changeRequired = true;
       } else if (percent.gte(1)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
@@ -171,6 +174,7 @@ export class RepresentativeService {
           status = 'alert'; // In our list and marked for avoidance
           repStatus.markedToAvoid = true;
           repStatus.warn = true;
+          repStatus.changeRequired = true;
         }
       } else if (knownRepNinja) {
         status = status === 'none' ? 'ok' : status; // In our list
@@ -181,6 +185,7 @@ export class RepresentativeService {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
+          repStatus.changeRequired = true;
         } else if (knownRepNinja.uptime_over.week < 90) {
           if (status !== 'alert') {
             status = 'warn';
