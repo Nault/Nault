@@ -13,6 +13,7 @@ export class ChangeRepWidgetComponent implements OnInit {
   changeableRepresentatives = this.repService.changeableReps;
   displayedRepresentatives = [];
   representatives = [];
+  showRepChangeRequired = false;
   showRepHelp = false;
   selectedAccount = null;
 
@@ -24,23 +25,55 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
-    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);    
+    this.updateDisplayedRepresentatives(); 
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
-      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+      this.updateDisplayedRepresentatives();
     });
 
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
       this.selectedAccount = acc;
-      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+      this.updateDisplayedRepresentatives();
     });
 
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
+      // Includes both acceptable and bad reps
+      // When user clicks 'Rep Change Required' action, acceptable reps will also be included
       this.changeableRepresentatives = reps;
+
+      // However 'Rep Change Required' action will only appear when there is at least one bad rep
+      this.showRepChangeRequired = reps.some(rep => (rep.status.changeRequired === true));
+
+      this.updateDisplayedRepresentatives();
     });
+  }
+
+  updateDisplayedRepresentatives() {
+    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+  }
+
+  includeRepRequiringChange(displayedReps : any[]) {
+    const repRequiringChange =
+      this.changeableRepresentatives
+        .sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
+        .filter(
+          (changeableRep) => (
+              (changeableRep.status.changeRequired === true)
+            && displayedReps.every(
+              (displayedRep) =>
+                (displayedRep.id !== changeableRep.id)
+            )
+          )
+        )[0];
+
+    if(repRequiringChange == null) {
+      return [...displayedReps];
+    }
+ 
+    return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
   }
 
   getDisplayedRepresentatives(representatives : any[]) {
@@ -63,29 +96,36 @@ export class ChangeRepWidgetComponent implements OnInit {
         return [];
       }
 
-      return [ Object.assign( {}, selectedAccountRep ) ];
+      let displayedReps = [ Object.assign( {}, selectedAccountRep ) ];
+
+      return this.includeRepRequiringChange(displayedReps);
     }
 
     let sortedRepresentatives: any[] = [...representatives];
 
     sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight));
 
-    return [ Object.assign( {}, sortedRepresentatives[0] ) ];
+    let displayedReps = [ Object.assign( {}, sortedRepresentatives[0] ) ];
+
+    return this.includeRepRequiringChange(displayedReps);
   }
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  showRepSelectionForSpecificRepId(requiredRepId : number) {
+  showRepSelectionForSpecificRep(clickedRep) {
     const accountsToChangeRepFor = (
-        (this.selectedAccount !== null)
+        (
+            (this.selectedAccount !== null)
+          && clickedRep.accounts.some(a => (a.id === this.selectedAccount.id))
+        )
       ? this.selectedAccount.id
       : ( // all accounts that delegate to this rep
         this.representatives
           .filter(
             (rep) =>
-              (rep.id == requiredRepId)
+              (rep.id == clickedRep.id)
           )
           .map(
             (rep) =>
