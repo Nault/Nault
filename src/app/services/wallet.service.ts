@@ -395,63 +395,100 @@ export class WalletService {
     return this.wallet.locked;
   }
 
-  async createWalletFromSeed(seed: string, emptyAccountBuffer: number = 10) {
+  async createWalletFromSeed(seed: string) {
     this.resetWallet();
 
     this.wallet.seed = seed;
     this.wallet.seedBytes = this.util.hex.toUint8(seed);
 
+    await this.scanAccounts();
+
+    return this.wallet.seed;
+  }
+
+  async scanAccounts(emptyAccountBuffer: number = 5) {
     let emptyTicker = 0;
     let usedIndices = [];
     let greatestUsedIndex = 0;
     const batchSize = emptyAccountBuffer + 1;
+
+    console.log('Getting accounts...');
     for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
       let batchAccounts = {};
       let batchAccountsArray = [];
       for (let i = 0; i < batchSize; i++) {
         const index = batch * batchSize + i;
-        const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
-        const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
-        const accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+
+        let accountAddress = '';
+        let accountPublicKey = '';
+
+        if (this.wallet.type === 'seed') {
+          const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index);
+          const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+          accountPublicKey = this.util.uint8.toHex(accountKeyPair.publicKey).toUpperCase();
+          accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+        } else if (this.wallet.type === 'ledger') {
+          const account: any = await this.ledgerService.getLedgerAccount(index);
+          accountAddress = account.address.replace('xrb_', 'nano_');
+          accountPublicKey = account.publicKey.toUpperCase();
+        } else {
+          return false;
+        }
+        console.log(accountAddress, accountPublicKey);
+
         batchAccounts[accountAddress] = {
           index: index,
-          publicKey: this.util.uint8.toHex(accountKeyPair.publicKey).toUpperCase(),
+          publicKey: accountPublicKey,
           used: false
         };
         batchAccountsArray.push(accountAddress);
       }
+      console.log('batchAccountsArray', batchAccountsArray);
+
+      console.log('Checking frontiers...');
       let batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
+      console.log('batchResponse', batchResponse);
+
       for (let accountID in batchResponse.frontiers) {
-        const frontier = batchResponse.frontiers[accountID];
-        if (frontier !== batchAccounts[accountID].publicKey) {
-          batchAccounts[accountID].used = true;
+        if (batchResponse.frontiers.hasOwnProperty(accountID)) {
+          const frontier = batchResponse.frontiers[accountID];
+          console.log(accountID, frontier, batchAccounts[accountID].publicKey);
+          if (frontier !== batchAccounts[accountID].publicKey) {
+            batchAccounts[accountID].used = true;
+          }
         }
       }
+
       for (let accountID in batchAccounts) {
-        let account = batchAccounts[accountID];
-        if (account.used) {
-          usedIndices.push(account.index)
-          if (account.index > greatestUsedIndex) {
-            greatestUsedIndex = account.index
-            emptyTicker = 0;
-          }
-        } else {
-          if (account.index > greatestUsedIndex) {
-            emptyTicker ++;
+        if (batchAccounts.hasOwnProperty(accountID)) {
+          let account = batchAccounts[accountID];
+          if (account.used) {
+            usedIndices.push(account.index);
+            if (account.index > greatestUsedIndex) {
+              greatestUsedIndex = account.index;
+              emptyTicker = 0;
+            }
+          } else {
+            if (account.index > greatestUsedIndex) {
+              emptyTicker ++;
+            }
           }
         }
       }
     }
+
+    console.log('Used Indices:', usedIndices);
     if (usedIndices.length > 0) {
-      for (let i = 0; i < usedIndices.length - 1; i++) {
-        this.addWalletAccount(usedIndices[i], false);
-      }
-      this.addWalletAccount(usedIndices.length - 1, true);
-    } else{
+      usedIndices.forEach(index => {
+        console.log('Adding', index);
+        
+        this.addWalletAccount(index);
+      });
+    } else {
       this.addWalletAccount();
     }
 
-    return this.wallet.seed;
+    this.reloadBalances();
   }
 
   createNewWallet() {
@@ -466,11 +503,12 @@ export class WalletService {
     return this.wallet.seed;
   }
 
-  createLedgerWallet() {
+  async createLedgerWallet() {
     this.resetWallet();
 
     this.wallet.type = 'ledger';
-    const newAccount = this.addWalletAccount(0);
+
+    await this.scanAccounts();
 
     return this.wallet;
   }
