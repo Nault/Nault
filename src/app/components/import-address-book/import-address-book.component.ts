@@ -22,20 +22,26 @@ export class ImportAddressBookComponent implements OnInit {
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
-    if (!importData || !importData.length) return this.importDataError(`No import data found.  Check your link and try again.`);
+    if (!importData || !importData.length) {
+      return this.importDataError(`No import data found.  Check your link and try again.`);
+    }
 
     const decodedData = atob(importData);
 
     try {
       const importBlob = JSON.parse(decodedData);
-      if (!importBlob || !importBlob.length) return this.importDataError(`Bad import data.  Check your link and try again.`);
+      if (!importBlob || !importBlob.length) {
+        return this.importDataError(`Bad import data.  Check your link and try again.`);
+      }
       this.validImportData = true;
       this.importData = importBlob;
       this.activePanel = 'import';
 
       // Now, find conflicting accounts
       for (const entry of importBlob) {
-        if (!entry.account || !entry.name) continue; // Data missing?
+        if (!entry.account || !entry.name) {
+          continue; // Data missing?
+        }
         entry.originalName = this.addressBook.getAccountName(entry.account);
         if (!entry.originalName) {
           this.newEntries++;

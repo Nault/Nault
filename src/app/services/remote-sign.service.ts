@@ -14,7 +14,9 @@ export class RemoteSignService {
   ) { }
 
   navigateSignBlock(url) {
-    if (!this.checkSignBlock(url.pathname)) return this.notifcationService.sendWarning('Not a recognized format of an unsigned block.', { length: 5000 });
+    if (!this.checkSignBlock(url.pathname)) {
+      return this.notifcationService.sendWarning('Not a recognized format of an unsigned block.', { length: 5000 });
+    }
     try {
       const data = JSON.parse(url.pathname);
       // Block to sign
@@ -38,14 +40,15 @@ export class RemoteSignService {
         }};
       }
       this.router.navigate(['sign'], { queryParams: paramsSign});
-    }
-    catch (error) {
+    } catch (error) {
       this.notifcationService.sendWarning('Block sign data detected but not correct format.', { length: 5000 });
     }
   }
 
   navigateProcessBlock(url) {
-    if (!this.checkSignBlock(url.pathname) || !this.checkProcessBlock(url.pathname)) return this.notifcationService.sendWarning('Not a recognized format of a signed block.', { length: 5000 });
+    if (!this.checkSignBlock(url.pathname) || !this.checkProcessBlock(url.pathname)) {
+      return this.notifcationService.sendWarning('Not a recognized format of a signed block.', { length: 5000 });
+    }
     try {
       const data = JSON.parse(url.pathname);
       // Block to process
@@ -70,8 +73,7 @@ export class RemoteSignService {
         }};
       }
       this.router.navigate(['sign'], { queryParams: paramsProcess});
-    }
-    catch (error) {
+    } catch (error) {
       this.notifcationService.sendWarning('Block process data detected but not correct format.', { length: 5000 });
     }
   }
@@ -92,8 +94,7 @@ export class RemoteSignService {
         this.util.nano.isValidHash(data.block.link) &&
         (data.previous ? this.util.nano.isValidHash(data.previous.link) : true) &&
         (data.previous ? this.util.nano.isValidSignature(data.previous.signature) : true));
-    }
-    catch (error) {
+    } catch (error) {
       return false;
     }
   }
@@ -103,8 +104,7 @@ export class RemoteSignService {
       const data = JSON.parse(stringdata);
       return (this.util.nano.isValidSignature(data.block.signature) &&
         (data.block.work ? this.util.nano.isValidWork(data.block.work) : true));
-    }
-    catch (error) {
+    } catch (error) {
       return false;
     }
   }

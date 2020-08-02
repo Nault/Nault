@@ -42,7 +42,7 @@ export class SignComponent implements OnInit {
   currentBlock: StateBlock = null;
   previousBlock: StateBlock = null;
   txType: TxType = null;
-  txTypes = TxType; //to access enum in html
+  txTypes = TxType; // to access enum in html
   txTypeMessage = '';
   confirmingTransaction = false;
   shouldGenWork = false;
@@ -66,7 +66,7 @@ export class SignComponent implements OnInit {
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash: string = null;
   finalSignature: string = null;
-  //TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
+  // TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
   thresholds = [
     { name: '1x', value: 1 },
     { name: '2x', value: 2 },
@@ -96,15 +96,19 @@ export class SignComponent implements OnInit {
     console.log(params);
     this.signTypeSelected = this.walletService.isConfigured() ? this.signTypes[0] : this.signTypes[1];
 
-    if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params && 'n_balance' in params && 'n_link' in params) {
-      this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative, 'balance': params.n_balance, 'link': params.n_link, signature: 'n_signature' in params ? params.n_signature : null, work: 'n_work' in params ? params.n_work : null};
+    if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params &&
+      'n_balance' in params && 'n_link' in params) {
+      this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative,
+      'balance': params.n_balance, 'link': params.n_link, signature: 'n_signature' in params ? params.n_signature : null,
+      work: 'n_work' in params ? params.n_work : null};
 
       // previous block won't be included with open block (or maybe if another wallet implement this feature)
       if ('p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
-        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative, 'balance': params.p_balance, 'link': params.p_link, signature: 'p_signature' in params ? params.p_signature : null, work: null};
+        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative,
+        'balance': params.p_balance, 'link': params.p_link, signature: 'p_signature' in params ? params.p_signature : null, work: null};
       }
 
-      this.shouldSign = params.sign == 1 ? true : false;
+      this.shouldSign = params.sign === '1' ? true : false;
       this.shouldGenWork = this.currentBlock.work === null && !this.shouldSign;
 
       // check if both new block and previous block hashes matches (balances has not been tampered with) and have valid parameters
@@ -121,9 +125,9 @@ export class SignComponent implements OnInit {
           if (this.fromAccountID === this.toAccountID) {
             this.toAccountBalance = this.fromAccountBalance;
           }
-        }
-        // it's a change block
-        else if (new BigNumber(this.previousBlock.balance).eq(new BigNumber(this.currentBlock.balance)) && this.previousBlock.representative != this.currentBlock.representative && this.currentBlock.link === this.nullBlock) {
+        } else if (new BigNumber(this.previousBlock.balance).eq(new BigNumber(this.currentBlock.balance)) &&
+            this.previousBlock.representative !== this.currentBlock.representative && this.currentBlock.link === this.nullBlock) {
+          // it's a change block
           this.txType = TxType.change;
           this.txTypeMessage = 'change representative to';
           this.rawAmount = new BigNumber(0);
@@ -131,9 +135,9 @@ export class SignComponent implements OnInit {
           this.toAccountID = this.currentBlock.account;
           this.fromAccountBalance = new BigNumber(this.currentBlock.balance);
           this.toAccountBalance = new BigNumber(this.currentBlock.balance);
-        }
-        // it's a receive block
-        else if (new BigNumber(this.previousBlock.balance).lt(new BigNumber(this.currentBlock.balance)) && this.currentBlock.previous !== this.nullBlock) {
+        } else if (new BigNumber(this.previousBlock.balance).lt(
+            new BigNumber(this.currentBlock.balance)) && this.currentBlock.previous !== this.nullBlock) {
+          // it's a receive block
           this.txType = TxType.receive;
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance));
@@ -142,26 +146,24 @@ export class SignComponent implements OnInit {
           let recipientInfo = null;
           try {
             recipientInfo = await this.api.blockInfo(this.currentBlock.link);
+          } catch {}
+          if (recipientInfo && 'block_account' in recipientInfo) {
+            this.fromAccountID = recipientInfo.block_account;
+          } else {
+            this.fromAccountID = null;
           }
-          catch {}
-          if (recipientInfo && 'block_account' in recipientInfo) this.fromAccountID = recipientInfo.block_account;
-          else this.fromAccountID = null;
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(this.previousBlock.balance);
-        }
-        else {
+        } else {
           return this.notificationService.sendError(`Meaningless block. The balance and representative are unchanged!`, {length: 0});
         }
 
         this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
         this.prepareTransaction();
-      }
-
-      // No previous block present (open block)
-      // TODO: Make all block subtypes also possible to sign even if previous block is missing, but with less displayed data
-      else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
-        // it's an open block
+      } else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
+        // No previous block present (open block)
+        // TODO: Make all block subtypes also possible to sign even if previous block is missing, but with less displayed data
         if (this.currentBlock.previous === this.nullBlock) {
           this.txType = TxType.open;
           this.txTypeMessage = 'receive';
@@ -171,28 +173,26 @@ export class SignComponent implements OnInit {
           let recipientInfo = null;
           try {
             recipientInfo = await this.api.blockInfo(this.currentBlock.link);
-          }
-          catch {}
+          } catch {}
 
-          if (recipientInfo && 'block_account' in recipientInfo) this.fromAccountID = recipientInfo.block_account;
-          else this.fromAccountID = null;
+          if (recipientInfo && 'block_account' in recipientInfo) {
+            this.fromAccountID = recipientInfo.block_account;
+          } else {
+            this.fromAccountID = null;
+          }
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(0);
-        }
-
-        else {
+        } else {
           return this.notificationService.sendError(`Only OPEN block is currently supported when previous block is missing`, {length: 0});
         }
 
         this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
         this.prepareTransaction();
-      }
-      else {
+      } else {
         return;
       }
-    }
-    else {
+    } else {
       this.notificationService.sendError(`Incorrect parameters provided for signing!`, {length: 0});
       return;
     }
@@ -205,18 +205,17 @@ export class SignComponent implements OnInit {
       this.util.account.isValidAccount(block.representative) &&
       this.util.account.isValidAmount(block.balance) &&
       this.util.nano.isValidHash(block.previous) &&
-      this.util.nano.isValidHash(block.link))
-    {
+      this.util.nano.isValidHash(block.link)) {
       return true;
-    }
-    else {
+    } else {
       this.notificationService.sendError(`The provided blocks contain invalid values!`, {length: 0});
       return false;
     }
   }
 
   verifyBlockHash(currentBlock: StateBlock, previousBlock: StateBlock) {
-    const block: StateBlock = {account: previousBlock.account, link: previousBlock.link, previous: previousBlock.previous, representative: previousBlock.representative, balance: previousBlock.balance, signature: null, work: null};
+    const block: StateBlock = {account: previousBlock.account, link: previousBlock.link, previous: previousBlock.previous,
+      representative: previousBlock.representative, balance: previousBlock.balance, signature: null, work: null};
     const previousHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
     if (!currentBlock.previous || previousHash !== currentBlock.previous) {
       this.notificationService.sendError(`The hash of the previous block does not match the frontier in the new block!`, {length: 0});
@@ -243,9 +242,12 @@ export class SignComponent implements OnInit {
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
-        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_', 'nano_') == this.signatureAccount);
-        if (!this.walletAccount) return this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
-        else this.signatureMessageSuccess = 'A matching account found!';
+        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_', 'nano_') === this.signatureAccount);
+        if (!this.walletAccount) {
+          return this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
+        } else {
+          this.signatureMessageSuccess = 'A matching account found!';
+        }
         break;
 
       case this.signTypes[1]:
@@ -259,7 +261,9 @@ export class SignComponent implements OnInit {
   }
 
   powChange() {
-    if (this.shouldGenWork) this.prepareWork();
+    if (this.shouldGenWork) {
+      this.prepareWork();
+    }
   }
 
   changeThreshold() {
@@ -293,8 +297,7 @@ export class SignComponent implements OnInit {
 
     if (this.txType === TxType.send || this.txType === TxType.change) {
       this.signatureAccount = this.fromAccountID.replace('xrb_', 'nano_').toLowerCase();
-    }
-    else if (this.txType === TxType.receive || this.txType === TxType.open) {
+    } else if (this.txType === TxType.receive || this.txType === TxType.open) {
       this.signatureAccount = this.toAccountID.replace('xrb_', 'nano_').toLowerCase();
     }
 
@@ -310,14 +313,18 @@ export class SignComponent implements OnInit {
 
     // using internal wallet
     if (this.signTypeSelected === this.signTypes[0] && walletAccount) {
-      if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning('Wallet must be unlocked for signing with it');
-    }
-    else if (this.signTypeSelected === this.signTypes[0]) {
+      if (this.walletService.walletIsLocked()) {
+        return this.notificationService.sendWarning('Wallet must be unlocked for signing with it');
+      }
+    } else if (this.signTypeSelected === this.signTypes[0]) {
       return this.notificationService.sendWarning('Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts');
     }
 
     // using seed or private key
-    if (((this.signTypeSelected === this.signTypes[1] && !this.validSeed) || (this.signTypeSelected === this.signTypes[2]) && !this.validPrivkey)) return this.notificationService.sendWarning('Could not find a matching private key to sign with.');
+    if (((this.signTypeSelected === this.signTypes[1] && !this.validSeed) || (this.signTypeSelected === this.signTypes[2])
+      && !this.validPrivkey)) {
+        return this.notificationService.sendWarning('Could not find a matching private key to sign with.');
+      }
     if (this.signTypeSelected === this.signTypes[1] || this.signTypeSelected === this.signTypes[2]) {
       isLedger = false;
       // create dummy wallet that only contains needed elements for signature
@@ -327,7 +334,8 @@ export class SignComponent implements OnInit {
     this.confirmingTransaction = true;
 
     // sign the block
-    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock, this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
+    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock,
+      this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
     console.log('Signature: ' + block.signature || 'Error');
     console.log('Work: ' + block.work || 'Not applied');
 
@@ -348,14 +356,19 @@ export class SignComponent implements OnInit {
 
     try {
       this.clean(block);
-      if (this.previousBlock) this.clean(this.previousBlock);
-      if (this.previousBlock) this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + ',"previous":' + JSON.stringify(this.previousBlock) + '}';
-      else this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
+      if (this.previousBlock) {
+        this.clean(this.previousBlock);
+      }
+      if (this.previousBlock) {
+        this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) +
+        ',"previous":' + JSON.stringify(this.previousBlock) + '}';
+      } else {
+        this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
+      }
 
       const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
       this.qrCodeImageBlock = qrCode;
-    }
-    catch (error) {
+    } catch (error) {
       this.confirmingTransaction = false;
       console.log(error);
       return this.notificationService.sendError('The block could not be signed!', {lenth: 0});
@@ -407,7 +420,8 @@ export class SignComponent implements OnInit {
     blockData.type = 'state';
     const processResponse = await this.api.process(blockData, this.txType);
     if (processResponse && processResponse.hash) {
-      //this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool but does not make much sense for this case
+      // Add new hash into the work pool but does not make much sense for this case
+      // this.workPool.addWorkToCache(processResponse.hash);
       this.workPool.removeFromCache(workBlock);
       this.processedHash = processResponse.hash;
       this.notificationService.sendSuccess('Successfully processed the block!');
@@ -435,8 +449,7 @@ export class SignComponent implements OnInit {
     this.validSeed = keyType !== null;
     if (this.validSeed && this.validIndex) {
       this.verifyKey(keyType, input, Number(this.index));
-    }
-    else {
+    } else {
       this.signatureMessage = '';
       this.signatureMessageSuccess = '';
     }
@@ -454,12 +467,10 @@ export class SignComponent implements OnInit {
         this.signatureMessage = '';
         this.signatureMessageSuccess = 'The private key match the account!';
         return;
-      }
-      else {
+      } else {
         this.signatureMessage = 'The account for this private key does not match!';
       }
-    }
-    else {
+    } else {
       this.signatureMessage = '';
     }
     this.signatureMessageSuccess = '';
@@ -470,23 +481,21 @@ export class SignComponent implements OnInit {
   indexChange(index) {
     this.validIndex = true;
     if (this.util.string.isNumeric(index) && index % 1 === 0) {
-      index = parseInt(index);
+      index = parseInt(index, 10);
       if (!this.util.nano.isValidIndex(index)) {
         this.validIndex = false;
       }
       if (index > INDEX_MAX) {
         this.validIndex = false;
       }
-    }
-    else {
+    } else {
       this.validIndex = false;
     }
 
     if (this.validSeed && this.validIndex) {
       const keyType = this.checkMasterKey(this.sourceSecret);
       this.verifyKey(keyType, this.sourceSecret, Number(this.index));
-    }
-    else {
+    } else {
       this.signatureMessage = '';
       this.signatureMessageSuccess = '';
     }
@@ -500,7 +509,8 @@ export class SignComponent implements OnInit {
     // input is mnemonic
     if (keyType === 'mnemonic') {
       seed = bip39.mnemonicToEntropy(input).toUpperCase();
-      // seed must be 64 or the nano wallet can't be created. This is the reason 12-words can't be used because the seed would be 32 in length
+      // seed must be 64 or the nano wallet can't be created.
+      // This is the reason 12-words can't be used because the seed would be 32 in length
       if (seed.length !== 64) {
         this.notificationService.sendError(`Mnemonic not 24 words`);
         return;
@@ -521,8 +531,7 @@ export class SignComponent implements OnInit {
       // take 128 char bip39 seed directly from input or convert it from a 64 char nano seed (entropy)
       if (keyType === 'bip39_seed') {
         bip39Seed = input;
-      }
-      else {
+      } else {
         bip39Seed = bip39Wallet.wallet.generate(seed).seed;
       }
       privKey2 = bip39Wallet.wallet.accounts(bip39Seed, index, index)[0].privateKey;
@@ -535,12 +544,14 @@ export class SignComponent implements OnInit {
     const address2 = this.util.account.getPublicAccountID(pubKey2);
 
     if (address1 === this.signatureAccount || address2 === this.signatureAccount ) {
-      if (address1 === this.signatureAccount) this.privateKey = privKey1;
-      else this.privateKey = privKey2;
+      if (address1 === this.signatureAccount) {
+        this.privateKey = privKey1;
+      } else {
+        this.privateKey = privKey2;
+      }
       this.signatureMessage = '';
       this.signatureMessageSuccess = 'A matching private key found!';
-    }
-    else {
+    } else {
       this.signatureMessage = 'Could not find a matching private key!';
       this.signatureMessageSuccess = '';
     }
@@ -574,8 +585,7 @@ export class SignComponent implements OnInit {
       return key.substring(0, 64);
     } else if (key.length === 64) {
       return key;
-    }
-    else {
+    } else {
       return null;
     }
   }

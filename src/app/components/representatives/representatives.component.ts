@@ -118,10 +118,14 @@ export class RepresentativesComponent implements OnInit {
 
   newAccountID(accountID) {
     const newAccount = accountID || this.changeAccountID;
-    if (!newAccount) return; // Didn't select anything
+    if (!newAccount) {
+      return; // Didn't select anything
+    }
 
     const existingAccount = this.selectedAccounts.find(a => a.id === newAccount);
-    if (existingAccount) return; // Already selected
+    if (existingAccount) {
+      return; // Already selected
+    }
 
     const allExists = this.selectedAccounts.find(a => a.id === 'All Accounts');
     if (newAccount === 'all' && !allExists) {
@@ -241,9 +245,15 @@ export class RepresentativesComponent implements OnInit {
     const accounts = this.selectedAccounts;
     const newRep = this.toRepresentativeID;
 
-    if (this.changingRepresentatives) return; // Already running
-    if (this.wallet.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
-    if (!accounts || !accounts.length) return this.notifications.sendWarning(`You must select at least one account to change`);
+    if (this.changingRepresentatives) {
+      return; // Already running
+    }
+    if (this.wallet.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
+    if (!accounts || !accounts.length) {
+      return this.notifications.sendWarning(`You must select at least one account to change`);
+    }
 
     this.changingRepresentatives = true;
 
@@ -259,7 +269,9 @@ export class RepresentativesComponent implements OnInit {
     // Remove any that don't need their represetatives to be changed
     const accountsNeedingChange = accountsToChange.filter(account => {
       const accountInfo = this.fullAccounts.find(a => a.id === account.id);
-      if (!accountInfo || accountInfo.error) return false; // Cant find info, update the account
+      if (!accountInfo || accountInfo.error) {
+        return false; // Cant find info, update the account
+      }
 
       if (accountInfo.representative.toLowerCase() === newRep.toLowerCase()) {
         return false; // This account already has this representative, reject it
@@ -276,7 +288,9 @@ export class RepresentativesComponent implements OnInit {
     // Now loop and change them
     for (const account of accountsNeedingChange) {
       const walletAccount = this.wallet.getWalletAccount(account.id);
-      if (!walletAccount) continue; // Unable to find account in the wallet? wat?
+      if (!walletAccount) {
+        continue; // Unable to find account in the wallet? wat?
+      }
 
       try {
         const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.wallet.isLedgerWallet());
@@ -289,7 +303,7 @@ export class RepresentativesComponent implements OnInit {
     }
 
     // Determine if a recommended rep was selected, if so we save an entry in the rep list
-    if (this.selectedRecommendedRep && this.selectedRecommendedRep.account && this.selectedRecommendedRep.account == newRep) {
+    if (this.selectedRecommendedRep && this.selectedRecommendedRep.account && this.selectedRecommendedRep.account === newRep) {
       this.representativeService.saveRepresentative(newRep, this.selectedRecommendedRep.alias, false, false);
     }
 

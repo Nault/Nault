@@ -20,13 +20,17 @@ export class ImportWalletComponent implements OnInit {
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
-    if (!importData || !importData.length) return this.importDataError(`No import data found.  Check your link and try again.`);
+    if (!importData || !importData.length) {
+      return this.importDataError(`No import data found.  Check your link and try again.`);
+    }
 
     const decodedData = atob(importData);
 
     try {
       const importBlob = JSON.parse(decodedData);
-      if (!importBlob || !importBlob.seed) return this.importDataError(`Bad import data.  Check your link and try again.`);
+      if (!importBlob || !importBlob.seed) {
+        return this.importDataError(`Bad import data.  Check your link and try again.`);
+      }
       this.validImportData = true;
       this.importData = importBlob;
       this.activePanel = 'import';

@@ -34,8 +34,7 @@ export class RemoteSigningComponent implements OnInit {
     if (this.util.account.isValidAccount(this.toAccountID)) {
       this.toAccountStatus = 1;
       return true;
-    }
-    else {
+    } else {
       this.toAccountStatus = 0;
       return false;
     }
@@ -48,8 +47,7 @@ export class RemoteSigningComponent implements OnInit {
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname)) {
       this.unsignedStatus = 1;
-    }
-    else {
+    } else {
       this.unsignedStatus = 0;
     }
   }
@@ -61,8 +59,7 @@ export class RemoteSigningComponent implements OnInit {
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname) && this.remoteSignService.checkProcessBlock(url.pathname)) {
       this.signedStatus = 1;
-    }
-    else {
+    } else {
       this.signedStatus = 0;
     }
   }
@@ -70,8 +67,7 @@ export class RemoteSigningComponent implements OnInit {
   start() {
     if (this.validateDestination()) {
       this.router.navigate(['account', this.toAccountID], { queryParams: {sign: 1}});
-    }
-    else {
+    } else {
       this.notifcationService.sendWarning('Not a valid account format!');
     }
   }
@@ -83,18 +79,17 @@ export class RemoteSigningComponent implements OnInit {
       const url = new URL(block);
       if (url.protocol === 'nanosign:') {
         this.remoteSignService.navigateSignBlock(url);
-      }
-      else if (url.protocol === 'nanoprocess:') {
+      } else if (url.protocol === 'nanoprocess:') {
         this.remoteSignService.navigateProcessBlock(url);
-      }
-      else {
+      } else {
         badScheme = true;
       }
-    }
-    else {
+    } else {
       badScheme = true;
     }
-    if (badScheme) this.notifcationService.sendWarning('Not a recognized block format!', { length: 5000 });
+    if (badScheme) {
+      this.notifcationService.sendWarning('Not a recognized block format!', { length: 5000 });
+    }
   }
 
   // open qr reader modal

@@ -89,8 +89,12 @@ export class SendComponent implements OnInit {
 
     // Look for the first account that has a balance
     const accountIDWithBalance = this.accounts.reduce((previous, current) => {
-      if (previous) return previous;
-      if (current.balance.gt(0)) return current.id;
+      if (previous) {
+        return previous;
+      }
+      if (current.balance.gt(0)) {
+        return current.id;
+      }
       return null;
     }, null);
 
@@ -156,7 +160,7 @@ export class SendComponent implements OnInit {
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);
     if (accountInfo.error) {
-      if (accountInfo.error == 'Account not found') {
+      if (accountInfo.error === 'Account not found') {
         this.toAccountStatus = 1;
       } else {
         this.toAccountStatus = 0;
@@ -169,12 +173,18 @@ export class SendComponent implements OnInit {
 
   async sendTransaction() {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
-    if (!isValid) return this.notificationService.sendWarning(`To account address is not valid`);
-    if (!this.fromAccountID || !this.toAccountID) return this.notificationService.sendWarning(`From and to account are required`);
+    if (!isValid) {
+      return this.notificationService.sendWarning(`To account address is not valid`);
+    }
+    if (!this.fromAccountID || !this.toAccountID) {
+      return this.notificationService.sendWarning(`From and to account are required`);
+    }
 
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
     const to = await this.nodeApi.accountInfo(this.toAccountID);
-    if (!from) return this.notificationService.sendError(`From account not found`);
+    if (!from) {
+      return this.notificationService.sendError(`From account not found`);
+    }
 
     from.balanceBN = new BigNumber(from.balance || 0);
     to.balanceBN = new BigNumber(to.balance || 0);
@@ -187,9 +197,15 @@ export class SendComponent implements OnInit {
 
     const nanoAmount = this.rawAmount.div(this.nano);
 
-    if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
-    if (nanoAmount.lessThan(1)) return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough NANO`);
+    if (this.amount < 0 || rawAmount.lessThan(0)) {
+      return this.notificationService.sendWarning(`Amount is invalid`);
+    }
+    if (nanoAmount.lessThan(1)) {
+      return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.`);
+    }
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) {
+      return this.notificationService.sendError(`From account does not have enough NANO`);
+    }
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
     this.amountRaw = this.rawAmount.mod(this.nano);
@@ -206,21 +222,19 @@ export class SendComponent implements OnInit {
   }
 
   async confirmTransaction() {
-    const walletAccount = this.walletService.wallet.accounts.find(a => a.id == this.fromAccountID);
-    if (!walletAccount) throw new Error(`Unable to find sending account in wallet`);
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
+    if (!walletAccount) {
+      throw new Error(`Unable to find sending account in wallet`);
+    }
+    if (this.walletService.walletIsLocked()) {
+      return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    }
 
     this.confirmingTransaction = true;
 
     try {
-      // New stuff to show status of each part of the transaction.
-      // console.log('Sending sub send command....');
-      // this.nanoBlock.subscribeSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet()).subscribe(value => {
-      //   console.log('GOT VALUE!!! ', value)
-      // }, err => {
-      //   console.log('GOT ERROR!!!: ', err);
-      // });
-      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet());
+      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID,
+        this.rawAmount, this.walletService.isLedgerWallet());
       if (newHash) {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
         this.activePanel = 'send';
@@ -249,7 +263,9 @@ export class SendComponent implements OnInit {
 
   setMaxAmount() {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
-    if (!walletAccount) return;
+    if (!walletAccount) {
+      return;
+    }
 
     this.amountRaw = walletAccount.balanceRaw;
 

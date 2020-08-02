@@ -62,13 +62,17 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   }
 
   async saveNewRepresentative() {
-    if (!this.newRepAccount || !this.newRepName) return this.notificationService.sendError(`Account and name are required`);
+    if (!this.newRepAccount || !this.newRepName) {
+      return this.notificationService.sendError(`Account and name are required`);
+    }
 
     this.newRepAccount = this.newRepAccount.replace(/ /g, ''); // Remove spaces
 
     // Make sure the address is valid
     const valid = this.util.account.isValidAccount(this.newRepAccount);
-    if (!valid) return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    if (!valid) {
+      return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    }
 
     try {
       await this.repService.saveRepresentative(this.newRepAccount, this.newRepName, this.newRepTrusted, this.newRepWarn);
@@ -97,7 +101,9 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
     try {
       const reps = await this.api.representativesOnline();
       for (const representative in reps.representatives) {
-        if (!reps.representatives.hasOwnProperty(representative)) continue;
+        if (!reps.representatives.hasOwnProperty(representative)) {
+          continue;
+        }
         representatives.push(reps.representatives[representative]);
       }
     } catch (err) {

@@ -59,11 +59,11 @@ export class QrScanComponent implements OnInit {
 
     const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess):.+$/g;
 
-    if (this.util.account.isValidAccount(resultString)){
+    if (this.util.account.isValidAccount(resultString)) {
       // Got address, routing to send...
       this.router.navigate(['send'], {queryParams: {to: resultString}});
 
-    } else if (this.util.nano.isValidSeed(resultString)){
+    } else if (this.util.nano.isValidSeed(resultString)) {
       // Seed
       this.handleSeed(resultString);
 
@@ -71,7 +71,7 @@ export class QrScanComponent implements OnInit {
       // This is a valid Nano scheme URI
       const url = new URL(resultString);
 
-      if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)){
+      if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...
         const amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
@@ -105,7 +105,7 @@ export class QrScanComponent implements OnInit {
     }
   }
 
-  handleSeed(seed){
+  handleSeed(seed) {
     if (this.hasAccounts) {
       // Wallet already set up, sweeping...
       this.router.navigate(['sweeper'], { state: { seed: seed } });
@@ -115,7 +115,7 @@ export class QrScanComponent implements OnInit {
     }
   }
 
-  handlePrivateKey(key){
+  handlePrivateKey(key) {
     if (this.hasAccounts) {
       // Wallet already set up, sweeping...
       this.router.navigate(['sweeper'], { state: { seed: key } });

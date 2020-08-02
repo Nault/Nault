@@ -21,7 +21,8 @@ export class RaiPipe implements PipeTransform {
       case 'mnano':
         const hasRawValue = (value / this.rai) % 1;
         if (hasRawValue) {
-          const newVal = value / this.mrai < 0.000001 ? 0 : value / this.mrai; // New more precise toFixed function, but bugs on huge raw numbers
+          // New more precise toFixed function, but bugs on huge raw numbers
+          const newVal = value / this.mrai < 0.000001 ? 0 : value / this.mrai;
           return `${this.toFixed(newVal, this.precision)}${!hideText ? ' NANO' : ''}`;
         } else {
           return `${(value / this.mrai).toFixed(6)}${!hideText ? ' NANO' : ''}`;
@@ -46,7 +47,9 @@ export class RaiPipe implements PipeTransform {
   }
 
   toFixed(num, fixed) {
-    if (isNaN(num)) return 0;
+    if (isNaN(num)) {
+      return 0;
+    }
     const re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
     return num.toString().match(re)[0];
   }

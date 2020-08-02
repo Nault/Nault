@@ -12,8 +12,8 @@ import { wallet } from 'nanocurrency-web';
 import * as bip39 from 'bip39';
 import {Router} from '@angular/router';
 
-const INDEX_MAX = 4294967295; //seed index
-const SWEEP_MAX_INDEX = 100; //max index keys to sweep
+const INDEX_MAX = 4294967295; // seed index
+const SWEEP_MAX_INDEX = 100; // max index keys to sweep
 const SWEEP_MAX_PENDING = 100; // max pending blocks to process per run
 
 @Component({
@@ -27,7 +27,7 @@ export class SweeperComponent implements OnInit {
   indexMax = INDEX_MAX;
   incomingMax = SWEEP_MAX_PENDING;
 
-  myAccountModel = this.accounts.length > 0 ? this.accounts[0].id : 0;
+  myAccountModel = this.accounts.length > 0 ? this.accounts[0].id : '0';
   sourceWallet = '';
   destinationAccount = this.accounts.length > 0 ? this.accounts[0].id : '';
   startIndex = '0';
@@ -47,10 +47,10 @@ export class SweeperComponent implements OnInit {
   keyCount = 0;
   pendingCallback = null;
   totalSwept = '0';
-  customAccountSelected = this.accounts.length == 0;
+  customAccountSelected = this.accounts.length === 0;
 
   validSeed = false;
-  validDestination = this.myAccountModel != 0 ? true : false;
+  validDestination = this.myAccountModel !== '0' ? true : false;
   validStartIndex = true;
   validEndIndex = true;
   validMaxIncoming = true;
@@ -68,7 +68,7 @@ export class SweeperComponent implements OnInit {
     private nanoBlock: NanoBlockService,
     private util: UtilService,
     private route: Router) {
-      if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
+      if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
         this.sourceWallet = this.route.getCurrentNavigation().extras.state.seed;
         this.validSeed = true;
       }
@@ -82,11 +82,10 @@ export class SweeperComponent implements OnInit {
   }
 
   setDestination(account) {
-    if (account != '0') {
+    if (account !== '0') {
       this.destinationAccount = account;
       this.customAccountSelected = false;
-    }
-    else {
+    } else {
       this.destinationAccount = '';
       this.customAccountSelected = true;
     }
@@ -98,7 +97,7 @@ export class SweeperComponent implements OnInit {
   this.startIndex = '0';
   // check end index
   if (this.validEndIndex) {
-    if (parseInt(this.endIndex) > 0 + SWEEP_MAX_INDEX) {
+    if (parseInt(this.endIndex, 10) > 0 + SWEEP_MAX_INDEX) {
       this.endIndex = (0 + SWEEP_MAX_INDEX).toString(); }
     }
   }
@@ -108,7 +107,7 @@ export class SweeperComponent implements OnInit {
     this.endIndex = INDEX_MAX.toString();
     // check start index
     if (this.validStartIndex) {
-      if (parseInt(this.startIndex) < INDEX_MAX - SWEEP_MAX_INDEX) {
+      if (parseInt(this.startIndex, 10) < INDEX_MAX - SWEEP_MAX_INDEX) {
         this.startIndex = (INDEX_MAX - SWEEP_MAX_INDEX).toString();
       }
     }
@@ -122,8 +121,7 @@ export class SweeperComponent implements OnInit {
   seedChange(seed) {
     if (this.checkMasterKey(seed)) {
       this.validSeed = true;
-    }
-    else {
+    } else {
       this.validSeed = false;
     }
   }
@@ -131,8 +129,7 @@ export class SweeperComponent implements OnInit {
   destinationChange(address) {
     if (nanocurrency.checkAddress(address)) {
       this.validDestination = true;
-    }
-    else {
+    } else {
       this.validDestination = false;
     }
   }
@@ -140,15 +137,14 @@ export class SweeperComponent implements OnInit {
   startIndexChange(index) {
     let invalid = false;
     if (this.util.string.isNumeric(index) && index % 1 === 0) {
-      index = parseInt(index);
+      index = parseInt(index, 10);
       if (!nanocurrency.checkIndex(index)) {
         invalid = true;
       }
       if (index > INDEX_MAX) {
         invalid = true;
       }
-    }
-    else {
+    } else {
       invalid = true;
     }
     if (invalid) {
@@ -157,7 +153,7 @@ export class SweeperComponent implements OnInit {
     }
     // check end index
     if (this.validEndIndex) {
-      if (parseInt(this.endIndex) > index + SWEEP_MAX_INDEX) {
+      if (parseInt(this.endIndex, 10) > index + SWEEP_MAX_INDEX) {
         this.endIndex = (index + SWEEP_MAX_INDEX).toString();
       }
     }
@@ -167,15 +163,14 @@ export class SweeperComponent implements OnInit {
   endIndexChange(index) {
     let invalid = false;
     if (this.util.string.isNumeric(index) && index % 1 === 0) {
-      index = parseInt(index);
+      index = parseInt(index, 10);
       if (!nanocurrency.checkIndex(index)) {
         invalid = true;
       }
       if (index > INDEX_MAX) {
         invalid = true;
       }
-    }
-    else {
+    } else {
       invalid = true;
     }
     if (invalid) {
@@ -184,7 +179,7 @@ export class SweeperComponent implements OnInit {
     }
     // check end index
     if (this.validStartIndex) {
-      if (parseInt(this.startIndex) < index - SWEEP_MAX_INDEX) {
+      if (parseInt(this.startIndex, 10) < index - SWEEP_MAX_INDEX) {
         this.startIndex = (index - SWEEP_MAX_INDEX).toString();
       }
     }
@@ -195,9 +190,8 @@ export class SweeperComponent implements OnInit {
     if (!this.util.string.isNumeric(value) || value % 1 !== 0) {
       this.validMaxIncoming = false;
       return;
-    }
-    else {
-      value = parseInt(value);
+    } else {
+      value = parseInt(value, 10);
       if (value > SWEEP_MAX_PENDING) {
         this.validMaxIncoming = false;
         return;
@@ -264,17 +258,16 @@ export class SweeperComponent implements OnInit {
           nanoAmountSent = this.util.nano.rawToMnano(blockInfo.amount);
           this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
         }
-        this.notificationService.sendInfo('Account ' + address + ' was swept and ' + (nanoAmountSent ? (nanoAmountSent.toString(10) + ' Nano') : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
+        this.notificationService.sendInfo('Account ' + address + ' was swept and ' +
+        (nanoAmountSent ? (nanoAmountSent.toString(10) + ' Nano') : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
         this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(' + nanoAmountSent.toString(10) + ' Nano)') : '') + ': ' + data.hash);
         console.log(this.adjustedBalance + ' raw transferred to ' + this.destinationAccount);
-      }
-      else {
+      } else {
         this.notificationService.sendWarning(`Failed processing block.`);
         this.appendLog('Failed processing block: ' + data.error);
       }
       sendCallback();
-    }
-    else {
+    } else {
       this.notificationService.sendError(`The destination address is not valid.`);
       sendCallback();
     }
@@ -321,23 +314,18 @@ export class SweeperComponent implements OnInit {
             this.subType = 'receive';
           }
           this.processPending(this.blocks, this.keys, this.keyCount);
-        }
-        // all pending done, now we process the final send block
-        else {
+        } else { // all pending done, now we process the final send block
           this.appendLog('All pending processed!');
           this.pendingCallback(this.previous);
         }
-      }
-      else {
+      } else {
         this.notificationService.sendWarning(`Failed processing block`);
         this.appendLog('Failed processing block: ' + data.error);
       }
-    }
-    catch (error) {
+    } catch (error) {
       if (error.message === 'invalid_hash') {
         this.notificationService.sendError(`Block hash must be 64 character hex string`);
-      }
-      else {
+      } else {
         this.notificationService.sendError(`An unknown error occurred while generating PoW`);
         console.log('An unknown error occurred while generating PoW' + error);
       }
@@ -358,16 +346,14 @@ export class SweeperComponent implements OnInit {
       const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive).toString(10);
       if (this.appSettings.settings.pendingOption === 'amount') {
         data = await this.api.pendingLimitSorted(address, this.maxIncoming, minAmount);
-      }
-      else {
+      } else {
         data = await this.api.pendingLimit(address, this.maxIncoming, minAmount);
       }
 
     } else {
       if (this.appSettings.settings.pendingOption === 'amount') {
         data = await this.api.pendingSorted(address, this.maxIncoming);
-      }
-      else {
+      } else {
         data = await this.api.pending(address, this.maxIncoming);
       }
     }
@@ -392,15 +378,12 @@ export class SweeperComponent implements OnInit {
       });
 
       this.processPending(pending.blocks, keys, 0);
-    }
-    // no pending, create final block directly
-    else {
-      if (parseInt(this.adjustedBalance) > 0) {
+    } else { // no pending, create final block directly
+      if (parseInt(this.adjustedBalance, 10) > 0) {
         this.processSend(this.privKey, this.previous, () => {
           accountCallback(); // tell that we are ok to continue with next step
         });
-      }
-      else {
+      } else {
         accountCallback(); // tell that we are ok to continue with next step
       }
     }
@@ -430,28 +413,25 @@ export class SweeperComponent implements OnInit {
       this.representative = accountInfo.representative;
       subType = 'receive';
       validResponse = true;
-    }
-    else if (accountInfo.error === 'Account not found') {
+    } else if (accountInfo.error === 'Account not found') {
       validResponse = true;
       this.adjustedBalance = '0';
     }
     if (validResponse) {
       // create and publish all pending
-      this.createPendingBlocks(privKey, address, balance, previous, subType, function(previous) {
+      this.createPendingBlocks(privKey, address, balance, previous, subType, function(previous_) {
         // the previous is the last received block and will be used to create the final send block
-        if (parseInt(this.adjustedBalance) > 0) {
-          this.processSend(privKey, previous, () => {
+        if (parseInt(this.adjustedBalance, 10) > 0) {
+          this.processSend(privKey, previous_, () => {
             accountCallback();
           });
-        }
-        else {
+        } else {
           accountCallback();
         }
       }.bind(this), () => {
         accountCallback();
       });
-    }
-    else {
+    } else {
       this.notificationService.sendError(`Bad RPC response. Please try again.`);
       accountCallback();
     }
@@ -459,7 +439,8 @@ export class SweeperComponent implements OnInit {
 
   // Recursively process private keys from index range
   async processIndexRecursive(privKeys, keyCount) {
-    await this.sleep(300); //delay each process to not hit backend rate limiters
+    // delay each process to not hit backend rate limiters
+    await this.sleep(300);
     const privKey = privKeys[keyCount][0];
     this.appendLog('Checking index ' + privKeys[keyCount][2] + ' using ' + privKeys[keyCount][1]);
     this.processAccount(privKey, function() {
@@ -467,9 +448,8 @@ export class SweeperComponent implements OnInit {
       keyCount += 1;
       if (keyCount < privKeys.length) {
         this.processIndexRecursive(privKeys, keyCount);
-      }
-      // all private keys have been processed
-      else {
+      } else {
+        // all private keys have been processed
         this.appendLog('Finished processing all accounts');
         this.appendLog(this.totalSwept + ' Nano transferred');
         this.notificationService.sendInfo('Finished processing all accounts. ' + this.totalSwept + ' Nano transferred', {length: 0});
@@ -488,7 +468,8 @@ export class SweeperComponent implements OnInit {
       // input is mnemonic
       if (keyType === 'mnemonic') {
         seed = bip39.mnemonicToEntropy(this.sourceWallet).toUpperCase();
-        // seed must be 64 or the nano wallet can't be created. This is the reason 12-words can't be used because the seed would be 32 in length
+        // seed must be 64 or the nano wallet can't be created.
+        // This is the reason 12-words can't be used because the seed would be 32 in length
         if (seed.length !== 64) {
           this.notificationService.sendError(`Mnemonic not 24 words`);
           return;
@@ -508,7 +489,7 @@ export class SweeperComponent implements OnInit {
           const privKeys = [];
           // start with blake2b derivation
           if (keyType !== 'bip39_seed') {
-            for (i = parseInt(this.startIndex); i <= parseInt(this.endIndex); i++) {
+            for (i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
               privKey = nanocurrency.deriveSecretKey(seed, i);
               privKeys.push([privKey, 'blake2b', i]);
             }
@@ -518,14 +499,13 @@ export class SweeperComponent implements OnInit {
           // take 128 char bip39 seed directly from input or convert it from a 64 char nano seed (entropy)
           if (keyType === 'bip39_seed') {
             bip39Seed = this.sourceWallet;
-          }
-          else {
+          } else {
             bip39Seed = wallet.generate(seed).seed;
           }
 
           const accounts = wallet.accounts(bip39Seed, this.startIndex, this.endIndex);
           let k = 0;
-          for (i = parseInt(this.startIndex); i <= parseInt(this.endIndex); i++) {
+          for (i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
             privKey = accounts[k].privateKey;
             k += 1;
             privKeys.push([privKey, 'bip39/44', i]);
@@ -534,8 +514,7 @@ export class SweeperComponent implements OnInit {
         }.bind(this));
       }
 
-    }
-    else {
+    } else {
       this.notificationService.sendError(`Invalid input format! Please check.`);
     }
   }
@@ -552,12 +531,11 @@ export class SweeperComponent implements OnInit {
     }
 
     if (this.validStartIndex && this.validEndIndex) {
-      if (parseInt(this.startIndex) > parseInt(this.endIndex)) {
+      if (parseInt(this.startIndex, 10) > parseInt(this.endIndex, 10)) {
         this.notificationService.sendError(`End Index must be equal or larger than Start Index`);
         return;
       }
-    }
-    else {
+    } else {
       this.notificationService.sendError(`Not valid start and end indexes`);
       return;
     }

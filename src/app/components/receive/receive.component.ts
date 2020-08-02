@@ -51,7 +51,9 @@ export class ReceiveComponent implements OnInit {
       const frontiers = await this.api.accountsFrontiers(this.pendingBlocks.map(p => p.account));
       if (frontiers && frontiers.frontiers) {
         for (const account in frontiers.frontiers) {
-          if (!frontiers.frontiers.hasOwnProperty(account)) continue;
+          if (!frontiers.frontiers.hasOwnProperty(account)) {
+            continue;
+          }
           this.workPool.addWorkToCache(frontiers.frontiers[account]);
         }
       }
@@ -78,7 +80,7 @@ export class ReceiveComponent implements OnInit {
   async changeQRAmount(amount) {
     this.qrAmount = null;
     let qrCode = null;
-    if (amount != '') {
+    if (amount !== '') {
       if (this.util.account.isValidNanoAmount(amount)) {
         this.qrAmount = this.util.nano.mnanoToRaw(amount);
       }
@@ -92,10 +94,14 @@ export class ReceiveComponent implements OnInit {
   async receivePending(pendingBlock) {
     const sourceBlock = pendingBlock.hash;
 
-    const walletAccount = this.walletService.wallet.accounts.find(a => a.id == pendingBlock.account);
-    if (!walletAccount) throw new Error(`unable to find receiving account in wallet`);
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === pendingBlock.account);
+    if (!walletAccount) {
+      throw new Error(`unable to find receiving account in wallet`);
+    }
 
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    }
     pendingBlock.loading = true;
 
     const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());

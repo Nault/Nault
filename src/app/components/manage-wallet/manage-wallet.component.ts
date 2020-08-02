@@ -36,9 +36,15 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async changePassword() {
-    if (this.newPassword !== this.confirmPassword) return this.notifications.sendError(`Passwords do not match`);
-    if (this.newPassword.length < 1) return this.notifications.sendError(`Password cannot be empty`);
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.newPassword !== this.confirmPassword) {
+      return this.notifications.sendError(`Passwords do not match`);
+    }
+    if (this.newPassword.length < 1) {
+      return this.notifications.sendError(`Password cannot be empty`);
+    }
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     this.walletService.wallet.password = this.newPassword;
     this.walletService.saveWalletExport();
@@ -49,7 +55,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async exportWallet() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     const exportUrl = this.walletService.generateExportUrl();
     this.QRExportUrl = exportUrl;
@@ -81,7 +89,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportAddressBookToFile() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
     const fileName = `Nault-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
@@ -117,7 +127,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportToFile() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     const fileName = `Nault-Wallet.json`;
     const exportData = this.walletService.generateExportData();
@@ -127,7 +139,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   importFromFile(files) {
-    if (!files.length) return;
+    if (!files.length) {
+      return;
+    }
 
     const file = files[0];
     const reader = new FileReader();
