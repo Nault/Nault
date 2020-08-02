@@ -26,7 +26,7 @@ export class NanoAccountIdComponent implements OnChanges {
     this.firstCharacters = accountID.split('').slice(0, openingChars).join('');
     this.lastCharacters = accountID.split('').slice(-closingChars).join('');
     if (this.middle !== 'off') {
-      this.middleCharacters = accountID.split('').slice(openingChars, -closingChars).join('')
+      this.middleCharacters = accountID.split('').slice(openingChars, -closingChars).join('');
     }
   }
 

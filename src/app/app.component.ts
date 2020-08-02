@@ -1,14 +1,14 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {WalletService} from "./services/wallet.service";
-import {AddressBookService} from "./services/address-book.service";
-import {AppSettingsService} from "./services/app-settings.service";
-import {WebsocketService} from "./services/websocket.service";
-import {PriceService} from "./services/price.service";
-import {NotificationService} from "./services/notification.service";
-import {WorkPoolService} from "./services/work-pool.service";
-import {Router} from "@angular/router";
-import {RepresentativeService} from "./services/representative.service";
-import {NodeService} from "./services/node.service";
+import {WalletService} from './services/wallet.service';
+import {AddressBookService} from './services/address-book.service';
+import {AppSettingsService} from './services/app-settings.service';
+import {WebsocketService} from './services/websocket.service';
+import {PriceService} from './services/price.service';
+import {NotificationService} from './services/notification.service';
+import {WorkPoolService} from './services/work-pool.service';
+import {Router} from '@angular/router';
+import {RepresentativeService} from './services/representative.service';
+import {NodeService} from './services/node.service';
 import { LedgerService } from './services';
 
 
@@ -20,13 +20,13 @@ import { LedgerService } from './services';
 export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event']) onResize (e) {
     this.windowHeight = e.target.innerHeight;
-  };
+  }
 
   @ViewChild('selectButton') selectButton: ElementRef;
   @ViewChild('accountsDropdown') accountsDropdown: ElementRef;
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
-    if(
+    if (
             ( this.selectButton.nativeElement.contains(event.target) === false )
           && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
       ) {
@@ -56,10 +56,10 @@ export class AppComponent implements OnInit {
     private router: Router,
     private workPool: WorkPoolService,
     private ledger: LedgerService,
-    public price: PriceService) { 
-      router.events.subscribe(() => { this.navExpanded = false })
-      let path = localStorage.getItem('path');
-      if(path) {
+    public price: PriceService) {
+      router.events.subscribe(() => { this.navExpanded = false; });
+      const path = localStorage.getItem('path');
+      if (path) {
         localStorage.removeItem('path');
         this.router.navigate([path]);
       }
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
     this.workPool.loadWorkCache();
 
     await this.walletService.loadStoredWallet();
-    this.websocket.connect();    
+    this.websocket.connect();
 
     this.representative.loadRepresentativeList();
 
@@ -94,11 +94,11 @@ export class AppComponent implements OnInit {
     }
 
     // When the page closes, determine if we should lock the wallet
-    window.addEventListener("beforeunload",  (e) => {
+    window.addEventListener('beforeunload',  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
       this.walletService.lockWallet();
     });
-    window.addEventListener("unload",  (e) => {
+    window.addEventListener('unload',  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
       this.walletService.lockWallet();
     });
@@ -151,7 +151,7 @@ export class AppComponent implements OnInit {
   }
 
   toggleNav() {
-    this.navExpanded = !this.navExpanded
+    this.navExpanded = !this.navExpanded;
   }
 
   closeNav() {
@@ -159,13 +159,13 @@ export class AppComponent implements OnInit {
   }
 
   toggleAccountsDropdown() {
-    if(this.showAccountsDropdown === true) {
-      this.showAccountsDropdown = false
-      return
+    if (this.showAccountsDropdown === true) {
+      this.showAccountsDropdown = false;
+      return;
     }
 
-    this.showAccountsDropdown = true
-    this.accountsDropdown.nativeElement.scrollTop = 0
+    this.showAccountsDropdown = true;
+    this.accountsDropdown.nativeElement.scrollTop = 0;
   }
 
   selectAccount(account){
@@ -184,7 +184,7 @@ export class AppComponent implements OnInit {
     } else if (searchData.length === 64) {
       this.router.navigate(['transaction', searchData]);
     } else {
-      this.notifications.sendWarning(`Invalid Nano account or transaction hash!`)
+      this.notifications.sendWarning(`Invalid Nano account or transaction hash!`);
     }
     this.searchData = '';
   }

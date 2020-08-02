@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {UtilService} from "../services/util.service";
-import {AppSettingsService} from "../services/app-settings.service";
+import {UtilService} from '../services/util.service';
+import {AppSettingsService} from '../services/app-settings.service';
 
 @Pipe({
   name: 'account'

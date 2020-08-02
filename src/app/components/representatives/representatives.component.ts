@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import BigNumber from "bignumber.js";
-import {BehaviorSubject} from "rxjs";
-import { QrModalService } from "../../services/qr-modal.service";
+import {ActivatedRoute} from '@angular/router';
+import BigNumber from 'bignumber.js';
+import {BehaviorSubject} from 'rxjs';
+import { QrModalService } from '../../services/qr-modal.service';
 
 import {
   ApiService,
@@ -14,7 +14,7 @@ import {
   UtilService,
   WalletService,
   NinjaService
-} from "../../services";
+} from '../../services';
 
 @Component({
   selector: 'app-representatives',
@@ -25,7 +25,7 @@ export class RepresentativesComponent implements OnInit {
   @ViewChild('repInput') repInput;
 
   changeAccountID: any = null;
-  toRepresentativeID: string = '';
+  toRepresentativeID = '';
 
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
@@ -48,7 +48,7 @@ export class RepresentativesComponent implements OnInit {
 
   hideOverview = false;
 
-  representativeList = []
+  representativeList = [];
 
   constructor(
     private router: ActivatedRoute,
@@ -73,7 +73,7 @@ export class RepresentativesComponent implements OnInit {
       if (params && params.accounts) {
         this.selectedAccounts = []; // Reset the preselected accounts
         const accounts = params.accounts.split(',');
-        for (let account of accounts) {
+        for (const account of accounts) {
           this.newAccountID(account);
         }
       }
@@ -108,7 +108,7 @@ export class RepresentativesComponent implements OnInit {
   }
 
   addSelectedAccounts(accounts) {
-    for (let account of accounts) {
+    for (const account of accounts) {
       this.newAccountID(account.id);
     }
 
@@ -274,7 +274,7 @@ export class RepresentativesComponent implements OnInit {
     }
 
     // Now loop and change them
-    for (let account of accountsNeedingChange) {
+    for (const account of accountsNeedingChange) {
       const walletAccount = this.wallet.getWalletAccount(account.id);
       if (!walletAccount) continue; // Unable to find account in the wallet? wat?
 

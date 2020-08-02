@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { NotificationService } from "../../services/notification.service";
+import { NotificationService } from '../../services/notification.service';
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
 import { UtilService } from '../../services/util.service';
-import * as bip39 from 'bip39'
+import * as bip39 from 'bip39';
 
-export type QRType = "account" | "hash" | "mnemonic" | "generic";
+export type QRType = 'account' | 'hash' | 'mnemonic' | 'generic';
 
 @Component({
   selector: 'app-qr-modal',
@@ -16,11 +16,11 @@ export type QRType = "account" | "hash" | "mnemonic" | "generic";
 export class QrModalComponent implements OnInit {
 
   @Input() title = 'QR Scanner';
-  @Input() reference:string;
-  @Input() type:QRType;
+  @Input() reference: string;
+  @Input() type: QRType;
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo = null;
-  nano_scheme = /^(xrb|nano|nanorep|nanoseed|nanokey):.+$/g
+  nano_scheme = /^(xrb|nano|nanorep|nanoseed|nanokey):.+$/g;
 
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
@@ -45,14 +45,14 @@ export class QrModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCamerasFound(devices: MediaDeviceInfo[]): void {    
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
     this.availableDevices = devices;
     this.hasDevices = Boolean(devices && devices.length);
   }
 
   onCodeResult(resultString: string) {
-    var type: QRType = null;
-    var content: string = '';
+    let type: QRType = null;
+    let content = '';
     // account
     if (this.util.account.isValidAccount(resultString)) {
       type = 'account';
@@ -78,15 +78,15 @@ export class QrModalComponent implements OnInit {
       content = resultString;
     }
     // special url formatted account, rep, seed, key
-    else if(this.nano_scheme.test(resultString)) {
+    else if (this.nano_scheme.test(resultString)) {
       // This is a valid Nano scheme URI
-      var url = new URL(resultString)
+      const url = new URL(resultString);
       content = url.pathname;
 
-      if((url.protocol === 'nano:' || url.protocol === 'nanorep:' || url.protocol === 'xrb:') && this.util.account.isValidAccount(url.pathname)){
+      if ((url.protocol === 'nano:' || url.protocol === 'nanorep:' || url.protocol === 'xrb:') && this.util.account.isValidAccount(url.pathname)){
         type = 'account';
       }
-      else if((url.protocol === 'nanoseed:' || url.protocol === 'nanokey:') && this.util.nano.isValidHash(url.pathname)){
+      else if ((url.protocol === 'nanoseed:' || url.protocol === 'nanokey:') && this.util.nano.isValidHash(url.pathname)){
         type = 'hash';
       }
     }
@@ -98,10 +98,10 @@ export class QrModalComponent implements OnInit {
 
     // check that the result is valid and matched the requested type
     if (type != null && type === this.type || this.type === 'generic') {
-      this.activeModal.close({reference: this.reference, content: content})
+      this.activeModal.close({reference: this.reference, content: content});
     }
     else {
-      this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' })
+      this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });
       return;
     }
   }

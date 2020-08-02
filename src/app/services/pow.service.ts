@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import {AppSettingsService} from "./app-settings.service";
-import {ApiService} from "./api.service";
-import {NotificationService} from "./notification.service";
-import { PoWSource } from './app-settings.service'
+import {AppSettingsService} from './app-settings.service';
+import {ApiService} from './api.service';
+import {NotificationService} from './notification.service';
+import { PoWSource } from './app-settings.service';
 import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
-import {UtilService} from "./util.service";
+import {UtilService} from './util.service';
 
 const mod = window['Module'];
 //NEW v21 THRESHOLD BELOW TO BE ACTIVATED
 //const baseThreshold = 'fffffff800000000'
-const baseThreshold = 'ffffffc000000000'
-const hardwareConcurrency = window.navigator.hardwareConcurrency || 2
-const workerCount = Math.max(hardwareConcurrency - 1, 1)
-let workerList = []
+const baseThreshold = 'ffffffc000000000';
+const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
+const workerCount = Math.max(hardwareConcurrency - 1, 1);
+let workerList = [];
 
 @Injectable()
 export class PowService {
@@ -98,7 +98,7 @@ export class PowService {
       this.webGLAvailable = false;
       return false;
     }
-  };
+  }
 
   /**
    * Gets the next item in the queue and sends it to be processed
@@ -131,7 +131,7 @@ export class PowService {
     switch (powSource) {
       default:
       case 'server':
-        work = (await this.api.workGenerate(queueItem.hash).then(work => {return work.work}).catch(async err => {return await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier)}));
+        work = (await this.api.workGenerate(queueItem.hash).then(work => work.work).catch(async err => await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier)));
         break;
       case 'clientCPU':
         work = await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier);
@@ -167,10 +167,10 @@ export class PowService {
   getHashCPUSync(hash) {
     const response = this.getDeferredPromise();
 
-    const PoW = mod.cwrap("launchPoW", 'string', ['string']);
+    const PoW = mod.cwrap('launchPoW', 'string', ['string']);
     const start = Date.now();
     let work;
-    do { work = PoW(hash) } while (work == '0000000000000000');
+    do { work = PoW(hash); } while (work == '0000000000000000');
     console.log(`Synchronous CPU: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds`);
 
     response.resolve(work);
@@ -182,7 +182,7 @@ export class PowService {
    */
   async getHashCPUWorker(hash, multiplier) {
     // console.log('Generating work using CPU for', hash);
-    
+
     const response = this.getDeferredPromise();
 
     const start = Date.now();
@@ -201,8 +201,8 @@ export class PowService {
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
 
     const work = () => new Promise(resolve => {
-      console.log('Generating work at threshold '+ newThreshold + ' using CPU workers for', hash);
-      workerList = []
+      console.log('Generating work at threshold ' + newThreshold + ' using CPU workers for', hash);
+      workerList = [];
       for (let i = 0; i < workerCount; i++) {
         //const worker = new Worker()
         const worker = new (Worker as any)();
@@ -215,7 +215,7 @@ export class PowService {
         worker.onmessage = (work) => {
           console.log(`CPU Worker: Found work (${work.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
           response.resolve(work.data);
-          for (let workerIndex in workerList) {
+          for (const workerIndex in workerList) {
             workerList[workerIndex].terminate();
           }
           resolve();
@@ -233,7 +233,7 @@ export class PowService {
    */
   getHashWebGL(hash, multiplier) {
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
-    console.log('Generating work at threshold '+ newThreshold + ' using WebGL for', hash);
+    console.log('Generating work at threshold ' + newThreshold + ' using WebGL for', hash);
 
     const response = this.getDeferredPromise();
 
@@ -244,9 +244,9 @@ export class PowService {
           response.resolve(work);
         },
         n => {},
-        '0x'+newThreshold.substring(0,8).toUpperCase() // max threshold for webglpow is currently ffffffff00000000
+        '0x' + newThreshold.substring(0, 8).toUpperCase() // max threshold for webglpow is currently ffffffff00000000
       );
-    } catch(error) {
+    } catch (error) {
       if (error.message === 'webgl2_required') {
         this.webGLAvailable = false;
       }

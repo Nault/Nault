@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AddressBookService} from "../../services/address-book.service";
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ModalService} from "../../services/modal.service";
-import {UtilService} from "../../services/util.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import {AddressBookService} from '../../services/address-book.service';
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {ModalService} from '../../services/modal.service';
+import {UtilService} from '../../services/util.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-address-book',
@@ -34,7 +34,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // Listen for reordering events
     document.getElementById('address-book-sortable').addEventListener('moved', (e) => {
-      const element = e.srcElement as HTMLDivElement
+      const element = e.srcElement as HTMLDivElement;
       const elements = element.children;
 
       const result = [].slice.call(elements);
@@ -78,7 +78,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
       }
       this.cancelNewAddress();
     } catch (err) {
-      this.notificationService.sendError(`Unable to save entry: ${err.message}`)
+      this.notificationService.sendError(`Unable to save entry: ${err.message}`);
     }
   }
 
@@ -95,9 +95,9 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
   async deleteAddress(account) {
     try {
       this.addressBookService.deleteAddress(account);
-      this.notificationService.sendSuccess(`Successfully deleted address book entry`)
+      this.notificationService.sendSuccess(`Successfully deleted address book entry`);
     } catch (err) {
-      this.notificationService.sendError(`Unable to delete entry: ${err.message}`)
+      this.notificationService.sendError(`Unable to delete entry: ${err.message}`);
     }
   }
 

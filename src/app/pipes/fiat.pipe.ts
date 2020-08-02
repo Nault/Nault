@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe} from '@angular/common';
 import {BigNumber} from 'bignumber.js';
 
 @Pipe({

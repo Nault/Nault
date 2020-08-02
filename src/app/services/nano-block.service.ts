@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {ApiService} from "./api.service";
-import {UtilService, StateBlock, TxType} from "./util.service";
-import {WorkPoolService} from "./work-pool.service";
-import BigNumber from "bignumber.js";
-import {NotificationService} from "./notification.service";
-import {AppSettingsService} from "./app-settings.service";
-import {LedgerService} from "./ledger.service";
+import {ApiService} from './api.service';
+import {UtilService, StateBlock, TxType} from './util.service';
+import {WorkPoolService} from './work-pool.service';
+import BigNumber from 'bignumber.js';
+import {NotificationService} from './notification.service';
+import {AppSettingsService} from './app-settings.service';
+import {LedgerService} from './ledger.service';
 import { WalletAccount } from './wallet.service';
 const nacl = window['nacl'];
 
@@ -19,9 +19,9 @@ export class NanoBlockService {
     'nano_3chartsi6ja8ay1qq9xg3xegqnbg1qx76nouw6jedyb8wx3r4wu94rxap7hg', // Nano Charts
     'nano_1ninja7rh37ehfp9utkor5ixmxyg8kme8fnzc4zty145ibch8kf5jwpnzr3r', // My Nano Ninja
     'nano_1iuz18n4g4wfp9gf7p1s8qkygxw7wx9qfjq6a9aq68uyrdnningdcjontgar', // NanoTicker / Json
-  ]
+  ];
 
-  zeroHash = '0000000000000000000000000000000000000000000000000000000000000000'
+  zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
   constructor(
     private api: ApiService,
@@ -37,8 +37,8 @@ export class NanoBlockService {
 
     const balance = new BigNumber(toAcct.balance);
     const balanceDecimal = balance.toString(10);
-    let link = this.zeroHash;
-    let blockData = {
+    const link = this.zeroHash;
+    const blockData = {
       type: 'state',
       account: walletAccount.id,
       previous: toAcct.frontier,
@@ -184,7 +184,7 @@ export class NanoBlockService {
     const remainingDecimal = remaining.toString(10);
 
     const representative = fromAccount.representative || (this.settings.settings.defaultRepresentative || this.getRandomRepresentative());
-    let blockData = {
+    const blockData = {
       type: 'state',
       account: walletAccount.id,
       previous: fromAccount.frontier,
@@ -249,7 +249,7 @@ export class NanoBlockService {
     const newBalanceDecimal = newBalance.toString(10);
     let newBalancePadded = newBalance.toString(16);
     while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
-    let blockData = {
+    const blockData = {
       type: 'state',
       account: walletAccount.id,
       previous: previousBlock,
@@ -295,7 +295,7 @@ export class NanoBlockService {
     }
 
     blockData.work = await this.workPool.getWork(workBlock);
-    const processResponse = await this.api.process(blockData, openEquiv? TxType.open:TxType.receive);
+    const processResponse = await this.api.process(blockData, openEquiv ? TxType.open : TxType.receive);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
       this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
@@ -307,13 +307,13 @@ export class NanoBlockService {
   }
 
   // for signing block when offline
-  async signOfflineBlock(walletAccount:WalletAccount, block:StateBlock, prevBlock:StateBlock, type:TxType, genWork:boolean, multiplier:number, ledger = false) {
+  async signOfflineBlock(walletAccount: WalletAccount, block: StateBlock, prevBlock: StateBlock, type: TxType, genWork: boolean, multiplier: number, ledger = false) {
     // special treatment if open block
     const openEquiv = type === TxType.open;
-    console.log("Signing block of subtype: " + TxType[type]);
+    console.log('Signing block of subtype: ' + TxType[type]);
 
     if (ledger) {
-      var ledgerBlock = null;
+      let ledgerBlock = null;
       if (type === TxType.send) {
         ledgerBlock = {
           previousBlock: block.previous,
@@ -349,7 +349,7 @@ export class NanoBlockService {
             await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock);
           }
           // this will fail when working offline, but no problem
-          catch(err){console.log(err)} 
+          catch (err){console.log(err); }
         }
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
@@ -365,11 +365,11 @@ export class NanoBlockService {
 
     if (genWork) {
       // For open blocks which don't have a frontier, use the public key of the account
-      let workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : block.previous;
+      const workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : block.previous;
       if (!this.workPool.workExists(workBlock)) {
         this.notifications.sendInfo(`Generating Proof of Work...`);
       }
-  
+
       block.work = await this.workPool.getWork(workBlock, multiplier);
       this.workPool.removeFromCache(workBlock);
     }
@@ -379,7 +379,7 @@ export class NanoBlockService {
   async validateAccount(accountInfo) {
     if (!accountInfo) return;
     if (!accountInfo.frontier || accountInfo.frontier === this.zeroHash) {
-      if (accountInfo.balance && accountInfo.balance !== "0") {
+      if (accountInfo.balance && accountInfo.balance !== '0') {
         throw new Error(`Frontier not set, but existing account balance is nonzero`);
       }
       if (accountInfo.representative) {

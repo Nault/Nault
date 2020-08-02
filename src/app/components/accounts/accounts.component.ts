@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Subject, timer} from "rxjs";
-import {debounce} from "rxjs/operators";
+import {Subject, timer} from 'rxjs';
+import {debounce} from 'rxjs/operators';
 import {
   AppSettingsService,
   LedgerService,
@@ -9,7 +9,7 @@ import {
   NotificationService,
   RepresentativeService,
   WalletService
-} from "../../services";
+} from '../../services';
 
 @Component({
   selector: 'app-accounts',
@@ -37,7 +37,7 @@ export class AccountsComponent implements OnInit {
   async ngOnInit() {
     this.reloadRepWarning$.subscribe(a => {
       this.representatives.detectChangeableReps();
-    })
+    });
   }
 
   async createAccount() {
@@ -49,7 +49,7 @@ export class AccountsComponent implements OnInit {
     // Advanced view, manual account index?
     let accountIndex = null;
     if (this.viewAdvanced && this.newAccountIndex != null) {
-      let index = parseInt(this.newAccountIndex);
+      const index = parseInt(this.newAccountIndex);
       if (index < 0) return this.notificationService.sendWarning(`Invalid account index - must be positive number`);
       const existingAccount = this.walletService.wallet.accounts.find(a => a.index == index);
       if (existingAccount) {

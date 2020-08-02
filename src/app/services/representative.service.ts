@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {BaseApiAccount, WalletApiAccount, WalletService} from "./wallet.service";
-import BigNumber from "bignumber.js";
-import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
+import {BehaviorSubject} from 'rxjs';
+import {BaseApiAccount, WalletApiAccount, WalletService} from './wallet.service';
+import BigNumber from 'bignumber.js';
+import {ApiService} from './api.service';
+import {UtilService} from './util.service';
 import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
@@ -221,7 +221,7 @@ export class RepresentativeService {
    */
   getUniqueRepresentatives(accounts: WalletApiAccount[]): RepresentativeOverview[] {
     const representatives = [];
-    for (let account of accounts) {
+    for (const account of accounts) {
       if (!account || !account.representative) continue; // Account doesn't exist yet
 
       const existingRep = representatives.find(rep => rep.id == account.representative);
@@ -249,7 +249,7 @@ export class RepresentativeService {
     const representatives = [];
     const reps = await this.api.representativesOnline();
     if (!reps) return representatives;
-    for (let representative in reps.representatives) {
+    for (const representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);
     }

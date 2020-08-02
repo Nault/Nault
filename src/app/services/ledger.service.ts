@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import Nano from "hw-app-nano";
-import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import {Subject} from "rxjs";
-import {ApiService} from "./api.service";
-import {NotificationService} from "./notification.service";
-import { environment } from "../../environments/environment";
-import {DesktopService} from "./desktop.service";
+import Nano from 'hw-app-nano';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import {Subject} from 'rxjs';
+import {ApiService} from './api.service';
+import {NotificationService} from './notification.service';
+import { environment } from '../../environments/environment';
+import {DesktopService} from './desktop.service';
 
 export const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,
@@ -15,8 +15,8 @@ export const STATUS_CODES = {
 };
 
 export const LedgerStatus = {
-  NOT_CONNECTED: "not-connected",
-  LOCKED: "locked",
+  NOT_CONNECTED: 'not-connected',
+  LOCKED: 'locked',
   READY: 'ready',
 };
 
@@ -119,7 +119,7 @@ export class LedgerService {
           console.log(`Desktop message got error!`, err);
           reject(err);
         });
-    })
+    });
 
   }
 
@@ -231,7 +231,7 @@ export class LedgerService {
         }
 
         // Any response will be handled by the configureDesktop() function, which pipes responses into this observable
-        let sub = this.ledgerStatus$.subscribe(newStatus => {
+        const sub = this.ledgerStatus$.subscribe(newStatus => {
           if (newStatus.status === LedgerStatus.READY) {
             resolve(true);
           } else {
@@ -340,7 +340,7 @@ export class LedgerService {
       }
 
       return null;
-    })
+    });
 
   }
 

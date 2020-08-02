@@ -26,8 +26,8 @@ export class NinjaService {
 
   private randomizeByScore(replist: any) {
 
-    let scores = {};
-    let newlist = [];
+    const scores = {};
+    const newlist = [];
 
     for (const account of replist) {
       scores[account.score] = scores[account.score] || [];

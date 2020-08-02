@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {PriceService} from "../../services/price.service";
-import {PowService} from "../../services/pow.service";
-import {WorkPoolService} from "../../services/work-pool.service";
-import {AddressBookService} from "../../services/address-book.service";
-import {ApiService} from "../../services/api.service";
-import {WebsocketService} from "../../services/websocket.service";
-import {NodeService} from "../../services/node.service";
-import {UtilService} from "../../services/util.service";
-import {BehaviorSubject} from "rxjs";
-import {RepresentativeService} from "../../services/representative.service";
-import {NinjaService} from "../../services/ninja.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import {PriceService} from '../../services/price.service';
+import {PowService} from '../../services/pow.service';
+import {WorkPoolService} from '../../services/work-pool.service';
+import {AddressBookService} from '../../services/address-book.service';
+import {ApiService} from '../../services/api.service';
+import {WebsocketService} from '../../services/websocket.service';
+import {NodeService} from '../../services/node.service';
+import {UtilService} from '../../services/util.service';
+import {BehaviorSubject} from 'rxjs';
+import {RepresentativeService} from '../../services/representative.service';
+import {NinjaService} from '../../services/ninja.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-configure-app',
@@ -171,24 +171,24 @@ export class ConfigureAppComponent implements OnInit {
     this.representativeList.push(...localReps);
   }
 
-  async updateNodeStats(refresh=false) {
-    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled) || this.selectedServer === 'offline') return
+  async updateNodeStats(refresh= false) {
+    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled) || this.selectedServer === 'offline') return;
     this.statsRefreshEnabled = false;
     try {
-      let blockCount = await this.api.blockCount()
-      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US')
-      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US')
-      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US')
-      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US')
+      const blockCount = await this.api.blockCount();
+      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US');
+      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US');
+      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US');
+      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US');
     }
-    catch {console.warn("Failed to get node stats: block count")}
-    
+    catch {console.warn('Failed to get node stats: block count'); }
+
     try {
-      let version = await this.api.version()
-      this.nodeVendor = version.node_vendor
-      this.nodeNetwork = version.network
+      const version = await this.api.version();
+      this.nodeVendor = version.node_vendor;
+      this.nodeNetwork = version.network;
     }
-    catch {console.warn("Failed to get node stats: version")}
+    catch {console.warn('Failed to get node stats: version'); }
 
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
   }
@@ -261,10 +261,10 @@ export class ConfigureAppComponent implements OnInit {
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
-    let pendingOption = this.selectedPendingOption
-    let minReceive = null
+    const pendingOption = this.selectedPendingOption;
+    let minReceive = null;
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
-      minReceive = this.minimumReceive
+      minReceive = this.minimumReceive;
     }
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
@@ -414,9 +414,9 @@ export class ConfigureAppComponent implements OnInit {
     this.nodeUncemented = 'N/A';
     this.nodeVendor = 'N/A';
     this.nodeNetwork = 'N/A';
-    this.statsRefreshEnabled = newServer == 'random' ? false:true;
+    this.statsRefreshEnabled = newServer == 'random' ? false : true;
 
-    this.updateNodeStats()
+    this.updateNodeStats();
   }
 
   async clearWorkCache() {

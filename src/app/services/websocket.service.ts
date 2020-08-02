@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {AppSettingsService} from "./app-settings.service";
+import {AppSettingsService} from './app-settings.service';
 
 @Injectable()
 export class WebsocketService {
@@ -87,7 +87,7 @@ export class WebsocketService {
       } catch (err) {
         console.log(`Error parsing message`, err);
       }
-    }
+    };
   }
 
   attemptReconnect() {

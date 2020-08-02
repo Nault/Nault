@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import BigNumber from "bignumber.js";
-import {AddressBookService} from "../../services/address-book.service";
-import {BehaviorSubject} from "rxjs";
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ApiService} from "../../services/api.service";
-import {UtilService} from "../../services/util.service";
-import {WorkPoolService} from "../../services/work-pool.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {ActivatedRoute} from "@angular/router";
-import {PriceService} from "../../services/price.service";
-import {NanoBlockService} from "../../services/nano-block.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import BigNumber from 'bignumber.js';
+import {AddressBookService} from '../../services/address-book.service';
+import {BehaviorSubject} from 'rxjs';
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {ApiService} from '../../services/api.service';
+import {UtilService} from '../../services/util.service';
+import {WorkPoolService} from '../../services/work-pool.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import {ActivatedRoute} from '@angular/router';
+import {PriceService} from '../../services/price.service';
+import {NanoBlockService} from '../../services/nano-block.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 const nacl = window['nacl'];
 
@@ -45,10 +45,10 @@ export class SendComponent implements OnInit {
   fromAccountID: any = '';
   fromAddressBook = '';
   toAccount: any = false;
-  toAccountID: string = '';
+  toAccountID = '';
   toAddressBook = '';
   toAccountStatus = null;
-  confirmingTransaction: boolean = false;
+  confirmingTransaction = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -61,11 +61,11 @@ export class SendComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private util: UtilService,
-    private qrModalService: QrModalService,) { }
+    private qrModalService: QrModalService, ) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
-    
+
     if (params && params.amount) {
       this.amount = params.amount;
     }
@@ -234,11 +234,11 @@ export class SendComponent implements OnInit {
         this.addressBookMatch = '';
       } else {
         if (!this.walletService.isLedgerWallet()) {
-          this.notificationService.sendError(`There was an error sending your transaction, please try again.`)
+          this.notificationService.sendError(`There was an error sending your transaction, please try again.`);
         }
       }
     } catch (err) {
-      this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`)
+      this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`);
     }
 
 

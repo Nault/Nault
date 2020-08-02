@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {RepresentativeService} from "../../services/representative.service";
-import {Router} from "@angular/router";
+import {WalletService} from '../../services/wallet.service';
+import {RepresentativeService} from '../../services/representative.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-rep-widget',
@@ -25,7 +25,7 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
-    this.updateDisplayedRepresentatives(); 
+    this.updateDisplayedRepresentatives();
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
@@ -55,7 +55,7 @@ export class ChangeRepWidgetComponent implements OnInit {
     this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
   }
 
-  includeRepRequiringChange(displayedReps : any[]) {
+  includeRepRequiringChange(displayedReps: any[]) {
     const repRequiringChange =
       this.changeableRepresentatives
         .sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
@@ -69,19 +69,19 @@ export class ChangeRepWidgetComponent implements OnInit {
           )
         )[0];
 
-    if(repRequiringChange == null) {
+    if (repRequiringChange == null) {
       return [...displayedReps];
     }
- 
+
     return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
   }
 
-  getDisplayedRepresentatives(representatives : any[]) {
-    if(this.representatives.length === 0) {
+  getDisplayedRepresentatives(representatives: any[]) {
+    if (this.representatives.length === 0) {
       return [];
     }
 
-    if(this.selectedAccount !== null) {
+    if (this.selectedAccount !== null) {
       const selectedAccountRep =
         this.representatives
           .filter(
@@ -92,20 +92,20 @@ export class ChangeRepWidgetComponent implements OnInit {
               )
           )[0];
 
-      if(selectedAccountRep == null) {
+      if (selectedAccountRep == null) {
         return [];
       }
 
-      let displayedReps = [ Object.assign( {}, selectedAccountRep ) ];
+      const displayedReps = [ Object.assign( {}, selectedAccountRep ) ];
 
       return this.includeRepRequiringChange(displayedReps);
     }
 
-    let sortedRepresentatives: any[] = [...representatives];
+    const sortedRepresentatives: any[] = [...representatives];
 
     sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight));
 
-    let displayedReps = [ Object.assign( {}, sortedRepresentatives[0] ) ];
+    const displayedReps = [ Object.assign( {}, sortedRepresentatives[0] ) ];
 
     return this.includeRepRequiringChange(displayedReps);
   }

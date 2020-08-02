@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
 import * as QRCode from 'qrcode';
-import {AddressBookService} from "../../services/address-book.service";
-import {Router} from "@angular/router";
+import {AddressBookService} from '../../services/address-book.service';
+import {Router} from '@angular/router';
 import * as bip from 'bip39';
 
 @Component({
@@ -136,7 +136,7 @@ export class ManageWalletComponent implements OnInit {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {
-          return this.notifications.sendError(`Bad import data, make sure you selected a Nault Address Book export`)
+          return this.notifications.sendError(`Bad import data, make sure you selected a Nault Address Book export`);
         }
 
         const walletEncrypted = btoa(JSON.stringify(importData));

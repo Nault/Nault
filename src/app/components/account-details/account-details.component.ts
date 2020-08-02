@@ -1,20 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, ChildActivationEnd, Router, NavigationEnd} from "@angular/router";
-import {AddressBookService} from "../../services/address-book.service";
-import {ApiService} from "../../services/api.service";
-import {NotificationService} from "../../services/notification.service";
-import {WalletService} from "../../services/wallet.service";
-import {NanoBlockService} from "../../services/nano-block.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {PriceService} from "../../services/price.service";
-import {UtilService} from "../../services/util.service";
+import {ActivatedRoute, ChildActivationEnd, Router, NavigationEnd} from '@angular/router';
+import {AddressBookService} from '../../services/address-book.service';
+import {ApiService} from '../../services/api.service';
+import {NotificationService} from '../../services/notification.service';
+import {WalletService} from '../../services/wallet.service';
+import {NanoBlockService} from '../../services/nano-block.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import {PriceService} from '../../services/price.service';
+import {UtilService} from '../../services/util.service';
 import * as QRCode from 'qrcode';
-import BigNumber from "bignumber.js";
-import {RepresentativeService} from "../../services/representative.service";
-import {BehaviorSubject} from "rxjs";
-import * as nanocurrency from 'nanocurrency'
-import {NinjaService} from "../../services/ninja.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import BigNumber from 'bignumber.js';
+import {RepresentativeService} from '../../services/representative.service';
+import {BehaviorSubject} from 'rxjs';
+import * as nanocurrency from 'nanocurrency';
+import {NinjaService} from '../../services/ninja.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-account-details',
@@ -33,7 +33,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   repLabel: any = '';
   addressBookEntry: any = null;
   account: any = {};
-  accountID: string = '';
+  accountID = '';
 
   walletAccount = null;
 
@@ -71,7 +71,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   toAccount: any = false;
-  toAccountID: string = '';
+  toAccountID = '';
   toAddressBook = '';
   toAccountStatus = null;
   repStatus = null;
@@ -99,7 +99,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
     private qrModalService: QrModalService,
-    private ninja: NinjaService) { 
+    private ninja: NinjaService) {
       // to detect when the account changes if the view is already active
       route.events.subscribe((val) => {
         if (val instanceof NavigationEnd) {
@@ -111,7 +111,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
-      this.remoteVisible = params.sign == 1 
+      this.remoteVisible = params.sign == 1;
     }
 
     this.routerSub = this.route.events.subscribe(event => {
@@ -167,8 +167,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.representativeListMatch = '';
   }
 
-  async loadAccountDetails(refresh=false) {
-    if (refresh && !this.statsRefreshEnabled) return
+  async loadAccountDetails(refresh= false) {
+    if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
@@ -179,7 +179,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
     this.account = await this.api.accountInfo(this.accountID);
 
-    if (!this.account) return
+    if (!this.account) return;
     const knownRepresentative = this.repService.getRepresentative(this.account.representative);
     this.repLabel = knownRepresentative ? knownRepresentative.name : null;
 
@@ -195,7 +195,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
 
       if (pending && pending.blocks) {
-        for (let block in pending.blocks) {
+        for (const block in pending.blocks) {
           if (!pending.blocks.hasOwnProperty(block)) continue;
           this.pendingBlocks.push({
             account: pending.blocks[block].source,
@@ -240,7 +240,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.pageSize = 25;
     }
     const history = await this.api.accountHistory(account, this.pageSize, true);
-    let additionalBlocksInfo = [];
+    const additionalBlocksInfo = [];
 
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
@@ -263,7 +263,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
       if (additionalBlocksInfo.length) {
         const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
-        for (let block in blocksInfo.blocks) {
+        for (const block in blocksInfo.blocks) {
           if (!blocksInfo.blocks.hasOwnProperty(block)) continue;
 
           const matchingBlock = additionalBlocksInfo.find(a => a.link === block);
@@ -450,7 +450,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
-    if (!this.util.account.isValidAccount(this.toAccountID)) return this.toAccountStatus = 0
+    if (!this.util.account.isValidAccount(this.toAccountID)) return this.toAccountStatus = 0;
     const accountInfo = await this.api.accountInfo(this.toAccountID);
     if (accountInfo.error) {
       if (accountInfo.error == 'Account not found') {
@@ -465,7 +465,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   setMaxAmount() {
-    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano):new BigNumber(0);
+    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano) : new BigNumber(0);
     const nanoVal = this.util.nano.rawToNano(this.account.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
@@ -527,23 +527,23 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const remainingDecimal = remaining.toString(10);
 
     const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
-    let blockData = {
-      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
+    const blockData = {
+      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
       link: this.util.account.getAccountPublicKey(this.toAccountID),
     };
-    this.blockHash = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
-    console.log("Created block",blockData);
-    console.log("Block hash: " + this.blockHash);
+    this.blockHash = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    console.log('Created block', blockData);
+    console.log('Block hash: ' + this.blockHash);
 
     // Previous block info
     const previousBlockInfo = await this.api.blockInfo(blockData.previous);
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
-    const jsonBlock = JSON.parse(previousBlockInfo.contents)
-    let blockDataPrevious = {
-      account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
+    const jsonBlock = JSON.parse(previousBlockInfo.contents);
+    const blockDataPrevious = {
+      account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -552,7 +552,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     };
 
     // Nano signing standard
-    this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+    this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlock = qrCode;
   }
@@ -563,7 +563,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.blockHashReceive = null;
 
     const UIkit = window['UIkit'];
-    var modal = UIkit.modal("#receive-modal");
+    const modal = UIkit.modal('#receive-modal');
     modal.show();
 
     const toAcct = await this.api.accountInfo(this.accountID);
@@ -578,26 +578,26 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
     const newBalanceDecimal = newBalance.toString(10);
 
-    let blockData = {
-      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
+    const blockData = {
+      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
       previous: previousBlock,
       representative: representative,
       balance: newBalanceDecimal,
       link: pendingHash,
     };
 
-    this.blockHashReceive = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
-    console.log("Created block",blockData);
-    console.log("Block hash: " + this.blockHashReceive);
+    this.blockHashReceive = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    console.log('Created block', blockData);
+    console.log('Block hash: ' + this.blockHashReceive);
 
     // Previous block info
-    var blockDataPrevious = null;
+    let blockDataPrevious = null;
     if (!openEquiv) {
       const previousBlockInfo = await this.api.blockInfo(blockData.previous);
       if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
-      const jsonBlock = JSON.parse(previousBlockInfo.contents)
+      const jsonBlock = JSON.parse(previousBlockInfo.contents);
       blockDataPrevious = {
-        account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
+        account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
         previous: jsonBlock.previous,
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
@@ -609,7 +609,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Nano signing standard
     if (blockDataPrevious) this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
     else this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + '}';
-    
+
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlockReceive = qrCode;
   }
@@ -626,24 +626,24 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const balance = new BigNumber(account.balance);
     const balanceDecimal = balance.toString(10);
-    let blockData = {
-      account: this.accountID.replace('xrb_','nano_').toLowerCase(),
+    const blockData = {
+      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
       previous: account.frontier,
       representative: this.representativeModel,
       balance: balanceDecimal,
       link: this.zeroHash,
     };
 
-    this.blockHash = nanocurrency.hashBlock({account:blockData.account, link:blockData.link, previous:blockData.previous, representative: blockData.representative, balance: blockData.balance})
-    console.log("Created block",blockData);
-    console.log("Block hash: " + this.blockHash);
+    this.blockHash = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    console.log('Created block', blockData);
+    console.log('Block hash: ' + this.blockHash);
 
     // Previous block info
     const previousBlockInfo = await this.api.blockInfo(blockData.previous);
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
-    const jsonBlock = JSON.parse(previousBlockInfo.contents)
-    let blockDataPrevious = {
-      account: jsonBlock.account.replace('xrb_','nano_').toLowerCase(),
+    const jsonBlock = JSON.parse(previousBlockInfo.contents);
+    const blockDataPrevious = {
+      account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -657,13 +657,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.qrCodeImageBlock = qrCode;
   }
 
-  showRemote(state:boolean) {
+  showRemote(state: boolean) {
     this.remoteVisible = !state;
   }
 
   showRemoteModal() {
     const UIkit = window['UIkit'];
-    var modal = UIkit.modal("#block-modal");
+    const modal = UIkit.modal('#block-modal');
     modal.show();
     this.clearRemoteVars();
   }

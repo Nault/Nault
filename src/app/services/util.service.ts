@@ -16,7 +16,7 @@ export interface StateBlock {
   work: string;
 }
 
-export enum TxType {"send", "receive", "open", "change"};
+export enum TxType {'send', 'receive', 'open', 'change'}
 
 @Injectable()
 export class UtilService {
@@ -102,8 +102,8 @@ function hexToUint8(hexValue) {
 
 // Check if string is hexdecimal
 function isHex(h) {
-  let re = /^[0-9a-fA-F]+$/
-  return re.test(h)
+  const re = /^[0-9a-fA-F]+$/;
+  return re.test(h);
 }
 
 
@@ -111,29 +111,29 @@ function isHex(h) {
 function uint4ToUint8(uintValue) {
   const length = uintValue.length / 2;
   const uint8 = new Uint8Array(length);
-  for (let i = 0; i < length; i++)	uint8[i] = uintValue[i*2] * 16 + uintValue[i*2+1];
+  for (let i = 0; i < length; i++)	uint8[i] = uintValue[i * 2] * 16 + uintValue[i * 2 + 1];
 
   return uint8;
 }
 
 function uint4ToUint5(uintValue) {
-  var length = uintValue.length / 5 * 4;
-  var uint5 = new Uint8Array(length);
+  const length = uintValue.length / 5 * 4;
+  const uint5 = new Uint8Array(length);
   for (let i = 1; i <= length; i++) {
-    let n = i - 1;
-    let m = i % 4;
-    let z = n + ((i - m)/4);
-    let right = uintValue[z] << m;
+    const n = i - 1;
+    const m = i % 4;
+    const z = n + ((i - m) / 4);
+    const right = uintValue[z] << m;
     let left;
-    if (((length - i) % 4) == 0)	left = uintValue[z-1] << 4;
-    else	left = uintValue[z+1] >> (4 - m);
+    if (((length - i) % 4) == 0)	left = uintValue[z - 1] << 4;
+    else	left = uintValue[z + 1] >> (4 - m);
     uint5[n] = (left + right) % 32;
   }
   return uint5;
 }
 
 function uint4ToHex(uint4) {
-  var hex = "";
+  let hex = '';
   for (let i = 0; i < uint4.length; i++) hex += uint4[i].toString(16).toUpperCase();
   return hex;
 }
@@ -142,21 +142,21 @@ function uint4ToHex(uint4) {
 /** Uint5 Functions **/
 function uint5ToString(uint5) {
   const letter_list = '13456789abcdefghijkmnopqrstuwxyz'.split('');
-  let string = "";
+  let string = '';
   for (let i = 0; i < uint5.length; i++)	string += letter_list[uint5[i]];
 
   return string;
 }
 
 function uint5ToUint4(uint5) {
-  var length = uint5.length / 4 * 5;
-  var uint4 = new Uint8Array(length);
+  const length = uint5.length / 4 * 5;
+  const uint4 = new Uint8Array(length);
   for (let i = 1; i <= length; i++) {
-    let n = i - 1;
-    let m = i % 5;
-    let z = n - ((i - m)/5);
-    let right = uint5[z-1] << (5 - m);
-    let left = uint5[z] >> m;
+    const n = i - 1;
+    const m = i % 5;
+    const z = n - ((i - m) / 5);
+    const right = uint5[z - 1] << (5 - m);
+    const left = uint5[z] >> m;
     uint4[n] = (left + right) % 16;
   }
   return uint4;
@@ -165,12 +165,12 @@ function uint5ToUint4(uint5) {
 
 /** Uint8 Functions **/
 function uint8ToHex(uintValue) {
-  let hex = "";
+  let hex = '';
   let aux;
   for (let i = 0; i < uintValue.length; i++) {
     aux = uintValue[i].toString(16).toUpperCase();
-    if(aux.length == 1)
-      aux = '0'+aux;
+    if (aux.length == 1)
+      aux = '0' + aux;
     hex += aux;
     aux = '';
   }
@@ -181,8 +181,8 @@ function uint8ToHex(uintValue) {
 function uint8ToUint4(uintValue) {
   const uint4 = new Uint8Array(uintValue.length * 2);
   for (let i = 0; i < uintValue.length; i++) {
-    uint4[i*2] = uintValue[i] / 16 | 0;
-    uint4[i*2+1] = uintValue[i] % 16;
+    uint4[i * 2] = uintValue[i] / 16 | 0;
+    uint4[i * 2 + 1] = uintValue[i] % 16;
   }
 
   return uint4;
@@ -191,55 +191,55 @@ function uint8ToUint4(uintValue) {
 
 /** Dec Functions **/
 function decToHex(decValue, bytes = null) {
-  var dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s
-  while(dec.length) {
-    s = 1 * dec.shift()
-    for(i = 0; s || i < sum.length; i++)
+  let dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s;
+  while (dec.length) {
+    s = 1 * dec.shift();
+    for (i = 0; s || i < sum.length; i++)
     {
-      s += (sum[i] || 0) * 10
-      sum[i] = s % 16
-      s = (s - sum[i]) / 16
+      s += (sum[i] || 0) * 10;
+      sum[i] = s % 16;
+      s = (s - sum[i]) / 16;
     }
   }
-  while(sum.length) {
+  while (sum.length) {
     hexArray.push(sum.pop().toString(16));
   }
 
   hex = hexArray.join('');
 
-  if(hex.length % 2 != 0)
-    hex = "0" + hex;
+  if (hex.length % 2 != 0)
+    hex = '0' + hex;
 
-  if(bytes > hex.length / 2) {
-    var diff = bytes - hex.length / 2;
-    for(var j = 0; j < diff; j++)
-      hex = "00" + hex;
+  if (bytes > hex.length / 2) {
+    const diff = bytes - hex.length / 2;
+    for (let j = 0; j < diff; j++)
+      hex = '00' + hex;
   }
 
   return hex;
 }
 
 // BigNumber functions
-function bigAdd(input,value) {
-  let insert = new BigNumber(input)
-  let val = new BigNumber(value)
-  return insert.plus(val).toString(10)
+function bigAdd(input, value) {
+  const insert = new BigNumber(input);
+  const val = new BigNumber(value);
+  return insert.plus(val).toString(10);
 }
 
 /** String Functions **/
 function stringToUint5(string) {
-  var letter_list = letter_list = '13456789abcdefghijkmnopqrstuwxyz'.split('');
-  var length = string.length;
-  var string_array = string.split('');
-  var uint5 = new Uint8Array(length);
+  const letter_list = '13456789abcdefghijkmnopqrstuwxyz'.split('');
+  const length = string.length;
+  const string_array = string.split('');
+  const uint5 = new Uint8Array(length);
   for (let i = 0; i < length; i++)	uint5[i] = letter_list.indexOf(string_array[i]);
   return uint5;
 }
 
 function isNumeric(val) {
   //numerics and last character is not a dot and number of dots is 0 or 1
-  let isnum = /^-?\d*\.?\d*$/.test(val) && val != ''
-  return isnum && String(val).slice(-1) !== '.'
+  const isnum = /^-?\d*\.?\d*$/.test(val) && val != '';
+  return isnum && String(val).slice(-1) !== '.';
 }
 
 
@@ -272,23 +272,23 @@ function isValidAccount(account: string): boolean {
 }
 
 // Check if a string is a numeric and larger than 0 but less than Nano supply
-function isValidNanoAmount(val:string) {
+function isValidNanoAmount(val: string) {
   //numerics and last character is not a dot and number of dots is 0 or 1
-  let isnum = /^-?\d*\.?\d*$/.test(val)
+  const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
     if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
-      return true
+      return true;
     }
     else {
-      return false
+      return false;
     }
   }
   else {
-    return false
+    return false;
   }
 }
 
-function isValidAmount(val:string) {
+function isValidAmount(val: string) {
   return nanocurrency.checkAmount(val);
 }
 
@@ -296,7 +296,7 @@ function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
     throw new Error(`Invalid Mikron Account`);
   }
-  const account_crop = account.length == 64 ? account.substring(4,64) : account.substring(5,65);
+  const account_crop = account.length == 64 ? account.substring(4, 64) : account.substring(5, 65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
   if (!isValid) throw new Error(`Invalid NANO account`);
 
@@ -346,27 +346,27 @@ function rawToNano(value) {
 /**
  * Nano functions
  */
-function isValidSeed(val:string) {
+function isValidSeed(val: string) {
   return nanocurrency.checkSeed(val);
 }
 
-function isValidHash(val:string) {
+function isValidHash(val: string) {
   return nanocurrency.checkHash(val);
 }
 
-function isValidIndex(val:number) {
+function isValidIndex(val: number) {
   return nanocurrency.checkIndex(val);
 }
 
-function isValidSignature(val:string) {
+function isValidSignature(val: string) {
   return nanocurrency.checkSignature(val);
 }
 
-function isValidWork(val:string) {
+function isValidWork(val: string) {
   return nanocurrency.checkWork(val);
 }
 
-function hashStateBlock(block:StateBlock) {
+function hashStateBlock(block: StateBlock) {
   const balance = new BigNumber(block.balance);
   if (balance.isNegative() || balance.isNaN()) {
     throw new Error(`Negative or NaN balance`);
@@ -385,15 +385,15 @@ function hashStateBlock(block:StateBlock) {
 
 // Determine new difficulty from base difficulty (hexadecimal string) and a multiplier (float). Returns hex string
 export function difficultyFromMultiplier(multiplier, base_difficulty) {
-  let big64 = new BigNumber(2).pow(64);
-  let big_multiplier = new BigNumber(multiplier);
-  let big_base = new BigNumber(base_difficulty,16);
+  const big64 = new BigNumber(2).pow(64);
+  const big_multiplier = new BigNumber(multiplier);
+  const big_base = new BigNumber(base_difficulty, 16);
   return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16);
 }
 
 // shuffle any array
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
@@ -412,10 +412,10 @@ function shuffle(array) {
 }
 
 function array_crop (array) {
-  var length = array.length - 1;
-  var cropped_array = new Uint8Array(length);
+  const length = array.length - 1;
+  const cropped_array = new Uint8Array(length);
   for (let i = 0; i < length; i++)
-    cropped_array[i] = array[i+1];
+    cropped_array[i] = array[i + 1];
   return cropped_array;
 }
 
