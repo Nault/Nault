@@ -408,14 +408,14 @@ export class WalletService {
 
   async scanAccounts(emptyAccountBuffer: number = 5) {
     let emptyTicker = 0;
-    let usedIndices = [];
+    const usedIndices = [];
     let greatestUsedIndex = 0;
     const batchSize = emptyAccountBuffer + 1;
 
     console.log('Getting accounts...');
     for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
-      let batchAccounts = {};
-      let batchAccountsArray = [];
+      const batchAccounts = {};
+      const batchAccountsArray = [];
       for (let i = 0; i < batchSize; i++) {
         const index = batch * batchSize + i;
 
@@ -427,10 +427,12 @@ export class WalletService {
           const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
           accountPublicKey = this.util.uint8.toHex(accountKeyPair.publicKey).toUpperCase();
           accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+
         } else if (this.wallet.type === 'ledger') {
           const account: any = await this.ledgerService.getLedgerAccount(index);
           accountAddress = account.address.replace('xrb_', 'nano_');
           accountPublicKey = account.publicKey.toUpperCase();
+
         } else {
           return false;
         }
@@ -446,10 +448,10 @@ export class WalletService {
       console.log('batchAccountsArray', batchAccountsArray);
 
       console.log('Checking frontiers...');
-      let batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
+      const batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
       console.log('batchResponse', batchResponse);
 
-      for (let accountID in batchResponse.frontiers) {
+      for (const accountID in batchResponse.frontiers) {
         if (batchResponse.frontiers.hasOwnProperty(accountID)) {
           const frontier = batchResponse.frontiers[accountID];
           console.log(accountID, frontier, batchAccounts[accountID].publicKey);
@@ -459,9 +461,9 @@ export class WalletService {
         }
       }
 
-      for (let accountID in batchAccounts) {
+      for (const accountID in batchAccounts) {
         if (batchAccounts.hasOwnProperty(accountID)) {
-          let account = batchAccounts[accountID];
+          const account = batchAccounts[accountID];
           if (account.used) {
             usedIndices.push(account.index);
             if (account.index > greatestUsedIndex) {
@@ -479,13 +481,12 @@ export class WalletService {
 
     console.log('Used Indices:', usedIndices);
     if (usedIndices.length > 0) {
-      usedIndices.forEach(index => {
+      for (const index of usedIndices) {
         console.log('Adding', index);
-        
-        this.addWalletAccount(index);
-      });
+        await this.addWalletAccount(index);
+      }
     } else {
-      this.addWalletAccount();
+      await this.addWalletAccount();
     }
 
     this.reloadBalances();
