@@ -406,13 +406,13 @@ export class WalletService {
     return this.wallet.seed;
   }
 
-  async scanAccounts(emptyAccountBuffer: number = 5) {
+  async scanAccounts(emptyAccountBuffer: number = 10) {
     let emptyTicker = 0;
     const usedIndices = [];
     let greatestUsedIndex = 0;
     const batchSize = emptyAccountBuffer + 1;
 
-    console.log('Getting accounts...');
+    // Getting accounts...
     for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
       const batchAccounts = {};
       const batchAccountsArray = [];
@@ -436,7 +436,6 @@ export class WalletService {
         } else {
           return false;
         }
-        console.log(accountAddress, accountPublicKey);
 
         batchAccounts[accountAddress] = {
           index: index,
@@ -445,12 +444,9 @@ export class WalletService {
         };
         batchAccountsArray.push(accountAddress);
       }
-      console.log('batchAccountsArray', batchAccountsArray);
 
-      console.log('Checking frontiers...');
+      // Checking frontiers...
       const batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
-      console.log('batchResponse', batchResponse);
-
       for (const accountID in batchResponse.frontiers) {
         if (batchResponse.frontiers.hasOwnProperty(accountID)) {
           const frontier = batchResponse.frontiers[accountID];
@@ -461,6 +457,7 @@ export class WalletService {
         }
       }
 
+      // Check index usage
       for (const accountID in batchAccounts) {
         if (batchAccounts.hasOwnProperty(accountID)) {
           const account = batchAccounts[accountID];
@@ -479,16 +476,16 @@ export class WalletService {
       }
     }
 
-    console.log('Used Indices:', usedIndices);
+    // Add accounts
     if (usedIndices.length > 0) {
       for (const index of usedIndices) {
-        console.log('Adding', index);
         await this.addWalletAccount(index);
       }
     } else {
       await this.addWalletAccount();
     }
 
+    // Reload balances for all accounts
     this.reloadBalances();
   }
 
