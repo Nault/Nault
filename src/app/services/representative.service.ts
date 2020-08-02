@@ -193,6 +193,12 @@ export class RepresentativeService {
           repStatus.lowUptime = true;
           repStatus.warn = true;
         }
+      } else {
+        status = 'alert';
+        repStatus.uptime = 0;
+        repStatus.veryLowUptime = true;
+        repStatus.warn = true;
+        repStatus.changeRequired = true;
       }
 
       const additionalData = {
