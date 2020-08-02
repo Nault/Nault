@@ -13,10 +13,14 @@
         : ''
       }}</h2>
     <div class="representative-name-row">
-      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown' }}</a>
-      <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
+      <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
+      <div class="representative-health-row health-unknown" *ngSwitchCase="rep.statusText == 'unknown'">
+        <div class="health-icon"></div>
+        <div class="label">Unknown Status</div>
+      </div>
       <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
         <div class="health-icon"></div>
         <div class="label">Acceptable Representative</div>
@@ -59,7 +63,10 @@
       <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
         <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
       </p>
-      <p *ngIf="rep.statusText != 'ok'">
+      <p *ngIf="rep.statusText == 'unknown'">
+        <span uk-icon="icon: question;"></span>We could not determine status of this representative.
+      </p>
+      <p *ngIf="rep.statusText != 'ok' && rep.statusText != 'unknown'">
         It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
       </p>
     </div>

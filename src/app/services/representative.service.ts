@@ -193,12 +193,16 @@ export class RepresentativeService {
           repStatus.lowUptime = true;
           repStatus.warn = true;
         }
-      } else {
+      } else if (knownRepNinja === false) {
+        // does not exist (404)
         status = 'alert';
         repStatus.uptime = 0;
         repStatus.veryLowUptime = true;
         repStatus.warn = true;
         repStatus.changeRequired = true;
+      } else {
+        // any other api error
+        status = status === 'none' ? 'unknown' : status;
       }
 
       const additionalData = {
