@@ -62,7 +62,11 @@
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">{{
+                    <a [routerLink]="(
+                        (wallet.selectedAccount !== null)
+                      ? '/account/' + wallet.selectedAccount.id
+                      : '/accounts/'
+                    )" class="name">{{
                         (wallet.selectedAccount !== null)
                       ? (
                           wallet.selectedAccount.addressBookName
@@ -70,7 +74,7 @@
                         : ('Account #' + wallet.selectedAccount.index)
                       )
                       : 'Total Balance'
-                    }}</div>
+                    }}</a>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
@@ -127,7 +131,7 @@
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
-                      <div class="name">Incoming Balance</div>
+                      <a routerLink="/receive" class="name">Incoming Balance</a>
                     </div>
                     <div class="account-balances">
                       <div class="balance-container primary">

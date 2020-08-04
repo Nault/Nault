@@ -170,16 +170,24 @@
 	> .card-contents > .account-name-container {
 		display: flex;
 		align-items: center;
-		margin: 15px 12px 14px 17px;
+		margin: 14px 12px 13px 17px;
 
 		> .name {
 			color: #FFF;
 			margin-right: 10px;
+			text-decoration: none;
+			border-bottom: 2px solid transparent;
+			transition: border-color 100ms ease-in-out;
+			padding-top: 1px;
 			.truncated-text();
 
 			font-size: 14px;
 			@media (min-width: 1500px) {
 				font-size: 18px;
+			}
+
+			&:hover {
+				border-color: #FFF;
 			}
 		}
 
