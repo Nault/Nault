@@ -59,6 +59,8 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NinjaService } from './services';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { NinjaService } from './services';
     ClipboardModule,
     ZXingScannerModule,
     NgbModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     UtilService,
