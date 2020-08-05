@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install and Build Desktop App
+      - name: Install and Lint
         run: |
           npm install
           npm run lint
