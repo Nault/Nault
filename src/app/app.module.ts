@@ -125,9 +125,6 @@ import { NinjaService } from './services';
     NgbActiveModal,
     QrModalService,
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [
-    QrModalComponent
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

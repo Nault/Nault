@@ -1,5 +1,10 @@
 # Nault
 
+![GitHub Pages](https://github.com/Nault/Nault/workflows/GitHub%20Pages/badge.svg)
+![Electron App](https://github.com/Nault/Nault/workflows/Electron%20App/badge.svg)
+[![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/Nault/Nault/releases/latest)
+[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg)](https://discord.nanocenter.org)
+
 Nault is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
 It's a fully client-side signing wallet for sending and receiving [Nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
@@ -14,10 +19,15 @@ Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [
 
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc).
 
+Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
+
 ## How To Help
 Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
 
 If you want to know how to setup the development environment head over to [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Support
+If you are looking for more interactive and quick support compared to creating a new Github issue, you will then find most of the developers in the Nault channel over at the [TNC discord server](https://discord.nanocenter.org/).
 
 ## Acknowledgements
 Special thanks to the following!
