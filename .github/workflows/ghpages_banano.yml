@@ -1,4 +1,4 @@
-name: Build and Deploy GH Pages (Banano)
+name: GitHub Pages (Banano)
 
 on:
   push:
