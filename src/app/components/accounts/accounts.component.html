@@ -49,7 +49,7 @@
                 </a>
               </div>
               <div class="uk-width-auto" style="padding-left: 10px;">
-                <ul class="uk-hidden-hover uk-iconnav">
+                <ul class="uk-iconnav">
                   <!--<li class="account-index">#{{ account.index }}</li>-->
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
@@ -74,7 +74,7 @@
             <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
               {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
             </div>
-            <div class="uk-float-right uk-hidden-hover">
+            <div class="uk-float-right">
               <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
 
