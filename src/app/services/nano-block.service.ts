@@ -321,8 +321,7 @@ export class NanoBlockService {
           balance: block.balance,
           recipient: this.util.account.getPublicAccountID(this.util.hex.toUint8(block.link)),
         };
-      }
-      else if (type === TxType.receive || type === TxType.open) {
+      } else if (type === TxType.receive || type === TxType.open) {
         ledgerBlock = {
           representative: block.representative,
           balance: block.balance,
@@ -331,9 +330,7 @@ export class NanoBlockService {
         if (!openEquiv) {
           ledgerBlock.previousBlock = block.previous;
         }
-      }
-
-      else if (type === TxType.change) {
+      } else if (type === TxType.change) {
         ledgerBlock = {
           previousBlock: block.previous,
           representative: block.representative,
@@ -345,11 +342,9 @@ export class NanoBlockService {
         // On new accounts, we do not need to cache anything
         if (!openEquiv) {
           try {
-            //await this.ledgerService.updateCache(walletAccount.index, block.previous);
+            // await this.ledgerService.updateCache(walletAccount.index, block.previous);
             await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock);
-          }
-          // this will fail when working offline, but no problem
-          catch (err){console.log(err); }
+          } catch (err) {console.log(err); }
         }
         const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
         this.clearLedgerNotification();
@@ -373,7 +368,7 @@ export class NanoBlockService {
       block.work = await this.workPool.getWork(workBlock, multiplier);
       this.workPool.removeFromCache(workBlock);
     }
-    return block; //return signed block (with or without work)
+    return block; // return signed block (with or without work)
   }
 
   async validateAccount(accountInfo) {

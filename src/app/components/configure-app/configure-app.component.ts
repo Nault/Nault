@@ -21,6 +21,22 @@ import { QrModalService } from '../../services/qr-modal.service';
   styleUrls: ['./configure-app.component.css']
 })
 export class ConfigureAppComponent implements OnInit {
+
+  constructor(
+    private walletService: WalletService,
+    private notifications: NotificationService,
+    private appSettings: AppSettingsService,
+    private addressBook: AddressBookService,
+    private pow: PowService,
+    private api: ApiService,
+    private websocket: WebsocketService,
+    private workPool: WorkPoolService,
+    private repService: RepresentativeService,
+    private node: NodeService,
+    private util: UtilService,
+    private price: PriceService,
+    private ninja: NinjaService,
+    private qrModalService: QrModalService) { }
   wallet = this.walletService.wallet;
 
   denominations = [
@@ -122,9 +138,6 @@ export class ConfigureAppComponent implements OnInit {
   serverAuth = null;
   minimumReceive = null;
 
-  showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
-  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
-
   nodeBlockCount = null;
   nodeUnchecked = null;
   nodeCemented = null;
@@ -133,21 +146,8 @@ export class ConfigureAppComponent implements OnInit {
   nodeNetwork = null;
   statsRefreshEnabled = true;
 
-  constructor(
-    private walletService: WalletService,
-    private notifications: NotificationService,
-    private appSettings: AppSettingsService,
-    private addressBook: AddressBookService,
-    private pow: PowService,
-    private api: ApiService,
-    private websocket: WebsocketService,
-    private workPool: WorkPoolService,
-    private repService: RepresentativeService,
-    private node: NodeService,
-    private util: UtilService,
-    private price: PriceService,
-    private ninja: NinjaService,
-    private qrModalService: QrModalService) { }
+  showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
+  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   async ngOnInit() {
     this.loadFromSettings();
@@ -180,15 +180,13 @@ export class ConfigureAppComponent implements OnInit {
       this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US');
       this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US');
       this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US');
-    }
-    catch {console.warn('Failed to get node stats: block count'); }
+    } catch {console.warn('Failed to get node stats: block count'); }
 
     try {
       const version = await this.api.version();
       this.nodeVendor = version.node_vendor;
       this.nodeNetwork = version.network;
-    }
-    catch {console.warn('Failed to get node stats: version'); }
+    } catch {console.warn('Failed to get node stats: version'); }
 
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
   }
@@ -349,7 +347,7 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
-    this.serverAPIUpdated = this.appSettings.settings.serverAPI; //this is updated after setting server to random and doing recheck of wallet balance
+    this.serverAPIUpdated = this.appSettings.settings.serverAPI; // this is updated after setting server to random and doing recheck of wallet balance
     this.serverAPI = this.serverAPIUpdated;
     this.statsRefreshEnabled = true;
     this.updateNodeStats();

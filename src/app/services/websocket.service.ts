@@ -38,11 +38,11 @@ export class WebsocketService {
   }
 
   connect() {
-    if (this.socket.connected && this.socket.ws){
+    if (this.socket.connected && this.socket.ws) {
       // Already connected
       return;
     }
-    if (!this.appSettings.settings.serverWS){
+    if (!this.appSettings.settings.serverWS) {
       console.log('No Websocket server available.');
       return;
     }

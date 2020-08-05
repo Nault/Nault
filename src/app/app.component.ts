@@ -18,32 +18,6 @@ import { LedgerService } from './services';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  @HostListener('window:resize', ['$event']) onResize (e) {
-    this.windowHeight = e.target.innerHeight;
-  }
-
-  @ViewChild('selectButton') selectButton: ElementRef;
-  @ViewChild('accountsDropdown') accountsDropdown: ElementRef;
-
-  @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
-    if (
-            ( this.selectButton.nativeElement.contains(event.target) === false )
-          && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
-      ) {
-        this.showAccountsDropdown = false;
-    }
-  }
-
-  wallet = this.walletService.wallet;
-  node = this.nodeService.node;
-  nanoPrice = this.price.price;
-  fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
-  inactiveSeconds = 0;
-  windowHeight = 1000;
-  navExpanded = false;
-  showAccountsDropdown = false;
-  searchData = '';
-  isConfigured = this.walletService.isConfigured;
 
   constructor(
     public walletService: WalletService,
@@ -65,6 +39,32 @@ export class AppComponent implements OnInit {
       }
     }
 
+  @ViewChild('selectButton') selectButton: ElementRef;
+  @ViewChild('accountsDropdown') accountsDropdown: ElementRef;
+
+  wallet = this.walletService.wallet;
+  node = this.nodeService.node;
+  nanoPrice = this.price.price;
+  fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
+  inactiveSeconds = 0;
+  windowHeight = 1000;
+  navExpanded = false;
+  showAccountsDropdown = false;
+  searchData = '';
+  isConfigured = this.walletService.isConfigured;
+  @HostListener('window:resize', ['$event']) onResize (e) {
+    this.windowHeight = e.target.innerHeight;
+  }
+
+  @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
+    if (
+            ( this.selectButton.nativeElement.contains(event.target) === false )
+          && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
+      ) {
+        this.showAccountsDropdown = false;
+    }
+  }
+
   async ngOnInit() {
     this.windowHeight = window.innerHeight;
     this.settings.loadAppSettings();
@@ -83,8 +83,7 @@ export class AppComponent implements OnInit {
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet (if not receive priority is set to manual)
     if (this.wallet.locked && this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption !== 'manual') {
       this.notifications.sendWarning(`New incoming transaction(s) - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-    }
-    else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
+    } else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
       this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
     }
 
@@ -168,7 +167,7 @@ export class AppComponent implements OnInit {
     this.accountsDropdown.nativeElement.scrollTop = 0;
   }
 
-  selectAccount(account){
+  selectAccount(account) {
     // note: account is null when user is switching to 'Total Balance'
     this.wallet.selectedAccount = account;
     this.wallet.selectedAccount$.next(account);

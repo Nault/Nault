@@ -46,11 +46,10 @@ export class ConfigureWalletComponent implements OnInit {
     private qrModalService: QrModalService,
     private ledgerService: LedgerService,
     private repService: RepresentativeService) {
-    if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
+    if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = 1;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
-    }
-    else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key){
+    } else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key) {
       this.activePanel = 1;
       this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
       this.selectedImportOption = 'privateKey';

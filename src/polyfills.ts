@@ -10,7 +10,7 @@ import '@angular/localize/init';
 };
 
 // Add global to window, assigning the value of window itself.
-//(window as any).global = window;
+// (window as any).global = window;
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
 /**

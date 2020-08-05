@@ -113,8 +113,7 @@ export class WalletService {
     private websocket: WebsocketService,
     private nanoBlock: NanoBlockService,
     private ledgerService: LedgerService,
-    private notifications: NotificationService)
-  {
+    private notifications: NotificationService) {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
       console.log('New Transaction', transaction);
@@ -130,8 +129,7 @@ export class WalletService {
           // If the wallet is locked, show a notification
           if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-          }
-          else if (this.appSettings.settings.pendingOption === 'manual') {
+          } else if (this.appSettings.settings.pendingOption === 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
           }
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount, transaction.block.link_as_account);
@@ -140,14 +138,13 @@ export class WalletService {
       } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
           this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-        }
-        else if (this.appSettings.settings.pendingOption === 'manual') {
+        } else if (this.appSettings.settings.pendingOption === 'manual') {
           this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
         }
 
         await this.processStateBlock(transaction);
 
-      }else if (transaction.block.type == 'state') {
+      } else if (transaction.block.type == 'state') {
         /* Don't understand when this is ever needed / Json
         if (this.wallet.locked) {
           this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
@@ -982,8 +979,7 @@ export class WalletService {
             try {
               res.id = account.id;
               res.addressBookName = account.addressBookName;
-            }
-            catch {return null; }
+            } catch {return null; }
 
             return res;
           })

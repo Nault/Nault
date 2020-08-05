@@ -7,8 +7,8 @@ import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
 import {UtilService} from './util.service';
 
 const mod = window['Module'];
-//NEW v21 THRESHOLD BELOW TO BE ACTIVATED
-//const baseThreshold = 'fffffff800000000'
+// NEW v21 THRESHOLD BELOW TO BE ACTIVATED
+// const baseThreshold = 'fffffff800000000'
 const baseThreshold = 'ffffffc000000000';
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
@@ -204,7 +204,7 @@ export class PowService {
       console.log('Generating work at threshold ' + newThreshold + ' using CPU workers for', hash);
       workerList = [];
       for (let i = 0; i < workerCount; i++) {
-        //const worker = new Worker()
+        // const worker = new Worker()
         const worker = new (Worker as any)();
         worker.postMessage({
           blockHash: hash,

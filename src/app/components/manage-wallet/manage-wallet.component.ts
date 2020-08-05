@@ -119,7 +119,7 @@ export class ManageWalletComponent implements OnInit {
       elem.download = fileName;
       document.body.appendChild(elem);
       elem.click();
-      setTimeout(function(){
+      setTimeout(function() {
         document.body.removeChild(elem);
         window.URL.revokeObjectURL(objUrl);
       }, 200);

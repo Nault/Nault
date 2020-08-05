@@ -57,41 +57,30 @@ export class QrModalComponent implements OnInit {
     if (this.util.account.isValidAccount(resultString)) {
       type = 'account';
       content = resultString;
-    }
-    // mnemonic
-    else if (bip39.validateMnemonic(resultString)) {
+    } else if (bip39.validateMnemonic(resultString)) {
       type = 'mnemonic';
       content = resultString;
-    }
-    // expanded private key
-    else if (resultString.length === 128) {
+    } else if (resultString.length === 128) {
       // includes deterministic R value material which we ignore
       resultString = resultString.substring(0, 64);
       if (this.util.nano.isValidHash(resultString)) {
         type = 'hash';
         content = resultString;
       }
-    }
-    // block hash, seed, public or private key
-    else if (this.util.nano.isValidHash(resultString)) {
+    } else if (this.util.nano.isValidHash(resultString)) {
       type = 'hash';
       content = resultString;
-    }
-    // special url formatted account, rep, seed, key
-    else if (this.nano_scheme.test(resultString)) {
+    } else if (this.nano_scheme.test(resultString)) {
       // This is a valid Nano scheme URI
       const url = new URL(resultString);
       content = url.pathname;
 
-      if ((url.protocol === 'nano:' || url.protocol === 'nanorep:' || url.protocol === 'xrb:') && this.util.account.isValidAccount(url.pathname)){
+      if ((url.protocol === 'nano:' || url.protocol === 'nanorep:' || url.protocol === 'xrb:') && this.util.account.isValidAccount(url.pathname)) {
         type = 'account';
-      }
-      else if ((url.protocol === 'nanoseed:' || url.protocol === 'nanokey:') && this.util.nano.isValidHash(url.pathname)){
+      } else if ((url.protocol === 'nanoseed:' || url.protocol === 'nanokey:') && this.util.nano.isValidHash(url.pathname)) {
         type = 'hash';
       }
-    }
-    // generic type
-    else {
+    } else {
       type = 'generic';
       content = resultString;
     }
@@ -99,8 +88,7 @@ export class QrModalComponent implements OnInit {
     // check that the result is valid and matched the requested type
     if (type != null && type === this.type || this.type === 'generic') {
       this.activeModal.close({reference: this.reference, content: content});
-    }
-    else {
+    } else {
       this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });
       return;
     }

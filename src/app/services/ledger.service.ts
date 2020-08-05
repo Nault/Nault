@@ -52,8 +52,7 @@ export class LedgerService {
 
   constructor(private api: ApiService,
               private desktop: DesktopService,
-              private notifications: NotificationService)
-  {
+              private notifications: NotificationService) {
     if (this.isDesktop) {
       this.configureDesktop();
     }

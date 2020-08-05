@@ -169,8 +169,9 @@ function uint8ToHex(uintValue) {
   let aux;
   for (let i = 0; i < uintValue.length; i++) {
     aux = uintValue[i].toString(16).toUpperCase();
-    if (aux.length == 1)
+    if (aux.length == 1) {
       aux = '0' + aux;
+    }
     hex += aux;
     aux = '';
   }
@@ -194,8 +195,7 @@ function decToHex(decValue, bytes = null) {
   let dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s;
   while (dec.length) {
     s = 1 * dec.shift();
-    for (i = 0; s || i < sum.length; i++)
-    {
+    for (i = 0; s || i < sum.length; i++) {
       s += (sum[i] || 0) * 10;
       sum[i] = s % 16;
       s = (s - sum[i]) / 16;
@@ -207,13 +207,15 @@ function decToHex(decValue, bytes = null) {
 
   hex = hexArray.join('');
 
-  if (hex.length % 2 != 0)
+  if (hex.length % 2 != 0) {
     hex = '0' + hex;
+  }
 
   if (bytes > hex.length / 2) {
     const diff = bytes - hex.length / 2;
-    for (let j = 0; j < diff; j++)
+    for (let j = 0; j < diff; j++) {
       hex = '00' + hex;
+    }
   }
 
   return hex;
@@ -237,7 +239,7 @@ function stringToUint5(string) {
 }
 
 function isNumeric(val) {
-  //numerics and last character is not a dot and number of dots is 0 or 1
+  // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val) && val != '';
   return isnum && String(val).slice(-1) !== '.';
 }
@@ -273,17 +275,15 @@ function isValidAccount(account: string): boolean {
 
 // Check if a string is a numeric and larger than 0 but less than Nano supply
 function isValidNanoAmount(val: string) {
-  //numerics and last character is not a dot and number of dots is 0 or 1
+  // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
     if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
-  }
-  else {
+  } else {
     return false;
   }
 }
@@ -414,8 +414,9 @@ function shuffle(array) {
 function array_crop (array) {
   const length = array.length - 1;
   const cropped_array = new Uint8Array(length);
-  for (let i = 0; i < length; i++)
+  for (let i = 0; i < length; i++) {
     cropped_array[i] = array[i + 1];
+  }
   return cropped_array;
 }
 
