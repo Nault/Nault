@@ -14,6 +14,7 @@ import {RepresentativeService} from "../../services/representative.service";
 import {BehaviorSubject} from "rxjs";
 import * as nanocurrency from 'nanocurrency'
 import {NinjaService} from "../../services/ninja.service";
+import { QrModalService } from "../../services/qr-modal.service";
 
 @Component({
   selector: 'app-account-details',
@@ -97,6 +98,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     private util: UtilService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
+    private qrModalService: QrModalService,
     private ninja: NinjaService) { 
       // to detect when the account changes if the view is already active
       route.events.subscribe((val) => {
@@ -664,6 +666,24 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     var modal = UIkit.modal("#block-modal");
     modal.show();
     this.clearRemoteVars();
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'account1':
+          this.toAccountID = data.content;
+          this.validateDestination();
+          break;
+        case 'rep1':
+          this.representativeModel = data.content;
+          this.validateRepresentative();
+          break;
+      }
+    }, () => {}
+    );
   }
 
   // End remote signing methods

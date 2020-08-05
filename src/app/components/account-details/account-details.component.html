@@ -205,7 +205,7 @@
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
-                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
+                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px; padding-top: 0;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
               </tr>
 
               <tr *ngFor="let history of accountHistory">
@@ -312,8 +312,7 @@
           <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
           <div class="uk-form-controls">
             <div class="uk-inline uk-width-1-1">
-              <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
-              <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+              <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
               <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
 
               <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
@@ -361,7 +360,7 @@
                 <div class="uk-width-1-1 uk-width-3-5@s" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                   <div class="uk-width-1-1 uk-inline">
                     <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                    <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px; border: 0; border-bottom: 1px solid #e5e5e5;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
+                    <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important; border: 0; border-bottom: 1px solid #e5e5e5;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
                   </div>
                 </div>
 
@@ -376,8 +375,7 @@
           <label class="uk-form-label" for="form-horizontal-text3">Representative</label>
           <div class="uk-form-controls">
             <div class="uk-inline uk-width-1-1">
-              <span class="uk-form-icon uk-form-icon-flip" *ngIf="toAccountStatus === 0" uk-icon="icon: warning"></span>
-              <span class="uk-form-icon uk-form-icon-flip"*ngIf="toAccountStatus === 2" uk-icon="icon: check"></span>
+              <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
               <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" (keyup.enter)="generateChange()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
               
               <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">

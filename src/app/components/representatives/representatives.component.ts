@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-
 import BigNumber from "bignumber.js";
 import {BehaviorSubject} from "rxjs";
+import { QrModalService } from "../../services/qr-modal.service";
 
 import {
   ApiService,
@@ -59,7 +59,8 @@ export class RepresentativesComponent implements OnInit {
     private util: UtilService,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,
-    private ninja: NinjaService) { }
+    private ninja: NinjaService,
+    private qrModalService: QrModalService) { }
 
   async ngOnInit() {
     this.representativeService.loadRepresentativeList();
@@ -310,5 +311,18 @@ export class RepresentativesComponent implements OnInit {
     await this.representativeService.detectChangeableReps();
   }
 
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'rep1':
+          this.toRepresentativeID = data.content;
+          this.validateRepresentative();
+          break;
+      }
+    }, () => {}
+    );
+  }
 
 }

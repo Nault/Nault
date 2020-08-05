@@ -7,7 +7,7 @@
 
 h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
 .uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
-.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li {
+.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar {
 	font-family: @global-secondary-font-family;
 }
 
@@ -35,6 +35,67 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     resize: none;
   }
 
+.uk-card-body > ul > li > a {
+	color: #676686;
+}
+
+@mobile-top-bar-height: 50px;
+
+.mobile-top-bar {
+	height: @mobile-top-bar-height;
+	color: #FFF;
+
+	.nav-button {
+		display: flex;
+		align-items: center;
+		margin: 9px 0 8px 14px;
+
+		> .uk-icon {
+			margin-right: 10px;
+		}
+
+		> .app-name {
+			font-size: 22px;
+			font-weight: 400;
+		}
+	}
+}
+
+.app-grid {
+	margin-top: 0;
+	overflow: hidden;
+	margin-left: 0;
+	min-height: calc(100vh);
+	max-height: calc(100vh);
+
+	@media (max-width: 639px) {
+		min-height: calc(100vh - @mobile-top-bar-height);
+		max-height: calc(100vh - @mobile-top-bar-height);
+	}
+}
+
+.content-container {
+	min-height: 100%;
+	border-top: 1px solid rgb(220, 233, 249);
+	padding: 0;
+	z-index: 1;
+
+	> .uk-panel {
+		padding: 15px 20px;
+	}
+
+	@media (max-width: 639px) {
+		transition: transform 0.5s ease;
+
+		&.nav-expanded {
+			transform: translateX(360px);
+		}
+
+		> .uk-panel {
+			padding: 15px;
+		}
+	}
+}
 
 // custom classes
 // ========================================================================
@@ -56,3 +117,151 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 		margin-left: @global-margin;
 	}
 }
+
+// ng-bootstrap modal classes
+// ========================================================================
+.fade {
+    opacity: 0;
+    transition: opacity .15s linear;
+}
+
+.modal-backdrop {
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000;
+}
+
+.fade.show {
+    opacity: 1;
+}
+
+.modal-backdrop.fade {
+	opacity: 0;
+}
+
+.modal-backdrop.show {
+	opacity: .5;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+}
+
+.d-block {
+    display: block!important;
+}
+
+.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+@media (min-width: 576px) {
+	.scanner-modal .modal-dialog {
+		max-width: 500px;
+		margin: 1.75rem auto;
+	}
+}
+
+.scanner-modal .modal-dialog {
+	max-width: 100%;
+	margin-top: 0;
+	position: relative;
+    width: auto;
+    pointer-events: none;
+}
+
+.scanner-modal .modal-content {
+	position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    outline: 0;
+}
+
+.scanner-modal .scanner-modal-sub {
+    max-width: 98%;
+}
+
+.scanner-modal .modal.fade .modal-dialog {
+    transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+    -webkit-transform: translate(0,-25%);
+    transform: translate(0,-25%);
+}
+
+.scanner-modal .modal.show .modal-dialog {
+    -webkit-transform: translate(0,0);
+    transform: translate(0,0);
+}
+
+.scanner-modal .modal-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: .3rem;
+    border-top-right-radius: .3rem;
+}
+
+.scanner-modal .modal-body {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+.scanner-modal .modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+@media (min-width: @breakpoint-xsmall-max) {
+	.scanner-modal {
+        max-width: @breakpoint-xsmall-max;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 30px;
+    }
+}
+
+@media (min-width: @breakpoint-small-max) {
+	.scanner-modal {
+		margin-left: auto;
+		margin-right: 30px;
+		margin-top: 30px;
+    }
+}
+
+// ========================================================================

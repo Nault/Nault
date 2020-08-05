@@ -10,7 +10,11 @@ export interface RepresentativeStatus {
   online: boolean;
   veryHighWeight: boolean;
   highWeight: boolean;
+  veryLowUptime: boolean;
+  lowUptime: boolean;
+  markedToAvoid: boolean;
   trusted: boolean;
+  changeRequired: boolean;
   warn: boolean;
   known: boolean;
   uptime: Number;
@@ -86,9 +90,15 @@ export class RepresentativeService {
         continue; // Reps marked as trusted are good no matter their status
       }
 
-      // If we have high weight, marked as warn, or it is offline, then we need to change
-      if (rep.status.highWeight || rep.status.warn || !rep.status.online) {
-        needsChange.push(rep);
+      // If we have high weight, low uptime or marked as warn, then we need to change
+      if (
+            rep.status.highWeight
+          || rep.status.veryHighWeight
+          || rep.status.lowUptime
+          || rep.status.veryLowUptime
+          || rep.status.warn
+        ) {
+          needsChange.push(rep);
       }
     }
 
@@ -128,7 +138,11 @@ export class RepresentativeService {
         online: repOnline,
         veryHighWeight: false,
         highWeight: false,
+        veryLowUptime: false,
+        lowUptime: false,
+        markedToAvoid: false,
         trusted: false,
+        changeRequired: false,
         warn: false,
         known: false,
         uptime: null,
@@ -139,9 +153,10 @@ export class RepresentativeService {
       let status = 'none';
       let label;
 
-      if (percent.gte(10)) {
+      if (percent.gte(3)) {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
+        repStatus.changeRequired = true;
       } else if (percent.gte(1)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
@@ -157,20 +172,37 @@ export class RepresentativeService {
         }
         if (knownRep.warn) {
           status = 'alert'; // In our list and marked for avoidance
+          repStatus.markedToAvoid = true;
           repStatus.warn = true;
+          repStatus.changeRequired = true;
         }
       } else if (knownRepNinja) {
         status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
-        repStatus.uptime = knownRepNinja.uptime;
+        repStatus.uptime = knownRepNinja.uptime_over.week;
         repStatus.score = knownRepNinja.score;
-        if (knownRepNinja.uptime < 80) {
+        if (knownRepNinja.uptime_over.week < 80) {
           status = 'alert';
+          repStatus.veryLowUptime = true;
           repStatus.warn = true;
-        } else if (knownRepNinja.uptime < 90) {
-          status = 'warn';
+          repStatus.changeRequired = true;
+        } else if (knownRepNinja.uptime_over.week < 90) {
+          if (status !== 'alert') {
+            status = 'warn';
+          }
+          repStatus.lowUptime = true;
           repStatus.warn = true;
         }
+      } else if (knownRepNinja === false) {
+        // does not exist (404)
+        status = 'alert';
+        repStatus.uptime = 0;
+        repStatus.veryLowUptime = true;
+        repStatus.warn = true;
+        repStatus.changeRequired = true;
+      } else {
+        // any other api error
+        status = status === 'none' ? 'unknown' : status;
       }
 
       const additionalData = {

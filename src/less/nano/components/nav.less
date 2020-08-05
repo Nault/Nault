@@ -31,9 +31,39 @@
 
 .nav-container {
 	background: #1F1F26;
-	min-height: 100vh;
-	min-width: 360px;
 	color: #868AB0;
+	padding-left: 0;
+	min-width: 360px;
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	@mobile-top-bar-height: 50px;
+
+	@media (max-width: 639px) {
+		position: absolute;
+		width: 360px;
+		height: calc(100vh - @mobile-top-bar-height);
+	}
+
+	// Scrollbar - Gecko (Firefox)
+	scrollbar-width: thin;
+	scrollbar-color: #4E4E5F #1F1F26;
+
+	// Scrollbar - WebKit (Chrome, Edge)
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #1F1F26;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #4E4E5F;
+		border-radius: 9px;
+		border: 2px solid #1F1F26;
+	}
 }
 
 .nav-container .uk-background-secondary {
@@ -89,6 +119,26 @@
 		min-height: 155px;
 	}
 
+	&.is-wallet {
+		background: #506279;
+
+		> .logo {
+			filter: saturate(0.5) brightness(0.75);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: calc(100% - 10px);
+			height: calc(100% - 10px);
+			display: block;
+			border: 1px dashed #1F1F26;
+			margin: 4px;
+			border-radius: 10px;
+			pointer-events: none;
+		}
+	}
+
 	&.incoming-card {
 		background: rgba(78, 145, 224, 0.2);
 
@@ -120,16 +170,24 @@
 	> .card-contents > .account-name-container {
 		display: flex;
 		align-items: center;
-		margin: 15px 12px 14px 17px;
+		margin: 14px 12px 13px 17px;
 
 		> .name {
 			color: #FFF;
 			margin-right: 10px;
+			text-decoration: none;
+			border-bottom: 2px solid transparent;
+			transition: border-color 100ms ease-in-out;
+			padding-top: 1px;
 			.truncated-text();
 
 			font-size: 14px;
 			@media (min-width: 1500px) {
 				font-size: 18px;
+			}
+
+			&:hover {
+				border-color: #FFF;
 			}
 		}
 
@@ -420,23 +478,24 @@
 	border-bottom: 1px solid @nav-border-color;
 	padding: 0px 20px 0px 20px;
 	margin-bottom: 15px;
-	position: relative;
-
-	> h2 {
-		text-transform: uppercase;
-		font-size: 12px;
-		font-weight: 500;
-		color: @nav-half-muted-color;
-		margin-bottom: 5px;
-	}
 
 	> .representative {
 		display: flex;
 		flex-direction: column;
+		position: relative;
 
 		&:hover > .representative-name-row > .name {
 			border-bottom-style: dotted;
 			border-color: #868AB0;
+		}
+
+		> h2 {
+			text-transform: uppercase;
+			font-size: 12px;
+			font-weight: 500;
+			color: @nav-half-muted-color;
+			margin-bottom: 5px;
+			.truncated-text();
 		}
 	}
 
@@ -473,7 +532,7 @@
 		}
 	}
 
-	> div > .representative-health-row {
+	> .representative > .representative-health-row {
 		display: flex;
 		align-items: center;
 		margin-top: 5px;
@@ -494,6 +553,11 @@
 			.health-state-apply-colors();
 		}
 
+		&.health-unknown {
+			@health-state-color: #868AB0;
+			.health-state-apply-colors();
+		}
+
 		> .health-icon {
 			display: flex;
 			width: 15px;
@@ -508,7 +572,7 @@
 		}
 	}
 
-	> div > .representative-help-tooltip {
+	> .representative > .representative-help-tooltip {
 		display: flex;
 		flex-direction: column;
 		width: calc(100% - 75px);
@@ -745,5 +809,21 @@
 				}
 			}
 		}
+	}
+}
+
+.nav-search {
+	background: rgba(56, 56, 68, 0.3);
+	padding: 3px 15px 3px 18px;
+	border-bottom: 1px solid @nav-border-color;
+	font-size: 14px;
+
+	.uk-search-icon {
+		width: 30px;
+		margin-right: -8px;
+	}
+
+	input {
+		color: @nav-half-muted-color;
 	}
 }

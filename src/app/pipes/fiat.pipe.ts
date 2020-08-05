@@ -8,7 +8,7 @@ import {BigNumber} from 'bignumber.js';
 export class FiatPipe extends CurrencyPipe implements PipeTransform {
   // transform(value: any, currencyCode?: string, display?: 'code' | 'symbol' | 'symbol-narrow' | boolean, digits?: string, locale?: string): string | null;
 
-  transform(value: any, currencyCode?: string, display?: 'code' | 'symbol' | 'symbol-narrow' | boolean, digits?: string, locale?: string): any {
+  transform(value: any, currencyCode?: string, display?: 'code' | 'symbol' | 'symbol-narrow' | string | boolean, digits?: string, locale?: string): any {
     if (currencyCode === '') {
       return ``;
     }

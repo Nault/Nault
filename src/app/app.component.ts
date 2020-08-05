@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
   inactiveSeconds = 0;
   windowHeight = 1000;
   navExpanded = false;
-  showSearchBar = false;
   showAccountsDropdown = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
@@ -59,6 +58,11 @@ export class AppComponent implements OnInit {
     private ledger: LedgerService,
     public price: PriceService) { 
       router.events.subscribe(() => { this.navExpanded = false })
+      let path = localStorage.getItem('path');
+      if(path) {
+        localStorage.removeItem('path');
+        this.router.navigate([path]);
+      }
     }
 
   async ngOnInit() {
@@ -72,7 +76,7 @@ export class AppComponent implements OnInit {
     this.workPool.loadWorkCache();
 
     await this.walletService.loadStoredWallet();
-    this.websocket.connect();
+    this.websocket.connect();    
 
     this.representative.loadRepresentativeList();
 
@@ -164,11 +168,11 @@ export class AppComponent implements OnInit {
     this.accountsDropdown.nativeElement.scrollTop = 0
   }
 
-  toggleSearch(mobile = false) {
-    this.showSearchBar = !this.showSearchBar;
-    if (this.showSearchBar) {
-      setTimeout(() => document.getElementById(mobile ? 'search-input-mobile' : 'search-input').focus(), 150);
-    }
+  selectAccount(account){
+    // note: account is null when user is switching to 'Total Balance'
+    this.wallet.selectedAccount = account;
+    this.wallet.selectedAccount$.next(account);
+    this.toggleAccountsDropdown();
   }
 
   performSearch() {

@@ -52,6 +52,9 @@ import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 import {SignComponent} from "./components/sign/sign.component";
 import {RemoteSigningComponent} from "./components/remote-signing/remote-signing.component";
 import {RemoteSignService} from "./services/remote-sign.service";
+import { QrModalComponent } from './components/qr-modal/qr-modal.component';
+import { QrModalService } from './services/qr-modal.service';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -88,6 +91,7 @@ import { NinjaService } from './services';
     QrScanComponent,
     SignComponent,
     RemoteSigningComponent,
+    QrModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,7 +100,8 @@ import { NinjaService } from './services';
     ReactiveFormsModule,
     FormsModule,
     ClipboardModule,
-    ZXingScannerModule
+    ZXingScannerModule,
+    NgbModule,
   ],
   providers: [
     UtilService,
@@ -117,6 +122,8 @@ import { NinjaService } from './services';
     DesktopService,
     RemoteSignService,
     NinjaService,
+    NgbActiveModal,
+    QrModalService,
   ],
   bootstrap: [AppComponent]
 })

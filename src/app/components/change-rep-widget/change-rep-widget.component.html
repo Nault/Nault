@@ -1,128 +1,95 @@
-<div *ngIf="representatives.length > 0" class="nav-representative-info">
-  <h2>Representative{{ representatives.length > 1 ? 's' : '' }}</h2>
-  <div class="representative" *ngFor="let rep of representatives" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+<div *ngIf="displayedRepresentatives.length > 0" class="nav-representative-info">
+  <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
+      <h2>Representative{{
+          (repIdx !== 0)
+        ? (
+            ' for '
+          + (
+              rep.accounts[0].addressBookName
+            ? ( '"' + rep.accounts[0].addressBookName + '"' )
+            : ( rep.accounts[0].id.slice(0, 10) + '...' )
+          )
+        )
+        : ''
+      }}</h2>
     <div class="representative-name-row">
-      <a (click)="rep.statusText == 'ok' ? navigateToRepChangePage() : changeToRep(suggestedRep.account)" class="name">{{ rep.label || 'Unknown' }}</a>
-      <div class="weight-total">{{ rep.percent.toFixed(2) }}%</div>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
+      <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
-      <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
+      <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
         <div class="health-icon"></div>
-        <div class="label">Medium</div>
+        <div class="label">Good Representative</div>
       </div>
-      <div class="representative-health-row health-red" *ngSwitchCase="rep.statusText == 'alert'">
+      <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'ok')">
         <div class="health-icon"></div>
-        <div class="label">Poor</div>
+        <div class="label">Good Representative</div>
       </div>
-      <div class="representative-health-row health-green" *ngSwitchDefault>
+      <div class="representative-health-row health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
         <div class="health-icon"></div>
-        <div class="label">Good</div>
+        <div class="label">Acceptable Representative</div>
+      </div>
+      <div class="representative-health-row health-red" *ngSwitchCase="(rep.statusText == 'alert')">
+        <div class="health-icon"></div>
+        <div class="label">Bad Representative</div>
+      </div>
+      <div class="representative-health-row health-unknown" *ngSwitchDefault>
+        <div class="health-icon"></div>
+        <div class="label">Unknown Status</div>
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
-      <p class="primary"><b>{{ rep.label || 'Unknown' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
-      <p *ngIf="rep.statusText == 'ok'">You can change representative at any time by clicking on its name above.</p>
-      <p *ngIf="rep.statusText != 'ok'">Click to change to the suggested representative <b>{{ suggestedRep.alias }}</b>.</p>
+      <p class="primary"><b>{{ rep.label || 'Unknown Rep' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
+      <p>You can change representative at any time by clicking on its name above.</p>
       <div class="header-row">
         <div class="separator"></div>
         <h2>Health</h2>
         <div class="separator"></div>
       </div>
+      <p class="uk-text-danger" *ngIf="rep.status.markedToAvoid">
+        <span uk-icon="icon: warning;"></span>This representative is <b>marked as "avoid"</b> in the list of known reps.
+      </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 10%).
+        <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
         <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
       </p>
-      <p class="uk-text-danger" *ngIf="!rep.status.online">
-        <span uk-icon="icon: warning;"></span>This representative is <b>offline</b>.
+      <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.uptime > 0">
+        <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
-      <p class="uk-text-danger" *ngIf="rep.status.uptime < 80">
-        <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime }}% uptime).
+      <p class="uk-text-warning" *ngIf="rep.status.lowUptime && rep.status.uptime > 0">
+        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
-      <p class="uk-text-danger" *ngIf="rep.status.uptime < 90">
-        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime }}% uptime).
+      <p class="uk-text-danger" *ngIf="!rep.status.online && rep.status.uptime === 0">
+        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past 7 days</b>.
       </p>
-      <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
-        <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
-      </p>
-      <p *ngIf="rep.statusText != 'ok'">
-        It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
-      </p>
+      <ng-container [ngSwitch]="true">
+        <p *ngSwitchCase="(rep.statusText == 'trusted')">
+          You have marked this representative as trusted, meaning its status will remain "Good" even in case of severe issues with uptime or weight distribution.
+        </p>
+        <p class="uk-text-success" *ngSwitchCase="(rep.statusText == 'ok')">
+          <span uk-icon="icon: check;"></span>We found no issues with uptime or weight distribution of your current representative.
+        </p>
+        <p *ngSwitchCase="(rep.statusText == 'warn')">
+          Switching to a different representative could improve security and decentralization of the Nano network.
+        </p>
+        <p *ngSwitchCase="(rep.statusText == 'alert')">
+          It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
+        </p>
+        <p *ngSwitchDefault>
+          <span uk-icon="icon: question;"></span>We could not determine status of this representative.
+        </p>
+      </ng-container>
     </div>
   </div>
 </div>
 
-<!--
-<div class="nav-status-row interactable uk-animation-slide-left" (click)="showModal()" *ngIf="changeableRepresentatives.length">
+<div class="nav-status-row interactable uk-animation-slide-left" (click)="showRepSelectionForAllChangeableReps()" *ngIf="showRepChangeRequired">
   <div class="status-icon">
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
   <div class="status-labels">
-    <div class="label primary uk-text-warning">Update Representatives</div>
+    <div class="label primary uk-text-warning">Representative Change Required</div>
   </div>
 </div>
--->
-
-<div id="change-rep-modal" class="uk-flex-top uk-modal-container" uk-modal>
-  <div class="uk-modal-dialog">
-    <div class="uk-modal-header">
-      <h2 class="uk-modal-title">Representative Change Recommended</h2>
-    </div>
-    <div class="uk-modal-body">
-      <div class="uk-alert-primary uk-text-center" uk-alert>
-        Your representatives vote on transactions on your behalf to secure the Nano network.<br>
-        By changing the representatives below, you will help decentralize the network.
-      </div>
-
-      <ul class="" uk-accordion="multiple: true;" >
-        <li *ngFor="let rep of changeableRepresentatives; let i = index" class="uk-open" style="margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px;">
-          <a class="uk-accordion-title uk-text-truncate" href="#" style="padding-left: 5px; padding-bottom: 5px;"><span *ngIf="rep.label" class="uk-margin-small-right uk-label uk-label-danger">{{ rep.label }}</span> {{ rep.account | squeeze }}</a>
-
-          <div class="uk-accordion-content" style="margin-top: 0; border-top: 1px dotted #ccc;">
-            <ul style="margin-top: 10px; margin-bottom: 10px;" class="uk-text-danger">
-              <li *ngIf="!rep.status.online">Representative is offline</li>
-              <li *ngIf="rep.status.highWeight">Representative has high voting weight (>1%)</li>
-              <li *ngIf="rep.status.warn">Representative is marked as avoid</li>
-            </ul>
-
-            <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
-              <tbody>
-                <tr *ngFor="let account of rep.accounts">
-                  <td class="uk-width-3-4">
-                    <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span>
-                    {{ account.id | squeeze }}
-                  </td>
-                  <td class="uk-width-1-4">{{ account.balance | rai:'mnano' }}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </li>
-      </ul>
-
-      <p class="uk-text-center uk-text-small uk-text-muted">To bypass this warning, add your representative as trusted to your known representative list.</p>
-
-      <p class="uk-text-center uk-text-small uk-text-muted">
-        By clicking "change" you change to the suggested representative: <span *ngIf="suggestedRep.alias" class="uk-margin-small-right uk-label uk-label-default">{{ suggestedRep.alias }}</span><br>
-        Click "manual" to choose your new representative yourself.
-      </p>
-
-    </div>
-    <div class="uk-modal-footer">
-      <div uk-grid>
-        <div class="uk-width-1-2 uk-text-left">
-          <button class="uk-button uk-button-danger" type="button" (click)="closeModal()">Cancel</button>
-        </div>
-        <div class="uk-width-1-2 uk-text-right">
-          <div class="uk-button-group">
-            <button class="uk-button uk-button-default uk-margin-small-right" type="button" (click)="changeReps()">Manual</button>
-            <button class="uk-button uk-button-primary" type="button" (click)="changeToRep(suggestedRep.account)">Change</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-

@@ -33,8 +33,8 @@
                 <div uk-grid class="">
 
                   <div class="uk-width-1-5" [ngClass]="{ 'uk-text-danger': rep.statusText === 'alert', 'uk-text-warning': rep.statusText === 'warn', 'uk-text-success': rep.statusText === 'trusted', 'uk-text-primary': rep.statusText === 'ok' }">
-                    <span *ngIf="rep.statusText === 'alert'" uk-tooltip title="This is an official representative or it has very high (10%+) voting weight.  It is recommended to change to a new representative!"><span uk-icon="icon: warning"></span> Change</span>
-                    <span *ngIf="rep.statusText === 'warn'" uk-tooltip title="This representative has a high voting weight (1%+).  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
+                    <span *ngIf="rep.statusText === 'alert'" uk-tooltip title="This is an unknown or official representative, or it's marked because of bad uptime or high (3%+ of online) voting weight.  It is recommended to change to a new representative!"><span uk-icon="icon: warning"></span> Change</span>
+                    <span *ngIf="rep.statusText === 'warn'" uk-tooltip title="This representative has a bad uptime or a high (1%+ of online) voting weight.  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
                     <span *ngIf="rep.statusText === 'trusted'" uk-tooltip title="This representative is marked as trusted.  No change is needed."><span uk-icon="icon: star"></span> Trusted</span>
                     <span *ngIf="rep.statusText === 'ok'" uk-tooltip title="This representative is saved in your list, as long as it is online, no change is needed."><span uk-icon="icon: check"></span> Okay</span>
                     <span *ngIf="rep.statusText === 'none'" uk-tooltip title="This representative is not known, consider switching to a known one or add this one to your list"><span uk-icon="icon: question"></span> Unknown</span>
@@ -100,9 +100,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">New Representative</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-
-
-
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Representative Account ID" #repInput>
 
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">

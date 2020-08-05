@@ -7,7 +7,7 @@ on:
       - '*'
     tags:
       - '*'
-  #pull_request:
+  pull_request:
 
 jobs:
   build_and_push:
@@ -23,3 +23,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: nault/nault
           tag_with_ref: true
+          push: ${{ startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/') }}
