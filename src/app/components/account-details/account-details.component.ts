@@ -111,7 +111,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
-      this.remoteVisible = params.sign == 1;
+      this.remoteVisible = params.sign === 1;
     }
 
     this.routerSub = this.route.events.subscribe(event => {
@@ -210,7 +210,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     // If the account doesnt exist, set the pending balance manually
     if (this.account.error) {
-      const pendingRaw = this.pendingBlocks.reduce((prev: BigNumber, current: any) => prev.plus(new BigNumber(current.amount)), new BigNumber(0));
+      const pendingRaw = this.pendingBlocks.reduce(
+        (prev: BigNumber, current: any) => prev.plus(new BigNumber(current.amount)),
+        new BigNumber(0)
+      );
       this.account.pending = pendingRaw;
     }
 
@@ -349,7 +352,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   searchRepresentatives() {
-    if (this.representativeModel != '' && !this.util.account.isValidAccount(this.representativeModel)) this.repStatus = 0;
+    if (this.representativeModel !== '' && !this.util.account.isValidAccount(this.representativeModel)) this.repStatus = 0;
     else this.repStatus = null;
 
     this.showRepresentatives = true;
@@ -407,7 +410,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount)
+    .times(this.price.price.lastPrice)
+    .times(precision)
+    .floor().div(precision).toNumber();
+
     this.amountFiat = fiatAmount;
   }
 
@@ -453,7 +460,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!this.util.account.isValidAccount(this.toAccountID)) return this.toAccountStatus = 0;
     const accountInfo = await this.api.accountInfo(this.toAccountID);
     if (accountInfo.error) {
-      if (accountInfo.error == 'Account not found') {
+      if (accountInfo.error === 'Account not found') {
         this.toAccountStatus = 1;
       } else {
         this.toAccountStatus = 0;
@@ -526,7 +533,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const remaining = new BigNumber(from.balance).minus(this.rawAmount);
     const remainingDecimal = remaining.toString(10);
 
-    const representative = from.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
+    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative();
+    const representative = from.representative || defaultRepresentative;
     const blockData = {
       account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
       previous: from.frontier,
@@ -534,7 +542,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       balance: remainingDecimal,
       link: this.util.account.getAccountPublicKey(this.toAccountID),
     };
-    this.blockHash = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    this.blockHash = nanocurrency.hashBlock({
+      account: blockData.account,
+      link: blockData.link,
+      previous: blockData.previous,
+      representative: blockData.representative,
+      balance: blockData.balance
+    });
     console.log('Created block', blockData);
     console.log('Block hash: ' + this.blockHash);
 
@@ -571,7 +585,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const openEquiv = !toAcct || !toAcct.frontier; // if open block
 
     const previousBlock = toAcct.frontier || this.zeroHash; // set to zeroes if open block
-    const representative = toAcct.representative || (this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative());
+    const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative();
+    const representative = toAcct.representative || defaultRepresentative;
 
     const srcBlockInfo = await this.api.blocksInfo([pendingHash]);
     const srcAmount = new BigNumber(srcBlockInfo.blocks[pendingHash].amount);
@@ -586,7 +601,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       link: pendingHash,
     };
 
-    this.blockHashReceive = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    this.blockHashReceive = nanocurrency.hashBlock({
+      account: blockData.account,
+      link: blockData.link,
+      previous: blockData.previous,
+      representative: blockData.representative,
+      balance: blockData.balance
+    });
     console.log('Created block', blockData);
     console.log('Block hash: ' + this.blockHashReceive);
 
@@ -606,9 +627,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       };
     }
 
+    let qrData;
+    if (blockDataPrevious) {
+      qrData = {
+        block: blockData,
+        previous: blockDataPrevious
+      };
+    } else {
+      qrData = {
+        block: blockData
+      };
+    }
+
     // Nano signing standard
-    if (blockDataPrevious) this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}';
-    else this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + '}';
+    this.qrString = 'nanosign:' + JSON.stringify(qrData);
 
     const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
     this.qrCodeImageBlockReceive = qrCode;
@@ -634,7 +666,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       link: this.zeroHash,
     };
 
-    this.blockHash = nanocurrency.hashBlock({account: blockData.account, link: blockData.link, previous: blockData.previous, representative: blockData.representative, balance: blockData.balance});
+    this.blockHash = nanocurrency.hashBlock({
+      account: blockData.account,
+      link: blockData.link,
+      previous: blockData.previous,
+      representative: blockData.representative,
+      balance: blockData.balance
+    });
+
     console.log('Created block', blockData);
     console.log('Block hash: ' + this.blockHash);
 
