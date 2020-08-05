@@ -17,6 +17,10 @@
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
+      <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
+        <div class="health-icon"></div>
+        <div class="label">Good Representative</div>
+      </div>
       <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'ok')">
         <div class="health-icon"></div>
         <div class="label">Good Representative</div>
@@ -61,8 +65,11 @@
         <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past 7 days</b>.
       </p>
       <ng-container [ngSwitch]="true">
+        <p *ngSwitchCase="(rep.statusText == 'trusted')">
+          You have marked this representative as trusted, meaning its status will remain "Good" even in case of severe issues with uptime or weight distribution.
+        </p>
         <p class="uk-text-success" *ngSwitchCase="(rep.statusText == 'ok')">
-          <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
+          <span uk-icon="icon: check;"></span>We found no issues with uptime or weight distribution of your current representative.
         </p>
         <p *ngSwitchCase="(rep.statusText == 'warn')">
           Switching to a different representative could improve security and decentralization of the Nano network.
