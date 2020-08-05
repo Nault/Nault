@@ -44,7 +44,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { useHash: environment.desktop }), // On the desktop apps, use hashes so it works properly using only index.html
+    // On the desktop apps, use hashes so it works properly using only index.html
+    RouterModule.forRoot(routes, { useHash: environment.desktop }),
   ],
   declarations: [],
   exports: [RouterModule]

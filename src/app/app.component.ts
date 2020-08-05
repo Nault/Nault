@@ -80,7 +80,8 @@ export class AppComponent implements OnInit {
 
     this.representative.loadRepresentativeList();
 
-    // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet (if not receive priority is set to manual)
+    // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
+    // (if not receive priority is set to manual)
     if (this.wallet.locked && this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption !== 'manual') {
       this.notifications.sendWarning(`New incoming transaction(s) - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
     } else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
