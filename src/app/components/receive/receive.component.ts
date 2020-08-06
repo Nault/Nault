@@ -21,7 +21,7 @@ import BigNumber from 'bignumber.js';
 export class ReceiveComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
 
-  pendingAccountModel = 0;
+  pendingAccountModel = '0';
   pendingBlocks = [];
   qrCodeImage = null;
   qrAccount = "";
@@ -41,6 +41,11 @@ export class ReceiveComponent implements OnInit {
     setTimeout(() => {
       this.getPending();
     }, 100);
+
+    // Set the account selected in the sidebar as default
+    if (this.walletService.wallet.selectedAccount !== null) {
+      this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
+    }
   }
 
   async loadPendingForAll() {

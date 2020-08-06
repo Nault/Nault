@@ -16,10 +16,10 @@
       </div>
 
     <div uk-grid>
-      <div class="uk-width-expand@s">
+      <div class="uk-width-3-4@s">
         <select class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
           <option [value]="0">All Accounts</option>
-          <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+          <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
         </select>
       </div>
       <div class="uk-width-auto@s">
