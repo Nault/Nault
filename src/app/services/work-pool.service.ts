@@ -12,7 +12,7 @@ export class WorkPoolService {
   constructor(private pow: PowService, private notifications: NotificationService) { }
 
   public workExists(hash) {
-    return !!this.workCache.find(p => p.hash == hash);
+    return !!this.workCache.find(p => p.hash === hash);
   }
 
   // A simple helper, which doesn't wait for a response (Used for pre-loading work)
@@ -22,7 +22,7 @@ export class WorkPoolService {
 
   // Remove a hash from from the cache
   public removeFromCache(hash) {
-    const cachedIndex = this.workCache.findIndex(p => p.hash == hash);
+    const cachedIndex = this.workCache.findIndex(p => p.hash === hash);
     if (cachedIndex === -1) return;
 
     this.workCache.splice(cachedIndex, 1);
@@ -43,7 +43,7 @@ export class WorkPoolService {
 
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash, multiplier= 1) {
-    const cached = this.workCache.find(p => p.hash == hash);
+    const cached = this.workCache.find(p => p.hash === hash);
     if (cached && cached.work) {
       console.log('Using cached work: ' + cached.work);
       return cached.work;
@@ -69,7 +69,7 @@ export class WorkPoolService {
   private saveWorkCache() {
     // Remove duplicates
     this.workCache = this.workCache.reduce((previous, current) => {
-      if (!previous.find(p => p.hash == current.hash)) previous.push(current);
+      if (!previous.find(p => p.hash === current.hash)) previous.push(current);
       return previous;
     }, []);
 

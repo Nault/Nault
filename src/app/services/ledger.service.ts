@@ -251,7 +251,7 @@ export class LedgerService {
           this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         } catch (err) {
           console.log(`Transport error: `, err);
-          if (err.statusText == 'UNKNOWN_ERROR') {
+          if (err.statusText === 'UNKNOWN_ERROR') {
             this.resetLedger();
           }
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
@@ -265,7 +265,7 @@ export class LedgerService {
           this.ledger.nano = new Nano(this.ledger.transport);
         } catch (err) {
           console.log(`Nano error: `, err);
-          if (err.statusText == 'UNKNOWN_ERROR') {
+          if (err.statusText === 'UNKNOWN_ERROR') {
             this.resetLedger();
           }
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
@@ -303,7 +303,7 @@ export class LedgerService {
         }
       } catch (err) {
         console.log(`App config error: `, err);
-        if (err.statusText == 'HALTED') {
+        if (err.statusText === 'HALTED') {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
@@ -427,7 +427,7 @@ export class LedgerService {
   }
 
   async checkLedgerStatus() {
-    if (this.ledger.status != LedgerStatus.READY) {
+    if (this.ledger.status !== LedgerStatus.READY) {
       return;
     }
 

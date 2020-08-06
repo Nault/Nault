@@ -24,7 +24,12 @@ export class PowService {
   parallelQueue = false;
   processingQueueItem = false;
 
-  constructor(private appSettings: AppSettingsService, private api: ApiService, private notifications: NotificationService, private util: UtilService) { }
+  constructor(
+    private appSettings: AppSettingsService,
+    private api: ApiService,
+    private notifications: NotificationService,
+    private util: UtilService
+  ) { }
 
   /**
    * Determine the best PoW Method available for this browser
@@ -41,7 +46,7 @@ export class PowService {
    * Otherwise, add it into the queue and return when it is ready
    */
   async getPow(hash, multiplier) {
-    const existingPoW = this.PoWPool.find(p => p.hash == hash);
+    const existingPoW = this.PoWPool.find(p => p.hash === hash);
     if (existingPoW) {
       return existingPoW.promise.promise; // Its okay if its resolved already
     }
@@ -54,7 +59,7 @@ export class PowService {
    * Returns a promise that is resolved when work is completed
    */
   addQueueItem(hash, multiplier) {
-    const existingPoW = this.PoWPool.find(p => p.hash == hash);
+    const existingPoW = this.PoWPool.find(p => p.hash === hash);
     if (existingPoW) {
       return existingPoW.promise.promise;
     }
@@ -131,7 +136,7 @@ export class PowService {
     switch (powSource) {
       default:
       case 'server':
-        work = (await this.api.workGenerate(queueItem.hash).then(work => work.work).catch(async err => await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier)));
+        work = this.getHashServer(queueItem.hash, queueItem.multiplier);
         break;
       case 'clientCPU':
         work = await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier);
@@ -160,6 +165,11 @@ export class PowService {
   /**
    * Actual PoW functions
    */
+  async getHashServer(hash, multiplier) {
+    return await this.api.workGenerate(hash)
+    .then(work => work.work)
+    .catch(async err => await this.getHashCPUWorker(hash, multiplier));
+  }
 
   /**
    * Generate PoW using CPU without workers (Not used)
@@ -170,7 +180,7 @@ export class PowService {
     const PoW = mod.cwrap('launchPoW', 'string', ['string']);
     const start = Date.now();
     let work;
-    do { work = PoW(hash); } while (work == '0000000000000000');
+    do { work = PoW(hash); } while (work === '0000000000000000');
     console.log(`Synchronous CPU: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds`);
 
     response.resolve(work);
@@ -212,11 +222,13 @@ export class PowService {
           workerCount: workerCount,
           workThreshold: newThreshold,
         });
-        worker.onmessage = (work) => {
-          console.log(`CPU Worker: Found work (${work.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
-          response.resolve(work.data);
+        worker.onmessage = (workerwork) => {
+          console.log(`CPU Worker: Found work (${workerwork.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
+          response.resolve(workerwork.data);
           for (const workerIndex in workerList) {
-            workerList[workerIndex].terminate();
+            if (Object.prototype.hasOwnProperty.call(workerList, workerIndex)) {
+              workerList[workerIndex].terminate();
+            }
           }
           resolve();
         };

@@ -54,7 +54,7 @@ export class WebsocketService {
 
     ws.onopen = event => {
       this.socket.connected = true;
-      this.queuedCommands.forEach(event => ws.send(JSON.stringify(event)));
+      this.queuedCommands.forEach(queueevent => ws.send(JSON.stringify(queueevent)));
 
       // Resubscribe to accounts?
       if (this.subscribedAccounts.length) {

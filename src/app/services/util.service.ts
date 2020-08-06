@@ -93,6 +93,7 @@ function hexToUint4(hexValue) {
   return uint4;
 }
 function hexToUint8(hexValue) {
+  // tslint:disable-next-line:no-bitwise
   const length = (hexValue.length / 2) | 0;
   const uint8 = new Uint8Array(length);
   for (let i = 0; i < length; i++) uint8[i] = parseInt(hexValue.substr(i * 2, 2), 16);
@@ -116,6 +117,7 @@ function uint4ToUint8(uintValue) {
   return uint8;
 }
 
+// tslint:disable:no-bitwise
 function uint4ToUint5(uintValue) {
   const length = uintValue.length / 5 * 4;
   const uint5 = new Uint8Array(length);
@@ -125,12 +127,13 @@ function uint4ToUint5(uintValue) {
     const z = n + ((i - m) / 4);
     const right = uintValue[z] << m;
     let left;
-    if (((length - i) % 4) == 0)	left = uintValue[z - 1] << 4;
+    if (((length - i) % 4) === 0)	left = uintValue[z - 1] << 4;
     else	left = uintValue[z + 1] >> (4 - m);
     uint5[n] = (left + right) % 32;
   }
   return uint5;
 }
+// tslint:enable:no-bitwise
 
 function uint4ToHex(uint4) {
   let hex = '';
@@ -148,6 +151,7 @@ function uint5ToString(uint5) {
   return string;
 }
 
+// tslint:disable:no-bitwise
 function uint5ToUint4(uint5) {
   const length = uint5.length / 4 * 5;
   const uint4 = new Uint8Array(length);
@@ -161,6 +165,7 @@ function uint5ToUint4(uint5) {
   }
   return uint4;
 }
+// tslint:enable:no-bitwise
 
 
 /** Uint8 Functions **/
@@ -169,7 +174,7 @@ function uint8ToHex(uintValue) {
   let aux;
   for (let i = 0; i < uintValue.length; i++) {
     aux = uintValue[i].toString(16).toUpperCase();
-    if (aux.length == 1) {
+    if (aux.length === 1) {
       aux = '0' + aux;
     }
     hex += aux;
@@ -179,6 +184,7 @@ function uint8ToHex(uintValue) {
   return(hex);
 }
 
+// tslint:disable:no-bitwise
 function uint8ToUint4(uintValue) {
   const uint4 = new Uint8Array(uintValue.length * 2);
   for (let i = 0; i < uintValue.length; i++) {
@@ -188,10 +194,12 @@ function uint8ToUint4(uintValue) {
 
   return uint4;
 }
+// tslint:enable:no-bitwise
 
 
 /** Dec Functions **/
 function decToHex(decValue, bytes = null) {
+  // tslint:disable-next-line:prefer-const
   let dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s;
   while (dec.length) {
     s = 1 * dec.shift();
@@ -207,7 +215,7 @@ function decToHex(decValue, bytes = null) {
 
   hex = hexArray.join('');
 
-  if (hex.length % 2 != 0) {
+  if (hex.length % 2 !== 0) {
     hex = '0' + hex;
   }
 
@@ -240,7 +248,7 @@ function stringToUint5(string) {
 
 function isNumeric(val) {
   // numerics and last character is not a dot and number of dots is 0 or 1
-  const isnum = /^-?\d*\.?\d*$/.test(val) && val != '';
+  const isnum = /^-?\d*\.?\d*$/.test(val) && val !== '';
   return isnum && String(val).slice(-1) !== '.';
 }
 
@@ -296,7 +304,7 @@ function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
     throw new Error(`Invalid Mikron Account`);
   }
-  const account_crop = account.length == 64 ? account.substring(4, 64) : account.substring(5, 65);
+  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
   if (!isValid) throw new Error(`Invalid NANO account`);
 
@@ -422,7 +430,7 @@ function array_crop (array) {
 
 function equal_arrays (array1, array2) {
   for (let i = 0; i < array1.length; i++) {
-    if (array1[i] != array2[i])	return false;
+    if (array1[i] !== array2[i])	return false;
   }
   return true;
 }

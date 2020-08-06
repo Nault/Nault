@@ -307,7 +307,8 @@ export class NanoBlockService {
   }
 
   // for signing block when offline
-  async signOfflineBlock(walletAccount: WalletAccount, block: StateBlock, prevBlock: StateBlock, type: TxType, genWork: boolean, multiplier: number, ledger = false) {
+  async signOfflineBlock(walletAccount: WalletAccount, block: StateBlock, prevBlock: StateBlock,
+    type: TxType, genWork: boolean, multiplier: number, ledger = false) {
     // special treatment if open block
     const openEquiv = type === TxType.open;
     console.log('Signing block of subtype: ' + TxType[type]);

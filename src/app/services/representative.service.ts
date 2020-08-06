@@ -234,7 +234,7 @@ export class RepresentativeService {
     for (const account of accounts) {
       if (!account || !account.representative) continue; // Account doesn't exist yet
 
-      const existingRep = representatives.find(rep => rep.id == account.representative);
+      const existingRep = representatives.find(rep => rep.id === account.representative);
       if (existingRep) {
         existingRep.weight = existingRep.weight.plus(new BigNumber(account.balance));
         existingRep.accounts.push(account);
@@ -328,7 +328,7 @@ export class RepresentativeService {
   }
 
   getRepresentative(id): StoredRepresentative | undefined {
-    return this.representatives.find(rep => rep.id == id);
+    return this.representatives.find(rep => rep.id === id);
   }
 
   // Reset representatives list to the default one
@@ -347,7 +347,9 @@ export class RepresentativeService {
     if (trusted) newRepresentative.trusted = true;
     if (warn) newRepresentative.warn = true;
 
-    const existingRepresentative = this.representatives.find(r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase());
+    const existingRepresentative = this.representatives.find(
+      r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase()
+    );
     if (existingRepresentative) {
       this.representatives.splice(this.representatives.indexOf(existingRepresentative), 1, newRepresentative);
     } else {

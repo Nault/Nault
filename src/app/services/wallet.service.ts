@@ -122,7 +122,7 @@ export class WalletService {
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
 
-      if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+      if (transaction.block.type === 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         // Perform an automatic receive
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
         if (walletAccount) {
@@ -135,7 +135,9 @@ export class WalletService {
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount, transaction.block.link_as_account);
           await this.processPendingBlocks();
         }
-      } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+      } else if (transaction.block.type === 'state'
+      && transaction.block.subtype === 'send'
+      && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
           this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
         } else if (this.appSettings.settings.pendingOption === 'manual') {
@@ -144,12 +146,7 @@ export class WalletService {
 
         await this.processStateBlock(transaction);
 
-      } else if (transaction.block.type == 'state') {
-        /* Don't understand when this is ever needed / Json
-        if (this.wallet.locked) {
-          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-        }*/
-
+      } else if (transaction.block.type === 'state') {
         await this.processStateBlock(transaction);
       }
 
@@ -166,7 +163,7 @@ export class WalletService {
     console.log('Processing state block', transaction);
 
     // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
-    if (transaction.block.subtype == 'send' && transaction.block.link_as_account) {
+    if (transaction.block.subtype === 'send' && transaction.block.link_as_account) {
       // This is an incoming send block, we want to perform a receive
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
@@ -187,7 +184,11 @@ export class WalletService {
         if (txAmount.gt(minAmount)) {
           this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
         } else {
-          console.log(`Found new pending block that was below minimum receive amount: `, transaction.amount, this.appSettings.settings.minimumReceive);
+          console.log(
+            `Found new pending block that was below minimum receive amount: `,
+            transaction.amount,
+            this.appSettings.settings.minimumReceive
+          );
         }
       } else {
         this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
@@ -208,7 +209,7 @@ export class WalletService {
   }
 
   getWalletAccount(accountID) {
-    return this.wallet.accounts.find(a => a.id == accountID);
+    return this.wallet.accounts.find(a => a.id === accountID);
   }
 
 
@@ -672,7 +673,7 @@ export class WalletService {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
       // Find the account, update it
       // const prefixedAccount = this.util.account.setPrefix(accountID, this.appSettings.settings.displayPrefix);
-      const walletAccount = this.wallet.accounts.find(a => a.id == accountID);
+      const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
       // console.log(`Finding account by id: ${accountID} - prefixed: ${accountID} - resulting account: `, walletAccount);
       if (!walletAccount) continue;
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
@@ -838,7 +839,7 @@ export class WalletService {
 
   addPendingBlock(accountID, blockHash, amount, source) {
     if (this.successfulBlocks.indexOf(blockHash) !== -1) return; // Already successful with this block
-    const existingHash = this.wallet.pendingBlocks.find(b => b.hash == blockHash);
+    const existingHash = this.wallet.pendingBlocks.find(b => b.hash === blockHash);
     if (existingHash) return; // Already added
 
     this.wallet.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount, source: source });
@@ -847,7 +848,7 @@ export class WalletService {
 
   // Remove a pending account from the pending list
   async removePendingBlock(blockHash) {
-    const index = this.wallet.pendingBlocks.findIndex(b => b.hash == blockHash);
+    const index = this.wallet.pendingBlocks.findIndex(b => b.hash === blockHash);
     this.wallet.pendingBlocks.splice(index, 1);
   }
 
@@ -873,7 +874,7 @@ export class WalletService {
       if (!pending.blocks.hasOwnProperty(account)) continue;
       for (const block in pending.blocks[account]) {
         if (!pending.blocks[account].hasOwnProperty(block)) continue;
-        if (pending.blocks[account] == '') continue; // Accounts show up as nothing with threshold there...
+        if (pending.blocks[account] === '') continue; // Accounts show up as nothing with threshold there...
 
         this.addPendingBlock(account, block, pending.blocks[account][block].amount, pending.blocks[account][block].source);
       }
@@ -901,7 +902,7 @@ export class WalletService {
     this.processingPending = true;
 
     const nextBlock = this.wallet.pendingBlocks[0];
-    if (this.successfulBlocks.find(b => b.hash == nextBlock.hash)) {
+    if (this.successfulBlocks.find(b => b.hash === nextBlock.hash)) {
       return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
     }
     const walletAccount = this.getWalletAccount(nextBlock.account);
