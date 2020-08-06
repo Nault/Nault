@@ -51,9 +51,9 @@
             <tr *ngFor="let block of pendingBlocks">
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel == 0" class="uk-visible-toggle">
                 <div uk-grid>
-                  <div class="uk-width-expand uk-text-truncate">
+                  <div class="uk-width-auto uk-text-truncate">
                     <a [routerLink]="'/account/' + block.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.account | squeeze }}
+                      <app-nano-account-id [accountID]="block.account" middle="off"></app-nano-account-id>
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">
@@ -65,9 +65,9 @@
               </td>
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel == 0" class="uk-visible-toggle">
                 <div uk-grid>
-                  <div class="uk-width-expand uk-text-truncate">
+                  <div class="uk-width-auto uk-text-truncate">
                     <a [routerLink]="'/account/' + block.source" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.source | squeeze }}
+                      <app-nano-account-id [accountID]="block.source" middle="off"></app-nano-account-id>
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">

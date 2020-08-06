@@ -24,26 +24,40 @@
             <div *ngIf="!showEditAddressBook" uk-grid>
               <div class="uk-width-1-1">
                 <div *ngIf="addressBookEntry">
-                    <h3 class="uk-card-title">{{ addressBookEntry }}</h3>
-                    <div class="uk-text-small uk-text-truncate">
+                  <div class="uk-width-1-1">
+                    <div uk-grid>
+                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{ addressBookEntry }}</h3>
+                      <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
+                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
+                      </div>
+                    </div>
+                  </div>
+                  <div uk-grid>
+                    <div class="uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
                     </div>
+                    <div class="uk-width-auto" style="padding-left: 10px; margin-top: -3px;">
+                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </div>
+                  </div>
                 </div>
 
                 <div *ngIf="!addressBookEntry">
-                  <h3 class="uk-card-title uk-text-truncate" style="margin-bottom: 0;">
-                    <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
-                  </h3>
+                  <div uk-grid>
+                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
+                      <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                    </h3>
+                    <div class="uk-width-auto">
+                      <ul class="uk-iconnav" style="margin-top: 5px;">
+                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
+                        <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-          </div>
-          <div class="uk-width-auto">
-            <ul class="uk-iconnav">
-              <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
-              <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-            </ul>
           </div>
         </div>
       </div>
@@ -188,7 +202,7 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-expand uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate">
                       <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
@@ -213,7 +227,7 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-expand uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate">
                       <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
