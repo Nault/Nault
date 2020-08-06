@@ -23,10 +23,10 @@
             </div>
             <div *ngIf="!showEditAddressBook" uk-grid>
               <div class="uk-width-1-1">
-                <div *ngIf="addressBookEntry">
+                <div *ngIf="addressBookEntry || walletAccount">
                   <div class="uk-width-1-1">
                     <div uk-grid>
-                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{ addressBookEntry }}</h3>
+                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{ addressBookEntry ? addressBookEntry : ('Account #' + walletAccount.index)}}</h3>
                       <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
                         <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
                       </div>
@@ -42,7 +42,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="!addressBookEntry">
+                <div *ngIf="!addressBookEntry && !walletAccount">
                   <div uk-grid>
                     <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
                       <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
