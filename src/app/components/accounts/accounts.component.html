@@ -39,9 +39,9 @@
             <div uk-grid>
               <div class="uk-width-expand uk-text-truncate">
                 <div class="uk-width-1-1">
-                  <span class="account-index">
+                  <a class="account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
-                  </span>
+                  </a>
                 </div>
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
