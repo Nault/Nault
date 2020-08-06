@@ -157,7 +157,7 @@ export class RepresentativeService {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
         repStatus.changeRequired = true;
-      } else if (percent.gte(1)) {
+      } else if (percent.gte(2)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
