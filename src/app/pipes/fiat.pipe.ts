@@ -12,7 +12,7 @@ export class FiatPipe extends CurrencyPipe implements PipeTransform {
       return ``;
     }
     if (currencyCode === 'BTC') {
-      return `BTC ${new BigNumber(new Number(value).toFixed(4) || 0).toFixed(6)}`;
+      return `BTC ${new BigNumber(Number(value).toFixed(4) || 0).toFixed(6)}`;
     }
     return super.transform(value, currencyCode, 'symbol-narrow', digits, locale);
   }

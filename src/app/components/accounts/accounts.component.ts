@@ -49,7 +49,7 @@ export class AccountsComponent implements OnInit {
     // Advanced view, manual account index?
     let accountIndex = null;
     if (this.viewAdvanced && this.newAccountIndex != null) {
-      const index = parseInt(this.newAccountIndex);
+      const index = parseInt(this.newAccountIndex, 10);
       if (index < 0) return this.notificationService.sendWarning(`Invalid account index - must be positive number`);
       const existingAccount = this.walletService.wallet.accounts.find(a => a.index === index);
       if (existingAccount) {

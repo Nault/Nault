@@ -96,9 +96,9 @@ export class ChangeRepWidgetComponent implements OnInit {
         return [];
       }
 
-      const displayedReps = [ Object.assign( {}, selectedAccountRep ) ];
+      const displayedRepsAllAccounts = [ Object.assign( {}, selectedAccountRep ) ];
 
-      return this.includeRepRequiringChange(displayedReps);
+      return this.includeRepRequiringChange(displayedRepsAllAccounts);
     }
 
     const sortedRepresentatives: any[] = [...representatives];

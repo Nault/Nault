@@ -297,7 +297,7 @@ export class ConfigureAppComponent implements OnInit {
 
     const newSettings = {
       walletStore: newStorage,
-      lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
+      lockInactivityMinutes: Number(this.selectedInactivityMinutes),
       powSource: newPoW,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
