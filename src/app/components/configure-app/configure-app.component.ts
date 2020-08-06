@@ -171,8 +171,14 @@ export class ConfigureAppComponent implements OnInit {
     this.representativeList.push(...localReps);
   }
 
-  async updateNodeStats(refresh= false) {
-    if ((this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random') || (refresh && !this.statsRefreshEnabled) || this.selectedServer === 'offline') return;
+  async updateNodeStats(refresh = false) {
+    // random server and updated server is not chosen server
+    if (this.serverAPIUpdated !== this.appSettings.settings.serverAPI && this.selectedServer === 'random') return;
+    // refresh is not enabled
+    if (refresh && !this.statsRefreshEnabled) return;
+    // Offline mode selected
+    if (this.selectedServer === 'offline') return;
+
     this.statsRefreshEnabled = false;
     try {
       const blockCount = await this.api.blockCount();
@@ -197,19 +203,19 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value == settings.displayDenomination);
+    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
     this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
 
-    const matchingStorage = this.storageOptions.find(d => d.value == settings.walletStore);
+    const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
-    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value == settings.lockInactivityMinutes);
+    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value === settings.lockInactivityMinutes);
     this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
 
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
-    const matchingPendingOption = this.pendingOptions.find(d => d.value == settings.pendingOption);
+    const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
     this.serverOptions = this.appSettings.serverOptions;
@@ -268,7 +274,8 @@ export class ConfigureAppComponent implements OnInit {
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
-    const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive || (pendingOption !== 'manual' && pendingOption != this.appSettings.settings.pendingOption);
+    const reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
+    || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
       const valid = this.util.account.isValidAccount(this.defaultRepresentative);
@@ -347,14 +354,15 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
-    this.serverAPIUpdated = this.appSettings.settings.serverAPI; // this is updated after setting server to random and doing recheck of wallet balance
+    // this is updated after setting server to random and doing recheck of wallet balance
+    this.serverAPIUpdated = this.appSettings.settings.serverAPI;
     this.serverAPI = this.serverAPIUpdated;
     this.statsRefreshEnabled = true;
     this.updateNodeStats();
   }
 
   searchRepresentatives() {
-    if (this.defaultRepresentative != '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
+    if (this.defaultRepresentative !== '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
     else this.repStatus = null;
 
     this.showRepresentatives = true;
@@ -412,7 +420,7 @@ export class ConfigureAppComponent implements OnInit {
     this.nodeUncemented = 'N/A';
     this.nodeVendor = 'N/A';
     this.nodeNetwork = 'N/A';
-    this.statsRefreshEnabled = newServer == 'random' ? false : true;
+    this.statsRefreshEnabled = newServer === 'random' ? false : true;
 
     this.updateNodeStats();
   }

@@ -75,9 +75,9 @@ export class QrModalComponent implements OnInit {
       const url = new URL(resultString);
       content = url.pathname;
 
-      if ((url.protocol === 'nano:' || url.protocol === 'nanorep:' || url.protocol === 'xrb:') && this.util.account.isValidAccount(url.pathname)) {
+      if (['nano:', 'nanorep:', 'xrb:'].includes(url.protocol) && this.util.account.isValidAccount(url.pathname)) {
         type = 'account';
-      } else if ((url.protocol === 'nanoseed:' || url.protocol === 'nanokey:') && this.util.nano.isValidHash(url.pathname)) {
+      } else if (['nanoseed:', 'nanokey:'].includes(url.protocol) && this.util.nano.isValidHash(url.pathname)) {
         type = 'hash';
       }
     } else {

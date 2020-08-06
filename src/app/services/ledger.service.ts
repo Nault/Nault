@@ -27,6 +27,8 @@ export interface LedgerData {
   transport: any|null;
 }
 
+const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
+
 @Injectable()
 export class LedgerService {
   walletPrefix = `44'/165'/`;
@@ -93,7 +95,7 @@ export class LedgerService {
    * @param {any} filterFn
    * @returns {Promise<any>}
    */
-  async getDesktopResponse(eventType, filterFn = undefined) {
+  async getDesktopResponse(eventType, filterFn?) {
     return new Promise((resolve, reject) => {
       const sub = this.desktopMessage$
         .subscribe((response: any) => {
@@ -355,7 +357,7 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.contents.representative,
       balance: blockData.contents.balance,
-      previousBlock: blockData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.contents.previous,
+      previousBlock: blockData.contents.previous === zeroBlock ? null : blockData.contents.previous,
       sourceBlock: blockData.contents.link,
     };
 
@@ -374,7 +376,7 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.representative,
       balance: blockData.balance,
-      previousBlock: blockData.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.previous,
+      previousBlock: blockData.previous === zeroBlock ? null : blockData.previous,
       sourceBlock: blockData.link,
     };
 

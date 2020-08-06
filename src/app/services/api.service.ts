@@ -20,7 +20,7 @@ export class ApiService {
       this.node.setLoading();
     }
     let header;
-    if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth != '') {
+    if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth !== '') {
       header = {
         headers: new HttpHeaders()
           .set('Authorization',  this.appSettings.settings.serverAuth)
@@ -100,10 +100,12 @@ export class ApiService {
   async pendingLimitSorted(account, count, threshold): Promise<any> {
     return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true, sorting: true });
   }
-  async version(): Promise<{rpc_version: number, store_version: number, protocol_version: number, node_vendor: string, network: string, network_identifier: string, build_info: string }> {
+  async version(): Promise<{rpc_version: number, store_version: number, protocol_version: number, node_vendor: string, network: string,
+    network_identifier: string, build_info: string }> {
     return await this.request('version', { }, true);
   }
-  async confirmationQuorum(): Promise<{quorum_delta: string, online_weight_quorum_percent: number, online_weight_minimum: string, online_stake_total: string, peers_stake_total: string, peers_stake_required: string }> {
+  async confirmationQuorum(): Promise<{quorum_delta: string, online_weight_quorum_percent: number, online_weight_minimum: string,
+    online_stake_total: string, peers_stake_total: string, peers_stake_required: string }> {
     return await this.request('confirmation_quorum', { }, true);
   }
 }

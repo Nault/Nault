@@ -125,7 +125,7 @@ export class ChangeRepWidgetComponent implements OnInit {
         this.representatives
           .filter(
             (rep) =>
-              (rep.id == clickedRep.id)
+              (rep.id === clickedRep.id)
           )
           .map(
             (rep) =>
@@ -135,7 +135,9 @@ export class ChangeRepWidgetComponent implements OnInit {
       )
     );
 
-    this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: accountsToChangeRepFor, showRecommended: true } });
+    this.router.navigate(['/representatives'], {
+      queryParams: { hideOverview: true, accounts: accountsToChangeRepFor, showRecommended: true }
+    });
   }
 
   showRepSelectionForAllChangeableReps() {

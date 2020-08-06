@@ -115,7 +115,9 @@ export class SendComponent implements OnInit {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
+      .times(precision).floor().div(precision).toNumber();
+
     this.amountFiat = fiatAmount;
   }
 

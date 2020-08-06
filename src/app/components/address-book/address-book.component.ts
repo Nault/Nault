@@ -38,7 +38,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
       const elements = element.children;
 
       const result = [].slice.call(elements);
-      const datas = result.map(e => e.dataset.account);
+      const datas = result.map(el => el.dataset.account);
 
       this.addressBookService.setAddressBookOrder(datas);
       this.notificationService.sendSuccess(`Updated address book order`);

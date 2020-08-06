@@ -84,7 +84,9 @@ export class RepresentativesComponent implements OnInit {
 
     let repOverview = await this.representativeService.getRepresentativesOverview();
     // Sort by weight delegated
-    repOverview = repOverview.sort((a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber());
+    repOverview = repOverview.sort(
+      (a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber()
+    );
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
 
@@ -231,7 +233,10 @@ export class RepresentativesComponent implements OnInit {
   }
 
   calculatePage() {
-    this.recommendedRepsPaginated = this.recommendedReps.slice((this.currentRepPage * this.repsPerPage), (this.currentRepPage * this.repsPerPage) + this.repsPerPage);
+    this.recommendedRepsPaginated = this.recommendedReps.slice(
+      (this.currentRepPage * this.repsPerPage),
+      (this.currentRepPage * this.repsPerPage) + this.repsPerPage
+    );
   }
 
   selectRecommendedRep(rep) {
