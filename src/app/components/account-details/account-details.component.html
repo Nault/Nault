@@ -134,7 +134,7 @@
                     </div>
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
-                        <div class="uk-width-expand uk-text-truncate ">
+                        <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                           <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
                           <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
@@ -157,7 +157,7 @@
                   <div class="uk-width-1-3 uk-text-right">
                     <label>Enable Remote Signing</label>
                   </div>
-                  <div class="uk-width-1-3 uk-text-right">
+                  <div class="uk-width-1-3 uk-text-left">
                     <input class="uk-checkbox uk-margin-medium-left" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="remoteVisible">
                   </div>
                 </div>
