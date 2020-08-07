@@ -53,7 +53,7 @@
         <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
+        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 2%).
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.uptime > 0">
         <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).

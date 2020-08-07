@@ -129,7 +129,7 @@ export class RepresentativesComponent implements OnInit {
       return; // Already selected
     }
 
-    const allExists = this.selectedAccounts.find(a => a.id === 'All Accounts');
+    const allExists = this.selectedAccounts.find(a => a.id === 'All Current Accounts');
     if (newAccount === 'all' && !allExists) {
       this.selectedAccounts = []; // Reset the list before adding all
     }
@@ -138,7 +138,9 @@ export class RepresentativesComponent implements OnInit {
     }
 
     if (newAccount === 'all') {
-      this.selectedAccounts.push({ id: 'All Accounts' });
+      if (this.selectedAccounts.length === 0) {
+        this.selectedAccounts.push({ id: 'All Current Accounts' });
+      }
     } else {
       const walletAccount = this.wallet.getWalletAccount(newAccount);
       this.selectedAccounts.push(walletAccount);
@@ -268,7 +270,7 @@ export class RepresentativesComponent implements OnInit {
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }
 
-    const allAccounts = accounts.find(a => a.id === 'All Accounts');
+    const allAccounts = accounts.find(a => a.id === 'All Current Accounts');
     const accountsToChange = allAccounts ? this.wallet.wallet.accounts : accounts;
 
     // Remove any that don't need their represetatives to be changed

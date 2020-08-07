@@ -79,27 +79,28 @@ export class SendComponent implements OnInit {
     // Set default From account
     this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
 
-    // We want to look for the first account in the wallet that has a balance
+    // Set the account selected in the sidebar as default
+    if (this.walletService.wallet.selectedAccount !== null) {
+      this.fromAccountID = this.walletService.wallet.selectedAccount.id;
+    } else {
+      // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
 
-    // If the wallet balance is zero, this might be an initial load to the send page
-    // If it is, we want to load balances before we try to find the right account
-    if (this.walletService.wallet.balance.isZero()) {
-      await this.walletService.reloadBalances();
-    }
-
-    // Look for the first account that has a balance
-    const accountIDWithBalance = this.accounts.reduce((previous, current) => {
-      if (previous) {
-        return previous;
+      // If the wallet balance is zero, this might be an initial load to the send page
+      // If it is, we want to load balances before we try to find the right account
+      if (this.walletService.wallet.balance.isZero()) {
+        await this.walletService.reloadBalances();
       }
-      if (current.balance.gt(0)) {
-        return current.id;
-      }
-      return null;
-    }, null);
 
-    if (accountIDWithBalance) {
-      this.fromAccountID = accountIDWithBalance;
+      // Look for the first account that has a balance
+      const accountIDWithBalance = this.accounts.reduce((previous, current) => {
+        if (previous) return previous;
+        if (current.balance.gt(0)) return current.id;
+        return null;
+      }, null);
+
+      if (accountIDWithBalance) {
+        this.fromAccountID = accountIDWithBalance;
+      }
     }
   }
 

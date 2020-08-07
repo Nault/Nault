@@ -75,6 +75,10 @@ export class SweeperComponent implements OnInit {
     }
 
   async ngOnInit() {
+    // Set the account selected in the sidebar as default
+    if (this.walletService.wallet.selectedAccount !== null) {
+      this.myAccountModel = this.walletService.wallet.selectedAccount.id;
+    }
   }
 
   sleep(ms) {

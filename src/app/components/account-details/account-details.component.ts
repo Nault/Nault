@@ -54,7 +54,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   statsRefreshEnabled = true;
 
   // Remote signing
-  accounts = this.wallet.wallet.accounts;
   addressBookResults$ = new BehaviorSubject([]);
   showAddressBook = false;
   addressBookMatch = '';

@@ -1,4 +1,18 @@
 .account-index {
-  color: #d2d2d2;
+  color: #383844;
   margin-right: 5px;
+}
+
+.account-container {
+  max-width: calc(100% - 35px);
+}
+
+.copy-container {
+  padding-left: 10px;
+  padding-bottom: 3px;
+  display: grid;
+}
+
+.copy-icons {
+  align-self: end;
 }
