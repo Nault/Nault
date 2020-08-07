@@ -603,6 +603,7 @@ export class WalletService {
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
     this.wallet.selectedAccount = null;
+    this.wallet.selectedAccount$ = new BehaviorSubject(null);
   }
 
   isConfigured() {
