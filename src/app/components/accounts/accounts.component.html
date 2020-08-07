@@ -39,7 +39,7 @@
             <div uk-grid>
               <div class="uk-width-auto uk-text-truncate account-container">
                 <div class="uk-width-1-1">
-                  <a class="account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
+                  <a class="uk-label uk-label-default account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
                   </a>
                 </div>

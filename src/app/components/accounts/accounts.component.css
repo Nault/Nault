@@ -1,6 +1,9 @@
 .account-index {
-  color: #383844;
   margin-right: 5px;
+}
+
+.account-index:hover {
+  color: #333;
 }
 
 .account-container {
