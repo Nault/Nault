@@ -173,6 +173,7 @@ export class AppComponent implements OnInit {
     this.wallet.selectedAccount = account;
     this.wallet.selectedAccount$.next(account);
     this.toggleAccountsDropdown();
+    this.walletService.saveWalletExport();
   }
 
   performSearch() {

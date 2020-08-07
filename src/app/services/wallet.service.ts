@@ -272,6 +272,8 @@ export class WalletService {
       }
     }
 
+    this.wallet.selectedAccount = walletJson.selectedAccount;
+
     await this.reloadBalances(true);
 
     if (walletType === 'ledger') {
@@ -600,6 +602,7 @@ export class WalletService {
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
+    this.wallet.selectedAccount = null;
   }
 
   isConfigured() {
@@ -954,6 +957,7 @@ export class WalletService {
       type: this.wallet.type,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
       accountsIndex: this.wallet.accountsIndex,
+      selectedAccount: this.wallet.selectedAccount,
     };
 
     if (this.wallet.type === 'ledger') {
