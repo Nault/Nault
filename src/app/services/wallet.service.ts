@@ -272,7 +272,7 @@ export class WalletService {
       }
     }
 
-    this.wallet.selectedAccount = walletJson.selectedAccount;
+    this.wallet.selectedAccount = walletJson.selectedAccount || null;
 
     await this.reloadBalances(true);
 
