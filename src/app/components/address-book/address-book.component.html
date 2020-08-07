@@ -38,7 +38,7 @@
                     <div class="uk-width-expand uk-text-truncate">
                       <a (click)="editEntry(addressBook)" class="uk-link-text" title="Edit Account Label" uk-tooltip>{{ addressBook.name }}</a>
                     </div>
-                    <ul class="uk-hidden-hover uk-iconnav uk-width-auto" style="padding-left: 0;">
+                    <ul class="uk-iconnav uk-width-auto" style="padding-left: 0;">
                       <li><span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>
                     </ul>
                   </div>
@@ -50,7 +50,7 @@
                         <app-nano-account-id [accountID]="addressBook.account"></app-nano-account-id>
                       </a>
                     </div>
-                    <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+                    <ul class="uk-iconnav" style="padding-left: 10px;">
                       <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>

@@ -37,7 +37,7 @@
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
           <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
-              <div class="uk-width-expand uk-text-truncate">
+              <div class="uk-width-auto uk-text-truncate account-container">
                 <div class="uk-width-1-1">
                   <a class="account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
@@ -47,9 +47,8 @@
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
                 </a>
               </div>
-              <div class="uk-width-auto" style="padding-left: 10px;">
-                <ul class="uk-iconnav">
-                  <!--<li class="account-index">#{{ account.index }}</li>-->
+              <div class="uk-width-auto copy-container">
+                <ul class="uk-iconnav copy-icons">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
                 </ul>
