@@ -11,11 +11,11 @@ export class QrModalService {
     private modalService: NgbModal) { }
 
   /** Will return a promise that will only resolve if the type matches the QR string read and is valid
-   * 
+   *
    * @param reference Unique reference ID for example a text input
    * @param type String type to match in QR
    */
-  openQR(reference:string, type:QRType) {
+  openQR(reference: string, type: QRType) {
     const response = this.getDeferredPromise();
     const modalRef = this.modalService.open(QrModalComponent, {windowClass: 'scanner-modal'});
     modalRef.componentInstance.reference = reference;

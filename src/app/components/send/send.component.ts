@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import BigNumber from "bignumber.js";
-import {AddressBookService} from "../../services/address-book.service";
-import {BehaviorSubject} from "rxjs";
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ApiService} from "../../services/api.service";
-import {UtilService} from "../../services/util.service";
-import {WorkPoolService} from "../../services/work-pool.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {ActivatedRoute} from "@angular/router";
-import {PriceService} from "../../services/price.service";
-import {NanoBlockService} from "../../services/nano-block.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import BigNumber from 'bignumber.js';
+import {AddressBookService} from '../../services/address-book.service';
+import {BehaviorSubject} from 'rxjs';
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {ApiService} from '../../services/api.service';
+import {UtilService} from '../../services/util.service';
+import {WorkPoolService} from '../../services/work-pool.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import {ActivatedRoute} from '@angular/router';
+import {PriceService} from '../../services/price.service';
+import {NanoBlockService} from '../../services/nano-block.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 const nacl = window['nacl'];
 
@@ -45,10 +45,10 @@ export class SendComponent implements OnInit {
   fromAccountID: any = '';
   fromAddressBook = '';
   toAccount: any = false;
-  toAccountID: string = '';
+  toAccountID = '';
   toAddressBook = '';
   toAccountStatus = null;
-  confirmingTransaction: boolean = false;
+  confirmingTransaction = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -61,11 +61,11 @@ export class SendComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private util: UtilService,
-    private qrModalService: QrModalService,) { }
+    private qrModalService: QrModalService, ) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
-    
+
     if (params && params.amount) {
       this.amount = params.amount;
     }
@@ -116,7 +116,9 @@ export class SendComponent implements OnInit {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
+      .times(precision).floor().div(precision).toNumber();
+
     this.amountFiat = fiatAmount;
   }
 
@@ -161,7 +163,7 @@ export class SendComponent implements OnInit {
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);
     if (accountInfo.error) {
-      if (accountInfo.error == 'Account not found') {
+      if (accountInfo.error === 'Account not found') {
         this.toAccountStatus = 1;
       } else {
         this.toAccountStatus = 0;
@@ -174,12 +176,18 @@ export class SendComponent implements OnInit {
 
   async sendTransaction() {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
-    if (!isValid) return this.notificationService.sendWarning(`To account address is not valid`);
-    if (!this.fromAccountID || !this.toAccountID) return this.notificationService.sendWarning(`From and to account are required`);
+    if (!isValid) {
+      return this.notificationService.sendWarning(`To account address is not valid`);
+    }
+    if (!this.fromAccountID || !this.toAccountID) {
+      return this.notificationService.sendWarning(`From and to account are required`);
+    }
 
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
     const to = await this.nodeApi.accountInfo(this.toAccountID);
-    if (!from) return this.notificationService.sendError(`From account not found`);
+    if (!from) {
+      return this.notificationService.sendError(`From account not found`);
+    }
 
     from.balanceBN = new BigNumber(from.balance || 0);
     to.balanceBN = new BigNumber(to.balance || 0);
@@ -192,9 +200,15 @@ export class SendComponent implements OnInit {
 
     const nanoAmount = this.rawAmount.div(this.nano);
 
-    if (this.amount < 0 || rawAmount.lessThan(0)) return this.notificationService.sendWarning(`Amount is invalid`);
-    if (nanoAmount.lessThan(1)) return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.  Send raw amounts with at least 1 nano.`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough NANO`);
+    if (this.amount < 0 || rawAmount.lessThan(0)) {
+      return this.notificationService.sendWarning(`Amount is invalid`);
+    }
+    if (nanoAmount.lessThan(1)) {
+      return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.`);
+    }
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) {
+      return this.notificationService.sendError(`From account does not have enough NANO`);
+    }
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
     this.amountRaw = this.rawAmount.mod(this.nano);
@@ -211,21 +225,19 @@ export class SendComponent implements OnInit {
   }
 
   async confirmTransaction() {
-    const walletAccount = this.walletService.wallet.accounts.find(a => a.id == this.fromAccountID);
-    if (!walletAccount) throw new Error(`Unable to find sending account in wallet`);
-    if (this.walletService.walletIsLocked()) return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
+    if (!walletAccount) {
+      throw new Error(`Unable to find sending account in wallet`);
+    }
+    if (this.walletService.walletIsLocked()) {
+      return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    }
 
     this.confirmingTransaction = true;
 
     try {
-      // New stuff to show status of each part of the transaction.
-      // console.log('Sending sub send command....');
-      // this.nanoBlock.subscribeSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet()).subscribe(value => {
-      //   console.log('GOT VALUE!!! ', value)
-      // }, err => {
-      //   console.log('GOT ERROR!!!: ', err);
-      // });
-      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID, this.rawAmount, this.walletService.isLedgerWallet());
+      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID,
+        this.rawAmount, this.walletService.isLedgerWallet());
       if (newHash) {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
         this.activePanel = 'send';
@@ -239,11 +251,11 @@ export class SendComponent implements OnInit {
         this.addressBookMatch = '';
       } else {
         if (!this.walletService.isLedgerWallet()) {
-          this.notificationService.sendError(`There was an error sending your transaction, please try again.`)
+          this.notificationService.sendError(`There was an error sending your transaction, please try again.`);
         }
       }
     } catch (err) {
-      this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`)
+      this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`);
     }
 
 
@@ -254,7 +266,9 @@ export class SendComponent implements OnInit {
 
   setMaxAmount() {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
-    if (!walletAccount) return;
+    if (!walletAccount) {
+      return;
+    }
 
     this.amountRaw = walletAccount.balanceRaw;
 

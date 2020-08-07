@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService, NotificationService, RepresentativeService} from "../../services";
-import {ActivatedRoute, Router} from "@angular/router";
+import {WalletService, NotificationService, RepresentativeService} from '../../services';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as bip from 'bip39';
-import {LedgerService, LedgerStatus} from "../../services/ledger.service";
-import { QrModalService } from "../../services/qr-modal.service";
+import {LedgerService, LedgerStatus} from '../../services/ledger.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-configure-wallet',
@@ -46,12 +46,11 @@ export class ConfigureWalletComponent implements OnInit {
     private qrModalService: QrModalService,
     private ledgerService: LedgerService,
     private repService: RepresentativeService) {
-    if(this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed){
+    if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = 1;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
-    }
-    else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key){
-      this.activePanel = 1;      
+    } else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key) {
+      this.activePanel = 1;
       this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
       this.selectedImportOption = 'privateKey';
     }
@@ -66,7 +65,7 @@ export class ConfigureWalletComponent implements OnInit {
 
   onMethodChange(method) {
     if (method === 'ledger') {
-      this.importLedgerWallet(true)
+      this.importLedgerWallet(true);
     }
   }
 
@@ -258,7 +257,7 @@ export class ConfigureWalletComponent implements OnInit {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.seed || !importData.hasOwnProperty('accountsIndex')) {
-          return this.notifications.sendError(`Bad import data `)
+          return this.notifications.sendError(`Bad import data `);
         }
 
         const walletEncrypted = btoa(JSON.stringify(importData));

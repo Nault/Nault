@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {BaseApiAccount, WalletApiAccount, WalletService} from "./wallet.service";
-import BigNumber from "bignumber.js";
-import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
+import {BehaviorSubject} from 'rxjs';
+import {BaseApiAccount, WalletApiAccount, WalletService} from './wallet.service';
+import BigNumber from 'bignumber.js';
+import {ApiService} from './api.service';
+import {UtilService} from './util.service';
 import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
@@ -231,10 +231,10 @@ export class RepresentativeService {
    */
   getUniqueRepresentatives(accounts: WalletApiAccount[]): RepresentativeOverview[] {
     const representatives = [];
-    for (let account of accounts) {
+    for (const account of accounts) {
       if (!account || !account.representative) continue; // Account doesn't exist yet
 
-      const existingRep = representatives.find(rep => rep.id == account.representative);
+      const existingRep = representatives.find(rep => rep.id === account.representative);
       if (existingRep) {
         existingRep.weight = existingRep.weight.plus(new BigNumber(account.balance));
         existingRep.accounts.push(account);
@@ -259,7 +259,7 @@ export class RepresentativeService {
     const representatives = [];
     const reps = await this.api.representativesOnline();
     if (!reps) return representatives;
-    for (let representative in reps.representatives) {
+    for (const representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);
     }
@@ -328,7 +328,7 @@ export class RepresentativeService {
   }
 
   getRepresentative(id): StoredRepresentative | undefined {
-    return this.representatives.find(rep => rep.id == id);
+    return this.representatives.find(rep => rep.id === id);
   }
 
   // Reset representatives list to the default one
@@ -347,7 +347,9 @@ export class RepresentativeService {
     if (trusted) newRepresentative.trusted = true;
     if (warn) newRepresentative.warn = true;
 
-    const existingRepresentative = this.representatives.find(r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase());
+    const existingRepresentative = this.representatives.find(
+      r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase()
+    );
     if (existingRepresentative) {
       this.representatives.splice(this.representatives.indexOf(existingRepresentative), 1, newRepresentative);
     } else {

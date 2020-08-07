@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, ChildActivationEnd, Router} from "@angular/router";
-import {ApiService} from "../../services/api.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import BigNumber from "bignumber.js";
-import {AddressBookService} from "../../services/address-book.service";
+import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
+import {ApiService} from '../../services/api.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import BigNumber from 'bignumber.js';
+import {AddressBookService} from '../../services/address-book.service';
 
 @Component({
   selector: 'app-transaction-details',
@@ -66,13 +66,13 @@ export class TransactionDetailsComponent implements OnInit {
     const hashContents = JSON.parse(hashData.contents);
     hashData.contents = hashContents;
 
-    this.transactionJSON = JSON.stringify(hashData.contents, null ,4);
+    this.transactionJSON = JSON.stringify(hashData.contents, null , 4);
 
     this.blockType = hashData.contents.type;
     if (this.blockType === 'state') {
-      const isOpen = hashData.contents.previous === "0000000000000000000000000000000000000000000000000000000000000000";
+      const isOpen = hashData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000';
       if (isOpen) {
-        this.blockType = 'open'
+        this.blockType = 'open';
       } else {
         const prevRes = await this.api.blocksInfo([hashData.contents.previous]);
         const prevData = prevRes.blocks[hashData.contents.previous];
