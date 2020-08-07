@@ -161,10 +161,10 @@
         <div *ngIf="processedHash" class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="padding: 20px 20px;">
           <div class="uk-visible-toggle">
             <div uk-grid class="uk-width-auto">
-              <div class="uk-width-expand uk-text-truncate">
+              <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px); flex: auto;">
                 <span class="uk-text-success">Successfully processed block: </span><a [routerLink]="'/transaction/' + processedHash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ processedHash }}</a>
               </div>
-              <div class="uk-width-auto" style="padding-left: 10px;">
+              <div class="uk-width-auto" style="padding-left: 10px; flex: auto;">
                 <ul class="uk-iconnav">
                   <li><a ngxClipboard [cbContent]="processedHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Block Hash" uk-tooltip></a></li>
                 </ul>

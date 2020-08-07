@@ -65,7 +65,7 @@
               </td>
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel == 0" class="uk-visible-toggle">
                 <div uk-grid>
-                  <div class="uk-width-auto uk-text-truncate">
+                  <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                     <a [routerLink]="'/account/' + block.source" class="uk-link-text" title="View Account Details" uk-tooltip>
                       <app-nano-account-id [accountID]="block.source" middle="off"></app-nano-account-id>
                     </a>

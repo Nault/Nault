@@ -202,7 +202,7 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-auto uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
@@ -227,7 +227,7 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-auto uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
