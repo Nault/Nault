@@ -718,7 +718,7 @@
 		padding: 0;
 
 		&.uk-parent > a::after {
-			margin-right: 10px;
+			margin-right: 17px;
 		}
 
 		&.uk-parent.uk-open > a {
@@ -814,9 +814,10 @@
 
 .nav-search {
 	background: rgba(56, 56, 68, 0.3);
-	padding: 3px 15px 3px 18px;
-	border-bottom: 1px solid @nav-border-color;
+	padding: 3px 12px 3px 8px;
 	font-size: 14px;
+	border-radius: 10px;
+	margin: 10px 10px 5px 10px;
 
 	.uk-search-icon {
 		width: 30px;
@@ -825,5 +826,10 @@
 
 	input {
 		color: @nav-half-muted-color;
+		border: 0 !important;
 	}
+}
+
+.nav-container > .footer {
+	padding: 15px 0 20px 0;
 }
