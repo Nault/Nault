@@ -45,6 +45,7 @@ export class ReceiveComponent implements OnInit {
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
+      this.changeQRAccount(this.pendingAccountModel);
     }
   }
 
