@@ -190,13 +190,6 @@
           <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
           <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
           <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
-            <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
-            </ul>
-          </li>
-          <li class="uk-parent">
             <a href="#">Settings</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
@@ -205,17 +198,24 @@
               <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
+          <li class="uk-parent">
+            <a href="#">Advanced Tools</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+            </ul>
+          </li>
         </ul>
 
         <div class="nav-search">
           <form class="uk-search uk-search-default uk-width-1-1">
             <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
+            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
           </form>
         </div>
 
         <div class="footer uk-margin-remove-top" uk-grid>
-          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
+          <div class="uk-width-1-1 uk-text-center">
             <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
