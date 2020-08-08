@@ -32,11 +32,6 @@ export class AppComponent implements OnInit {
     private ledger: LedgerService,
     public price: PriceService) {
       router.events.subscribe(() => { this.navExpanded = false; });
-      const path = localStorage.getItem('path');
-      if (path) {
-        localStorage.removeItem('path');
-        this.router.navigate([path]);
-      }
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
@@ -133,6 +128,11 @@ export class AppComponent implements OnInit {
       this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
 
+    const path = localStorage.getItem('path');
+    if (path) {
+      localStorage.removeItem('path');
+      this.router.navigate([path]);
+    }
   }
 
   /*
