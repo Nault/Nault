@@ -25,7 +25,23 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+               "qrcode",
+               "bip39",
+               "@zxing/library",
+               "bignumber.js",
+               "nanocurrency",
+               "hw-app-nano",
+               "crypto-js",
+               "blakejs",
+               "nanocurrency-web",
+               "bignumber.js",
+               "u2f-api",
+               "create-hash",
+               "randombytes",
+               "pbkdf2"
+            ]
           },
           "configurations": {
             "production": {
