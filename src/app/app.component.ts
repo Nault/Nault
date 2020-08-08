@@ -71,6 +71,15 @@ export class AppComponent implements OnInit {
     this.workPool.loadWorkCache();
 
     await this.walletService.loadStoredWallet();
+
+    // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
+    // This data is saved from the 404.html page
+    const path = localStorage.getItem('path');
+    if (path) {
+      localStorage.removeItem('path');
+      this.router.navigate([path]);
+    }
+
     this.websocket.connect();
 
     this.representative.loadRepresentativeList();
@@ -126,12 +135,6 @@ export class AppComponent implements OnInit {
       await this.updateFiatPrices();
     } catch (err) {
       this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
-    }
-
-    const path = localStorage.getItem('path');
-    if (path) {
-      localStorage.removeItem('path');
-      this.router.navigate([path]);
     }
   }
 
