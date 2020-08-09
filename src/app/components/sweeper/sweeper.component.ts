@@ -395,6 +395,11 @@ export class SweeperComponent implements OnInit {
 
   // Process an account
   async processAccount(privKey, accountCallback) {
+    if (privKey.length !== 64) {
+      accountCallback();
+      return;
+    }
+
     this.pubKey = nanocurrency.derivePublicKey(privKey);
     const address = nanocurrency.deriveAddress(this.pubKey, {useNanoPrefix: true});
 
@@ -462,20 +467,22 @@ export class SweeperComponent implements OnInit {
     }.bind(this));
   }
 
-  sweepContinue () {
+  async sweepContinue () {
     this.sweeping = true;
     this.totalSwept = '0';
 
     const keyType = this.checkMasterKey(this.sourceWallet);
     if (this.validEndIndex && this.validStartIndex && this.validMaxIncoming) {
       let seed = '', privKey;
+      let bip39Seed = '';
       // input is mnemonic
       if (keyType === 'mnemonic') {
         seed = bip39.mnemonicToEntropy(this.sourceWallet).toUpperCase();
-        // seed must be 64 or the nano wallet can't be created.
-        // This is the reason 12-words can't be used because the seed would be 32 in length
-        if (seed.length !== 64) {
-          this.notificationService.sendError(`Mnemonic not 24 words`);
+        bip39Seed = bip39.mnemonicToSeedSync(this.sourceWallet).toString('hex');
+        // Seed must be 64 for regular nano blake derivation to happen
+        // For other lengths, only bip39/44 derivation is possible
+        if (seed.length !== 32 && seed.length !== 40 && seed.length !== 48 && seed.length !== 56 && seed.length !== 64) {
+          this.notificationService.sendError(`Mnemonic not 12,15,18,21 or 24 words`);
           return;
         }
       }
@@ -489,27 +496,26 @@ export class SweeperComponent implements OnInit {
         }
         this.processAccount(seed, function() {
           // done checking if private key, continue interpret as seed
-          let i;
           const privKeys = [];
-          // start with blake2b derivation
-          if (keyType !== 'bip39_seed') {
-            for (i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
+          // start with blake2b derivation (but not if the mnemonic is anything other than 24 words)
+          if (keyType !== 'bip39_seed' && seed.length === 64) {
+            for (let i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
               privKey = nanocurrency.deriveSecretKey(seed, i);
               privKeys.push([privKey, 'blake2b', i]);
             }
           }
           // also check all indexes using bip39/44 derivation
-          let bip39Seed;
           // take 128 char bip39 seed directly from input or convert it from a 64 char nano seed (entropy)
           if (keyType === 'bip39_seed') {
             bip39Seed = this.sourceWallet;
-          } else {
+          } else if (seed.length === 64) {
             bip39Seed = wallet.generate(seed).seed;
           }
 
+          if (bip39Seed.length !== 128) return this.notificationService.sendError(`Invalid input format! Please check.`);
           const accounts = wallet.accounts(bip39Seed, this.startIndex, this.endIndex);
           let k = 0;
-          for (i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
+          for (let i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
             privKey = accounts[k].privateKey;
             k += 1;
             privKeys.push([privKey, 'bip39/44', i]);
