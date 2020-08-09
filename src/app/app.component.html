@@ -43,7 +43,13 @@
             <div class="address">{{ account.id }}</div>
           </div>
           <div class="balance-column">
-            <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+            <div class="balance primary">
+              <span class="incoming-label" *ngIf="account.pending.gt(0)">
+                <span class="text-snippet">New</span>
+                <span class="text-full">+{{ account.pending | rai: 'mnano,true' }}</span>
+              </span>
+              {{ account.balance | rai: settings.settings.displayDenomination }}
+            </div>
             <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
           </div>
         </div>
