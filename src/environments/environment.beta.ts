@@ -30,5 +30,12 @@ export const environment = {
     'nano_3frak9fj7giaw8xn4bedyt7y1rh8na3dk6jz6gc8wkmrpo9xqe7jfg73ha1f', // frakilk
     'nano_3ninja4qi61cwarib1thbr3w94n6qk3s7tquwgwoeue4bwt9nnmwf43eug1z', // My Nano Ninja
     'nano_1kitteh45srbwthaxq11tj54awh1trwuyt6o56ya4ghqinqo3a3jisbjg4dd', // Kittehcoinoisseurus
+  ],
+  defaultRepresentatives: [
+    {
+      id: 'nano_3ninja4qi61cwarib1thbr3w94n6qk3s7tquwgwoeue4bwt9nnmwf43eug1z',
+      name: 'My Nano Ninja',
+      trusted: true
+    }
   ]
 };
