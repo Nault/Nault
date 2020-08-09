@@ -70,6 +70,14 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
+      name: 'VoxPopuli',
+      value: 'voxpopuli',
+      api: 'https://voxpopuli.network/api',
+      ws: 'wss://voxpopuli.network/websocket',
+      auth: null,
+      shouldRandom: false,
+    },
+    {
       name: 'Nanex.cc',
       value: 'nanex',
       api: 'https://api.nanex.cc',
