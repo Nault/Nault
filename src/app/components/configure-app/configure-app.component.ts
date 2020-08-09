@@ -175,8 +175,9 @@ export class ConfigureAppComponent implements OnInit {
     this.representativeList.push(...localReps);
   }
 
-  async updateNodeStats(refresh=false) {
-    if ((!this.serverAPIUpdated || (this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random'))) return
+  async updateNodeStats(refresh= false) {
+    if ((!this.serverAPIUpdated ||
+      (this.serverAPIUpdated !== this.appSettings.settings.serverAPI && this.selectedServer === 'random'))) return;
     // refresh is not enabled
     if (refresh && !this.statsRefreshEnabled) return;
     // Offline mode selected
@@ -184,21 +185,19 @@ export class ConfigureAppComponent implements OnInit {
 
     this.statsRefreshEnabled = false;
     try {
-      let blockCount = await this.api.blockCount()
-      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US')
-      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US')
-      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US')
-      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US')
-    }
-    catch {console.warn("Failed to get node stats: block count")}
+      const blockCount = await this.api.blockCount();
+      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US');
+      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US');
+      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US');
+      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US');
+    } catch {console.warn('Failed to get node stats: block count'); }
 
     try {
-      let quorumData = await this.api.confirmationQuorum()
-      this.peersStakeReq = Number(this.util.nano.rawToMnano(quorumData.peers_stake_required)).toLocaleString('en-US')
-      this.peersStakeTotal = Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US')
-    }
-    catch {console.warn("Failed to get node stats: confirmation quorum")}
-    
+      const quorumData = await this.api.confirmationQuorum();
+      this.peersStakeReq = Number(this.util.nano.rawToMnano(quorumData.peers_stake_required)).toLocaleString('en-US');
+      this.peersStakeTotal = Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US');
+    } catch {console.warn('Failed to get node stats: confirmation quorum'); }
+
     try {
       const version = await this.api.version();
       this.nodeVendor = version.node_vendor;
@@ -422,7 +421,7 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? 'Yes':'No';
+      this.shouldRandom = custom.shouldRandom ? 'Yes' : 'No';
     }
 
     // reset server stats until updated
@@ -434,7 +433,7 @@ export class ConfigureAppComponent implements OnInit {
     this.peersStakeTotal = null;
     this.nodeVendor = null;
     this.nodeNetwork = null;
-    this.statsRefreshEnabled = newServer == 'random' ? false:true;
+    this.statsRefreshEnabled = newServer === 'random' ? false : true;
   }
 
   async clearWorkCache() {
