@@ -150,6 +150,7 @@ export class ConfigureAppComponent implements OnInit {
   shouldRandom = null;
 
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
+  showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   async ngOnInit() {

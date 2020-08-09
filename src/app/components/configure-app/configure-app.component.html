@@ -296,7 +296,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1" *ngIf="showServerValues() || showServerConfigs()">
+          <div class="uk-width-1-1" *ngIf="showStatValues() || showServerConfigs()">
             <div class="uk-form-horizontal">
               <div>
                 <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
