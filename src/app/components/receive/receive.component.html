@@ -16,10 +16,10 @@
       </div>
 
     <div uk-grid>
-      <div class="uk-width-expand@s">
+      <div class="uk-width-3-4@s">
         <select class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
           <option [value]="0">All Accounts</option>
-          <option *ngFor="let account of accounts" [value]="account.id">{{ account.id }}</option>
+          <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
         </select>
       </div>
       <div class="uk-width-auto@s">
@@ -51,13 +51,13 @@
             <tr *ngFor="let block of pendingBlocks">
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel == 0" class="uk-visible-toggle">
                 <div uk-grid>
-                  <div class="uk-width-expand uk-text-truncate">
+                  <div class="uk-width-auto uk-text-truncate">
                     <a [routerLink]="'/account/' + block.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.account | squeeze }}
+                      <app-nano-account-id [accountID]="block.account" middle="off"></app-nano-account-id>
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">
-                    <ul class="uk-hidden-hover uk-iconnav">
+                    <ul class="uk-iconnav">
                       <li><a ngxClipboard [cbContent]="block.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>
@@ -65,13 +65,13 @@
               </td>
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel == 0" class="uk-visible-toggle">
                 <div uk-grid>
-                  <div class="uk-width-expand uk-text-truncate">
+                  <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                     <a [routerLink]="'/account/' + block.source" class="uk-link-text" title="View Account Details" uk-tooltip>
-                      {{ block.source | squeeze }}
+                      <app-nano-account-id [accountID]="block.source" middle="off"></app-nano-account-id>
                     </a>
                   </div>
                   <div class="uk-width-auto" style="padding-left: 10px;">
-                    <ul class="uk-hidden-hover uk-iconnav">
+                    <ul class="uk-iconnav">
                       <li><a ngxClipboard [cbContent]="block.source" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>

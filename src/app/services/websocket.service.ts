@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {AppSettingsService} from "./app-settings.service";
+import {AppSettingsService} from './app-settings.service';
 
 @Injectable()
 export class WebsocketService {
@@ -38,11 +38,11 @@ export class WebsocketService {
   }
 
   connect() {
-    if (this.socket.connected && this.socket.ws){
+    if (this.socket.connected && this.socket.ws) {
       // Already connected
       return;
     }
-    if (!this.appSettings.settings.serverWS){
+    if (!this.appSettings.settings.serverWS) {
       console.log('No Websocket server available.');
       return;
     }
@@ -54,7 +54,7 @@ export class WebsocketService {
 
     ws.onopen = event => {
       this.socket.connected = true;
-      this.queuedCommands.forEach(event => ws.send(JSON.stringify(event)));
+      this.queuedCommands.forEach(queueevent => ws.send(JSON.stringify(queueevent)));
 
       // Resubscribe to accounts?
       if (this.subscribedAccounts.length) {
@@ -87,7 +87,7 @@ export class WebsocketService {
       } catch (err) {
         console.log(`Error parsing message`, err);
       }
-    }
+    };
   }
 
   attemptReconnect() {

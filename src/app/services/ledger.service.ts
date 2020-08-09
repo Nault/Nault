@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import Nano from "hw-app-nano";
-import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import {Subject} from "rxjs";
-import {ApiService} from "./api.service";
-import {NotificationService} from "./notification.service";
-import { environment } from "../../environments/environment";
-import {DesktopService} from "./desktop.service";
+import Nano from 'hw-app-nano';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import {Subject} from 'rxjs';
+import {ApiService} from './api.service';
+import {NotificationService} from './notification.service';
+import { environment } from '../../environments/environment';
+import {DesktopService} from './desktop.service';
 
 export const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,
@@ -15,8 +15,8 @@ export const STATUS_CODES = {
 };
 
 export const LedgerStatus = {
-  NOT_CONNECTED: "not-connected",
-  LOCKED: "locked",
+  NOT_CONNECTED: 'not-connected',
+  LOCKED: 'locked',
   READY: 'ready',
 };
 
@@ -26,6 +26,8 @@ export interface LedgerData {
   nano: any|null;
   transport: any|null;
 }
+
+const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
 
 @Injectable()
 export class LedgerService {
@@ -52,8 +54,7 @@ export class LedgerService {
 
   constructor(private api: ApiService,
               private desktop: DesktopService,
-              private notifications: NotificationService)
-  {
+              private notifications: NotificationService) {
     if (this.isDesktop) {
       this.configureDesktop();
     }
@@ -94,7 +95,7 @@ export class LedgerService {
    * @param {any} filterFn
    * @returns {Promise<any>}
    */
-  async getDesktopResponse(eventType, filterFn = undefined) {
+  async getDesktopResponse(eventType, filterFn?) {
     return new Promise((resolve, reject) => {
       const sub = this.desktopMessage$
         .subscribe((response: any) => {
@@ -119,7 +120,7 @@ export class LedgerService {
           console.log(`Desktop message got error!`, err);
           reject(err);
         });
-    })
+    });
 
   }
 
@@ -231,7 +232,7 @@ export class LedgerService {
         }
 
         // Any response will be handled by the configureDesktop() function, which pipes responses into this observable
-        let sub = this.ledgerStatus$.subscribe(newStatus => {
+        const sub = this.ledgerStatus$.subscribe(newStatus => {
           if (newStatus.status === LedgerStatus.READY) {
             resolve(true);
           } else {
@@ -252,7 +253,7 @@ export class LedgerService {
           this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         } catch (err) {
           console.log(`Transport error: `, err);
-          if (err.statusText == 'UNKNOWN_ERROR') {
+          if (err.statusText === 'UNKNOWN_ERROR') {
             this.resetLedger();
           }
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
@@ -266,7 +267,7 @@ export class LedgerService {
           this.ledger.nano = new Nano(this.ledger.transport);
         } catch (err) {
           console.log(`Nano error: `, err);
-          if (err.statusText == 'UNKNOWN_ERROR') {
+          if (err.statusText === 'UNKNOWN_ERROR') {
             this.resetLedger();
           }
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
@@ -304,7 +305,7 @@ export class LedgerService {
         }
       } catch (err) {
         console.log(`App config error: `, err);
-        if (err.statusText == 'HALTED') {
+        if (err.statusText === 'HALTED') {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
@@ -340,7 +341,7 @@ export class LedgerService {
       }
 
       return null;
-    })
+    });
 
   }
 
@@ -356,7 +357,7 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.contents.representative,
       balance: blockData.contents.balance,
-      previousBlock: blockData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.contents.previous,
+      previousBlock: blockData.contents.previous === zeroBlock ? null : blockData.contents.previous,
       sourceBlock: blockData.contents.link,
     };
 
@@ -375,7 +376,7 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.representative,
       balance: blockData.balance,
-      previousBlock: blockData.previous === '0000000000000000000000000000000000000000000000000000000000000000' ? null : blockData.previous,
+      previousBlock: blockData.previous === zeroBlock ? null : blockData.previous,
       sourceBlock: blockData.link,
     };
 
@@ -428,7 +429,7 @@ export class LedgerService {
   }
 
   async checkLedgerStatus() {
-    if (this.ledger.status != LedgerStatus.READY) {
+    if (this.ledger.status !== LedgerStatus.READY) {
       return;
     }
 

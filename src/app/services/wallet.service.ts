@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {UtilService} from "./util.service";
-import {ApiService} from "./api.service";
+import {BehaviorSubject} from 'rxjs';
+import {UtilService} from './util.service';
+import {ApiService} from './api.service';
 import {BigNumber} from 'bignumber.js';
-import {AddressBookService} from "./address-book.service";
+import {AddressBookService} from './address-book.service';
 import * as CryptoJS from 'crypto-js';
-import {WorkPoolService} from "./work-pool.service";
-import {WebsocketService} from "./websocket.service";
-import {NanoBlockService} from "./nano-block.service";
-import {NotificationService} from "./notification.service";
-import {AppSettingsService} from "./app-settings.service";
-import {PriceService} from "./price.service";
-import {LedgerService} from "./ledger.service";
+import {WorkPoolService} from './work-pool.service';
+import {WebsocketService} from './websocket.service';
+import {NanoBlockService} from './nano-block.service';
+import {NotificationService} from './notification.service';
+import {AppSettingsService} from './app-settings.service';
+import {PriceService} from './price.service';
+import {LedgerService} from './ledger.service';
 
-export type WalletType = "seed" | "ledger" | "privateKey" | "expandedKey";
+export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey';
 
 export interface WalletAccount {
   id: string;
@@ -113,8 +113,7 @@ export class WalletService {
     private websocket: WebsocketService,
     private nanoBlock: NanoBlockService,
     private ledgerService: LedgerService,
-    private notifications: NotificationService)
-  {
+    private notifications: NotificationService) {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
       console.log('New Transaction', transaction);
@@ -123,36 +122,31 @@ export class WalletService {
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
 
-      if (transaction.block.type == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+      if (transaction.block.type === 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         // Perform an automatic receive
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
         if (walletAccount) {
           // If the wallet is locked, show a notification
           if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-          }
-          else if (this.appSettings.settings.pendingOption === 'manual') {
+          } else if (this.appSettings.settings.pendingOption === 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
           }
           this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount, transaction.block.link_as_account);
           await this.processPendingBlocks();
         }
-      } else if (transaction.block.type == 'state' && transaction.block.subtype == 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+      } else if (transaction.block.type === 'state'
+      && transaction.block.subtype === 'send'
+      && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
           this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-        }
-        else if (this.appSettings.settings.pendingOption === 'manual') {
+        } else if (this.appSettings.settings.pendingOption === 'manual') {
           this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
         }
 
         await this.processStateBlock(transaction);
 
-      }else if (transaction.block.type == 'state') {
-        /* Don't understand when this is ever needed / Json
-        if (this.wallet.locked) {
-          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-        }*/
-
+      } else if (transaction.block.type === 'state') {
         await this.processStateBlock(transaction);
       }
 
@@ -162,14 +156,14 @@ export class WalletService {
 
     this.addressBook.addressBook$.subscribe(newAddressBook => {
       this.reloadAddressBook();
-    })
+    });
   }
 
   async processStateBlock(transaction) {
     console.log('Processing state block', transaction);
-    
+
     // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
-    if (transaction.block.subtype == 'send' && transaction.block.link_as_account) {
+    if (transaction.block.subtype === 'send' && transaction.block.link_as_account) {
       // This is an incoming send block, we want to perform a receive
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
@@ -190,7 +184,11 @@ export class WalletService {
         if (txAmount.gt(minAmount)) {
           this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
         } else {
-          console.log(`Found new pending block that was below minimum receive amount: `, transaction.amount, this.appSettings.settings.minimumReceive);
+          console.log(
+            `Found new pending block that was below minimum receive amount: `,
+            transaction.amount,
+            this.appSettings.settings.minimumReceive
+          );
         }
       } else {
         this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
@@ -207,11 +205,11 @@ export class WalletService {
   reloadAddressBook() {
     this.wallet.accounts.forEach(account => {
       account.addressBookName = this.addressBook.getAccountName(account.id);
-    })
+    });
   }
 
   getWalletAccount(accountID) {
-    return this.wallet.accounts.find(a => a.id == accountID);
+    return this.wallet.accounts.find(a => a.id === accountID);
   }
 
 
@@ -273,6 +271,8 @@ export class WalletService {
         await this.loadAccountsFromIndex(); // Need to have the seed to reload any accounts if they are not stored
       }
     }
+
+    this.wallet.selectedAccount = walletJson.selectedAccount || null;
 
     await this.reloadBalances(true);
 
@@ -602,6 +602,8 @@ export class WalletService {
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
+    this.wallet.selectedAccount = null;
+    this.wallet.selectedAccount$ = new BehaviorSubject(null);
   }
 
   isConfigured() {
@@ -675,7 +677,7 @@ export class WalletService {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
       // Find the account, update it
       // const prefixedAccount = this.util.account.setPrefix(accountID, this.appSettings.settings.displayPrefix);
-      const walletAccount = this.wallet.accounts.find(a => a.id == accountID);
+      const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
       // console.log(`Finding account by id: ${accountID} - prefixed: ${accountID} - resulting account: `, walletAccount);
       if (!walletAccount) continue;
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
@@ -693,7 +695,7 @@ export class WalletService {
       walletPending = walletPending.plus(walletAccount.pending);
     }
 
-    let hasPending: boolean = false;
+    let hasPending = false;
 
     // If this is just a normal reload.... do not use the minimum receive setting?
     if (!reloadPending && walletPending.gt(0)) {
@@ -708,7 +710,7 @@ export class WalletService {
         const pending = await this.api.accountsPendingLimit(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
 
         if (pending && pending.blocks) {
-          for (let block in pending.blocks) {
+          for (const block in pending.blocks) {
             if (!pending.blocks.hasOwnProperty(block)) {
               continue;
             }
@@ -750,7 +752,7 @@ export class WalletService {
 
 
   async loadWalletAccount(accountIndex, accountID) {
-    let index = accountIndex;
+    const index = accountIndex;
     const addressBookName = this.addressBook.getAccountName(accountID);
 
     const newAccount: WalletAccount = {
@@ -841,7 +843,7 @@ export class WalletService {
 
   addPendingBlock(accountID, blockHash, amount, source) {
     if (this.successfulBlocks.indexOf(blockHash) !== -1) return; // Already successful with this block
-    const existingHash = this.wallet.pendingBlocks.find(b => b.hash == blockHash);
+    const existingHash = this.wallet.pendingBlocks.find(b => b.hash === blockHash);
     if (existingHash) return; // Already added
 
     this.wallet.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount, source: source });
@@ -850,7 +852,7 @@ export class WalletService {
 
   // Remove a pending account from the pending list
   async removePendingBlock(blockHash) {
-    let index = this.wallet.pendingBlocks.findIndex(b => b.hash == blockHash)
+    const index = this.wallet.pendingBlocks.findIndex(b => b.hash === blockHash);
     this.wallet.pendingBlocks.splice(index, 1);
   }
 
@@ -872,11 +874,11 @@ export class WalletService {
     }
     if (!pending || !pending.blocks) return;
 
-    for (let account in pending.blocks) {
+    for (const account in pending.blocks) {
       if (!pending.blocks.hasOwnProperty(account)) continue;
-      for (let block in pending.blocks[account]) {
+      for (const block in pending.blocks[account]) {
         if (!pending.blocks[account].hasOwnProperty(block)) continue;
-        if (pending.blocks[account] == '') continue; // Accounts show up as nothing with threshold there...
+        if (pending.blocks[account] === '') continue; // Accounts show up as nothing with threshold there...
 
         this.addPendingBlock(account, block, pending.blocks[account][block].amount, pending.blocks[account][block].source);
       }
@@ -904,7 +906,7 @@ export class WalletService {
     this.processingPending = true;
 
     const nextBlock = this.wallet.pendingBlocks[0];
-    if (this.successfulBlocks.find(b => b.hash == nextBlock.hash)) {
+    if (this.successfulBlocks.find(b => b.hash === nextBlock.hash)) {
       return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
     }
     const walletAccount = this.getWalletAccount(nextBlock.account);
@@ -952,10 +954,11 @@ export class WalletService {
   }
 
   generateWalletExport() {
-    let data: any = {
+    const data: any = {
       type: this.wallet.type,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
       accountsIndex: this.wallet.accountsIndex,
+      selectedAccount: this.wallet.selectedAccount,
     };
 
     if (this.wallet.type === 'ledger') {
@@ -982,8 +985,7 @@ export class WalletService {
             try {
               res.id = account.id;
               res.addressBookName = account.addressBookName;
-            }
-            catch {return null;}
+            } catch {return null; }
 
             return res;
           })

@@ -1,14 +1,14 @@
 
 import {map} from 'rxjs/operators';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AddressBookService} from "../../services/address-book.service";
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ModalService} from "../../services/modal.service";
-import {ApiService} from "../../services/api.service";
-import {Router} from "@angular/router";
-import {RepresentativeService} from "../../services/representative.service";
-import {UtilService} from "../../services/util.service";
+import {AddressBookService} from '../../services/address-book.service';
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {ModalService} from '../../services/modal.service';
+import {ApiService} from '../../services/api.service';
+import {Router} from '@angular/router';
+import {RepresentativeService} from '../../services/representative.service';
+import {UtilService} from '../../services/util.service';
 
 @Component({
   selector: 'app-manage-representatives',
@@ -24,7 +24,7 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
     return reps.map(rep => {
       rep.online = this.onlineReps.indexOf(rep.id) !== -1;
       return rep;
-    })
+    });
   }));
 
   newRepAccount = '';
@@ -62,13 +62,17 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   }
 
   async saveNewRepresentative() {
-    if (!this.newRepAccount || !this.newRepName) return this.notificationService.sendError(`Account and name are required`);
+    if (!this.newRepAccount || !this.newRepName) {
+      return this.notificationService.sendError(`Account and name are required`);
+    }
 
     this.newRepAccount = this.newRepAccount.replace(/ /g, ''); // Remove spaces
 
     // Make sure the address is valid
     const valid = this.util.account.isValidAccount(this.newRepAccount);
-    if (!valid) return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    if (!valid) {
+      return this.notificationService.sendWarning(`Account ID is not a valid account`);
+    }
 
     try {
       await this.repService.saveRepresentative(this.newRepAccount, this.newRepName, this.newRepTrusted, this.newRepWarn);
@@ -76,7 +80,7 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
 
       this.cancelNewRep();
     } catch (err) {
-      this.notificationService.sendError(`Unable to save entry: ${err.message}`)
+      this.notificationService.sendError(`Unable to save entry: ${err.message}`);
     }
   }
 
@@ -96,8 +100,10 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
     const representatives = [];
     try {
       const reps = await this.api.representativesOnline();
-      for (let representative in reps.representatives) {
-        if (!reps.representatives.hasOwnProperty(representative)) continue;
+      for (const representative in reps.representatives) {
+        if (!reps.representatives.hasOwnProperty(representative)) {
+          continue;
+        }
         representatives.push(reps.representatives[representative]);
       }
     } catch (err) {
@@ -110,9 +116,9 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   async deleteRepresentative(accountID) {
     try {
       this.repService.deleteRepresentative(accountID);
-      this.notificationService.sendSuccess(`Successfully deleted representative`)
+      this.notificationService.sendSuccess(`Successfully deleted representative`);
     } catch (err) {
-      this.notificationService.sendError(`Unable to delete representative: ${err.message}`)
+      this.notificationService.sendError(`Unable to delete representative: ${err.message}`);
     }
   }
 

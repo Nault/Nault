@@ -34,7 +34,7 @@
 
                   <div class="uk-width-1-5" [ngClass]="{ 'uk-text-danger': rep.statusText === 'alert', 'uk-text-warning': rep.statusText === 'warn', 'uk-text-success': rep.statusText === 'trusted', 'uk-text-primary': rep.statusText === 'ok' }">
                     <span *ngIf="rep.statusText === 'alert'" uk-tooltip title="This is an unknown or official representative, or it's marked because of bad uptime or high (3%+ of online) voting weight.  It is recommended to change to a new representative!"><span uk-icon="icon: warning"></span> Change</span>
-                    <span *ngIf="rep.statusText === 'warn'" uk-tooltip title="This representative has a bad uptime or a high (1%+ of online) voting weight.  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
+                    <span *ngIf="rep.statusText === 'warn'" uk-tooltip title="This representative has a bad uptime or a high (2%+ of online) voting weight.  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
                     <span *ngIf="rep.statusText === 'trusted'" uk-tooltip title="This representative is marked as trusted.  No change is needed."><span uk-icon="icon: star"></span> Trusted</span>
                     <span *ngIf="rep.statusText === 'ok'" uk-tooltip title="This representative is saved in your list, as long as it is online, no change is needed."><span uk-icon="icon: check"></span> Okay</span>
                     <span *ngIf="rep.statusText === 'none'" uk-tooltip title="This representative is not known, consider switching to a known one or add this one to your list"><span uk-icon="icon: question"></span> Unknown</span>
@@ -76,15 +76,16 @@
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
                     <option [value]="null">Select Accounts to Change</option>
-                    <option [value]="'all'">All Accounts</option>
-                    <option *ngFor="let account of wallet.wallet.accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName + ' - ' : '' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
+                    <option [value]="'all'">All Current Accounts</option>
+                    <option *ngFor="let account of wallet.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
                           <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
-                          <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
+                          <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id></span>
+                          <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
                         </div>
                         <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
                           <a (click)="removeSelectedAccount(account)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
@@ -101,7 +102,7 @@
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Representative Account ID" #repInput>
+                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Representative Account" #repInput>
 
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">

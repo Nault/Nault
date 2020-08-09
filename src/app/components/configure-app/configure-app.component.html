@@ -296,7 +296,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1" *ngIf="showServerValues() || showServerConfigs()">
+          <div class="uk-width-1-1" *ngIf="showStatValues() || showServerConfigs()">
             <div class="uk-form-horizontal">
               <div>
                 <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
@@ -315,10 +315,19 @@
                             <strong>Uncemented Blocks</strong>
                           </tr>
                           <tr>
+                            <strong>Peers Stake Required</strong>
+                          </tr>
+                          <tr>
+                            <strong>Peers Stake Total</strong>
+                          </tr>
+                          <tr>
                             <strong>Node Version</strong>
                           </tr>
                           <tr>
                             <strong>Network</strong>
+                          </tr>
+                          <tr *ngIf="showServerValues() && !showServerConfigs()">
+                            <strong>Random Server</strong>
                           </tr>
                         </td>
                         <td>
@@ -332,10 +341,19 @@
                             {{nodeUncemented || 'N/A'}}
                           </tr>
                           <tr>
+                            {{peersStakeReq || 'N/A'}}
+                          </tr>
+                          <tr>
+                            {{peersStakeTotal || 'N/A'}}
+                          </tr>
+                          <tr>
                             {{nodeVendor || 'N/A'}}
                           </tr>
                           <tr>
                             {{nodeNetwork || 'N/A'}}
+                          </tr>
+                          <tr *ngIf="showServerValues() && !showServerConfigs()">
+                            {{shouldRandom || 'No'}}
                           </tr>
                         </td>
                       </table>

@@ -20,6 +20,14 @@ export const environment = {
       shouldRandom: true,
     },
     {
+      name: 'VoxPopuli',
+      value: 'voxpopuli',
+      api: 'https://voxpopuli.network/api',
+      ws: 'wss://voxpopuli.network/websocket',
+      auth: null,
+      shouldRandom: false,
+    },
+    {
       name: 'Nanos.cc',
       value: 'nanos',
       api: 'https://proxy.nanos.cc/proxy',

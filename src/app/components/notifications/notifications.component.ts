@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NotificationService} from "../../services/notification.service";
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   selector: 'app-notifications',
@@ -15,7 +15,9 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     this.notificationService.notifications$.subscribe(notification => {
-      if (!notification) return; // Default value
+      if (!notification) {
+        return; // Default value
+      }
 
       // Check the options
       const length = notification.options.hasOwnProperty('length') ? notification.options.length : this.notificationLength;
@@ -24,7 +26,9 @@ export class NotificationsComponent implements OnInit {
       // Stop duplicates
       if (identifier) {
         const existingNotification = this.notifications.find(n => n.identifier === identifier);
-        if (existingNotification) return;
+        if (existingNotification) {
+          return;
+        }
       }
 
       const newNotification = {
@@ -42,7 +46,9 @@ export class NotificationsComponent implements OnInit {
     });
 
     this.notificationService.removeNotification$.subscribe(identifier => {
-      if (!identifier) return;
+      if (!identifier) {
+        return;
+      }
 
       const existingNotification = this.notifications.find(n => n.identifier === identifier);
       if (existingNotification) {
