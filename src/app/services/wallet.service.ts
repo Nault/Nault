@@ -50,6 +50,7 @@ export interface FullWallet {
   hasPending: boolean;
   accounts: WalletAccount[];
   accountsIndex: number;
+  selectedAccountId: string|null;
   selectedAccount: WalletAccount|null;
   selectedAccount$: BehaviorSubject<WalletAccount|null>;
   locked: boolean;
@@ -93,6 +94,7 @@ export class WalletService {
     hasPending: false,
     accounts: [],
     accountsIndex: 0,
+    selectedAccountId: null,
     selectedAccount: null,
     selectedAccount$: new BehaviorSubject(null),
     locked: false,
@@ -272,9 +274,7 @@ export class WalletService {
       }
     }
 
-    this.wallet.selectedAccount = walletJson.selectedAccount || null;
-
-    await this.reloadBalances(true);
+    this.wallet.selectedAccountId = walletJson.selectedAccountId || null;
 
     if (walletType === 'ledger') {
       this.ledgerService.loadLedger(true);
@@ -602,6 +602,7 @@ export class WalletService {
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
+    this.wallet.selectedAccountId = null;
     this.wallet.selectedAccount = null;
     this.wallet.selectedAccount$ = new BehaviorSubject(null);
   }
@@ -958,7 +959,7 @@ export class WalletService {
       type: this.wallet.type,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
       accountsIndex: this.wallet.accountsIndex,
-      selectedAccount: this.wallet.selectedAccount,
+      selectedAccountId: this.wallet.selectedAccount ? this.wallet.selectedAccount.id : null,
     };
 
     if (this.wallet.type === 'ledger') {

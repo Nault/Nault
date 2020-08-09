@@ -15,8 +15,6 @@ export class DesktopService {
       } catch (e) {
         throw e;
       }
-    } else {
-      console.warn('Electron\'s IPC was not loaded. Normal on web but not desktop.');
     }
   }
 

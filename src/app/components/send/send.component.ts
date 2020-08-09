@@ -102,6 +102,13 @@ export class SendComponent implements OnInit {
         this.fromAccountID = accountIDWithBalance;
       }
     }
+
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (acc) {
+        this.fromAccountID = acc.id;
+      }
+    });
   }
 
   // An update to the Nano amount, sync the fiat value
