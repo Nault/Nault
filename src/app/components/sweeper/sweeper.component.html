@@ -11,7 +11,7 @@
         Could be used to load a paper wallet into some of your existing accounts, transfer a wallet or even empty your existing Nault wallet and transfer it somewhere else.
       </p>
       <p>
-        Even a passphrase from a Ledger hardware wallet can be recovered using this tool.
+        Even a passphrase from a Ledger hardware wallet or other multicurrency wallets using bip39/44 can be recovered using this tool.
       </p>
       <p>
         <strong>Please use with caution if you are using an external destination. Make sure you have access to the seed on the receiving side!</strong>
@@ -29,7 +29,7 @@
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 24-word passphrase" autocomplete="off">
+                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, bip39 seed, private key or 12,15,18,21,24-word passphrase" autocomplete="off">
                       </div>
                     </div>
                   </div>
