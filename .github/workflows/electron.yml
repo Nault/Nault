@@ -1,6 +1,8 @@
-name: Build/release Desktop
+name: Electron App
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
   release:
@@ -28,7 +30,7 @@ jobs:
           sudo apt-get install libusb-1.0-0-dev -y
           sudo apt-get install gcc-4.8 g++-4.8 -y
 
-      - name: Install and Build
+      - name: Install and Build Desktop App
         run: |
           npm install
           npm run desktop:build

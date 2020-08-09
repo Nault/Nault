@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
 import * as QRCode from 'qrcode';
-import {AddressBookService} from "../../services/address-book.service";
-import {Router} from "@angular/router";
+import {AddressBookService} from '../../services/address-book.service';
+import {Router} from '@angular/router';
 import * as bip from 'bip39';
 
 @Component({
@@ -36,9 +36,15 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async changePassword() {
-    if (this.newPassword !== this.confirmPassword) return this.notifications.sendError(`Passwords do not match`);
-    if (this.newPassword.length < 1) return this.notifications.sendError(`Password cannot be empty`);
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.newPassword !== this.confirmPassword) {
+      return this.notifications.sendError(`Passwords do not match`);
+    }
+    if (this.newPassword.length < 1) {
+      return this.notifications.sendError(`Password cannot be empty`);
+    }
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     this.walletService.wallet.password = this.newPassword;
     this.walletService.saveWalletExport();
@@ -49,7 +55,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async exportWallet() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     const exportUrl = this.walletService.generateExportUrl();
     this.QRExportUrl = exportUrl;
@@ -62,7 +70,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   seedMnemonic() {
-    return bip.entropyToMnemonic(this.wallet.seed);
+    if (this.wallet && this.wallet.seed ) {
+      return bip.entropyToMnemonic(this.wallet.seed);
+    }
   }
 
   async exportAddressBook() {
@@ -79,7 +89,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportAddressBookToFile() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
     const fileName = `Nault-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
@@ -107,7 +119,7 @@ export class ManageWalletComponent implements OnInit {
       elem.download = fileName;
       document.body.appendChild(elem);
       elem.click();
-      setTimeout(function(){
+      setTimeout(function() {
         document.body.removeChild(elem);
         window.URL.revokeObjectURL(objUrl);
       }, 200);
@@ -115,7 +127,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   exportToFile() {
-    if (this.walletService.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
 
     const fileName = `Nault-Wallet.json`;
     const exportData = this.walletService.generateExportData();
@@ -125,7 +139,9 @@ export class ManageWalletComponent implements OnInit {
   }
 
   importFromFile(files) {
-    if (!files.length) return;
+    if (!files.length) {
+      return;
+    }
 
     const file = files[0];
     const reader = new FileReader();
@@ -134,7 +150,7 @@ export class ManageWalletComponent implements OnInit {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {
-          return this.notifications.sendError(`Bad import data, make sure you selected a Nault Address Book export`)
+          return this.notifications.sendError(`Bad import data, make sure you selected a Nault Address Book export`);
         }
 
         const walletEncrypted = btoa(JSON.stringify(importData));

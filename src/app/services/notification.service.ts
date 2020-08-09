@@ -22,16 +22,16 @@ export class NotificationService {
     this.removeNotification$.next(identifier);
   }
 
-  sendInfo(message:string, options = {}) {
+  sendInfo(message: string, options = {}) {
     this.sendNotification('info', message, options);
   }
-  sendSuccess(message:string, options = {}) {
+  sendSuccess(message: string, options = {}) {
     this.sendNotification('success', message, options);
   }
-  sendWarning(message:string, options = {}) {
+  sendWarning(message: string, options = {}) {
     this.sendNotification('warning', message, options);
   }
-  sendError(message:string, options = {}) {
+  sendError(message: string, options = {}) {
     this.sendNotification('error', message, options);
   }
 
@@ -40,7 +40,7 @@ export class NotificationService {
     this.sendWarning(
       `<b>Notice:</b> You may experience issues using a Ledger device with Google Chrome. ` +
       `If you do please use Brave/Opera browser or ` +
-      `<a href="https://github.com/BitDesert/Nault/releases" target="_blank" rel="noopener">Nault Desktop</a>.`,
+      `<a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener">Nault Desktop</a>.`,
       { length: 0, identifier: 'chrome-ledger' }
       );
   }

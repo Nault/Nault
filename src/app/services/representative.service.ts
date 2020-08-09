@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {BaseApiAccount, WalletApiAccount, WalletService} from "./wallet.service";
-import BigNumber from "bignumber.js";
-import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
+import {BehaviorSubject} from 'rxjs';
+import {BaseApiAccount, WalletApiAccount, WalletService} from './wallet.service';
+import BigNumber from 'bignumber.js';
+import {ApiService} from './api.service';
+import {UtilService} from './util.service';
 import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
   online: boolean;
+  veryHighWeight: boolean;
   highWeight: boolean;
+  veryLowUptime: boolean;
+  lowUptime: boolean;
+  markedToAvoid: boolean;
   trusted: boolean;
+  changeRequired: boolean;
   warn: boolean;
   known: boolean;
+  uptime: Number;
+  score: Number;
 }
 
 export interface RepresentativeOverview {
@@ -50,8 +57,13 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
+  walletReps$ = new BehaviorSubject([]);
+  walletReps = [];
+
   changeableReps$ = new BehaviorSubject([]);
   changeableReps = [];
+
+  onlineStakeTotal = new BigNumber(115202418);
 
   loaded = false;
 
@@ -78,9 +90,15 @@ export class RepresentativeService {
         continue; // Reps marked as trusted are good no matter their status
       }
 
-      // If we have high weight, marked as warn, or it is offline, then we need to change
-      if (rep.status.highWeight || rep.status.warn || !rep.status.online) {
-        needsChange.push(rep);
+      // If we have high weight, low uptime or marked as warn, then we need to change
+      if (
+            rep.status.highWeight
+          || rep.status.veryHighWeight
+          || rep.status.lowUptime
+          || rep.status.veryLowUptime
+          || rep.status.warn
+        ) {
+          needsChange.push(rep);
       }
     }
 
@@ -100,8 +118,11 @@ export class RepresentativeService {
     const uniqueReps = this.getUniqueRepresentatives(accounts);
     const representatives = await this.getRepresentativesDetails(uniqueReps);
     const onlineReps = await this.getOnlineRepresentatives();
+    const quorum = await this.api.confirmationQuorum();
 
-    const totalSupply = new BigNumber(133248289);
+    const online_stake_total = this.util.nano.rawToMnano(quorum.online_stake_total);
+    this.onlineStakeTotal = new BigNumber(online_stake_total);
+
     const allReps = [];
 
     // Now, loop through each representative and determine some details about it
@@ -111,30 +132,38 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(totalSupply).times(100);
+      const percent = nanoWeight.div(this.onlineStakeTotal).times(100);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
+        veryHighWeight: false,
         highWeight: false,
+        veryLowUptime: false,
+        lowUptime: false,
+        markedToAvoid: false,
         trusted: false,
+        changeRequired: false,
         warn: false,
         known: false,
+        uptime: null,
+        score: null
       };
 
       // Determine the status based on some factors
       let status = 'none';
       let label;
 
-      if (percent.gte(10)) {
+      if (percent.gte(3)) {
         status = 'alert'; // Has extremely high voting weight
-        repStatus.highWeight = true;
-      } else if (percent.gte(1)) {
+        repStatus.veryHighWeight = true;
+        repStatus.changeRequired = true;
+      } else if (percent.gte(2)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
 
       if (knownRep) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
@@ -143,18 +172,37 @@ export class RepresentativeService {
         }
         if (knownRep.warn) {
           status = 'alert'; // In our list and marked for avoidance
+          repStatus.markedToAvoid = true;
           repStatus.warn = true;
+          repStatus.changeRequired = true;
         }
       } else if (knownRepNinja) {
-        status = status = 'none' ? 'known' : status; // In our list
+        status = status === 'none' ? 'ok' : status; // In our list
         label = knownRepNinja.alias;
-        if (knownRepNinja.score < 70) {
+        repStatus.uptime = knownRepNinja.uptime_over.week;
+        repStatus.score = knownRepNinja.score;
+        if (knownRepNinja.uptime_over.week < 80) {
           status = 'alert';
+          repStatus.veryLowUptime = true;
           repStatus.warn = true;
-        } else if (knownRepNinja.score < 80) {
-          status = 'warn';
+          repStatus.changeRequired = true;
+        } else if (knownRepNinja.uptime_over.week < 90) {
+          if (status !== 'alert') {
+            status = 'warn';
+          }
+          repStatus.lowUptime = true;
           repStatus.warn = true;
         }
+      } else if (knownRepNinja === false) {
+        // does not exist (404)
+        status = 'alert';
+        repStatus.uptime = 0;
+        repStatus.veryLowUptime = true;
+        repStatus.warn = true;
+        repStatus.changeRequired = true;
+      } else {
+        // any other api error
+        status = status === 'none' ? 'unknown' : status;
       }
 
       const additionalData = {
@@ -169,6 +217,9 @@ export class RepresentativeService {
       allReps.push(fullRep);
     }
 
+    this.walletReps = allReps;
+    this.walletReps$.next(allReps);
+
     return allReps;
   }
 
@@ -180,10 +231,10 @@ export class RepresentativeService {
    */
   getUniqueRepresentatives(accounts: WalletApiAccount[]): RepresentativeOverview[] {
     const representatives = [];
-    for (let account of accounts) {
+    for (const account of accounts) {
       if (!account || !account.representative) continue; // Account doesn't exist yet
 
-      const existingRep = representatives.find(rep => rep.id == account.representative);
+      const existingRep = representatives.find(rep => rep.id === account.representative);
       if (existingRep) {
         existingRep.weight = existingRep.weight.plus(new BigNumber(account.balance));
         existingRep.accounts.push(account);
@@ -207,7 +258,8 @@ export class RepresentativeService {
   async getOnlineRepresentatives(): Promise<string[]> {
     const representatives = [];
     const reps = await this.api.representativesOnline();
-    for (let representative in reps.representatives) {
+    if (!reps) return representatives;
+    for (const representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);
     }
@@ -276,7 +328,7 @@ export class RepresentativeService {
   }
 
   getRepresentative(id): StoredRepresentative | undefined {
-    return this.representatives.find(rep => rep.id == id);
+    return this.representatives.find(rep => rep.id === id);
   }
 
   // Reset representatives list to the default one
@@ -295,7 +347,9 @@ export class RepresentativeService {
     if (trusted) newRepresentative.trusted = true;
     if (warn) newRepresentative.warn = true;
 
-    const existingRepresentative = this.representatives.find(r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase());
+    const existingRepresentative = this.representatives.find(
+      r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase()
+    );
     if (existingRepresentative) {
       this.representatives.splice(this.representatives.indexOf(existingRepresentative), 1, newRepresentative);
     } else {

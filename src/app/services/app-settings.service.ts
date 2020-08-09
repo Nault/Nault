@@ -100,6 +100,14 @@ export class AppSettingsService {
       ws: null,
       auth: null,
       shouldRandom: false,
+    },
+    {
+      name: 'Offline Mode',
+      value: 'offline',
+      api: null,
+      ws: null,
+      auth: null,
+      shouldRandom: false,
     }
   ];
 
@@ -130,6 +138,11 @@ export class AppSettingsService {
       this.settings.serverWS = randomServerOption.ws;
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
+    } else if (this.settings.serverName === 'offline') {
+      console.log('SETTINGS: Offline Mode');
+      this.settings.serverName = matchingServerOption.value;
+      this.settings.serverAPI = matchingServerOption.api;
+      this.settings.serverWS = matchingServerOption.ws;
     } else {
       console.log('SETTINGS: Found', matchingServerOption);
       this.settings.serverName = matchingServerOption.value;
@@ -152,7 +165,7 @@ export class AppSettingsService {
   }
 
   setAppSettings(settingsObject) {
-    for (let key in settingsObject) {
+    for (const key in settingsObject) {
       if (!settingsObject.hasOwnProperty(key)) continue;
       this.settings[key] = settingsObject[key];
     }
@@ -183,7 +196,7 @@ export class AppSettingsService {
 
   // Get the base URL part of the serverAPI, e.g. https://nanovault.io from https://nanovault.io/api/node-api.
   getServerApiBaseUrl(): string {
-    let u = url.parse(this.settings.serverAPI);
+    const u = url.parse(this.settings.serverAPI);
     u.pathname = '/';
     return url.format(u);
   }

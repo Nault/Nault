@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {AppSettingsService} from "../../services/app-settings.service";
-import {PriceService} from "../../services/price.service";
-import {PowService} from "../../services/pow.service";
-import {WorkPoolService} from "../../services/work-pool.service";
-import {AddressBookService} from "../../services/address-book.service";
-import {ApiService} from "../../services/api.service";
-import {WebsocketService} from "../../services/websocket.service";
-import {NodeService} from "../../services/node.service";
-import {UtilService} from "../../services/util.service";
-import {BehaviorSubject} from "rxjs";
-import {RepresentativeService} from "../../services/representative.service";
+import {WalletService} from '../../services/wallet.service';
+import {NotificationService} from '../../services/notification.service';
+import {AppSettingsService} from '../../services/app-settings.service';
+import {PriceService} from '../../services/price.service';
+import {PowService} from '../../services/pow.service';
+import {WorkPoolService} from '../../services/work-pool.service';
+import {AddressBookService} from '../../services/address-book.service';
+import {ApiService} from '../../services/api.service';
+import {WebsocketService} from '../../services/websocket.service';
+import {NodeService} from '../../services/node.service';
+import {UtilService} from '../../services/util.service';
+import {BehaviorSubject} from 'rxjs';
+import {RepresentativeService} from '../../services/representative.service';
+import {NinjaService} from '../../services/ninja.service';
+import { QrModalService } from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-configure-app',
@@ -19,6 +21,22 @@ import {RepresentativeService} from "../../services/representative.service";
   styleUrls: ['./configure-app.component.css']
 })
 export class ConfigureAppComponent implements OnInit {
+
+  constructor(
+    private walletService: WalletService,
+    private notifications: NotificationService,
+    private appSettings: AppSettingsService,
+    private addressBook: AddressBookService,
+    private pow: PowService,
+    private api: ApiService,
+    private websocket: WebsocketService,
+    private workPool: WorkPoolService,
+    private repService: RepresentativeService,
+    private node: NodeService,
+    private util: UtilService,
+    private price: PriceService,
+    private ninja: NinjaService,
+    private qrModalService: QrModalService) { }
   wallet = this.walletService.wallet;
 
   denominations = [
@@ -111,15 +129,14 @@ export class ConfigureAppComponent implements OnInit {
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
   representativeListMatch = '';
+  repStatus = null;
+  representativeList = [];
 
   serverAPI = null;
   serverAPIUpdated = null;
   serverWS = null;
   serverAuth = null;
   minimumReceive = null;
-
-  showServerValues = () => this.selectedServer && this.selectedServer !== 'random';
-  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   nodeBlockCount = null;
   nodeUnchecked = null;
@@ -132,27 +149,38 @@ export class ConfigureAppComponent implements OnInit {
   statsRefreshEnabled = true;
   shouldRandom = null;
 
-  constructor(
-    private walletService: WalletService,
-    private notifications: NotificationService,
-    private appSettings: AppSettingsService,
-    private addressBook: AddressBookService,
-    private pow: PowService,
-    private api: ApiService,
-    private websocket: WebsocketService,
-    private workPool: WorkPoolService,
-    private repService: RepresentativeService,
-    private node: NodeService,
-    private util: UtilService,
-    private price: PriceService) { }
+  showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
+  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
   async ngOnInit() {
     this.loadFromSettings();
     this.updateNodeStats();
+
+    // populate representative list
+    if (!this.serverAPI) return;
+    const verifiedReps = await this.ninja.recommendedRandomized();
+
+    for (const representative of verifiedReps) {
+      const temprep = {
+        id: representative.account,
+        name: representative.alias
+      };
+
+      this.representativeList.push(temprep);
+    }
+
+    // add the localReps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
   }
 
   async updateNodeStats(refresh=false) {
-    if ((!this.serverAPIUpdated || (this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random')) || (refresh && !this.statsRefreshEnabled)) return
+    if ((!this.serverAPIUpdated || (this.serverAPIUpdated != this.appSettings.settings.serverAPI && this.selectedServer === 'random'))) return
+    // refresh is not enabled
+    if (refresh && !this.statsRefreshEnabled) return;
+    // Offline mode selected
+    if (this.selectedServer === 'offline') return;
+
     this.statsRefreshEnabled = false;
     try {
       let blockCount = await this.api.blockCount()
@@ -171,11 +199,10 @@ export class ConfigureAppComponent implements OnInit {
     catch {console.warn("Failed to get node stats: confirmation quorum")}
     
     try {
-      let version = await this.api.version()
-      this.nodeVendor = version.node_vendor
-      this.nodeNetwork = version.network
-    }
-    catch {console.warn("Failed to get node stats: version")}
+      const version = await this.api.version();
+      this.nodeVendor = version.node_vendor;
+      this.nodeNetwork = version.network;
+    } catch {console.warn('Failed to get node stats: version'); }
 
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
   }
@@ -186,19 +213,19 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value == settings.displayDenomination);
+    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
     this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
 
-    const matchingStorage = this.storageOptions.find(d => d.value == settings.walletStore);
+    const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
-    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value == settings.lockInactivityMinutes);
+    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value === settings.lockInactivityMinutes);
     this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
 
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
-    const matchingPendingOption = this.pendingOptions.find(d => d.value == settings.pendingOption);
+    const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
     this.serverOptions = this.appSettings.serverOptions;
@@ -248,20 +275,21 @@ export class ConfigureAppComponent implements OnInit {
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
-    let pendingOption = this.selectedPendingOption
-    let minReceive = null
+    const pendingOption = this.selectedPendingOption;
+    let minReceive = null;
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
-      minReceive = this.minimumReceive
+      minReceive = this.minimumReceive;
     }
 
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
-    const reloadPending = this.appSettings.settings.minimumReceive != this.minimumReceive || (pendingOption !== 'manual' && pendingOption != this.appSettings.settings.pendingOption);
+    const reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
+    || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
-      const valid = await this.api.validateAccountNumber(this.defaultRepresentative);
-      if (!valid || valid.valid !== '1') {
+      const valid = this.util.account.isValidAccount(this.defaultRepresentative);
+      if (!valid) {
         return this.notifications.sendWarning(`Default representative is not a valid account`);
       }
     }
@@ -279,7 +307,7 @@ export class ConfigureAppComponent implements OnInit {
 
     const newSettings = {
       walletStore: newStorage,
-      lockInactivityMinutes: new Number(this.selectedInactivityMinutes),
+      lockInactivityMinutes: Number(this.selectedInactivityMinutes),
       powSource: newPoW,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
@@ -336,18 +364,21 @@ export class ConfigureAppComponent implements OnInit {
     // Reload balances which triggers an api check + reconnect to websocket server
     await this.walletService.reloadBalances();
     this.websocket.forceReconnect();
-    this.serverAPIUpdated = this.appSettings.settings.serverAPI; //this is updated after setting server to random and doing recheck of wallet balance
+    // this is updated after setting server to random and doing recheck of wallet balance
+    this.serverAPIUpdated = this.appSettings.settings.serverAPI;
     this.serverAPI = this.serverAPIUpdated;
     this.statsRefreshEnabled = true;
     this.updateNodeStats();
   }
 
   searchRepresentatives() {
+    if (this.defaultRepresentative !== '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
+    else this.repStatus = null;
+
     this.showRepresentatives = true;
     const search = this.defaultRepresentative || '';
-    const representatives = this.repService.getSortedRepresentatives();
 
-    const matches = representatives
+    const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
@@ -361,13 +392,22 @@ export class ConfigureAppComponent implements OnInit {
     this.validateRepresentative();
   }
 
-  validateRepresentative() {
+  async validateRepresentative() {
     setTimeout(() => this.showRepresentatives = false, 400);
-    this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+    if (this.defaultRepresentative) this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+
+    if (this.defaultRepresentative === '') {
+      this.representativeListMatch = '';
+      return;
+    }
+
     const rep = this.repService.getRepresentative(this.defaultRepresentative);
+    const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
     if (rep) {
       this.representativeListMatch = rep.name;
+    } else if (ninjaRep) {
+      this.representativeListMatch = ninjaRep.alias;
     } else {
       this.representativeListMatch = '';
     }
@@ -432,5 +472,19 @@ export class ConfigureAppComponent implements OnInit {
 
       this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
     } catch (err) {}
+  }
+
+  // open qr reader modal
+  openQR(reference, type) {
+    const qrResult = this.qrModalService.openQR(reference, type);
+    qrResult.then((data) => {
+      switch (data.reference) {
+        case 'rep1':
+          this.defaultRepresentative = data.content;
+          this.validateRepresentative();
+          break;
+      }
+    }, () => {}
+    );
   }
 }

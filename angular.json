@@ -19,12 +19,29 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/pow.wasm"
+              "src/pow.wasm",
+              "src/404.html"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+               "qrcode",
+               "bip39",
+               "@zxing/library",
+               "bignumber.js",
+               "nanocurrency",
+               "hw-app-nano",
+               "crypto-js",
+               "blakejs",
+               "nanocurrency-web",
+               "bignumber.js",
+               "u2f-api",
+               "create-hash",
+               "randombytes",
+               "pbkdf2"
+            ]
           },
           "configurations": {
             "production": {
@@ -104,7 +121,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/styles.css"
+              "src/styles.less"
             ],
             "assets": [
               "src/assets",
@@ -156,7 +173,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "style": "css"
+      "style": "less"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

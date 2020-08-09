@@ -1,17 +1,20 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <div uk-grid>
-      <div class="uk-width-1-2">
-        <h2>
+    
+    <div class="uk-margin-bottom" uk-grid>
+      <div class="uk-width-expand@s uk-width-1-1">
+        <h2 class="uk-heading-divider">
           Accounts
           <a (click)="viewAdvanced = !viewAdvanced" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BASIC' : 'ADVANCED' }}</a>
         </h2>
       </div>
-      <div class="uk-width-1-2 uk-text-right">
-        <div uk-grid>
-          <div class="uk-width-1-1">
-            <input type="number" class="uk-input uk-form-width-small" [(ngModel)]="newAccountIndex" placeholder="Account #" *ngIf="viewAdvanced">
-            <button class="uk-button uk-button-secondary" (click)="createAccount()">
+      <div class="uk-width-auto@m uk-width-1-1 uk-text-right">
+        <div class="uk-grid-small uk-child-width-expand" uk-grid>
+          <div>
+            <input type="number" class="uk-input uk-form-width-small uk-width-1-1@m" [(ngModel)]="newAccountIndex" placeholder="Account #" *ngIf="viewAdvanced">
+          </div>
+          <div class="uk-width-auto@m">
+            <button class="uk-button uk-button-secondary uk-width-1-1@m" (click)="createAccount()">
               Add New Account
             </button>
           </div>
@@ -19,13 +22,11 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin-top">
+    <div class="uk-card uk-overflow-auto">
       <table class="uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
           <th class="uk-width-3-5@m uk-width-1-2">
-            <a class="account-index" *ngIf="viewAdvanced" uk-icon="icon: hashtag;" title="Sort Accounts" (click)="sortAccounts()" uk-tooltip>
-            </a>
             Account
           </th>
           <th class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
@@ -34,47 +35,50 @@
         </thead>
         <tbody>
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
-          <td class="uk-visible-toggle">
+          <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
-              <div class="uk-width-expand uk-text-truncate">
-                <span class="account-index" *ngIf="viewAdvanced">
-                  {{ account.index }}
-                </span>
+              <div class="uk-width-auto uk-text-truncate account-container">
+                <div class="uk-width-1-1">
+                  <a class="uk-label uk-label-default account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
+                    {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
+                  </a>
+                </div>
                 <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
-                  <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
                 </a>
               </div>
-              <div class="uk-width-auto" style="padding-left: 10px;">
-                <ul class="uk-hidden-hover uk-iconnav">
-                  <!--<li class="account-index">#{{ account.index }}</li>-->
+              <div class="uk-width-auto copy-container">
+                <ul class="uk-iconnav copy-icons">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
                 </ul>
               </div>
             </div>
           </td>
-          <td class=" uk-text-right">
-            {{ account.balance | rai: settings.settings.displayDenomination }}
-            <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-              +{{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
+          <td class="uk-text-right">
+            <div class="uk-width-1-1">
+              {{ account.balance | rai: settings.settings.displayDenomination }}
+              <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
+                +{{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
+              </div>
+              <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
+                {{ account.pending | rai: settings.settings.displayDenomination }}
+              </div>
+              <div *ngIf="account.pendingRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
+                +{{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
+              </div>
             </div>
-            <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
-              {{ account.pending | rai: settings.settings.displayDenomination }}
-            </div>
-            <div *ngIf="account.pendingRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-              +{{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
+            <div class="uk-width-1-1">
+              {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+              <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
+                {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
+              </div>
             </div>
           </td>
-          <td class=" uk-text-left">
-            {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
-            <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
-              {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
-            </div>
-            <div class="uk-float-right uk-hidden-hover">
+          <td class="uk-text-right">
+            <div class="uk-float-right">
               <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
-
           </td>
         </tr>
         <tr *ngIf="!(accounts).length">

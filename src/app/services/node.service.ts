@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {NotificationService} from "./notification.service";
+import {NotificationService} from './notification.service';
 
 @Injectable()
 export class NodeService {
@@ -14,7 +14,7 @@ export class NodeService {
     if (this.node.status === false) return; // Already offline
     this.node.status = false;
 
-    this.notifications.sendError(msg, { identifier: 'node-offline', length: 0 });
+    if (msg) this.notifications.sendError(msg, { identifier: 'node-offline', length: 0 });
   }
 
   setOnline() {
