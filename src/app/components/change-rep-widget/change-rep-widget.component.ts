@@ -115,6 +115,7 @@ export class ChangeRepWidgetComponent implements OnInit {
   }
 
   showRepSelectionForSpecificRep(clickedRep) {
+    this.showRepHelp = false;
     const accountsToChangeRepFor = (
         (
             (this.selectedAccount !== null)
