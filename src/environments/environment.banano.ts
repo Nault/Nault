@@ -30,7 +30,7 @@ export const environment = {
       api: 'https://vault.banano.cc/api/node-api',
       ws: null,
       auth: null,
-      shouldRandom: true,
+      shouldRandom: false,
     },
   ],
   representativeAccounts: [

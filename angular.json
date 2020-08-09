@@ -23,7 +23,7 @@
               "src/404.html"
             ],
             "styles": [
-              "src/styles.less"
+              "src/themes/nano/less/styles.less"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
@@ -92,12 +92,29 @@
             },
             "banano": {
               "styles": [
-                "src/styles.banano.less"
+                "src/themes/banano/less/styles.less"
+              ],
+              "assets": [
+                "src/assets",
+                { "glob": "**/*", "input": "src/themes/banano/assets", "output": "/assets/" },
+                "src/pow.wasm",
+                "src/404.html"
               ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.banano.ts"
+                }
+              ]
+            },
+            "beta": {
+              "styles": [
+                "src/themes/nano/less/styles.less"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
                 }
               ]
             }
