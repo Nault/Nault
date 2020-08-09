@@ -19,6 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
+              { "glob": "**/*", "input": "src/themes/nano/assets", "output": "/assets/" },
               "src/pow.wasm",
               "src/404.html"
             ],
@@ -134,6 +135,9 @@
             },
             "banano": {
               "browserTarget": "nault:build:banano"
+            },
+            "beta": {
+              "browserTarget": "nault:build:beta"
             }
           }
         },
