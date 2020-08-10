@@ -155,7 +155,7 @@ export class WalletService {
           }
         }
 
-        
+
 
         await this.processStateBlock(transaction);
 
@@ -724,14 +724,17 @@ export class WalletService {
 
         if (pending && pending.blocks) {
           for (const block in pending.blocks) {
-            const walletAccount = this.wallet.accounts.find(a => a.id === block);
             if (!pending.blocks.hasOwnProperty(block)) {
               continue;
             }
+            const walletAccount = this.wallet.accounts.find(a => a.id === block);
             if (pending.blocks[block]) {
               hasPending = true;
               let accountPending = new BigNumber(0);
               for (const hash in pending.blocks[block]) {
+                if (!pending.blocks[block].hasOwnProperty(hash)) {
+                  continue;
+                }
                 walletPendingReal = walletPendingReal.plus(pending.blocks[block][hash].amount);
                 accountPending = accountPending.plus(pending.blocks[block][hash].amount);
               }
@@ -739,8 +742,7 @@ export class WalletService {
               walletAccount.pending = accountPending;
               walletAccount.pendingRaw = accountPending.mod(this.nano);
               walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
-            }
-            else {
+            } else {
               walletAccount.pending = new BigNumber(0);
               walletAccount.pendingRaw = new BigNumber(0);
               walletAccount.pendingFiat = 0;
