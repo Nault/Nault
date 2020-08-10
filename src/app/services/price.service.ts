@@ -4,15 +4,18 @@ import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class PriceService {
+  storeKey = `nanovault-price`;
   apiUrl = `https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
 
   price = {
-    lastPrice: 1,
-    lastPriceBTC: 0.001,
+    lastPrice: 0,
+    lastPriceBTC: 0,
   };
   lastPrice$ = new BehaviorSubject(1);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loadSavedPrice();
+  }
 
   async getPrice(currency = 'USD') {
     if (!currency) return; // No currency defined, do not refetch
@@ -28,9 +31,22 @@ export class PriceService {
     this.price.lastPrice = currencyPrice;
     this.price.lastPriceBTC = btcPrice;
 
+    this.savePrice();
+
     this.lastPrice$.next(currencyPrice);
 
     return this.price.lastPrice;
+  }
+
+  loadSavedPrice() {
+    const priceData = localStorage.getItem(this.storeKey);
+    if (!priceData) return false;
+
+    this.price = JSON.parse(priceData);
+  }
+
+  savePrice() {
+    localStorage.setItem(this.storeKey, JSON.stringify(this.price));
   }
 
 }
