@@ -47,6 +47,14 @@ export class ReceiveComponent implements OnInit {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
       this.changeQRAccount(this.pendingAccountModel);
     }
+
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (acc) {
+        this.pendingAccountModel = acc.id;
+        this.changeQRAccount(this.pendingAccountModel);
+      }
+    });
   }
 
   async loadPendingForAll() {

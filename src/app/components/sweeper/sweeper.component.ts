@@ -79,6 +79,12 @@ export class SweeperComponent implements OnInit {
     if (this.walletService.wallet.selectedAccount !== null) {
       this.myAccountModel = this.walletService.wallet.selectedAccount.id;
     }
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (acc) {
+        this.myAccountModel = acc.id;
+      }
+    });
   }
 
   sleep(ms) {
