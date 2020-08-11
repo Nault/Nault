@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {RepresentativeService} from "../../services/representative.service";
-import {Router} from "@angular/router";
-import { NinjaService } from "../../services/ninja.service";
+import {WalletService} from '../../services/wallet.service';
+import {RepresentativeService} from '../../services/representative.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-rep-widget',
@@ -13,73 +13,132 @@ export class ChangeRepWidgetComponent implements OnInit {
   changeableRepresentatives = this.repService.changeableReps;
   displayedRepresentatives = [];
   representatives = [];
+  showRepChangeRequired = false;
   showRepHelp = false;
-  suggestedRep = {
-    alias: '',
-    account: ''
-  };
+  selectedAccount = null;
 
   constructor(
+    private walletService: WalletService,
     private repService: RepresentativeService,
-    private router: Router,
-    private ninja: NinjaService
+    private router: Router
     ) { }
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
-    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
+    this.updateDisplayedRepresentatives();
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
-      this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives)
+      this.updateDisplayedRepresentatives();
+    });
+
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      this.selectedAccount = acc;
+      this.updateDisplayedRepresentatives();
     });
 
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
+      // Includes both acceptable and bad reps
+      // When user clicks 'Rep Change Required' action, acceptable reps will also be included
       this.changeableRepresentatives = reps;
 
-      if (reps.length > 0) {
-        this.suggestedRep = await this.ninja.getSuggestedRep();
-      }
+      // However 'Rep Change Required' action will only appear when there is at least one bad rep
+      this.showRepChangeRequired = reps.some(rep => (rep.status.changeRequired === true));
+
+      this.updateDisplayedRepresentatives();
     });
   }
 
-  getDisplayedRepresentatives(representatives : any[]) {
-    if(this.representatives.length === 0) {
-      return []
+  updateDisplayedRepresentatives() {
+    this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
+  }
+
+  includeRepRequiringChange(displayedReps: any[]) {
+    const repRequiringChange =
+      this.changeableRepresentatives
+        .sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
+        .filter(
+          (changeableRep) => (
+              (changeableRep.status.changeRequired === true)
+            && displayedReps.every(
+              (displayedRep) =>
+                (displayedRep.id !== changeableRep.id)
+            )
+          )
+        )[0];
+
+    if (repRequiringChange == null) {
+      return [...displayedReps];
     }
 
-    // todo: when not in total balance view, pass [ representative ] of the currently selected address
+    return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
+  }
 
-    let sortedRepresentatives: any[] = [...representatives]
+  getDisplayedRepresentatives(representatives: any[]) {
+    if (this.representatives.length === 0) {
+      return [];
+    }
 
-    sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
+    if (this.selectedAccount !== null) {
+      const selectedAccountRep =
+        this.representatives
+          .filter(
+            (rep) =>
+              rep.accounts.some(
+                (a) =>
+                  (a.id === this.selectedAccount.id)
+              )
+          )[0];
 
-    return [ Object.assign( {}, sortedRepresentatives[0] ) ]
+      if (selectedAccountRep == null) {
+        return [];
+      }
+
+      const displayedRepsAllAccounts = [ Object.assign( {}, selectedAccountRep ) ];
+
+      return this.includeRepRequiringChange(displayedRepsAllAccounts);
+    }
+
+    const sortedRepresentatives: any[] = [...representatives];
+
+    sortedRepresentatives.sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight));
+
+    const displayedReps = [ Object.assign( {}, sortedRepresentatives[0] ) ];
+
+    return this.includeRepRequiringChange(displayedReps);
   }
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  showRepSelectionForSpecificRepId(requiredRepId : number) {
-    // in total balance view we want to pass each account that delegates to this rep
-    const allAccountsWithThisRep =
-      this.representatives
-        .filter(
-          (rep) =>
-            (rep.id == requiredRepId)
+  showRepSelectionForSpecificRep(clickedRep) {
+    this.showRepHelp = false;
+    const accountsToChangeRepFor = (
+        (
+            (this.selectedAccount !== null)
+          && clickedRep.accounts.some(a => (a.id === this.selectedAccount.id))
         )
-        .map(
-          (rep) =>
-            rep.accounts.map(a => a.id).join(',')
-        )
-        .join(',');
+      ? this.selectedAccount.id
+      : ( // all accounts that delegate to this rep
+        this.representatives
+          .filter(
+            (rep) =>
+              (rep.id === clickedRep.id)
+          )
+          .map(
+            (rep) =>
+              rep.accounts.map(a => a.id).join(',')
+          )
+          .join(',')
+      )
+    );
 
-    // todo: when not in total balance view, pass currently selected address in "accounts"
-
-    this.router.navigate(['/representatives'], { queryParams: { hideOverview: true, accounts: allAccountsWithThisRep, showRecommended: true } });
+    this.router.navigate(['/representatives'], {
+      queryParams: { hideOverview: true, accounts: accountsToChangeRepFor, showRecommended: true }
+    });
   }
 
   showRepSelectionForAllChangeableReps() {

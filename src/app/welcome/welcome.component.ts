@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from "../services/wallet.service";
+import {WalletService} from '../services/wallet.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -13,7 +13,7 @@ export class WelcomeComponent implements OnInit {
 
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;
-  currencyName = environment.currency.name
+  currencyName = environment.currency.name;
 
   constructor(private walletService: WalletService) { }
 

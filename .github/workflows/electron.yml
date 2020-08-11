@@ -1,6 +1,8 @@
 name: Electron App
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
   release:

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {NotificationService} from "./notification.service";
+import {NotificationService} from './notification.service';
 import { IpcRenderer } from 'electron';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class DesktopService {
     if (window.require) {
       try {
         this._ipc = window.require('electron').ipcRenderer;
-        console.log("IPC loaded")
+        console.log('IPC loaded');
       } catch (e) {
         throw e;
       }

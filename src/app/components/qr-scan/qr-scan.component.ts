@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { UtilService } from '../../services/util.service';
-import { NotificationService } from "../../services/notification.service";
-import { WalletService } from "../../services/wallet.service";
+import { NotificationService } from '../../services/notification.service';
+import { WalletService } from '../../services/wallet.service';
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
-import { RemoteSignService } from "../../services/remote-sign.service";
+import { RemoteSignService } from '../../services/remote-sign.service';
 
 @Component({
   selector: 'app-qr-scan',
@@ -49,7 +49,7 @@ export class QrScanComponent implements OnInit {
     this.qrResultString = null;
   }
 
-  onCamerasFound(devices: MediaDeviceInfo[]): void {    
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
     this.availableDevices = devices;
     this.hasDevices = Boolean(devices && devices.length);
   }
@@ -57,23 +57,23 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    const nano_scheme = /^(nano|nanorep|nanoseed|nanosign|nanoprocess):.+$/g
+    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess):.+$/g;
 
-    if(this.util.account.isValidAccount(resultString)){
+    if (this.util.account.isValidAccount(resultString)) {
       // Got address, routing to send...
       this.router.navigate(['send'], {queryParams: {to: resultString}});
 
-    } else if(this.util.nano.isValidSeed(resultString)){
+    } else if (this.util.nano.isValidSeed(resultString)) {
       // Seed
       this.handleSeed(resultString);
 
-    } else if(nano_scheme.test(resultString)) {
+    } else if (nano_scheme.test(resultString)) {
       // This is a valid Nano scheme URI
-      var url = new URL(resultString)
+      const url = new URL(resultString);
 
-      if(url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)){
+      if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...
-        var amount = url.searchParams.get('amount');
+        const amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
           to: url.pathname,
           amount: amount ? this.util.nano.rawToMnano(amount) : null
@@ -81,7 +81,7 @@ export class QrScanComponent implements OnInit {
 
       } else if (url.protocol === 'nanorep:' && this.util.account.isValidAccount(url.pathname)) {
         // Representative change
-        this.router.navigate(['representatives'], { queryParams: { 
+        this.router.navigate(['representatives'], { queryParams: {
           hideOverview: true,
           accounts: 'all',
           representative: url.pathname
@@ -90,25 +90,38 @@ export class QrScanComponent implements OnInit {
       } else if (url.protocol === 'nanoseed:' && this.util.nano.isValidSeed(url.pathname)) {
         // Seed
         this.handleSeed(url.pathname);
+      } else if (url.protocol === 'nanokey:' && this.util.nano.isValidHash(url.pathname)) {
+        // Private key
+        this.handlePrivateKey(url.pathname);
       } else if (url.protocol === 'nanosign:') {
           this.remoteSignService.navigateSignBlock(url);
-        
+
       } else if (url.protocol === 'nanoprocess:') {
           this.remoteSignService.navigateProcessBlock(url);
       }
-      
+
     } else {
-      this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' })
+      this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });
     }
   }
 
-  handleSeed(seed){
+  handleSeed(seed) {
     if (this.hasAccounts) {
       // Wallet already set up, sweeping...
       this.router.navigate(['sweeper'], { state: { seed: seed } });
     } else {
       // No wallet set up, new wallet...
       this.router.navigate(['configure-wallet'], { state: { seed: seed }});
+    }
+  }
+
+  handlePrivateKey(key) {
+    if (this.hasAccounts) {
+      // Wallet already set up, sweeping...
+      this.router.navigate(['sweeper'], { state: { seed: key } });
+    } else {
+      // No wallet set up, new wallet...
+      this.router.navigate(['configure-wallet'], { state: { key: key }});
     }
   }
 

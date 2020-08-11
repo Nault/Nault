@@ -1,12 +1,12 @@
 <div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
-  <div class="uk-width-1-1" style="position: relative;">
+  <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
-    <div uk-grid class=" uk-hidden@s uk-background-primary" style="color: #FFF;">
+    <div uk-grid class="mobile-top-bar uk-hidden@s uk-background-primary">
       <div class="uk-width-1-2">
-        <div class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-left uk-text-middle" (click)="toggleNav()" style="cursor: pointer;">
-          <span uk-icon="icon: menu;" style=" margin-right: 10px; vertical-align: text-bottom;"></span>
-          <span style="font-size: 22px; font-weight: 500;" >Nault</span>
+        <div class="nav-button" (click)="toggleNav()" style="cursor: pointer;">
+          <span uk-icon="icon: menu;"></span>
+          <span class="app-name">Nault</span>
         </div>
       </div>
       <div class="uk-width-1-2 " style="text-align: right;">
@@ -16,7 +16,17 @@
     <!-- Accounts dropdown -->
     <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
       <div class="header">Currently Selected</div>
-      <div class="account active" *ngIf="false"> <!-- active address should always appear first, don't show if active account is "total" -->
+      <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active nano_ account -->
+        <div class="name-column">
+          <div class="name">{{ wallet.selectedAccount.addressBookName ? wallet.selectedAccount.addressBookName : ('Account #' + wallet.selectedAccount.index) }}</div>
+          <div class="address">{{ wallet.selectedAccount.id }}</div>
+        </div>
+        <div class="balance-column">
+          <div class="balance primary">{{ wallet.selectedAccount.balance | rai: settings.settings.displayDenomination }}</div>
+          <div class="balance converted">{{ wallet.selectedAccount.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+        </div>
+      </div>
+      <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)"> <!-- active/inactive total balance -->
         <div class="name-column">
           <div class="name">Total Balance</div>
           <div class="address"> </div>
@@ -26,41 +36,45 @@
           <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
         </div>
       </div>
-      <div [class]="[ 'account', true ? 'active' : '' ]" *ngIf="true"> <!-- replaces previous element if active account is "total" -->
-        <div class="name-column">
-          <div class="name">Total Balance</div>
-          <div class="address"> </div>
+      <ng-container *ngFor="let account of wallet.accounts"> <!-- inactive accounts -->
+        <div class="account inactive" (click)="selectAccount(account)" *ngIf="( (wallet.selectedAccount === null) || (wallet.selectedAccount.id !== account.id) )">
+          <div class="name-column">
+            <div class="name">{{ account.addressBookName ? account.addressBookName : ('Account #' + account.index) }}</div>
+            <div class="address">{{ account.id }}</div>
+          </div>
+          <div class="balance-column">
+            <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+            <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
+          </div>
         </div>
-        <div class="balance-column">
-          <div class="balance primary">{{ wallet.balance | rai: settings.settings.displayDenomination }}</div>
-          <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
-        </div>
-      </div>
-      <div class="account" *ngFor="let account of wallet.accounts" (click)="selectAccount(account)">
-        <div class="name-column">
-          <div class="name">Account #{{ account.index }}</div>
-          <div class="address">{{ account.id }}</div>
-        </div>
-        <div class="balance-column">
-          <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
-          <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
-        </div>
-      </div>
+      </ng-container>
     </div>
 
     <!-- Main content container-->
-    <div uk-grid uk-height-viewport="expand: false" style="margin-top: 0; overflow: hidden;">
+    <div uk-grid class="app-grid">
       <div class="uk-width-1-4 nav-container">
         <div class="nav-header">
 
           <div uk-grid>
             <div class="uk-width-expand">
 
-              <div [class]="[ 'nav-nano-card', true ? 'is-wallet' : '' ]">
+              <div [class]="[ 'nav-nano-card', (wallet.selectedAccount === null) ? 'is-wallet' : 'is-card' ]">
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">{{ wallet.selectedAccount !== null ? 'Account #' + wallet.selectedAccount.index : 'Total Balance' }}</div>
+                    <a [routerLink]="(
+                        (wallet.selectedAccount !== null)
+                      ? '/account/' + wallet.selectedAccount.id
+                      : '/accounts'
+                    )" class="name">{{
+                        (wallet.selectedAccount !== null)
+                      ? (
+                          wallet.selectedAccount.addressBookName
+                        ? wallet.selectedAccount.addressBookName
+                        : ('Account #' + wallet.selectedAccount.index)
+                      )
+                      : 'Total Balance'
+                    }}</a>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
@@ -117,7 +131,7 @@
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
-                      <div class="name">Incoming Balance</div>
+                      <a routerLink="/receive" class="name">Incoming Balance</a>
                     </div>
                     <div class="account-balances">
                       <div class="balance-container primary">
@@ -144,9 +158,13 @@
                 <div class="status-icon">
                   <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
                 </div>
-                <div class="status-labels">
+                <div class="status-labels" *ngIf="settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">Unable to connect to the server</div>
                   <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                </div>
+                <div class="status-labels" *ngIf="!settings.settings.serverAPI">
+                  <div class="label primary uk-text-danger">Wallet is in offline mode</div>
+                  <div class="label secondary"><a routerLink="/configure-app">Select a server</a> to interact with the network</div>
                 </div>
               </div>
 
@@ -176,13 +194,6 @@
           <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
           <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
           <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
-            <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
-            </ul>
-          </li>
-          <li class="uk-parent">
             <a href="#">Settings</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
@@ -191,27 +202,30 @@
               <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
+          <li class="uk-parent">
+            <a href="#">Advanced Tools</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+            </ul>
+          </li>
         </ul>
 
-
+        <div class="nav-search">
+          <form class="uk-search uk-search-default uk-width-1-1">
+            <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
+            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
+          </form>
+        </div>
 
         <div class="footer uk-margin-remove-top" uk-grid>
-          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
+          <div class="uk-width-1-1 uk-text-center">
             <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>
-            <a href="javascript:void(0)" uk-icon="icon: search" uk-tooltip title="View an account or transaction" class="footer-link" (click)="toggleSearch()"></a>
           </div>
         </div>
 
-        <div uk-grid *ngIf="showSearchBar" style="margin-top: 15px;">
-          <div class="uk-width-1-1" style="padding-left: 55px; padding-right: 15px;">
-            <form class="uk-search uk-search-default uk-width-1-1">
-              <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-              <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Nano account or transaction hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
-            </form>
-          </div>
-        </div>
 
       </div>
       <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #fff;" [style.height]="windowHeight + 'px'">

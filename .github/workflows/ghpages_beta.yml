@@ -1,0 +1,27 @@
+name: GitHub Pages (Beta)
+
+on:
+  push:
+    branches: [ master, multicurrency ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2 
+        with:
+          persist-credentials: false
+
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run wallet:build -- -c beta
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          REPOSITORY_NAME: Nault/Benault
+          BRANCH: gh-pages
+          FOLDER: dist
