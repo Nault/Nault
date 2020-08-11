@@ -23,6 +23,7 @@ export interface WalletAccount {
   index: number;
   balance: BigNumber;
   pending: BigNumber;
+  pendingBelowThreshold: BigNumber[];
   balanceRaw: BigNumber;
   pendingRaw: BigNumber;
   balanceFiat: number;
@@ -56,6 +57,7 @@ export interface FullWallet {
   locked: boolean;
   password: string;
   pendingBlocks: Block[];
+  pendingBelowThreshold: BigNumber[];
 }
 
 export interface BaseApiAccount {
@@ -100,6 +102,7 @@ export class WalletService {
     locked: false,
     password: '',
     pendingBlocks: [],
+    pendingBelowThreshold: [new BigNumber(0)],
   };
 
   processingPending = false;
@@ -119,11 +122,13 @@ export class WalletService {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
       console.log('New Transaction', transaction);
+      let shouldNotify = false;
 
       // Find out if this is a send, with our account as a destination or not
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
 
+      // TODO: Block type 'send', will this ever happen now with state blocks fully implemented? /JSON
       if (transaction.block.type === 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         // Perform an automatic receive
         const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
@@ -140,20 +145,39 @@ export class WalletService {
       } else if (transaction.block.type === 'state'
       && transaction.block.subtype === 'send'
       && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
-        if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
-          this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-        } else if (this.appSettings.settings.pendingOption === 'manual') {
-          this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+        if (this.appSettings.settings.minimumReceive) {
+          const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+          if ((new BigNumber(transaction.amount)).gte(minAmount)) {
+            shouldNotify = true;
+          }
+        } else {
+          shouldNotify = true;
         }
-
+        if (shouldNotify) {
+          if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+          } else if (this.appSettings.settings.pendingOption === 'manual') {
+            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+          }
+        } else {
+          console.log(
+            `Found new pending block that was below minimum receive amount: `,
+            transaction.amount,
+            this.appSettings.settings.minimumReceive
+          );
+        }
         await this.processStateBlock(transaction);
-
       } else if (transaction.block.type === 'state') {
+        shouldNotify = true;
         await this.processStateBlock(transaction);
       }
 
       // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
-      await this.reloadBalances(false);
+      // I'm not sure about that because what happens if the websocket is disconnected and misses a transaction?
+      // won't the balance be incorrect if relying only on the websocket? / Json
+      if (shouldNotify) {
+        await this.reloadBalances(false);
+      }
     });
 
     this.addressBook.addressBook$.subscribe(newAddressBook => {
@@ -162,8 +186,6 @@ export class WalletService {
   }
 
   async processStateBlock(transaction) {
-    console.log('Processing state block', transaction);
-
     // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
     if (transaction.block.subtype === 'send' && transaction.block.link_as_account) {
       // This is an incoming send block, we want to perform a receive
@@ -173,26 +195,27 @@ export class WalletService {
       // Check for a min receive
       const txAmount = new BigNumber(transaction.amount);
 
-      if (this.wallet.pending.lte(0)) {
+      if (this.appSettings.settings.minimumReceive) {
+        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+
+        if (txAmount.gte(minAmount)) {
+          this.wallet.pending = this.wallet.pending.plus(txAmount);
+          this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
+          this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
+          this.wallet.hasPending = true;
+          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
+        } else {
+          // The resons for using push and shift is to keep the reference when used in another component
+          this.wallet.pendingBelowThreshold.push(this.wallet.pendingBelowThreshold[0].plus(txAmount));
+          this.wallet.pendingBelowThreshold.shift();
+          walletAccount.pendingBelowThreshold.push(walletAccount.pendingBelowThreshold[0].plus(txAmount));
+          walletAccount.pendingBelowThreshold.shift();
+        }
+      } else {
         this.wallet.pending = this.wallet.pending.plus(txAmount);
         this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
         this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
         this.wallet.hasPending = true;
-      }
-
-      if (this.appSettings.settings.minimumReceive) {
-        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
-
-        if (txAmount.gt(minAmount)) {
-          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
-        } else {
-          console.log(
-            `Found new pending block that was below minimum receive amount: `,
-            transaction.amount,
-            this.appSettings.settings.minimumReceive
-          );
-        }
-      } else {
         this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
       }
 
@@ -538,6 +561,7 @@ export class WalletService {
       keyPair: null,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
+      pendingBelowThreshold: [new BigNumber(0)],
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -560,6 +584,7 @@ export class WalletService {
       keyPair: accountKeyPair,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
+      pendingBelowThreshold: [new BigNumber(0)],
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -605,6 +630,8 @@ export class WalletService {
     this.wallet.selectedAccountId = null;
     this.wallet.selectedAccount = null;
     this.wallet.selectedAccount$ = new BehaviorSubject(null);
+    this.wallet.pendingBelowThreshold = [new BigNumber(0)];
+    this.wallet.pendingBlocks = [];
   }
 
   isConfigured() {
@@ -672,6 +699,7 @@ export class WalletService {
 
     let walletBalance = new BigNumber(0);
     let walletPending = new BigNumber(0);
+    let walletPendingReal = new BigNumber(0);
 
     if (!accounts) return;
     for (const accountID in accounts.balances) {
@@ -691,17 +719,13 @@ export class WalletService {
       walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
 
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
+      walletAccount.pendingBelowThreshold = [new BigNumber(0)];
 
       walletBalance = walletBalance.plus(walletAccount.balance);
       walletPending = walletPending.plus(walletAccount.pending);
     }
 
     let hasPending = false;
-
-    // If this is just a normal reload.... do not use the minimum receive setting?
-    if (!reloadPending && walletPending.gt(0)) {
-      hasPending = true; // Temporary override? New incoming transaction on half reload? skip?
-    }
 
     // Check if there is a pending balance at all
     if (walletPending.gt(0)) {
@@ -715,15 +739,35 @@ export class WalletService {
             if (!pending.blocks.hasOwnProperty(block)) {
               continue;
             }
+            const walletAccount = this.wallet.accounts.find(a => a.id === block);
             if (pending.blocks[block]) {
               hasPending = true;
+              let accountPending = new BigNumber(0);
+              for (const hash in pending.blocks[block]) {
+                if (!pending.blocks[block].hasOwnProperty(hash)) {
+                  continue;
+                }
+                walletPendingReal = walletPendingReal.plus(pending.blocks[block][hash].amount);
+                accountPending = accountPending.plus(pending.blocks[block][hash].amount);
+              }
+              // Update the actual account pending amount with this above-threshold-value
+              walletAccount.pendingBelowThreshold.push(walletAccount.pending.minus(accountPending));
+              walletAccount.pendingBelowThreshold.shift();
+              walletAccount.pending = accountPending;
+              walletAccount.pendingRaw = accountPending.mod(this.nano);
+              walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
             } else {
-              console.log('Pendling loop - no match, skipping? ', block);
+              walletAccount.pendingBelowThreshold.push(walletAccount.pending);
+              walletAccount.pendingBelowThreshold.shift();
+              walletAccount.pending = new BigNumber(0);
+              walletAccount.pendingRaw = new BigNumber(0);
+              walletAccount.pendingFiat = 0;
             }
           }
         }
       } else {
         hasPending = true; // No minimum receive, but pending balance, set true
+        walletPendingReal = walletPending;
       }
     }
 
@@ -733,16 +777,25 @@ export class WalletService {
     hashes.forEach(hash => this.workPool.addWorkToCache(hash));
 
     this.wallet.balance = walletBalance;
-    this.wallet.pending = walletPending;
+    this.wallet.pending = walletPendingReal;
 
     this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.nano);
-    this.wallet.pendingRaw = new BigNumber(walletPending).mod(this.nano);
+    this.wallet.pendingRaw = new BigNumber(walletPendingReal).mod(this.nano);
 
     this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
-    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPending).times(fiatPrice).toNumber();
+    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPendingReal).times(fiatPrice).toNumber();
+
+    // Save pending that will be ignored, to be displayed to the user
+    // The resons for using push and shift is to keep the reference when used in another component
+    this.wallet.pendingBelowThreshold.push(walletPending.minus(walletPendingReal));
+    this.wallet.pendingBelowThreshold.shift();
 
     // tslint:disable-next-line
     this.wallet.hasPending = hasPending;
+
+    if (reloadPending) {
+      this.clearPendingBlocks();
+    }
 
     // If there is a pending balance, search for the actual pending transactions
     if (reloadPending && walletPending.gt(0)) {
@@ -763,6 +816,7 @@ export class WalletService {
       keyPair: null,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
+      pendingBelowThreshold: [new BigNumber(0)],
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,

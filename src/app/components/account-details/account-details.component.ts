@@ -189,6 +189,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
         pending = await this.api.pendingLimit(this.accountID, 50, minAmount.toString(10));
+        this.account.pending = '0';
       } else {
         pending = await this.api.pending(this.accountID, 50);
       }
@@ -203,6 +204,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
             hash: block,
           });
+
+          // Update the actual account pending amount with this above-threshold-value
+          this.account.pending = new BigNumber(this.account.pending).plus(pending.blocks[block].amount).toString(10);
         }
       }
     }
