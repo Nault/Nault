@@ -55,24 +55,18 @@
               </div>
             </div>
           </td>
-          <td class="uk-text-right">
+          <td class="uk-text-right" style="white-space: nowrap;">
             <div class="uk-width-1-1">
-              {{ account.balance | rai: settings.settings.displayDenomination }}
-              <div *ngIf="account.balanceRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-                +{{ account.balanceRaw.toString(10) | squeeze:'5,5' }} raw
+              <div *ngIf="account.pending.gt(0)" class="incoming-label">
+                <div class="text-snippet">New</div>
+                <div class="text-full">+{{ account.pending | rai: settings.settings.displayDenomination + ',true' }}</div>
               </div>
-              <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
-                {{ account.pending | rai: settings.settings.displayDenomination }}
-              </div>
-              <div *ngIf="account.pendingRaw.gt(0)" style="font-size: 10px;" class="uk-text-muted">
-                +{{ account.pendingRaw.toString(10) | squeeze:'5,5' }} raw
-              </div>
+              <span [title]="( account.balanceRaw.gt(0) ? ( '+' + ( account.balanceRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
+                {{ account.balance | rai: settings.settings.displayDenomination }}
+              </span>
             </div>
             <div class="uk-width-1-1">
               {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
-              <div *ngIf="account.pending.gt(0)" class="uk-text-muted uk-text-small">
-                {{ account.pendingFiat | fiat: settings.settings.displayCurrency }}
-              </div>
             </div>
           </td>
           <td class="uk-text-right">
