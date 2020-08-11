@@ -37,7 +37,7 @@
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
           <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
-              <div class="uk-width-auto uk-text-truncate account-container">
+              <div [class]="[ 'uk-width-auto', 'uk-text-truncate', !isLedgerWallet ? 'account-container' : 'account-container-wide' ]">
                 <div class="uk-width-1-1">
                   <a class="uk-label uk-label-default account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
