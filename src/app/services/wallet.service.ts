@@ -166,11 +166,11 @@ export class WalletService {
             this.appSettings.settings.minimumReceive
           );
         }
-
+        await this.processStateBlock(transaction);
       } else if (transaction.block.type === 'state') {
         shouldNotify = true;
+        await this.processStateBlock(transaction);
       }
-      await this.processStateBlock(transaction);
 
       // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
       // I'm not sure about that because what happens if the websocket is disconnected and misses a transaction?
