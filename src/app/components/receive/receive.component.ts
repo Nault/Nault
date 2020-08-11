@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from '../../services/wallet.service';
+import {WalletService, WalletAccount} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {ModalService} from '../../services/modal.service';
 import {ApiService} from '../../services/api.service';
@@ -20,12 +20,16 @@ import BigNumber from 'bignumber.js';
 
 export class ReceiveComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
+  pendingBelowThreshold = [];
 
   pendingAccountModel = '0';
   pendingBlocks = [];
   qrCodeImage = null;
   qrAccount = '';
   qrAmount: BigNumber = null;
+  minAmount: BigNumber = this.settings.settings.minimumReceive ? this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive) : null;
+  walletAccount: WalletAccount = null;
+  selAccountInit = false;
 
   constructor(
     private walletService: WalletService,
@@ -38,27 +42,26 @@ export class ReceiveComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
-    setTimeout(() => {
-      this.getPending();
-    }, 100);
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.selAccountInit) {
+        this.pendingAccountModel = acc ? acc.id : '0';
+        this.changeQRAccount(this.pendingAccountModel);
+      }
+      this.selAccountInit = true;
+    });
 
+    await this.loadPendingForAll();
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
       this.changeQRAccount(this.pendingAccountModel);
     }
-
-    // Update selected account if changed in the sidebar
-    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
-      if (acc) {
-        this.pendingAccountModel = acc.id;
-        this.changeQRAccount(this.pendingAccountModel);
-      }
-    });
   }
 
   async loadPendingForAll() {
     this.pendingBlocks = this.walletService.wallet.pendingBlocks;
+    this.pendingBelowThreshold = this.walletService.wallet.pendingBelowThreshold;
 
     // Now, only if we have results, do a unique on the account names, and run account info on all of them?
     if (this.pendingBlocks.length) {
@@ -76,12 +79,12 @@ export class ReceiveComponent implements OnInit {
 
   async getPending() {
     // clear the list of pending blocks. Updated again with reloadBalances()
-    this.walletService.clearPendingBlocks();
     await this.walletService.reloadBalances(true);
     await this.loadPendingForAll();
   }
 
   async changeQRAccount(account) {
+    this.walletAccount = this.walletService.wallet.accounts.find(a => a.id === account) || null;
     this.qrAccount = '';
     let qrCode = null;
     if (account.length > 1) {
