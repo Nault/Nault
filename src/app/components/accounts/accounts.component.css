@@ -10,6 +10,10 @@
   max-width: calc(100% - 35px);
 }
 
+.account-container-wide {
+  max-width: calc(100% - 100px);
+}
+
 .copy-container {
   padding-left: 10px;
   padding-bottom: 3px;

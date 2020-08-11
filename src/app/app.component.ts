@@ -72,6 +72,14 @@ export class AppComponent implements OnInit {
 
     await this.walletService.loadStoredWallet();
 
+    // update selected account object with the latest balance, pending, etc
+    if (this.wallet.selectedAccountId) {
+      const currentUpdatedAccount = this.wallet.accounts.find(a => a.id === this.wallet.selectedAccountId);
+      this.wallet.selectedAccount = currentUpdatedAccount;
+    }
+
+    await this.walletService.reloadBalances(true);
+
     // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
     const path = localStorage.getItem('path');
@@ -173,6 +181,7 @@ export class AppComponent implements OnInit {
 
   selectAccount(account) {
     // note: account is null when user is switching to 'Total Balance'
+    this.wallet.selectedAccountId = account ? account.id : null;
     this.wallet.selectedAccount = account;
     this.wallet.selectedAccount$.next(account);
     this.toggleAccountsDropdown();

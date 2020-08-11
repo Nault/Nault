@@ -54,6 +54,7 @@ export class SweeperComponent implements OnInit {
   validStartIndex = true;
   validEndIndex = true;
   validMaxIncoming = true;
+  selAccountInit = false;
 
   @ViewChild('outputarea') logArea: ElementRef;
 
@@ -75,6 +76,14 @@ export class SweeperComponent implements OnInit {
     }
 
   async ngOnInit() {
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.selAccountInit) {
+        this.myAccountModel = acc ? acc.id : (this.accounts.length > 0 ? this.accounts[0].id : '0');
+      }
+      this.selAccountInit = true;
+    });
+
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.myAccountModel = this.walletService.wallet.selectedAccount.id;
