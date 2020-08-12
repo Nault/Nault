@@ -215,6 +215,8 @@ export class ConfigureWalletComponent implements OnInit {
 
     this.activePanel = 3;
     this.notifications.sendSuccess(`Successfully created new wallet! Make sure to write down your seed!`);
+
+    this.walletService.informNewWallet();
   }
 
   confirmNewSeed() {
