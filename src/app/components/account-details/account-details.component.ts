@@ -206,7 +206,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           });
 
           // Update the actual account pending amount with this above-threshold-value
-          this.account.pending = new BigNumber(this.account.pending).plus(pending.blocks[block].amount).toString(10);
+          if (this.settings.settings.minimumReceive) {
+            this.account.pending = new BigNumber(this.account.pending).plus(pending.blocks[block].amount).toString(10);
+          }
         }
       }
     }
