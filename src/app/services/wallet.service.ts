@@ -58,6 +58,7 @@ export interface FullWallet {
   password: string;
   pendingBlocks: Block[];
   pendingBelowThreshold: BigNumber[];
+  newWallet$: BehaviorSubject<boolean|false>;
 }
 
 export interface BaseApiAccount {
@@ -103,6 +104,7 @@ export class WalletService {
     password: '',
     pendingBlocks: [],
     pendingBelowThreshold: [new BigNumber(0)],
+    newWallet$: new BehaviorSubject(false),
   };
 
   processingPending = false;
@@ -624,6 +626,8 @@ export class WalletService {
     this.wallet.accountsIndex = 0;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
+    this.wallet.balanceRaw = new BigNumber(0);
+    this.wallet.pendingRaw = new BigNumber(0);
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
@@ -1046,5 +1050,11 @@ export class WalletService {
           })
       )
     );
+  }
+
+  // Subscribable event when a new wallet is created
+  informNewWallet() {
+    this.wallet.newWallet$.next(true);
+    this.wallet.newWallet$.next(false);
   }
 }

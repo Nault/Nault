@@ -106,7 +106,8 @@ export class ConfigureWalletComponent implements OnInit {
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
 
-    this.repService.detectChangeableReps();
+    // this.repService.detectChangeableReps(); // this is now called from change-rep-widget.component when new wallet
+    this.walletService.informNewWallet();
   }
 
   async importSingleKeyWallet() {
@@ -135,6 +136,7 @@ export class ConfigureWalletComponent implements OnInit {
 
     this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
+    this.walletService.informNewWallet();
   }
 
   async importLedgerWallet(refreshOnly = false) {
@@ -172,6 +174,8 @@ export class ConfigureWalletComponent implements OnInit {
     if (this.ledgerService.isBrokenBrowser()) {
       this.notifications.sendLedgerChromeWarning();
     }
+
+    this.walletService.informNewWallet();
   }
 
   // Send a confirmation dialog to the user if they already have a wallet configured

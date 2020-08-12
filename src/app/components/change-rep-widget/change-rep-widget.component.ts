@@ -37,6 +37,18 @@ export class ChangeRepWidgetComponent implements OnInit {
       this.updateDisplayedRepresentatives();
     });
 
+    // Detect if a wallet is reset
+    this.walletService.wallet.newWallet$.subscribe(async bool => {
+      if (bool) {
+        console.log('Reloading representatives..');
+        this.representatives = await this.repService.getRepresentativesOverview();
+        this.selectedAccount = null;
+        this.updateDisplayedRepresentatives();
+        await this.repService.detectChangeableReps();
+        console.log('Representatives reloaded');
+      }
+    });
+
     await this.repService.detectChangeableReps();
 
     this.repService.changeableReps$.subscribe(async reps => {
