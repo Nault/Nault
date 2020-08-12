@@ -323,13 +323,16 @@ export class RepresentativesComponent implements OnInit {
 
     this.notifications.sendSuccess(`Successfully updated representatives!`);
 
+    let useCachedReps = false;
+
     // If the overview panel is displayed, reload its data now
     if (!this.hideOverview) {
       this.representativeOverview = await this.representativeService.getRepresentativesOverview();
+      useCachedReps = true;
     }
 
     // Detect if any new reps should be changed
-    await this.representativeService.detectChangeableReps();
+    await this.representativeService.detectChangeableReps(useCachedReps ? this.representativeOverview : null);
   }
 
   // open qr reader modal
