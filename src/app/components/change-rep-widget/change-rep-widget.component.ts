@@ -25,10 +25,12 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.representatives = await this.repService.getRepresentativesOverview();
+    await this.updateChangeableRepresentatives();
     this.updateDisplayedRepresentatives();
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
+      await this.updateChangeableRepresentatives();
       this.updateDisplayedRepresentatives();
     });
 
@@ -37,7 +39,12 @@ export class ChangeRepWidgetComponent implements OnInit {
       this.updateDisplayedRepresentatives();
     });
 
-    await this.repService.detectChangeableReps();
+    // Detect if a wallet is reset
+    this.walletService.wallet.newWallet$.subscribe(shouldReload => {
+      if (shouldReload) {
+        this.resetRepresentatives();
+      }
+    });
 
     this.repService.changeableReps$.subscribe(async reps => {
       // Includes both acceptable and bad reps
@@ -49,6 +56,21 @@ export class ChangeRepWidgetComponent implements OnInit {
 
       this.updateDisplayedRepresentatives();
     });
+  }
+
+  async resetRepresentatives() {
+    console.log('Reloading representatives..');
+    this.selectedAccount = null;
+    this.representatives = [];
+    this.changeableRepresentatives = [];
+    this.showRepChangeRequired = false;
+    this.updateDisplayedRepresentatives();
+    this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    console.log('Representatives reloaded');
+  }
+
+  async updateChangeableRepresentatives() {
+    await this.repService.detectChangeableReps(this.representatives);
   }
 
   updateDisplayedRepresentatives() {

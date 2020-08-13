@@ -80,8 +80,8 @@ export class RepresentativeService {
    * Determine if any accounts in the wallet need a rep change
    * @returns {Promise<FullRepresentativeOverview[]>}
    */
-  async detectChangeableReps(): Promise<FullRepresentativeOverview[]> {
-    const representatives = await this.getRepresentativesOverview();
+  async detectChangeableReps(cachedReps?: FullRepresentativeOverview[]): Promise<FullRepresentativeOverview[]> {
+    const representatives = cachedReps ? cachedReps : await this.getRepresentativesOverview();
 
     // Now based on some of their properties, we filter them out
     const needsChange = [];
