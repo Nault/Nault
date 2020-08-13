@@ -1,6 +1,6 @@
 {
   "name": "nault",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "BitDesert / Andrew Steele",
