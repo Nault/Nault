@@ -62,7 +62,7 @@
         <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
       <p class="uk-text-danger" *ngIf="!rep.status.online && rep.status.uptime === 0">
-        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past 7 days</b>.
+        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past {{ rep.status.daysSinceLastVoted }} days</b>.
       </p>
       <ng-container [ngSwitch]="true">
         <p *ngSwitchCase="(rep.statusText == 'trusted')">

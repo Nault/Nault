@@ -17,8 +17,9 @@ export interface RepresentativeStatus {
   changeRequired: boolean;
   warn: boolean;
   known: boolean;
-  uptime: Number;
-  score: Number;
+  daysSinceLastVoted: number;
+  uptime: number;
+  score: number;
 }
 
 export interface RepresentativeOverview {
@@ -142,6 +143,7 @@ export class RepresentativeService {
         lowUptime: false,
         markedToAvoid: false,
         trusted: false,
+        daysSinceLastVoted: 0,
         changeRequired: false,
         warn: false,
         known: false,
@@ -181,6 +183,14 @@ export class RepresentativeService {
         label = knownRepNinja.alias;
         repStatus.uptime = knownRepNinja.uptime_over.week;
         repStatus.score = knownRepNinja.score;
+
+        const msSinceLastVoted = knownRepNinja.lastVoted ? ( Date.now() - new Date(knownRepNinja.lastVoted).getTime() ) : 0;
+        repStatus.daysSinceLastVoted = Math.floor(msSinceLastVoted / 86400000);
+        if (knownRepNinja.uptime_over.week === 0) {
+          // display a minimum of 7 days if the weekly uptime is 0%
+          repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, 7);
+        }
+
         if (knownRepNinja.uptime_over.week < 80) {
           status = 'alert';
           repStatus.veryLowUptime = true;
