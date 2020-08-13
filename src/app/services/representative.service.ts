@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {BaseApiAccount, WalletApiAccount, WalletService} from "./wallet.service";
-import BigNumber from "bignumber.js";
-import {ApiService} from "./api.service";
-import {UtilService} from "./util.service";
+import {BehaviorSubject} from 'rxjs';
+import {BaseApiAccount, WalletApiAccount, WalletService} from './wallet.service';
+import BigNumber from 'bignumber.js';
+import {ApiService} from './api.service';
+import {UtilService} from './util.service';
 import { NinjaService } from './ninja.service';
 
 export interface RepresentativeStatus {
@@ -80,8 +80,8 @@ export class RepresentativeService {
    * Determine if any accounts in the wallet need a rep change
    * @returns {Promise<FullRepresentativeOverview[]>}
    */
-  async detectChangeableReps(): Promise<FullRepresentativeOverview[]> {
-    const representatives = await this.getRepresentativesOverview();
+  async detectChangeableReps(cachedReps?: FullRepresentativeOverview[]): Promise<FullRepresentativeOverview[]> {
+    const representatives = cachedReps ? cachedReps : await this.getRepresentativesOverview();
 
     // Now based on some of their properties, we filter them out
     const needsChange = [];
@@ -120,8 +120,8 @@ export class RepresentativeService {
     const onlineReps = await this.getOnlineRepresentatives();
     const quorum = await this.api.confirmationQuorum();
 
-    const online_stake_total = this.util.nano.rawToMnano(quorum.online_stake_total);
-    this.onlineStakeTotal = new BigNumber(online_stake_total);
+    const online_stake_total = quorum ? this.util.nano.rawToMnano(quorum.online_stake_total) : null;
+    this.onlineStakeTotal = online_stake_total ? new BigNumber(online_stake_total) : null;
 
     const allReps = [];
 
@@ -132,7 +132,7 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = nanoWeight.div(this.onlineStakeTotal).times(100);
+      const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
@@ -157,7 +157,7 @@ export class RepresentativeService {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
         repStatus.changeRequired = true;
-      } else if (percent.gte(1)) {
+      } else if (percent.gte(2)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }
@@ -231,10 +231,10 @@ export class RepresentativeService {
    */
   getUniqueRepresentatives(accounts: WalletApiAccount[]): RepresentativeOverview[] {
     const representatives = [];
-    for (let account of accounts) {
+    for (const account of accounts) {
       if (!account || !account.representative) continue; // Account doesn't exist yet
 
-      const existingRep = representatives.find(rep => rep.id == account.representative);
+      const existingRep = representatives.find(rep => rep.id === account.representative);
       if (existingRep) {
         existingRep.weight = existingRep.weight.plus(new BigNumber(account.balance));
         existingRep.accounts.push(account);
@@ -259,7 +259,7 @@ export class RepresentativeService {
     const representatives = [];
     const reps = await this.api.representativesOnline();
     if (!reps) return representatives;
-    for (let representative in reps.representatives) {
+    for (const representative in reps.representatives) {
       if (!reps.representatives.hasOwnProperty(representative)) continue;
       representatives.push(reps.representatives[representative]);
     }
@@ -328,7 +328,7 @@ export class RepresentativeService {
   }
 
   getRepresentative(id): StoredRepresentative | undefined {
-    return this.representatives.find(rep => rep.id == id);
+    return this.representatives.find(rep => rep.id === id);
   }
 
   // Reset representatives list to the default one
@@ -347,7 +347,9 @@ export class RepresentativeService {
     if (trusted) newRepresentative.trusted = true;
     if (warn) newRepresentative.warn = true;
 
-    const existingRepresentative = this.representatives.find(r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase());
+    const existingRepresentative = this.representatives.find(
+      r => r.name.toLowerCase() === name.toLowerCase() || r.id.toLowerCase() === accountID.toLowerCase()
+    );
     if (existingRepresentative) {
       this.representatives.splice(this.representatives.indexOf(existingRepresentative), 1, newRepresentative);
     } else {

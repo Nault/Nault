@@ -15,7 +15,7 @@
                 <label class="uk-form-label" for="form-horizontal-select">From Account</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="fromAccountID" (change)="resetRaw()" id="form-horizontal-select">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.addressBookName ? account.addressBookName + ' - ' : '' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                 </div>
               </div>

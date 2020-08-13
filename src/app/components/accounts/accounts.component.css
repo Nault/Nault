@@ -1,4 +1,56 @@
 .account-index {
-  color: #d2d2d2;
   margin-right: 5px;
+}
+
+.account-index:hover {
+  color: #333;
+}
+
+.account-container {
+  max-width: calc(100% - 35px);
+}
+
+.account-container-wide {
+  max-width: calc(100% - 100px);
+}
+
+.copy-container {
+  padding-left: 10px;
+  padding-bottom: 3px;
+  display: grid;
+}
+
+.copy-icons {
+  align-self: end;
+}
+
+.incoming-label {
+	display: inline-block;
+	background: #4a90e2;
+	border-radius: 20px;
+	font-size: 12px;
+	padding: 2px 10px;
+	margin-right: 2px;
+	vertical-align: 1px;
+	padding-bottom: 1px;
+	text-transform: uppercase;
+	color: #FFF;
+}
+
+.incoming-label > .text-full {
+	display: none;
+}
+
+.incoming-label > .text-snippet {
+	display: inline-block;
+}
+
+@media (min-width: 1500px) {
+	.incoming-label > .text-full {
+		display: inline-block;
+	}
+
+	.incoming-label > .text-snippet {
+		display: none;
+	}
 }

@@ -17,21 +17,25 @@
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
-      <div class="representative-health-row health-unknown" *ngSwitchCase="rep.statusText == 'unknown'">
+      <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
         <div class="health-icon"></div>
-        <div class="label">Unknown Status</div>
+        <div class="label">Good Representative</div>
       </div>
-      <div class="representative-health-row health-yellow" *ngSwitchCase="rep.statusText == 'warn'">
+      <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'ok')">
+        <div class="health-icon"></div>
+        <div class="label">Good Representative</div>
+      </div>
+      <div class="representative-health-row health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
         <div class="health-icon"></div>
         <div class="label">Acceptable Representative</div>
       </div>
-      <div class="representative-health-row health-red" *ngSwitchCase="rep.statusText == 'alert'">
+      <div class="representative-health-row health-red" *ngSwitchCase="(rep.statusText == 'alert')">
         <div class="health-icon"></div>
         <div class="label">Bad Representative</div>
       </div>
-      <div class="representative-health-row health-green" *ngSwitchDefault>
+      <div class="representative-health-row health-unknown" *ngSwitchDefault>
         <div class="health-icon"></div>
-        <div class="label">Good Representative</div>
+        <div class="label">Unknown Status</div>
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
@@ -49,7 +53,7 @@
         <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 1%).
+        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 2%).
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.uptime > 0">
         <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
@@ -60,15 +64,23 @@
       <p class="uk-text-danger" *ngIf="!rep.status.online && rep.status.uptime === 0">
         <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past 7 days</b>.
       </p>
-      <p class="uk-text-success" *ngIf="rep.statusText == 'ok'">
-        <span uk-icon="icon: check;"></span>We've found no issues with uptime or weight distribution of your current representative.
-      </p>
-      <p *ngIf="rep.statusText == 'unknown'">
-        <span uk-icon="icon: question;"></span>We could not determine status of this representative.
-      </p>
-      <p *ngIf="rep.statusText != 'ok' && rep.statusText != 'unknown'">
-        It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
-      </p>
+      <ng-container [ngSwitch]="true">
+        <p *ngSwitchCase="(rep.statusText == 'trusted')">
+          You have marked this representative as trusted, meaning its status will remain "Good" even in case of severe issues with uptime or weight distribution.
+        </p>
+        <p class="uk-text-success" *ngSwitchCase="(rep.statusText == 'ok')">
+          <span uk-icon="icon: check;"></span>We found no issues with uptime or weight distribution of your current representative.
+        </p>
+        <p *ngSwitchCase="(rep.statusText == 'warn')">
+          Switching to a different representative could improve security and decentralization of the Nano network.
+        </p>
+        <p *ngSwitchCase="(rep.statusText == 'alert')">
+          It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
+        </p>
+        <p *ngSwitchDefault>
+          <span uk-icon="icon: question;"></span>We could not determine status of this representative.
+        </p>
+      </ng-container>
     </div>
   </div>
 </div>

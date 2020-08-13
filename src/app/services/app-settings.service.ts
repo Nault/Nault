@@ -70,6 +70,14 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
+      name: 'VoxPopuli',
+      value: 'voxpopuli',
+      api: 'https://voxpopuli.network/api',
+      ws: 'wss://voxpopuli.network/websocket',
+      auth: null,
+      shouldRandom: false,
+    },
+    {
       name: 'Nanex.cc',
       value: 'nanex',
       api: 'https://api.nanex.cc',
@@ -157,7 +165,7 @@ export class AppSettingsService {
   }
 
   setAppSettings(settingsObject) {
-    for (let key in settingsObject) {
+    for (const key in settingsObject) {
       if (!settingsObject.hasOwnProperty(key)) continue;
       this.settings[key] = settingsObject[key];
     }
@@ -188,7 +196,7 @@ export class AppSettingsService {
 
   // Get the base URL part of the serverAPI, e.g. https://nanovault.io from https://nanovault.io/api/node-api.
   getServerApiBaseUrl(): string {
-    let u = url.parse(this.settings.serverAPI);
+    const u = url.parse(this.settings.serverAPI);
     u.pathname = '/';
     return url.format(u);
   }

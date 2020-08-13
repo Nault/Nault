@@ -41,7 +41,7 @@
                       <a (click)="editEntry(representative)" class="uk-link-text" title="Edit Representative" uk-tooltip>{{ representative.name }}</a>
                     </div>
                     <ul class="uk-iconnav uk-width-auto" style="padding-left: 0;">
-                      <!--<li><span class="uk-hidden-hover uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>-->
+                      <!--<li><span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>-->
                       <li *ngIf="representative.trusted"><span class="uk-text-success" uk-icon="icon: star" uk-tooltip title="Representative marked as trusted"></span></li>
                       <li *ngIf="representative.warn"><span class="uk-text-warning" uk-icon="icon: warning" uk-tooltip title="Representative marked as avoid"></span></li>
                     </ul>
@@ -54,7 +54,7 @@
                         <app-nano-account-id [accountID]="representative.id"></app-nano-account-id>
                       </a>
                     </div>
-                    <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+                    <ul class="uk-iconnav" style="padding-left: 0;">
                       <li><a ngxClipboard [cbContent]="representative.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>

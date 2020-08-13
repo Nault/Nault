@@ -43,7 +43,13 @@
             <div class="address">{{ account.id }}</div>
           </div>
           <div class="balance-column">
-            <div class="balance primary">{{ account.balance | rai: settings.settings.displayDenomination }}</div>
+            <div class="balance primary">
+              <span class="incoming-label" *ngIf="account.pending.gt(0)">
+                <span class="text-snippet">New</span>
+                <span class="text-full">+{{ account.pending | rai: 'mnano,true' }}</span>
+              </span>
+              {{ account.balance | rai: settings.settings.displayDenomination }}
+            </div>
             <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
           </div>
         </div>
@@ -62,7 +68,11 @@
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <div class="name">{{
+                    <a [routerLink]="(
+                        (wallet.selectedAccount !== null)
+                      ? '/account/' + wallet.selectedAccount.id
+                      : '/accounts'
+                    )" class="name">{{
                         (wallet.selectedAccount !== null)
                       ? (
                           wallet.selectedAccount.addressBookName
@@ -70,7 +80,7 @@
                         : ('Account #' + wallet.selectedAccount.index)
                       )
                       : 'Total Balance'
-                    }}</div>
+                    }}</a>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
                       <div class="circle"></div>
@@ -103,7 +113,7 @@
                 </div>
               </div>
 
-              <ng-container *ngIf="walletService.hasPendingTransactions()">
+              <ng-container *ngIf="(wallet.selectedAccount === null && walletService.hasPendingTransactions()) || wallet.selectedAccount !== null && wallet.selectedAccount.pending.gt(0)">
                 <ng-container *ngIf="walletService.processingPending else notProcessingPending">
                   <div class="nav-action-receive" *ngIf="walletService.processingPending">
                     <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
@@ -127,21 +137,21 @@
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
-                      <div class="name">Incoming Balance</div>
+                      <a routerLink="/receive" class="name">Incoming Balance</a>
                     </div>
                     <div class="account-balances">
                       <div class="balance-container primary">
                         <div class="currency-name">NANO</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ wallet.pending | rai: 'mnano,true' | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ wallet.pending | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 1 }}</div>
                         </div>
                       </div>
                       <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
                         <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ wallet.pendingFiat | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount ? wallet.selectedAccount.pendingFiat : wallet.pendingFiat) | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount ? wallet.selectedAccount.pendingFiat : wallet.pendingFiat) | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
                         </div>
                       </div>
                     </div>
@@ -154,9 +164,13 @@
                 <div class="status-icon">
                   <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
                 </div>
-                <div class="status-labels">
+                <div class="status-labels" *ngIf="settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">Unable to connect to the server</div>
                   <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                </div>
+                <div class="status-labels" *ngIf="!settings.settings.serverAPI">
+                  <div class="label primary uk-text-danger">Wallet is in offline mode</div>
+                  <div class="label secondary"><a routerLink="/configure-app">Select a server</a> to interact with the network</div>
                 </div>
               </div>
 
@@ -186,13 +200,6 @@
           <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
           <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
           <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
-            <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
-            </ul>
-          </li>
-          <li class="uk-parent">
             <a href="#">Settings</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
@@ -201,17 +208,24 @@
               <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
+          <li class="uk-parent">
+            <a href="#">Advanced Tools</a>
+            <ul class="uk-nav-sub">
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+            </ul>
+          </li>
         </ul>
 
         <div class="nav-search">
           <form class="uk-search uk-search-default uk-width-1-1">
             <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" style="border: 0;" name="searchData" (keyup.enter)="performSearch()">
+            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
           </form>
         </div>
 
         <div class="footer uk-margin-remove-top" uk-grid>
-          <div class="uk-width-1-1 uk-text-center" style="padding-top: 15px; padding-bottom: 60px;">
+          <div class="uk-width-1-1 uk-text-center">
             <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://twitter.com/TheNanoCenter" uk-icon="icon: twitter" uk-tooltip title="Chat with us on Twitter" class="footer-link" target="_blank" rel="noopener"></a>
             <a href="https://discord.nanocenter.org" uk-icon="icon: users" uk-tooltip title="Join our community on Discord" class="footer-link" target="_blank" rel="noopener"></a>

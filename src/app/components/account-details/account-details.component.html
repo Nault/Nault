@@ -23,27 +23,41 @@
             </div>
             <div *ngIf="!showEditAddressBook" uk-grid>
               <div class="uk-width-1-1">
-                <div *ngIf="addressBookEntry">
-                    <h3 class="uk-card-title">{{ addressBookEntry }}</h3>
-                    <div class="uk-text-small uk-text-truncate">
+                <div *ngIf="addressBookEntry || walletAccount">
+                  <div class="uk-width-1-1">
+                    <div uk-grid>
+                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{ addressBookEntry ? addressBookEntry : ('Account #' + walletAccount.index)}}</h3>
+                      <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
+                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
+                      </div>
+                    </div>
+                  </div>
+                  <div uk-grid>
+                    <div class="uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
                     </div>
+                    <div class="uk-width-auto" style="padding-left: 10px; margin-top: -3px;">
+                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </div>
+                  </div>
                 </div>
 
-                <div *ngIf="!addressBookEntry">
-                  <h3 class="uk-card-title uk-text-truncate" style="margin-bottom: 0;">
-                    <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
-                  </h3>
+                <div *ngIf="!addressBookEntry && !walletAccount">
+                  <div uk-grid>
+                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
+                      <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                    </h3>
+                    <div class="uk-width-auto">
+                      <ul class="uk-iconnav" style="margin-top: 5px;">
+                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
+                        <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-          </div>
-          <div class="uk-width-auto">
-            <ul class="uk-hidden-hover uk-iconnav">
-              <li><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
-              <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-            </ul>
           </div>
         </div>
       </div>
@@ -120,12 +134,12 @@
                     </div>
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
-                        <div class="uk-width-expand uk-text-truncate ">
+                        <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                           <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
                           <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
                         <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
-                          <ul class="uk-hidden-hover uk-iconnav">
+                          <ul class="uk-iconnav">
                             <!--<li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip (click)="showEditRepresentative = true"></a></li>-->
                             <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a></li>
                           </ul>
@@ -143,7 +157,7 @@
                   <div class="uk-width-1-3 uk-text-right">
                     <label>Enable Remote Signing</label>
                   </div>
-                  <div class="uk-width-1-3 uk-text-right">
+                  <div class="uk-width-1-3 uk-text-left">
                     <input class="uk-checkbox uk-margin-medium-left" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="remoteVisible">
                   </div>
                 </div>
@@ -188,14 +202,14 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-expand uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
-                      <ul class="uk-hidden-hover uk-iconnav">
+                      <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
                     </div>
@@ -213,14 +227,14 @@
                 <td class="uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
                 <td class="uk-visible-toggle">
                   <div uk-grid>
-                    <div class="uk-width-expand uk-text-truncate">
+                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
                         <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> 
                         <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
                       </a>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px;">
-                      <ul class="uk-hidden-hover uk-iconnav">
+                      <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
                     </div>
@@ -272,11 +286,11 @@
 
       <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
         <span class="uk-text-small" uk-tooltip title="Unsigned block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Unsigned Block</strong></span>
-        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+        <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
         </ul>
         <span class="uk-text-small" uk-tooltip title="Final block hash to be signed or verified" style="overflow-wrap: anywhere; margin-left: 50px;"><strong>Block Hash</strong></span>
-        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+        <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="blockHashReceive" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
         </ul>
       </div>
@@ -406,11 +420,11 @@
 
       <div *ngIf="blockHash" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
         <span class="uk-text-small" uk-tooltip title="Unsigned block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Unsigned Block</strong></span>
-        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+        <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
         </ul>
         <span class="uk-text-small" uk-tooltip title="Final block hash to be signed or verified" style="overflow-wrap: anywhere; margin-left: 50px;"><strong>Block Hash</strong></span>
-        <ul class="uk-hidden-hover uk-iconnav" style="padding-left: 0;">
+        <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="blockHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
         </ul>
       </div>

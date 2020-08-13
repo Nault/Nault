@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import BigNumber from "bignumber.js";
-import {BehaviorSubject} from "rxjs";
-import { QrModalService } from "../../services/qr-modal.service";
+import {ActivatedRoute} from '@angular/router';
+import BigNumber from 'bignumber.js';
+import {BehaviorSubject} from 'rxjs';
+import { QrModalService } from '../../services/qr-modal.service';
 
 import {
   ApiService,
@@ -14,7 +14,7 @@ import {
   UtilService,
   WalletService,
   NinjaService
-} from "../../services";
+} from '../../services';
 
 @Component({
   selector: 'app-representatives',
@@ -25,7 +25,7 @@ export class RepresentativesComponent implements OnInit {
   @ViewChild('repInput') repInput;
 
   changeAccountID: any = null;
-  toRepresentativeID: string = '';
+  toRepresentativeID = '';
 
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
@@ -48,7 +48,7 @@ export class RepresentativesComponent implements OnInit {
 
   hideOverview = false;
 
-  representativeList = []
+  representativeList = [];
 
   constructor(
     private router: ActivatedRoute,
@@ -73,7 +73,7 @@ export class RepresentativesComponent implements OnInit {
       if (params && params.accounts) {
         this.selectedAccounts = []; // Reset the preselected accounts
         const accounts = params.accounts.split(',');
-        for (let account of accounts) {
+        for (const account of accounts) {
           this.newAccountID(account);
         }
       }
@@ -84,7 +84,9 @@ export class RepresentativesComponent implements OnInit {
 
     let repOverview = await this.representativeService.getRepresentativesOverview();
     // Sort by weight delegated
-    repOverview = repOverview.sort((a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber());
+    repOverview = repOverview.sort(
+      (a: FullRepresentativeOverview, b: FullRepresentativeOverview) => b.delegatedWeight.toNumber() - a.delegatedWeight.toNumber()
+    );
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
 
@@ -108,7 +110,7 @@ export class RepresentativesComponent implements OnInit {
   }
 
   addSelectedAccounts(accounts) {
-    for (let account of accounts) {
+    for (const account of accounts) {
       this.newAccountID(account.id);
     }
 
@@ -118,12 +120,16 @@ export class RepresentativesComponent implements OnInit {
 
   newAccountID(accountID) {
     const newAccount = accountID || this.changeAccountID;
-    if (!newAccount) return; // Didn't select anything
+    if (!newAccount) {
+      return; // Didn't select anything
+    }
 
     const existingAccount = this.selectedAccounts.find(a => a.id === newAccount);
-    if (existingAccount) return; // Already selected
+    if (existingAccount) {
+      return; // Already selected
+    }
 
-    const allExists = this.selectedAccounts.find(a => a.id === 'All Accounts');
+    const allExists = this.selectedAccounts.find(a => a.id === 'All Current Accounts');
     if (newAccount === 'all' && !allExists) {
       this.selectedAccounts = []; // Reset the list before adding all
     }
@@ -132,7 +138,9 @@ export class RepresentativesComponent implements OnInit {
     }
 
     if (newAccount === 'all') {
-      this.selectedAccounts.push({ id: 'All Accounts' });
+      if (this.selectedAccounts.length === 0) {
+        this.selectedAccounts.push({ id: 'All Current Accounts' });
+      }
     } else {
       const walletAccount = this.wallet.getWalletAccount(newAccount);
       this.selectedAccounts.push(walletAccount);
@@ -227,7 +235,10 @@ export class RepresentativesComponent implements OnInit {
   }
 
   calculatePage() {
-    this.recommendedRepsPaginated = this.recommendedReps.slice((this.currentRepPage * this.repsPerPage), (this.currentRepPage * this.repsPerPage) + this.repsPerPage);
+    this.recommendedRepsPaginated = this.recommendedReps.slice(
+      (this.currentRepPage * this.repsPerPage),
+      (this.currentRepPage * this.repsPerPage) + this.repsPerPage
+    );
   }
 
   selectRecommendedRep(rep) {
@@ -241,9 +252,15 @@ export class RepresentativesComponent implements OnInit {
     const accounts = this.selectedAccounts;
     const newRep = this.toRepresentativeID;
 
-    if (this.changingRepresentatives) return; // Already running
-    if (this.wallet.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
-    if (!accounts || !accounts.length) return this.notifications.sendWarning(`You must select at least one account to change`);
+    if (this.changingRepresentatives) {
+      return; // Already running
+    }
+    if (this.wallet.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
+    if (!accounts || !accounts.length) {
+      return this.notifications.sendWarning(`You must select at least one account to change`);
+    }
 
     this.changingRepresentatives = true;
 
@@ -253,13 +270,15 @@ export class RepresentativesComponent implements OnInit {
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }
 
-    const allAccounts = accounts.find(a => a.id === 'All Accounts');
+    const allAccounts = accounts.find(a => a.id === 'All Current Accounts');
     const accountsToChange = allAccounts ? this.wallet.wallet.accounts : accounts;
 
     // Remove any that don't need their represetatives to be changed
     const accountsNeedingChange = accountsToChange.filter(account => {
       const accountInfo = this.fullAccounts.find(a => a.id === account.id);
-      if (!accountInfo || accountInfo.error) return false; // Cant find info, update the account
+      if (!accountInfo || accountInfo.error) {
+        return false; // Cant find info, update the account
+      }
 
       if (accountInfo.representative.toLowerCase() === newRep.toLowerCase()) {
         return false; // This account already has this representative, reject it
@@ -274,9 +293,11 @@ export class RepresentativesComponent implements OnInit {
     }
 
     // Now loop and change them
-    for (let account of accountsNeedingChange) {
+    for (const account of accountsNeedingChange) {
       const walletAccount = this.wallet.getWalletAccount(account.id);
-      if (!walletAccount) continue; // Unable to find account in the wallet? wat?
+      if (!walletAccount) {
+        continue; // Unable to find account in the wallet? wat?
+      }
 
       try {
         const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.wallet.isLedgerWallet());
@@ -289,7 +310,7 @@ export class RepresentativesComponent implements OnInit {
     }
 
     // Determine if a recommended rep was selected, if so we save an entry in the rep list
-    if (this.selectedRecommendedRep && this.selectedRecommendedRep.account && this.selectedRecommendedRep.account == newRep) {
+    if (this.selectedRecommendedRep && this.selectedRecommendedRep.account && this.selectedRecommendedRep.account === newRep) {
       this.representativeService.saveRepresentative(newRep, this.selectedRecommendedRep.alias, false, false);
     }
 
@@ -302,13 +323,16 @@ export class RepresentativesComponent implements OnInit {
 
     this.notifications.sendSuccess(`Successfully updated representatives!`);
 
+    let useCachedReps = false;
+
     // If the overview panel is displayed, reload its data now
     if (!this.hideOverview) {
       this.representativeOverview = await this.representativeService.getRepresentativesOverview();
+      useCachedReps = true;
     }
 
     // Detect if any new reps should be changed
-    await this.representativeService.detectChangeableReps();
+    await this.representativeService.detectChangeableReps(useCachedReps ? this.representativeOverview : null);
   }
 
   // open qr reader modal
