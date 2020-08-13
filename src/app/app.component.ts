@@ -7,9 +7,11 @@ import {PriceService} from './services/price.service';
 import {NotificationService} from './services/notification.service';
 import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
+import {SwUpdate} from '@angular/service-worker';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { LedgerService } from './services';
+
 
 
 @Component({
@@ -28,6 +30,7 @@ export class AppComponent implements OnInit {
     public nodeService: NodeService,
     private representative: RepresentativeService,
     private router: Router,
+    public updates: SwUpdate,
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService) {
@@ -123,6 +126,11 @@ export class AppComponent implements OnInit {
         this.router.navigate(['account', stripped]);
       }
       // Soon: Load seed, automatic send page?
+    });
+
+    // Notify user if service-worker update is available
+    this.updates.available.subscribe((event) => {
+      this.notifications.sendInfo('A Nault update has been downloaded and installed in the background. Refresh to apply.');
     });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
