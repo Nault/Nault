@@ -40,16 +40,9 @@ export class ChangeRepWidgetComponent implements OnInit {
     });
 
     // Detect if a wallet is reset
-    this.walletService.wallet.newWallet$.subscribe(async bool => {
-      if (bool) {
-        console.log('Reloading representatives..');
-        this.selectedAccount = null;
-        this.representatives = [];
-        this.changeableRepresentatives = [];
-        this.showRepChangeRequired = false;
-        this.updateDisplayedRepresentatives();
-        this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
-        console.log('Representatives reloaded');
+    this.walletService.wallet.newWallet$.subscribe(shouldReload => {
+      if (shouldReload) {
+        this.resetRepresentatives();
       }
     });
 
@@ -63,6 +56,17 @@ export class ChangeRepWidgetComponent implements OnInit {
 
       this.updateDisplayedRepresentatives();
     });
+  }
+
+  async resetRepresentatives() {
+    console.log('Reloading representatives..');
+    this.selectedAccount = null;
+    this.representatives = [];
+    this.changeableRepresentatives = [];
+    this.showRepChangeRequired = false;
+    this.updateDisplayedRepresentatives();
+    this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    console.log('Representatives reloaded');
   }
 
   async updateChangeableRepresentatives() {
