@@ -3,10 +3,9 @@ name: SonarCloud
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request. 
-  # disable master as automatic analysis is enabled
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
   pull_request:
       types: [opened, synchronize, reopened]
 
