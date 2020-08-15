@@ -36,7 +36,7 @@
 	color: #868AB0;
 	padding-left: 0;
 	min-width: 360px;
-	height: 100vh;
+	height: var(--vh, 100vh);
 	overflow-x: hidden;
 	overflow-y: auto;
 
@@ -45,7 +45,7 @@
 	@media (max-width: 639px) {
 		position: absolute;
 		width: 360px;
-		height: calc(100vh - @mobile-top-bar-height);
+		max-height: 100%;
 	}
 
 	// Scrollbar - Gecko (Firefox)

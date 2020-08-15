@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
   searchData = '';
   isConfigured = this.walletService.isConfigured;
   @HostListener('window:resize', ['$event']) onResize (e) {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
     this.windowHeight = e.target.innerHeight;
   }
 
