@@ -52,6 +52,7 @@ import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 import {SignComponent} from './components/sign/sign.component';
 import {RemoteSigningComponent} from './components/remote-signing/remote-signing.component';
 import {RemoteSignService} from './services/remote-sign.service';
+import { InstallWidgetComponent } from './components/install-widget/install-widget.component';
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -94,6 +95,7 @@ import { environment } from '../environments/environment';
     SignComponent,
     RemoteSigningComponent,
     QrModalComponent,
+    InstallWidgetComponent,
   ],
   imports: [
     BrowserModule,
