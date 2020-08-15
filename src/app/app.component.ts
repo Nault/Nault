@@ -45,14 +45,12 @@ export class AppComponent implements OnInit {
   nanoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
-  windowHeight = 1000;
   navExpanded = false;
   showAccountsDropdown = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
-  @HostListener('window:resize', ['$event']) onResize (e) {
+  @HostListener('window:resize', ['$event']) onResize () {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
-    this.windowHeight = e.target.innerHeight;
   }
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
@@ -65,7 +63,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.windowHeight = window.innerHeight;
+    this.onResize();
     this.settings.loadAppSettings();
 
     // New for v19: Patch saved xrb_ prefixes to nano_

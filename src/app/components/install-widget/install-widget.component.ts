@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { getPriority } from 'os';
 
 interface InstallEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed', platform: string }>;
@@ -20,7 +19,9 @@ export class InstallWidgetComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (!this.isPromotable()) return;
+    if (!this.isPromotable()) {
+      return;
+    }
 
     window.addEventListener('beforeinstallprompt', (e: InstallEvent) => {
       // Prevent the mini-infobar from appearing on mobile
@@ -29,7 +30,7 @@ export class InstallWidgetComponent implements OnInit {
       // Keep event for later
       this.installEvent = e;
 
-      // Determine if promotion should be shown
+      // Show promotion
       this.showInstallPromotion = true;
     });
   }
@@ -71,6 +72,10 @@ export class InstallWidgetComponent implements OnInit {
 
   isPromotable() {
     const platform = this.getPlatform();
-    return !this.hideOnDesktop || !(platform === 'Windows' || platform === 'Mac' || platform === 'Linux');
+    return !this.isInstalled() || !this.hideOnDesktop || !(platform === 'Windows' || platform === 'Mac' || platform === 'Linux');
+  }
+
+  isInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches;
   }
 }
