@@ -88,7 +88,7 @@
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <p>
-          Make sure you have the Nano app installed, then connect your ledger device via USB. <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener">Ledger/Nault User Guide</a><br>
+          Make sure you have the Nano app installed, then connect your ledger device via USB. <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide</a><br>
           <br>
         </p>
         <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED" class="uk-alert uk-alert-warning">
@@ -170,7 +170,7 @@
     <div uk-grid>
       <div class="uk-width-1-4@m">
         Mnemonic Phrase<br>
-        <span class="uk-text-small uk-text-muted">(Uses <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" class="uk-link-text" target="_blank" rel="noopener">BIP39 Standard</a>)</span>
+        <span class="uk-text-small uk-text-muted">(Uses <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" class="uk-link-text" target="_blank" rel="noopener noreferrer">BIP39 Standard</a>)</span>
       </div>
       <div class="uk-width-3-4@m">
         <pre class="mne-box"><span *ngFor="let line of newWalletMnemonicLines; let l = index" class="mne-cont"><span *ngFor="let word of line; let i = index" class="mne-word"><span class="mne-num">{{ (l * 4) + i + 1 }}</span> {{ word }}</span></span></pre>
