@@ -298,7 +298,7 @@ export class LedgerService {
         const ledgerConfig = await this.ledger.nano.getAppConfiguration();
         resolved = true;
 
-        if (!ledgerConfig || !ledgerConfig) return resolve(false);
+        if (!ledgerConfig) return resolve(false);
         if (ledgerConfig && ledgerConfig.version) {
           this.ledger.status = LedgerStatus.LOCKED;
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano app detected, but ledger is locked` });
