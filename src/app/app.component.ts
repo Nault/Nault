@@ -31,7 +31,9 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService) {
-      router.events.subscribe(() => { this.navExpanded = false; });
+      router.events.subscribe(() => {
+        this.navExpanded = false;
+      });
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
