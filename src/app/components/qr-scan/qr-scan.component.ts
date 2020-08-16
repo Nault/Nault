@@ -57,7 +57,7 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess):.+$/g;
+    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|http|https):.+$/g;
 
     if (this.util.account.isValidAccount(resultString)) {
       // Got address, routing to send...
@@ -70,6 +70,12 @@ export class QrScanComponent implements OnInit {
     } else if (nano_scheme.test(resultString)) {
       // This is a valid Nano scheme URI
       const url = new URL(resultString);
+
+      // check if QR contains a full web URL. For example a full wallet import
+      if ((url.protocol === 'http:' || url.protocol === 'https:')) {
+        window.location.href = resultString;
+        return;
+      }
 
       if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...
