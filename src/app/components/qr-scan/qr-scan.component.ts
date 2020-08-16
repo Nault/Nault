@@ -73,7 +73,7 @@ export class QrScanComponent implements OnInit {
 
       // check if QR contains a full URL path
       if (url.protocol === 'https:') {
-        if (url.pathname.startsWith('/import-wallet') && url.hash.slice(1).length) {
+        if (url.pathname === '/import-wallet' && url.hash.slice(1).length) {
           // wallet import
           this.router.navigate(['import-wallet'], { fragment: url.hash.slice(1)});
         } else if (url.pathname === '/import-address-book' && url.hash.slice(1).length) {
