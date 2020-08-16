@@ -56,26 +56,34 @@ export class InstallWidgetComponent implements OnInit {
 
   getPlatform() {
     const platform = window.navigator.platform;
+    const userAgent = window.navigator.userAgent;
+
     if (platform.includes('Win')) {
       return 'Windows';
     } else if (platform.includes('Mac')) {
       return 'Mac';
-    } else if (window.navigator.userAgent.includes('Android')) {
+    } else if (userAgent.includes('Android')) {
       return 'Android';
+    } else if (userAgent.includes('CrOS')) {
+      return 'Chrome OS';
     } else if (platform.includes('Linux')) {
       return 'Linux';
-    } else if (platform.includes('iPhone') || platform.includes('iPad')) {
+    } else if (platform.includes('iPhone')) {
       return 'iOS';
+    } else if (platform.includes('iPad')) {
+      return 'iPadOS';
     }
-    return undefined;
   }
 
   isPromotable() {
+    if (this.isInstalled()) {
+      return false;
+    }
     const platform = this.getPlatform();
-    return !this.isInstalled() || !this.hideOnDesktop || !(platform === 'Windows' || platform === 'Mac' || platform === 'Linux');
+    return !this.hideOnDesktop || !(platform === 'Windows' || platform === 'Mac' || platform === 'Linux');
   }
 
   isInstalled() {
-    return window.matchMedia('(display-mode: standalone)').matches;
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.userAgent.includes('Electron');
   }
 }
