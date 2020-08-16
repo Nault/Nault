@@ -83,7 +83,7 @@
                 <button *ngIf="block.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span class="uk-margin-right" uk-spinner></span> Loading</button>
               </td>
             </tr>
-            <tr *ngIf="!pendingBlocks.length && ((pendingAccountModel === '0' && pendingBelowThreshold.length > 0 && !pendingBelowThreshold[0].gt(0)) || (pendingAccountModel !== '0' && walletAccount && walletAccount.pendingBelowThreshold.length > 0 && !walletAccount.pendingBelowThreshold[0].gt(0)))">
+            <tr *ngIf="!loadingIncomingTxList && !pendingBlocks.length && ((pendingAccountModel === '0' && pendingBelowThreshold.length > 0 && !pendingBelowThreshold[0].gt(0)) || (pendingAccountModel !== '0' && walletAccount && walletAccount.pendingBelowThreshold.length > 0 && !walletAccount.pendingBelowThreshold[0].gt(0)))">
               <td colspan="4" style="text-align: center;">No incoming transactions</td>
             </tr>
             <tr *ngIf="pendingAccountModel === '0' && pendingBelowThreshold.length > 0 && pendingBelowThreshold[0].gt(0)">
@@ -91,6 +91,9 @@
             </tr>
             <tr *ngIf="pendingAccountModel !== '0' && walletAccount && walletAccount.pendingBelowThreshold.length > 0 && walletAccount.pendingBelowThreshold[0].gt(0)">
               <td colspan="4" style="text-align: center;">Some transactions ({{walletAccount.pendingBelowThreshold[0] | rai: settings.settings.displayDenomination}} total) were hidden due to a Minimum Receive Amount of {{minAmount | rai: settings.settings.displayDenomination}} <a routerLink="/configure-app" routerLinkActive="active">(configure)</a></td>
+            </tr>
+            <tr *ngIf="loadingIncomingTxList">
+              <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</td>
             </tr>
             </tbody>
           </table>
