@@ -22,7 +22,7 @@ export class ImportWalletComponent implements OnInit {
     const params = this.route.snapshot.queryParams;
     let imported = null;
     if (('wallet' in params) && params.wallet.length) {
-      imported = params.wallet
+      imported = params.wallet;
     } else {
       return this.importDataError(`No import data found.  Check your link and try again.`);
     }
