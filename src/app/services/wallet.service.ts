@@ -354,7 +354,7 @@ export class WalletService {
     const exportData = this.generateExportData();
     const base64Data = btoa(JSON.stringify(exportData));
 
-    return `https://nault.cc/import-wallet?wallet=${base64Data}`;
+    return `https://nault.cc/import-wallet#${base64Data}`;
   }
 
   lockWallet() {

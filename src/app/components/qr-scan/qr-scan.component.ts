@@ -57,7 +57,7 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|http|https):.+$/g;
+    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|https):.+$/g;
 
     if (this.util.account.isValidAccount(resultString)) {
       // Got address, routing to send...
@@ -71,13 +71,16 @@ export class QrScanComponent implements OnInit {
       // This is a valid Nano scheme URI
       const url = new URL(resultString);
 
-      // check if QR contains a full web URL. For example a full wallet import
-      if ((url.protocol === 'http:' || url.protocol === 'https:')) {
-        window.location.href = resultString;
-        return;
-      }
-
-      if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
+      // check if QR contains a full URL path
+      if (url.protocol === 'https:') {
+        if (url.pathname.startsWith('/import-wallet') && url.hash.slice(1).length) {
+          // wallet import
+          this.router.navigate(['import-wallet'], { fragment: url.hash.slice(1)});
+        } else if (url.pathname === '/import-address-book' && url.hash.slice(1).length) {
+          // address book import
+          this.router.navigate(['import-address-book'], { fragment: url.hash.slice(1)});
+        }
+      } else if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...
         const amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
