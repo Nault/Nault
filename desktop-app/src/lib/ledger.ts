@@ -81,7 +81,7 @@ export class LedgerService {
         console.log(`Error loading transport? `, err);
         this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Unable to load Ledger transport: ${err.message || err}`);
         this.resetLedger();
-        return;
+        return false;
       }
     }
 
