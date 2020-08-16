@@ -1,5 +1,7 @@
 <script>
-    const path = (window.location.pathname+window.location.search).slice(1);
+    const path = window.location.pathname.slice(1);
+    const query = window.location.search.slice(1);
     localStorage.setItem('path', path);
+    localStorage.setItem('query', query);
     window.location.href='../';
 </script>
