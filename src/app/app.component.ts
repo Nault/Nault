@@ -86,7 +86,11 @@ export class AppComponent implements OnInit {
 
     if (path) {
       const search = localStorage.getItem('query') ? localStorage.getItem('query') : '';
-      const queryParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function(key, value) { return key === '' ? value : decodeURIComponent(value); });
+      const queryParams = {};
+      const urlSearch = new URLSearchParams(search);
+      urlSearch.forEach(function(value, key) {
+        queryParams[key] = value;
+      });
       localStorage.removeItem('path');
       localStorage.removeItem('query');
       this.router.navigate([path], { queryParams: queryParams});
