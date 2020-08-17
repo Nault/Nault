@@ -5,9 +5,10 @@ on:
   # a pull request. 
   push:
     branches:
-      - master
-  pull_request:
-      types: [opened, synchronize, reopened]
+      # - master
+      - notexisting
+  # pull_request:
+  #     types: [opened, synchronize, reopened]
 
 jobs:
   sonarcloud:
