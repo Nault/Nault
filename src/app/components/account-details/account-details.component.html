@@ -165,7 +165,7 @@
             </div>
           </div>
           <div class="uk-width-2-5@s uk-width-1-4@m uk-text-center">
-            <img *ngIf="qrCodeImage" [src]="qrCodeImage"><br />
+            <img *ngIf="qrCodeImage" [src]="qrCodeImage" alt="QR code"><br />
             <span class="uk-text-small">Deposit Address</span>
           </div>
         </div>
@@ -188,11 +188,11 @@
             <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
               <thead>
               <tr>
-                <th class="uk-width-1-6@m uk-width-1-6">Date</th>
-                <th class="uk-width-1-5@m uk-width-1-4">Account</th>
-                <th class="uk-width-1-5@m uk-width-1-4">Amount</th>
-                <th class="uk-width-1-5@m uk-width-1-4">Hash</th>
-                <th *ngIf="remoteVisible" class="uk-width-1-5@m uk-width-1-4">Incoming</th>
+                <th scope="col" class="uk-width-1-6@m uk-width-1-6">Date</th>
+                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Account</th>
+                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Amount</th>
+                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Hash</th>
+                <th scope="col" *ngIf="remoteVisible" class="uk-width-1-5@m uk-width-1-4">Incoming</th>
               </tr>
               </thead>
               <tbody>
@@ -296,7 +296,7 @@
       </div>
 
       <div class="uk-width-1-1 uk-text-center">
-        <img *ngIf="qrCodeImageBlockReceive" [src]="qrCodeImageBlockReceive" class="block-qr"><br />
+        <img *ngIf="qrCodeImageBlockReceive" [src]="qrCodeImageBlockReceive" class="block-qr" alt="QR code"><br />
       </div>
     </div>
   </div>
@@ -429,7 +429,7 @@
         </ul>
       </div>
       <div class="uk-width-1-1 uk-text-center">
-        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr"><br />
+        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr" alt="QR code"><br />
       </div>
     </div>
   </div>

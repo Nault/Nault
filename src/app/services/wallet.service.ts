@@ -243,7 +243,7 @@ export class WalletService {
   async patchOldSavedData() {
     // Look for saved accounts using an xrb_ prefix
     const walletData = localStorage.getItem(this.storeKey);
-    if (!walletData) return true;
+    if (!walletData) return;
 
     const walletJson = JSON.parse(walletData);
 
@@ -260,7 +260,7 @@ export class WalletService {
 
     localStorage.setItem(this.storeKey, JSON.stringify(walletJson));
 
-    return true;
+    return;
   }
 
   async loadStoredWallet() {

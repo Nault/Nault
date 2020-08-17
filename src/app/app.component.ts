@@ -31,7 +31,9 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService) {
-      router.events.subscribe(() => { this.navExpanded = false; });
+      router.events.subscribe(() => {
+        this.navExpanded = false;
+      });
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
@@ -91,14 +93,14 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('query');
       localStorage.removeItem('fragment');
 
-      if (search) {
+      if (search && search.length) {
         const queryParams = {};
         const urlSearch = new URLSearchParams(search);
         urlSearch.forEach(function(value, key) {
           queryParams[key] = value;
         });
         this.router.navigate([path], { queryParams: queryParams});
-      } else if (fragment) {
+      } else if (fragment && fragment.length) {
         this.router.navigate([path], { fragment: fragment});
       } else {
         this.router.navigate([path]);
