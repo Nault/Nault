@@ -775,15 +775,11 @@ export class WalletService {
         walletPendingReal = walletPending;
 
         // update the individual pending here to avoid setting it twice (GUI flickering)
-        for (const accountID in accounts.balances) {
-          if (!accounts.balances.hasOwnProperty(accountID)) continue;
-          const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
-          if (!walletAccount) continue;
-          walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
-          walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
-          walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
-        }
+        this.updateAccountPending(accounts);
       }
+    } else {
+      // update pending also when they are zero
+      this.updateAccountPending(accounts);
     }
 
     // Make sure any frontiers are in the work pool
@@ -818,7 +814,16 @@ export class WalletService {
     }
   }
 
-
+  updateAccountPending(accounts) {
+    for (const accountID in accounts.balances) {
+      if (!accounts.balances.hasOwnProperty(accountID)) continue;
+      const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
+      if (!walletAccount) continue;
+      walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
+      walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
+      walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(this.price.price.lastPrice).toNumber();
+    }
+  }
 
   async loadWalletAccount(accountIndex, accountID) {
     const index = accountIndex;
