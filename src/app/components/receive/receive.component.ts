@@ -30,6 +30,7 @@ export class ReceiveComponent implements OnInit {
   minAmount: BigNumber = this.settings.settings.minimumReceive ? this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive) : null;
   walletAccount: WalletAccount = null;
   selAccountInit = false;
+  loadingIncomingTxList = false;
 
   constructor(
     private walletService: WalletService,
@@ -60,12 +61,16 @@ export class ReceiveComponent implements OnInit {
   }
 
   async loadPendingForAll() {
-    this.pendingBlocks = this.walletService.wallet.pendingBlocks;
-    this.pendingBelowThreshold = this.walletService.wallet.pendingBelowThreshold;
+    const walletPendingBlocks = this.walletService.wallet.pendingBlocks;
+    const walletPendingBlocksBelowThreshold = this.walletService.wallet.pendingBelowThreshold;
+
+    this.pendingBlocks = [];
+    this.pendingBelowThreshold = [];
 
     // Now, only if we have results, do a unique on the account names, and run account info on all of them?
-    if (this.pendingBlocks.length) {
-      const frontiers = await this.api.accountsFrontiers(this.pendingBlocks.map(p => p.account));
+    if (walletPendingBlocks.length) {
+      this.loadingIncomingTxList = true;
+      const frontiers = await this.api.accountsFrontiers(walletPendingBlocks.map(p => p.account));
       if (frontiers && frontiers.frontiers) {
         for (const account in frontiers.frontiers) {
           if (!frontiers.frontiers.hasOwnProperty(account)) {
@@ -75,10 +80,16 @@ export class ReceiveComponent implements OnInit {
         }
       }
     }
+
+    this.loadingIncomingTxList = false;
+    this.pendingBlocks = walletPendingBlocks;
+    this.pendingBelowThreshold = walletPendingBlocksBelowThreshold;
   }
 
   async getPending() {
     // clear the list of pending blocks. Updated again with reloadBalances()
+    this.pendingBlocks = [];
+    this.loadingIncomingTxList = true;
     await this.walletService.reloadBalances(true);
     await this.loadPendingForAll();
   }
