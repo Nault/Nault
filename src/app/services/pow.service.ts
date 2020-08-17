@@ -7,9 +7,7 @@ import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
 import {UtilService} from './util.service';
 
 const mod = window['Module'];
-// NEW v21 THRESHOLD BELOW TO BE ACTIVATED
-// const baseThreshold = 'fffffff800000000'
-const baseThreshold = 'ffffffc000000000';
+const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
