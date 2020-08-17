@@ -24,6 +24,7 @@ export interface WalletAccount {
   balance: BigNumber;
   pending: BigNumber;
   pendingBelowThreshold: BigNumber[];
+  pendingOriginal: BigNumber;
   balanceRaw: BigNumber;
   pendingRaw: BigNumber;
   balanceFiat: number;
@@ -564,6 +565,7 @@ export class WalletService {
       balance: new BigNumber(0),
       pending: new BigNumber(0),
       pendingBelowThreshold: [new BigNumber(0)],
+      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -587,6 +589,7 @@ export class WalletService {
       balance: new BigNumber(0),
       pending: new BigNumber(0),
       pendingBelowThreshold: [new BigNumber(0)],
+      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -714,19 +717,17 @@ export class WalletService {
       // console.log(`Finding account by id: ${accountID} - prefixed: ${accountID} - resulting account: `, walletAccount);
       if (!walletAccount) continue;
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
-      walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
+      walletAccount.pendingOriginal = new BigNumber(accounts.balances[accountID].pending);
 
       walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
-      walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
 
       walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
-      walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
 
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
       walletAccount.pendingBelowThreshold = [new BigNumber(0)];
 
       walletBalance = walletBalance.plus(walletAccount.balance);
-      walletPending = walletPending.plus(walletAccount.pending);
+      walletPending = walletPending.plus(walletAccount.pendingOriginal);
     }
 
     let hasPending = false;
@@ -755,13 +756,13 @@ export class WalletService {
                 accountPending = accountPending.plus(pending.blocks[block][hash].amount);
               }
               // Update the actual account pending amount with this above-threshold-value
-              walletAccount.pendingBelowThreshold.push(walletAccount.pending.minus(accountPending));
+              walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal.minus(accountPending));
               walletAccount.pendingBelowThreshold.shift();
               walletAccount.pending = accountPending;
               walletAccount.pendingRaw = accountPending.mod(this.nano);
               walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
             } else {
-              walletAccount.pendingBelowThreshold.push(walletAccount.pending);
+              walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal);
               walletAccount.pendingBelowThreshold.shift();
               walletAccount.pending = new BigNumber(0);
               walletAccount.pendingRaw = new BigNumber(0);
@@ -772,6 +773,16 @@ export class WalletService {
       } else {
         hasPending = true; // No minimum receive, but pending balance, set true
         walletPendingReal = walletPending;
+
+        // update the individual pending here to avoid setting it twice (GUI flickering)
+        for (const accountID in accounts.balances) {
+          if (!accounts.balances.hasOwnProperty(accountID)) continue;
+          const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
+          if (!walletAccount) continue;
+          walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
+          walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
+          walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(fiatPrice).toNumber();
+        }
       }
     }
 
@@ -821,6 +832,7 @@ export class WalletService {
       balance: new BigNumber(0),
       pending: new BigNumber(0),
       pendingBelowThreshold: [new BigNumber(0)],
+      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
