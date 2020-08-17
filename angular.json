@@ -19,7 +19,11 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              { "glob": "**/*", "input": "src/themes/nano/assets", "output": "/assets/" },
+              {
+                "glob": "**/*",
+                "input": "src/themes/nano/assets",
+                "output": "/assets/"
+              },
               "src/pow.wasm",
               "src/404.html"
             ],
@@ -28,20 +32,20 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-               "qrcode",
-               "bip39",
-               "@zxing/library",
-               "bignumber.js",
-               "nanocurrency",
-               "hw-app-nano",
-               "crypto-js",
-               "blakejs",
-               "nanocurrency-web",
-               "bignumber.js",
-               "u2f-api",
-               "create-hash",
-               "randombytes",
-               "pbkdf2"
+              "qrcode",
+              "bip39",
+              "@zxing/library",
+              "bignumber.js",
+              "nanocurrency",
+              "hw-app-nano",
+              "crypto-js",
+              "blakejs",
+              "nanocurrency-web",
+              "bignumber.js",
+              "u2f-api",
+              "create-hash",
+              "randombytes",
+              "pbkdf2"
             ]
           },
           "configurations": {
@@ -97,7 +101,11 @@
               ],
               "assets": [
                 "src/assets",
-                { "glob": "**/*", "input": "src/themes/banano/assets", "output": "/assets/" },
+                {
+                  "glob": "**/*",
+                  "input": "src/themes/banano/assets",
+                  "output": "/assets/"
+                },
                 "src/pow.wasm",
                 "src/404.html"
               ],
@@ -213,5 +221,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "e785a0c2-623b-4614-955a-17e4b7f1a494"
   }
 }
