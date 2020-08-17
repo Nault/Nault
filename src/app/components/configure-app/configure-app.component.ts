@@ -1,27 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import {WalletService} from '../../services/wallet.service';
-import {NotificationService} from '../../services/notification.service';
-import {AppSettingsService} from '../../services/app-settings.service';
-import {PriceService} from '../../services/price.service';
-import {PowService} from '../../services/pow.service';
-import {WorkPoolService} from '../../services/work-pool.service';
-import {AddressBookService} from '../../services/address-book.service';
-import {ApiService} from '../../services/api.service';
-import {WebsocketService} from '../../services/websocket.service';
-import {NodeService} from '../../services/node.service';
-import {UtilService} from '../../services/util.service';
-import {BehaviorSubject} from 'rxjs';
-import {RepresentativeService} from '../../services/representative.service';
-import {NinjaService} from '../../services/ninja.service';
-import { QrModalService } from '../../services/qr-modal.service';
-
+import { Component, OnInit } from "@angular/core";
+import { WalletService } from "../../services/wallet.service";
+import { NotificationService } from "../../services/notification.service";
+import { AppSettingsService } from "../../services/app-settings.service";
+import { PriceService } from "../../services/price.service";
+import { PowService } from "../../services/pow.service";
+import { WorkPoolService } from "../../services/work-pool.service";
+import { AddressBookService } from "../../services/address-book.service";
+import { ApiService } from "../../services/api.service";
+import { WebsocketService } from "../../services/websocket.service";
+import { NodeService } from "../../services/node.service";
+import { UtilService } from "../../services/util.service";
+import { BehaviorSubject } from "rxjs";
+import { RepresentativeService } from "../../services/representative.service";
+import { NinjaService } from "../../services/ninja.service";
+import { QrModalService } from "../../services/qr-modal.service";
+import { environment } from "../../../environments/environment";
 @Component({
-  selector: 'app-configure-app',
-  templateUrl: './configure-app.component.html',
-  styleUrls: ['./configure-app.component.css']
+  selector: "app-configure-app",
+  templateUrl: "./configure-app.component.html",
+  styleUrls: ["./configure-app.component.css"],
 })
 export class ConfigureAppComponent implements OnInit {
-
   constructor(
     private walletService: WalletService,
     private notifications: NotificationService,
@@ -36,83 +35,88 @@ export class ConfigureAppComponent implements OnInit {
     private util: UtilService,
     private price: PriceService,
     private ninja: NinjaService,
-    private qrModalService: QrModalService) { }
+    private qrModalService: QrModalService
+  ) {}
+  multiCurrency = environment.settings.displayDenomination;
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'NANO (1 Mnano)', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', value: 'nano' },
+    { name: "NANO (1 Mnano)", value: "mnano" },
+    { name: "knano (0.001 Mnano)", value: "knano" },
+    { name: "nano (0.000001 Mnano)", value: "nano" },
   ];
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
-    { name: 'Browser Local Storage', value: 'localStorage' },
-    { name: 'None', value: 'none' },
+    { name: "Browser Local Storage", value: "localStorage" },
+    { name: "None", value: "none" },
   ];
   selectedStorage = this.storageOptions[0].value;
 
   currencies = [
-    { name: 'None', value: '' },
-    { name: 'USD - US Dollar', value: 'USD' },
-    { name: 'BTC - Bitcoin', value: 'BTC' },
-    { name: 'AUD - Australian Dollar', value: 'AUD' },
-    { name: 'BRL - Brazilian Real', value: 'BRL' },
-    { name: 'CAD - Canadian Dollar', value: 'CAD' },
-    { name: 'CHF - Swiss Franc', value: 'CHF' },
-    { name: 'CLP - Chilean Peso', value: 'CLP' },
-    { name: 'CNY - Chinese Yuan', value: 'CNY' },
-    { name: 'CZK - Czech Koruna', value: 'CZK' },
-    { name: 'DKK - Danish Krown', value: 'DKK' },
-    { name: 'EUR - Euro', value: 'EUR' },
-    { name: 'GBP - British Pound', value: 'GBP' },
-    { name: 'HKD - Hong Kong Dollar', value: 'HKD' },
-    { name: 'HUF - Hungarian Forint', value: 'HUF' },
-    { name: 'IDR - Indonesian Rupiah', value: 'IDR' },
-    { name: 'ILS - Israeli New Shekel', value: 'ILS' },
-    { name: 'INR - Indian Rupee', value: 'INR' },
-    { name: 'JPY - Japanese Yen', value: 'JPY' },
-    { name: 'KRW - South Korean Won', value: 'KRW' },
-    { name: 'MXN - Mexican Peso', value: 'MXN' },
-    { name: 'MYR - Malaysian Ringgit', value: 'MYR' },
-    { name: 'NOK - Norwegian Krone', value: 'NOK' },
-    { name: 'NZD - New Zealand Dollar', value: 'NZD' },
-    { name: 'PHP - Philippine Piso', value: 'PHP' },
-    { name: 'PKR - Pakistani Rupee', value: 'PKR' },
-    { name: 'PLN - Polish Zloty', value: 'PLN' },
-    { name: 'RUB - Russian Ruble', value: 'RUB' },
-    { name: 'SEK - Swedish Krona', value: 'SEK' },
-    { name: 'SGD - Singapore Dollar', value: 'SGD' },
-    { name: 'THB - Thai Baht', value: 'THB' },
-    { name: 'TRY - Turkish Lira', value: 'TRY' },
-    { name: 'TWD - New Taiwan Dollar', value: 'TWD' },
-    { name: 'ZAR - South African Rand', value: 'ZAR' },
+    { name: "None", value: "" },
+    { name: "USD - US Dollar", value: "USD" },
+    { name: "BTC - Bitcoin", value: "BTC" },
+    { name: "AUD - Australian Dollar", value: "AUD" },
+    { name: "BRL - Brazilian Real", value: "BRL" },
+    { name: "CAD - Canadian Dollar", value: "CAD" },
+    { name: "CHF - Swiss Franc", value: "CHF" },
+    { name: "CLP - Chilean Peso", value: "CLP" },
+    { name: "CNY - Chinese Yuan", value: "CNY" },
+    { name: "CZK - Czech Koruna", value: "CZK" },
+    { name: "DKK - Danish Krown", value: "DKK" },
+    { name: "EUR - Euro", value: "EUR" },
+    { name: "GBP - British Pound", value: "GBP" },
+    { name: "HKD - Hong Kong Dollar", value: "HKD" },
+    { name: "HUF - Hungarian Forint", value: "HUF" },
+    { name: "IDR - Indonesian Rupiah", value: "IDR" },
+    { name: "ILS - Israeli New Shekel", value: "ILS" },
+    { name: "INR - Indian Rupee", value: "INR" },
+    { name: "JPY - Japanese Yen", value: "JPY" },
+    { name: "KRW - South Korean Won", value: "KRW" },
+    { name: "MXN - Mexican Peso", value: "MXN" },
+    { name: "MYR - Malaysian Ringgit", value: "MYR" },
+    { name: "NOK - Norwegian Krone", value: "NOK" },
+    { name: "NZD - New Zealand Dollar", value: "NZD" },
+    { name: "PHP - Philippine Piso", value: "PHP" },
+    { name: "PKR - Pakistani Rupee", value: "PKR" },
+    { name: "PLN - Polish Zloty", value: "PLN" },
+    { name: "RUB - Russian Ruble", value: "RUB" },
+    { name: "SEK - Swedish Krona", value: "SEK" },
+    { name: "SGD - Singapore Dollar", value: "SGD" },
+    { name: "THB - Thai Baht", value: "THB" },
+    { name: "TRY - Turkish Lira", value: "TRY" },
+    { name: "TWD - New Taiwan Dollar", value: "TWD" },
+    { name: "ZAR - South African Rand", value: "ZAR" },
   ];
   selectedCurrency = this.currencies[0].value;
 
   inactivityOptions = [
-    { name: 'Never', value: 0 },
-    { name: '1 Minute', value: 1 },
-    { name: '5 Minutes', value: 5 },
-    { name: '15 Minutes', value: 15 },
-    { name: '30 Minutes', value: 30 },
-    { name: '1 Hour', value: 60 },
-    { name: '6 Hours', value: 360 },
+    { name: "Never", value: 0 },
+    { name: "1 Minute", value: 1 },
+    { name: "5 Minutes", value: 5 },
+    { name: "15 Minutes", value: 15 },
+    { name: "30 Minutes", value: 30 },
+    { name: "1 Hour", value: 60 },
+    { name: "6 Hours", value: 360 },
   ];
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
   powOptions = [
-    { name: 'Best Option Available', value: 'best' },
-    { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
-    { name: 'Client Side - CPU', value: 'clientCPU' },
-    { name: 'Server - Nault Server', value: 'server' },
+    { name: "Best Option Available", value: "best" },
+    {
+      name: "Client Side - WebGL [Recommended] (Chrome/Firefox)",
+      value: "clientWebGL",
+    },
+    { name: "Client Side - CPU", value: "clientCPU" },
+    { name: "Server - Nault Server", value: "server" },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
   pendingOptions = [
-    { name: 'Largest Amount First', value: 'amount' },
-    { name: 'Oldest Transaction First', value: 'date' },
-    { name: 'Manual', value: 'manual' },
+    { name: "Largest Amount First", value: "amount" },
+    { name: "Oldest Transaction First", value: "date" },
+    { name: "Manual", value: "manual" },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
@@ -128,7 +132,7 @@ export class ConfigureAppComponent implements OnInit {
   defaultRepresentative = null;
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
-  representativeListMatch = '';
+  representativeListMatch = "";
   repStatus = null;
   representativeList = [];
 
@@ -149,9 +153,14 @@ export class ConfigureAppComponent implements OnInit {
   statsRefreshEnabled = true;
   shouldRandom = null;
 
-  showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
-  showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
-  showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
+  showServerValues = () =>
+    this.selectedServer &&
+    this.selectedServer !== "random" &&
+    this.selectedServer !== "offline";
+  showStatValues = () =>
+    this.selectedServer && this.selectedServer !== "offline";
+  showServerConfigs = () =>
+    this.selectedServer && this.selectedServer === "custom";
 
   async ngOnInit() {
     this.loadFromSettings();
@@ -164,7 +173,7 @@ export class ConfigureAppComponent implements OnInit {
     for (const representative of verifiedReps) {
       const temprep = {
         id: representative.account,
-        name: representative.alias
+        name: representative.alias,
       };
 
       this.representativeList.push(temprep);
@@ -175,58 +184,103 @@ export class ConfigureAppComponent implements OnInit {
     this.representativeList.push(...localReps);
   }
 
-  async updateNodeStats(refresh= false) {
-    if ((!this.serverAPIUpdated ||
-      (this.serverAPIUpdated !== this.appSettings.settings.serverAPI && this.selectedServer === 'random'))) return;
+  async updateNodeStats(refresh = false) {
+    if (
+      !this.serverAPIUpdated ||
+      (this.serverAPIUpdated !== this.appSettings.settings.serverAPI &&
+        this.selectedServer === "random")
+    )
+      return;
     // refresh is not enabled
     if (refresh && !this.statsRefreshEnabled) return;
     // Offline mode selected
-    if (this.selectedServer === 'offline') return;
+    if (this.selectedServer === "offline") return;
 
     this.statsRefreshEnabled = false;
     try {
       const blockCount = await this.api.blockCount();
-      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US');
-      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US');
-      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US');
-      this.nodeUncemented = Number(blockCount.count - blockCount.cemented).toLocaleString('en-US');
-    } catch {console.warn('Failed to get node stats: block count'); }
+      this.nodeBlockCount = Number(blockCount.count).toLocaleString("en-US");
+      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString("en-US");
+      this.nodeCemented = Number(blockCount.cemented).toLocaleString("en-US");
+      this.nodeUncemented = Number(
+        blockCount.count - blockCount.cemented
+      ).toLocaleString("en-US");
+    } catch {
+      console.warn("Failed to get node stats: block count");
+    }
 
     try {
       const quorumData = await this.api.confirmationQuorum();
-      this.peersStakeReq = quorumData ? Number(this.util.nano.rawToMnano(quorumData.peers_stake_required)).toLocaleString('en-US') : null;
-      this.peersStakeTotal = quorumData ? Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US') : null;
-    } catch {console.warn('Failed to get node stats: confirmation quorum'); }
+      this.peersStakeReq = quorumData
+        ? Number(
+            this.util.nano.rawToMnano(quorumData.peers_stake_required)
+          ).toLocaleString("en-US")
+        : null;
+      this.peersStakeTotal = quorumData
+        ? Number(
+            this.util.nano.rawToMnano(quorumData.peers_stake_total)
+          ).toLocaleString("en-US")
+        : null;
+    } catch {
+      console.warn("Failed to get node stats: confirmation quorum");
+    }
 
     try {
       const version = await this.api.version();
       this.nodeVendor = version.node_vendor;
       this.nodeNetwork = version.network;
-    } catch {console.warn('Failed to get node stats: version'); }
+    } catch {
+      console.warn("Failed to get node stats: version");
+    }
 
-    setTimeout(() => this.statsRefreshEnabled = true, 5000);
+    setTimeout(() => (this.statsRefreshEnabled = true), 5000);
   }
 
   loadFromSettings() {
-    const settings = this.appSettings.settings;
+    let settings = this.appSettings.settings;
+    if (this.multiCurrency !== "mnano" && this.multiCurrency === "banano") {
+      settings = this.appSettings.banSettings;
+    }
 
-    const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
+    const matchingCurrency = this.currencies.find(
+      (d) => d.value === settings.displayCurrency
+    );
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
-    this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
+    const matchingDenomination = this.denominations.find(
+      (d) => d.value === settings.displayDenomination
+    );
+    this.selectedDenomination =
+      matchingDenomination.value || this.denominations[0].value;
 
-    const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
-    this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
+    const matchingStorage = this.storageOptions.find(
+      (d) => d.value === settings.walletStore
+    );
+    this.selectedStorage =
+      matchingStorage.value || this.storageOptions[0].value;
 
-    const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value === settings.lockInactivityMinutes);
-    this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
+    const matchingInactivityMinutes = this.inactivityOptions.find(
+      (d) => d.value === settings.lockInactivityMinutes
+    );
+    this.selectedInactivityMinutes = matchingInactivityMinutes
+      ? matchingInactivityMinutes.value
+      : this.inactivityOptions[4].value;
 
-    const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
-    this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
+    const matchingPowOption = this.powOptions.find(
+      (d) =>
+        settings.defaultRepresentative === "mnano" &&
+        d.value === settings.powSource
+    );
+    this.selectedPoWOption = matchingPowOption
+      ? matchingPowOption.value
+      : this.powOptions[0].value;
 
-    const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
-    this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
+    const matchingPendingOption = this.pendingOptions.find(
+      (d) => d.value === settings.pendingOption
+    );
+    this.selectedPendingOption = matchingPendingOption
+      ? matchingPendingOption.value
+      : this.pendingOptions[0].value;
 
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
@@ -245,31 +299,36 @@ export class ConfigureAppComponent implements OnInit {
   async updateDisplaySettings() {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
-    const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-    this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
-    this.notifications.sendSuccess(`App display settings successfully updated!`);
+    const reloadFiat =
+      this.appSettings.settings.displayCurrency !== newCurrency;
+    this.appSettings.setAppSetting(
+      "displayDenomination",
+      this.selectedDenomination
+    );
+    this.notifications.sendSuccess(
+      `App display settings successfully updated!`
+    );
 
     if (reloadFiat) {
       // Reload prices with our currency, then call to reload fiat balances.
       await this.price.getPrice(newCurrency);
-      this.appSettings.setAppSetting('displayCurrency', newCurrency);
+      this.appSettings.setAppSetting("displayCurrency", newCurrency);
       this.walletService.reloadFiatBalances();
     }
 
     // if (updatePrefixes) {
     //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
-      // Go through accounts?
-      // this.wallet.accounts.forEach(account => {
-      //   account.id = this.util.account.setPrefix(account.id, this.selectedPrefix);
-      // });
-      // this.walletService.saveWalletExport();
-      //
-      // this.addressBook.addressBook.forEach(entry => {
-      //   entry.account = this.util.account.setPrefix(entry.account, this.selectedPrefix);
-      // });
-      // this.addressBook.saveAddressBook();
+    // Go through accounts?
+    // this.wallet.accounts.forEach(account => {
+    //   account.id = this.util.account.setPrefix(account.id, this.selectedPrefix);
+    // });
+    // this.walletService.saveWalletExport();
+    //
+    // this.addressBook.addressBook.forEach(entry => {
+    //   entry.account = this.util.account.setPrefix(entry.account, this.selectedPrefix);
+    // });
+    // this.addressBook.saveAddressBook();
     // }
-
   }
 
   async updateWalletSettings() {
@@ -284,24 +343,34 @@ export class ConfigureAppComponent implements OnInit {
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
-    const reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
-    || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
+    const reloadPending =
+      this.appSettings.settings.minimumReceive !== this.minimumReceive ||
+      (pendingOption !== "manual" &&
+        pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
-      const valid = this.util.account.isValidAccount(this.defaultRepresentative);
+      const valid = this.util.account.isValidAccount(
+        this.defaultRepresentative
+      );
       if (!valid) {
-        return this.notifications.sendWarning(`Default representative is not a valid account`);
+        return this.notifications.sendWarning(
+          `Default representative is not a valid account`
+        );
       }
     }
 
     if (this.appSettings.settings.powSource !== newPoW) {
-      if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
-        this.notifications.sendWarning(`WebGL support not available, set PoW to Best`);
-        newPoW = 'best';
+      if (newPoW === "clientWebGL" && !this.pow.hasWebGLSupport()) {
+        this.notifications.sendWarning(
+          `WebGL support not available, set PoW to Best`
+        );
+        newPoW = "best";
       }
-      if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
-        this.notifications.sendWarning(`CPU Worker support not available, set PoW to Best`);
-        newPoW = 'best';
+      if (newPoW === "clientCPU" && !this.pow.hasWorkerSupport()) {
+        this.notifications.sendWarning(
+          `CPU Worker support not available, set PoW to Best`
+        );
+        newPoW = "best";
       }
     }
 
@@ -335,18 +404,28 @@ export class ConfigureAppComponent implements OnInit {
 
     // Custom... do some basic validation
     if (this.serverAPI != null && this.serverAPI.trim().length > 1) {
-      if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
+      if (
+        this.serverAPI.startsWith("https://") ||
+        this.serverAPI.startsWith("http://")
+      ) {
         newSettings.serverAPI = this.serverAPI;
       } else {
-        return this.notifications.sendWarning(`Custom API Server has an invalid address.`);
+        return this.notifications.sendWarning(
+          `Custom API Server has an invalid address.`
+        );
       }
     }
 
     if (this.serverWS != null && this.serverWS.trim().length > 1) {
-      if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
+      if (
+        this.serverWS.startsWith("wss://") ||
+        this.serverWS.startsWith("ws://")
+      ) {
         newSettings.serverWS = this.serverWS;
       } else {
-        return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
+        return this.notifications.sendWarning(
+          `Custom Update Server has an invalid address.`
+        );
       }
     }
 
@@ -357,7 +436,9 @@ export class ConfigureAppComponent implements OnInit {
     this.appSettings.setAppSettings(newSettings);
     this.appSettings.loadAppSettings();
 
-    this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
+    this.notifications.sendSuccess(
+      `Server settings successfully updated, reconnecting to backend`
+    );
 
     this.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
 
@@ -372,14 +453,18 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   searchRepresentatives() {
-    if (this.defaultRepresentative !== '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
+    if (
+      this.defaultRepresentative !== "" &&
+      !this.util.account.isValidAccount(this.defaultRepresentative)
+    )
+      this.repStatus = 0;
     else this.repStatus = null;
 
     this.showRepresentatives = true;
-    const search = this.defaultRepresentative || '';
+    const search = this.defaultRepresentative || "";
 
     const matches = this.representativeList
-      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      .filter((a) => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
 
     this.representativeResults$.next(matches);
@@ -393,11 +478,12 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async validateRepresentative() {
-    setTimeout(() => this.showRepresentatives = false, 400);
-    if (this.defaultRepresentative) this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+    setTimeout(() => (this.showRepresentatives = false), 400);
+    if (this.defaultRepresentative)
+      this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, "");
 
-    if (this.defaultRepresentative === '') {
-      this.representativeListMatch = '';
+    if (this.defaultRepresentative === "") {
+      this.representativeListMatch = "";
       return;
     }
 
@@ -409,19 +495,19 @@ export class ConfigureAppComponent implements OnInit {
     } else if (ninjaRep) {
       this.representativeListMatch = ninjaRep.alias;
     } else {
-      this.representativeListMatch = '';
+      this.representativeListMatch = "";
     }
   }
 
   // When changing the Server Config option, prefill values
   serverConfigChange(newServer) {
-    const custom = this.serverOptions.find(c => c.value === newServer);
+    const custom = this.serverOptions.find((c) => c.value === newServer);
     if (custom) {
       this.serverAPI = custom.api;
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? 'Yes' : 'No';
+      this.shouldRandom = custom.shouldRandom ? "Yes" : "No";
     }
 
     // reset server stats until updated
@@ -433,22 +519,26 @@ export class ConfigureAppComponent implements OnInit {
     this.peersStakeTotal = null;
     this.nodeVendor = null;
     this.nodeNetwork = null;
-    this.statsRefreshEnabled = newServer === 'random' ? false : true;
+    this.statsRefreshEnabled = newServer === "random" ? false : true;
   }
 
   async clearWorkCache() {
-    const UIkit = window['UIkit'];
+    const UIkit = window["UIkit"];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm(
+        '<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>'
+      );
       this.workPool.clearCache();
       this.notifications.sendSuccess(`Successfully cleared the work cache!`);
     } catch (err) {}
   }
 
   async clearWalletData() {
-    const UIkit = window['UIkit'];
+    const UIkit = window["UIkit"];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm(
+        '<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>'
+      );
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -457,9 +547,11 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async clearAllData() {
-    const UIkit = window['UIkit'];
+    const UIkit = window["UIkit"];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm(
+        '<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>'
+      );
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -470,21 +562,25 @@ export class ConfigureAppComponent implements OnInit {
 
       this.loadFromSettings();
 
-      this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+      this.notifications.sendSuccess(
+        `Successfully deleted ALL locally stored data!`
+      );
     } catch (err) {}
   }
 
   // open qr reader modal
   openQR(reference, type) {
     const qrResult = this.qrModalService.openQR(reference, type);
-    qrResult.then((data) => {
-      switch (data.reference) {
-        case 'rep1':
-          this.defaultRepresentative = data.content;
-          this.validateRepresentative();
-          break;
-      }
-    }, () => {}
+    qrResult.then(
+      (data) => {
+        switch (data.reference) {
+          case "rep1":
+            this.defaultRepresentative = data.content;
+            this.validateRepresentative();
+            break;
+        }
+      },
+      () => {}
     );
   }
 }

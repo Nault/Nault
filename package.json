@@ -16,6 +16,7 @@
     "release": "npm run desktop:build && electron-builder",
     "wallet:dev": "ng serve --open",
     "wallet:dev-ssl": "ng serve --ssl --open",
+    "start-banano": "ng serve --configuration=banano",
     "wallet:build": "ng build --prod",
     "wallet:build-desktop": "ng build --configuration=desktop --base-href ",
     "desktop:compile": "cd desktop-app && tsc && cd ..",
