@@ -19,15 +19,12 @@ export class ImportWalletComponent implements OnInit {
   constructor(private route: ActivatedRoute, private notifications: NotificationService, private wallet: WalletService) { }
 
   ngOnInit() {
-    const params = this.route.snapshot.queryParams;
-    let imported = null;
-    if (('wallet' in params) && params.wallet.length) {
-      imported = params.wallet;
-    } else {
+    const importData = this.route.snapshot.fragment;
+    if (!importData || !importData.length) {
       return this.importDataError(`No import data found.  Check your link and try again.`);
     }
 
-    const decodedData = atob(imported);
+    const decodedData = atob(importData);
 
     try {
       const importBlob = JSON.parse(decodedData);

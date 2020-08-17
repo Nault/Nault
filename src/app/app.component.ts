@@ -87,15 +87,24 @@ export class AppComponent implements OnInit {
     const path = localStorage.getItem('path');
 
     if (path) {
-      const search = localStorage.getItem('query') ? localStorage.getItem('query') : '';
-      const queryParams = {};
-      const urlSearch = new URLSearchParams(search);
-      urlSearch.forEach(function(value, key) {
-        queryParams[key] = value;
-      });
+      const search = localStorage.getItem('query'); // ?param=value
+      const fragment = localStorage.getItem('fragment'); // #value
       localStorage.removeItem('path');
       localStorage.removeItem('query');
-      this.router.navigate([path], { queryParams: queryParams});
+      localStorage.removeItem('fragment');
+
+      if (search) {
+        const queryParams = {};
+        const urlSearch = new URLSearchParams(search);
+        urlSearch.forEach(function(value, key) {
+          queryParams[key] = value;
+        });
+        this.router.navigate([path], { queryParams: queryParams});
+      } else if (fragment) {
+        this.router.navigate([path], { fragment: fragment});
+      } else {
+        this.router.navigate([path]);
+      }
     }
 
     this.websocket.connect();
