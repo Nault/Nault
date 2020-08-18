@@ -88,5 +88,4 @@ export const environment = {
       name: 'protecc iazid (FR)',
       warn: false,
     },
-  ];
 };
