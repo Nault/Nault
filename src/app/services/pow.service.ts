@@ -7,7 +7,7 @@ import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
 import {UtilService} from './util.service';
 
 const mod = window['Module'];
-const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
+export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
@@ -164,6 +164,8 @@ export class PowService {
    * Actual PoW functions
    */
   async getHashServer(hash, multiplier) {
+    const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
+    console.log('Generating work at threshold ' + newThreshold + ' using remote server', hash);
     return await this.api.workGenerate(hash)
     .then(work => work.work)
     .catch(async err => await this.getHashCPUWorker(hash, multiplier));
