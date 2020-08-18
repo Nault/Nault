@@ -17,15 +17,18 @@ export class ImportAddressBookComponent implements OnInit {
   conflictingEntries = 0;
   newEntries = 0;
   existingEntries = 0;
+  hostname = '';
 
   constructor(private route: ActivatedRoute, private notifications: NotificationService, private addressBook: AddressBookService) { }
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
+    const queryData = this.route.snapshot.queryParams;
     if (!importData || !importData.length) {
       return this.importDataError(`No import data found.  Check your link and try again.`);
     }
 
+    if ('hostname' in queryData) this.hostname = queryData.hostname;
     const decodedData = atob(importData);
 
     try {

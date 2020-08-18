@@ -15,15 +15,18 @@ export class ImportWalletComponent implements OnInit {
   walletPassword = '';
   validImportData = false;
   importData: any = null;
+  hostname = '';
 
-  constructor(private route: ActivatedRoute, private notifications: NotificationService, private wallet: WalletService) { }
+  constructor(private route: ActivatedRoute, private notifications: NotificationService, private walletService: WalletService) { }
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
+    const queryData = this.route.snapshot.queryParams;
     if (!importData || !importData.length) {
       return this.importDataError(`No import data found.  Check your link and try again.`);
     }
 
+    if ('hostname' in queryData) this.hostname = queryData.hostname;
     const decodedData = atob(importData);
 
     try {
@@ -54,7 +57,7 @@ export class ImportWalletComponent implements OnInit {
         return this.notifications.sendError(`Invalid password, please try again`);
       }
 
-      await this.wallet.loadImportedWallet(decryptedSeed, this.walletPassword, this.importData.accountsIndex || 0);
+      await this.walletService.loadImportedWallet(decryptedSeed, this.walletPassword, this.importData.accountsIndex || 0);
       this.activePanel = 'imported';
 
     } catch (err) {

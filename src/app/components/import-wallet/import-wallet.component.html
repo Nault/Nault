@@ -12,11 +12,16 @@
     </div>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="activePanel == 'import'">
+      <div *ngIf="walletService.isConfigured()" class="uk-alert uk-alert-danger">
+        <b>You already have a wallet configured</b><br>
+        Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
+        Without it, <b>any funds you have will become completely unrecoverable!</b>
+      </div>
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Confirm Wallet Password</h3>
+        <h3 class="uk-card-title">Confirm Wallet Import</h3>
       </div>
       <div class="uk-card-body">
-        <p>Almost finished - just enter your wallet password to decrypt your wallet!</p>
+        <p>You are about to import a wallet {{hostname ? 'from ' + hostname : ''}} - just enter your {{hostname ? 'wallet' : ''}} password to decrypt it!</p>
         <div uk-grid>
           <div class="uk-width-1-1">
             <input class="uk-input" [(ngModel)]="walletPassword" placeholder="Wallet Password" type="password">
