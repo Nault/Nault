@@ -75,6 +75,7 @@ export class UtilService {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
   };
   array = {
@@ -374,6 +375,10 @@ function isValidWork(val: string) {
   return nanocurrency.checkWork(val);
 }
 
+function validateWork(blockHash: string, threshold: string, work: string) {
+  return nanocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
+}
+
 function hashStateBlock(block: StateBlock) {
   const balance = new BigNumber(block.balance);
   if (balance.isNegative() || balance.isNaN()) {
@@ -492,6 +497,7 @@ const util = {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
   }
 };

@@ -164,6 +164,8 @@ export class PowService {
    * Actual PoW functions
    */
   async getHashServer(hash, multiplier) {
+    const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
+    console.log('Generating work at threshold ' + newThreshold + ' using remote server', hash);
     return await this.api.workGenerate(hash)
     .then(work => work.work)
     .catch(async err => await this.getHashCPUWorker(hash, multiplier));

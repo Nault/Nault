@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {PowService} from './pow.service';
 import {NotificationService} from './notification.service';
+import {UtilService} from './util.service';
 
 @Injectable()
 export class WorkPoolService {
@@ -8,8 +9,9 @@ export class WorkPoolService {
 
   cacheLength = 25;
   workCache = [];
+  minThreshold = 'fffffff800000000';
 
-  constructor(private pow: PowService, private notifications: NotificationService) { }
+  constructor(private pow: PowService, private notifications: NotificationService, private util: UtilService) { }
 
   public workExists(hash) {
     return !!this.workCache.find(p => p.hash === hash);
@@ -44,7 +46,7 @@ export class WorkPoolService {
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash, multiplier= 1) {
     const cached = this.workCache.find(p => p.hash === hash);
-    if (cached && cached.work) {
+    if (cached && cached.work && this.util.nano.validateWork(hash, this.minThreshold, cached.work)) {
       console.log('Using cached work: ' + cached.work);
       return cached.work;
     }
@@ -67,11 +69,8 @@ export class WorkPoolService {
    * Save the work cache to localStorage
    */
   private saveWorkCache() {
-    // Remove duplicates
-    this.workCache = this.workCache.reduce((previous, current) => {
-      if (!previous.find(p => p.hash === current.hash)) previous.push(current);
-      return previous;
-    }, []);
+    // Remove duplicates by keeping the last updated work
+    this.workCache = this.uniqByKeepLast(this.workCache, it => it.hash);
 
     localStorage.setItem(this.storeKey, JSON.stringify(this.workCache));
   }
@@ -88,5 +87,18 @@ export class WorkPoolService {
     this.workCache = workCache;
 
     return this.workCache;
+  }
+
+  /**
+   * Remove duplicates but keep the last one
+   * @param a array
+   * @param key it => it.hash
+   */
+  private uniqByKeepLast(a, key) {
+    return [
+        ...new Map(
+            a.map(x => [key(x), x])
+        ).values()
+    ];
   }
 }
