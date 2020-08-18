@@ -75,10 +75,10 @@ export class QrScanComponent implements OnInit {
       if (url.protocol === 'https:') {
         if (url.pathname === '/import-wallet' && url.hash.slice(1).length) {
           // wallet import
-          this.router.navigate(['import-wallet'], { fragment: url.hash.slice(1)});
+          this.router.navigate(['import-wallet'], { queryParams: {hostname: url.hostname}, fragment: url.hash.slice(1)});
         } else if (url.pathname === '/import-address-book' && url.hash.slice(1).length) {
           // address book import
-          this.router.navigate(['import-address-book'], { fragment: url.hash.slice(1)});
+          this.router.navigate(['import-address-book'], { queryParams: {hostname: url.hostname}, fragment: url.hash.slice(1)});
         }
       } else if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...

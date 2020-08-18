@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2 class="uk-heading-divider">Import Address Book</h2>
+    <h2 class="uk-heading-divider">Import Address Book Entries</h2>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="activePanel == 'error'">
       <div class="uk-card-header">
@@ -16,6 +16,9 @@
         <h3 class="uk-card-title">Confirm Import</h3>
       </div>
       <div class="uk-card-body">
+        <p class="uk-text-center">
+          You are about to import the following address book entries {{hostname ? 'from ' + hostname : ''}}
+        </p>
         <p class="uk-text-center">
           <span class="import-warning" *ngIf="conflictingEntries">
             {{ conflictingEntries }} Labels already exist and will have their name changed.
@@ -65,7 +68,7 @@
             <button routerLink="/address-book" class="uk-button uk-button-danger">Cancel</button>
           </div>
           <div class="uk-width-1-2 uk-text-right">
-            <button (click)="confirmImport()" class="uk-button uk-button-secondary">Import Address Book</button>
+            <button (click)="confirmImport()" class="uk-button uk-button-secondary">Import Entries</button>
           </div>
         </div>
       </div>
