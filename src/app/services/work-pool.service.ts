@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {PowService} from './pow.service';
+import {PowService, baseThreshold} from './pow.service';
 import {NotificationService} from './notification.service';
 import {UtilService} from './util.service';
 
@@ -9,7 +9,6 @@ export class WorkPoolService {
 
   cacheLength = 25;
   workCache = [];
-  minThreshold = 'fffffff800000000';
 
   constructor(private pow: PowService, private notifications: NotificationService, private util: UtilService) { }
 
@@ -46,7 +45,7 @@ export class WorkPoolService {
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash, multiplier= 1) {
     const cached = this.workCache.find(p => p.hash === hash);
-    if (cached && cached.work && this.util.nano.validateWork(hash, this.minThreshold, cached.work)) {
+    if (cached && cached.work && this.util.nano.validateWork(hash, baseThreshold, cached.work)) {
       console.log('Using cached work: ' + cached.work);
       return cached.work;
     }
