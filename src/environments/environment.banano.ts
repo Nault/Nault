@@ -28,7 +28,7 @@ export const environment = {
       name: 'BananoVault',
       value: 'bananovault',
       api: 'https://vault.banano.cc/api/node-api',
-      ws: null,
+      ws: 'wss://ws.banano.cc/',
       auth: null,
       shouldRandom: false,
     },
