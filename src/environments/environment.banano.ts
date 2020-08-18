@@ -37,7 +37,7 @@ export const environment = {
     'ban_1cake36ua5aqcq1c5i3dg7k8xtosw7r9r7qbbf5j15sk75csp9okesz87nfn', // Official Rep - Cake
     'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj', // Official Rep - FOMO
   ],
-  defaultRepresentatives = [
+  defaultRepresentatives: [
     {
       id: 'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj',
       name: 'Official Fomo Rep',
@@ -87,5 +87,6 @@ export const environment = {
       id: 'ban_14z56meuqz6etgaik1ucsuyzcmp4aju73ziqkct3jdn3eqsgigihhkjitibz',
       name: 'protecc iazid (FR)',
       warn: false,
-    },
+    }
+  ]
 };
