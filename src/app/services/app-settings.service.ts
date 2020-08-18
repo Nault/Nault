@@ -26,6 +26,7 @@ interface AppSettings {
 @Injectable()
 export class AppSettingsService {
   storeKey = `nanovault-appsettings`;
+  multiCurrency = environment.currency.id;
 
   settings: AppSettings = {
     displayDenomination: "mnano",
@@ -95,6 +96,9 @@ export class AppSettingsService {
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;
+    if (this.multiCurrency === "banano") {
+      settings = this.banSettings;
+    }
     const settingsStore = localStorage.getItem(this.storeKey);
     if (settingsStore) {
       settings = JSON.parse(settingsStore);

@@ -37,13 +37,17 @@ export class ConfigureAppComponent implements OnInit {
     private ninja: NinjaService,
     private qrModalService: QrModalService
   ) {}
-  multiCurrency = environment.settings.displayDenomination;
+  multiCurrency = environment.currency.id;
   wallet = this.walletService.wallet;
 
   denominations = [
     { name: "NANO (1 Mnano)", value: "mnano" },
     { name: "knano (0.001 Mnano)", value: "knano" },
     { name: "nano (0.000001 Mnano)", value: "nano" },
+  ];
+  bananoDenominations = [
+    { name: "Banano (1 banano)", value: "banano" },
+    { name: "Banano (0.000000001 banano)", value: "Bananoshi" },
   ];
   selectedDenomination = this.denominations[0].value;
 
@@ -238,7 +242,7 @@ export class ConfigureAppComponent implements OnInit {
 
   loadFromSettings() {
     let settings = this.appSettings.settings;
-    if (this.multiCurrency !== "mnano" && this.multiCurrency === "banano") {
+    if (this.multiCurrency === "banano") {
       settings = this.appSettings.banSettings;
     }
 
@@ -247,6 +251,9 @@ export class ConfigureAppComponent implements OnInit {
     );
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
+    if (this.multiCurrency === "banano") {
+      this.denominations = this.bananoDenominations;
+    }
     const matchingDenomination = this.denominations.find(
       (d) => d.value === settings.displayDenomination
     );
