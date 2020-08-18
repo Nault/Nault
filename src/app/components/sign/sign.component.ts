@@ -66,15 +66,12 @@ export class SignComponent implements OnInit {
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash: string = null;
   finalSignature: string = null;
-  // TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
+  // With v21 the 1x is the old 8x and max will be 8x due to the webgl threshold is max ffffffff00000000
   thresholds = [
     { name: '1x', value: 1 },
     { name: '2x', value: 2 },
     { name: '4x', value: 4 },
-    { name: '8x', value: 8 },
-    { name: '16x', value: 16 },
-    { name: '32x', value: 32 },
-    { name: '64x', value: 64 },
+    { name: '8x', value: 8 }
   ];
   selectedThreshold = this.thresholds[0].value;
   selectedThresholdOld = this.selectedThreshold;
