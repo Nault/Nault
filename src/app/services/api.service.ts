@@ -17,7 +17,9 @@ export class ApiService {
       return;
     }
     if (this.node.node.status === false) {
-      this.node.setLoading();
+      if (!skipError) {
+        this.node.setLoading();
+      }
     }
     let header;
     if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth !== '') {
