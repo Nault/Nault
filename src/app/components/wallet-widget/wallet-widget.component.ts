@@ -67,6 +67,7 @@ export class WalletWidgetComponent implements OnInit {
   }
 
   async unlockWallet() {
+    await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
     this.unlockPassword = '';
 

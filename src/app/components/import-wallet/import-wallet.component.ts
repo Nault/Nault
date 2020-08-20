@@ -50,6 +50,7 @@ export class ImportWalletComponent implements OnInit {
   async decryptWallet() {
     // Attempt to decrypt the seed value using the password
     try {
+      await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
       const decryptedBytes = CryptoJS.AES.decrypt(this.importData.seed, this.walletPassword);
       const decryptedSeed = decryptedBytes.toString(CryptoJS.enc.Utf8);
       if (!decryptedSeed || decryptedSeed.length !== 64) {
