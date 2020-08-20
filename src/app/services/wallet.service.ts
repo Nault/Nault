@@ -996,7 +996,6 @@ export class WalletService {
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
       this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} Nano!`);
 
-      // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
       await this.reloadBalances();
     } else {
       if (this.isLedgerWallet()) {
@@ -1005,7 +1004,9 @@ export class WalletService {
       return this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
     }
 
-    this.wallet.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
+    // shifting no longer needed because reloadBalances will make sure wallet.pendingBlocks is up to date
+    // keep it for now in case we remove reloadBalances above but I think it's good precaution /Json
+    // this.wallet.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
     this.processingPending = false;
 
     setTimeout(() => this.processPendingBlocks(), 1500);
