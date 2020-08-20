@@ -110,6 +110,7 @@ export class WalletService {
 
   processingPending = false;
   successfulBlocks = [];
+  reloadingBalance = false;
 
   constructor(
     private util: UtilService,
@@ -131,22 +132,7 @@ export class WalletService {
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
 
-      // TODO: Block type 'send', will this ever happen now with state blocks fully implemented? /JSON
-      if (transaction.block.type === 'send' && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
-        // Perform an automatic receive
-        const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
-        if (walletAccount) {
-          // If the wallet is locked, show a notification
-          if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
-            this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
-          } else if (this.appSettings.settings.pendingOption === 'manual') {
-            this.notifications.sendWarning(`New incoming transaction - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
-          }
-          this.addPendingBlock(walletAccount.id, transaction.hash, transaction.amount, transaction.block.link_as_account);
-          await this.processPendingBlocks();
-        }
-      } else if (transaction.block.type === 'state'
-      && transaction.block.subtype === 'send'
+      if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
       && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (this.appSettings.settings.minimumReceive) {
           const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
@@ -686,6 +672,10 @@ export class WalletService {
   }
 
   async reloadBalances(reloadPending = true) {
+    // to block two reloads to happen at the same time (websocket)
+    if (this.reloadingBalance) return;
+
+    this.reloadingBalance = true;
     const fiatPrice = this.price.price.lastPrice;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
@@ -708,7 +698,10 @@ export class WalletService {
     let walletPending = new BigNumber(0);
     let walletPendingReal = new BigNumber(0);
 
-    if (!accounts) return;
+    if (!accounts) {
+      this.reloadingBalance = false;
+      return;
+    }
     for (const accountID in accounts.balances) {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
       // Find the account, update it
@@ -812,6 +805,7 @@ export class WalletService {
     if (reloadPending && walletPending.gt(0)) {
       await this.loadPendingBlocksForWallet();
     }
+    this.reloadingBalance = false;
   }
 
   updateAccountPending(accounts) {
