@@ -30,7 +30,7 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Nano Seed', value: 'seed' },
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
     { name: 'Nault Wallet File', value: 'file' },
-    { name: 'Ledger Nano S', value: 'ledger' },
+    { name: 'Ledger Nano S / Nano X', value: 'ledger' },
     { name: 'Private Key', value: 'privateKey' },
     { name: 'Expanded Private Key', value: 'expandedKey' },
   ];
