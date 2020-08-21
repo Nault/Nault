@@ -52,6 +52,8 @@ export class ManageWalletComponent implements OnInit {
     this.newPassword = '';
     this.confirmPassword = '';
     this.notifications.sendSuccess(`Wallet password successfully updated`);
+
+    this.showQRExport = false;
   }
 
   async exportWallet() {
