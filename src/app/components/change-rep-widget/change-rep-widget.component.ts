@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
+import {NanoBlockService} from '../../services/nano-block.service';
 import {RepresentativeService} from '../../services/representative.service';
 import {Router} from '@angular/router';
 
@@ -21,6 +22,7 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
+    private blockService: NanoBlockService,
     private repService: RepresentativeService,
     private router: Router
     ) { }
@@ -47,6 +49,13 @@ export class ChangeRepWidgetComponent implements OnInit {
     this.walletService.wallet.newWallet$.subscribe(shouldReload => {
       if (shouldReload) {
         this.resetRepresentatives();
+      }
+    });
+
+    // Detect if a new open block is received
+    this.blockService.newOpenBlock$.subscribe(async shouldReload => {
+      if (shouldReload) {
+        this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
       }
     });
 

@@ -7,6 +7,7 @@ import {NotificationService} from './notification.service';
 import {AppSettingsService} from './app-settings.service';
 import {LedgerService} from './ledger.service';
 import { WalletAccount } from './wallet.service';
+import {BehaviorSubject} from 'rxjs';
 const nacl = window['nacl'];
 
 @Injectable()
@@ -22,6 +23,8 @@ export class NanoBlockService {
   ];
 
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
+
+  newOpenBlock$: BehaviorSubject<boolean|false> = new BehaviorSubject(false);
 
   constructor(
     private api: ApiService,
@@ -300,6 +303,11 @@ export class NanoBlockService {
       walletAccount.frontier = processResponse.hash;
       this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
       this.workPool.removeFromCache(workBlock);
+
+      // update the rep view via subscription
+      if (openEquiv) {
+        this.informNewRep();
+      }
       return processResponse.hash;
     } else {
       return null;
@@ -418,6 +426,12 @@ export class NanoBlockService {
 
   getRandomRepresentative() {
     return this.representativeAccounts[Math.floor(Math.random() * this.representativeAccounts.length)];
+  }
+
+  // Subscribable event when a new open block and we should update the rep info
+  informNewRep() {
+    this.newOpenBlock$.next(true);
+    this.newOpenBlock$.next(false);
   }
 
 }
