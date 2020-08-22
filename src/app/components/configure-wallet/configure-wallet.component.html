@@ -26,9 +26,12 @@
       <p>Make sure you back up your seed, write it down, and keep it incredibly safe!  There is NO way to recover it after
         creation, and all funds inside WILL be lost without it!  You have been warned!</p>
     </div>
+    <label>Sanitize Accounts</label><span uk-icon="icon: info;" uk-tooltip title="Make sure the first 20 accounts (index 0-19) contain no common bad American or English words. See the console for live results."></span>
+    <input class="uk-checkbox uk-margin-medium-left" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="sanitize">
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="createNewWallet()">Create Wallet</button>
+    <button *ngIf="!sanitize || !sanitizing" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="createNewWallet()">Create Wallet</button>
+    <button *ngIf="sanitize && sanitizing" class="uk-button uk-button-primary  uk-disabled uk-width-auto@s uk-width-1-1"><span class="uk-margin-right" uk-spinner="ratio: 0.6;"></span> Sanitizing...</button>
   </div>
 </div>
 

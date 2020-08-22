@@ -12,6 +12,7 @@ import {NotificationService} from './notification.service';
 import {AppSettingsService} from './app-settings.service';
 import {PriceService} from './price.service';
 import {LedgerService} from './ledger.service';
+import {badWords} from '../badWords';
 
 export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey';
 
@@ -501,16 +502,61 @@ export class WalletService {
     this.reloadBalances();
   }
 
-  createNewWallet() {
+  async createNewWallet(sanitize: number = 0): Promise<string>  {
     this.resetWallet();
+    let seedBytes;
 
-    const seedBytes = this.util.account.generateSeedBytes();
-    this.wallet.seedBytes = seedBytes;
-    this.wallet.seed = this.util.hex.fromUint8(seedBytes);
+    if (sanitize) {
+      const now = Date.now();
+      seedBytes = await this.getSanitizedSeedBytes().catch(() => {console.log('Failed sanitizing'); });
+      console.log(`Sanitizing took ${(Date.now() - now) / 1000}sec`);
+    } else {
+      seedBytes = this.util.account.generateSeedBytes();
+    }
 
-    this.addWalletAccount();
+    return new Promise((resolve, reject) => {
+      if (seedBytes) {
+        this.wallet.seedBytes = seedBytes;
+        this.wallet.seed = this.util.hex.fromUint8(seedBytes);
+        this.addWalletAccount();
+        resolve(this.wallet.seed);
+      } else reject(null);
+    });
+  }
 
-    return this.wallet.seed;
+  getSanitizedSeedBytes(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      // Try find a clean seed x times, and reject otherwise if EXTREMELY unlucky
+      let found = false;
+      for (let iteration = 1; iteration <= 10000; iteration++) {
+        console.log(`Sanitizing iteration: ${iteration}`);
+        const seedBytes = this.util.account.generateSeedBytes();
+        if (this.isAccountOk(seedBytes)) {
+          resolve(seedBytes);
+          found = true;
+          break;
+        }
+      }
+      if (!found) reject(null);
+    });
+  }
+
+  isAccountOk(seedBytes): boolean {
+    // check first x accounts
+    let accountString = '';
+    for (let index = 0; index <= 19; index++) {
+      const accountBytes = this.util.account.generateAccountSecretKeyBytes(seedBytes, index);
+      const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes);
+      const accountAddress = this.util.account.getPublicAccountID(accountKeyPair.publicKey);
+      accountString = accountString + accountAddress;
+    }
+    for (let wordCount = 0; wordCount < badWords.length; wordCount++) {
+      if (accountString.includes(badWords[wordCount])) {
+        console.log('Bad word found: ' + badWords[wordCount]);
+        return false;
+      }
+    }
+    return true;
   }
 
   async createLedgerWallet() {

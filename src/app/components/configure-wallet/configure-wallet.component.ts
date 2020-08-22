@@ -25,6 +25,9 @@ export class ConfigureWalletComponent implements OnInit {
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
 
+  sanitize = 1;
+  sanitizing = false;
+
   selectedImportOption = 'seed';
   importOptions = [
     { name: 'Nano Seed', value: 'seed' },
@@ -197,7 +200,16 @@ export class ConfigureWalletComponent implements OnInit {
     const confirmed = await this.confirmWalletOverwrite();
     if (!confirmed) return;
 
-    const newSeed = this.walletService.createNewWallet();
+    let newSeed;
+    if (this.sanitize) this.sanitizing = true;
+    await new Promise(resolve => setTimeout(resolve, 100)); // allow the DOM to change loading button
+    newSeed = await this.walletService.createNewWallet(this.sanitize).catch(() => {
+      this.notifications.sendError(`Failed sanitizing, too many bad words found! Please try again.`, {length: 10000});
+    });
+    if (this.sanitize) this.sanitizing = false;
+    if (!newSeed) {
+      return;
+    }
     this.newWalletSeed = newSeed;
     this.newWalletMnemonic = bip.entropyToMnemonic(newSeed);
 
