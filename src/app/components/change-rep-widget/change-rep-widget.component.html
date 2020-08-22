@@ -1,17 +1,17 @@
-<div *ngIf="displayedRepresentatives.length > 0" class="nav-representative-info">
+<div class="nav-representative-info" *ngIf="(displayedRepresentatives.length > 0) else noRepresentatives">
   <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
-      <h2>Representative{{
-          (repIdx !== 0)
-        ? (
-            ' for '
-          + (
-              rep.accounts[0].addressBookName
-            ? ( '"' + rep.accounts[0].addressBookName + '"' )
-            : ( rep.accounts[0].id.slice(0, 10) + '...' )
-          )
+    <h2>Representative{{
+        (repIdx !== 0)
+      ? (
+          ' for '
+        + (
+            rep.accounts[0].addressBookName
+          ? ( '"' + rep.accounts[0].addressBookName + '"' )
+          : ( rep.accounts[0].id.slice(0, 10) + '...' )
         )
-        : ''
-      }}</h2>
+      )
+      : ''
+    }}</h2>
     <div class="representative-name-row">
       <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
@@ -84,6 +84,34 @@
     </div>
   </div>
 </div>
+<ng-template #noRepresentatives>
+  <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
+    <div class="representative">
+      <h2>Representative</h2>
+      <div class="representative-name-row">
+        <div class="name no-interact">Loading...</div>
+      </div>
+      <div class="representative-health-row health-unknown health-loading">
+        <div uk-spinner="ratio: 0.5;"></div>
+        <div class="label">Checking Status...</div>
+      </div>
+    </div>
+  </div>
+  <ng-template #selectedAccountHasNoRep>
+    <div class="nav-representative-info">
+      <div class="representative">
+        <h2>Representative</h2>
+        <div class="representative-name-row">
+          <div class="name no-interact">None</div>
+        </div>
+        <div class="representative-health-row health-unknown">
+          <div class="health-icon"></div>
+          <div class="label">Receive a transaction to configure</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
 
 <div class="nav-status-row interactable uk-animation-slide-left" (click)="showRepSelectionForAllChangeableReps()" *ngIf="showRepChangeRequired">
   <div class="status-icon">

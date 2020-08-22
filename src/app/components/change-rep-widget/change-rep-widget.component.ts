@@ -16,6 +16,8 @@ export class ChangeRepWidgetComponent implements OnInit {
   showRepChangeRequired = false;
   showRepHelp = false;
   selectedAccount = null;
+  selectedAccountHasRep = false;
+  initialLoadComplete = false;
 
   constructor(
     private walletService: WalletService,
@@ -24,9 +26,11 @@ export class ChangeRepWidgetComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
+    this.updateSelectedAccountHasRep();
     this.representatives = await this.repService.getRepresentativesOverview();
     await this.updateChangeableRepresentatives();
     this.updateDisplayedRepresentatives();
+    this.initialLoadComplete = true;
 
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
@@ -74,6 +78,7 @@ export class ChangeRepWidgetComponent implements OnInit {
   }
 
   updateDisplayedRepresentatives() {
+    this.updateSelectedAccountHasRep();
     this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
   }
 
@@ -96,6 +101,19 @@ export class ChangeRepWidgetComponent implements OnInit {
     }
 
     return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
+  }
+
+  updateSelectedAccountHasRep() {
+    if (this.selectedAccount != null) {
+      this.selectedAccountHasRep = !!this.selectedAccount.frontier;
+      return;
+    }
+
+    this.selectedAccountHasRep =
+      this.walletService.wallet.accounts.some(
+        (acc) =>
+          (acc.frontier)
+      );
   }
 
   getDisplayedRepresentatives(representatives: any[]) {
