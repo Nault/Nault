@@ -28,12 +28,6 @@ export class ChangeRepWidgetComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.updateSelectedAccountHasRep();
-    this.representatives = await this.repService.getRepresentativesOverview();
-    await this.updateChangeableRepresentatives();
-    this.updateDisplayedRepresentatives();
-    this.initialLoadComplete = true;
-
     this.repService.walletReps$.subscribe(async reps => {
       this.representatives = reps;
       await this.updateChangeableRepresentatives();
@@ -55,7 +49,7 @@ export class ChangeRepWidgetComponent implements OnInit {
     // Detect if a new open block is received
     this.blockService.newOpenBlock$.subscribe(async shouldReload => {
       if (shouldReload) {
-        this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+        await this.repService.getRepresentativesOverview(); // calls walletReps$.next
       }
     });
 
@@ -69,6 +63,11 @@ export class ChangeRepWidgetComponent implements OnInit {
 
       this.updateDisplayedRepresentatives();
     });
+
+    this.selectedAccount = this.walletService.wallet.selectedAccount;
+    this.updateSelectedAccountHasRep();
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    this.initialLoadComplete = true;
   }
 
   async resetRepresentatives() {
@@ -78,7 +77,7 @@ export class ChangeRepWidgetComponent implements OnInit {
     this.changeableRepresentatives = [];
     this.showRepChangeRequired = false;
     this.updateDisplayedRepresentatives();
-    this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
     console.log('Representatives reloaded');
   }
 
