@@ -29,9 +29,15 @@ export class ChangeRepWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.repService.walletReps$.subscribe(async reps => {
+      if ( reps[0] === null ) {
+        // initial state from new BehaviorSubject([null])
+        return;
+      }
+
       this.representatives = reps;
       await this.updateChangeableRepresentatives();
       this.updateDisplayedRepresentatives();
+      this.initialLoadComplete = true;
     });
 
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
@@ -67,11 +73,11 @@ export class ChangeRepWidgetComponent implements OnInit {
     this.selectedAccount = this.walletService.wallet.selectedAccount;
     this.updateSelectedAccountHasRep();
     await this.repService.getRepresentativesOverview(); // calls walletReps$.next
-    this.initialLoadComplete = true;
   }
 
   async resetRepresentatives() {
     console.log('Reloading representatives..');
+    this.initialLoadComplete = false;
     this.selectedAccount = null;
     this.representatives = [];
     this.changeableRepresentatives = [];

@@ -58,7 +58,7 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
-  walletReps$ = new BehaviorSubject([]);
+  walletReps$ = new BehaviorSubject([null]);
   walletReps = [];
 
   changeableReps$ = new BehaviorSubject([]);
@@ -228,6 +228,7 @@ export class RepresentativeService {
     }
 
     this.walletReps = allReps;
+    console.log('done .next')
     this.walletReps$.next(allReps);
 
     return allReps;
