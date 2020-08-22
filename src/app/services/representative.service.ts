@@ -228,7 +228,6 @@ export class RepresentativeService {
     }
 
     this.walletReps = allReps;
-    console.log('done .next')
     this.walletReps$.next(allReps);
 
     return allReps;
