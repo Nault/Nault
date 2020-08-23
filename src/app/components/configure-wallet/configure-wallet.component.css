@@ -53,3 +53,22 @@ pre.mnemonic span.mnemonic-word::before {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+
+.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+  background-color: #ddd;
+  color: #999;
+  border-color: #dce9f9;
+}
+
+.password-helper {
+  font-size: 70%;
+  font-weight: 400;
+  color: #f0506e!important;
+  display: inline-block;
+  margin-top: .25rem;
+  display: block;
+}
+
+#create-wallet {
+  margin-top: 20px;
+}

@@ -14,6 +14,11 @@ export class ConfigureWalletComponent implements OnInit {
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;
   activePanel = 0;
+  isNewWallet = true;
+  hasConfirmedBackup = false;
+  importSeed = '';
+  isExpanded = false;
+  keyString = '';
 
   newWalletSeed = '';
   newWalletMnemonic = '';
@@ -70,40 +75,13 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async importExistingWallet() {
-    let importSeed = '';
-    if (this.selectedImportOption === 'seed') {
-      const existingSeed = this.importSeedModel.trim();
-      if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
-      importSeed = existingSeed;
-    } else if (this.selectedImportOption === 'mnemonic') {
-      // Clean the value by trimming it and removing newlines
-      const mnemonic = this.importSeedMnemonicModel.toLowerCase().trim().replace(/\n/g, ``);
-
-      const words = mnemonic.split(' ');
-      if (words.length < 20) return this.notifications.sendError(`Mnemonic is too short, double check it!`);
-
-      // Try and decode the mnemonic
-      try {
-        const newSeed = bip.mnemonicToEntropy(mnemonic);
-        if (!newSeed || newSeed.length !== 64) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
-        importSeed = newSeed.toUpperCase(); // Force uppercase, for consistency
-      } catch (err) {
-        return this.notifications.sendError(`Unable to decode mnemonic, double check it!`);
-      }
-    } else {
-      return this.notifications.sendError(`Invalid import option`);
-    }
-
-    // Now, if a wallet is configured, make sure they confirm an overwrite first
-    const confirmed = await this.confirmWalletOverwrite();
-    if (!confirmed) return;
-
     this.notifications.sendInfo(`Importing existing accounts...`, { identifier: 'importing-loading' });
-    await this.walletService.createWalletFromSeed(importSeed);
+    this.route.navigate(['accounts']); // load accounts and watch them update in real-time
+    await this.walletService.createWalletFromSeed(this.importSeed);
+    this.importSeed = '';
 
     this.notifications.removeNotification('importing-loading');
 
-    this.activePanel = 4;
     this.notifications.sendSuccess(`Successfully imported wallet!`);
 
     // this.repService.detectChangeableReps(); // this is now called from change-rep-widget.component when new wallet
@@ -111,31 +89,11 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async importSingleKeyWallet() {
-    // Now, if a wallet is configured, make sure they confirm an overwrite first
-    const confirmed = await this.confirmWalletOverwrite();
-    if (!confirmed) return;
+    this.walletService.createWalletFromSingleKey(this.keyString, this.isExpanded);
+    this.route.navigate(['accounts']); // load accounts and watch them update in real-time
+    this.keyString = '';
 
-    let isExpanded;
-    if (this.selectedImportOption === 'privateKey') {
-      isExpanded = false;
-    } else if (this.selectedImportOption === 'expandedKey') {
-      isExpanded = true;
-    } else {
-      return this.notifications.sendError(`Invalid import option`);
-    }
-
-    let keyString = isExpanded ? this.importExpandedKeyModel : this.importPrivateKeyModel;
-    keyString = keyString.trim();
-    if (isExpanded && keyString.length === 128) {
-      // includes deterministic R value material which we ignore
-      keyString = keyString.substring(0, 64);
-    } else if (keyString.length !== 64) {
-      return this.notifications.sendError(`Private key is invalid, double check it!`);
-    }
-    this.walletService.createWalletFromSingleKey(keyString, isExpanded);
-
-    this.activePanel = 4;
-    this.notifications.sendSuccess(`Successfully imported wallet!`);
+    this.notifications.sendSuccess(`Successfully imported wallet from a private key!`);
     this.walletService.informNewWallet();
   }
 
@@ -163,17 +121,17 @@ export class ConfigureWalletComponent implements OnInit {
       return;
     }
 
-    // Create new ledger wallet
-    const newWallet = await this.walletService.createLedgerWallet();
-
     // We skip the password panel
-    this.activePanel = 5;
-    this.notifications.sendSuccess(`Successfully loaded ledger device!`);
+    this.route.navigate(['accounts']); // load accounts and watch them update in real-time
 
     // If they are using Chrome, warn them.
     if (this.ledgerService.isBrokenBrowser()) {
       this.notifications.sendLedgerChromeWarning();
     }
+
+    // Create new ledger wallet
+    const newWallet = await this.walletService.createLedgerWallet();
+    this.notifications.sendSuccess(`Successfully loaded ledger device!`);
 
     this.walletService.informNewWallet();
   }
@@ -184,19 +142,69 @@ export class ConfigureWalletComponent implements OnInit {
 
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local cache</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed before continuing</b><br><br>Without the seed - <b>ALL FUNDS WILL BE UNRECOVERABLE</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local wallet store</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/>This does not affect any Ledger device, only the local Nault wallet.</p>');
       return true;
     } catch (err) {
-      this.notifications.sendInfo(`Use the 'Manage Wallet' page to back up your Nano seed before continuing!`);
+      this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Nano seed and/or mnemonic`);
       return false;
     }
   }
 
-  async createNewWallet() {
+  async setPasswordInit() {
+    // if importing from existing, the format check must be done prior the password page
+    if (!this.isNewWallet) {
+      if (this.selectedImportOption === 'mnemonic' || this.selectedImportOption === 'seed') {
+        if (this.selectedImportOption === 'seed') {
+          const existingSeed = this.importSeedModel.trim();
+          if (existingSeed.length !== 64) return this.notifications.sendError(`Seed is invalid, double check it!`);
+          this.importSeed = existingSeed;
+        } else if (this.selectedImportOption === 'mnemonic') {
+          // Clean the value by trimming it and removing newlines
+          const mnemonic = this.importSeedMnemonicModel.toLowerCase().trim().replace(/\n/g, ``);
+
+          const words = mnemonic.split(' ');
+          if (words.length < 20) return this.notifications.sendError(`Mnemonic is too short, double check it!`);
+
+          // Try and decode the mnemonic
+          try {
+            const newSeed = bip.mnemonicToEntropy(mnemonic);
+            if (!newSeed || newSeed.length !== 64) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
+            this.importSeed = newSeed.toUpperCase(); // Force uppercase, for consistency
+          } catch (err) {
+            return this.notifications.sendError(`Unable to decode mnemonic, double check it!`);
+          }
+        } else {
+          return this.notifications.sendError(`Invalid import option`);
+        }
+      } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey') {
+        if (this.selectedImportOption === 'privateKey') {
+          this.isExpanded = false;
+        } else if (this.selectedImportOption === 'expandedKey') {
+          this.isExpanded = true;
+        } else {
+          return this.notifications.sendError(`Invalid import option`);
+        }
+
+        this.keyString = this.isExpanded ? this.importExpandedKeyModel : this.importPrivateKeyModel;
+        this.keyString = this.keyString.trim();
+        if (this.isExpanded && this.keyString.length === 128) {
+          // includes deterministic R value material which we ignore
+          this.keyString = this.keyString.substring(0, 64);
+        } else if (this.keyString.length !== 64) {
+          return this.notifications.sendError(`Private key is invalid, double check it!`);
+        }
+      }
+    }
+
     // If a wallet already exists, confirm that the seed is saved
     const confirmed = await this.confirmWalletOverwrite();
     if (!confirmed) return;
+    this.activePanel = 4; // password panel
+  }
 
+  async createNewWallet() {
+    this.walletPasswordModel = '';
+    this.walletPasswordConfirmModel = '';
     const newSeed = this.walletService.createNewWallet();
     this.newWalletSeed = newSeed;
     this.newWalletMnemonic = bip.entropyToMnemonic(newSeed);
@@ -213,40 +221,53 @@ export class ConfigureWalletComponent implements OnInit {
     ];
     this.newWalletMnemonicLines = lines;
 
-    this.activePanel = 3;
-    this.notifications.sendSuccess(`Successfully created new wallet! Make sure to write down your seed!`);
-
-    this.walletService.informNewWallet();
+    this.activePanel = 3; // seed panel
   }
 
   confirmNewSeed() {
+    if (!this.hasConfirmedBackup) {
+      return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
+    }
     this.newWalletSeed = '';
     this.newWalletMnemonicLines = [];
+    this.saveNewWallet();
 
-    this.activePanel = 4;
+    this.activePanel = 5; // final panel
   }
 
   saveWalletPassword() {
     if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
       return this.notifications.sendError(`Password confirmation does not match, try again!`);
     }
-    if (this.walletPasswordModel.length < 1) {
-      return this.notifications.sendWarning(`Password cannot be empty!`);
+    if (this.walletPasswordModel.length < 6) {
+      return this.notifications.sendWarning(`Password length must be at least 6`);
     }
     const newPassword = this.walletPasswordModel;
     this.walletService.wallet.password = newPassword;
 
+    if (this.isNewWallet) {
+      this.createNewWallet();
+    } else if (this.selectedImportOption === 'mnemonic' || this.selectedImportOption === 'seed') {
+      this.importExistingWallet();
+    } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey') {
+      this.importSingleKeyWallet();
+    }
+  }
+
+  saveNewWallet() {
     this.walletService.saveWalletExport();
+    this.walletService.informNewWallet();
 
-    this.walletPasswordModel = '';
-    this.walletPasswordConfirmModel = '';
-
-    this.activePanel = 5;
-    this.notifications.sendSuccess(`Successfully set wallet password!`);
+    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the seed/mnemonic!`);
   }
 
   setPanel(panel) {
     this.activePanel = panel;
+    if (panel === 0) {
+      this.isNewWallet = true;
+    } else if (panel === 1) {
+      this.isNewWallet = false;
+    }
   }
 
   copied() {
