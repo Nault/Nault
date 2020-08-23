@@ -4,6 +4,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as bip from 'bip39';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import {UtilService} from '../../services/util.service';
+
+enum panels {'create', 'import', 'password', 'backup', 'final'}
 
 @Component({
   selector: 'app-configure-wallet',
@@ -11,9 +14,10 @@ import { QrModalService } from '../../services/qr-modal.service';
   styleUrls: ['./configure-wallet.component.css']
 })
 export class ConfigureWalletComponent implements OnInit {
+  panels = panels;
+  activePanel = panels.create;
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;
-  activePanel = 0;
   isNewWallet = true;
   hasConfirmedBackup = false;
   importSeed = '';
@@ -23,6 +27,7 @@ export class ConfigureWalletComponent implements OnInit {
   newWalletSeed = '';
   newWalletMnemonic = '';
   newWalletMnemonicLines = [];
+  newPassword = '';
   importSeedModel = '';
   importPrivateKeyModel = '';
   importExpandedKeyModel = '';
@@ -50,12 +55,12 @@ export class ConfigureWalletComponent implements OnInit {
     private route: Router,
     private qrModalService: QrModalService,
     private ledgerService: LedgerService,
-    private repService: RepresentativeService) {
+    private util: UtilService) {
     if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
-      this.activePanel = 1;
+      this.activePanel = panels.import;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
     } else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key) {
-      this.activePanel = 1;
+      this.activePanel = panels.import;
       this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
       this.selectedImportOption = 'privateKey';
     }
@@ -64,7 +69,7 @@ export class ConfigureWalletComponent implements OnInit {
   async ngOnInit() {
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
-      this.activePanel = 1;
+      this.activePanel = panels.import;
     }
   }
 
@@ -79,6 +84,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
     await this.walletService.createWalletFromSeed(this.importSeed);
     this.importSeed = '';
+    this.storePassword();
 
     this.notifications.removeNotification('importing-loading');
 
@@ -90,6 +96,7 @@ export class ConfigureWalletComponent implements OnInit {
 
   async importSingleKeyWallet() {
     this.walletService.createWalletFromSingleKey(this.keyString, this.isExpanded);
+    this.storePassword();
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
     this.keyString = '';
 
@@ -142,7 +149,7 @@ export class ConfigureWalletComponent implements OnInit {
 
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local wallet store</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/>This does not affect any Ledger device, only the local Nault wallet.</p>');
+      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local Nault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>');
       return true;
     } catch (err) {
       this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Nano seed and/or mnemonic`);
@@ -199,15 +206,13 @@ export class ConfigureWalletComponent implements OnInit {
     // If a wallet already exists, confirm that the seed is saved
     const confirmed = await this.confirmWalletOverwrite();
     if (!confirmed) return;
-    this.activePanel = 4; // password panel
+    this.activePanel = panels.password;
   }
 
   async createNewWallet() {
-    this.walletPasswordModel = '';
-    this.walletPasswordConfirmModel = '';
-    const newSeed = this.walletService.createNewWallet();
-    this.newWalletSeed = newSeed;
-    this.newWalletMnemonic = bip.entropyToMnemonic(newSeed);
+    const seedBytes = this.util.account.generateSeedBytes();
+    this.newWalletSeed = this.util.hex.fromUint8(seedBytes);
+    this.newWalletMnemonic = bip.entropyToMnemonic(this.newWalletSeed);
 
     // Split the seed up so we can show 4 per line
     const words = this.newWalletMnemonic.split(' ');
@@ -221,18 +226,20 @@ export class ConfigureWalletComponent implements OnInit {
     ];
     this.newWalletMnemonicLines = lines;
 
-    this.activePanel = 3; // seed panel
+    this.activePanel = panels.backup;
   }
 
   confirmNewSeed() {
     if (!this.hasConfirmedBackup) {
       return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
     }
+    this.walletService.createNewWallet(this.newWalletSeed);
+    this.storePassword();
     this.newWalletSeed = '';
     this.newWalletMnemonicLines = [];
     this.saveNewWallet();
 
-    this.activePanel = 5; // final panel
+    this.activePanel = panels.final;
   }
 
   saveWalletPassword() {
@@ -242,8 +249,9 @@ export class ConfigureWalletComponent implements OnInit {
     if (this.walletPasswordModel.length < 6) {
       return this.notifications.sendWarning(`Password length must be at least 6`);
     }
-    const newPassword = this.walletPasswordModel;
-    this.walletService.wallet.password = newPassword;
+    this.newPassword = this.walletPasswordModel;
+    this.walletPasswordModel = '';
+    this.walletPasswordConfirmModel = '';
 
     if (this.isNewWallet) {
       this.createNewWallet();
@@ -252,6 +260,11 @@ export class ConfigureWalletComponent implements OnInit {
     } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey') {
       this.importSingleKeyWallet();
     }
+  }
+
+  storePassword() {
+    this.walletService.wallet.password = this.newPassword;
+    this.newPassword = '';
   }
 
   saveNewWallet() {
@@ -263,9 +276,9 @@ export class ConfigureWalletComponent implements OnInit {
 
   setPanel(panel) {
     this.activePanel = panel;
-    if (panel === 0) {
+    if (panel === panels.create) {
       this.isNewWallet = true;
-    } else if (panel === 1) {
+    } else if (panel === panels.import) {
       this.isNewWallet = false;
     }
   }

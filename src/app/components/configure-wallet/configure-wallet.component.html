@@ -1,23 +1,22 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
 <p>Use the options below to import an existing wallet or create a new one.</p>
 
-<div *ngIf="isConfigured() && (activePanel != 3 && activePanel != 4 && activePanel != 5)" class="uk-alert uk-alert-danger">
-  <b>You already have a local wallet configured</b><br>
+<div *ngIf="isConfigured() && (activePanel === panels.create || activePanel === panels.import)" class="uk-alert uk-alert-danger">
+  <b>You already have a local Nault wallet configured</b><br>
   Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
-  Without it, <b>any funds you have will become completely unrecoverable!</b><br><br>
-  This does not affect any Ledger device.
+  Without it, <b>any funds you have will become completely unrecoverable!</b>
 </div>
 
-<div uk-grid *ngIf="activePanel == 0 || activePanel == 1">
+<div uk-grid *ngIf="activePanel === panels.create || activePanel === panels.import">
   <div class="uk-width-1-1">
     <div class="uk-button-group uk-width-1-1">
-      <button (click)="setPanel(0)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel == 0, 'uk-button-secondary': activePanel != 0 }">Create New Wallet</button>
-      <button (click)="setPanel(1)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel == 1, 'uk-button-secondary': activePanel != 1 }">Import Existing Wallet</button>
+      <button (click)="setPanel(0)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel === panels.create, 'uk-button-secondary': activePanel !== panels.create }">Create New Wallet</button>
+      <button (click)="setPanel(1)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel === panels.import, 'uk-button-secondary': activePanel !== panels.import }">Import Existing Wallet</button>
     </div>
   </div>
 </div>
 
-<div class="uk-card uk-card-default" *ngIf="activePanel == 0">
+<div class="uk-card uk-card-default" *ngIf="activePanel === panels.create">
   <div class="uk-card-body">
     <p>
       When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts
@@ -32,7 +31,7 @@
   </div>
 </div>
 
-<div class="uk-card uk-card-default" *ngIf="activePanel == 1">
+<div class="uk-card uk-card-default" *ngIf="activePanel === panels.import">
   <div class="uk-card-body">
     <p>
       If you already have a Nano wallet, you can import it below.  When you import a wallet, it replaces the previous one in the GUI but none of your existing 
@@ -144,7 +143,7 @@
 
 
 
-<div class="uk-card uk-card-default" *ngIf="activePanel == 3">
+<div class="uk-card uk-card-default" *ngIf="activePanel === panels.backup">
   <div class="uk-card-header">
     <h3 class="uk-card-title">Save Wallet Backup</h3>
   </div>
@@ -185,7 +184,7 @@
   </div>
 </div>
 
-<div class="uk-card uk-card-default" *ngIf="activePanel == 4">
+<div class="uk-card uk-card-default" *ngIf="activePanel === panels.password">
   <div class="uk-card-header">
     <h3 class="uk-card-title">Set Wallet Password</h3>
   </div>
@@ -203,7 +202,7 @@
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
         <password-strength-meter [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
         <span class="password-helper" *ngIf="walletPasswordModel.length < 6">Password must be at least 6 characters long</span>
-        <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">Passwords does not match!</span>
+        <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">Passwords do not match!</span>
       </div>
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" (keyup.enter)="saveWalletPassword()" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
@@ -215,7 +214,7 @@
   </div>
 </div>
 
-<div class="uk-card uk-card-default" *ngIf="activePanel == 5">
+<div class="uk-card uk-card-default" *ngIf="activePanel === panels.final">
   <div class="uk-card-header">
     <h3 class="uk-card-title">Wallet Created!</h3>
   </div>
@@ -230,9 +229,9 @@
   </div>
 </div>
 
-<div *ngIf="(activePanel == 5) && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
+<div *ngIf="activePanel === panels.final && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><b>ProTip:</b> If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.</p>
 </div>
-<div *ngIf="activePanel == 5 && walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
+<div *ngIf="activePanel === panels.final && walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><b>ProTip:</b> Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.</p>
 </div>
