@@ -28,16 +28,16 @@ export class ChangeRepWidgetComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.updateSelectedAccountHasRep();
-    this.representatives = await this.repService.getRepresentativesOverview();
-    await this.updateChangeableRepresentatives();
-    this.updateDisplayedRepresentatives();
-    this.initialLoadComplete = true;
-
     this.repService.walletReps$.subscribe(async reps => {
+      if ( reps[0] === null ) {
+        // initial state from new BehaviorSubject([null])
+        return;
+      }
+
       this.representatives = reps;
       await this.updateChangeableRepresentatives();
       this.updateDisplayedRepresentatives();
+      this.initialLoadComplete = true;
     });
 
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
@@ -55,7 +55,7 @@ export class ChangeRepWidgetComponent implements OnInit {
     // Detect if a new open block is received
     this.blockService.newOpenBlock$.subscribe(async shouldReload => {
       if (shouldReload) {
-        this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+        await this.repService.getRepresentativesOverview(); // calls walletReps$.next
       }
     });
 
@@ -69,16 +69,21 @@ export class ChangeRepWidgetComponent implements OnInit {
 
       this.updateDisplayedRepresentatives();
     });
+
+    this.selectedAccount = this.walletService.wallet.selectedAccount;
+    this.updateSelectedAccountHasRep();
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
   }
 
   async resetRepresentatives() {
     console.log('Reloading representatives..');
+    this.initialLoadComplete = false;
     this.selectedAccount = null;
     this.representatives = [];
     this.changeableRepresentatives = [];
     this.showRepChangeRequired = false;
     this.updateDisplayedRepresentatives();
-    this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
     console.log('Representatives reloaded');
   }
 

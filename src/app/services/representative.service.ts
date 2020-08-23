@@ -58,7 +58,7 @@ export class RepresentativeService {
   representatives$ = new BehaviorSubject([]);
   representatives = [];
 
-  walletReps$ = new BehaviorSubject([]);
+  walletReps$ = new BehaviorSubject([null]);
   walletReps = [];
 
   changeableReps$ = new BehaviorSubject([]);

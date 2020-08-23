@@ -113,7 +113,7 @@
                 </div>
               </div>
 
-              <ng-container *ngIf="(wallet.selectedAccount === null && walletService.hasPendingTransactions()) || wallet.selectedAccount !== null && wallet.selectedAccount.pending.gt(0)">
+              <ng-container *ngIf="(wallet.selectedAccount !== null) ? wallet.selectedAccount.pending.gt(0) : walletService.hasPendingTransactions()">
                 <ng-container *ngIf="walletService.processingPending else notProcessingPending">
                   <div class="nav-action-receive" *ngIf="walletService.processingPending">
                     <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>

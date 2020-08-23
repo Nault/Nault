@@ -622,7 +622,7 @@ export class WalletService {
     this.wallet.hasPending = false;
     this.wallet.selectedAccountId = null;
     this.wallet.selectedAccount = null;
-    this.wallet.selectedAccount$ = new BehaviorSubject(null);
+    this.wallet.selectedAccount$.next(null);
     this.wallet.pendingBelowThreshold = [new BigNumber(0)];
     this.wallet.pendingBlocks = [];
   }
