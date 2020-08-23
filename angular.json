@@ -222,7 +222,4 @@
       "prefix": "app"
     }
   },
-  "cli": {
-    "analytics": "e785a0c2-623b-4614-955a-17e4b7f1a494"
-  }
 }
