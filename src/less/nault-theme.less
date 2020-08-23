@@ -39,6 +39,12 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	color: #676686;
 }
 
+.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+    background-color: #ddd;
+    color: #999;
+    border-color: #dce9f9;
+}
+
 @mobile-top-bar-height: 50px;
 
 .mobile-top-bar {
@@ -116,6 +122,18 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	.nlt-button-group button {
 		margin-left: @global-margin;
 	}
+}
+
+.password-feedback, password-suggetion {
+    display: block !important;
+}
+
+.password-helper {
+    font-size: 70%;
+    font-weight: 400;
+    color: #f0506e!important;
+    margin-top: .25rem;
+    display: block;
 }
 
 // ng-bootstrap modal classes
@@ -263,9 +281,4 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 		margin-top: 30px;
     }
 }
-
-.password-feedback, password-suggetion {
-    display: block !important;
-}
-
 // ========================================================================
