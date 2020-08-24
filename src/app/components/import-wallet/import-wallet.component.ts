@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../services/notification.service';
 import * as CryptoJS from 'crypto-js';
 import {WalletService} from '../../services/wallet.service';
@@ -17,7 +17,8 @@ export class ImportWalletComponent implements OnInit {
   importData: any = null;
   hostname = '';
 
-  constructor(private route: ActivatedRoute, private notifications: NotificationService, private walletService: WalletService) { }
+  constructor(private route: ActivatedRoute, private notifications: NotificationService, private walletService: WalletService,
+    private router: Router) { }
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
@@ -58,8 +59,8 @@ export class ImportWalletComponent implements OnInit {
         return this.notifications.sendError(`Invalid password, please try again`);
       }
 
+      this.router.navigate(['accounts']); // load accounts and watch them update in real-time
       await this.walletService.loadImportedWallet(decryptedSeed, this.walletPassword, this.importData.accountsIndex || 0);
-      this.activePanel = 'imported';
 
     } catch (err) {
       this.walletPassword = '';
