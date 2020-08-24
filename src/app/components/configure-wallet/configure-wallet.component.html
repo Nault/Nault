@@ -1,5 +1,5 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
-<p>Use the options below to import an existing wallet or create a new one.</p>
+<p *ngIf="activePanel === panels.create || activePanel === panels.import">Use the options below to import an existing wallet or create a new one</p>
 
 <div *ngIf="isConfigured() && (activePanel === panels.create || activePanel === panels.import)" class="uk-alert uk-alert-danger">
   <b>You already have a local Nault wallet configured</b><br>
@@ -132,7 +132,7 @@
       <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
       <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import From File</button>
     </div>
-    <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Mnemonic Phrase</button>
+    <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Mnemonic</button>
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Seed</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.READY" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importLedgerWallet()">Import From Ledger</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.READY" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
@@ -153,8 +153,9 @@
     </p>
     <div class="uk-alert-danger uk-alert-primary">
       Make sure to write down your seed and/or mnemonic or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
-      It is the master key to all of your accounts, and the only way to recover your funds in an emergency.<br><br>
+      It is the master key to all of your accounts, and the only way to recover your funds in an emergency.<br>
     </div>
+    <br>
 
     <div uk-grid>
       <div class="uk-width-1-4">Nano Seed</div>
@@ -200,8 +201,8 @@
     <div uk-grid>
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
-        <password-strength-meter [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
-        <span class="password-helper" *ngIf="walletPasswordModel.length < 6">Password must be at least 6 characters long</span>
+        <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
+        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">Password must be at least 6 characters long</span>
         <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">Passwords do not match!</span>
       </div>
       <div class="uk-width-1-2@m">
