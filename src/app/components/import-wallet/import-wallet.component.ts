@@ -60,7 +60,9 @@ export class ImportWalletComponent implements OnInit {
       }
 
       this.router.navigate(['accounts']); // load accounts and watch them update in real-time
+      this.notifications.sendInfo(`Loading all accounts for the wallet...`);
       await this.walletService.loadImportedWallet(decryptedSeed, this.walletPassword, this.importData.accountsIndex || 0);
+      this.notifications.sendSuccess(`Successfully imported the wallet!`, {length: 10000});
 
     } catch (err) {
       this.walletPassword = '';

@@ -80,15 +80,13 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async importExistingWallet() {
-    this.notifications.sendInfo(`Importing existing accounts...`, { identifier: 'importing-loading' });
+    this.notifications.sendInfo(`Starting to scan the first 10 accounts and importing them if they have been used...`, {length: 7000});
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
     await this.walletService.createWalletFromSeed(this.importSeed);
     this.importSeed = '';
     this.storePassword();
 
-    this.notifications.removeNotification('importing-loading');
-
-    this.notifications.sendSuccess(`Successfully imported wallet!`);
+    this.notifications.sendSuccess(`Successfully imported wallet!`, {length: 10000});
 
     // this.repService.detectChangeableReps(); // this is now called from change-rep-widget.component when new wallet
     this.walletService.informNewWallet();
