@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Nano from 'hw-app-nano';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import Transport from '@ledgerhq/hw-transport';
 import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
@@ -24,7 +25,7 @@ export const LedgerStatus = {
 export interface LedgerData {
   status: string;
   nano: any|null;
-  transport: any|null;
+  transport: Transport|null;
 }
 
 const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
