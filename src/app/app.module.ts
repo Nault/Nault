@@ -55,6 +55,7 @@ import {RemoteSignService} from './services/remote-sign.service';
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -102,6 +103,7 @@ import { NinjaService } from './services';
     ClipboardModule,
     ZXingScannerModule,
     NgbModule,
+    PasswordStrengthMeterModule,
   ],
   providers: [
     UtilService,

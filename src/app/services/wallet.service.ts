@@ -414,8 +414,6 @@ export class WalletService {
     this.wallet.seedBytes = this.util.hex.toUint8(seed);
 
     await this.scanAccounts();
-
-    return this.wallet.seed;
   }
 
   async scanAccounts(emptyAccountBuffer: number = 10) {
@@ -501,12 +499,11 @@ export class WalletService {
     this.reloadBalances();
   }
 
-  createNewWallet() {
+  createNewWallet(seed: string) {
     this.resetWallet();
 
-    const seedBytes = this.util.account.generateSeedBytes();
-    this.wallet.seedBytes = seedBytes;
-    this.wallet.seed = this.util.hex.fromUint8(seedBytes);
+    this.wallet.seedBytes = this.util.hex.toUint8(seed);
+    this.wallet.seed = seed;
 
     this.addWalletAccount();
 
@@ -532,8 +529,6 @@ export class WalletService {
 
     this.wallet.accounts.push(this.createSingleKeyAccount(expanded));
     this.saveWalletExport();
-
-    return this.wallet;
   }
 
   async createLedgerAccount(index) {

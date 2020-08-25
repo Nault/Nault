@@ -53,3 +53,7 @@ pre.mnemonic span.mnemonic-word::before {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+
+#create-wallet {
+  margin-top: 20px;
+}
