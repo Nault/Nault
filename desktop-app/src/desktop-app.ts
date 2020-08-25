@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 
-import { app, BrowserWindow, shell, Menu, protocol, webFrame, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, Menu, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
@@ -14,10 +14,19 @@ initialize();
 let mainWindow;
 
 function createWindow () {
+  let newWidth = 1000;
+  let newHeight = 600;
+  try {
+    const mainScreen = screen.getPrimaryDisplay();
+    const dimensions = mainScreen.size;
+    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.7));
+    newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
+  } catch {}
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    width: newWidth,
+    height: newHeight,
     webPreferences:
     {
       webSecurity: false,
