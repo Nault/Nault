@@ -23,6 +23,7 @@ export class InstallWidgetComponent implements OnInit {
       return;
     }
 
+    // Show clickable installation banner (Chrome / Edge)
     window.addEventListener('beforeinstallprompt', (e: InstallEvent) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
@@ -33,6 +34,13 @@ export class InstallWidgetComponent implements OnInit {
       // Show promotion
       this.showInstallPromotion = true;
     });
+
+    // Fallback for iOS family
+    if (this.isIosInstallable()) {
+      setTimeout(() => {
+        this.showInstallPromotion = true;
+      });
+    }
   }
 
   install() {
@@ -73,6 +81,14 @@ export class InstallWidgetComponent implements OnInit {
     } else if (platform.includes('iPad')) {
       return 'iPadOS';
     }
+  }
+
+  isIosInstallable() {
+    if (!this.isPromotable() || this.isInstalled()) {
+      return false;
+    }
+    const platform = this.getPlatform();
+    return (platform === 'iOS' || platform === 'iPadOS') && (window.navigator.userAgent.includes('Version'));
   }
 
   isPromotable() {
