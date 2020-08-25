@@ -19,6 +19,7 @@ import {
 export class AccountsComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
   isLedgerWallet = this.walletService.isLedgerWallet();
+  isSingleKeyWallet = this.walletService.isSingleKeyWallet();
   viewAdvanced = false;
   newAccountIndex = null;
 
