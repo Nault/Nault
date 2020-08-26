@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import Nano from 'hw-app-nano';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import TransportUSB from '@ledgerhq/hw-transport-webusb';
+import TransportHID from '@ledgerhq/hw-transport-webhid';
+import TransportBLE from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
 import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
@@ -50,6 +53,13 @@ export class LedgerService {
   isDesktop = environment.desktop;
   queryingDesktopLedger = false;
 
+  supportsWebHID = Boolean((navigator as any).hid);
+  supportsWebUSB = Boolean((navigator as any).usb);
+  supportsWebBluetooth = Boolean((navigator as any).bluetooth);
+
+  transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
+  DynamicTransport = TransportU2F as typeof Transport;
+
   ledgerStatus$: Subject<any> = new Subject();
   desktopMessage$ = new Subject();
 
@@ -88,6 +98,23 @@ export class LedgerService {
           break;
       }
     });
+  }
+
+  /**
+   * Determine which transport protocol is the best for the current browser and OS combo
+   */
+  findBestTransport() {
+    console.log('Bluetooth', this.supportsWebBluetooth);
+    console.log('HID', this.supportsWebHID);
+    console.log('USB', this.supportsWebUSB);
+
+    if (this.supportsWebHID) {
+      this.transportMode = 'HID';
+      this.DynamicTransport = TransportHID;
+    } else if (this.supportsWebUSB) {
+      this.transportMode = 'USB';
+      this.DynamicTransport = TransportUSB;
+    }
   }
 
   /**
@@ -217,6 +244,19 @@ export class LedgerService {
     }
   }
 
+  async loadTransport() {
+    return new Promise((resolve, reject) => {
+      this.DynamicTransport.create().then(trans => {
+
+        this.ledger.transport = trans;
+        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+        this.ledger.nano = new Nano(this.ledger.transport);
+
+        resolve(this.ledger.transport);
+      }).catch(reject);
+    });
+  }
+
 
   /**
    * Main ledger loading function.  Can be called multiple times to attempt a reconnect.
@@ -244,36 +284,57 @@ export class LedgerService {
         return;
       }
 
-      // Note:
-      // Everything else below is for loading the Ledger via the browser using Chrome U2F Bridge (Requires https)
+      this.findBestTransport();
 
-      // Load the transport object
-      if (!this.ledger.transport) {
-        try {
-          this.ledger.transport = await TransportU2F.open(null);
-          this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        } catch (err) {
-          console.log(`Transport error: `, err);
-          if (err.statusText === 'UNKNOWN_ERROR') {
+      if (this.transportMode !== 'U2F') {
+        // Modern mode
+        if (!this.ledger.transport) {
+          try {
+            await this.loadTransport();
+            resolve(true);
+          } catch (err) {
+            console.log(`Error loading transport? `, err);
+            this.ledger.status = LedgerStatus.NOT_CONNECTED;
+            this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
             this.resetLedger();
+            resolve(false);
           }
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
-          return resolve(false);
         }
-      }
+      } else {
+        // Legacy mode
 
-      // Load nano object
-      if (!this.ledger.nano) {
-        try {
-          this.ledger.nano = new Nano(this.ledger.transport);
-        } catch (err) {
-          console.log(`Nano error: `, err);
-          if (err.statusText === 'UNKNOWN_ERROR') {
-            this.resetLedger();
+        // Note:
+        // Everything else below is for loading the Ledger via the browser using Chrome U2F Bridge (Requires https)
+
+        // Load the transport object
+        if (!this.ledger.transport) {
+          try {
+            this.ledger.transport = await this.DynamicTransport.open(null);
+            this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+          } catch (err) {
+            console.log(`Transport error: `, err);
+            if (err.statusText === 'UNKNOWN_ERROR') {
+              this.resetLedger();
+            }
+            this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
+            return resolve(false);
           }
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
-          return resolve(false);
         }
+
+        // Load nano object
+        if (!this.ledger.nano) {
+          try {
+            this.ledger.nano = new Nano(this.ledger.transport);
+          } catch (err) {
+            console.log(`Nano error: `, err);
+            if (err.statusText === 'UNKNOWN_ERROR') {
+              this.resetLedger();
+            }
+            this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
+            return resolve(false);
+          }
+        }
+
       }
 
       let resolved = false;
@@ -314,7 +375,6 @@ export class LedgerService {
         }
         return resolve(false);
       }
-
       // Attempt to load account 0 - which confirms the app is unlocked and ready
       try {
         const accountDetails = await this.getLedgerAccount(0);
