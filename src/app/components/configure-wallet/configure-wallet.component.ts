@@ -129,11 +129,6 @@ export class ConfigureWalletComponent implements OnInit {
     // We skip the password panel
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
 
-    // If they are using Chrome, warn them.
-    if (this.ledgerService.isBrokenBrowser()) {
-      this.notifications.sendLedgerChromeWarning();
-    }
-
     // Create new ledger wallet
     const newWallet = await this.walletService.createLedgerWallet();
     this.notifications.sendSuccess(`Successfully loaded ledger device!`);

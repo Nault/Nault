@@ -53,9 +53,9 @@ export class LedgerService {
   isDesktop = environment.desktop;
   queryingDesktopLedger = false;
 
-  supportsWebHID = Boolean((navigator as any).hid);
-  supportsWebUSB = Boolean((navigator as any).usb);
-  supportsWebBluetooth = Boolean((navigator as any).bluetooth);
+  supportsWebHID = Boolean((window.navigator as any).hid);
+  supportsWebUSB = Boolean((window.navigator as any).usb);
+  supportsWebBluetooth = Boolean((window.navigator as any).bluetooth);
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F as typeof Transport;
@@ -208,39 +208,6 @@ export class LedgerService {
     } catch (err) {
       this.queryingDesktopLedger = false;
       throw new Error(`Error signing block: ${err.message}`);
-    }
-  }
-
-  /**
-   * Determine if a broken browser is being used (Non-desktop Chrome)
-   */
-  isBrokenBrowser(): boolean {
-    if (this.isDesktop) {
-      return false;
-    }
-    // If we using Chromium and not on desktop - warn about Ledger issue
-    const isChromium = window['chrome'];
-    const winNav = window.navigator;
-    const vendorName = winNav.vendor;
-    const isOpera = typeof window['opr'] !== 'undefined';
-    const isIEedge = winNav.userAgent.indexOf('Edge') > -1;
-    const isIOSChrome = winNav.userAgent.match('CriOS');
-
-    if (isIOSChrome) {
-      // is Google Chrome on IOS - Shouldnt be using Ledger but meh
-      return true;
-    } else if (
-      isChromium !== null &&
-      typeof isChromium !== 'undefined' &&
-      vendorName === 'Google Inc.' &&
-      isOpera === false &&
-      isIEedge === false
-    ) {
-      // is Google Chrome
-      return true;
-    } else {
-      // not Google Chrome
-      return false;
     }
   }
 
