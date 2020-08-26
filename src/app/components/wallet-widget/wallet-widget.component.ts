@@ -69,6 +69,10 @@ export class WalletWidgetComponent implements OnInit {
   async unlockWallet() {
     await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
+    if (this.unlockPassword.length < 6) {
+      // tslint:disable-next-line: max-line-length
+      this.notificationService.sendWarning(`You are using an insecure password and encouraged to change it from settings > manage wallet`);
+    }
     this.unlockPassword = '';
 
     if (unlocked) {
