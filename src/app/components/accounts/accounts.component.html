@@ -78,7 +78,7 @@
         <tr *ngIf="!accounts.length">
           <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a>.</td>
         </tr>
-        <tr class="uk-alert uk-alert-primary missing-accounts-hint">
+        <tr class="uk-alert uk-alert-primary missing-accounts-hint" *ngIf="!isSingleKeyWallet">
           <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a (click)="createAccount()">Add new account</a> to import a previously used address.</td>
         </tr>
         </tbody>

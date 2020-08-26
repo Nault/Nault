@@ -645,6 +645,10 @@ export class WalletService {
     return this.wallet.type === 'ledger';
   }
 
+  isSingleKeyWallet() {
+    return (this.wallet.type === 'privateKey' || this.wallet.type === 'expandedKey');
+  }
+
   hasPendingTransactions() {
     return this.wallet.hasPending;
     // if (this.appSettings.settings.minimumReceive) {
@@ -853,11 +857,11 @@ export class WalletService {
 
     let newAccount: WalletAccount|null;
 
-    if (this.wallet.type === 'privateKey' || this.wallet.type === 'expandedKey') {
-      throw new Error(`Cannot add another account in private key mode`);
+    if (this.isSingleKeyWallet()) {
+      throw new Error(`Wallet consists of a single private key.`);
     } else if (this.wallet.type === 'seed') {
       newAccount = await this.createSeedAccount(index);
-    } else if (this.wallet.type === 'ledger') {
+    } else if (this.isLedgerWallet()) {
       try {
         newAccount = await this.createLedgerAccount(index);
       } catch (err) {
