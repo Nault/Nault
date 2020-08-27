@@ -53,12 +53,13 @@ export class LedgerService {
   isDesktop = environment.desktop;
   queryingDesktopLedger = false;
 
-  supportsWebHID = Boolean((window.navigator as any).hid);
-  supportsWebUSB = Boolean((window.navigator as any).usb);
-  supportsWebBluetooth = Boolean((window.navigator as any).bluetooth);
+  supportsU2F = false;
+  supportsWebHID = false;
+  supportsWebUSB = false;
+  supportsWebBluetooth = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
-  DynamicTransport = TransportU2F as typeof Transport;
+  DynamicTransport = TransportU2F;
 
   ledgerStatus$: Subject<any> = new Subject();
   desktopMessage$ = new Subject();
@@ -68,6 +69,8 @@ export class LedgerService {
               private notifications: NotificationService) {
     if (this.isDesktop) {
       this.configureDesktop();
+    } else {
+      this.updateTransportBrowserSupport();
     }
   }
 
@@ -101,19 +104,51 @@ export class LedgerService {
   }
 
   /**
-   * Determine which transport protocol is the best for the current browser and OS combo
+   * Update supported transport protocols by the browser
    */
-  findBestTransport() {
-    console.log('Bluetooth', this.supportsWebBluetooth);
-    console.log('HID', this.supportsWebHID);
-    console.log('USB', this.supportsWebUSB);
+  updateTransportBrowserSupport() {
+    TransportU2F.isSupported().then(supported => this.supportsU2F = supported);
+    TransportHID.isSupported().then(supported => this.supportsWebHID = supported);
+    TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported);
+    TransportBLE.isSupported().then(supported => this.supportsWebBluetooth = supported);
+  }
 
-    if (this.supportsWebHID) {
+  /**
+   * Detect which USB transport protocol is optimal for the current browser and OS combo
+   */
+  detectUsbTransport() {
+    const isWindows = window.navigator.platform.includes('Win');
+    console.log('USB - HID - BLE:', this.supportsWebUSB, this.supportsWebHID, this.supportsWebBluetooth);
+
+    if (isWindows && this.supportsWebHID) {
+      // Prefer WebHID on Windows due to WebUSB stability issues
       this.transportMode = 'HID';
       this.DynamicTransport = TransportHID;
     } else if (this.supportsWebUSB) {
+      // Prefer WebUSB on all other OS's
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
+    } else if (this.supportsWebHID) {
+      // Fallback to WebHID
+      this.transportMode = 'HID';
+      this.DynamicTransport = TransportHID;
+    } else {
+      // Legacy
+      this.transportMode = 'U2F';
+      this.DynamicTransport = TransportU2F;
+    }
+  }
+
+  /**
+   * Enable or disable bluetooth communication, if supported
+   * @param enabled   The bluetooth enabled state
+   */
+  enableBluetoothMode(enabled: boolean) {
+    if (this.supportsWebBluetooth && enabled) {
+      this.transportMode = 'Bluetooth';
+      this.DynamicTransport = TransportBLE;
+    } else {
+        this.detectUsbTransport();
     }
   }
 
@@ -251,10 +286,16 @@ export class LedgerService {
         return;
       }
 
-      this.findBestTransport();
+      // If in USB mode, detect best transport option
+      if (this.transportMode !== 'Bluetooth') {
+        this.detectUsbTransport();
+      }
+      console.log('Connecting to ledger using transport:', this.transportMode);
+      const isSupported = await TransportUSB.isSupported();
+      console.log('usb', isSupported);
 
-      if (this.transportMode !== 'U2F') {
-        // Modern mode
+      // Use modern transport connection mode if supported by the browser
+      if (this.transportMode !== 'U2F' || this.transportMode === 'U2F') {
         if (!this.ledger.transport) {
           try {
             await this.loadTransport();
@@ -301,7 +342,10 @@ export class LedgerService {
             return resolve(false);
           }
         }
+      }
 
+      if (!this.ledger.transport || !this.ledger.nano) {
+        return resolve(false);
       }
 
       let resolved = false;
