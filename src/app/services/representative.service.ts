@@ -191,12 +191,12 @@ export class RepresentativeService {
           repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, 7);
         }
 
-        if (knownRepNinja.uptime_over.week < 80) {
+        if (knownRepNinja.uptime_over.week < 50) {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
           repStatus.changeRequired = true;
-        } else if (knownRepNinja.uptime_over.week < 90) {
+        } else if (knownRepNinja.uptime_over.week < 60) {
           if (status !== 'alert') {
             status = 'warn';
           }
