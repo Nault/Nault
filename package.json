@@ -3,7 +3,7 @@
   "version": "1.7.6",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
-  "author": "BitDesert / Andrew Steele",
+  "author": "The Nano Community / Andrew Steele",
   "main": "desktop-app/dist/desktop-app.js",
   "scripts": {
     "ng": "ng",
@@ -97,7 +97,7 @@
     "appId": "cc.nault",
     "buildVersion": "1.6.1",
     "productName": "Nault",
-    "copyright": "Copyright © 2020 BitDesert / Andrew Steele",
+    "copyright": "Copyright © 2020 The Nano Community / Andrew Steele",
     "directories": {
       "output": "desktop-app/build",
       "buildResources": "desktop-app/assets",
