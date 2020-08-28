@@ -46,7 +46,7 @@ export class ConfigureWalletComponent implements OnInit {
   importOptions = [
     { name: 'Nano Seed', value: 'seed' },
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
-    { name: 'Bip39 Mnemonic Phrase', value: 'bip39-mnemonic' },
+    { name: 'BIP39 Mnemonic Phrase', value: 'bip39-mnemonic' },
     { name: 'Nault Wallet File', value: 'file' },
     { name: 'Ledger Nano S / Nano X', value: 'ledger' },
     { name: 'Private Key', value: 'privateKey' },

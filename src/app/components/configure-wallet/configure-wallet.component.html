@@ -76,11 +76,11 @@
     <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <p>
-          Enter your mnemonic generated from Nault or other Nano wallets. If it came from a Ledger device or certain multi-currency wallets, use "Bip39 Mnemonic" import type instead.
+          Enter your mnemonic generated from Nault or other Nano wallets. If it came from a Ledger device or certain multi-currency wallets, use "BIP39 Mnemonic" import type instead.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
-          <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="24-words Passphrase"></textarea>
+          <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="24-words mnemonic"></textarea>
         </div>
       </div>
     </div>
@@ -91,11 +91,11 @@
         </p>
         <div class="uk-form-horizontal">
           <div class="uk-margin">
-            <label class="uk-form-label" for="form-horizontal-select">Bip39 Mnemonic</label>
+            <label class="uk-form-label" for="form-horizontal-select">BIP39 Mnemonic</label>
             <div class="uk-form-controls">
               <div class="uk-inline uk-width-expand">
                 <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo2','mnemonic')" uk-tooltip title="Scan from QR code"></a>
-                <textarea class="uk-textarea" rows="2" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicModel" placeholder="12,15,18,21 or 24-words Passphrase" autocomplete="off"></textarea>
+                <textarea class="uk-textarea" rows="2" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicModel" placeholder="12,15,18,21 or 24-words mnemonic" autocomplete="off"></textarea>
               </div>
            </div>
           </div>
@@ -110,7 +110,7 @@
         </div>
         <div class="uk-form-horizontal">
           <div class="uk-margin">
-            <label class="uk-form-label" for="form-horizontal-select">Bip39 Password <span uk-icon="icon: info;" uk-tooltip title="Required if mnemonic was protected by a password."></span></label>
+            <label class="uk-form-label" for="form-horizontal-select">BIP39 Passphrase <span uk-icon="icon: info;" uk-tooltip title="Required only if the BIP39 seed is protected by a password or passphrase."></span></label>
             <div class="uk-form-controls">
               <input type="password" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicPasswordModel" placeholder="Optional" autocomplete="off">
             </div>
