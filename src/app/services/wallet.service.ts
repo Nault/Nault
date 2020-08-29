@@ -295,7 +295,8 @@ export class WalletService {
     return this.wallet;
   }
 
-  async loadImportedWallet(seed, password, accountsIndex = 1) {
+  // Using full list of indexes is the latest standard with back compatability with accountsIndex
+  async loadImportedWallet(seed: string, password: string, accountsIndex: number, indexes: Array<number>) {
     this.resetWallet();
 
     this.wallet.seed = seed;
@@ -303,9 +304,17 @@ export class WalletService {
     this.wallet.accountsIndex = accountsIndex;
     this.wallet.password = password;
 
-    for (let i = 0; i < accountsIndex; i++) {
-      await this.addWalletAccount(i, false);
-    }
+    // Old method
+    if (accountsIndex > 0) {
+      for (let i = 0; i < accountsIndex; i++) {
+        await this.addWalletAccount(i, false);
+      }
+    } else if (indexes) {
+      // New method (the promise ensures all wallets have been added before moving on)
+      await Promise.all(indexes.map(async (i) => {
+        await this.addWalletAccount(i, false);
+      }));
+    } else return false;
 
     await this.reloadBalances(true);
 
@@ -313,7 +322,7 @@ export class WalletService {
       this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
     }
 
-    return this.wallet;
+    return true;
   }
 
   async loadAccountsFromIndex() {
@@ -326,7 +335,7 @@ export class WalletService {
 
   generateExportData() {
     const exportData: any = {
-      accountsIndex: this.wallet.accountsIndex,
+      indexes: this.wallet.accounts.map(a => a.index),
     };
     if (this.wallet.locked) {
       exportData.seed = this.wallet.seed;
