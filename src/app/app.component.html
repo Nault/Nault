@@ -5,16 +5,16 @@
   (mousemove)="updateIdleTime()"
   (keypress)="updateIdleTime()"
 >
-  <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
+  <div class="uk-width-1-1" style="position: relative; overflow-y: hidden">
     <!-- Mobile top bar -->
     <div uk-grid class="mobile-top-bar uk-hidden@s uk-background-primary">
       <div class="uk-width-1-2">
-        <div class="nav-button" (click)="toggleNav()" style="cursor: pointer;">
+        <div class="nav-button" (click)="toggleNav()" style="cursor: pointer">
           <span uk-icon="icon: menu;"></span>
           <span class="app-name">Nault</span>
         </div>
       </div>
-      <div class="uk-width-1-2" style="text-align: right;"></div>
+      <div class="uk-width-1-2" style="text-align: right"></div>
     </div>
 
     <!-- Accounts dropdown -->
@@ -163,7 +163,7 @@
                         <div class="currency-name">
                           {{
                             settings.settings.displayDenomination === "banano"
-                              ? "Banano"
+                              ? "BANANO"
                               : "NANO"
                           }}
                         </div>
@@ -539,12 +539,12 @@
         class="uk-width-expand uk-width-1-1 content-container"
         [class.nav-expanded]="navExpanded"
         (click)="closeNav()"
-        style="background: #fff;"
+        style="background: #fff"
         [style.height]="windowHeight + 'px'"
       >
         <div
           class="uk-panel uk-panel-scrollable uk-height-1-1"
-          style="border: 0; height: 100%;"
+          style="border: 0; height: 100%"
         >
           <router-outlet></router-outlet>
         </div>

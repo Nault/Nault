@@ -70,6 +70,11 @@ export class SendComponent implements OnInit {
     if (params && params.amount) {
       this.amount = params.amount;
     }
+
+    if (this.settings.multiCurrency === 'banano') {
+      this.amounts = [{ name: 'BANANO (1 banano)', shortName: 'BANANO', value: 'banano' }];
+    }
+
     if (params && params.to) {
       this.toAccountID = params.to;
       this.validateDestination();
