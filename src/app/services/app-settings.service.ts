@@ -100,14 +100,11 @@ export class AppSettingsService {
 
   constructor() {
     this.serverOptions = this.serverOptions.concat(environment.backends);
-    this.settings = environment.currency.ticker === 'BAN' ? this.banSettings  : this.settings;
+    this.settings = this.multiCurrency === 'banano' ? this.banSettings  : this.settings;
   }
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;
-    if (this.multiCurrency === 'banano') {
-      settings = this.banSettings;
-    }
     const settingsStore = localStorage.getItem(this.storeKey);
     if (settingsStore) {
       settings = JSON.parse(settingsStore);
