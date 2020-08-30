@@ -51,7 +51,6 @@ export interface FullWallet {
   pendingFiat: number;
   hasPending: boolean;
   accounts: WalletAccount[];
-  accountsIndex: number;
   selectedAccountId: string|null;
   selectedAccount: WalletAccount|null;
   selectedAccount$: BehaviorSubject<WalletAccount|null>;
@@ -97,7 +96,6 @@ export class WalletService {
     pendingFiat: 0,
     hasPending: false,
     accounts: [],
-    accountsIndex: 0,
     selectedAccountId: null,
     selectedAccount: null,
     selectedAccount$: new BehaviorSubject(null),
@@ -262,28 +260,14 @@ export class WalletService {
     if (walletType === 'seed' || walletType === 'privateKey' || walletType === 'expandedKey') {
       this.wallet.seed = walletJson.seed;
       this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
-      // Remove support for unlocked wallet
-      this.wallet.locked = walletJson.locked;
-      this.wallet.password = walletJson.password || null;
+      this.wallet.locked = true;
     }
     if (walletType === 'ledger') {
       // Check ledger status?
     }
 
-    this.wallet.accountsIndex = walletJson.accountsIndex || 0;
-
     if (walletJson.accounts && walletJson.accounts.length) {
-      // if (walletType === 'ledger' || this.wallet.locked) {
-        // With the wallet locked, we load a simpler version of the accounts which does not have the keypairs, and uses the ID as input
         walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
-      // } else {
-      //   await Promise.all(walletJson.accounts.map(async (account) => await this.addWalletAccount(account.index, false)));
-      // }
-    } else {
-      // Loading from accounts index
-      if (!this.wallet.locked) {
-        await this.loadAccountsFromIndex(); // Need to have the seed to reload any accounts if they are not stored
-      }
     }
 
     this.wallet.selectedAccountId = walletJson.selectedAccountId || null;
@@ -301,7 +285,6 @@ export class WalletService {
 
     this.wallet.seed = seed;
     this.wallet.seedBytes = this.util.hex.toUint8(seed);
-    this.wallet.accountsIndex = accountsIndex;
     this.wallet.password = password;
 
     // Old method
@@ -323,14 +306,6 @@ export class WalletService {
     }
 
     return true;
-  }
-
-  async loadAccountsFromIndex() {
-    this.wallet.accounts = [];
-
-    for (let i = 0; i < this.wallet.accountsIndex; i++) {
-      await this.addWalletAccount(i, false);
-    }
   }
 
   generateExportData() {
@@ -395,11 +370,6 @@ export class WalletService {
       this.wallet.password = password;
 
       this.notifications.removeNotification('pending-locked'); // If there is a notification to unlock, remove it
-
-      // TODO: Determine if we need to load some accounts - should only be used when? Loading from import.
-      if (this.wallet.accounts.length < this.wallet.accountsIndex) {
-        this.loadAccountsFromIndex().then(() => this.reloadBalances()); // Reload all?
-      }
 
       // Process any pending blocks
       this.processPendingBlocks();
@@ -616,7 +586,6 @@ export class WalletService {
     this.wallet.seed = '';
     this.wallet.seedBytes = null;
     this.wallet.accounts = [];
-    this.wallet.accountsIndex = 0;
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
     this.wallet.balanceRaw = new BigNumber(0);
@@ -882,11 +851,6 @@ export class WalletService {
 
     this.wallet.accounts.push(newAccount);
 
-    // Set new accountsIndex - used when importing wallets.  Only count from 0, won't include custom added ones
-    let nextIndex = 0;
-    while (this.wallet.accounts.find(a => a.index === nextIndex)) nextIndex++;
-    this.wallet.accountsIndex = nextIndex;
-
     if (reloadBalances) await this.reloadBalances();
 
     this.websocket.subscribeAccounts([newAccount.id]);
@@ -904,11 +868,6 @@ export class WalletService {
     if (walletAccountIndex === -1) throw new Error(`Account is not in wallet`);
 
     this.wallet.accounts.splice(walletAccountIndex, 1);
-
-    // Reset the account index if this account is lower than the current index
-    if (walletAccount.index < this.wallet.accountsIndex) {
-      this.wallet.accountsIndex = walletAccount.index;
-    }
 
     this.websocket.unsubscribeAccounts([accountID]);
 
@@ -1036,7 +995,6 @@ export class WalletService {
     const data: any = {
       type: this.wallet.type,
       accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
-      accountsIndex: this.wallet.accountsIndex,
       selectedAccountId: this.wallet.selectedAccount ? this.wallet.selectedAccount.id : null,
     };
 
