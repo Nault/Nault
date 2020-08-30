@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 export type WalletStore = 'localStorage' | 'none';
 export type PoWSource = 'server' | 'clientCPU' | 'clientWebGL' | 'best';
 
+
 interface AppSettings {
   displayDenomination: string;
   // displayPrefix: string | null;
@@ -21,6 +22,7 @@ interface AppSettings {
   serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
+  amounts: Array<{ name: String, shortName: String, value: String }>;
 }
 
 @Injectable()
@@ -44,6 +46,11 @@ export class AppSettingsService {
     serverAuth: null,
     minimumReceive: null,
     walletVersion: 1,
+    amounts: [
+      { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
+      { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
+      { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+    ]
   };
 
   banSettings: AppSettings = {
@@ -61,6 +68,7 @@ export class AppSettingsService {
     serverAuth: null,
     minimumReceive: null,
     walletVersion: 1,
+    amounts: [{ name: 'BANANO (1 banano)', shortName: 'BANANO', value: 'banano' }]
   };
 
   serverOptions = [
@@ -92,6 +100,7 @@ export class AppSettingsService {
 
   constructor() {
     this.serverOptions = this.serverOptions.concat(environment.backends);
+    this.settings = environment.currency.ticker === 'BAN' ? this.banSettings  : this.settings;
   }
 
   loadAppSettings() {
@@ -180,6 +189,11 @@ export class AppSettingsService {
       serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
+      amounts: [
+        { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
+        { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
+        { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+      ]
     };
   }
 

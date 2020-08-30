@@ -30,11 +30,7 @@ export class SendComponent implements OnInit {
   showAddressBook = false;
   addressBookMatch = '';
 
-  amounts = [
-    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
-  ];
+  amounts = this.settings.settings.amounts;
   selectedAmount = this.amounts[0];
 
   amount = null;
@@ -70,11 +66,6 @@ export class SendComponent implements OnInit {
     if (params && params.amount) {
       this.amount = params.amount;
     }
-
-    if (this.settings.multiCurrency === 'banano') {
-      this.amounts = [{ name: 'BANANO (1 banano)', shortName: 'BANANO', value: 'banano' }];
-    }
-
     if (params && params.to) {
       this.toAccountID = params.to;
       this.validateDestination();
