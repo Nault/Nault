@@ -267,7 +267,7 @@ export class WalletService {
     }
 
     if (walletJson.accounts && walletJson.accounts.length) {
-        walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
+      walletJson.accounts.forEach(account => this.loadWalletAccount(account.index, account.id));
     }
 
     this.wallet.selectedAccountId = walletJson.selectedAccountId || null;
