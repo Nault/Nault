@@ -1,24 +1,24 @@
-import { Component, OnInit } from "@angular/core";
-import { WalletService } from "../../services/wallet.service";
-import { NotificationService } from "../../services/notification.service";
-import { AppSettingsService } from "../../services/app-settings.service";
-import { PriceService } from "../../services/price.service";
-import { PowService } from "../../services/pow.service";
-import { WorkPoolService } from "../../services/work-pool.service";
-import { AddressBookService } from "../../services/address-book.service";
-import { ApiService } from "../../services/api.service";
-import { WebsocketService } from "../../services/websocket.service";
-import { NodeService } from "../../services/node.service";
-import { UtilService } from "../../services/util.service";
-import { BehaviorSubject } from "rxjs";
-import { RepresentativeService } from "../../services/representative.service";
-import { NinjaService } from "../../services/ninja.service";
-import { QrModalService } from "../../services/qr-modal.service";
-import { environment } from "../../../environments/environment";
+import { Component, OnInit } from '@angular/core';
+import { WalletService } from '../../services/wallet.service';
+import { NotificationService } from '../../services/notification.service';
+import { AppSettingsService } from '../../services/app-settings.service';
+import { PriceService } from '../../services/price.service';
+import { PowService } from '../../services/pow.service';
+import { WorkPoolService } from '../../services/work-pool.service';
+import { AddressBookService } from '../../services/address-book.service';
+import { ApiService } from '../../services/api.service';
+import { WebsocketService } from '../../services/websocket.service';
+import { NodeService } from '../../services/node.service';
+import { UtilService } from '../../services/util.service';
+import { BehaviorSubject } from 'rxjs';
+import { RepresentativeService } from '../../services/representative.service';
+import { NinjaService } from '../../services/ninja.service';
+import { QrModalService } from '../../services/qr-modal.service';
+import { environment } from '../../../environments/environment';
 @Component({
-  selector: "app-configure-app",
-  templateUrl: "./configure-app.component.html",
-  styleUrls: ["./configure-app.component.css"],
+  selector: 'app-configure-app',
+  templateUrl: './configure-app.component.html',
+  styleUrls: ['./configure-app.component.css'],
 })
 export class ConfigureAppComponent implements OnInit {
   constructor(
@@ -41,84 +41,84 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: "NANO (1 Mnano)", value: "mnano" },
-    { name: "knano (0.001 Mnano)", value: "knano" },
-    { name: "nano (0.000001 Mnano)", value: "nano" },
+    { name: 'NANO (1 Mnano)', value: 'mnano' },
+    { name: 'knano (0.001 Mnano)', value: 'knano' },
+    { name: 'nano (0.000001 Mnano)', value: 'nano' },
   ];
-  bananoDenominations = [{ name: "Banano (1 banano)", value: "banano" }];
+  bananoDenominations = [{ name: 'Banano (1 banano)', value: 'banano' }];
 
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
-    { name: "Browser Local Storage", value: "localStorage" },
-    { name: "None", value: "none" },
+    { name: 'Browser Local Storage', value: 'localStorage' },
+    { name: 'None', value: 'none' },
   ];
   selectedStorage = this.storageOptions[0].value;
 
   currencies = [
-    { name: "None", value: "" },
-    { name: "USD - US Dollar", value: "USD" },
-    { name: "BTC - Bitcoin", value: "BTC" },
-    { name: "AUD - Australian Dollar", value: "AUD" },
-    { name: "BRL - Brazilian Real", value: "BRL" },
-    { name: "CAD - Canadian Dollar", value: "CAD" },
-    { name: "CHF - Swiss Franc", value: "CHF" },
-    { name: "CLP - Chilean Peso", value: "CLP" },
-    { name: "CNY - Chinese Yuan", value: "CNY" },
-    { name: "CZK - Czech Koruna", value: "CZK" },
-    { name: "DKK - Danish Krown", value: "DKK" },
-    { name: "EUR - Euro", value: "EUR" },
-    { name: "GBP - British Pound", value: "GBP" },
-    { name: "HKD - Hong Kong Dollar", value: "HKD" },
-    { name: "HUF - Hungarian Forint", value: "HUF" },
-    { name: "IDR - Indonesian Rupiah", value: "IDR" },
-    { name: "ILS - Israeli New Shekel", value: "ILS" },
-    { name: "INR - Indian Rupee", value: "INR" },
-    { name: "JPY - Japanese Yen", value: "JPY" },
-    { name: "KRW - South Korean Won", value: "KRW" },
-    { name: "MXN - Mexican Peso", value: "MXN" },
-    { name: "MYR - Malaysian Ringgit", value: "MYR" },
-    { name: "NOK - Norwegian Krone", value: "NOK" },
-    { name: "NZD - New Zealand Dollar", value: "NZD" },
-    { name: "PHP - Philippine Piso", value: "PHP" },
-    { name: "PKR - Pakistani Rupee", value: "PKR" },
-    { name: "PLN - Polish Zloty", value: "PLN" },
-    { name: "RUB - Russian Ruble", value: "RUB" },
-    { name: "SEK - Swedish Krona", value: "SEK" },
-    { name: "SGD - Singapore Dollar", value: "SGD" },
-    { name: "THB - Thai Baht", value: "THB" },
-    { name: "TRY - Turkish Lira", value: "TRY" },
-    { name: "TWD - New Taiwan Dollar", value: "TWD" },
-    { name: "ZAR - South African Rand", value: "ZAR" },
+    { name: 'None', value: '' },
+    { name: 'USD - US Dollar', value: 'USD' },
+    { name: 'BTC - Bitcoin', value: 'BTC' },
+    { name: 'AUD - Australian Dollar', value: 'AUD' },
+    { name: 'BRL - Brazilian Real', value: 'BRL' },
+    { name: 'CAD - Canadian Dollar', value: 'CAD' },
+    { name: 'CHF - Swiss Franc', value: 'CHF' },
+    { name: 'CLP - Chilean Peso', value: 'CLP' },
+    { name: 'CNY - Chinese Yuan', value: 'CNY' },
+    { name: 'CZK - Czech Koruna', value: 'CZK' },
+    { name: 'DKK - Danish Krown', value: 'DKK' },
+    { name: 'EUR - Euro', value: 'EUR' },
+    { name: 'GBP - British Pound', value: 'GBP' },
+    { name: 'HKD - Hong Kong Dollar', value: 'HKD' },
+    { name: 'HUF - Hungarian Forint', value: 'HUF' },
+    { name: 'IDR - Indonesian Rupiah', value: 'IDR' },
+    { name: 'ILS - Israeli New Shekel', value: 'ILS' },
+    { name: 'INR - Indian Rupee', value: 'INR' },
+    { name: 'JPY - Japanese Yen', value: 'JPY' },
+    { name: 'KRW - South Korean Won', value: 'KRW' },
+    { name: 'MXN - Mexican Peso', value: 'MXN' },
+    { name: 'MYR - Malaysian Ringgit', value: 'MYR' },
+    { name: 'NOK - Norwegian Krone', value: 'NOK' },
+    { name: 'NZD - New Zealand Dollar', value: 'NZD' },
+    { name: 'PHP - Philippine Piso', value: 'PHP' },
+    { name: 'PKR - Pakistani Rupee', value: 'PKR' },
+    { name: 'PLN - Polish Zloty', value: 'PLN' },
+    { name: 'RUB - Russian Ruble', value: 'RUB' },
+    { name: 'SEK - Swedish Krona', value: 'SEK' },
+    { name: 'SGD - Singapore Dollar', value: 'SGD' },
+    { name: 'THB - Thai Baht', value: 'THB' },
+    { name: 'TRY - Turkish Lira', value: 'TRY' },
+    { name: 'TWD - New Taiwan Dollar', value: 'TWD' },
+    { name: 'ZAR - South African Rand', value: 'ZAR' },
   ];
   selectedCurrency = this.currencies[0].value;
 
   inactivityOptions = [
-    { name: "Never", value: 0 },
-    { name: "1 Minute", value: 1 },
-    { name: "5 Minutes", value: 5 },
-    { name: "15 Minutes", value: 15 },
-    { name: "30 Minutes", value: 30 },
-    { name: "1 Hour", value: 60 },
-    { name: "6 Hours", value: 360 },
+    { name: 'Never', value: 0 },
+    { name: '1 Minute', value: 1 },
+    { name: '5 Minutes', value: 5 },
+    { name: '15 Minutes', value: 15 },
+    { name: '30 Minutes', value: 30 },
+    { name: '1 Hour', value: 60 },
+    { name: '6 Hours', value: 360 },
   ];
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
   powOptions = [
-    { name: "Best Option Available", value: "best" },
+    { name: 'Best Option Available', value: 'best' },
     {
-      name: "Client Side - WebGL [Recommended] (Chrome/Firefox)",
-      value: "clientWebGL",
+      name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)',
+      value: 'clientWebGL',
     },
-    { name: "Client Side - CPU", value: "clientCPU" },
-    { name: "Server - Nault Server", value: "server" },
+    { name: 'Client Side - CPU', value: 'clientCPU' },
+    { name: 'Server - Nault Server', value: 'server' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
   pendingOptions = [
-    { name: "Largest Amount First", value: "amount" },
-    { name: "Oldest Transaction First", value: "date" },
-    { name: "Manual", value: "manual" },
+    { name: 'Largest Amount First', value: 'amount' },
+    { name: 'Oldest Transaction First', value: 'date' },
+    { name: 'Manual', value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
@@ -134,7 +134,7 @@ export class ConfigureAppComponent implements OnInit {
   defaultRepresentative = null;
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
-  representativeListMatch = "";
+  representativeListMatch = '';
   repStatus = null;
   representativeList = [];
 
@@ -157,12 +157,12 @@ export class ConfigureAppComponent implements OnInit {
 
   showServerValues = () =>
     this.selectedServer &&
-    this.selectedServer !== "random" &&
-    this.selectedServer !== "offline";
+    this.selectedServer !== 'random' &&
+    this.selectedServer !== 'offline'
   showStatValues = () =>
-    this.selectedServer && this.selectedServer !== "offline";
+    this.selectedServer && this.selectedServer !== 'offline'
   showServerConfigs = () =>
-    this.selectedServer && this.selectedServer === "custom";
+    this.selectedServer && this.selectedServer === 'custom'
 
   async ngOnInit() {
     this.loadFromSettings();
@@ -190,25 +190,26 @@ export class ConfigureAppComponent implements OnInit {
     if (
       !this.serverAPIUpdated ||
       (this.serverAPIUpdated !== this.appSettings.settings.serverAPI &&
-        this.selectedServer === "random")
-    )
+        this.selectedServer === 'random')
+    ) {
       return;
+    }
     // refresh is not enabled
     if (refresh && !this.statsRefreshEnabled) return;
     // Offline mode selected
-    if (this.selectedServer === "offline") return;
+    if (this.selectedServer === 'offline') return;
 
     this.statsRefreshEnabled = false;
     try {
       const blockCount = await this.api.blockCount();
-      this.nodeBlockCount = Number(blockCount.count).toLocaleString("en-US");
-      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString("en-US");
-      this.nodeCemented = Number(blockCount.cemented).toLocaleString("en-US");
+      this.nodeBlockCount = Number(blockCount.count).toLocaleString('en-US');
+      this.nodeUnchecked = Number(blockCount.unchecked).toLocaleString('en-US');
+      this.nodeCemented = Number(blockCount.cemented).toLocaleString('en-US');
       this.nodeUncemented = Number(
         blockCount.count - blockCount.cemented
-      ).toLocaleString("en-US");
+      ).toLocaleString('en-US');
     } catch {
-      console.warn("Failed to get node stats: block count");
+      console.warn('Failed to get node stats: block count');
     }
 
     try {
@@ -216,15 +217,15 @@ export class ConfigureAppComponent implements OnInit {
       this.peersStakeReq = quorumData
         ? Number(
             this.util.nano.rawToMnano(quorumData.peers_stake_required)
-          ).toLocaleString("en-US")
+          ).toLocaleString('en-US')
         : null;
       this.peersStakeTotal = quorumData
         ? Number(
             this.util.nano.rawToMnano(quorumData.peers_stake_total)
-          ).toLocaleString("en-US")
+          ).toLocaleString('en-US')
         : null;
     } catch {
-      console.warn("Failed to get node stats: confirmation quorum");
+      console.warn('Failed to get node stats: confirmation quorum');
     }
 
     try {
@@ -232,7 +233,7 @@ export class ConfigureAppComponent implements OnInit {
       this.nodeVendor = version.node_vendor;
       this.nodeNetwork = version.network;
     } catch {
-      console.warn("Failed to get node stats: version");
+      console.warn('Failed to get node stats: version');
     }
 
     setTimeout(() => (this.statsRefreshEnabled = true), 5000);
@@ -240,7 +241,7 @@ export class ConfigureAppComponent implements OnInit {
 
   loadFromSettings() {
     let settings = this.appSettings.settings;
-    if (this.multiCurrency === "banano") {
+    if (this.multiCurrency === 'banano') {
       settings = this.appSettings.banSettings;
     }
 
@@ -249,7 +250,7 @@ export class ConfigureAppComponent implements OnInit {
     );
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    if (this.multiCurrency === "banano") {
+    if (this.multiCurrency === 'banano') {
       this.denominations = this.bananoDenominations;
     }
     const matchingDenomination = this.denominations.find(
@@ -273,7 +274,7 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingPowOption = this.powOptions.find(
       (d) =>
-        settings.defaultRepresentative === "mnano" &&
+        settings.defaultRepresentative === 'mnano' &&
         d.value === settings.powSource
     );
     this.selectedPoWOption = matchingPowOption
@@ -307,7 +308,7 @@ export class ConfigureAppComponent implements OnInit {
     const reloadFiat =
       this.appSettings.settings.displayCurrency !== newCurrency;
     this.appSettings.setAppSetting(
-      "displayDenomination",
+      'displayDenomination',
       this.selectedDenomination
     );
     this.notifications.sendSuccess(
@@ -317,7 +318,7 @@ export class ConfigureAppComponent implements OnInit {
     if (reloadFiat) {
       // Reload prices with our currency, then call to reload fiat balances.
       await this.price.getPrice(newCurrency);
-      this.appSettings.setAppSetting("displayCurrency", newCurrency);
+      this.appSettings.setAppSetting('displayCurrency', newCurrency);
       this.walletService.reloadFiatBalances();
     }
 
@@ -350,7 +351,7 @@ export class ConfigureAppComponent implements OnInit {
     // reload pending if threshold changes or if receive priority changes from manual to auto
     const reloadPending =
       this.appSettings.settings.minimumReceive !== this.minimumReceive ||
-      (pendingOption !== "manual" &&
+      (pendingOption !== 'manual' &&
         pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
@@ -365,17 +366,17 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     if (this.appSettings.settings.powSource !== newPoW) {
-      if (newPoW === "clientWebGL" && !this.pow.hasWebGLSupport()) {
+      if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
         this.notifications.sendWarning(
           `WebGL support not available, set PoW to Best`
         );
-        newPoW = "best";
+        newPoW = 'best';
       }
-      if (newPoW === "clientCPU" && !this.pow.hasWorkerSupport()) {
+      if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
         this.notifications.sendWarning(
           `CPU Worker support not available, set PoW to Best`
         );
-        newPoW = "best";
+        newPoW = 'best';
       }
     }
 
@@ -410,8 +411,8 @@ export class ConfigureAppComponent implements OnInit {
     // Custom... do some basic validation
     if (this.serverAPI != null && this.serverAPI.trim().length > 1) {
       if (
-        this.serverAPI.startsWith("https://") ||
-        this.serverAPI.startsWith("http://")
+        this.serverAPI.startsWith('https://') ||
+        this.serverAPI.startsWith('http://')
       ) {
         newSettings.serverAPI = this.serverAPI;
       } else {
@@ -423,8 +424,8 @@ export class ConfigureAppComponent implements OnInit {
 
     if (this.serverWS != null && this.serverWS.trim().length > 1) {
       if (
-        this.serverWS.startsWith("wss://") ||
-        this.serverWS.startsWith("ws://")
+        this.serverWS.startsWith('wss://') ||
+        this.serverWS.startsWith('ws://')
       ) {
         newSettings.serverWS = this.serverWS;
       } else {
@@ -459,14 +460,16 @@ export class ConfigureAppComponent implements OnInit {
 
   searchRepresentatives() {
     if (
-      this.defaultRepresentative !== "" &&
+      this.defaultRepresentative !== '' &&
       !this.util.account.isValidAccount(this.defaultRepresentative)
-    )
+    ) {
       this.repStatus = 0;
-    else this.repStatus = null;
+    } else {
+      this.repStatus = null;
+    }
 
     this.showRepresentatives = true;
-    const search = this.defaultRepresentative || "";
+    const search = this.defaultRepresentative || '';
 
     const matches = this.representativeList
       .filter((a) => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -484,11 +487,13 @@ export class ConfigureAppComponent implements OnInit {
 
   async validateRepresentative() {
     setTimeout(() => (this.showRepresentatives = false), 400);
-    if (this.defaultRepresentative)
-      this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, "");
 
-    if (this.defaultRepresentative === "") {
-      this.representativeListMatch = "";
+    if (this.defaultRepresentative) {
+      this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
+    }
+
+    if (this.defaultRepresentative === '') {
+      this.representativeListMatch = '';
       return;
     }
 
@@ -500,7 +505,7 @@ export class ConfigureAppComponent implements OnInit {
     } else if (ninjaRep) {
       this.representativeListMatch = ninjaRep.alias;
     } else {
-      this.representativeListMatch = "";
+      this.representativeListMatch = '';
     }
   }
 
@@ -512,7 +517,7 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? "Yes" : "No";
+      this.shouldRandom = custom.shouldRandom ? 'Yes' : 'No';
     }
 
     // reset server stats until updated
@@ -524,14 +529,14 @@ export class ConfigureAppComponent implements OnInit {
     this.peersStakeTotal = null;
     this.nodeVendor = null;
     this.nodeNetwork = null;
-    this.statsRefreshEnabled = newServer === "random" ? false : true;
+    this.statsRefreshEnabled = newServer === 'random' ? false : true;
   }
 
   async clearWorkCache() {
-    const UIkit = window["UIkit"];
+    const UIkit = window['UIkit'];
     try {
       await UIkit.modal.confirm(
-        '<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>'
+        `<p style='text-align: center;'>You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>`
       );
       this.workPool.clearCache();
       this.notifications.sendSuccess(`Successfully cleared the work cache!`);
@@ -539,10 +544,10 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async clearWalletData() {
-    const UIkit = window["UIkit"];
+    const UIkit = window['UIkit'];
     try {
       await UIkit.modal.confirm(
-        '<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>'
+        `<p style='text-align: center;'>You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>`
       );
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
@@ -552,10 +557,10 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async clearAllData() {
-    const UIkit = window["UIkit"];
+    const UIkit = window['UIkit'];
     try {
       await UIkit.modal.confirm(
-        '<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>'
+        `<p style='text-align: center;'>You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>`
       );
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
@@ -579,7 +584,7 @@ export class ConfigureAppComponent implements OnInit {
     qrResult.then(
       (data) => {
         switch (data.reference) {
-          case "rep1":
+          case 'rep1':
             this.defaultRepresentative = data.content;
             this.validateRepresentative();
             break;

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import * as url from "url";
-import { environment } from "../../environments/environment";
+import { Injectable } from '@angular/core';
+import * as url from 'url';
+import { environment } from '../../environments/environment';
 
-export type WalletStore = "localStorage" | "none";
-export type PoWSource = "server" | "clientCPU" | "clientWebGL" | "best";
+export type WalletStore = 'localStorage' | 'none';
+export type PoWSource = 'server' | 'clientCPU' | 'clientWebGL' | 'best';
 
 interface AppSettings {
   displayDenomination: string;
@@ -29,16 +29,16 @@ export class AppSettingsService {
   multiCurrency = environment.currency.id;
 
   settings: AppSettings = {
-    displayDenomination: "mnano",
+    displayDenomination: 'mnano',
     // displayPrefix: 'xrb',
-    walletStore: "localStorage",
-    displayCurrency: "USD",
+    walletStore: 'localStorage',
+    displayCurrency: 'USD',
     defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
-    powSource: "best",
-    pendingOption: "amount",
-    serverName: "random",
+    powSource: 'best',
+    pendingOption: 'amount',
+    serverName: 'random',
     serverAPI: null,
     serverWS: null,
     serverAuth: null,
@@ -47,15 +47,15 @@ export class AppSettingsService {
   };
 
   banSettings: AppSettings = {
-    displayDenomination: "banano",
-    walletStore: "localStorage",
-    displayCurrency: "USD",
+    displayDenomination: 'banano',
+    walletStore: 'localStorage',
+    displayCurrency: 'USD',
     defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
-    powSource: "best",
-    pendingOption: "amount",
-    serverName: "random",
+    powSource: 'best',
+    pendingOption: 'amount',
+    serverName: 'random',
     serverAPI: null,
     serverWS: null,
     serverAuth: null,
@@ -65,24 +65,24 @@ export class AppSettingsService {
 
   serverOptions = [
     {
-      name: "Random",
-      value: "random",
+      name: 'Random',
+      value: 'random',
       api: null,
       ws: null,
       auth: null,
       shouldRandom: false,
     },
     {
-      name: "Custom",
-      value: "custom",
+      name: 'Custom',
+      value: 'custom',
       api: null,
       ws: null,
       auth: null,
       shouldRandom: false,
     },
     {
-      name: "Offline Mode",
-      value: "offline",
+      name: 'Offline Mode',
+      value: 'offline',
       api: null,
       ws: null,
       auth: null,
@@ -96,7 +96,7 @@ export class AppSettingsService {
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;
-    if (this.multiCurrency === "banano") {
+    if (this.multiCurrency === 'banano') {
       settings = this.banSettings;
     }
     const settingsStore = localStorage.getItem(this.storeKey);
@@ -115,25 +115,25 @@ export class AppSettingsService {
       (d) => d.value === this.settings.serverName
     );
 
-    if (this.settings.serverName === "random" || !matchingServerOption) {
+    if (this.settings.serverName === 'random' || !matchingServerOption) {
       const availableServers = this.serverOptions.filter(
         (server) => server.shouldRandom
       );
       const randomServerOption =
         availableServers[Math.floor(Math.random() * availableServers.length)];
-      console.log("SETTINGS: Random", randomServerOption);
+      console.log('SETTINGS: Random', randomServerOption);
 
       this.settings.serverAPI = randomServerOption.api;
       this.settings.serverWS = randomServerOption.ws;
-    } else if (this.settings.serverName === "custom") {
-      console.log("SETTINGS: Custom");
-    } else if (this.settings.serverName === "offline") {
-      console.log("SETTINGS: Offline Mode");
+    } else if (this.settings.serverName === 'custom') {
+      console.log('SETTINGS: Custom');
+    } else if (this.settings.serverName === 'offline') {
+      console.log('SETTINGS: Offline Mode');
       this.settings.serverName = matchingServerOption.value;
       this.settings.serverAPI = matchingServerOption.api;
       this.settings.serverWS = matchingServerOption.ws;
     } else {
-      console.log("SETTINGS: Found", matchingServerOption);
+      console.log('SETTINGS: Found', matchingServerOption);
       this.settings.serverName = matchingServerOption.value;
       this.settings.serverAPI = matchingServerOption.api;
       this.settings.serverWS = matchingServerOption.ws;
@@ -165,16 +165,16 @@ export class AppSettingsService {
   clearAppSettings() {
     localStorage.removeItem(this.storeKey);
     this.settings = {
-      displayDenomination: "mnano",
+      displayDenomination: 'mnano',
       // displayPrefix: 'xrb',
-      walletStore: "localStorage",
-      displayCurrency: "USD",
+      walletStore: 'localStorage',
+      displayCurrency: 'USD',
       defaultRepresentative: null,
       lockOnClose: 1,
       lockInactivityMinutes: 30,
-      powSource: "best",
-      pendingOption: "amount",
-      serverName: "random",
+      powSource: 'best',
+      pendingOption: 'amount',
+      serverName: 'random',
       serverAPI: null,
       serverWS: null,
       serverAuth: null,
@@ -186,7 +186,7 @@ export class AppSettingsService {
   // Get the base URL part of the serverAPI, e.g. https://nanovault.io from https://nanovault.io/api/node-api.
   getServerApiBaseUrl(): string {
     const u = url.parse(this.settings.serverAPI);
-    u.pathname = "/";
+    u.pathname = '/';
     return url.format(u);
   }
 }
