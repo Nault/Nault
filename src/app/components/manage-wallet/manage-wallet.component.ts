@@ -63,7 +63,7 @@ export class ManageWalletComponent implements OnInit {
 
     const exportUrl = this.walletService.generateExportUrl();
     this.QRExportUrl = exportUrl;
-    this.QRExportImg = await QRCode.toDataURL(exportUrl);
+    this.QRExportImg = await QRCode.toDataURL(exportUrl, { errorCorrectionLevel: 'M', scale: 8 });
     this.showQRExport = true;
   }
 
