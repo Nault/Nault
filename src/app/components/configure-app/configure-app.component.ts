@@ -45,10 +45,8 @@ export class ConfigureAppComponent implements OnInit {
     { name: "knano (0.001 Mnano)", value: "knano" },
     { name: "nano (0.000001 Mnano)", value: "nano" },
   ];
-  bananoDenominations = [
-    { name: "Banano (1 banano)", value: "banano" },
-    { name: "Banano (0.000000001 banano)", value: "Bananoshi" },
-  ];
+  bananoDenominations = [{ name: "Banano (1 banano)", value: "banano" }];
+
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
