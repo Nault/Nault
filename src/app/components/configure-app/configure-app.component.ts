@@ -472,6 +472,9 @@ export class ConfigureAppComponent implements OnInit {
       this.loadFromSettings();
 
       this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+
+      // Get a new random API server or Nault will get stuck in offline mode
+      this.updateServerSettings();
     } catch (err) {}
   }
 
