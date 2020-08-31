@@ -436,12 +436,14 @@ export class WalletService {
 
       // Checking frontiers...
       const batchResponse = await this.api.accountsFrontiers(batchAccountsArray);
-      for (const accountID in batchResponse.frontiers) {
-        if (batchResponse.frontiers.hasOwnProperty(accountID)) {
-          const frontier = batchResponse.frontiers[accountID];
-          console.log(accountID, frontier, batchAccounts[accountID].publicKey);
-          if (frontier !== batchAccounts[accountID].publicKey) {
-            batchAccounts[accountID].used = true;
+      if (batchResponse) {
+        for (const accountID in batchResponse.frontiers) {
+          if (batchResponse.frontiers.hasOwnProperty(accountID)) {
+            const frontier = batchResponse.frontiers[accountID];
+            console.log(accountID, frontier, batchAccounts[accountID].publicKey);
+            if (frontier !== batchAccounts[accountID].publicKey) {
+              batchAccounts[accountID].used = true;
+            }
           }
         }
       }
