@@ -460,7 +460,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all your data stored in Nault and reset all settings.<br>This includes all of your wallet data and address book!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -471,7 +471,7 @@ export class ConfigureAppComponent implements OnInit {
 
       this.loadFromSettings();
 
-      this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+      this.notifications.sendSuccess(`Successfully deleted locally stored data and reset the settings!`);
 
       // Get a new random API server or Nault will get stuck in offline mode
       this.updateServerSettings();
