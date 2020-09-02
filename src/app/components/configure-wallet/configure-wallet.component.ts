@@ -73,12 +73,6 @@ export class ConfigureWalletComponent implements OnInit {
     }
   }
 
-  onMethodChange(method) {
-    if (method === 'ledger') {
-      this.importLedgerWallet(true);
-    }
-  }
-
   async importExistingWallet() {
     this.notifications.sendInfo(`Starting to scan the first 10 accounts and importing them if they have been used...`, {length: 7000});
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
@@ -100,6 +94,16 @@ export class ConfigureWalletComponent implements OnInit {
 
     this.notifications.sendSuccess(`Successfully imported wallet from a private key!`);
     this.walletService.informNewWallet();
+  }
+
+  async connectLedgerByBluetooth() {
+    this.ledgerService.enableBluetoothMode(true);
+    await this.importLedgerWallet();
+  }
+
+  async connectLedgerByUsb() {
+    this.ledgerService.enableBluetoothMode(false);
+    await this.importLedgerWallet();
   }
 
   async importLedgerWallet(refreshOnly = false) {
