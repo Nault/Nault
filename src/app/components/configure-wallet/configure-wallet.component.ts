@@ -67,10 +67,12 @@ export class ConfigureWalletComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = panels.import;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
+      this.isNewWallet = false;
     } else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key) {
       this.activePanel = panels.import;
       this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
       this.selectedImportOption = 'privateKey';
+      this.isNewWallet = false;
     }
   }
 
@@ -78,6 +80,7 @@ export class ConfigureWalletComponent implements OnInit {
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
       this.activePanel = panels.import;
+      this.isNewWallet = false;
     }
   }
 
