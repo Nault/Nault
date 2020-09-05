@@ -60,7 +60,7 @@
                       </div>
 
                       <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-width-3-5@m uk-text-small uk-text-muted uk-margin-remove">
-                        <span uk-tooltip title="Additional raw to send">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a (click)="resetRaw()" uk-tooltip title="Ignore the raw amount for this transaction">ignore</a>
+                        <span uk-tooltip title="Additional raw to send">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
                       </div>
 
                     </div>
