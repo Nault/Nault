@@ -286,20 +286,19 @@ export class LedgerService {
         return;
       }
 
-      // If in USB mode, detect best transport option
-      if (this.transportMode !== 'Bluetooth') {
-        this.detectUsbTransport();
-      }
-      console.log('Connecting to ledger using transport:', this.transportMode);
-
       // Use modern transport connection mode if supported by the browser
 
       if (!this.ledger.transport) {
+
+        // If in USB mode, detect best transport option
+        if (this.transportMode !== 'Bluetooth') {
+          this.detectUsbTransport();
+        }
+
         try {
           await this.loadTransport();
-          resolve(true);
         } catch (err) {
-          console.log(`Error loading transport? `, err);
+          console.log(`Error loading ${this.transportMode} transport `, err);
           this.ledger.status = LedgerStatus.NOT_CONNECTED;
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
           this.resetLedger();
@@ -346,10 +345,11 @@ export class LedgerService {
         return resolve(false);
       }
 
-      let resolved = false;
+      console.log(this.ledger.status);
       if (this.ledger.status === LedgerStatus.READY) {
         return resolve(true); // Already ready?
       }
+      let resolved = false;
 
       // Set up a timeout when things are not ready
       setTimeout(() => {
@@ -384,6 +384,7 @@ export class LedgerService {
         }
         return resolve(false);
       }
+
       // Attempt to load account 0 - which confirms the app is unlocked and ready
       try {
         const accountDetails = await this.getLedgerAccount(0);
@@ -507,6 +508,7 @@ export class LedgerService {
       const accountDetails = await this.getLedgerAccount(0);
       this.ledger.status = LedgerStatus.READY;
     } catch (err) {
+      console.log('Check ledger status failed ', err);
       this.ledger.status = LedgerStatus.NOT_CONNECTED;
       this.pollingLedger = false;
     }

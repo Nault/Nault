@@ -44,7 +44,7 @@
           <div class="uk-margin">
             <label class="uk-form-label" for="form-horizontal-select">Select Import Type</label>
             <div class="uk-form-controls">
-              <select class="uk-select" [(ngModel)]="selectedImportOption" id="form-horizontal-select" (change)="onMethodChange(selectedImportOption)">
+              <select class="uk-select" [(ngModel)]="selectedImportOption" id="form-horizontal-select">
                 <option *ngFor="let option of importOptions" [value]="option.value">{{ option.name }}</option>
               </select>
             </div>
