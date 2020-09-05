@@ -214,9 +214,6 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
-    this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
-
     const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
@@ -247,7 +244,6 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-    this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
