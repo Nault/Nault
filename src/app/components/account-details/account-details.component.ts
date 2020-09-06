@@ -58,9 +58,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   showAddressBook = false;
   addressBookMatch = '';
   amounts = [
-    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+    { name: 'NANO', shortName: 'NANO', value: 'mnano' },
+    { name: 'knano', shortName: 'knano', value: 'knano' },
+    { name: 'nano', shortName: 'nano', value: 'nano' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -73,6 +73,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   toAccountID = '';
   toAddressBook = '';
   toAccountStatus = null;
+  amountStatus = null;
   repStatus = null;
   qrString = null;
   qrCodeImageBlock = null;
@@ -405,6 +406,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   // Remote signing methods
   // An update to the Nano amount, sync the fiat value
   syncFiatPrice() {
+    if (!this.validateAmount()) return;
     const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
     if (rawAmount.lte(0)) {
       this.amountFiat = 0;
@@ -476,6 +478,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  validateAmount() {
+    if (this.util.account.isValidNanoAmount(this.amount)) {
+      this.amountStatus = 1;
+      return true;
+    } else {
+      this.amountStatus = 0;
+      return false;
+    }
+  }
+
   setMaxAmount() {
     this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano) : new BigNumber(0);
     const nanoVal = this.util.nano.rawToNano(this.account.balance).floor();
@@ -507,6 +519,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
     if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
+    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid NANO Amount`);
 
     this.qrCodeImageBlock = null;
 
@@ -526,7 +539,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const nanoAmount = this.rawAmount.div(this.nano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
-    if (nanoAmount.lessThan(1)) return this.notifications.sendWarning(`Transactions for less than 0.000001 Nano will be ignored by the node.`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough NANO`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
@@ -728,6 +740,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
     }, () => {}
     );
+  }
+
+  resetRaw() {
+    this.amountRaw = new BigNumber(0);
   }
 
   // End remote signing methods

@@ -77,7 +77,12 @@
                   </div>
                 </div>
               </td>
-              <td *ngIf="block.account == pendingAccountModel || pendingAccountModel === '0'">{{ block.amount | rai: settings.settings.displayDenomination }}</td>
+              <td *ngIf="block.account == pendingAccountModel || pendingAccountModel === '0'">
+                {{ block.amount | rai: settings.settings.displayDenomination }}
+                <div *ngIf="toBigNumber(block.amount).mod(nano).gt(0)">
+                  <span *ngIf="toBigNumber(block.amount); let rawAmount" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ rawAmount.mod(nano).toString(10) }} raw</span>
+                </div>
+              </td>
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel === '0'" class="uk-text-nowrap">
                 <button *ngIf="!block.loading" (click)="receivePending(block)" class="uk-button uk-button-secondary uk-button-small">Receive</button>
                 <button *ngIf="block.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span class="uk-margin-right" uk-spinner></span> Loading</button>
