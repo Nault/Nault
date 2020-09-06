@@ -508,9 +508,12 @@ export class LedgerService {
       const accountDetails = await this.getLedgerAccount(0);
       this.ledger.status = LedgerStatus.READY;
     } catch (err) {
-      console.log('Check ledger status failed ', err);
-      this.ledger.status = LedgerStatus.NOT_CONNECTED;
-      this.pollingLedger = false;
+      // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)
+      if (err.name !== 'TransportRaceCondition') {
+        console.log('Check ledger status failed ', err);
+        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        this.pollingLedger = false;
+      }
     }
 
     this.ledgerStatus$.next({ status: this.ledger.status, statusText: `` });
