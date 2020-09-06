@@ -464,17 +464,19 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
-    if (!this.util.account.isValidAccount(this.toAccountID)) return this.toAccountStatus = 0;
-    const accountInfo = await this.api.accountInfo(this.toAccountID);
-    if (accountInfo.error) {
-      if (accountInfo.error === 'Account not found') {
-        this.toAccountStatus = 1;
-      } else {
-        this.toAccountStatus = 0;
+    this.toAccountStatus = null;
+    if (this.util.account.isValidAccount(this.toAccountID)) {
+      const accountInfo = await this.api.accountInfo(this.toAccountID);
+      if (accountInfo.error) {
+        if (accountInfo.error === 'Account not found') {
+          this.toAccountStatus = 1;
+        }
       }
-    }
-    if (accountInfo && accountInfo.frontier) {
-      this.toAccountStatus = 2;
+      if (accountInfo && accountInfo.frontier) {
+        this.toAccountStatus = 2;
+      }
+    } else {
+      this.toAccountStatus = 0;
     }
   }
 
