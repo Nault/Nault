@@ -74,6 +74,11 @@ export class AppComponent implements OnInit {
 
     await this.walletService.loadStoredWallet();
 
+    // Navigate to accounts page if there is wallet
+    if (this.walletService.isConfigured()) {
+      this.router.navigate(['accounts']);
+    }
+
     // update selected account object with the latest balance, pending, etc
     if (this.wallet.selectedAccountId) {
       const currentUpdatedAccount = this.wallet.accounts.find(a => a.id === this.wallet.selectedAccountId);
