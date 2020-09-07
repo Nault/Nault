@@ -607,8 +607,7 @@ export class WalletService {
       case 'privateKey':
       case 'expandedKey':
       case 'seed': return !!this.wallet.seed;
-      case 'ledger': return true; // ?
-      case 'privateKey': return false;
+      case 'ledger': return true;
     }
   }
 
