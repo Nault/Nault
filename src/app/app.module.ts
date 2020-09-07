@@ -60,6 +60,8 @@ import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NinjaService } from './services';
+import { ConverterComponent } from './components/converter/converter.component';
+import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,8 @@ import { NinjaService } from './services';
     SignComponent,
     RemoteSigningComponent,
     QrModalComponent,
+    ConverterComponent,
+    QrGeneratorComponent,
   ],
   imports: [
     BrowserModule,

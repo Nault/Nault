@@ -297,6 +297,7 @@ function isValidNanoAmount(val: string) {
   }
 }
 
+// Check if valid raw amount
 function isValidAmount(val: string) {
   return nanocurrency.checkAmount(val);
 }
