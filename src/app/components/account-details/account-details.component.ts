@@ -427,8 +427,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   // An update to the fiat amount, sync the nano value based on currently selected denomination
   syncNanoPrice() {
-    const fiatAmount = this.amountFiat || 0;
-    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(fiatAmount).div(this.price.price.lastPrice));
+    if (!this.amountFiat) {
+      this.amount = '';
+      return;
+    }
+    if (!this.util.string.isNumeric(this.amountFiat)) return;
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
     const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 

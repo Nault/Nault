@@ -63,6 +63,13 @@
                         <span uk-tooltip title="Additional raw to send">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
                       </div>
 
+                      <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                        <div class="uk-width-1-1 uk-inline">
+                          <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
+                        </div>
+                      </div>
+
                     </div>
 
                   </div>
