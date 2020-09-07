@@ -6,7 +6,7 @@ import {WebsocketService} from './services/websocket.service';
 import {PriceService} from './services/price.service';
 import {NotificationService} from './services/notification.service';
 import {WorkPoolService} from './services/work-pool.service';
-import {Router, NavigationEnd} from '@angular/router';
+import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { LedgerService } from './services';
@@ -18,7 +18,6 @@ import { LedgerService } from './services';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  skipRouting = false;
 
   constructor(
     public walletService: WalletService,
@@ -32,13 +31,7 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService) {
-      router.events.subscribe(route => {
-        // Do not default to accounts page if user refresh on a sub path
-        if (route instanceof NavigationEnd) {
-          if (route.url !== '/') {
-            this.skipRouting = true;
-          }
-        }
+      router.events.subscribe(() => {
         this.navExpanded = false;
       });
     }
@@ -81,8 +74,8 @@ export class AppComponent implements OnInit {
 
     await this.walletService.loadStoredWallet();
 
-    // Navigate to accounts page if there is wallet
-    if (this.walletService.isConfigured() && !this.skipRouting) {
+    // Navigate to accounts page if there is wallet, but only if coming from home
+    if (this.walletService.isConfigured() && window.location.pathname === '/') {
       this.router.navigate(['accounts']);
     }
 
