@@ -186,11 +186,11 @@ export class RepresentativeService {
 
       if (knownRepNinja && !repStatus.trusted) {
         let uptimeIntervalValue = knownRepNinja.uptime_over.week;
-        let uptimeIntervalDays = 7;
+        const uptimeIntervalDays = 7;
 
         // temporary fix for knownRepNinja.uptime_over.week always returning 0
-        uptimeIntervalValue = knownRepNinja.uptime_over.month;
-        uptimeIntervalDays = 30;
+        // uptimeIntervalValue = knownRepNinja.uptime_over.month;
+        // uptimeIntervalDays = 30;
         // /temporary fix
 
         // consider uptime value at least 1/<interval days> of daily uptime
