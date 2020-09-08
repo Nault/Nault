@@ -24,14 +24,12 @@ export class ConverterComponent implements OnInit, OnDestroy {
     private util: UtilService,
     public settings: AppSettingsService,
     private price: PriceService,
-    private notificationService: NotificationService,
+    public notifications: NotificationService,
   ) { }
 
   ngOnInit(): void {
     BigNumber.config({ DECIMAL_PLACES: 30 });
     this.Mnano = '1';
-    this.settings = this.settings;
-    this.notificationService = this.notificationService;
 
     this.priceSub = this.price.lastPrice$.subscribe(event => {
       this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString();
