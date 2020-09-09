@@ -78,7 +78,6 @@
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/ledgerhq__hw-transport": "^4.21.2",
-    "@types/ledgerhq__hw-transport-u2f": "^4.21.1",
     "@types/node": "^12.11.1",
     "@types/qrcode": "^0.8.1",
     "codelyzer": "^6.0.0",

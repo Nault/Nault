@@ -287,7 +287,6 @@ export class LedgerService {
       }
 
       // Use modern transport connection mode if supported by the browser
-
       if (!this.ledger.transport) {
 
         // If in USB mode, detect best transport option
@@ -380,8 +379,9 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your ledger is unlocked.  Restart the Nano App on your ledger if the error persists`);
         }
+        resolved = true;
         return resolve(false);
       }
 
