@@ -19,6 +19,7 @@ import BigNumber from 'bignumber.js';
 
 
 export class ReceiveComponent implements OnInit {
+  nano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
   pendingBelowThreshold = [];
 
@@ -151,6 +152,10 @@ export class ReceiveComponent implements OnInit {
 
   copied() {
     this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+  }
+
+  toBigNumber(value) {
+    return new BigNumber(value);
   }
 
 }

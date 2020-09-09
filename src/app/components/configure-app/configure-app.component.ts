@@ -41,9 +41,9 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'NANO (1 Mnano)', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', value: 'nano' },
+    { name: 'NANO', value: 'mnano' },
+    { name: 'knano', value: 'knano' },
+    { name: 'nano', value: 'nano' },
   ];
   selectedDenomination = this.denominations[0].value;
 
@@ -214,9 +214,6 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
-    this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
-
     const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
@@ -247,7 +244,6 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-    this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
@@ -460,7 +456,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all your data stored in Nault and reset all settings.<br>This includes all of your wallet data and address book!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -471,7 +467,10 @@ export class ConfigureAppComponent implements OnInit {
 
       this.loadFromSettings();
 
-      this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+      this.notifications.sendSuccess(`Successfully deleted locally stored data and reset the settings!`);
+
+      // Get a new random API server or Nault will get stuck in offline mode
+      this.updateServerSettings();
     } catch (err) {}
   }
 

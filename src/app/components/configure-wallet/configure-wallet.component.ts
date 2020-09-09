@@ -5,8 +5,10 @@ import * as bip from 'bip39';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
+import { wallet } from 'nanocurrency-web';
 
 enum panels {'create', 'import', 'password', 'backup', 'final'}
+const INDEX_MAX = 4294967295; // seed index
 
 @Component({
   selector: 'app-configure-wallet',
@@ -32,13 +34,19 @@ export class ConfigureWalletComponent implements OnInit {
   importPrivateKeyModel = '';
   importExpandedKeyModel = '';
   importSeedMnemonicModel = '';
+  importSeedBip39MnemonicModel = '';
+  importSeedBip39MnemonicIndexModel = '0';
+  importSeedBip39MnemonicPasswordModel = '';
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
+  validIndex = true;
+  indexMax = INDEX_MAX;
 
   selectedImportOption = 'seed';
   importOptions = [
     { name: 'Nano Seed', value: 'seed' },
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
+    { name: 'BIP39 Mnemonic Phrase', value: 'bip39-mnemonic' },
     { name: 'Nault Wallet File', value: 'file' },
     { name: 'Ledger Nano S / Nano X', value: 'ledger' },
     { name: 'Private Key', value: 'privateKey' },
@@ -59,10 +67,12 @@ export class ConfigureWalletComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = panels.import;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
+      this.isNewWallet = false;
     } else if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.key) {
       this.activePanel = panels.import;
       this.importPrivateKeyModel = this.route.getCurrentNavigation().extras.state.key;
       this.selectedImportOption = 'privateKey';
+      this.isNewWallet = false;
     }
   }
 
@@ -70,6 +80,7 @@ export class ConfigureWalletComponent implements OnInit {
     const toggleImport = this.router.snapshot.queryParams.import;
     if (toggleImport) {
       this.activePanel = panels.import;
+      this.isNewWallet = false;
     }
   }
 
@@ -201,6 +212,25 @@ export class ConfigureWalletComponent implements OnInit {
         } else if (this.keyString.length !== 64) {
           return this.notifications.sendError(`Private key is invalid, double check it!`);
         }
+      } else if (this.selectedImportOption === 'bip39-mnemonic') {
+        // If bip39, import wallet as a single private key
+        if (!bip.validateMnemonic(this.importSeedBip39MnemonicModel)) {
+          return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
+        }
+        if (!this.validIndex) {
+          return this.notifications.sendError(`The account index is invalid, double check it!`);
+        }
+
+        // convert mnemonic to bip39 seed
+        const bip39Seed = this.importSeedBip39MnemonicPasswordModel !== '' ?
+        bip.mnemonicToSeedSync(this.importSeedBip39MnemonicModel, this.importSeedBip39MnemonicPasswordModel).toString('hex') :
+        bip.mnemonicToSeedSync(this.importSeedBip39MnemonicModel).toString('hex');
+
+        // derive private key from bip39 seed using the account index provided
+        const accounts = wallet.accounts(bip39Seed, Number(this.importSeedBip39MnemonicIndexModel),
+        Number(this.importSeedBip39MnemonicIndexModel));
+        this.keyString = accounts[0].privateKey;
+        this.isExpanded = false;
       }
     }
 
@@ -258,7 +288,8 @@ export class ConfigureWalletComponent implements OnInit {
       this.createNewWallet();
     } else if (this.selectedImportOption === 'mnemonic' || this.selectedImportOption === 'seed') {
       this.importExistingWallet();
-    } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey') {
+    } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey'
+    || this.selectedImportOption === 'bip39-mnemonic') {
       this.importSingleKeyWallet();
     }
   }
@@ -297,7 +328,7 @@ export class ConfigureWalletComponent implements OnInit {
       const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
-        if (!importData.seed || !importData.hasOwnProperty('accountsIndex')) {
+        if (!importData.seed || (!importData.hasOwnProperty('accountsIndex') && !importData.hasOwnProperty('indexes'))) {
           return this.notifications.sendError(`Bad import data `);
         }
 
@@ -322,6 +353,9 @@ export class ConfigureWalletComponent implements OnInit {
         case 'mnemo1':
           this.importSeedMnemonicModel = data.content;
           break;
+        case 'mnemo2':
+          this.importSeedBip39MnemonicModel = data.content;
+          break;
         case 'priv1':
           this.importPrivateKeyModel = data.content;
           break;
@@ -331,6 +365,22 @@ export class ConfigureWalletComponent implements OnInit {
       }
     }, () => {}
     );
+  }
+
+  accountIndexChange(index) {
+    let invalid = false;
+    if (this.util.string.isNumeric(index) && index % 1 === 0) {
+      index = parseInt(index, 10);
+      if (!this.util.nano.isValidIndex(index)) {
+        invalid = true;
+      }
+      if (index > INDEX_MAX) {
+        invalid = true;
+      }
+    } else {
+      invalid = true;
+    }
+    this.validIndex = !invalid;
   }
 
 }

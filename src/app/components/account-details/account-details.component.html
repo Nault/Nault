@@ -353,31 +353,21 @@
             <label class="uk-form-label" for="form-horizontal-text">Amount</label>
             <div class="uk-form-controls">
               <div uk-grid>
-                <div class="uk-width-3-5">
+                <div class="uk-width-1-1">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
-                    <input [(ngModel)]="amount" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to send">
+                    <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to send" maxlength="40">
                   </div>
-
-                </div>
-                <div class="uk-width-2-5">
-                  <div class="uk-inline uk-width-1-1">
-                    <button class="uk-button uk-button-secondary uk-width-1-1" type="button" style="text-transform: none;">{{ selectedAmount.shortName }}</button>
-                    <div uk-dropdown>
-                      <ul class="uk-nav uk-dropdown-nav">
-                        <li class="uk-active uk-dropdown-spacing" *ngFor="let amount of amounts" (click)="selectedAmount = amount; syncNanoPrice();">{{ amount.name }}</li>
-                      </ul>
+                  <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-width-3-5@m uk-text-small uk-text-muted uk-margin-remove">
+                    <span uk-tooltip title="Additional raw to send">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
+                  </div>
+                  <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                    <div class="uk-width-1-1 uk-inline">
+                      <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                      <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
                     </div>
                   </div>
                 </div>
-
-                <div class="uk-width-1-1 uk-width-3-5@s" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
-                  <div class="uk-width-1-1 uk-inline">
-                    <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                    <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important; border: 0; border-bottom: 1px solid #e5e5e5;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>

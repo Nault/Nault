@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NotificationService} from '../../services/notification.service';
 import {ActivatedRoute} from '@angular/router';
 import {AddressBookService} from '../../services/address-book.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-import-address-book',
@@ -19,7 +20,11 @@ export class ImportAddressBookComponent implements OnInit {
   existingEntries = 0;
   hostname = '';
 
-  constructor(private route: ActivatedRoute, private notifications: NotificationService, private addressBook: AddressBookService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private notifications: NotificationService,
+    private addressBook: AddressBookService,
+    private router: Router) { }
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
@@ -73,8 +78,8 @@ export class ImportAddressBookComponent implements OnInit {
       }
     }
 
+    this.router.navigate(['address-book']);
     this.notifications.sendSuccess(`Successfully imported ${importedCount} address book entries`);
-    this.activePanel = 'imported';
   }
 
   importDataError(message) {

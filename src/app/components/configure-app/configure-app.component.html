@@ -24,23 +24,6 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
-                <label class="uk-form-label">Display Denomination <span uk-icon="icon: info;" uk-tooltip title="Change the default denomination used throughout the application when displaying Nano balances"></span></label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedDenomination">
-                      <option *ngFor="let denomination of denominations" [value]="denomination.value">{{ denomination.name }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!--<div class="uk-width-1-1">-->
             <!--<div class="uk-form-horizontal">-->
 
@@ -145,23 +128,16 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Minimum Receive Amount <span uk-icon="icon: info;" uk-tooltip title="Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."></span></label>
+                <label class="uk-form-label">Min Receive [NANO] <span uk-icon="icon: info;" uk-tooltip title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
-                    <div class="uk-width-3-5">
+                    <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
                         <input [(ngModel)]="minimumReceive" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="0.000001">
                       </div>
 
                     </div>
-
-                    <div class="uk-width-2-5">
-                      <div class="uk-inline uk-width-1-1">
-                        <button class="uk-button uk-button-secondary uk-width-1-1" type="button" style="text-transform: none;">NANO</button>
-                      </div>
-                    </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -386,7 +362,7 @@
             <button class="uk-button uk-button-danger" (click)="clearWalletData()" uk-tooltip title="This will delete all data related to your wallet (Your seed and accounts)">Delete Wallet Data</button>
           </div>
           <div class="uk-width-1-3@m">
-            <button class="uk-button uk-button-danger" (click)="clearAllData()" uk-tooltip title="This will delete ALL stored data, including your wallet, address book, settings and more.">Delete ALL Data</button>
+            <button class="uk-button uk-button-danger" (click)="clearAllData()" uk-tooltip title="This will delete ALL stored data and reset app settings, including your wallet, address book and more.">Delete ALL Data</button>
           </div>
         </div>
       </div>

@@ -3,7 +3,10 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">Address Book</h2>
+        <h2 class="uk-heading-divider">
+          Address Book
+          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'ADDRESS BOOK' : 'IMPORT / EXPORT' }}</a>
+        </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
         <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="activePanel = 1;">Add New Contact</button>
@@ -16,7 +19,7 @@
       </p>
     </div>
 
-    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 0" uk-grid>
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel === 0" uk-grid>
       <div class="uk-width-1-1">
         <div class="uk-card uk-margin">
 
@@ -71,11 +74,11 @@
       </div>
     </div>
 
-    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 1" uk-grid>
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel === 1" uk-grid>
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">Create New Contact</h2>
+            <h2 class="uk-card-title">Add New Contact</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
@@ -106,6 +109,44 @@
                 <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewAddress()">Save New Contact</button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel === 2" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title">Import / Export</h3>
+          </div>
+          <div class="uk-card-body">
+            Use this tool to simplify transferring your address book between devices.  Use the options below to import or export your
+            address book from a file or QR Code/URL.  Your address book is NOT encrypted by your wallet password.
+            <div *ngIf="addressBookShowQRExport" uk-grid>
+              <div class="uk-width-1-1">
+                <hr class="uk-divider-icon">
+              </div>
+
+              <div class="uk-width-1-2@s uk-width-1-4@m">
+                <img [src]="addressBookQRExportImg" alt="QR code">
+              </div>
+              <div class="uk-width-1-2@s uk-width-3-4@m">
+                Scan the QR code on any device to import your Nault Address Book!<br>
+                <br>
+                If you do not have a QR code scanner, you can also import your address book by using the URL below.<br>
+                <input type="text" class="uk-input" value="{{ addressBookQRExportUrl }}"><br>
+                <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Address book export copied to clipboard!')" uk-tooltip>Copy to clipboard</a>
+              </div>
+            </div>
+          </div>
+          <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+            <div class="js-upload uk-text-left uk-width-auto@s uk-width-1-1" style="display: inline-block;" uk-form-custom>
+              <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
+              <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import Address Book</button>
+            </div>
+            <button (click)="exportAddressBookToFile()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export As File</button>
+            <button (click)="exportAddressBook()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export As QR Code / URL</button>
           </div>
         </div>
       </div>

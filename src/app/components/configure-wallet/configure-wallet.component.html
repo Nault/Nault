@@ -65,22 +65,56 @@
     <div uk-grid *ngIf="selectedImportOption === 'seed'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <p>
-          Enter your 64 character seed from any Nano wallet to import it below.
+          Enter your seed from any Nano wallet to import it below.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="Your Nano Backup Seed">
+          <input type="text" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedModel" placeholder="64 character Nano Backup Seed">
         </div>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <p>
-          Enter your wallet mnemonic phrase generated from any Nano wallet to import it below.
+          Enter your mnemonic generated from Nault or other Nano wallets. If it came from a Ledger device or certain multi-currency wallets, use "BIP39 Mnemonic" import type instead.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
-          <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="Your Nano Backup Mnemonic Phrase"></textarea>
+          <textarea class="uk-textarea" rows="3" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedMnemonicModel" placeholder="24-words mnemonic"></textarea>
+        </div>
+      </div>
+    </div>
+    <div uk-grid *ngIf="selectedImportOption === 'bip39-mnemonic'" class="uk-margin-top">
+      <div class="uk-width-1-1">
+        <p>
+          Enter your mnemonic generated from a Ledger device or certain multi-currency wallets. If it was generated in Nault, use "Nano Mnemonic" import type instead.
+        </p>
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-horizontal-select">BIP39 Mnemonic</label>
+            <div class="uk-form-controls">
+              <div class="uk-inline uk-width-expand">
+                <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo2','mnemonic')" uk-tooltip title="Scan from QR code"></a>
+                <textarea class="uk-textarea" rows="2" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicModel" placeholder="12,15,18,21 or 24-words mnemonic" autocomplete="off"></textarea>
+              </div>
+           </div>
+          </div>
+        </div>
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-horizontal-select">Account Index <span uk-icon="icon: info;" uk-tooltip title="The wallet will be imported as a single private key for the account index you provide."></span></label>
+            <div class="uk-form-controls">
+              <input type="text" class="uk-input uk-margin-small-bottom {{validIndex ? '':'uk-form-danger'}}" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicIndexModel" (ngModelChange)="accountIndexChange(importSeedBip39MnemonicIndexModel)" maxLength="10" placeholder="0 to {{indexMax}}" autocomplete="off">
+            </div>
+          </div>
+        </div>
+        <div class="uk-form-horizontal">
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-horizontal-select">BIP39 Passphrase <span uk-icon="icon: info;" uk-tooltip title="Required only if the BIP39 seed is protected by a password or passphrase."></span></label>
+            <div class="uk-form-controls">
+              <input type="password" class="uk-input" (keyup.enter)="importExistingWallet()" [(ngModel)]="importSeedBip39MnemonicPasswordModel" placeholder="Optional" autocomplete="off">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -112,7 +146,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importPrivateKeyModel" placeholder="Your Nano Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importPrivateKeyModel" placeholder="64 character Nano Private Key">
         </div>
       </div>
     </div>
@@ -123,7 +157,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('expanded1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importExpandedKeyModel" placeholder="Your Nano Expanded Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="importSingleKeyWallet()" [(ngModel)]="importExpandedKeyModel" placeholder="64 or 128 character Nano Expanded Private Key">
         </div>
       </div>
     </div>
@@ -134,6 +168,7 @@
       <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import From File</button>
     </div>
     <button *ngIf="selectedImportOption === 'mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Mnemonic</button>
+    <button *ngIf="selectedImportOption === 'bip39-mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="!validIndex" (click)="setPasswordInit()">Import From Mnemonic</button>
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Seed</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.NOT_CONNECTED" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="connectLedgerByUsb()">Connect via USB</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.NOT_CONNECTED && ledgerService.supportsWebBluetooth" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="connectLedgerByBluetooth()">Connect via Bluetooth</button>

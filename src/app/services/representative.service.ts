@@ -165,38 +165,61 @@ export class RepresentativeService {
       }
 
       if (knownRep) {
-        status = status === 'none' ? 'ok' : status; // In our list
+        // in the list of known representatives
+        status = status === 'none' ? 'ok' : status;
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
-          status = 'trusted'; // In our list and marked as trusted
+          status = 'trusted'; // marked as trusted
           repStatus.trusted = true;
         }
         if (knownRep.warn) {
-          status = 'alert'; // In our list and marked for avoidance
+          status = 'alert'; // marked to avoid
           repStatus.markedToAvoid = true;
           repStatus.warn = true;
           repStatus.changeRequired = true;
         }
       } else if (knownRepNinja) {
-        status = status === 'none' ? 'ok' : status; // In our list
+        status = status === 'none' ? 'ok' : status;
         label = knownRepNinja.alias;
-        repStatus.uptime = knownRepNinja.uptime_over.week;
+      }
+
+      if (knownRepNinja && !repStatus.trusted) {
+        let uptimeIntervalValue = knownRepNinja.uptime_over.week;
+        const uptimeIntervalDays = 7;
+
+        // temporary fix for knownRepNinja.uptime_over.week always returning 0
+        // uptimeIntervalValue = knownRepNinja.uptime_over.month;
+        // uptimeIntervalDays = 30;
+        // /temporary fix
+
+        // consider uptime value at least 1/<interval days> of daily uptime
+        uptimeIntervalValue = Math.max(
+          uptimeIntervalValue,
+          (knownRepNinja.uptime_over.day / uptimeIntervalDays)
+        );
+
+        if (repOnline === true) {
+          // consider uptime value at least 1% if the rep is currently online
+          uptimeIntervalValue = Math.max(uptimeIntervalValue, 1);
+        }
+
+        repStatus.uptime = uptimeIntervalValue;
         repStatus.score = knownRepNinja.score;
 
         const msSinceLastVoted = knownRepNinja.lastVoted ? ( Date.now() - new Date(knownRepNinja.lastVoted).getTime() ) : 0;
         repStatus.daysSinceLastVoted = Math.floor(msSinceLastVoted / 86400000);
-        if (knownRepNinja.uptime_over.week === 0) {
-          // display a minimum of 7 days if the weekly uptime is 0%
-          repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, 7);
+        if (uptimeIntervalValue === 0) {
+          // display a minimum of <interval days> if the uptime value is 0%
+          repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, uptimeIntervalDays);
         }
 
-        if (knownRepNinja.uptime_over.week < 80) {
+        if (uptimeIntervalValue < 50) {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
           repStatus.changeRequired = true;
-        } else if (knownRepNinja.uptime_over.week < 90) {
+        } else if (uptimeIntervalValue < 60) {
           if (status !== 'alert') {
             status = 'warn';
           }
