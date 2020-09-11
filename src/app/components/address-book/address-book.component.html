@@ -136,7 +136,7 @@
                 <br>
                 If you do not have a QR code scanner, you can also import your address book by using the URL below.<br>
                 <input type="text" class="uk-input" value="{{ addressBookQRExportUrl }}"><br>
-                <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Address book export copied to clipboard!')" uk-tooltip>Copy to clipboard</a>
+                <a title="Copy Export URL To Clipboard" ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" uk-tooltip>Copy to clipboard</a>
               </div>
             </div>
           </div>

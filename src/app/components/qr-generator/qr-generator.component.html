@@ -1,0 +1,18 @@
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+
+    <h2 class="uk-heading-divider">QR Generator</h2>
+
+    <div class="uk-card uk-card-default">
+      <div class="uk-card-body">
+        <div uk-grid>
+          <div class="uk-width-1-1">
+            <textarea [(ngModel)]="input" rows="5" class="uk-input uk-margin-small-bottom" placeholder="Text to be converted into QR" (keyup)="generateQR()" maxlength="2000"></textarea>
+          </div>
+        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr" alt="QR code" [ngStyle]="{'width': width+'px'}">
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
