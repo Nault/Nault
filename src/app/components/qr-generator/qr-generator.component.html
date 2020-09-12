@@ -9,7 +9,9 @@
           <div class="uk-width-1-1">
             <textarea [(ngModel)]="input" rows="5" class="uk-input uk-margin-small-bottom" placeholder="Text to be converted into QR" (keyup)="generateQR()" maxlength="2000"></textarea>
           </div>
-        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr" alt="QR code" [ngStyle]="{'width': width+'px'}">
+          <div class="block-qr" [ngStyle]="{'width': width+'px'}">
+            <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" alt="QR code">
+          </div>
         </div>
       </div>
     </div>
