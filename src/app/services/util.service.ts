@@ -5,6 +5,7 @@ import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
+const pbkdf2_1 = require('pbkdf2');
 
 export interface StateBlock {
   account: string;
@@ -50,6 +51,7 @@ export class UtilService {
   };
   string = {
     isNumeric: isNumeric,
+    mnemonicToSeedSync: mnemonicToSeedSync,
   };
   account = {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
@@ -251,6 +253,17 @@ function isNumeric(val) {
   // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val) && val !== '';
   return isnum && String(val).slice(-1) !== '.';
+}
+
+function mnemonicToSeedSync(mnemonic, password= null) {
+  // const mnemonicBuffer = Buffer.from((mnemonic || '').normalize('NFKD'), 'utf8');
+  // const saltBuffer = Buffer.from(this.salt((password || '').normalize('NFKD')), 'utf8');
+  // Using textencoder here instead ensures it returns an Uint8Array when using the desktop app
+  // and not a Buffer object that messes up the bip39 seed
+  const enc = new TextEncoder();
+  const mnemonicBuffer = enc.encode(mnemonic);
+  const saltBuffer = enc.encode('mnemonic' + (password || ''));
+  return pbkdf2_1.pbkdf2Sync(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
 }
 
 
@@ -473,6 +486,7 @@ const util = {
   },
   string: {
     isNumeric: isNumeric,
+    mnemonicToSeedSync: mnemonicToSeedSync,
   },
   account: {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
