@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 import {PriceService} from '../../services/price.service';
 import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import { environment } from 'environments/environment';
 
 const nacl = window['nacl'];
 
@@ -68,13 +69,7 @@ export class SendComponent implements OnInit {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
 
-    if (params && params.amount) {
-      this.amount = params.amount;
-    }
-    if (params && params.to) {
-      this.toAccountID = params.to;
-      this.validateDestination();
-    }
+    this.updateQueries(params);
 
     this.addressBookService.loadAddressBook();
 
@@ -93,12 +88,27 @@ export class SendComponent implements OnInit {
       this.selAccountInit = true;
     });
 
+    // Update the account if query params changes. For example donation button while active on this page
+    this.router.queryParams.subscribe(queries => {
+      this.updateQueries(queries);
+    });
+
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.fromAccountID = this.walletService.wallet.selectedAccount.id;
     } else {
       // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
       this.findFirstAccount();
+    }
+  }
+
+  updateQueries(params) {
+    if (params && params.amount) {
+      this.amount = params.amount;
+    }
+    if (params && params.to) {
+      this.toAccountID = params.to;
+      this.validateDestination();
     }
   }
 
@@ -180,6 +190,9 @@ export class SendComponent implements OnInit {
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
     this.addressBookMatch = this.addressBookService.getAccountName(this.toAccountID);
+    if (!this.addressBookMatch && this.toAccountID === environment.donationAddress) {
+      this.addressBookMatch = 'Nault Donations';
+    }
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     this.toAccountStatus = null;

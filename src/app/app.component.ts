@@ -10,12 +10,13 @@ import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { LedgerService } from './services';
+import { environment } from 'environments/environment';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
 
@@ -49,6 +50,8 @@ export class AppComponent implements OnInit {
   showAccountsDropdown = false;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
+  donationAccount = environment.donationAddress;
+
   @HostListener('window:resize', ['$event']) onResize (e) {
     this.windowHeight = e.target.innerHeight;
   }
