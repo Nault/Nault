@@ -36,3 +36,12 @@
 	display: block;
 	font-size: 10px;
 }
+
+#donation-icon {
+	color: #4a90e2;
+	opacity: 1;
+}
+
+#donation-icon:hover {
+	color: #e24a4a;
+}
