@@ -501,7 +501,7 @@ export class WalletService {
     return this.wallet;
   }
 
-  createWalletFromSingleKey(key: string, expanded: boolean) {
+  async createWalletFromSingleKey(key: string, expanded: boolean) {
     this.resetWallet();
 
     this.wallet.type = expanded ? 'expandedKey' : 'privateKey';
@@ -509,6 +509,7 @@ export class WalletService {
     this.wallet.seedBytes = this.util.hex.toUint8(key);
 
     this.wallet.accounts.push(this.createSingleKeyAccount(expanded));
+    await this.reloadBalances();
     this.saveWalletExport();
   }
 
