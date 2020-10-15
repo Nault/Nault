@@ -173,8 +173,8 @@
                       </div>
                     </li>
                   </ul>
-                  <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" style="float: right;" class="uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All</a>
-                  <ul class="uk-pagination uk-flex-center">
+                  <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
+                  <ul class="uk-pagination uk-flex-center uk-flex-middle">
                     <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous></span></a></li>
                     <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
                     <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next></span></a></li>
