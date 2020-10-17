@@ -14,7 +14,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">From Account</label>
                 <div class="uk-form-controls">
-                  <select class="uk-select" [(ngModel)]="fromAccountID" (change)="resetRaw()" id="form-horizontal-select">
+                  <select class="form-select-source uk-select" [(ngModel)]="fromAccountID" (change)="resetRaw()" id="form-horizontal-select">
                     <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                 </div>
@@ -23,7 +23,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
                 <div class="uk-form-controls">
-                  <div class="uk-inline uk-width-1-1">
+                  <div class="form-input-destination uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
 
@@ -41,7 +41,7 @@
 
                 <div class="uk-form-controls" *ngIf="addressBookMatch">
                   <div class="uk-inline uk-width-1-1">
-                    <span class="uk-label uk-label-primary">{{ addressBookMatch }}</span>
+                    <span class="account-label blue uk-margin-small-top">{{ addressBookMatch }}</span>
                   </div>
                 </div>
               </div>
@@ -49,7 +49,7 @@
               <div uk-grid>
                 <div class="uk-width-1-1">
                   <label class="uk-form-label" for="form-horizontal-text">Amount</label>
-                  <div class="uk-form-controls">
+                  <div class="form-amount uk-form-controls">
                     <div uk-grid>
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1">
@@ -103,12 +103,12 @@
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="fromAddressBook">
-                    <span class="confirm-title">{{ fromAddressBook }}</span>
+                    <span class="confirm-title uk-text-truncate">{{ fromAddressBook }}</span>
                     <span class="confirm-subtitle">From Account</span>
-                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
+                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!fromAddressBook">
-                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
+                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                     <span class="confirm-subtitle">From Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -134,12 +134,12 @@
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="toAddressBook">
-                    <span class="confirm-title">{{ toAddressBook }}</span>
+                    <span class="confirm-title uk-text-truncate">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>

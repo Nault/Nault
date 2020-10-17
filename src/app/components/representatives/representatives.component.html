@@ -42,7 +42,7 @@
                   <div class="uk-width-expand uk-text-truncate" (click)="addSelectedAccounts(rep.accounts)" style="cursor: pointer;" uk-tooltip title="Select the accounts which are using this representative">
                     <span class="circle circle-online" *ngIf="rep.status.online" uk-tooltip title="Representative is online"></span>
                     <span class="circle circle-offline" *ngIf="!rep.status.online" uk-tooltip title="Representative is offline"></span>
-                    <span *ngIf="rep.label">{{ rep.label }}</span> <span *ngIf="!rep.label"><app-nano-account-id [accountID]="rep.id" middle="on"></app-nano-account-id></span>
+                    <span *ngIf="rep.label">{{ rep.label }}</span> <span *ngIf="!rep.label"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
                   </div>
                   <div class="uk-width-1-4">
                     {{ rep.delegatedWeight | rai: 'mnano' }}
@@ -83,8 +83,8 @@
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
-                          <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
-                          <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id></span>
+                          <span *ngIf="account.addressBookName" class="uk-margin-small-right account-label blue">{{ account.addressBookName }}</span> 
+                          <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
                           <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
                         </div>
                         <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">

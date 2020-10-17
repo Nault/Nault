@@ -1,27 +1,36 @@
-.account-index {
-  margin-right: 5px;
+.account-container.narrow {
+	max-width: calc(100% - 35px);
 }
 
-.account-index:hover {
-  color: #333;
-}
-
-.account-container {
-  max-width: calc(100% - 35px);
-}
-
-.account-container-wide {
-  max-width: calc(100% - 100px);
+.account-container.wide {
+	max-width: calc(100% - 100px);
 }
 
 .copy-container {
-  padding-left: 10px;
-  padding-bottom: 3px;
-  display: grid;
+	padding-left: 10px;
+	padding-bottom: 3px;
+	display: grid;
 }
 
 .copy-icons {
-  align-self: end;
+	align-self: end;
+}
+
+.account-amounts-column {
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.account-container:hover .nano-address-clickable {
+	border-color: transparent;
+}
+
+.account-container .account-label {
+	margin-bottom: 3px;
+}
+
+.account-amounts-column .account-amounts-primary {
+	margin-bottom: 3px;
 }
 
 .incoming-label {
