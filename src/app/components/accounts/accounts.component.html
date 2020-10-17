@@ -39,7 +39,7 @@
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-width-1-1">
-                  <div class="account-label" >
+                  <div class="account-label">
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
                   </div>
                 </div>

@@ -83,7 +83,7 @@
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
-                          <span *ngIf="account.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ account.addressBookName }}</span> 
+                          <span *ngIf="account.addressBookName" class="uk-margin-small-right account-label blue">{{ account.addressBookName }}</span> 
                           <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
                           <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
                         </div>
