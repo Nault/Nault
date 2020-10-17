@@ -47,7 +47,7 @@
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
                 </div>
               </a>
-              <div class="uk-width-auto copy-container">
+              <div class="nano-address-actions uk-width-auto copy-container">
                 <ul class="uk-iconnav copy-icons">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>

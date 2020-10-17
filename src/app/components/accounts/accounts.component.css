@@ -14,12 +14,15 @@
 
 .copy-icons {
 	align-self: end;
-	margin-bottom: 3px;
 }
 
 .account-amounts-column {
 	white-space: nowrap;
 	vertical-align: middle;
+}
+
+.account-container:hover .nano-address-clickable {
+	border-color: transparent;
 }
 
 .account-container .account-label {
