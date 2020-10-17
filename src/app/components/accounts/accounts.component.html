@@ -37,16 +37,16 @@
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
           <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
-              <div [class]="[ 'uk-width-auto', 'uk-text-truncate', !isLedgerWallet ? 'account-container' : 'account-container-wide' ]">
+              <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-width-1-1">
-                  <a class="uk-label uk-label-default account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
+                  <div class="account-label" >
                     {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
-                  </a>
+                  </div>
                 </div>
-                <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
+                <div class="nano-address-clickable nano-address-monospace">
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
-                </a>
-              </div>
+                </div>
+              </a>
               <div class="uk-width-auto copy-container">
                 <ul class="uk-iconnav copy-icons">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
@@ -55,8 +55,8 @@
               </div>
             </div>
           </td>
-          <td class="uk-text-right" style="white-space: nowrap;">
-            <div class="uk-width-1-1">
+          <td class="account-amounts-column uk-text-right">
+            <div class="account-amounts-primary uk-width-1-1">
               <div *ngIf="account.pending.gt(0)" class="incoming-label">
                 <div class="text-snippet">New</div>
                 <div class="text-full">+{{ account.pending | rai: settings.settings.displayDenomination + ',true' }}</div>
@@ -84,8 +84,6 @@
         </tbody>
       </table>
     </div>
-
-    <p class="uk-text-center uk-text-small">Click on an account to view more details!</p>
 
   </div>
 </div>
