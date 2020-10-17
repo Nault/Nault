@@ -3,8 +3,20 @@
   font-size: 16px;
 }
 .circle-online {
-  color: #00d60f;
+	color: #00d60f;
 }
 .circle-offline {
-  color: #F00;
+	color: #F00;
+}
+
+.view-all-reps-link {
+	float: right;
+	margin-top: 5px;
+}
+.view-all-reps-link > .uk-icon {
+	vertical-align: 2px;
+}
+
+.uk-pagination > li > a {
+	padding: 5px 10px;
 }
