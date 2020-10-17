@@ -217,7 +217,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="uk-text-muted">
+                <td class="uk-text-muted" title="Incoming Transaction">
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
@@ -268,7 +268,7 @@
       </div>
     </div>
 
-    <div class="uk-width-1-1 uk-text-center uk-text-muted uk-text-small" *ngIf="pendingBlocks.length">
+    <div class="uk-width-1-1 uk-text-center uk-text-muted uk-text-small uk-margin-medium-bottom" *ngIf="pendingBlocks.length">
       * Incoming Transaction
     </div>
 

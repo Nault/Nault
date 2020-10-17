@@ -1,3 +1,11 @@
+.form-select-source, .form-input-destination {
+	max-width: 800px;
+}
+
+.form-amount {
+	max-width: 450px;
+}
+
 .confirm-title {
   font-weight: bolder;
   display: block;
