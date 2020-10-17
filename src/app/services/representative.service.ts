@@ -184,9 +184,10 @@ export class RepresentativeService {
         label = knownRepNinja.alias;
       }
 
+      const uptimeIntervalDays = 7;
+
       if (knownRepNinja && !repStatus.trusted) {
         let uptimeIntervalValue = knownRepNinja.uptime_over.week;
-        const uptimeIntervalDays = 7;
 
         // temporary fix for knownRepNinja.uptime_over.week always returning 0
         // uptimeIntervalValue = knownRepNinja.uptime_over.month;
@@ -231,6 +232,7 @@ export class RepresentativeService {
         status = 'alert';
         repStatus.uptime = 0;
         repStatus.veryLowUptime = true;
+        repStatus.daysSinceLastVoted = uptimeIntervalDays;
         repStatus.warn = true;
         repStatus.changeRequired = true;
       } else {
