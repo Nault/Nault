@@ -39,6 +39,7 @@
     "@angular/platform-browser-dynamic": "^10.0.7",
     "@angular/router": "^10.0.7",
     "@ledgerhq/hw-transport": "^5.22.0",
+    "@ledgerhq/hw-transport-node-ble": "^5.22.0",
     "@ledgerhq/hw-transport-node-hid": "^5.22.0",
     "@ledgerhq/hw-transport-u2f": "^5.22.0",
     "@ledgerhq/hw-transport-webusb": "^5.22.0",

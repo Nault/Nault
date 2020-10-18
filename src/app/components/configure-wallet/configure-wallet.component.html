@@ -171,7 +171,7 @@
     <button *ngIf="selectedImportOption === 'bip39-mnemonic'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="!validIndex" (click)="setPasswordInit()">Import From Mnemonic</button>
     <button *ngIf="selectedImportOption === 'seed'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Seed</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.NOT_CONNECTED" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="connectLedgerByUsb()">Connect via USB</button>
-    <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.NOT_CONNECTED && ledgerService.supportsWebBluetooth" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="connectLedgerByBluetooth()">Connect via Bluetooth</button>
+    <button *ngIf="selectedImportOption === 'ledger' && ledger.status === ledgerStatus.NOT_CONNECTED && ledgerService.supportsBluetooth" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="connectLedgerByBluetooth()">Connect via Bluetooth</button>
     <button *ngIf="selectedImportOption === 'ledger' && ledger.status !== ledgerStatus.NOT_CONNECTED" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="importLedgerWallet(true)">Refresh Ledger Status</button>
     <button *ngIf="selectedImportOption === 'privateKey'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Private Key</button>
     <button *ngIf="selectedImportOption === 'expandedKey'" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Import From Expanded Private Key</button>

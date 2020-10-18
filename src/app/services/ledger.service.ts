@@ -56,7 +56,7 @@ export class LedgerService {
   supportsU2F = false;
   supportsWebHID = false;
   supportsWebUSB = false;
-  supportsWebBluetooth = false;
+  supportsBluetooth = this.isDesktop;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
@@ -110,22 +110,15 @@ export class LedgerService {
     TransportU2F.isSupported().then(supported => this.supportsU2F = supported);
     TransportHID.isSupported().then(supported => this.supportsWebHID = supported);
     TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported);
-    TransportBLE.isSupported().then(supported => this.supportsWebBluetooth = supported);
+    TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported);
   }
 
   /**
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    const isWindows = window.navigator.platform.includes('Win');
-    console.log('USB - HID - BLE:', this.supportsWebUSB, this.supportsWebHID, this.supportsWebBluetooth);
-
-    if (isWindows && this.supportsWebHID) {
-      // Prefer WebHID on Windows due to WebUSB stability issues
-      this.transportMode = 'HID';
-      this.DynamicTransport = TransportHID;
-    } else if (this.supportsWebUSB) {
-      // Prefer WebUSB on all other OS's
+    if (this.supportsWebUSB) {
+      // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
     } else if (this.supportsWebHID) {
@@ -144,7 +137,7 @@ export class LedgerService {
    * @param enabled   The bluetooth enabled state
    */
   enableBluetoothMode(enabled: boolean) {
-    if (this.supportsWebBluetooth && enabled) {
+    if (this.supportsBluetooth && enabled) {
       this.transportMode = 'Bluetooth';
       this.DynamicTransport = TransportBLE;
     } else {
@@ -270,7 +263,7 @@ export class LedgerService {
 
       // Desktop is handled completely differently.  Send a message for status instead of setting anything up
       if (this.isDesktop) {
-        if (!this.desktop.send('ledger', { event: 'get-ledger-status' })) {
+        if (!this.desktop.send('ledger', { event: 'get-ledger-status', data: { bluetooth: this.transportMode === 'Bluetooth' } })) {
           reject(new Error(`Electron\'s IPC was not loaded`));
         }
 

@@ -1,4 +1,5 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
@@ -13,9 +14,9 @@ const STATUS_CODES = {
 };
 
 const LedgerStatus = {
-  NOT_CONNECTED: "not-connected",
-  LOCKED: "locked",
-  READY: "ready",
+  NOT_CONNECTED: 'not-connected',
+  LOCKED: 'locked',
+  READY: 'ready',
 };
 
 
@@ -52,31 +53,31 @@ export class LedgerService {
   }
 
   // Open a connection to the usb device and initialize up the Nano Ledger library
-  async loadTransport() {
+  async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      TransportNodeHid.create().then(trans => {
+      (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
 
         this.ledger.transport = trans;
-        this.ledger.transport.setDebugMode(true); //TODO: Deprecated. Replace with @ledgerhq/logs
+        this.ledger.transport.setDebugMode(true); // TODO: Deprecated. Replace with @ledgerhq/logs
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
 
         resolve(this.ledger.transport);
       }).catch(reject);
-    })
+    });
   }
 
   async loadAppConfig(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.ledger.nano.getAppConfiguration().then(resolve).catch(reject);
-    })
+    });
   }
 
   // Try connecting to the ledger device and sending a command to it
-  async loadLedger() {
+  async loadLedger(bluetooth?: boolean) {
     if (!this.ledger.transport) {
       try {
-        await this.loadTransport();
+        await this.loadTransport(bluetooth);
       } catch (err) {
         console.log(`Error loading transport? `, err);
         this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Unable to load Ledger transport: ${err.message || err}`);
@@ -216,7 +217,7 @@ let sendingWindow = null;
 
 // Create a copy of the ledger service and register listeners with the browser window
 export function initialize() {
-  console.log("Ledger service inializing")
+  console.log('Ledger service inializing');
   const Ledger = new LedgerService();
 
   // When the observable emits a new status, send it to the browser window
@@ -240,7 +241,7 @@ export function initialize() {
     if (!data || !data.event) return;
     switch (data.event) {
       case 'get-ledger-status':
-        Ledger.loadLedger();
+        Ledger.loadLedger(data.data.bluetooth);
         break;
       case 'account-details':
         Ledger.getLedgerAccount(data.data.accountIndex || 0, data.data.showOnScreen || false);
@@ -252,5 +253,5 @@ export function initialize() {
         Ledger.signBlock(data.data.accountIndex, data.data.blockData);
         break;
     }
-  })
+  });
 }
