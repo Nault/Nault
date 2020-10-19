@@ -25,6 +25,10 @@
 	border-color: transparent;
 }
 
+.account-container .nano-address-clickable {
+	vertical-align: bottom;
+}
+
 .account-container .account-label {
 	margin-bottom: 3px;
 }
