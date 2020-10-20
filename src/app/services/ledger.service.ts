@@ -298,46 +298,10 @@ export class LedgerService {
         }
       }
 
-      // Legacy mode
-
-      // Note:
-      // Everything else below is for loading the Ledger via the browser using Chrome U2F Bridge (Requires https)
-
-      // Load the transport object
-      // if (!this.ledger.transport) {
-      //   try {
-      //     this.ledger.transport = await this.DynamicTransport.open(null);
-      //     this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-      //   } catch (err) {
-      //     console.log(`Transport error: `, err);
-      //     if (err.statusText === 'UNKNOWN_ERROR') {
-      //       this.resetLedger();
-      //     }
-      //     this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
-      //     return resolve(false);
-      //   }
-      // }
-
-      // // Load nano object
-      // if (!this.ledger.nano) {
-      //   try {
-      //     this.ledger.nano = new Nano(this.ledger.transport);
-      //   } catch (err) {
-      //     console.log(`Nano error: `, err);
-      //     if (err.statusText === 'UNKNOWN_ERROR') {
-      //       this.resetLedger();
-      //     }
-      //     this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
-      //     return resolve(false);
-      //   }
-      // }
-
-
       if (!this.ledger.transport || !this.ledger.nano) {
         return resolve(false);
       }
 
-      console.log(this.ledger.status);
       if (this.ledger.status === LedgerStatus.READY) {
         return resolve(true); // Already ready?
       }
