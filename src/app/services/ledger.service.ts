@@ -141,7 +141,7 @@ export class LedgerService {
       this.transportMode = 'Bluetooth';
       this.DynamicTransport = TransportBLE;
     } else {
-        this.detectUsbTransport();
+      this.detectUsbTransport();
     }
   }
 
@@ -279,7 +279,6 @@ export class LedgerService {
         return;
       }
 
-      // Use modern transport connection mode if supported by the browser
       if (!this.ledger.transport) {
 
         // If in USB mode, detect best transport option
