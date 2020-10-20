@@ -74,7 +74,7 @@ export class LedgerService {
   }
 
   // Try connecting to the ledger device and sending a command to it
-  async loadLedger(bluetooth: boolean = false) {
+  async loadLedger(bluetooth = false) {
     if (!this.ledger.transport) {
       try {
         await this.loadTransport(bluetooth);
