@@ -33,7 +33,7 @@
                     </div>
                   </div>
                   <div uk-grid>
-                    <div class="uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
+                    <div class="nano-address-monospace uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
                       <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
                     </div>
                     <div class="uk-width-auto" style="padding-left: 10px; margin-top: -3px;">
@@ -44,7 +44,7 @@
 
                 <div *ngIf="!addressBookEntry && !walletAccount">
                   <div uk-grid>
-                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
+                    <h3 class="nano-address-monospace uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
                       <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
                     </h3>
                     <div class="uk-width-auto">
@@ -134,7 +134,7 @@
                     </div>
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
-                        <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                        <div class="nano-address-monospace uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                           <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
                           <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
@@ -203,19 +203,21 @@
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                      <a [routerLink]="'/account/' + pending.account" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="pending.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ pending.addressBookName }}</span> 
-                        <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
+                      <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text" title="View Account Details" uk-tooltip>
+                        <span *ngIf="pending.addressBookName" class="account-label uk-margin-small-right">{{ pending.addressBookName }}</span>
+                        <span class="nano-address-clickable nano-address-monospace">
+                          <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
+                        </span>
                       </a>
                     </div>
-                    <div class="uk-width-auto" style="padding-left: 10px;">
+                    <div class="nano-address-actions uk-width-auto">
                       <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
                     </div>
                   </div>
                 </td>
-                <td class="uk-text-muted">
+                <td class="uk-text-muted" title="Incoming Transaction">
                   +{{ pending.amount | rai: settings.settings.displayDenomination }}*
                 </td>
                 <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
@@ -228,12 +230,14 @@
                 <td class="uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                      <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="history.addressBookName" class="uk-margin-small-right uk-label uk-label-default">{{ history.addressBookName }}</span> 
-                        <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
+                      <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-link-text" title="View Account Details" uk-tooltip>
+                        <span *ngIf="history.addressBookName" class="account-label uk-margin-small-right">{{ history.addressBookName }}</span>
+                        <span class="nano-address-clickable nano-address-monospace">
+                          <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
+                        </span>
                       </a>
                     </div>
-                    <div class="uk-width-auto" style="padding-left: 10px;">
+                    <div class="nano-address-actions uk-width-auto">
                       <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
@@ -264,7 +268,7 @@
       </div>
     </div>
 
-    <div class="uk-width-1-1 uk-text-center uk-text-muted uk-text-small" *ngIf="pendingBlocks.length">
+    <div class="uk-width-1-1 uk-text-center uk-text-muted uk-text-small uk-margin-medium-bottom" *ngIf="pendingBlocks.length">
       * Incoming Transaction
     </div>
 

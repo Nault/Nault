@@ -487,7 +487,7 @@ export class SweeperComponent implements OnInit {
       // input is mnemonic
       if (keyType === 'mnemonic') {
         seed = bip39.mnemonicToEntropy(this.sourceWallet).toUpperCase();
-        bip39Seed = bip39.mnemonicToSeedSync(this.sourceWallet).toString('hex');
+        bip39Seed = this.util.string.mnemonicToSeedSync(this.sourceWallet).toString('hex');
         // Seed must be 64 for regular nano blake derivation to happen
         // For other lengths, only bip39/44 derivation is possible
         if (seed.length !== 32 && seed.length !== 40 && seed.length !== 48 && seed.length !== 56 && seed.length !== 64) {

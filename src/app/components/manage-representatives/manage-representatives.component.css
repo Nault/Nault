@@ -1,3 +1,7 @@
+.nano-address-actions {
+    margin-top: 2px;
+}
+
 .circle:before {
   content: ' \25CF';
   font-size: 16px;

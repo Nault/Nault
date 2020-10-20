@@ -28,7 +28,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
   constructor(
     private addressBookService: AddressBookService,
     private walletService: WalletService,
-    private notificationService: NotificationService,
+    public notificationService: NotificationService,
     public modal: ModalService,
     private util: UtilService,
     private qrModalService: QrModalService,

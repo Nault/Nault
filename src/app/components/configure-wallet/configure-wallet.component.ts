@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService, NotificationService, RepresentativeService} from '../../services';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as bip from 'bip39';
+import * as bip39 from 'bip39';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
@@ -186,7 +186,7 @@ export class ConfigureWalletComponent implements OnInit {
 
           // Try and decode the mnemonic
           try {
-            const newSeed = bip.mnemonicToEntropy(mnemonic);
+            const newSeed = bip39.mnemonicToEntropy(mnemonic);
             if (!newSeed || newSeed.length !== 64) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
             this.importSeed = newSeed.toUpperCase(); // Force uppercase, for consistency
           } catch (err) {
@@ -214,7 +214,7 @@ export class ConfigureWalletComponent implements OnInit {
         }
       } else if (this.selectedImportOption === 'bip39-mnemonic') {
         // If bip39, import wallet as a single private key
-        if (!bip.validateMnemonic(this.importSeedBip39MnemonicModel)) {
+        if (!bip39.validateMnemonic(this.importSeedBip39MnemonicModel)) {
           return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
         }
         if (!this.validIndex) {
@@ -223,8 +223,8 @@ export class ConfigureWalletComponent implements OnInit {
 
         // convert mnemonic to bip39 seed
         const bip39Seed = this.importSeedBip39MnemonicPasswordModel !== '' ?
-        bip.mnemonicToSeedSync(this.importSeedBip39MnemonicModel, this.importSeedBip39MnemonicPasswordModel).toString('hex') :
-        bip.mnemonicToSeedSync(this.importSeedBip39MnemonicModel).toString('hex');
+        this.util.string.mnemonicToSeedSync(this.importSeedBip39MnemonicModel, this.importSeedBip39MnemonicPasswordModel).toString('hex') :
+        this.util.string.mnemonicToSeedSync(this.importSeedBip39MnemonicModel).toString('hex');
 
         // derive private key from bip39 seed using the account index provided
         const accounts = wallet.accounts(bip39Seed, Number(this.importSeedBip39MnemonicIndexModel),
@@ -243,7 +243,7 @@ export class ConfigureWalletComponent implements OnInit {
   async createNewWallet() {
     const seedBytes = this.util.account.generateSeedBytes();
     this.newWalletSeed = this.util.hex.fromUint8(seedBytes);
-    this.newWalletMnemonic = bip.entropyToMnemonic(this.newWalletSeed);
+    this.newWalletMnemonic = bip39.entropyToMnemonic(this.newWalletSeed);
 
     // Split the seed up so we can show 4 per line
     const words = this.newWalletMnemonic.split(' ');

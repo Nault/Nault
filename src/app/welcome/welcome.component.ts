@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'environments/environment';
 import {WalletService} from '../services/wallet.service';
 
 @Component({
@@ -8,7 +9,7 @@ import {WalletService} from '../services/wallet.service';
 })
 export class WelcomeComponent implements OnInit {
 
-  donationAccount = `nano_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`;
+  donationAccount = environment.donationAddress;
 
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;

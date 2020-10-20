@@ -82,7 +82,7 @@
         </div>
 
         <div class="uk-text-center uk-text-small uk-text-truncate">
-          Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }">{{ donationAccount }}</a>
+          Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }" uk-tooltip title="Contribute to this wallet with a custom donation!">{{ donationAccount }}</a>
         </div>
       </div>
     </div>
