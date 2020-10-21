@@ -1,3 +1,8 @@
+.table-header-delete-account {
+	width: 1%;
+	min-width: 100px;
+}
+
 .account-container.narrow {
 	max-width: calc(100% - 35px);
 }
@@ -23,6 +28,10 @@
 
 .account-container:hover .nano-address-clickable {
 	border-color: transparent;
+}
+
+.account-container .nano-address-clickable {
+	vertical-align: bottom;
 }
 
 .account-container .account-label {
@@ -62,6 +71,10 @@
 	.incoming-label > .text-snippet {
 		display: none;
 	}
+}
+
+.icon-delete-account {
+	vertical-align: -2px;
 }
 
 .missing-accounts-hint {
