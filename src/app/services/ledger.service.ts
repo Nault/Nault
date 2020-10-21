@@ -335,7 +335,7 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your ledger is unlocked.  Restart the Nano App on your ledger if the error persists`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the Nano App on your Ledger if the error persists`);
         }
         resolved = true;
         return resolve(false);
