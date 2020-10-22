@@ -124,11 +124,11 @@ export class ConfigureWalletComponent implements OnInit {
     this.notifications.removeNotification('ledger-status');
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
-      return this.notifications.sendWarning(`No ledger device detected.  Make sure the Nano app is running on the Ledger.  Restart the Nano App if the error persists`);
+      return this.notifications.sendWarning(`No Ledger device detected.  Make sure the Nano app is running on the Ledger.  Restart the Nano App if the error persists`);
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {
-      return this.notifications.sendWarning(`Unlock your ledger device and open the Nano app to continue`);
+      return this.notifications.sendWarning(`Unlock your Ledger device and open the Nano app to continue`);
     }
 
     if (this.ledger.status === LedgerStatus.READY) {
