@@ -56,7 +56,7 @@ export class LedgerService {
   supportsU2F = false;
   supportsWebHID = false;
   supportsWebUSB = false;
-  supportsBluetooth = this.isDesktop;
+  supportsBluetooth = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
