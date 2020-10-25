@@ -317,7 +317,7 @@ export class LedgerService {
         }
         resolved = true;
         return resolve(false);
-      }, 2500);
+      }, 10000);
 
       // Try to load the app config
       try {
