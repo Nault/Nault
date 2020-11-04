@@ -127,11 +127,6 @@ export class AppComponent implements OnInit {
       this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
     }
 
-    // If they are using a Ledger device with a bad browser, warn them
-    if (this.walletService.isLedgerWallet() && this.ledger.isBrokenBrowser()) {
-      this.notifications.sendLedgerChromeWarning();
-    }
-
     // When the page closes, determine if we should lock the wallet
     window.addEventListener('beforeunload',  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about

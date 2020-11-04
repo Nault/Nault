@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import Nano from 'hw-app-nano';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import TransportUSB from '@ledgerhq/hw-transport-webusb';
+import TransportHID from '@ledgerhq/hw-transport-webhid';
+import TransportBLE from '@ledgerhq/hw-transport-web-ble';
+import Transport from '@ledgerhq/hw-transport';
 import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
@@ -24,7 +28,7 @@ export const LedgerStatus = {
 export interface LedgerData {
   status: string;
   nano: any|null;
-  transport: any|null;
+  transport: Transport|null;
 }
 
 const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -49,6 +53,14 @@ export class LedgerService {
   isDesktop = environment.desktop;
   queryingDesktopLedger = false;
 
+  supportsU2F = false;
+  supportsWebHID = false;
+  supportsWebUSB = false;
+  supportsBluetooth = false;
+
+  transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
+  DynamicTransport = TransportU2F;
+
   ledgerStatus$: Subject<any> = new Subject();
   desktopMessage$ = new Subject();
 
@@ -57,6 +69,8 @@ export class LedgerService {
               private notifications: NotificationService) {
     if (this.isDesktop) {
       this.configureDesktop();
+    } else {
+      this.checkBrowserSupport();
     }
   }
 
@@ -87,6 +101,48 @@ export class LedgerService {
           break;
       }
     });
+  }
+
+  /**
+   * Check which transport protocols are supported by the browser
+   */
+  checkBrowserSupport() {
+    TransportU2F.isSupported().then(supported => this.supportsU2F = supported);
+    TransportHID.isSupported().then(supported => this.supportsWebHID = supported);
+    TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported);
+    TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported);
+  }
+
+  /**
+   * Detect the optimal USB transport protocol for the current browser and OS
+   */
+  detectUsbTransport() {
+    if (this.supportsWebUSB) {
+      // Prefer WebUSB
+      this.transportMode = 'USB';
+      this.DynamicTransport = TransportUSB;
+    } else if (this.supportsWebHID) {
+      // Fallback to WebHID
+      this.transportMode = 'HID';
+      this.DynamicTransport = TransportHID;
+    } else {
+      // Legacy browsers
+      this.transportMode = 'U2F';
+      this.DynamicTransport = TransportU2F;
+    }
+  }
+
+  /**
+   * Enable or disable bluetooth communication, if supported
+   * @param enabled   The bluetooth enabled state
+   */
+  enableBluetoothMode(enabled: boolean) {
+    if (this.supportsBluetooth && enabled) {
+      this.transportMode = 'Bluetooth';
+      this.DynamicTransport = TransportBLE;
+    } else {
+      this.detectUsbTransport();
+    }
   }
 
   /**
@@ -183,37 +239,17 @@ export class LedgerService {
     }
   }
 
-  /**
-   * Determine if a broken browser is being used (Non-desktop Chrome)
-   */
-  isBrokenBrowser(): boolean {
-    if (this.isDesktop) {
-      return false;
-    }
-    // If we using Chromium and not on desktop - warn about Ledger issue
-    const isChromium = window['chrome'];
-    const winNav = window.navigator;
-    const vendorName = winNav.vendor;
-    const isOpera = typeof window['opr'] !== 'undefined';
-    const isIEedge = winNav.userAgent.indexOf('Edge') > -1;
-    const isIOSChrome = winNav.userAgent.match('CriOS');
+  async loadTransport() {
+    return new Promise((resolve, reject) => {
+      this.DynamicTransport.create().then(trans => {
 
-    if (isIOSChrome) {
-      // is Google Chrome on IOS - Shouldnt be using Ledger but meh
-      return true;
-    } else if (
-      isChromium !== null &&
-      typeof isChromium !== 'undefined' &&
-      vendorName === 'Google Inc.' &&
-      isOpera === false &&
-      isIEedge === false
-    ) {
-      // is Google Chrome
-      return true;
-    } else {
-      // not Google Chrome
-      return false;
-    }
+        this.ledger.transport = trans;
+        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+        this.ledger.nano = new Nano(this.ledger.transport);
+
+        resolve(this.ledger.transport);
+      }).catch(reject);
+    });
   }
 
 
@@ -227,7 +263,7 @@ export class LedgerService {
 
       // Desktop is handled completely differently.  Send a message for status instead of setting anything up
       if (this.isDesktop) {
-        if (!this.desktop.send('ledger', { event: 'get-ledger-status' })) {
+        if (!this.desktop.send('ledger', { event: 'get-ledger-status', data: { bluetooth: this.transportMode === 'Bluetooth' } })) {
           reject(new Error(`Electron\'s IPC was not loaded`));
         }
 
@@ -243,42 +279,32 @@ export class LedgerService {
         return;
       }
 
-      // Note:
-      // Everything else below is for loading the Ledger via the browser using Chrome U2F Bridge (Requires https)
-
-      // Load the transport object
       if (!this.ledger.transport) {
+
+        // If in USB mode, detect best transport option
+        if (this.transportMode !== 'Bluetooth') {
+          this.detectUsbTransport();
+        }
+
         try {
-          this.ledger.transport = await TransportU2F.open(null);
-          this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+          await this.loadTransport();
         } catch (err) {
-          console.log(`Transport error: `, err);
-          if (err.statusText === 'UNKNOWN_ERROR') {
-            this.resetLedger();
-          }
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load USB transport` });
-          return resolve(false);
+          console.log(`Error loading ${this.transportMode} transport `, err);
+          this.ledger.status = LedgerStatus.NOT_CONNECTED;
+          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+          this.resetLedger();
+          resolve(false);
         }
       }
 
-      // Load nano object
-      if (!this.ledger.nano) {
-        try {
-          this.ledger.nano = new Nano(this.ledger.transport);
-        } catch (err) {
-          console.log(`Nano error: `, err);
-          if (err.statusText === 'UNKNOWN_ERROR') {
-            this.resetLedger();
-          }
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Error loading Nano USB transport` });
-          return resolve(false);
-        }
+      if (!this.ledger.transport || !this.ledger.nano) {
+        return resolve(false);
       }
 
-      let resolved = false;
       if (this.ledger.status === LedgerStatus.READY) {
         return resolve(true); // Already ready?
       }
+      let resolved = false;
 
       // Set up a timeout when things are not ready
       setTimeout(() => {
@@ -291,7 +317,7 @@ export class LedgerService {
         }
         resolved = true;
         return resolve(false);
-      }, 2500);
+      }, 10000);
 
       // Try to load the app config
       try {
@@ -309,8 +335,9 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the Nano App on your Ledger if the error persists`);
         }
+        resolved = true;
         return resolve(false);
       }
 
@@ -437,8 +464,12 @@ export class LedgerService {
       const accountDetails = await this.getLedgerAccount(0);
       this.ledger.status = LedgerStatus.READY;
     } catch (err) {
-      this.ledger.status = LedgerStatus.NOT_CONNECTED;
-      this.pollingLedger = false;
+      // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)
+      if (err.name !== 'TransportRaceCondition') {
+        console.log('Check ledger status failed ', err);
+        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        this.pollingLedger = false;
+      }
     }
 
     this.ledgerStatus$.next({ status: this.ledger.status, statusText: `` });

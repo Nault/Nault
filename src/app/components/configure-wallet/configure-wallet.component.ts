@@ -84,12 +84,6 @@ export class ConfigureWalletComponent implements OnInit {
     }
   }
 
-  onMethodChange(method) {
-    if (method === 'ledger') {
-      this.importLedgerWallet(true);
-    }
-  }
-
   async importExistingWallet() {
     this.notifications.sendInfo(`Starting to scan the first 10 accounts and importing them if they have been used...`, {length: 7000});
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
@@ -113,6 +107,16 @@ export class ConfigureWalletComponent implements OnInit {
     this.walletService.informNewWallet();
   }
 
+  async connectLedgerByBluetooth() {
+    this.ledgerService.enableBluetoothMode(true);
+    await this.importLedgerWallet();
+  }
+
+  async connectLedgerByUsb() {
+    this.ledgerService.enableBluetoothMode(false);
+    await this.importLedgerWallet();
+  }
+
   async importLedgerWallet(refreshOnly = false) {
     // Determine status of ledger device using ledger service
     this.notifications.sendInfo(`Checking for Ledger device...`, { identifier: 'ledger-status', length: 0 });
@@ -120,11 +124,15 @@ export class ConfigureWalletComponent implements OnInit {
     this.notifications.removeNotification('ledger-status');
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
-      return this.notifications.sendWarning(`No ledger device detected, make sure it is connected and you are using Chrome/Opera`);
+      return this.notifications.sendWarning(`No Ledger device detected.  Make sure the Nano app is running on the Ledger.  Restart the Nano App if the error persists`);
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {
-      return this.notifications.sendWarning(`Unlock your ledger device and open the Nano app to continue`);
+      return this.notifications.sendWarning(`Unlock your Ledger device and open the Nano app to continue`);
+    }
+
+    if (this.ledger.status === LedgerStatus.READY) {
+      this.notifications.sendSuccess(`Successfully connected to Ledger device`);
     }
 
     if (refreshOnly) {
@@ -139,11 +147,6 @@ export class ConfigureWalletComponent implements OnInit {
 
     // We skip the password panel
     this.route.navigate(['accounts']); // load accounts and watch them update in real-time
-
-    // If they are using Chrome, warn them.
-    if (this.ledgerService.isBrokenBrowser()) {
-      this.notifications.sendLedgerChromeWarning();
-    }
 
     // Create new ledger wallet
     const newWallet = await this.walletService.createLedgerWallet();
