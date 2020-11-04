@@ -64,8 +64,8 @@ export class AppSettingsService {
     {
       name: 'Nanos.cc',
       value: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
+      api: 'https://nault.nanos.cc/proxy',
+      ws: 'wss://nault-ws.nanos.cc',
       auth: null,
       shouldRandom: true,
     },
