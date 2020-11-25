@@ -252,6 +252,40 @@ export class LedgerService {
     });
   }
 
+  async tryTransportProtocol(tryNext = false) {
+    try {
+      await this.loadTransport();
+      return true;
+    } catch (err) {
+      console.log(`Error loading ${this.transportMode} transport `, err);
+      if (tryNext) {
+        let connected = false;
+        if (this.supportsWebUSB) {
+          this.supportsWebUSB = false;
+          console.log('Unable to connect the Ledger using WebUSB. Testing the next supported protocol instead...');
+          this.notifications.sendInfo(`Unable to connect the Ledger using WebUSB. Testing the next supported protocol instead...`);
+          this.detectUsbTransport();
+          connected = await this.tryTransportProtocol(true);
+        } else if (this.supportsWebHID) {
+          this.supportsWebHID = false;
+          console.log('Unable to connect the Ledger using WebHID. Fallback to U2F protocol instead...');
+          this.notifications.sendInfo(`Unable to connect the Ledger using WebHID. Fallback to U2F protocol instead...`);
+          this.detectUsbTransport();
+          // U2F is the only one left, don't try any more after that
+          connected = await this.tryTransportProtocol(false);
+        }
+        if (connected) {
+          return true;
+        }
+      }
+
+      this.ledger.status = LedgerStatus.NOT_CONNECTED;
+      this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+      this.resetLedger();
+      return false;
+    }
+  }
+
 
   /**
    * Main ledger loading function.  Can be called multiple times to attempt a reconnect.
@@ -281,18 +315,20 @@ export class LedgerService {
 
       if (!this.ledger.transport) {
 
+        let connected = false;
         // If in USB mode, detect best transport option
         if (this.transportMode !== 'Bluetooth') {
           this.detectUsbTransport();
+          // Only try several times if not the last protocol to try
+          if (this.supportsWebUSB || this.supportsWebHID) {
+            connected = await this.tryTransportProtocol(true);
+          } else {
+            connected = await this.tryTransportProtocol(false);
+          }
+        } else {
+          connected = await this.tryTransportProtocol(false);
         }
-
-        try {
-          await this.loadTransport();
-        } catch (err) {
-          console.log(`Error loading ${this.transportMode} transport `, err);
-          this.ledger.status = LedgerStatus.NOT_CONNECTED;
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
-          this.resetLedger();
+        if (!connected) {
           resolve(false);
         }
       }
