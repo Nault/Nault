@@ -117,8 +117,14 @@ export class LedgerService {
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    if (this.supportsWebUSB) {
-      // Prefer WebUSB
+    const isWindows = window.navigator.platform.includes('Win');
+
+    if (isWindows && this.supportsWebHID) {
+      // Prefer WebHID on Windows due to stability issues with WebUSB
+      this.transportMode = 'HID';
+      this.DynamicTransport = TransportHID;
+    } else if (this.supportsWebUSB) {
+      // Else prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
     } else if (this.supportsWebHID) {
@@ -290,6 +296,13 @@ export class LedgerService {
           await this.loadTransport();
         } catch (err) {
           console.log(`Error loading ${this.transportMode} transport `, err);
+          if (this.transportMode === 'USB') {
+            this.supportsWebUSB = false;
+            console.log('Blacklisted WebUSB due to transport failure');
+          } else if (this.transportMode === 'HID') {
+            this.supportsWebHID = false;
+            console.log('Blacklisted WebHID due to transport failure');
+          }
           this.ledger.status = LedgerStatus.NOT_CONNECTED;
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
           this.resetLedger();
