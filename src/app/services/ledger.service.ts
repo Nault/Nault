@@ -57,6 +57,7 @@ export class LedgerService {
   supportsWebHID = false;
   supportsWebUSB = false;
   supportsBluetooth = false;
+  forceU2FProtocol = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
@@ -117,11 +118,11 @@ export class LedgerService {
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    if (this.supportsWebUSB) {
+    if (this.supportsWebUSB && !this.forceU2FProtocol) {
       // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
-    } else if (this.supportsWebHID) {
+    } else if (this.supportsWebHID && !this.forceU2FProtocol) {
       // Fallback to WebHID
       this.transportMode = 'HID';
       this.DynamicTransport = TransportHID;
@@ -143,6 +144,13 @@ export class LedgerService {
     } else {
       this.detectUsbTransport();
     }
+  }
+
+  /**
+   * Force legacy U2F protocol
+   */
+  forceU2F() {
+    this.forceU2FProtocol = true;
   }
 
   /**

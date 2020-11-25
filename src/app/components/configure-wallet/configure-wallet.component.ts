@@ -117,6 +117,12 @@ export class ConfigureWalletComponent implements OnInit {
     await this.importLedgerWallet();
   }
 
+  async connectLedgerByUsbLegacy() {
+    this.ledgerService.enableBluetoothMode(false);
+    this.ledgerService.forceU2F();
+    await this.importLedgerWallet();
+  }
+
   async importLedgerWallet(refreshOnly = false) {
     // Determine status of ledger device using ledger service
     this.notifications.sendInfo(`Checking for Ledger device...`, { identifier: 'ledger-status', length: 0 });
