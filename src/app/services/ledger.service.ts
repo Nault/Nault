@@ -66,13 +66,13 @@ export class LedgerService {
   desktopMessage$ = new Subject();
 
   constructor(private api: ApiService,
-    private desktop: DesktopService,
-    private notifications: NotificationService) {
-      if (this.isDesktop) {
-        this.configureDesktop();
-      } else {
-        this.checkBrowserSupport();
-      }
+              private desktop: DesktopService,
+              private notifications: NotificationService) {
+    if (this.isDesktop) {
+      this.configureDesktop();
+    } else {
+      this.checkBrowserSupport();
+    }
   }
 
   // Scraps binding to any existing transport/nano object
