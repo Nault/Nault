@@ -296,13 +296,6 @@ export class LedgerService {
           await this.loadTransport();
         } catch (err) {
           console.log(`Error loading ${this.transportMode} transport `, err);
-          if (this.transportMode === 'USB') {
-            this.supportsWebUSB = false;
-            console.log('Blacklisted WebUSB due to transport failure');
-          } else if (this.transportMode === 'HID') {
-            this.supportsWebHID = false;
-            console.log('Blacklisted WebHID due to transport failure');
-          }
           this.ledger.status = LedgerStatus.NOT_CONNECTED;
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
           this.resetLedger();
