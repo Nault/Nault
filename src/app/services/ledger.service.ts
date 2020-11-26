@@ -57,6 +57,7 @@ export class LedgerService {
   supportsWebHID = false;
   supportsWebUSB = false;
   supportsBluetooth = false;
+  isWindows = window.navigator.platform.includes('Win');
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
@@ -65,13 +66,13 @@ export class LedgerService {
   desktopMessage$ = new Subject();
 
   constructor(private api: ApiService,
-              private desktop: DesktopService,
-              private notifications: NotificationService) {
-    if (this.isDesktop) {
-      this.configureDesktop();
-    } else {
-      this.checkBrowserSupport();
-    }
+    private desktop: DesktopService,
+    private notifications: NotificationService) {
+      if (this.isDesktop) {
+        this.configureDesktop();
+      } else {
+        this.checkBrowserSupport();
+      }
   }
 
   // Scraps binding to any existing transport/nano object
@@ -117,8 +118,12 @@ export class LedgerService {
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    if (this.supportsWebUSB) {
-      // Prefer WebUSB
+    if (this.isWindows && this.supportsWebHID) {
+      // Prefer WebHID on Windows due to stability issues with WebUSB
+      this.transportMode = 'HID';
+      this.DynamicTransport = TransportHID;
+    } else if (this.supportsWebUSB) {
+      // Else prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
     } else if (this.supportsWebHID) {
@@ -260,16 +265,21 @@ export class LedgerService {
       console.log(`Error loading ${this.transportMode} transport `, err);
       if (tryNext) {
         let connected = false;
-        if (this.supportsWebUSB) {
-          this.supportsWebUSB = false;
-          console.log('Unable to connect the Ledger using WebUSB. Testing the next supported protocol instead...');
-          this.notifications.sendInfo(`Unable to connect the Ledger using WebUSB. Testing the next supported protocol instead...`);
+        console.log(`Unable to connect the Ledger using ${this.transportMode}. Testing the next supported protocol instead...`);
+        this.notifications.sendInfo(`Unable to connect the Ledger using ${this.transportMode}. Testing the next supported protocol instead...`);
+
+        if (this.supportsWebHID && this.isWindows) {
+          this.supportsWebHID = false;
           this.detectUsbTransport();
+          // The next test will be webUSB or U2F
+          connected = await this.tryTransportProtocol(true);
+        } else if (this.supportsWebUSB) {
+          this.supportsWebUSB = false;
+          this.detectUsbTransport();
+          // The next test will be webHID (if not Windows) or U2F
           connected = await this.tryTransportProtocol(true);
         } else if (this.supportsWebHID) {
           this.supportsWebHID = false;
-          console.log('Unable to connect the Ledger using WebHID. Fallback to U2F protocol instead...');
-          this.notifications.sendInfo(`Unable to connect the Ledger using WebHID. Fallback to U2F protocol instead...`);
           this.detectUsbTransport();
           // U2F is the only one left, don't try any more after that
           connected = await this.tryTransportProtocol(false);
@@ -285,7 +295,6 @@ export class LedgerService {
       return false;
     }
   }
-
 
   /**
    * Main ledger loading function.  Can be called multiple times to attempt a reconnect.
@@ -510,7 +519,4 @@ export class LedgerService {
 
     this.ledgerStatus$.next({ status: this.ledger.status, statusText: `` });
   }
-
-
-
 }
