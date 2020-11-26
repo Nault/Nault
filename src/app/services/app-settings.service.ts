@@ -72,10 +72,10 @@ export class AppSettingsService {
     {
       name: 'VoxPopuli',
       value: 'voxpopuli',
-      api: 'https://voxpopuli.network/api',
-      ws: 'wss://voxpopuli.network/websocket',
+      api: 'https://vox.nanos.cc/api',
+      ws: 'wss://vox.nanos.cc/websocket',
       auth: null,
-      shouldRandom: false,
+      shouldRandom: true,
     },
     {
       name: 'Nanex.cc',
