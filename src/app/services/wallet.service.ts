@@ -272,10 +272,6 @@ export class WalletService {
 
     this.wallet.selectedAccountId = walletJson.selectedAccountId || null;
 
-    if (walletType === 'ledger') {
-      this.ledgerService.loadLedger(true);
-    }
-
     return this.wallet;
   }
 

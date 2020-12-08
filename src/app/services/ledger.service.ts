@@ -10,6 +10,7 @@ import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
 import { environment } from '../../environments/environment';
 import {DesktopService} from './desktop.service';
+import { AppSettingsService } from './app-settings.service';
 
 export const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,
@@ -66,11 +67,16 @@ export class LedgerService {
 
   constructor(private api: ApiService,
               private desktop: DesktopService,
-              private notifications: NotificationService) {
+              private notifications: NotificationService,
+              private appSettings: AppSettingsService) {
     if (this.isDesktop) {
       this.configureDesktop();
     } else {
-      this.checkBrowserSupport();
+      this.checkBrowserSupport().then(() => {
+        if (appSettings.getAppSetting('ledgerReconnect') === 'bluetooth') {
+          this.enableBluetoothMode(true);
+        }
+      });
     }
   }
 
@@ -106,11 +112,13 @@ export class LedgerService {
   /**
    * Check which transport protocols are supported by the browser
    */
-  checkBrowserSupport() {
-    TransportU2F.isSupported().then(supported => this.supportsU2F = supported);
-    TransportHID.isSupported().then(supported => this.supportsWebHID = supported);
-    TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported);
-    TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported);
+  async checkBrowserSupport() {
+    await Promise.all([
+      TransportU2F.isSupported().then(supported => this.supportsU2F = supported),
+      TransportHID.isSupported().then(supported => this.supportsWebHID = supported),
+      TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported),
+      TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported),
+    ]);
   }
 
   /**
@@ -290,6 +298,9 @@ export class LedgerService {
         // If in USB mode, detect best transport option
         if (this.transportMode !== 'Bluetooth') {
           this.detectUsbTransport();
+          this.appSettings.setAppSetting('ledgerReconnect', 'usb');
+        } else {
+          this.appSettings.setAppSetting('ledgerReconnect', 'bluetooth');
         }
 
         try {
