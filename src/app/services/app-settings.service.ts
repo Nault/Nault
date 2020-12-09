@@ -3,6 +3,7 @@ import * as url from 'url';
 
 export type WalletStore = 'localStorage'|'none';
 export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
+export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
   displayDenomination: string;
@@ -12,6 +13,7 @@ interface AppSettings {
   defaultRepresentative: string | null;
   lockOnClose: number;
   lockInactivityMinutes: number;
+  ledgerReconnect: LedgerConnectionType;
   powSource: PoWSource;
   pendingOption: string;
   serverName: string;
@@ -34,6 +36,7 @@ export class AppSettingsService {
     defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
+    ledgerReconnect: 'usb',
     powSource: 'best',
     pendingOption: 'amount',
     serverName: 'random',
@@ -183,6 +186,7 @@ export class AppSettingsService {
       defaultRepresentative: null,
       lockOnClose: 1,
       lockInactivityMinutes: 30,
+      ledgerReconnect: 'usb',
       powSource: 'best',
       pendingOption: 'amount',
       serverName: 'random',
