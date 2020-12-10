@@ -111,6 +111,7 @@ export class SendComponent implements OnInit {
     if (params && params.to) {
       this.toAccountID = params.to;
       this.validateDestination();
+      this.sendDestinationType = 'external-address';
     }
   }
 
