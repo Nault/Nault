@@ -1,9 +1,16 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2 class="uk-heading-divider">Send Nano</h2>
+    <h2 class="uk-heading-divider">{{ (sendDestinationType === 'own-address') ? 'Transfer Nano between own accounts' : 'Send Nano' }}</h2>
 
     <!-- Send Panel -->
     <div uk-grid *ngIf="activePanel == 'send'" class="uk-animation-slide-left-small">
+      <div class="send-types-wrapper uk-width-1-1 uk-text-center">
+        <div class="send-types-frame">
+          <button [class]="['send-types-tab', (sendDestinationType === 'external-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'external-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('external-address')">Send to address</button>
+          <button [class]="['send-types-tab', (sendDestinationType === 'own-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'own-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('own-address')">Transfer between own accounts</button>
+        </div>
+      </div>
+
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-card-default">
@@ -20,12 +27,12 @@
                 </div>
               </div>
 
-              <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
+              <div class="uk-margin" *ngIf="( sendDestinationType === 'external-address' )">
+                <label class="uk-form-label" for="form-horizontal-text2">To Address</label>
                 <div class="uk-form-controls">
                   <div class="form-input-destination uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Account to send to" autocomplete="off">
+                    <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Address to send to" autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="dropdown-nav-container uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
@@ -43,6 +50,18 @@
                   <div class="uk-inline uk-width-1-1">
                     <span class="account-label blue uk-margin-small-top">{{ addressBookMatch }}</span>
                   </div>
+                </div>
+              </div>
+
+              <div class="uk-margin" *ngIf="( sendDestinationType === 'own-address' )">
+                <label class="uk-form-label" for="form-horizontal-text2">To Account</label>
+                <div class="uk-form-controls">
+                  <select required class="form-select-destination uk-select" [(ngModel)]="toOwnAccountID" id="form-horizontal-select">
+                    <option value="" disabled selected hidden>Account to transfer to</option>
+                    <ng-container *ngFor="let account of accounts">
+                      <option [value]="account.id" *ngIf="account.id !== fromAccountID">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
+                    </ng-container>
+                  </select>
                 </div>
               </div>
 
@@ -136,10 +155,10 @@
                   <div *ngIf="toAddressBook">
                     <span class="confirm-title uk-text-truncate">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="getDestinationID()" class="uk-flex-right"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="getDestinationID()" class="uk-flex-right"></app-nano-account-id></span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>
