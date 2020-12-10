@@ -236,10 +236,12 @@ export class SendComponent implements OnInit {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.toOwnAccountID);
 
     if (!walletAccount) {
-      throw new Error(`Unable to find receiving account in wallet`);
+      // Unable to find receiving account in wallet
+      return '';
     }
 
     if (this.toOwnAccountID === this.fromAccountID) {
+      // Sending to the same address is only allowed via 'external-address'
       return '';
     }
 
