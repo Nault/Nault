@@ -229,7 +229,7 @@ export class SendComponent implements OnInit {
 
   getDestinationID() {
     if (this.sendDestinationType === 'external-address') {
-      return this.toAccountID
+      return this.toAccountID;
     }
 
     // 'own-address'
