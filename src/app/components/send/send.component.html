@@ -73,19 +73,19 @@
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1">
                           <a class="uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
-                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to send" maxlength="40">
+                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}" maxlength="40">
                         </div>
 
                       </div>
 
                       <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-width-3-5@m uk-text-small uk-text-muted uk-margin-remove">
-                        <span uk-tooltip title="Additional raw to send">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
+                        <span uk-tooltip title="Additional raw to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
                       </div>
 
                       <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                         <div class="uk-width-1-1 uk-inline">
                           <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to send">
+                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="text" placeholder="Amount of {{ settings.settings.displayCurrency }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}">
                         </div>
                       </div>
 
@@ -98,7 +98,7 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sendTransaction()">Send Nano</button>
+            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sendTransaction()">{{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}</button>
           </div>
         </div>
       </div>
