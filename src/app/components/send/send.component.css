@@ -1,5 +1,9 @@
-.form-select-source, .form-input-destination {
+.form-select-source, .form-input-destination, .form-select-destination {
 	max-width: 800px;
+}
+
+select:invalid {
+  color: #888;
 }
 
 .form-amount {
@@ -45,4 +49,24 @@
 
 .uk-dropdown-spacing {
   padding: 5px 0;
+}
+
+.send-types-wrapper {
+  margin: -5px;
+  padding-bottom: 15px;
+}
+.send-types-frame {
+  display: inline-block;
+}
+.send-types-tab {
+  width: 400px;
+  margin: 5px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.send-types-tab-active {
+  border-color: transparent;
+  color: #555 !important;
+  background: #f4faff;
+  box-shadow: none;
 }

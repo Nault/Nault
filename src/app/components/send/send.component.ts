@@ -25,6 +25,7 @@ export class SendComponent implements OnInit {
   nano = 1000000000000000000000000;
 
   activePanel = 'send';
+  sendDestinationType = 'external-address';
 
   accounts = this.walletService.wallet.accounts;
   addressBookResults$ = new BehaviorSubject([]);
@@ -47,6 +48,7 @@ export class SendComponent implements OnInit {
   fromAddressBook = '';
   toAccount: any = false;
   toAccountID = '';
+  toOwnAccountID: any = '';
   toAddressBook = '';
   toAccountStatus = null;
   amountStatus = null;
@@ -109,6 +111,7 @@ export class SendComponent implements OnInit {
     if (params && params.to) {
       this.toAccountID = params.to;
       this.validateDestination();
+      this.sendDestinationType = 'external-address';
     }
   }
 
@@ -182,6 +185,10 @@ export class SendComponent implements OnInit {
     this.validateDestination();
   }
 
+  setSendDestinationType(newType: string) {
+    this.sendDestinationType = newType;
+  }
+
   async validateDestination() {
     // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
     setTimeout(() => this.showAddressBook = false, 400);
@@ -221,12 +228,34 @@ export class SendComponent implements OnInit {
     }
   }
 
+  getDestinationID() {
+    if (this.sendDestinationType === 'external-address') {
+      return this.toAccountID;
+    }
+
+    // 'own-address'
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.toOwnAccountID);
+
+    if (!walletAccount) {
+      // Unable to find receiving account in wallet
+      return '';
+    }
+
+    if (this.toOwnAccountID === this.fromAccountID) {
+      // Sending to the same address is only allowed via 'external-address'
+      return '';
+    }
+
+    return this.toOwnAccountID;
+  }
+
   async sendTransaction() {
-    const isValid = this.util.account.isValidAccount(this.toAccountID);
+    const destinationID = this.getDestinationID();
+    const isValid = this.util.account.isValidAccount(destinationID);
     if (!isValid) {
       return this.notificationService.sendWarning(`To account address is not valid`);
     }
-    if (!this.fromAccountID || !this.toAccountID) {
+    if (!this.fromAccountID || !destinationID) {
       return this.notificationService.sendWarning(`From and to account are required`);
     }
     if (!this.validateAmount()) {
@@ -234,7 +263,7 @@ export class SendComponent implements OnInit {
     }
 
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
-    const to = await this.nodeApi.accountInfo(this.toAccountID);
+    const to = await this.nodeApi.accountInfo(destinationID);
     if (!from) {
       return this.notificationService.sendError(`From account not found`);
     }
@@ -263,9 +292,9 @@ export class SendComponent implements OnInit {
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
-    // Start precopmuting the work...
+    // Start precomputing the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
-    this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
+    this.toAddressBook = this.addressBookService.getAccountName(destinationID);
     this.workPool.addWorkToCache(this.fromAccount.frontier);
 
     this.activePanel = 'confirm';
@@ -283,8 +312,11 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = true;
 
     try {
-      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID,
+      const destinationID = this.getDestinationID();
+
+      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,
         this.rawAmount, this.walletService.isLedgerWallet());
+
       if (newHash) {
         this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
         this.activePanel = 'send';
@@ -292,6 +324,7 @@ export class SendComponent implements OnInit {
         this.amountFiat = null;
         this.resetRaw();
         this.toAccountID = '';
+        this.toOwnAccountID = '';
         this.toAccountStatus = null;
         this.fromAddressBook = '';
         this.toAddressBook = '';
