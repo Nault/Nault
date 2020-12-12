@@ -118,6 +118,14 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async importLedgerWallet(refreshOnly = false) {
+     // If a wallet exists already, make sure they know they are overwriting it
+     if (!refreshOnly) {
+      const confirmed = await this.confirmWalletOverwrite();
+      if (!confirmed) {
+        return;
+      }
+    }
+
     // Determine status of ledger device using ledger service
     this.notifications.sendInfo(`Checking for Ledger device...`, { identifier: 'ledger-status', length: 0 });
     await this.ledgerService.loadLedger(true);
@@ -136,12 +144,6 @@ export class ConfigureWalletComponent implements OnInit {
     }
 
     if (refreshOnly) {
-      return;
-    }
-
-    // If a wallet exists already, make sure they know they are overwriting it
-    const confirmed = await this.confirmWalletOverwrite();
-    if (!confirmed) {
       return;
     }
 
