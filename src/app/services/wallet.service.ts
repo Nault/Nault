@@ -488,7 +488,7 @@ export class WalletService {
   }
 
   async createLedgerWallet() {
-    this.resetWallet();
+    // this.resetWallet(); Now done earlier to ensure user not sending to wrong account
 
     this.wallet.type = 'ledger';
 
