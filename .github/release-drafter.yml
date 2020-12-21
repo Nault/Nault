@@ -4,6 +4,7 @@ categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
+      - 'feat'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
@@ -11,7 +12,11 @@ categories:
       - 'bugfix'
       - 'bug'
   - title: '🧰 Maintenance'
-    label: 'chore'
+    labels:
+      - 'chore'
+      - 'refactor'
+      - 'style'
+      - 'docs'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
