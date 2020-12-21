@@ -119,20 +119,22 @@ export class ConfigureWalletComponent implements OnInit {
 
   async importLedgerWallet(refreshOnly = false) {
      // If a wallet exists already, make sure they know they are overwriting it
-     if (!refreshOnly) {
+     if (!refreshOnly && this.isConfigured()) {
       const confirmed = await this.confirmWalletOverwrite();
       if (!confirmed) {
         return;
       }
+      this.walletService.resetWallet();
     }
 
     // Determine status of ledger device using ledger service
     this.notifications.sendInfo(`Checking for Ledger device...`, { identifier: 'ledger-status', length: 0 });
     await this.ledgerService.loadLedger(true);
     this.notifications.removeNotification('ledger-status');
+    this.notifications.removeNotification('ledger-error');
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
-      return this.notifications.sendWarning(`No Ledger device detected.  Make sure the Nano app is running on the Ledger.  Restart the Nano App if the error persists`);
+      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the Nano app is running on the Ledger. If the error persists: Check the troubleshooting at https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting`, { identifier: 'ledger-error', length: 0 });
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {

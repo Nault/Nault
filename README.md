@@ -23,6 +23,8 @@ You can also use Nault from any device on the web at [nault.cc](https://nault.cc
 
 Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
 
+A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
+
 ## How To Help
 
 Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
