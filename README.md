@@ -18,16 +18,14 @@ ___
 ## How To Use
 Nault comes in different flavors to suit your need.
 #### Desktop App
-Available for Windows/Mac/Linux - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS:
+Available for Windows/Mac/Linux - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS.
 
-* Windows: *.exe
-* Linux: *.AppImage
-* Max: *.dmg
-
-If you want to verify the binary checksum you can download the corresponding checksum file. There are plenty of apps to do this, one way is using a powershell or bash terminal.
+If you want to verify the binary checksum there are plenty of apps to do this and one way is using a powershell or bash terminal using sha-512.
 
 * **Powershell:** Get-FileHash -Path '.\Nault Setup x.x.x.exe' -Algorithm SHA512
 * **Bash:** openssl sha512 Nault-x.x.x.AppImage
+
+Then compare the output hash with the one listed in the corresponding checksums file that you download.
 
 #### Web App
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc).
