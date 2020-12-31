@@ -42,7 +42,7 @@ template: |
 
   If you want to verify the binary checksum there are plenty of apps to do this. One way is using a powershell or bash terminal:
 
-  * **Powershell:** Get-FileHash -Path '.\Nault-Setup-$RESOLVED_VERSION-Windows.exe' -Algorithm SHA256
-  * **Bash:** openssl sha256 Nault-$RESOLVED_VERSION-Linux.AppImage
+  * **Powershell:** `Get-FileHash -Path '.\Nault-Setup-$RESOLVED_VERSION-Windows.exe' -Algorithm SHA256`
+  * **Bash:** `openssl sha256 Nault-$RESOLVED_VERSION-Linux.AppImage`
 
   Then compare the output hash with the one listed in the corresponding checksums file that you download.
