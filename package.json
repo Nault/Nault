@@ -101,7 +101,7 @@
   },
   "build": {
     "appId": "cc.nault",
-    "buildVersion": "1.6.1",
+    "buildVersion": "1.0.0",
     "productName": "Nault",
     "copyright": "Copyright © 2020 The Nano Community / Andrew Steele",
     "directories": {
@@ -126,13 +126,6 @@
     "linux": {
       "target": "AppImage"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "nault",
-        "repo": "nault"
-      }
-    ],
     "protocols": {
       "name": "nano",
       "schemes": [
