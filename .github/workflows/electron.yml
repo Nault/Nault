@@ -1,8 +1,8 @@
 name: Electron App
+# Action no longer used but kept as reference for a while
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   release:

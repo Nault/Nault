@@ -1,0 +1,169 @@
+name: Electron App Release
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Release draft and share app version via package.json
+  pre_build:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.release_drafter.outputs.upload_url }}
+      output2: ${{ steps.package-version.outputs.current-version }}
+    steps:
+      - name: Check out Git repository
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/checkout@v1
+
+      - uses: release-drafter/release-drafter@v5
+        if: startsWith(github.ref, 'refs/tags/')
+        id: release_drafter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store NPM version
+        if: startsWith(github.ref, 'refs/tags/')
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+  release:
+    runs-on: ${{ matrix.os }}
+
+    # Run different jobs for each OS
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: checksums
+            asset_name: checksums
+            app_ext: AppImage
+            app_os: linux
+          - os: macos-latest
+            artifact_name: checksums
+            asset_name: checksums
+            app_ext: dmg
+            app_os: mac
+          - os: windows-latest
+            artifact_name: checksums
+            asset_name: checksums
+            app_ext: exe
+            app_os: windows
+
+    needs: pre_build # job dependency and shared variables
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install APT dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential git -y
+          sudo apt-get install libudev-dev -y
+          sudo apt-get install libusb-1.0-0-dev -y
+          sudo apt-get install gcc-4.8 g++-4.8 -y
+
+      - name: Install and Build Desktop App
+        run: |
+          npm install
+          npm run desktop:build
+          
+      - name: Temporarily fix electron-builder
+        # https://github.com/electron-userland/electron-builder/issues/4176
+        if: matrix.os != 'macos-latest'
+        run: |
+          sed -i 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
+        shell: bash
+
+      - name: Temporarily fix electron-builder (MacOS)
+        # https://github.com/electron-userland/electron-builder/issues/4176
+        if: matrix.os == 'macos-latest'
+        run: |
+          sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
+        shell: bash
+        
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          # GitHub token, automatically provided to the action
+          # (No need to define this secret in the repo settings)
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # is already built
+          skip_build: true
+          
+          release: false
+          args: "-p never" # Do not publish, done in the next step instead
+
+      - name: Create Hashes
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          openssl sha1 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl md5 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl sha256 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl sha512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl sha3-512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl blake2b512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+        shell: bash
+
+      # Upload binaries separately for better control which release draft they go into
+      - name: Upload Binaries Linux
+        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
+          asset_path: desktop-app/build/Nault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Nault-${{ needs.pre_build.outputs.output2 }}-Linux.${{ matrix.app_ext }}
+          asset_content_type: application/octet-stream
+
+      - name: Upload Binaries Mac
+        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
+          asset_path: desktop-app/build/Nault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Nault-${{ needs.pre_build.outputs.output2 }}-Mac.${{ matrix.app_ext }}
+          asset_content_type: application/octet-stream
+
+      - name: Upload Binaries Windows
+        if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
+          asset_path: desktop-app/build/Nault Setup ${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Nault-Setup-${{ needs.pre_build.outputs.output2 }}-Windows.${{ matrix.app_ext }}
+          asset_content_type: application/octet-stream
+
+      - name: Upload Checksums
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
+          asset_path: desktop-app/build/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}-${{ needs.pre_build.outputs.output2}}-${{ matrix.app_os }}.txt
+          asset_content_type: application/octet-stream
+      
+      # Artifacts are always uploaded. Both untagged pushes and PRs
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: |
+            desktop-app/build/*.AppImage
+            desktop-app/build/*.dmg
+            desktop-app/build/*.exe
