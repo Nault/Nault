@@ -16,12 +16,23 @@ Seamless integration with any Nano compatible RPC backend/websocket and the aim 
 ___
 
 ## How To Use
+Nault comes in different flavors to suit your need.
+#### Desktop App
+Available for Windows/Mac/Linux - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS.
 
-Nault is available on your desktop (Windows/Mac/Linux) - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS.
+If you want to verify the binary checksum there are plenty of apps to do this. One way is using a powershell or bash terminal:
 
+* **Powershell:** `Get-FileHash -Path '.\Nault-Setup-x.x.x-Windows.exe' -Algorithm SHA256`
+* **Bash:** `openssl sha256 Nault-x.x.x-Linux.AppImage`
+
+Then compare the output hash with the one listed in the corresponding checksums file that you download.
+
+#### Web App
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc).
 
 Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
+
+The web version can additionally be pulled from the [dockerhub repo](https://hub.docker.com/r/nault/nault) using: docker pull nault/nault:latest
 
 A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
 
