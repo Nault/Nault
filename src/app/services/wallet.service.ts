@@ -945,7 +945,10 @@ export class WalletService {
       return setTimeout(() => this.processPendingBlocks(), 1500); // Block has already been processed
     }
     const walletAccount = this.getWalletAccount(nextBlock.account);
-    if (!walletAccount) return; // Dispose of the block, no matching account
+    if (!walletAccount) {
+      this.processingPending = false;
+      return; // Dispose of the block, no matching account
+    }
 
     const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash, this.isLedgerWallet());
     if (newHash) {
@@ -958,9 +961,11 @@ export class WalletService {
       await this.reloadBalances();
     } else {
       if (this.isLedgerWallet()) {
+        this.processingPending = false;
         return null; // Denied to receive, stop processing
       }
-      return this.notifications.sendError(`There was a problem performing the receive transaction, try manually!`);
+      this.processingPending = false;
+      return this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
     }
 
     // shifting no longer needed because reloadBalances will make sure wallet.pendingBlocks is up to date
