@@ -159,9 +159,11 @@ function getApplicationMenu() {
           label: `Nault Version: ${autoUpdater.currentVersion}`,
         },
         {
-          label: 'View Latest Updates',
+          label: 'Check for Updates',
           click () { loadExternal('https://github.com/Nault/Nault/releases'); }
         },
+        // updates not working, disable for now
+        /**
         {type: 'separator'},
         {
           label: `Check for Updates...`,
@@ -169,6 +171,7 @@ function getApplicationMenu() {
             checkForUpdates();
           }
         },
+        */
       ]
     }
   ];
@@ -180,9 +183,11 @@ function getApplicationMenu() {
         {role: 'about'},
         {type: 'separator'},
         {
-          label: `Check for Updates...`,
+          label: `Check for Updates`,
           click (menuItem, browserWindow) {
-            checkForUpdates();
+            // updates not working, disable for now
+            // checkForUpdates();
+            loadExternal('https://github.com/Nault/Nault/releases');
           }
         },
         {type: 'separator'},
