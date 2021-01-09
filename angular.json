@@ -44,7 +44,9 @@
                "zxcvbn",
                "url",
                "punycode",
-               "querystring"
+               "querystring",
+               "hw-transport-webusb",
+               "hw-transport-web-ble"
             ]
           },
           "configurations": {
