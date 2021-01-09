@@ -53,12 +53,10 @@ export class WorkPoolService {
 
     // if work is requested while work is already being processed for this hash
     if (cached && cached.work === tempWork) {
-      let count = 0;
       // wait for current pow to finish or fail
       while (cached && cached.work === tempWork) {
         await this.sleep(100);
         cached = this.workCache.find(p => p.hash === hash);
-        count++;
       }
       if (cached && cached.work && this.util.nano.validateWork(hash, baseThreshold, cached.work)) {
         console.log('Using pre-processed work: ' + cached.work);
