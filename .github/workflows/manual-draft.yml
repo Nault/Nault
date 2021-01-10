@@ -1,4 +1,4 @@
-name: Release Drafter
+name: Manual Release Draft
 
 on:
   # only allow manual run, for example to analyze changes before a realease
