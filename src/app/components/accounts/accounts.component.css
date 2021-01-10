@@ -30,8 +30,30 @@
 	border-color: transparent;
 }
 
+.account-container:hover .account-index {
+	color: #4A90E2;
+}
+
+.account-container:hover .account-index span {
+	color: #A2CBFA;
+}
+
 .account-container .nano-address-clickable {
 	vertical-align: bottom;
+}
+
+.account-container .account-index {
+	display: inline-block;
+	font-size: 13px;
+	margin-right: 7px;
+	color: #676686;
+}
+
+.account-container .account-index span {
+	color: #AAA;
+	font-size: 15px;
+	vertical-align: -1px;
+	margin-right: 1px;
 }
 
 .account-container .account-label {
