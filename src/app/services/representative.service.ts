@@ -12,6 +12,7 @@ export interface RepresentativeStatus {
   highWeight: boolean;
   veryLowUptime: boolean;
   lowUptime: boolean;
+  closing: boolean;
   markedToAvoid: boolean;
   trusted: boolean;
   changeRequired: boolean;
@@ -141,6 +142,7 @@ export class RepresentativeService {
         highWeight: false,
         veryLowUptime: false,
         lowUptime: false,
+        closing: false,
         markedToAvoid: false,
         trusted: false,
         daysSinceLastVoted: 0,
@@ -187,6 +189,13 @@ export class RepresentativeService {
       const uptimeIntervalDays = 7;
 
       if (knownRepNinja && !repStatus.trusted) {
+        if (knownRepNinja.closing === true) {
+          status = 'alert';
+          repStatus.closing = true;
+          repStatus.warn = true;
+          repStatus.changeRequired = true;
+        }
+
         let uptimeIntervalValue = knownRepNinja.uptime_over.week;
 
         // temporary fix for knownRepNinja.uptime_over.week always returning 0
