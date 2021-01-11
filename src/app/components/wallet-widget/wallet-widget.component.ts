@@ -17,6 +17,8 @@ export class WalletWidgetComponent implements OnInit {
   unlockPassword = '';
 
   modal: any = null;
+  shouldDelayUnlockAttempt: boolean = false;
+  timeoutIdDisablingDelay: any = null;
 
   constructor(
     public walletService: WalletService,
@@ -67,7 +69,24 @@ export class WalletWidgetComponent implements OnInit {
   }
 
   async unlockWallet() {
-    await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
+    if (this.shouldDelayUnlockAttempt === true) {
+      await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
+    }
+
+    this.shouldDelayUnlockAttempt = true;
+
+    if (this.timeoutIdDisablingDelay !== null) {
+      clearTimeout(this.timeoutIdDisablingDelay);
+    }
+
+    this.timeoutIdDisablingDelay = setTimeout(
+      () => {
+        this.shouldDelayUnlockAttempt = false;
+        this.timeoutIdDisablingDelay = null;
+      },
+      2000
+    );
+
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
     if (unlocked) {
