@@ -1,7 +1,7 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
 
-    <h2 class="uk-heading-divider">Account Details</h2>
+    <h2 class="uk-heading-divider">{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header uk-visible-toggle">
@@ -10,8 +10,11 @@
 
           <div class="uk-width-expand">
 
-            <div *ngIf="showEditAddressBook" uk-grid>
-              <div class=" uk-width-1-1">
+            <div *ngIf="walletAccount && addressBookEntry">{{ 'Account #' + walletAccount.index }}</div>
+            <div *ngIf="!walletAccount">External address</div>
+
+            <div uk-grid>
+              <div class="uk-width-1-1" *ngIf="showEditAddressBook">
                 <div class="uk-margin">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="Save Changes"></a>
@@ -20,39 +23,31 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div *ngIf="!showEditAddressBook" uk-grid>
-              <div class="uk-width-1-1">
-                <div *ngIf="addressBookEntry || walletAccount">
-                  <div class="uk-width-1-1">
-                    <div uk-grid>
-                    <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{ addressBookEntry ? addressBookEntry : ('Account #' + walletAccount.index)}}</h3>
-                      <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
-                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
-                      </div>
-                    </div>
-                  </div>
+              <div class="uk-width-1-1" *ngIf="!showEditAddressBook">
+                <div class="uk-width-1-1">
                   <div uk-grid>
-                    <div class="nano-address-monospace uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
-                      <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
-                    </div>
-                    <div class="uk-width-auto" style="padding-left: 10px; margin-top: -3px;">
-                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  <h3 class="uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 35px);">{{
+                      addressBookEntry
+                    ? addressBookEntry
+                    : (
+                        walletAccount
+                      ? ('Account #' + walletAccount.index)
+                      : 'No label set'
+                    )
+                  }}</h3>
+                    <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
+                      <a style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></a>
                     </div>
                   </div>
                 </div>
-
-                <div *ngIf="!addressBookEntry && !walletAccount">
-                  <div uk-grid>
-                    <h3 class="nano-address-monospace uk-width-auto uk-card-title uk-text-truncate" style="max-width: calc(100% - 80px);">
-                      <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
-                    </h3>
-                    <div class="uk-width-auto">
-                      <ul class="uk-iconnav" style="margin-top: 5px;">
-                        <li style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></li>
-                        <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                      </ul>
-                    </div>
+              </div>
+              <div class="uk-width-1-1 uk-margin-small-top">
+                <div uk-grid>
+                  <div class="nano-address-monospace uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 35px);">
+                    <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px; margin-top: -3px;">
+                    <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   </div>
                 </div>
               </div>
