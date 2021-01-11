@@ -33,11 +33,6 @@
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.import">
   <div class="uk-card-body">
-    <p>
-      If you already have a Nano wallet, you can import it below.  When you import a wallet, it replaces the previous one in the GUI but none of your existing 
-      accounts are affected since the wallet can be restored simply by importing it again. The seed is not stored anywhere besides in your local client so please make sure you have it stored elsewhere.  Use the drop
-      down below to select which type of import you want to use.
-    </p>
     <div uk-grid>
       <div class="uk-width-1-1">
         <div class="uk-form-horizontal">
@@ -55,6 +50,13 @@
 
     <hr class="uk-divider-icon" style="margin-top: 10px;">
 
+    <div class="uk-alert-primary" uk-alert style="max-width: 700px;" *ngIf="(selectedImportOption === 'mnemonic') || (selectedImportOption === 'bip39-mnemonic')">
+      <i><span uk-icon="icon: info;" style="vertical-align: 2px;"></span> Note for Ledger device owners:</i>
+      <p>
+        Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet.
+      </p>
+    </div>
+
     <div uk-grid *ngIf="selectedImportOption === 'file'">
       <div class="uk-width-1-1">
         <p>
@@ -69,7 +71,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importSeedModel" placeholder="64 character Nano Backup Seed">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importSeedModel" placeholder="64 hex character Nano Seed">
         </div>
       </div>
     </div>
@@ -147,7 +149,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importPrivateKeyModel" placeholder="64 character Nano Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importPrivateKeyModel" placeholder="64 hex character Nano Private Key">
         </div>
       </div>
     </div>
@@ -158,7 +160,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('expanded1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importExpandedKeyModel" placeholder="64 or 128 character Nano Expanded Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importExpandedKeyModel" placeholder="64 or 128 hex character Nano Expanded Private Key">
         </div>
       </div>
     </div>
