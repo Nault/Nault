@@ -17,7 +17,7 @@ export class WalletWidgetComponent implements OnInit {
   unlockPassword = '';
 
   modal: any = null;
-  shouldDelayUnlockAttempt: boolean = false;
+  shouldDelayUnlockAttempt = false;
   timeoutIdDisablingDelay: any = null;
 
   constructor(
