@@ -39,9 +39,16 @@
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-width-1-1">
-                  <div class="account-label">
-                    {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
-                  </div>
+                  <div class="account-index" *ngIf="viewAdvanced"><span>#</span>{{ account.index }}</div>
+                  <div class="account-label">{{
+                      account.addressBookName
+                    ? account.addressBookName
+                    : (
+                        viewAdvanced
+                      ? 'Account'
+                      : 'Account #' + account.index
+                    )
+                  }}</div>
                 </div>
                 <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
                   <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
