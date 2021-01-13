@@ -93,7 +93,7 @@ export class WalletWidgetComponent implements OnInit {
 
     this.timeoutIdAllowingUnlock = setTimeout(
       () => {
-        this.allowUnlock({ focusInputElement: true })
+        this.allowUnlock({ focusInputElement: true });
       },
       500
     );
