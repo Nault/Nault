@@ -62,11 +62,15 @@
       <h2 class="uk-modal-title">Unlock Wallet</h2>
     </div>
     <div class="uk-modal-body">
-      <input autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()" class="uk-input" placeholder="Enter wallet password">
+      <input #passwordInput autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()"
+        [class]="{ 'uk-input': true, 'password-input': true, 'uk-form-danger': !mayAttemptUnlock }"
+        [placeholder]="( mayAttemptUnlock ? 'Enter wallet password' : 'Incorrect password' )"
+        [disabled]="!mayAttemptUnlock"
+      >
     </div>
     <div class="uk-modal-footer uk-text-right nlt-button-group">
       <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()">Unlock</button>
+      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()" [disabled]="!mayAttemptUnlock">Unlock</button>
     </div>
   </div>
 </div>
