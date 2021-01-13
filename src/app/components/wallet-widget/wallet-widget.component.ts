@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {LedgerService} from '../../services/ledger.service';
@@ -17,12 +17,16 @@ export class WalletWidgetComponent implements OnInit {
   unlockPassword = '';
 
   modal: any = null;
+  mayAttemptUnlock = true;
+  timeoutIdAllowingUnlock: any = null;
 
   constructor(
     public walletService: WalletService,
     private notificationService: NotificationService,
     public ledgerService: LedgerService,
     public settings: AppSettingsService) { }
+
+  @ViewChild('passwordInput') passwordInput: ElementRef;
 
   ngOnInit() {
     const UIkit = (window as any).UIkit;
@@ -66,8 +70,34 @@ export class WalletWidgetComponent implements OnInit {
     }
   }
 
+  allowUnlock(params: any) {
+    this.mayAttemptUnlock = true;
+    this.timeoutIdAllowingUnlock = null;
+    this.unlockPassword = '';
+
+    if (params.focusInputElement === true) {
+      setTimeout(() => { this.passwordInput.nativeElement.focus(); }, 10);
+    }
+  }
+
   async unlockWallet() {
-    await new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
+    if (this.mayAttemptUnlock === false) {
+      return;
+    }
+
+    this.mayAttemptUnlock = false;
+
+    if (this.timeoutIdAllowingUnlock !== null) {
+      clearTimeout(this.timeoutIdAllowingUnlock);
+    }
+
+    this.timeoutIdAllowingUnlock = setTimeout(
+      () => {
+        this.allowUnlock({ focusInputElement: true });
+      },
+      500
+    );
+
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
     if (unlocked) {
@@ -77,11 +107,16 @@ export class WalletWidgetComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         this.notificationService.sendWarning(`You are using an insecure password and encouraged to change it from settings > manage wallet`);
       }
-    } else {
-      this.notificationService.sendError(`Invalid password, please try again!`);
-    }
 
-    this.unlockPassword = '';
+      if (this.timeoutIdAllowingUnlock !== null) {
+        clearTimeout(this.timeoutIdAllowingUnlock);
+        this.timeoutIdAllowingUnlock = null;
+      }
+
+      this.allowUnlock({ focusInputElement: false });
+    } else {
+      this.notificationService.sendError(`Incorrect password, please try again!`);
+    }
   }
 
 }
