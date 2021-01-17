@@ -67,6 +67,7 @@ export class LedgerService {
   supportsWebHID = false;
   supportsWebUSB = false;
   supportsBluetooth = false;
+  supportsUSB = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
@@ -116,6 +117,7 @@ export class LedgerService {
           break;
       }
     });
+    this.supportsUSB = true
   }
 
   /**
@@ -128,6 +130,7 @@ export class LedgerService {
       TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported),
       TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported),
     ]);
+    this.supportsUSB = this.supportsU2F || this.supportsWebHID || this.supportsWebUSB
   }
 
   /**
