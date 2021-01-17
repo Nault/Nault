@@ -34,11 +34,11 @@ export interface LedgerData {
 }
 
 export interface LedgerLog {
-  type: string
-  message?: string
-  data?: any
-  id: string
-  date: Date
+  type: string;
+  message?: string;
+  data?: any;
+  id: string;
+  date: Date;
 }
 
 const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -117,7 +117,7 @@ export class LedgerService {
           break;
       }
     });
-    this.supportsUSB = true
+    this.supportsUSB = true;
   }
 
   /**
@@ -130,7 +130,7 @@ export class LedgerService {
       TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported),
       TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported),
     ]);
-    this.supportsUSB = this.supportsU2F || this.supportsWebHID || this.supportsWebUSB
+    this.supportsUSB = this.supportsU2F || this.supportsWebHID || this.supportsWebUSB;
   }
 
   /**
@@ -269,7 +269,7 @@ export class LedgerService {
     return new Promise((resolve, reject) => {
       this.DynamicTransport.create().then(trans => {
 
-        LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`))
+        LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
@@ -386,7 +386,7 @@ export class LedgerService {
       } catch (err) {
         console.log(`Error on account details: `, err);
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
-          this.ledger.status = LedgerStatus.LOCKED
+          this.ledger.status = LedgerStatus.LOCKED;
           if (!hideNotifications) {
             this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
           }
@@ -502,7 +502,7 @@ export class LedgerService {
         console.log('Check ledger status failed ', err);
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
         this.pollingLedger = false;
-        this.resetLedger()
+        this.resetLedger();
       }
     }
 

@@ -134,7 +134,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.notifications.removeNotification('ledger-error');
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
-      this.ledgerService.resetLedger()
+      this.ledgerService.resetLedger();
       return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the Nano app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
     }
 
