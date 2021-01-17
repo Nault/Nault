@@ -1,7 +1,6 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import * as LedgerLogs from '@ledgerhq/logs';
-import { LedgerLog } from '../../../src/app/services/ledger.service';
 import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
@@ -58,8 +57,8 @@ export class LedgerService {
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
       (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
-        
-        LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`))
+
+        LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
