@@ -306,9 +306,11 @@ export class LedgerService {
         try {
           await this.loadTransport();
         } catch (err) {
-          console.log(`Error loading ${this.transportMode} transport `, err);
-          this.ledger.status = LedgerStatus.NOT_CONNECTED;
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+          if (err.name !== 'TransportOpenUserCancelled') {
+            console.log(`Error loading ${this.transportMode} transport `, err);
+            this.ledger.status = LedgerStatus.NOT_CONNECTED;
+            this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+          }
           this.resetLedger();
           resolve(false);
         }
@@ -371,6 +373,7 @@ export class LedgerService {
       } catch (err) {
         console.log(`Error on account details: `, err);
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+          this.ledger.status = LedgerStatus.LOCKED
           if (!hideNotifications) {
             this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
           }
@@ -486,6 +489,7 @@ export class LedgerService {
         console.log('Check ledger status failed ', err);
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
         this.pollingLedger = false;
+        this.resetLedger()
       }
     }
 

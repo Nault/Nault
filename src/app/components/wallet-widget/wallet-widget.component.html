@@ -13,8 +13,8 @@
       <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
     </div>
     <div class="status-labels">
-      <div class="label primary uk-text-warning">Ledger app was closed</div>
-      <div class="label secondary"><a (click)="reloadLedger()">Click here</a> to reconnect</div>
+      <div class="label primary uk-text-warning">Ledger locked</div>
+      <div class="label secondary">Unlock the device, then <a (click)="reloadLedger()">click here</a> to reconnect</div>
     </div>
   </div>
   <div class="nav-status-row interactable" (click)="reloadLedger()" *ngIf="( ledgerStatus === 'ready' )">

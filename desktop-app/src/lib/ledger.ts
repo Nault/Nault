@@ -1,5 +1,6 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
+import * as LedgerLogs from '@ledgerhq/logs'
 import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
@@ -18,6 +19,14 @@ const LedgerStatus = {
   LOCKED: 'locked',
   READY: 'ready',
 };
+
+interface Log {
+  type: string
+  message?: string
+  data?: any
+  id: string
+  date: Date
+}
 
 
 /**
@@ -58,7 +67,7 @@ export class LedgerService {
       (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
 
         this.ledger.transport = trans;
-        this.ledger.transport.setDebugMode(true); // TODO: Deprecated. Replace with @ledgerhq/logs
+        LedgerLogs.listen((log: Log) => console.log(`@LedgerLogs: ${log.type}: ${log.message}`))
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
 

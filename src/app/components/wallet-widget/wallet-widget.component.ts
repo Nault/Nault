@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
-import {LedgerService} from '../../services/ledger.service';
+import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 
 @Component({
@@ -58,10 +58,8 @@ export class WalletWidgetComponent implements OnInit {
     try {
       const loaded = await this.ledgerService.loadLedger();
       this.notificationService.removeNotification('ledger-status');
-      if (loaded) {
+      if (this.ledgerStatus === LedgerStatus.READY) {
         this.notificationService.sendSuccess(`Successfully connected to Ledger device`);
-      } else if (loaded === false) {
-        this.notificationService.sendError(`Unable to connect to Ledger device`);
       }
     } catch (err) {
       console.log(`Got error when loading ledger! `, err);
