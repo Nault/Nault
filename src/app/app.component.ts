@@ -12,6 +12,8 @@ import {NodeService} from './services/node.service';
 import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
 import { DeeplinkService } from './services/deeplink.service';
+import {TranslateService} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-root',
@@ -34,10 +36,15 @@ export class AppComponent implements OnInit {
     private desktop: DesktopService,
     private ledger: LedgerService,
     private renderer: Renderer2,
-    private deeplinkService: DeeplinkService) {
+    private deeplinkService: DeeplinkService,
+    private translate: TranslateService) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
+
+      // available languages
+      translate.addLangs(['en', 'de', 'sv-se']);
+      translate.setDefaultLang('en');
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
@@ -72,6 +79,9 @@ export class AppComponent implements OnInit {
 
     // New for v19: Patch saved xrb_ prefixes to nano_
     await this.patchXrbToNanoPrefixData();
+
+    // set translation language
+    this.translate.use(this.settings.settings.language);
 
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();

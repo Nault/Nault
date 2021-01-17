@@ -15,10 +15,10 @@
 
     <!-- Accounts dropdown -->
     <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
-      <div class="header">Currently Selected</div>
+      <div class="header">{{ 'currently-selected' | translate }}</div>
       <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active nano_ account -->
         <div class="name-column">
-          <div class="name">{{ wallet.selectedAccount.addressBookName ? wallet.selectedAccount.addressBookName : ('Account #' + wallet.selectedAccount.index) }}</div>
+          <div class="name">{{ wallet.selectedAccount.addressBookName ? wallet.selectedAccount.addressBookName : (('account' | translate) + ' #' + wallet.selectedAccount.index) }}</div>
           <div class="address nano-address-monospace">{{ wallet.selectedAccount.id }}</div>
         </div>
         <div class="balance-column">
@@ -30,7 +30,7 @@
       </div>
       <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)"> <!-- active/inactive total balance -->
         <div class="name-column">
-          <div class="name">Total Balance</div>
+          <div class="name">{{ 'total-balance' | translate }}</div>
           <div class="address"> </div>
         </div>
         <div class="balance-column">
@@ -41,7 +41,7 @@
       <ng-container *ngFor="let account of wallet.accounts"> <!-- inactive accounts -->
         <div class="account inactive" (click)="selectAccount(account)" *ngIf="( (wallet.selectedAccount === null) || (wallet.selectedAccount.id !== account.id) )">
           <div class="name-column">
-            <div class="name">{{ account.addressBookName ? account.addressBookName : ('Account #' + account.index) }}</div>
+            <div class="name">{{ account.addressBookName ? account.addressBookName : (('account' | translate) + ' #' + account.index) }}</div>
             <div class="address nano-address-monospace">{{ account.id }}</div>
           </div>
           <div class="balance-column">
@@ -79,9 +79,9 @@
                       ? (
                           wallet.selectedAccount.addressBookName
                         ? wallet.selectedAccount.addressBookName
-                        : ('Account #' + wallet.selectedAccount.index)
+                        : (('account' | translate) + ' #' + wallet.selectedAccount.index)
                       )
-                      : 'Total Balance'
+                      : ('total-balance' | translate)
                     }}</a>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>

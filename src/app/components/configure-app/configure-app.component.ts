@@ -14,6 +14,7 @@ import {BehaviorSubject} from 'rxjs';
 import {RepresentativeService} from '../../services/representative.service';
 import {NinjaService} from '../../services/ninja.service';
 import {QrModalService} from '../../services/qr-modal.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-configure-app',
@@ -38,8 +39,15 @@ export class ConfigureAppComponent implements OnInit {
     private price: PriceService,
     private ninja: NinjaService,
     private renderer: Renderer2,
-    private qrModalService: QrModalService) { }
+    private qrModalService: QrModalService,
+    private translate: TranslateService) { }
   wallet = this.walletService.wallet;
+
+  languages = [
+    { name: 'English', value: 'en' },
+    { name: 'Deutsch', value: 'de' }
+  ];
+  selectedLanguage = this.languages[0].value;
 
   denominations = [
     { name: 'NANO', value: 'mnano' },
@@ -248,6 +256,9 @@ export class ConfigureAppComponent implements OnInit {
   loadFromSettings() {
     const settings = this.appSettings.settings;
 
+    const matchingLanguage = this.languages.find(language => language.value === settings.language);
+    this.selectedLanguage = matchingLanguage.value || this.languages[0].value;
+
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
@@ -305,6 +316,10 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
+
+    this.appSettings.setAppSetting('language', this.selectedLanguage);
+    this.translate.use(this.selectedLanguage);
+    
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
