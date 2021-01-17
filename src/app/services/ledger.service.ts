@@ -5,6 +5,7 @@ import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
+import * as LedgerLogs from '@ledgerhq/logs';
 import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
@@ -30,6 +31,14 @@ export interface LedgerData {
   status: string;
   nano: any|null;
   transport: Transport|null;
+}
+
+export interface LedgerLog {
+  type: string
+  message?: string
+  data?: any
+  id: string
+  date: Date
 }
 
 const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -257,6 +266,7 @@ export class LedgerService {
     return new Promise((resolve, reject) => {
       this.DynamicTransport.create().then(trans => {
 
+        LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
