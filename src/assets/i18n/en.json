@@ -1,5 +1,26 @@
 {
   "currently-selected": "Currently Selected",
   "total-balance": "Total Balance",
-  "account": "Account"
+  "account": "Account",
+  "accounts": "Accounts",
+  "new": "New",
+  "send": "Send",
+  "receive": "Receive",
+  "address-book": "Address Book",
+  "scan-qr-code": "Scan QR Code",
+  "representatives": "Representatives",
+  "app-settings": "App Settings",
+  "manage-wallet": "Manage Wallet",
+  "configure-new-wallet": "Configure New Wallet",
+  "advanced-tools": "Advanced Tools",
+  "wallet-sweeper": "Wallet Sweeper",
+  "remote-signing": "Remote Signing",
+  "unit-converter": "Unit Converter",
+  "qr-generator": "QR Generator",
+  "processing-transactions": "Processing Transactions...",
+  "unlock-wallet-to-receive": "Unlock Wallet to Receive",
+  "set-to-receive-manually": "Set to Receive Manually",
+  "incoming-balance": "Incoming Balance",
+  "unable-to-connect-to-the-server": "Unable to connect to the server",
+  "wallet-is-in-offline-mode": "Wallet is in offline mode"
 }

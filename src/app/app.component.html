@@ -47,7 +47,7 @@
           <div class="balance-column">
             <div class="balance primary">
               <span class="incoming-label" *ngIf="account.pending.gt(0)">
-                <span class="text-snippet">New</span>
+                <span class="text-snippet">{{ 'new' | translate }}</span>
                 <span class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
               </span>
               {{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO
@@ -120,27 +120,27 @@
                 <ng-container *ngIf="walletService.processingPending else notProcessingPending">
                   <div class="nav-action-receive" *ngIf="walletService.processingPending">
                     <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                    <div class="label"><span uk-spinner="ratio: 0.5;"></span>Processing Transactions...</div>
+                    <div class="label"><span uk-spinner="ratio: 0.5;"></span>{{ 'processing-transactions' | translate }}</div>
                   </div>
                 </ng-container>
                 <ng-template #notProcessingPending>
                   <ng-container *ngIf=" (settings.settings.pendingOption !== 'manual') else manuallyReceivingPending ">
                     <div class="nav-action-receive user-action-required uk-animation-slide-left" *ngIf="walletService.isLocked()">
                       <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                      <div class="label">Unlock Wallet to Receive</div>
+                      <div class="label">{{ 'unlock-wallet-to-receive' | translate }}</div>
                     </div>
                   </ng-container>
                   <ng-template #manuallyReceivingPending>
                     <div class="nav-action-receive uk-animation-slide-left">
                       <div class="icon" uk-icon="icon: chevron-up; ratio: 1.2;"></div>
-                      <div class="label">Set to Receive Manually</div>
+                      <div class="label">{{ 'set-to-receive-manually' | translate }}</div>
                     </div>
                   </ng-template>
                 </ng-template>
                 <div class="nav-nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
-                      <a routerLink="/receive" class="name">Incoming Balance</a>
+                      <a routerLink="/receive" class="name">{{ 'incoming-balance' | translate }}</a>
                     </div>
                     <div class="account-balances">
                       <div class="balance-container primary">
@@ -168,11 +168,11 @@
                   <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
                 </div>
                 <div class="status-labels" *ngIf="settings.settings.serverAPI">
-                  <div class="label primary uk-text-danger">Unable to connect to the server</div>
+                  <div class="label primary uk-text-danger">{{ 'unable-to-connect-to-the-server' | translate }}</div>
                   <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
                 </div>
                 <div class="status-labels" *ngIf="!settings.settings.serverAPI">
-                  <div class="label primary uk-text-danger">Wallet is in offline mode</div>
+                  <div class="label primary uk-text-danger">{{ 'wallet-is-in-offline-mode' | translate }}</div>
                   <div class="label secondary"><a routerLink="/configure-app">Select a server</a> to interact with the network</div>
                 </div>
               </div>
@@ -186,38 +186,38 @@
         </div>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">Accounts</div></a></li>
-          <li><a routerLink="/send" routerLinkActive="active"><div class="label">Send</div></a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">{{ 'accounts' | translate }}</div></a></li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'send' | translate }}</div></a></li>
           <li>
             <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
                 <div class="uk-width-3-4">
-                  <div class="label">Receive</div>
+                  <div class="label">{{ 'receive' | translate }}</div>
                 </div>
                 <div class="uk-width-1-4 uk-text-center label-new">
-                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center"><div class="label">New</div></span>
+                  <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center"><div class="label">{{ 'new' | translate }}</div></span>
                 </div>
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">Address Book</div></a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">Scan QR Code</div></a></li>
+          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">{{ 'address-book' | translate }}</div></a></li>
+          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">{{ 'scan-qr-code' | translate }}</div></a></li>
           <li class="uk-parent">
             <a href="#">Settings</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
-              <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">App Settings</div></a></li>
-              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'representatives' | translate }}</div></a></li>
+              <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'app-settings' | translate }}</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">{{ 'manage-wallet' | translate }}</div></a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">{{ 'configure-new-wallet' | translate }}</div></a></li>
             </ul>
           </li>
           <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
+            <a href="#">{{ 'advanced-tools' | translate }}</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
-              <li><a routerLink="/converter" routerLinkActive="active"><div class="label">Unit Converter</div></a></li>
-              <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">QR Generator</div></a></li>
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">{{ 'wallet-sweeper' | translate }}</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">{{ 'remote-signing' | translate }}</div></a></li>
+              <li><a routerLink="/converter" routerLinkActive="active"><div class="label">{{ 'unit-converter' | translate }}</div></a></li>
+              <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">{{ 'qr-generator' | translate }}</div></a></li>
             </ul>
           </li>
         </ul>
