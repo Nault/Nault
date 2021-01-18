@@ -319,7 +319,7 @@ export class ConfigureAppComponent implements OnInit {
 
     this.appSettings.setAppSetting('language', this.selectedLanguage);
     this.translate.use(this.selectedLanguage);
-    
+
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {

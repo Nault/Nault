@@ -154,7 +154,7 @@ export class AppSettingsService {
       settings = JSON.parse(settingsStore);
     }
     this.settings = Object.assign(this.settings, settings);
-    
+
     if (this.settings.language === null) {
       const browserLang = this.translate.getBrowserLang();
       if (this.translate.getLangs().includes(browserLang)) {
