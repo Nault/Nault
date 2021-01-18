@@ -58,7 +58,7 @@ export class LedgerService {
     return new Promise((resolve, reject) => {
       (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
 
-        LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
+        // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
