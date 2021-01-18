@@ -22,5 +22,13 @@
   "set-to-receive-manually": "Set to Receive Manually",
   "incoming-balance": "Incoming Balance",
   "unable-to-connect-to-the-server": "Unable to connect to the server",
-  "wallet-is-in-offline-mode": "Wallet is in offline mode"
+  "wallet-is-in-offline-mode": "Wallet is in offline mode",
+  "based-on-x": "Based on",
+  "search-for-an-account-or-block-hash": "Search for an account or block hash",
+  "contribute-to-this-wallet-with-a-custom-donation": "Contribute to this wallet with a custom donation!",
+  "select-a-server-to-interact-with-the-network": "Select a server to interact with the network",
+  "refresh": "Refresh",
+  "select-a-different-server": "Select a different server",
+  "attempting-to-connect-to-nano-node": "Attempting to connect to Nano node",
+  "settings": "Settings"
 }

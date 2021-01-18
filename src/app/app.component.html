@@ -169,11 +169,11 @@
                 </div>
                 <div class="status-labels" *ngIf="settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">{{ 'unable-to-connect-to-the-server' | translate }}</div>
-                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                  <div class="label secondary"><a (click)="retryConnection()">{{ 'refresh' | translate }}</a> / <a routerLink="/configure-app">{{ 'select-a-different-server' | translate }}</a></div>
                 </div>
                 <div class="status-labels" *ngIf="!settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">{{ 'wallet-is-in-offline-mode' | translate }}</div>
-                  <div class="label secondary"><a routerLink="/configure-app">Select a server</a> to interact with the network</div>
+                  <div class="label secondary"><a routerLink="/configure-app">{{ 'select-a-server-to-interact-with-the-network' | translate }}</a></div>
                 </div>
               </div>
 
@@ -203,7 +203,7 @@
           <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">{{ 'address-book' | translate }}</div></a></li>
           <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">{{ 'scan-qr-code' | translate }}</div></a></li>
           <li class="uk-parent">
-            <a href="#">Settings</a>
+            <a href="#">{{ 'settings' | translate }}</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'representatives' | translate }}</div></a></li>
               <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'app-settings' | translate }}</div></a></li>
@@ -225,7 +225,7 @@
         <div class="nav-search">
           <form class="uk-search uk-search-default uk-width-1-1">
             <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
+            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" [placeholder]="'search-for-an-account-or-block-hash' | translate" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
           </form>
         </div>
 
@@ -265,7 +265,7 @@
         </div>
         <div class="footer footer-attribution uk-margin-remove-top" uk-grid>
           <div class="attribution uk-width-1-1 uk-text-center">
-            Based on <a href="https://github.com/cronoh/nanovault" target="_blank" rel="noopener noreferrer">NanoVault</a>
+            {{ 'based-on-x' | translate }} <a href="https://github.com/cronoh/nanovault" target="_blank" rel="noopener noreferrer">NanoVault</a>
           </div>
         </div>
 
