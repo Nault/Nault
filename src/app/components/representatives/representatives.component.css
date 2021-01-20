@@ -132,3 +132,7 @@
 .delegating-account-details-column {
 	cursor: pointer;
 }
+
+.change-representative-form .account-label {
+	margin-bottom: 3px;
+}

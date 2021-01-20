@@ -98,7 +98,7 @@
             <p class="uk-text-lead uk-text-center">Change your representatives</p>
 
 
-            <div class="uk-form-horizontal">
+            <div class="change-representative-form uk-form-horizontal">
 
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">Accounts to Change</label>
@@ -112,9 +112,11 @@
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
-                          <span *ngIf="account.addressBookName" class="uk-margin-small-right account-label blue">{{ account.addressBookName }}</span> 
-                          <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
-                          <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
+                          <div *ngIf="(account.id === 'All Current Accounts')">{{ account.id }}</div>
+                          <ng-container *ngIf="(account.id !== 'All Current Accounts')">
+                            <div class="uk-margin-small-right account-label blue">{{ account.addressBookName ? account.addressBookName : 'Account' }}</div>
+                            <app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id>
+                          </ng-container>
                         </div>
                         <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
                           <a (click)="removeSelectedAccount(account)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
@@ -151,8 +153,8 @@
                 </div>
 
                 <div class="uk-form-controls" *ngIf="representativeListMatch">
-                  <div class="uk-inline uk-width-1-1">
-                    <span class="uk-label uk-label-danger">{{ representativeListMatch }}</span>
+                  <div class="uk-inline uk-width-1-1 uk-margin-small-top">
+                    <span class="account-label rep">{{ representativeListMatch }}</span>
                   </div>
                 </div>
 

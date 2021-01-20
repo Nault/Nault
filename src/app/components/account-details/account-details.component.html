@@ -130,7 +130,7 @@
                     <div *ngIf="!showEditRepresentative">
                       <div uk-grid>
                         <div class="nano-address-monospace uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                          <span *ngIf="repLabel" class="uk-label uk-label-danger">{{ repLabel }}</span> 
+                          <span *ngIf="repLabel" class="account-label rep">{{ repLabel }}</span> 
                           <app-nano-account-id [accountID]="!account ? '':account.representative"></app-nano-account-id>
                         </div>
                         <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
@@ -397,8 +397,8 @@
             </div>
           </div>
           <div class="uk-form-controls" *ngIf="representativeListMatch">
-            <div class="uk-inline uk-width-1-1">
-              <span class="uk-label uk-label-danger">{{ representativeListMatch }}</span>
+            <div class="uk-inline uk-width-1-1 uk-margin-small-top">
+              <span class="account-label rep">{{ representativeListMatch }}</span>
             </div>
           </div>
         </div>
