@@ -70,6 +70,10 @@
 	background-color: #868AB0;
 }
 
+.representative-name-column {
+	cursor: pointer;
+}
+
 .representative-name-column > .account-label {
 	margin-bottom: 3px;
 }
@@ -123,4 +127,8 @@
 
 .delegating-account-row > .voting-weight-column {
 	vertical-align: bottom;
+}
+
+.delegating-account-details-column {
+	cursor: pointer;
 }

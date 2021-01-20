@@ -49,7 +49,7 @@
                       </div>
                     </ng-container>
                   </td>
-                  <td class="representative-name-column uk-text-truncate" (click)="addSelectedAccounts(rep.accounts)" style="cursor: pointer;">
+                  <td class="representative-name-column uk-text-truncate rep-container" (click)="addSelectedAccounts(rep.accounts)">
                     <div class="account-label rep">{{ rep.label ? rep.label : 'Unknown Rep' }}</div><div class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                   </td>
                   <td class="voting-weight-column uk-width-1-4">
@@ -59,7 +59,7 @@
                 </tr>
                 <tr class="delegating-account-row" *ngFor="let delegatingAccount of rep.accounts">
                   <td class="representative-health-column"></td>
-                  <td class="uk-text-truncate">
+                  <td class="delegating-account-details-column uk-text-truncate account-container" (click)="addSelectedAccounts([ delegatingAccount ])">
                     <div class="delegating-account">
                       <div class="descendant-icon"></div>
                       <div class="descendant-details uk-text-truncate">
