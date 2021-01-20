@@ -14,6 +14,8 @@
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-overflow-auto" *ngIf="!hideOverview">
+          <p>Representatives participate in the Nano consensus protocol on your behalf. You can change them at any time.</p>
+
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
@@ -120,10 +122,10 @@
                           <div *ngIf="(account.id === 'All Current Accounts')">{{ account.id }}</div>
                           <ng-container *ngIf="(account.id !== 'All Current Accounts')">
                             <div class="uk-margin-small-right account-label blue">{{ account.addressBookName ? account.addressBookName : 'Account' }}</div>
-                            <app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id>
+                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                           </ng-container>
                         </div>
-                        <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
+                        <div class="action-remove uk-width-1-6 uk-text-center">
                           <a (click)="removeSelectedAccount(account)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
                         </div>
                       </div>

@@ -137,3 +137,9 @@
 .change-representative-form .account-label {
 	margin-bottom: 3px;
 }
+
+.change-representative-form .action-remove {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
