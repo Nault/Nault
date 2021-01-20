@@ -23,6 +23,7 @@
               </tr>
             </thead>
             <tbody>
+              <ng-container *ngIf="!loadingRepresentatives">
               <ng-container *ngFor="let rep of representativeOverview">
                 <tr class="representative-row">
                   <td class="representative-health-column uk-visible-toggle uk-text-truncate">
@@ -81,8 +82,12 @@
                   </td>
                 </tr>
               </ng-container>
-              <tr *ngIf="!representativeOverview || !representativeOverview.length" class="uk-text-center">
+              </ng-container>
+              <tr *ngIf="!loadingRepresentatives && ( !representativeOverview || !representativeOverview.length )" class="uk-text-center">
                 <td colspan="3" style="text-align: center;">None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!</td>
+              </tr>
+              <tr *ngIf="loadingRepresentatives">
+                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
               </tr>
             </tbody>
           </table>

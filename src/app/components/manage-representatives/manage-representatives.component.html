@@ -3,16 +3,19 @@
 
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">Representatives List</h2>
+        <h2 class="uk-heading-divider">
+          Representatives Book
+          <a [routerLink]="'/representatives'" style="font-size: 12px; margin-left: 25px;">BACK TO REPRESENTATIVES OVERVIEW</a>
+        </h2>
       </div>
-      <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="activePanel = 1;">Add New Rep</button>
+      <div class="uk-width-auto@s uk-width-1-1 uk-text-right" *ngIf="activePanel == 0">
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="activePanel = 1;">Add Representative</button>
       </div>
     </div>
 
-    <div class="uk-width-1-1 nlt-page-intro">
+    <div class="uk-width-1-1 nlt-page-intro" *ngIf="activePanel == 0">
       <p>
-        You can use the representatives list to store a label and other information for representatives you use.
+        You can use this page as a notebook for representatives. Here you can set custom display names to be shown throughout the application, mark representatives as trusted (please note that this will suppress warnings), or mark representatives that should be avoided.
       </p>
     </div>
 
@@ -25,7 +28,7 @@
               <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
                 <div class="uk-width-2-5">Name</div>
                 <div class="uk-width-expand">Account ID</div>
-                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Actions</div>
               </div>
             </li>
           </ul>
@@ -36,8 +39,6 @@
                 <div class="uk-width-2-5 uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <span class="circle circle-online" *ngIf="representative.online" uk-tooltip title="Representative is online"></span>
-                      <span class="circle circle-offline" *ngIf="!representative.online" uk-tooltip title="Representative is offline"></span>
                       <a (click)="editEntry(representative)" class="uk-link-text" title="Edit Representative" uk-tooltip>{{ representative.name }}</a>
                     </div>
                     <ul class="uk-iconnav uk-width-auto" style="padding-left: 0;">
@@ -79,7 +80,7 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">Create New Representative</h2>
+            <h2 class="uk-card-title">Add Representative</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
@@ -102,10 +103,10 @@
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
-                      <label style="cursor: pointer;" uk-tooltip title="Make a representative appear at the top of your list as a recommended option"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepTrusted"> &nbsp; Trusted Representative</label>
+                      <label style="cursor: pointer;" uk-tooltip title="Suppress all warnings about this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepTrusted"> &nbsp; Trusted Representative</label>
                     </div>
                     <div class="uk-width-1-1 uk-margin-small-top">
-                      <label style="cursor: pointer;" uk-tooltip title="Warn the user when using this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepWarn"> &nbsp; Avoid Representative</label>
+                      <label style="cursor: pointer;" uk-tooltip title="Warn when using this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepWarn"> &nbsp; Avoid Representative</label>
                     </div>
                   </div>
 
