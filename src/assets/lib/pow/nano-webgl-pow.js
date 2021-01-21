@@ -327,7 +327,7 @@ window.NanoWebglPow = calculate;
 // Both width and height must be multiple of 256, (one byte)
 // but do not need to be the same,
 // matching GPU capabilities is the aim
-window.NanoWebglPow.width = 256 * 2;
-window.NanoWebglPow.height = 256 * 2;
+window.NanoWebglPow.width = 256 * 4;
+window.NanoWebglPow.height = 256 * 4;
 
 })();
