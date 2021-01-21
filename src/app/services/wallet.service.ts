@@ -722,13 +722,6 @@ export class WalletService {
                 }
                 walletPendingReal = walletPendingReal.plus(pending.blocks[block][hash].amount);
                 accountPending = accountPending.plus(pending.blocks[block][hash].amount);
-
-                // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
-                // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
-                // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
-                // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
-                console.log('Adding single pending to work cache');
-                this.workPool.addWorkToCache(hash, 1 / 64);
               }
               // Update the actual account pending amount with this above-threshold-value
               walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal.minus(accountPending));
@@ -736,6 +729,18 @@ export class WalletService {
               walletAccount.pending = accountPending;
               walletAccount.pendingRaw = accountPending.mod(this.nano);
               walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
+
+              // If there is a pending, it means we want to add to work cache as receive-threshold
+              if (walletAccount.pending.gt(0)) {
+                console.log('Adding single pending account within limit to work cache');
+                // Use frontier or public key if open block
+                const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id);
+                // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
+                // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
+                // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
+                // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
+                this.workPool.addWorkToCache(hash, 1 / 64);
+              }
             } else {
               walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal);
               walletAccount.pendingBelowThreshold.shift();
@@ -760,7 +765,7 @@ export class WalletService {
     // Make sure any frontiers are in the work pool
     // If they have no frontier, we want to use their pub key?
     const hashes = this.wallet.accounts.map(account => account.frontier || this.util.account.getAccountPublicKey(account.id));
-    console.log('Adding frontiers to work cache');
+    console.log('Adding non-pending frontiers to work cache');
     hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)); // use high pow here since we don't know what tx type will be next
 
     this.wallet.balance = walletBalance;
@@ -799,6 +804,18 @@ export class WalletService {
       walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
       walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
       walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(this.price.price.lastPrice).toNumber();
+
+      // If there is a pending, it means we want to add to work cache as receive-threshold
+      if (walletAccount.pending.gt(0)) {
+        console.log('Adding single pending account to work cache');
+        // Use frontier or public key if open block
+        const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id);
+        // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
+        // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
+        // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
+        // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
+        this.workPool.addWorkToCache(hash, 1 / 64);
+      }
     }
   }
 

@@ -21,7 +21,7 @@ export class WorkPoolService {
   }
 
   // A simple helper, which doesn't wait for a response (Used for pre-loading work)
-  public addWorkToCache(hash, multiplier= 1) {
+  public addWorkToCache(hash, multiplier = 1) {
     this.getWork(hash, multiplier);
   }
 
@@ -47,7 +47,7 @@ export class WorkPoolService {
   }
 
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
-  public async getWork(hash, multiplier= 1) {
+  public async getWork(hash, multiplier = 1) {
     let cached = this.workCache.find(p => p.hash === hash);
     const tempWork = '1';
 
