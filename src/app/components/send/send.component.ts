@@ -318,7 +318,8 @@ export class SendComponent implements OnInit {
         this.rawAmount, this.walletService.isLedgerWallet());
 
       if (newHash) {
-        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
+        this.notificationService.removeNotification('success-send');
+        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;

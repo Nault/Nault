@@ -430,7 +430,8 @@ export class SignComponent implements OnInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   clean(obj) {

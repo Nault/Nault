@@ -136,7 +136,8 @@ export class ReceiveComponent implements OnInit {
     const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
     if (newBlock) {
-      this.notificationService.sendSuccess(`Successfully received Nano!`);
+      this.notificationService.removeNotification('success-receive');
+      this.notificationService.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
       // clear the list of pending blocks. Updated again with reloadBalances()
       this.walletService.clearPendingBlocks();
     } else {
@@ -151,7 +152,8 @@ export class ReceiveComponent implements OnInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   toBigNumber(value) {

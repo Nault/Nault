@@ -400,7 +400,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   copied() {
-    this.notifications.sendSuccess(`Successfully copied to clipboard!`);
+    this.notifications.removeNotification('success-copied');
+    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   // Remote signing methods
