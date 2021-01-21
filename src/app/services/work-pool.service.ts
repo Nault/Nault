@@ -58,14 +58,16 @@ export class WorkPoolService {
         await this.sleep(100);
         cached = this.workCache.find(p => p.hash === hash);
       }
-      if (cached && cached.work && this.util.nano.validateWork(hash, this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold), cached.work)) {
+      if (cached && cached.work &&
+          this.util.nano.validateWork(hash, this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold), cached.work)) {
         console.log('Using pre-processed work: ' + cached.work);
         return cached.work;
       }
       // if the work was invalid and removed from cache, also invalidate the response
       console.log('Invalid pre-processed work');
       return null;
-    } else if (cached && cached.work && this.util.nano.validateWork(hash, this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold), cached.work)) {
+    } else if (cached && cached.work &&
+        this.util.nano.validateWork(hash, this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold), cached.work)) {
       console.log('Using cached work: ' + cached.work);
       return cached.work;
     }
