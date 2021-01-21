@@ -30,6 +30,7 @@ export interface WalletAccount {
   balanceFiat: number;
   pendingFiat: number;
   addressBookName: string|null;
+  receivePow: boolean;
 }
 
 export interface Block {
@@ -531,6 +532,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
+      receivePow: false,
     };
 
     return newAccount;
@@ -555,6 +557,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
+      receivePow: false,
     };
 
     return newAccount;
@@ -740,6 +743,9 @@ export class WalletService {
                 // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
                 // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
                 this.workPool.addWorkToCache(hash, 1 / 64);
+                walletAccount.receivePow = true;
+              } else {
+                walletAccount.receivePow = false;
               }
             } else {
               walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal);
@@ -747,6 +753,7 @@ export class WalletService {
               walletAccount.pending = new BigNumber(0);
               walletAccount.pendingRaw = new BigNumber(0);
               walletAccount.pendingFiat = 0;
+              walletAccount.receivePow = false;
             }
           }
         }
@@ -764,7 +771,8 @@ export class WalletService {
 
     // Make sure any frontiers are in the work pool
     // If they have no frontier, we want to use their pub key?
-    const hashes = this.wallet.accounts.map(account => account.frontier || this.util.account.getAccountPublicKey(account.id));
+    const hashes = this.wallet.accounts.filter(account => (account.receivePow === false)).
+      map(account => account.frontier || this.util.account.getAccountPublicKey(account.id));
     console.log('Adding non-pending frontiers to work cache');
     hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)); // use high pow here since we don't know what tx type will be next
 
@@ -815,6 +823,9 @@ export class WalletService {
         // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
         // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
         this.workPool.addWorkToCache(hash, 1 / 64);
+        walletAccount.receivePow = true;
+      } else {
+        walletAccount.receivePow = false;
       }
     }
   }
@@ -838,6 +849,7 @@ export class WalletService {
       pendingFiat: 0,
       index: index,
       addressBookName,
+      receivePow: false,
     };
 
     this.wallet.accounts.push(newAccount);

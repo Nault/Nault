@@ -62,7 +62,7 @@ export class WorkPoolService {
         console.log('Using cached work: ' + cached.work);
         return cached.work;
       }
-    } catch(err) {
+    } catch (err) {
       console.log('Error validating cached work. ' + err);
     }
 
@@ -77,6 +77,9 @@ export class WorkPoolService {
     }
 
     console.log('Work found: ' + work);
+
+    // remove duplicates
+    this.workCache = this.workCache.filter(entry => (entry.hash !== hash));
 
     this.workCache.push({ hash, work });
     delete this.currentlyProcessingHashes[hash];
