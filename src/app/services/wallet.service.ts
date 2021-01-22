@@ -391,18 +391,20 @@ export class WalletService {
     await this.scanAccounts();
   }
 
-  async scanAccounts(emptyAccountBuffer: number = 10) {
-    let emptyTicker = 0;
+  async scanAccounts() {
     const usedIndices = [];
-    let greatestUsedIndex = 0;
-    const batchSize = emptyAccountBuffer + 1;
+
+    const NAULT_ACCOUNTS_LIMIT = 20;
+    const ACCOUNTS_PER_API_REQUEST = 10;
+
+    const batchesCount = NAULT_ACCOUNTS_LIMIT / ACCOUNTS_PER_API_REQUEST;
 
     // Getting accounts...
-    for (let batch = 0; emptyTicker < emptyAccountBuffer; batch++) {
+    for (let batchIdx = 0; batchIdx < batchesCount; batchIdx++) {
       const batchAccounts = {};
       const batchAccountsArray = [];
-      for (let i = 0; i < batchSize; i++) {
-        const index = batch * batchSize + i;
+      for (let i = 0; i < ACCOUNTS_PER_API_REQUEST; i++) {
+        const index = batchIdx * ACCOUNTS_PER_API_REQUEST + i;
 
         let accountAddress = '';
         let accountPublicKey = '';
@@ -425,7 +427,6 @@ export class WalletService {
         batchAccounts[accountAddress] = {
           index: index,
           publicKey: accountPublicKey,
-          used: false
         };
         batchAccountsArray.push(accountAddress);
       }
@@ -436,27 +437,8 @@ export class WalletService {
         for (const accountID in batchResponse.frontiers) {
           if (batchResponse.frontiers.hasOwnProperty(accountID)) {
             const frontier = batchResponse.frontiers[accountID];
-            console.log(accountID, frontier, batchAccounts[accountID].publicKey);
             if (frontier !== batchAccounts[accountID].publicKey) {
-              batchAccounts[accountID].used = true;
-            }
-          }
-        }
-      }
-
-      // Check index usage
-      for (const accountID in batchAccounts) {
-        if (batchAccounts.hasOwnProperty(accountID)) {
-          const account = batchAccounts[accountID];
-          if (account.used) {
-            usedIndices.push(account.index);
-            if (account.index > greatestUsedIndex) {
-              greatestUsedIndex = account.index;
-              emptyTicker = 0;
-            }
-          } else {
-            if (account.index > greatestUsedIndex) {
-              emptyTicker ++;
+              usedIndices.push(batchAccounts[accountID].index);
             }
           }
         }
@@ -466,10 +448,10 @@ export class WalletService {
     // Add accounts
     if (usedIndices.length > 0) {
       for (const index of usedIndices) {
-        await this.addWalletAccount(index);
+        await this.addWalletAccount(index, false);
       }
     } else {
-      await this.addWalletAccount();
+      await this.addWalletAccount(0, false);
     }
 
     // Reload balances for all accounts
