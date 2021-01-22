@@ -30,5 +30,78 @@
   "refresh": "Refresh",
   "select-a-different-server": "Select a different server",
   "attempting-to-connect-to-nano-node": "Attempting to connect to Nano node",
-  "settings": "Settings"
+  "settings": "Settings",
+  "configure-wallet": "Configure Wallet",
+  "wallet-configured": {
+    "you-already-have-a-wallet-configured": "You already have a wallet configured",
+    "be-100-certain": "Before going any further, be 100% certain you have backed up the seed to your current wallet!",
+    "without-it-any-funds-unrecoverable": "Without it, any funds you have will become completely unrecoverable!"
+  },
+  "create-new-wallet": "Create New Wallet",
+  "import-existing-wallet": "Import Existing Wallet",
+  "make-sure-you-back-up-your-seed": "Make sure you back up your seed, write it down, and keep it incredibly safe! All funds inside can be lost without it!",
+  "when-you-create-a-new-wallet-a-new-nano-seed": "When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts on the Nano network. Your Nano seed is the master key to all of your accounts and any money inside of them!",
+  "create-wallet": "Create Wallet",
+  "import-type": "Import Type",
+  "note-for-ledger-device-owners": {
+    "title": "Note for Ledger device owners:",
+    "description": "Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet."
+  },
+  "if-wallet-file": "If you have saved your wallet to a file using Nault before, use the button below to import it.",
+  "enter-your-seed-from-any-nano-wallet-to-import-it-below": "Enter your seed from any Nano wallet to import it below.",
+  "enter-mnemonic": "Enter your mnemonic generated from Nault or other Nano wallets. If it came from a Ledger device or certain multi-currency wallets, use \"BIP39 Mnemonic\" import type instead.",
+  "enter-bip39-mnemonic": "Enter your mnemonic generated from a Ledger device or certain multi-currency wallets. If it was generated in Nault, use \"Nano Mnemonic\" import type instead.",
+  "account-index": "Account Index",
+  "bip39-passphrase": "BIP39 Passphrase",
+  "the-wallet-will-be-imported-as-a-single-private-key-for-the-account-index-you-provide": "The wallet will be imported as a single private key for the account index you provide.",
+  "required-only-if-the-bip39-seed-is-protected-by-a-password-or-passphrase": "Required only if the BIP39 seed is protected by a password or passphrase.",
+  "make-sure-you-have-the-nano-app-installed": "Make sure you have the Nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.",
+  "ledger-nault-user-guide-and-troubleshooting": "Ledger/Nault User Guide and Troubleshooting",
+  "unsupported-browser": {
+    "title": "Unsupported Browser",
+    "browser-does-not-support-usb-communication": "It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.",
+    "note-ios-is-currently-unsupported": "Note: iOS is currently unsupported. On Mac, use any browser other than Safari."
+  },
+  "ledger-device-not-connected": {
+    "title": "Ledger Device Not Connected",
+    "connect-your-ledger-device": "Connect your Ledger device and make sure you have the Nano app installed and running, then press the button below.",
+    "bluetooth-is-currently-not-supported-by-your-browser": "Bluetooth is currently not supported by your browser, please use Google Chrome or get the desktop app:"
+  },
+  "download": "Download",
+  "ledger-device-locked": {
+    "title": "Ledger Device Locked",
+    "unlock-your-ledger-device": "Unlock your Ledger device, then press the button below to retry"
+  },
+  "ledger-device-ready": {
+    "title": "Ledger Device Ready",
+    "press-the-import-button-below": "Press the import button below to use your ledger wallet"
+  },
+  "enter-your-nano-private-key-below": "Enter your Nano private key below. These are not to be confused with Nano seeds, which are more common, and produce many private keys.",
+  "enter-your-expanded-private-key-below": "Enter your expanded private key below. These are rare, and are usually generated from multi-party cryptography magic.",
+  "import": "Import",
+  "connect-via-usb": "Connect via USB",
+  "connect-via-bluetooth": "Connect via Bluetooth",
+  "refresh-ledger-status": "Refresh Ledger Status",
+  "save-wallet-backup": "Save Wallet Backup",
+  "below-is-the-seed-and-mnemonic-backup": "Below is the seed and mnemonic backup. You can use whichever you prefer in any other compatible wallet.",
+  "backupseed": {
+    "make-sure-to-write-down-your-seed": "Make sure to write down your seed and/or mnemonic or save it somewhere safe.",
+    "never-share-it-with-anyone": "Never share it with anyone!",
+    "it-is-the-master-key-to-all-of-your-accounts": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency."
+  },
+  "nano-seed": "Nano Seed",
+  "copy-to-clipboard": "Copy to clipboard",
+  "nano-mnemonic": "Nano Mnemonic",
+  "i-have-securely-stored-the-seed-and-or-mnemonic": "I have securely stored the seed and/or mnemonic",
+  "set-wallet-password": "Set Wallet Password",
+  "your-password-is-used-to-encrypt-the-sensitive-parts": "Your password is used to encrypt the sensitive parts of your wallet when it is locked, which disables sending, receiving, creating accounts, and other operations.",
+  "for-the-safety-of-your-funds-use-a-secure-und-unique-password": "For the safety of your funds, use a secure und unique password.",
+  "password-must-be-at-least-6-characters-long": "Password must be at least 6 characters long",
+  "passwords-do-not-match": "Passwords do not match!",
+  "wallet-created": "Wallet created!",
+  "your-wallet-has-been-created": "Your wallet has been created and you are ready to send and receive Nano!",
+  "view-accounts": "View Accounts",
+  "protip": "ProTip:",
+  "if-you-lose-your-password-you-can-always-restore": "If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.",
+  "press-the-ledger-status-bar-on-the-left-side-to-reload": "Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it."
 }
