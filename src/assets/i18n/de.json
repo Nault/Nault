@@ -22,5 +22,6 @@
     "set-to-receive-manually": "Auf manuellen Empfang gesetzt",
     "incoming-balance": "Eingehender Betrag",
     "unable-to-connect-to-the-server": "Kann nicht zum Server verbinden",
-    "wallet-is-in-offline-mode": "Wallet ist im offline Modus"
+    "wallet-is-in-offline-mode": "Wallet ist im offline Modus",
+    "search-for-an-account-or-block-hash": "Suche nach einem Konto oder Block Hash"
 }
