@@ -2,6 +2,8 @@
 
 @nlt-intro-margin:                        40px;
 
+@rep-label-color:                      #9A71D5;
+
 // extensions
 // ========================================================================
 
@@ -127,6 +129,13 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     &.interactable:hover, &.blue {
         .account-label-hover-styles();
     }
+
+    &.rep {
+        text-transform: none;
+        border-color: @rep-label-color;
+        background: @rep-label-color;
+        color: #FFF;
+    }
 }
 
 .nano-address-monospace {
@@ -165,6 +174,14 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
     .nano-address-clickable {
         .nano-address-clickable-hover-styles();
+    }
+}
+
+.rep-container:hover {
+    .account-label.rep {
+        border: 2px solid @rep-label-color;
+        background: transparent;
+        color: @rep-label-color;
     }
 }
 

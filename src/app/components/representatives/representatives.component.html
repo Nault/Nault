@@ -3,62 +3,98 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">Representatives Overview</h2>
+        <h2 class="uk-heading-divider">Representatives</h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
         <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Reps</a>
       </div>
     </div>
 
-    <!-- Send Panel -->
     <div uk-grid class="uk-animation-slide-left-small uk-margin-remove-top">
       <div class="uk-width-1-1">
 
-        <div class="uk-card uk-card-default" *ngIf="!hideOverview">
-          <div class="uk-card-body uk-padding-remove-bottom">
-            <p class="uk-text-lead uk-text-center">You have delegated voting weight to the following representatives</p>
+        <div class="uk-card uk-overflow-auto" *ngIf="!hideOverview">
+          <p>Representatives participate in the Nano consensus protocol on your behalf. You can change them at any time.</p>
 
-
-            <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-              <li style="background: #fff; border-bottom: 0;">
-                <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
-                  <div class="uk-width-1-5">Status</div>
-                  <div class="uk-width-expand">Representative</div>
-                  <div class="uk-width-1-4">Weight</div>
-                </div>
-              </li>
-            </ul>
-            <ul class="uk-list uk-list-striped" style="margin-top: 0;">
-              <li *ngFor="let rep of representativeOverview">
-                <div uk-grid class="">
-
-                  <div class="uk-width-1-5" [ngClass]="{ 'uk-text-danger': rep.statusText === 'alert', 'uk-text-warning': rep.statusText === 'warn', 'uk-text-success': rep.statusText === 'trusted', 'uk-text-primary': rep.statusText === 'ok' }">
-                    <span *ngIf="rep.statusText === 'alert'" uk-tooltip title="This is an unknown or official representative, or it's marked because of bad uptime or high (3%+ of online) voting weight.  It is recommended to change to a new representative!"><span uk-icon="icon: warning"></span> Change</span>
-                    <span *ngIf="rep.statusText === 'warn'" uk-tooltip title="This representative has a bad uptime or a high (2%+ of online) voting weight.  Consider changing to a new representative."><span uk-icon="icon: warning"></span> Change</span>
-                    <span *ngIf="rep.statusText === 'trusted'" uk-tooltip title="This representative is marked as trusted.  No change is needed."><span uk-icon="icon: star"></span> Trusted</span>
-                    <span *ngIf="rep.statusText === 'ok'" uk-tooltip title="This representative is saved in your list, as long as it is online, no change is needed."><span uk-icon="icon: check"></span> Okay</span>
-                    <span *ngIf="rep.statusText === 'none'" uk-tooltip title="This representative is not known, consider switching to a known one or add this one to your list"><span uk-icon="icon: question"></span> Unknown</span>
-                  </div>
-                  <div class="uk-width-expand uk-text-truncate" (click)="addSelectedAccounts(rep.accounts)" style="cursor: pointer;" uk-tooltip title="Select the accounts which are using this representative">
-                    <span class="circle circle-online" *ngIf="rep.status.online" uk-tooltip title="Representative is online"></span>
-                    <span class="circle circle-offline" *ngIf="!rep.status.online" uk-tooltip title="Representative is offline"></span>
-                    <span *ngIf="rep.label">{{ rep.label }}</span> <span *ngIf="!rep.label"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
-                  </div>
-                  <div class="uk-width-1-4">
+          <table class="uk-table uk-table-striped uk-table-small">
+            <thead>
+              <tr>
+                <th scope="col" class="representative-health-column-header">Status</th>
+                <th scope="col" class="uk-width-expand">Representative</th>
+                <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">Voting Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="!loadingRepresentatives">
+              <ng-container *ngFor="let rep of representativeOverview">
+                <tr class="representative-row">
+                  <td class="representative-health-column uk-visible-toggle uk-text-truncate">
+                    <ng-container [ngSwitch]="true">
+                      <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
+                        <div class="health-icon"></div>
+                        <div class="label">Good</div>
+                      </div>
+                      <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'ok')">
+                        <div class="health-icon"></div>
+                        <div class="label">Good</div>
+                      </div>
+                      <div class="representative-health-status health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
+                        <div class="health-icon"></div>
+                        <div class="label">Acceptable</div>
+                      </div>
+                      <div class="representative-health-status health-red" *ngSwitchCase="(rep.statusText == 'alert')">
+                        <div class="health-icon"></div>
+                        <div class="label">Bad</div>
+                      </div>
+                      <div class="representative-health-status health-unknown" *ngSwitchDefault>
+                        <div class="health-icon"></div>
+                        <div class="label">Unknown</div>
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td class="representative-name-column uk-text-truncate rep-container" (click)="addSelectedAccounts(rep.accounts)">
+                    <div class="account-label rep">{{ rep.label ? rep.label : 'Unknown Rep' }}</div><div class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                  </td>
+                  <td class="voting-weight-column uk-width-1-4">
+                    <div class="uk-text-small uk-text-muted">Total</div>
                     {{ rep.delegatedWeight | rai: 'mnano' }}
-                  </div>
-
-                </div>
-              </li>
-              <li *ngIf="!representativeOverview || !representativeOverview.length" class="uk-text-center">
-                None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!
-              </li>
-            </ul>
-            <p class="uk-text-center uk-margin-small-bottom">
-              <small>Click on a representative to select all of the accounts delegated to it</small>
-            </p>
-          </div>
+                  </td>
+                </tr>
+                <tr class="delegating-account-row" *ngFor="let delegatingAccount of rep.accounts">
+                  <td class="representative-health-column"></td>
+                  <td class="delegating-account-details-column uk-text-truncate account-container" (click)="addSelectedAccounts([ delegatingAccount ])">
+                    <div class="delegating-account">
+                      <div class="descendant-icon"></div>
+                      <div class="descendant-details uk-text-truncate">
+                        <div class="descendant-label">
+                          <div class="account-label">{{
+                              delegatingAccount.addressBookName
+                            ? delegatingAccount.addressBookName
+                            : 'Account'
+                          }}</div>
+                        </div>
+                        <div class="descendant-address uk-text-truncate">
+                          <app-nano-account-id [accountID]="delegatingAccount.id" middle="on" class="nano-address-monospace"></app-nano-account-id>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="voting-weight-column uk-width-1-4 uk-text-small">
+                    {{ delegatingAccount.balance | rai: 'mnano' }}
+                  </td>
+                </tr>
+              </ng-container>
+              </ng-container>
+              <tr *ngIf="!loadingRepresentatives && ( !representativeOverview || !representativeOverview.length )" class="uk-text-center">
+                <td colspan="3" style="text-align: center;">None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!</td>
+              </tr>
+              <tr *ngIf="loadingRepresentatives">
+                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
       </div>
 
 
@@ -69,7 +105,7 @@
             <p class="uk-text-lead uk-text-center">Change your representatives</p>
 
 
-            <div class="uk-form-horizontal">
+            <div class="change-representative-form uk-form-horizontal">
 
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">Accounts to Change</label>
@@ -83,11 +119,13 @@
                     <li *ngFor="let account of selectedAccounts">
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
-                          <span *ngIf="account.addressBookName" class="uk-margin-small-right account-label blue">{{ account.addressBookName }}</span> 
-                          <span *ngIf="account.id !== 'All Current Accounts'"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></span>
-                          <span *ngIf="account.id === 'All Current Accounts'">{{ account.id }}</span>
+                          <div *ngIf="(account.id === 'All Current Accounts')">{{ account.id }}</div>
+                          <ng-container *ngIf="(account.id !== 'All Current Accounts')">
+                            <div class="uk-margin-small-right account-label blue">{{ account.addressBookName ? account.addressBookName : 'Account' }}</div>
+                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                          </ng-container>
                         </div>
-                        <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
+                        <div class="action-remove uk-width-1-6 uk-text-center">
                           <a (click)="removeSelectedAccount(account)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
                         </div>
                       </div>
@@ -122,8 +160,8 @@
                 </div>
 
                 <div class="uk-form-controls" *ngIf="representativeListMatch">
-                  <div class="uk-inline uk-width-1-1">
-                    <span class="uk-label uk-label-danger">{{ representativeListMatch }}</span>
+                  <div class="uk-inline uk-width-1-1 uk-margin-small-top">
+                    <span class="account-label rep">{{ representativeListMatch }}</span>
                   </div>
                 </div>
 

@@ -42,6 +42,7 @@ export class RepresentativesComponent implements OnInit {
   recommendedRepsLoading = false;
   selectedRecommendedRep = null;
   showRecommendedReps = false;
+  loadingRepresentatives = false;
 
   repsPerPage = 5;
   currentRepPage = 0;
@@ -82,6 +83,7 @@ export class RepresentativesComponent implements OnInit {
       }
     });
 
+    this.loadingRepresentatives = true;
     let repOverview = await this.representativeService.getRepresentativesOverview();
     // Sort by weight delegated
     repOverview = repOverview.sort(
@@ -89,6 +91,7 @@ export class RepresentativesComponent implements OnInit {
     );
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
+    this.loadingRepresentatives = false;
 
     // populate representative list
     const verifiedReps = await this.ninja.recommendedRandomized();
@@ -327,7 +330,9 @@ export class RepresentativesComponent implements OnInit {
 
     // If the overview panel is displayed, reload its data now
     if (!this.hideOverview) {
+      this.loadingRepresentatives = true;
       this.representativeOverview = await this.representativeService.getRepresentativesOverview();
+      this.loadingRepresentatives = false;
       useCachedReps = true;
     }
 
