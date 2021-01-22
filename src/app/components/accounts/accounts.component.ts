@@ -81,7 +81,8 @@ export class AccountsComponent implements OnInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   async deleteAccount(account) {

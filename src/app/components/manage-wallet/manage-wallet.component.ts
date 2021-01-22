@@ -61,7 +61,8 @@ export class ManageWalletComponent implements OnInit {
   }
 
   copied() {
-    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`);
+    this.notifications.removeNotification('success-copied');
+    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   seedMnemonic() {

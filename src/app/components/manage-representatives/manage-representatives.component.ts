@@ -93,7 +93,8 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Account address copied to clipboard!`);
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Account address copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   async getOnlineRepresentatives() {
