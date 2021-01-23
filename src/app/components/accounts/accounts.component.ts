@@ -39,6 +39,7 @@ export class AccountsComponent implements OnInit {
     this.reloadRepWarning$.subscribe(a => {
       this.representatives.detectChangeableReps();
     });
+    this.sortAccounts();
   }
 
   async createAccount() {
@@ -69,15 +70,17 @@ export class AccountsComponent implements OnInit {
   }
 
   sortAccounts() {
-    if (this.walletService.isLocked()) {
-      return this.notificationService.sendError(`Wallet is locked.`);
-    }
-    if (!this.walletService.isConfigured()) return this.notificationService.sendError(`Wallet is not configured`);
-    if (this.walletService.wallet.accounts.length <= 1) return this.notificationService.sendWarning(`You need at least 2 accounts to sort them`);
+    // if (this.walletService.isLocked()) return this.notificationService.sendError(`Wallet is locked.`);
+    // if (!this.walletService.isConfigured()) return this.notificationService.sendError(`Wallet is not configured`);
+    // if (this.walletService.wallet.accounts.length <= 1) {
+      // return this.notificationService.sendWarning(`You need at least 2 accounts to sort them`);
+    // }
+    if (this.walletService.isLocked() || !this.walletService.isConfigured() ||
+      this.walletService.wallet.accounts.length <= 1) return;
     this.walletService.wallet.accounts = this.walletService.wallet.accounts.sort((a, b) => a.index - b.index);
     // this.accounts = this.walletService.wallet.accounts;
     this.walletService.saveWalletExport(); // Save new sorted accounts list
-    this.notificationService.sendSuccess(`Successfully sorted accounts by index!`);
+    // this.notificationService.sendSuccess(`Successfully sorted accounts by index!`);
   }
 
   copied() {
