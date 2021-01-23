@@ -78,8 +78,8 @@ export class ApiService {
   async blockCount(): Promise<{count: number, unchecked: number, cemented: number }> {
     return await this.request('block_count', { include_cemented: 'true'});
   }
-  async workGenerate(hash): Promise<{ work: string }> {
-    return await this.request('work_generate', { hash });
+  async workGenerate(hash, difficulty): Promise<{ work: string }> {
+    return await this.request('work_generate', { hash, difficulty });
   }
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
     return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] });

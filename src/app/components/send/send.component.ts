@@ -295,7 +295,7 @@ export class SendComponent implements OnInit {
     // Start precomputing the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
     this.toAddressBook = this.addressBookService.getAccountName(destinationID);
-    this.workPool.addWorkToCache(this.fromAccount.frontier);
+    this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
   }

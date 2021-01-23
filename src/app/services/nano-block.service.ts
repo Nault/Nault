@@ -77,12 +77,12 @@ export class NanoBlockService {
       this.notifications.sendInfo(`Generating Proof of Work...`);
     }
 
-    blockData.work = await this.workPool.getWork(toAcct.frontier);
+    blockData.work = await this.workPool.getWork(toAcct.frontier, 1);
 
     const processResponse = await this.api.process(blockData, TxType.change);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
-      this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
+      this.workPool.addWorkToCache(processResponse.hash, 1); // Add new hash into the work pool, high PoW threshold for change block
       this.workPool.removeFromCache(toAcct.frontier);
       return processResponse.hash;
     } else {
@@ -224,13 +224,13 @@ export class NanoBlockService {
       this.notifications.sendInfo(`Generating Proof of Work...`);
     }
 
-    blockData.work = await this.workPool.getWork(fromAccount.frontier);
+    blockData.work = await this.workPool.getWork(fromAccount.frontier, 1);
 
     const processResponse = await this.api.process(blockData, TxType.send);
     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
 
     walletAccount.frontier = processResponse.hash;
-    this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
+    this.workPool.addWorkToCache(processResponse.hash, 1); // Add new hash into the work pool, high PoW threshold for send block
     this.workPool.removeFromCache(fromAccount.frontier);
 
     return processResponse.hash;
@@ -296,11 +296,14 @@ export class NanoBlockService {
       this.notifications.sendInfo(`Generating Proof of Work...`);
     }
 
-    blockData.work = await this.workPool.getWork(workBlock);
+    console.log('Get work for receive block');
+    blockData.work = await this.workPool.getWork(workBlock, 1 / 64); // low PoW threshold since receive block
     const processResponse = await this.api.process(blockData, openEquiv ? TxType.open : TxType.receive);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
-      this.workPool.addWorkToCache(processResponse.hash); // Add new hash into the work pool
+      // Add new hash into the work pool, high PoW threshold since we don't know what the next one will be
+      // Skip adding new work cache directly, let reloadBalances() check for pending and decide instead
+      // this.workPool.addWorkToCache(processResponse.hash, 1);
       this.workPool.removeFromCache(workBlock);
 
       // update the rep view via subscription
