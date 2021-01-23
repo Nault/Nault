@@ -31,7 +31,11 @@
   "select-a-different-server": "Select a different server",
   "attempting-to-connect-to-nano-node": "Attempting to connect to Nano node",
   "settings": "Settings",
-  "configure-wallet": "Configure Wallet",
+  "configure-wallet": {
+    "unsupported-browser": {
+      "browser-does-not-support-usb-communication": "It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera."
+    }
+  },
   "wallet-configured": {
     "you-already-have-a-wallet-configured": "You already have a wallet configured",
     "be-100-certain": "Before going any further, be 100% certain you have backed up the seed to your current wallet!",
@@ -59,7 +63,6 @@
   "ledger-nault-user-guide-and-troubleshooting": "Ledger/Nault User Guide and Troubleshooting",
   "unsupported-browser": {
     "title": "Unsupported Browser",
-    "browser-does-not-support-usb-communication": "It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.",
     "note-ios-is-currently-unsupported": "Note: iOS is currently unsupported. On Mac, use any browser other than Safari."
   },
   "ledger-device-not-connected": {
@@ -96,12 +99,15 @@
   "set-wallet-password": "Set Wallet Password",
   "your-password-is-used-to-encrypt-the-sensitive-parts": "Your password is used to encrypt the sensitive parts of your wallet when it is locked, which disables sending, receiving, creating accounts, and other operations.",
   "for-the-safety-of-your-funds-use-a-secure-und-unique-password": "For the safety of your funds, use a secure und unique password.",
-  "password-must-be-at-least-6-characters-long": "Password must be at least 6 characters long",
+  "password-must-be-at-least-x-characters-long": "Password must be at least {{numchars}} characters long",
   "passwords-do-not-match": "Passwords do not match!",
   "wallet-created": "Wallet created!",
   "your-wallet-has-been-created": "Your wallet has been created and you are ready to send and receive Nano!",
   "view-accounts": "View Accounts",
   "protip": "ProTip:",
   "if-you-lose-your-password-you-can-always-restore": "If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.",
-  "press-the-ledger-status-bar-on-the-left-side-to-reload": "Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it."
+  "press-the-ledger-status-bar-on-the-left-side-to-reload": "Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.",
+  "next": "Next",
+  "import-wallet": "Import Wallet",
+  "successfully-created-new-wallet-do-not-lose-the-seed-mnemonic": "Successfully created new wallet! Do not lose the seed/mnemonic!"
 }

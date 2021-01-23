@@ -296,9 +296,9 @@
               <div uk-icon="icon: warning; ratio: 2;"></div>
             </div>
             <p>
-              <b>Unsupported Browser</b><br>
-              It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.<br>
-              Note: iOS is currently unsupported. On Mac, use any browser other than Safari.
+              <b>{{ 'unsupported-browser.title' | translate }}</b><br>
+              {{ 'configure-wallet.unsupported-browser.browser-does-not-support-usb-communication' | translate }}<br>
+              {{ 'unsupported-browser.note-ios-is-currently-unsupported' | translate }}
             </p>
           </div>
         </div>
@@ -449,7 +449,7 @@
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
         <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
-        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'password-must-be-at-least-6-characters-long' | translate }}</span>
+        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'password-must-be-at-least-x-characters-long' | translate: { numchars: 6 } }}</span>
         <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">{{ 'passwords-do-not-match' | translate }}</span>
       </div>
       <div class="uk-width-1-2@m">
@@ -458,7 +458,7 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 6 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? 'Next':'Import Wallet'}}</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 6 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? ('next' | translate):('import-wallet' | translate)}}</button>
   </div>
 </div>
 
