@@ -35,17 +35,20 @@ export class ApiService {
       })
       .catch(err => {
         if (skipError) return;
-        if (err.status === 500 || err.status === 0) {
-          this.node.setOffline(); // Hard error, node is offline
-          throw err;
-        } else if (err.status === 429) {
-          if (this.appSettings.settings.serverName === 'random') {
-            console.log('Too many requests, new backend...');
-            this.appSettings.loadServerSettings();
-            return this.request(action, data);
-          } else {
+        console.log('Node responded with error', err.status);
+
+        if (this.appSettings.settings.serverName === 'random') {
+          // choose a new backend and do the request again
+          this.appSettings.loadServerSettings();
+          return this.request(action, data);
+        } else {
+          // hard exit
+          if(err.status === 429){
             this.node.setOffline('Too Many Requests to the node. Try again later or choose a different node.');
+          } else {
+            this.node.setOffline();
           }
+          throw err;
         }
       });
   }
