@@ -43,7 +43,7 @@ export class ApiService {
           return this.request(action, data);
         } else {
           // hard exit
-          if(err.status === 429){
+          if (err.status === 429) {
             this.node.setOffline('Too Many Requests to the node. Try again later or choose a different node.');
           } else {
             this.node.setOffline();
