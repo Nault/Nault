@@ -3,7 +3,6 @@ name: Electron App Release
 on:
   push:
   pull_request:
-  workflow_dispatch:
 
 jobs:
   # Release draft and share app version via package.json
