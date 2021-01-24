@@ -3,20 +3,15 @@ tag-template: 'v$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
     labels:
-      - 'feature'
-      - 'feat'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'fix'
-      - 'bugfix'
       - 'bug'
   - title: '🧰 Maintenance'
     labels:
-      - 'chore'
-      - 'refactor'
-      - 'style'
-      - 'docs'
+      - 'dependencies'
+      - 'documentation'
+      - 'maintenance'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
