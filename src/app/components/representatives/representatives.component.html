@@ -67,11 +67,7 @@
                       <div class="descendant-icon"></div>
                       <div class="descendant-details uk-text-truncate">
                         <div class="descendant-label">
-                          <div class="account-label">{{
-                              delegatingAccount.addressBookName
-                            ? delegatingAccount.addressBookName
-                            : 'Account'
-                          }}</div>
+                          <div class="account-label">{{ getAccountLabel(delegatingAccount) }}</div>
                         </div>
                         <div class="descendant-address uk-text-truncate">
                           <app-nano-account-id [accountID]="delegatingAccount.id" middle="on" class="nano-address-monospace"></app-nano-account-id>
@@ -113,7 +109,7 @@
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
                     <option [value]="null">Select Accounts to Change</option>
                     <option [value]="'all'">All Current Accounts</option>
-                    <option *ngFor="let account of wallet.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
+                    <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of selectedAccounts">
@@ -121,7 +117,7 @@
                         <div class="uk-width-5-6 uk-text-truncate">
                           <div *ngIf="(account.id === 'All Current Accounts')">{{ account.id }}</div>
                           <ng-container *ngIf="(account.id !== 'All Current Accounts')">
-                            <div class="uk-margin-small-right account-label blue">{{ account.addressBookName ? account.addressBookName : 'Account' }}</div>
+                            <div class="uk-margin-small-right account-label blue">{{ getAccountLabel(account) }}</div>
                             <div class="uk-text-truncate"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                           </ng-container>
                         </div>
