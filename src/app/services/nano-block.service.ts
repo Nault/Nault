@@ -74,10 +74,11 @@ export class NanoBlockService {
     }
 
     if (!this.workPool.workExists(toAcct.frontier)) {
-      this.notifications.sendInfo(`Generating Proof of Work...`);
+      this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
     }
 
     blockData.work = await this.workPool.getWork(toAcct.frontier, 1);
+    this.notifications.removeNotification('pow');
 
     const processResponse = await this.api.process(blockData, TxType.change);
     if (processResponse && processResponse.hash) {
@@ -221,10 +222,11 @@ export class NanoBlockService {
     }
 
     if (!this.workPool.workExists(fromAccount.frontier)) {
-      this.notifications.sendInfo(`Generating Proof of Work...`);
+      this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
     }
 
     blockData.work = await this.workPool.getWork(fromAccount.frontier, 1);
+    this.notifications.removeNotification('pow');
 
     const processResponse = await this.api.process(blockData, TxType.send);
     if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
@@ -293,11 +295,12 @@ export class NanoBlockService {
 
     workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : previousBlock;
     if (!this.workPool.workExists(workBlock)) {
-      this.notifications.sendInfo(`Generating Proof of Work...`);
+      this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
     }
 
     console.log('Get work for receive block');
     blockData.work = await this.workPool.getWork(workBlock, 1 / 64); // low PoW threshold since receive block
+    this.notifications.removeNotification('pow');
     const processResponse = await this.api.process(blockData, openEquiv ? TxType.open : TxType.receive);
     if (processResponse && processResponse.hash) {
       walletAccount.frontier = processResponse.hash;
@@ -373,10 +376,11 @@ export class NanoBlockService {
       // For open blocks which don't have a frontier, use the public key of the account
       const workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : block.previous;
       if (!this.workPool.workExists(workBlock)) {
-        this.notifications.sendInfo(`Generating Proof of Work...`);
+        this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
       }
 
       block.work = await this.workPool.getWork(workBlock, multiplier);
+      this.notifications.removeNotification('pow');
       this.workPool.removeFromCache(workBlock);
     }
     return block; // return signed block (with or without work)

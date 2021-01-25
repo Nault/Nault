@@ -126,6 +126,7 @@ export class PowService {
     const queueItem = this.PoWPool[0];
 
     let powSource = this.appSettings.settings.powSource;
+    const multiplierSource: Number = this.appSettings.settings.multiplierSource;
     if (powSource === 'best') {
       powSource = this.determineBestPoWMethod();
     }
@@ -137,10 +138,10 @@ export class PowService {
         work = this.getHashServer(queueItem.hash, queueItem.multiplier);
         break;
       case 'clientCPU':
-        work = await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier);
+        work = await this.getHashCPUWorker(queueItem.hash, multiplierSource > 1 ? multiplierSource : queueItem.multiplier);
         break;
       case 'clientWebGL':
-        work = await this.getHashWebGL(queueItem.hash, queueItem.multiplier);
+        work = await this.getHashWebGL(queueItem.hash, multiplierSource > 1 ? multiplierSource : queueItem.multiplier);
         break;
     }
 
