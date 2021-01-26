@@ -467,6 +467,22 @@ export class ConfigureAppComponent implements OnInit {
     this.statsRefreshEnabled = newServer === 'random' ? false : true;
   }
 
+  getRemotePoWOptionName() {
+    const optionName = 'Remote - Selected Server';
+
+    if ( (this.selectedServer === 'random') || (this.selectedServer === 'offline') ) {
+      return optionName;
+    }
+
+    const selectedServerOption = this.appSettings.serverOptions.find(d => d.value === this.selectedServer);
+
+    if (!selectedServerOption) {
+      return optionName;
+    }
+
+    return ( optionName + ' (' + selectedServerOption.name + ')' );
+  }
+
   async clearWorkCache() {
     const UIkit = window['UIkit'];
     try {
