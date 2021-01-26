@@ -106,7 +106,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'Best Option Available', value: 'best' },
     { name: 'Client Side - GPU/WebGL', value: 'clientWebGL' },
     { name: 'Client Side - CPU (Slowest)', value: 'clientCPU' },
-    { name: 'Selected Server - dPoW / boomPoW / Other', value: 'server' },
+    { name: 'Remote - Selected Server', value: 'server' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -499,6 +499,7 @@ export class ConfigureAppComponent implements OnInit {
       this.addressBook.clearAddressBook();
       this.appSettings.clearAppSettings();
       this.repService.resetRepresentativeList();
+      this.api.deleteCache();
 
       this.loadFromSettings();
 

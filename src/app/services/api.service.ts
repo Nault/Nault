@@ -116,11 +116,7 @@ export class ApiService {
     return await this.request('confirmation_quorum', { }, true);
   }
   async activeDifficulty(): Promise<{network_current: string, network_receive_current: string }> {
-    let latestDifficulty = {
-      latest: 0,
-      network_current: '',
-      network_receive_current: '',
-    };
+    let latestDifficulty;
     // try cached value first
     const difficultyStore = localStorage.getItem(this.storeKey);
     if (difficultyStore) {
@@ -134,9 +130,11 @@ export class ApiService {
       if (networkDifficulty?.network_current?.length === 16 && networkDifficulty?.network_receive_current?.length === 16) {
         console.log('New active difficulty used for send: ' + networkDifficulty.network_current);
         console.log('New active difficulty used for receive: ' + networkDifficulty.network_receive_current);
-        latestDifficulty.latest = Date.now();
-        latestDifficulty.network_current = networkDifficulty.network_current;
-        latestDifficulty.network_receive_current = networkDifficulty.network_receive_current;
+        latestDifficulty = {
+          latest: Date.now(),
+          network_current: networkDifficulty.network_current,
+          network_receive_current: networkDifficulty.network_receive_current
+        };
       } else {
         console.log('Failed to get active_difficulty from server. Using default instead.');
         latestDifficulty = {
@@ -149,5 +147,9 @@ export class ApiService {
     // save to storage even if failed because we want cache duration
     localStorage.setItem(this.storeKey, JSON.stringify(latestDifficulty));
     return latestDifficulty;
+  }
+
+  public deleteCache() {
+    localStorage.removeItem(this.storeKey);
   }
 }
