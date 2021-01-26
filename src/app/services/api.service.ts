@@ -115,9 +115,12 @@ export class ApiService {
     online_stake_total: string, peers_stake_total: string, peers_stake_required: string }> {
     return await this.request('confirmation_quorum', { }, true);
   }
-  async activeDifficulty(): Promise<{multiplier: number, network_current: string, network_minimum: string,
-    network_receive_current: string, network_receive_minimum: string }> {
-    let latestDifficulty;
+  async activeDifficulty(): Promise<{network_current: string, network_receive_current: string }> {
+    let latestDifficulty = {
+      latest: 0,
+      network_current: '',
+      network_receive_current: '',
+    };
     // try cached value first
     const difficultyStore = localStorage.getItem(this.storeKey);
     if (difficultyStore) {
@@ -126,17 +129,24 @@ export class ApiService {
     // cache duration has expired, get new value via API
     if (!difficultyStore || Date.now() > latestDifficulty.latest + (this.difficultyCacheDuration * 1000)) {
       // ignore API errors (false flag). If backend does not support this we use default difficulty downstream
-      latestDifficulty = await this.request('active_difficulty', { }, true);
+      const networkDifficulty = await this.request('active_difficulty', { }, true);
       // only store if valid response
-      if (latestDifficulty?.network_current?.length === 16 && latestDifficulty?.network_receive_current?.length === 16) {
-        console.log('New active difficulty used for send: ' + latestDifficulty.network_current);
-        console.log('New active difficulty used for receive: ' + latestDifficulty.network_receive_current);
+      if (networkDifficulty?.network_current?.length === 16 && networkDifficulty?.network_receive_current?.length === 16) {
+        console.log('New active difficulty used for send: ' + networkDifficulty.network_current);
+        console.log('New active difficulty used for receive: ' + networkDifficulty.network_receive_current);
+        latestDifficulty.latest = Date.now();
+        latestDifficulty.network_current = networkDifficulty.network_current;
+        latestDifficulty.network_receive_current = networkDifficulty.network_receive_current;
       } else {
-        latestDifficulty = {};
+        console.log('Failed to get active_difficulty from server. Using default instead.');
+        latestDifficulty = {
+          latest:  Date.now(),
+          network_current: '',
+          network_receive_current: '',
+        };
       }
     }
     // save to storage even if failed because we want cache duration
-    latestDifficulty.latest = Date.now();
     localStorage.setItem(this.storeKey, JSON.stringify(latestDifficulty));
     return latestDifficulty;
   }

@@ -151,7 +151,6 @@ export class PowService {
             localMultiplier = 1 / 64;
           }
         } else {
-          console.log('Failed to get active_difficulty from server. Using default instead.');
           localMultiplier = queueItem.multiplier;
         }
       } else { // use default requested difficulty
