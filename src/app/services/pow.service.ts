@@ -127,8 +127,36 @@ export class PowService {
 
     let powSource = this.appSettings.settings.powSource;
     const multiplierSource: Number = this.appSettings.settings.multiplierSource;
+    let localMultiplier: Number = 1;
+
     if (powSource === 'best') {
       powSource = this.determineBestPoWMethod();
+    }
+
+    if (powSource === 'clientCPU' || powSource === 'clientWebGL') {
+      if (multiplierSource > 1) { // use manual difficulty
+        localMultiplier = multiplierSource;
+      } else if (multiplierSource === 0) { // use auto difficulty
+        const activeDifficulty = await this.api.activeDifficulty();
+        if (activeDifficulty?.network_current?.length === 16 && activeDifficulty?.network_receive_current?.length === 16) {
+          if (queueItem.multiplier === 1 / 64) { // receive pow
+            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_receive_current, baseThreshold);
+          } else { // send pow
+            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_current, baseThreshold);
+          }
+          // clamp to max and min
+          if (localMultiplier > 8) {
+            localMultiplier = 8;
+          } else if (localMultiplier < 1 / 64) {
+            localMultiplier = 1 / 64;
+          }
+        } else {
+          console.log('Failed to get active_difficulty from server. Using default instead.');
+          localMultiplier = queueItem.multiplier;
+        }
+      } else { // use default requested difficulty
+        localMultiplier = queueItem.multiplier;
+      }
     }
 
     let work;
@@ -138,10 +166,10 @@ export class PowService {
         work = this.getHashServer(queueItem.hash, queueItem.multiplier);
         break;
       case 'clientCPU':
-        work = await this.getHashCPUWorker(queueItem.hash, multiplierSource > 1 ? multiplierSource : queueItem.multiplier);
+        work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
         break;
       case 'clientWebGL':
-        work = await this.getHashWebGL(queueItem.hash, multiplierSource > 1 ? multiplierSource : queueItem.multiplier);
+        work = await this.getHashWebGL(queueItem.hash, localMultiplier);
         break;
     }
 

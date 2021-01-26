@@ -112,6 +112,7 @@ export class ConfigureAppComponent implements OnInit {
 
   multiplierOptions = [
     { name: 'Default (1x or 1/64x)', value: 1 },
+    { name: 'Automatic (max 8x)', value: 0 },
     { name: '2x', value: 2 },
     { name: '4x', value: 4 },
     { name: '8x', value: 8 },

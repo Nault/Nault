@@ -79,6 +79,7 @@ export class UtilService {
     isValidWork: isValidWork,
     validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
+    multiplierFromDifficulty: multiplierFromDifficulty,
   };
   array = {
     shuffle: shuffle
@@ -418,6 +419,14 @@ export function difficultyFromMultiplier(multiplier, base_difficulty) {
   return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16);
 }
 
+// Determine new multiplier from base difficulty (hexadecimal string) and target difficulty (hexadecimal string). Returns Number
+export function multiplierFromDifficulty(difficulty, base_difficulty) {
+  const big64 = new BigNumber(2).pow(64);
+  const big_diff = new BigNumber(difficulty, 16);
+  const big_base = new BigNumber(base_difficulty, 16);
+  return big64.minus(big_base).dividedBy(big64.minus(big_diff)).toNumber();
+}
+
 // shuffle any array
 function shuffle(array) {
   let currentIndex = array.length, temporaryValue, randomIndex;
@@ -514,5 +523,6 @@ const util = {
     isValidWork: isValidWork,
     validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
+    multiplierFromDifficulty: multiplierFromDifficulty,
   }
 };
