@@ -382,7 +382,7 @@ export class SignComponent implements OnInit {
     if (this.shouldGenWork) {
       // For open blocks which don't have a frontier, use the public key of the account
       if (!this.workPool.workExists(workBlock)) {
-        this.notificationService.sendInfo(`Generating Proof of Work...`);
+        this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
       }
 
       if (this.txType === TxType.receive || this.txType === TxType.open) {
@@ -390,6 +390,7 @@ export class SignComponent implements OnInit {
       } else {
         this.currentBlock.work = await this.workPool.getWork(workBlock, 1);
       }
+      this.notificationService.removeNotification('pow');
 
       this.workPool.removeFromCache(workBlock);
     }

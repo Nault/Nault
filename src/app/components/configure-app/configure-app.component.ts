@@ -104,11 +104,23 @@ export class ConfigureAppComponent implements OnInit {
 
   powOptions = [
     { name: 'Best Option Available', value: 'best' },
-    { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
-    { name: 'Client Side - CPU', value: 'clientCPU' },
-    { name: 'Server - Nault Server', value: 'server' },
+    { name: 'Client Side - GPU/WebGL', value: 'clientWebGL' },
+    { name: 'Client Side - CPU (Slowest)', value: 'clientCPU' },
+    { name: 'Remote - Selected Server', value: 'server' },
   ];
   selectedPoWOption = this.powOptions[0].value;
+
+  multiplierOptions = [
+    { name: 'Default (1x or 1/64x)', value: 1 },
+    { name: 'Automatic (max 8x)', value: 0 },
+    { name: '2x', value: 2 },
+    { name: '4x', value: 4 },
+    { name: '8x', value: 8 },
+    { name: '16x', value: 16 },
+    { name: '32x', value: 32 },
+    { name: '64x', value: 64 },
+  ];
+  selectedMultiplierOption: number = this.multiplierOptions[0].value;
 
   pendingOptions = [
     { name: 'Largest Amount First', value: 'amount' },
@@ -223,6 +235,9 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
 
+    const matchingMultiplierOption = this.multiplierOptions.find(d => d.value === settings.multiplierSource);
+    this.selectedMultiplierOption = matchingMultiplierOption ? matchingMultiplierOption.value : this.multiplierOptions[0].value;
+
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
@@ -272,6 +287,7 @@ export class ConfigureAppComponent implements OnInit {
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
+    const newMultiplier = this.selectedMultiplierOption;
     const pendingOption = this.selectedPendingOption;
     let minReceive = null;
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
@@ -281,7 +297,7 @@ export class ConfigureAppComponent implements OnInit {
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
-    const reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
+    let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
     || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
@@ -300,12 +316,30 @@ export class ConfigureAppComponent implements OnInit {
         this.notifications.sendWarning(`CPU Worker support not available, set PoW to Best`);
         newPoW = 'best';
       }
+      // reset multiplier when not using it to avoid user mistake
+      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU') {
+        this.selectedMultiplierOption = this.multiplierOptions[0].value;
+      }
+    }
+
+    // reset work cache so that the new PoW will be used but only if larger than before
+    if (
+      newMultiplier > this.appSettings.settings.multiplierSource &&
+      newMultiplier > 1 &&
+      ((newPoW === 'clientWebGL' && this.pow.hasWebGLSupport()) ||
+      (newPoW === 'clientCPU' && this.pow.hasWorkerSupport()))
+    ) {
+      // if user accept to reset cache
+      if (await this.clearWorkCache()) {
+        reloadPending = true; // force reload balance => re-work pow
+      }
     }
 
     const newSettings = {
       walletStore: newStorage,
       lockInactivityMinutes: Number(this.selectedInactivityMinutes),
       powSource: newPoW,
+      multiplierSource: Number(this.selectedMultiplierOption),
       pendingOption: pendingOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
@@ -433,13 +467,30 @@ export class ConfigureAppComponent implements OnInit {
     this.statsRefreshEnabled = newServer === 'random' ? false : true;
   }
 
+  getRemotePoWOptionName() {
+    const optionName = 'Remote - Selected Server';
+
+    if ( (this.selectedServer === 'random') || (this.selectedServer === 'offline') ) {
+      return optionName;
+    }
+
+    const selectedServerOption = this.appSettings.serverOptions.find(d => d.value === this.selectedServer);
+
+    if (!selectedServerOption) {
+      return optionName;
+    }
+
+    return ( optionName + ' (' + selectedServerOption.name + ')' );
+  }
+
   async clearWorkCache() {
     const UIkit = window['UIkit'];
     try {
       await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>');
       this.workPool.clearCache();
       this.notifications.sendSuccess(`Successfully cleared the work cache!`);
-    } catch (err) {}
+      return true;
+    } catch (err) { return false; }
   }
 
   async clearWalletData() {
@@ -464,6 +515,7 @@ export class ConfigureAppComponent implements OnInit {
       this.addressBook.clearAddressBook();
       this.appSettings.clearAppSettings();
       this.repService.resetRepresentativeList();
+      this.api.deleteCache();
 
       this.loadFromSettings();
 

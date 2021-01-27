@@ -15,6 +15,7 @@ interface AppSettings {
   lockInactivityMinutes: number;
   ledgerReconnect: LedgerConnectionType;
   powSource: PoWSource;
+  multiplierSource: number;
   pendingOption: string;
   serverName: string;
   serverAPI: string | null;
@@ -38,6 +39,7 @@ export class AppSettingsService {
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
     powSource: 'best',
+    multiplierSource: 1,
     pendingOption: 'amount',
     serverName: 'random',
     serverAPI: null,
@@ -188,6 +190,7 @@ export class AppSettingsService {
       lockInactivityMinutes: 30,
       ledgerReconnect: 'usb',
       powSource: 'best',
+      multiplierSource: 1,
       pendingOption: 'amount',
       serverName: 'random',
       serverAPI: null,

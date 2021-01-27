@@ -99,7 +99,21 @@
 
                   <div class="uk-inline uk-width-1-1">
                     <select class="uk-select" [(ngModel)]="selectedPoWOption">
-                      <option *ngFor="let pow of powOptions" [value]="pow.value">{{ pow.name }}</option>
+                      <option *ngFor="let pow of powOptions" [value]="pow.value">
+                        <ng-element *ngIf="pow.value === 'server'">{{ getRemotePoWOptionName() }}</ng-element>
+                        <ng-element *ngIf="pow.value !== 'server'">{{ pow.name }}</ng-element>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU'">
+                <label class="uk-form-label">PoW Multiplier <span uk-icon="icon: info;" uk-tooltip title="Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedMultiplierOption">
+                      <option *ngFor="let multiplier of multiplierOptions" [value]="multiplier.value">{{ multiplier.name }}</option>
                     </select>
                   </div>
                 </div>
