@@ -20,6 +20,20 @@ let showUpdateErrors = false;
   error, warn, info, verbose, debug, silly
  * */
 
+ // determine log location
+let logLocation = 'Unknown';
+switch (process.platform) {
+  case 'win32':
+    logLocation = '%USERPROFILE%\\AppData\\Roaming\\nault\\logs\\main.log';
+    break;
+  case 'linux':
+    logLocation = '~/.config/nault/logs/main.log';
+    break;
+  case 'darwin':
+    logLocation = '~/Library/Logs/nault/main.log';
+    break;
+}
+
 class AppUpdater {
   constructor() {
     // We want the user to proactively download the install
@@ -73,20 +87,6 @@ class AppUpdater {
   }
 }
 new AppUpdater();
-
-// determine log location
-let logLocation = 'Unknown';
-switch (process.platform) {
-  case 'win32':
-    logLocation = '%USERPROFILE%\\AppData\\Roaming\\nault\\logs\\main.log';
-    break;
-  case 'linux':
-    logLocation = '~/.config/nault/logs/main.log';
-    break;
-  case 'darwin':
-    logLocation = '~/Library/Logs/nault/main.log';
-    break;
-}
 
 app.setAsDefaultProtocolClient('nano'); // Register handler for nano: links
 
@@ -247,7 +247,7 @@ function getApplicationMenu() {
         },
         {
           label: 'Discord (#nault)',
-          click () { loadExternal('http://discord.nanocenter.org/'); }
+          click () { loadExternal('https://discord.nanocenter.org/'); }
         },
         {type: 'separator'},
         {
