@@ -8,7 +8,7 @@ import { initialize } from './lib/ledger';
 const log = require('electron-log');
 // Don't want errors to display when checking for update
 // Too annoying if there would be long-term problems with the source
-// Autoupdater checks for updates every 10min
+// Error would pop up on every launch
 let showUpdateErrors = false;
 
 /** 
@@ -29,10 +29,10 @@ class AppUpdater {
     autoUpdater.on('update-available', (event, releaseNotes, releaseName) => {
       const dialogOpts = {
         type: 'info',
-        buttons: ['Install Update', 'Remind Me Later'],
+        buttons: ['Update', 'Ask Later'],
         title: 'New Version',
         message: 'An update for Nault is available!',
-        detail: 'Download, Install and Restart?'
+        detail: 'Do you want to download and install it?'
       }
     
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
@@ -154,7 +154,7 @@ function sendStatusToWindow(progressObj) {
   // sending message to ipcRenderer can be done as well but not sure where and how to display it
   // using the title bar instead
   // mainWindow.webContents.send('downloading', Math.round(progressObj.percent));
-  mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update:  ${Math.round(progressObj.percent)} %`);
+  mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
 app.on('ready', () => {
@@ -242,25 +242,29 @@ function getApplicationMenu() {
       role: 'help',
       submenu: [
         {
+          label: 'Reddit (r/nanocurrency)',
+          click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
+        },
+        {
+          label: 'Discord (#nault)',
+          click () { loadExternal('http://discord.nanocenter.org/'); }
+        },
+        {type: 'separator'},
+        {
           label: 'View GitHub',
           click () { loadExternal('https://github.com/Nault/Nault'); }
         },
         {
-          label: 'Submit Issue',
+          label: 'Submit a bug report',
           click () { loadExternal('https://github.com/Nault/Nault/issues/new'); }
         },
-        {type: 'separator'},
         {
-          type: 'normal',
-          label: `Nault Version: ${autoUpdater.currentVersion}`,
-        },
-        {
-          label: 'Github Releases',
+          label: 'Release notes',
           click () { loadExternal('https://github.com/Nault/Nault/releases'); }
         },
         {type: 'separator'},
         {
-          label: `Check for Updates...`,
+          label: `Check for Updates`,
           click (menuItem, browserWindow) {
             checkForUpdates();
           }
@@ -279,7 +283,6 @@ function getApplicationMenu() {
           label: `Check for Updates`,
           click (menuItem, browserWindow) {
             checkForUpdates();
-            loadExternal('https://github.com/Nault/Nault/releases');
           }
         },
         {type: 'separator'},
