@@ -1,10 +1,92 @@
 import 'babel-polyfill';
 
-import { app, BrowserWindow, shell, Menu, screen } from 'electron';
+import { app, BrowserWindow, shell, Menu, screen, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 import { initialize } from './lib/ledger';
+const log = require('electron-log');
+// Don't want errors to display when checking for update
+// Too annoying if there would be long-term problems with the source
+// Error would pop up on every launch
+let showUpdateErrors = false;
+
+/** 
+ * By default, the logger writes logs to the following locations:
+  on Linux: ~/.config/nault/logs/{process type}.log
+  on macOS: ~/Library/Logs/nault/{process type}.log
+  on Windows: %USERPROFILE%\AppData\Roaming\nault\logs\{process type}.log
+
+  error, warn, info, verbose, debug, silly
+ * */
+
+ // determine log location
+let logLocation = 'Unknown';
+switch (process.platform) {
+  case 'win32':
+    logLocation = '%USERPROFILE%\\AppData\\Roaming\\nault\\logs\\main.log';
+    break;
+  case 'linux':
+    logLocation = '~/.config/nault/logs/main.log';
+    break;
+  case 'darwin':
+    logLocation = '~/Library/Logs/nault/main.log';
+    break;
+}
+
+class AppUpdater {
+  constructor() {
+    // We want the user to proactively download the install
+    autoUpdater.autoDownload = false;
+    autoUpdater.logger = log;
+
+    autoUpdater.on('update-available', (event, releaseNotes, releaseName) => {
+      const dialogOpts = {
+        type: 'info',
+        buttons: ['Update', 'Ask Later'],
+        title: 'New Version',
+        message: 'An update for Nault is available!',
+        detail: 'Do you want to download and install it?'
+      }
+    
+      dialog.showMessageBox(dialogOpts).then((returnValue) => {
+        if (returnValue.response === 0) {
+          showUpdateErrors = true; // enable errors
+          autoUpdater.downloadUpdate();
+        } 
+      })
+    })
+
+    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+      autoUpdater.quitAndInstall(true, true);
+    })
+
+    autoUpdater.on('download-progress', (progressObj) => {
+      sendStatusToWindow(progressObj);
+    })
+
+    autoUpdater.on('error', message => {
+      log.error('There was a problem updating the application');
+      log.error(message);
+
+      if (!showUpdateErrors) {
+        return;
+      }
+      mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion}`); // reset title
+      showUpdateErrors = false; // disable errors
+      const dialogOpts = {
+        type: 'error',
+        buttons: ['OK'],
+        title: 'Update Error',
+        message: 'Something went wrong while downloading Nault.',
+        detail: `You will be notified again on next start.\nMore details in the log at: ${logLocation}`
+      }
+    
+      dialog.showMessageBox(dialogOpts).then((returnValue) => {})
+    })
+  }
+}
+new AppUpdater();
 
 app.setAsDefaultProtocolClient('nano'); // Register handler for nano: links
 
@@ -19,7 +101,7 @@ function createWindow () {
   try {
     const mainScreen = screen.getPrimaryDisplay();
     const dimensions = mainScreen.size;
-    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.7));
+    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
     newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
   } catch {}
 
@@ -53,10 +135,26 @@ function createWindow () {
     shell.openExternal(externalurl);
   });
 
+  mainWindow.webContents.on('did-finish-load', function () {
+    mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion}`);
+  });
+
   const menuTemplate = getApplicationMenu();
 
   // Create our menu entries so that we can use MAC shortcuts
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+}
+
+function sendStatusToWindow(progressObj) {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + ' - Downloaded ' + Math.round(progressObj.percent) + '%';
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+
+  log.info(log_message);
+  // sending message to ipcRenderer can be done as well but not sure where and how to display it
+  // using the title bar instead
+  // mainWindow.webContents.send('downloading', Math.round(progressObj.percent));
+  mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
 app.on('ready', () => {
@@ -99,9 +197,7 @@ app.on('activate', function () {
 });
 
 function checkForUpdates() {
-  autoUpdater.checkForUpdatesAndNotify()
-    .then(() => {})
-    .catch(console.log);
+  autoUpdater.checkForUpdates();
 }
 
 // Build up the menu bar options based on platform
@@ -146,32 +242,33 @@ function getApplicationMenu() {
       role: 'help',
       submenu: [
         {
+          label: 'Reddit (r/nanocurrency)',
+          click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
+        },
+        {
+          label: 'Discord (#nault)',
+          click () { loadExternal('https://discord.nanocenter.org/'); }
+        },
+        {type: 'separator'},
+        {
           label: 'View GitHub',
           click () { loadExternal('https://github.com/Nault/Nault'); }
         },
         {
-          label: 'Submit Issue',
+          label: 'Submit a bug report',
           click () { loadExternal('https://github.com/Nault/Nault/issues/new'); }
         },
-        {type: 'separator'},
         {
-          type: 'normal',
-          label: `Nault Version: ${autoUpdater.currentVersion}`,
-        },
-        {
-          label: 'Check for Updates',
+          label: 'Release notes',
           click () { loadExternal('https://github.com/Nault/Nault/releases'); }
         },
-        // updates not working, disable for now
-        /**
         {type: 'separator'},
         {
-          label: `Check for Updates...`,
+          label: `Check for Updates`,
           click (menuItem, browserWindow) {
             checkForUpdates();
           }
         },
-        */
       ]
     }
   ];
@@ -185,9 +282,7 @@ function getApplicationMenu() {
         {
           label: `Check for Updates`,
           click (menuItem, browserWindow) {
-            // updates not working, disable for now
-            // checkForUpdates();
-            loadExternal('https://github.com/Nault/Nault/releases');
+            checkForUpdates();
           }
         },
         {type: 'separator'},
