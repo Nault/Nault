@@ -476,12 +476,6 @@ export class RepresentativeService {
       name: 'Nano Foundation #8',
       warn: true,
     },
-    // Expected to shut down March 2021. Remove later.
-    {
-      id: 'nano_3rpixaxmgdws7nk7sx6owp8d8becj9ei5nef6qiwokgycsy9ufytjwgj6eg9',
-      name: 'Repnode.org - Will shut down',
-      warn: true,
-    }
   ];
 
 }
