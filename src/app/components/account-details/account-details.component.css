@@ -158,6 +158,10 @@
     position: relative;
 }
 
+.representative-details, .balance-details {
+    min-height: 85px;
+}
+
 @media (max-width: 1199px) {
     /* horizontal separator between rep details and balances */
     .representative-details::after {
@@ -224,6 +228,7 @@
     width: 180px;
     height: 180px;
     background: #FFF;
+    margin-bottom: 0;
 }
 .uk-modal-body .qr-code {
     width: 180px;
@@ -232,6 +237,7 @@
 @media (max-width: 1199px) {
     .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
         min-width: 180px;
+        min-height: 180px;
         width: 60%;
         height: auto;
     }

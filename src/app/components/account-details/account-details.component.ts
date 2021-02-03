@@ -163,6 +163,17 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  clearAccountVars() {
+    this.accountHistory = [];
+    this.pendingBlocks = [];
+    this.accountID = '';
+    this.addressBookEntry = null;
+    this.addressBookModel = '';
+    this.walletAccount = null;
+    this.account = {};
+    this.qrCodeImage = null;
+  }
+
   clearRemoteVars() {
     this.selectedAmount = this.amounts[0];
     this.amount = null;
@@ -217,12 +228,17 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
     this.pendingBlocks = [];
+
+    if (this.accountID !== this.router.snapshot.params.account) {
+      this.clearAccountVars();
+      this.loadingAccountDetails = true;
+    }
+
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
 
-    this.loadingAccountDetails = true;
     this.account = await this.api.accountInfo(this.accountID);
 
     if (!this.account) {
