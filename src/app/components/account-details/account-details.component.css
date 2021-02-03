@@ -2,6 +2,25 @@
     margin-top: 2px;
 }
 
+.nano-address-actions li {
+    display: inline-block;
+}
+.nano-address-actions li + li {
+    margin-left: 7px;
+}
+
+.icon-qr-code {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    vertical-align: -5px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAATCAMAAADLVI+CAAAAAXNSR0IArs4c6QAAAAlQTFRFAAAAZ2aGM3nK67MP8AAAAAN0Uk5TAP//RFDWIQAAALJJREFUKJFlUgEOxDAIAv7/6FsV0eRsu60pU8CCFSBqVqgCQs3efIeFyAL1njoLD+ZcDXubL1HnalhtDDPowgwamLMMOEUV8IO1BPBPAnQkOMhmd0LCOfdwwfcpDxesTxrBUdsKNe/ks4CpyxUwdbXeDrbmeuFWxLUYg7gWY64wMhyvVnOc1h+Hp/XX4Wk9V8603sXqh/R0Saanh2RuyNLLDVl6576F3d63ZbcSYsxKSM0f2zYB9h/lHfIAAAAASUVORK5CYII=');
+    background-position: 0 0;
+}
+.icon-qr-code:hover {
+    background-position: -19px 0;
+}
+
 .block-qr {
     margin:auto;
     width: 100%;
@@ -55,4 +74,177 @@
 }
 .refresh-disabled {
     color: #bbb;
+}
+
+.incoming-label {
+    display: inline-block;
+    background: #4a90e2;
+    border-radius: 20px;
+    font-size: 12px;
+    padding: 2px 10px;
+    margin-left: 7px;
+    vertical-align: 1px;
+    padding-bottom: 1px;
+    text-transform: uppercase;
+    color: #FFF;
+    margin-top: -3px;
+    margin-bottom: -3px;
+}
+
+.incoming-label > .text-full {
+    display: inline-block;
+}
+
+.incoming-label > .text-full > .amount-sign {
+    display: inline-block;
+    vertical-align: 1px;
+    margin-right: 1px;
+}
+
+.incoming-label > .text-full > .amount-integer {
+    display: inline-block;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.incoming-label > .text-full > .amount-fractional {
+    display: inline-block;
+}
+
+.incoming-label > .text-snippet {
+    display: none;
+}
+
+.details-header {
+    text-transform: uppercase;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.representative-label-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.account-amounts-primary {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.account-amounts-primary-confirmed {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    line-height: 1;
+}
+
+.account-amounts-primary-confirmed > .amount-integer {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.account-amounts-primary-confirmed > .amount-fractional {
+    font-size: 16px;
+}
+
+.account-amounts-converted {
+    color: #81809f;
+}
+
+.representative-details {
+    position: relative;
+}
+
+.representative-details, .balance-details {
+    min-height: 85px;
+}
+
+@media (max-width: 1199px) {
+    /* horizontal separator between rep details and balances */
+    .representative-details::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: calc(100% + 30px);
+        height: 100%;
+        top: 14px;
+        left: 0;
+        border-bottom: 1px solid #dce9f9;
+    }
+}
+
+.advanced-options-link {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.advanced-options-link .chevron {
+    margin-left: 8px;
+}
+
+.chevron {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23676686%22%20stroke-width%3D%221.1%22%20points%3D%221%204%207%2010%2013%204%22%20%2F%3E%0A%3C%2Fsvg%3E");
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    margin-left: 4px;
+}
+
+.chevron-up {
+    transform: scaleY(-1);
+}
+
+.advanced-options {
+    margin-top: 20px;
+}
+
+.advanced-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.advanced-option .uk-checkbox {
+    margin-left: 12px;
+    margin-top: -1px;
+}
+
+.form-input-destination {
+    max-width: 800px;
+}
+
+.form-amount {
+    max-width: 450px;
+}
+
+.uk-modal-body .qr-code-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    background: #FFF;
+    margin-bottom: 0;
+}
+.uk-modal-body .qr-code {
+    width: 180px;
+    height: 180px;
+}
+@media (max-width: 1199px) {
+    .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+        min-width: 180px;
+        min-height: 180px;
+        width: 60%;
+        height: auto;
+    }
+}
+@media (max-width: 699px) {
+    .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+        width: 80%;
+        height: auto;
+    }
 }

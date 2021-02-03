@@ -41,7 +41,7 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="destination-account">Local Destination<span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
+                <label class="uk-form-label" for="destination-account">Local Destination <span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" id="destination-account" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
                     <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
@@ -55,7 +55,7 @@
           <div *ngIf="customAccountSelected" class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="custom-destination">Custom Destination<span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be any remote account."></span></label>
+                <label class="uk-form-label" for="custom-destination">Custom Destination <span uk-icon="icon: info;" uk-tooltip title="The deposit account for the sweps funds. Can be any remote account."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">

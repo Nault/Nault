@@ -37,9 +37,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   walletAccount = null;
 
+  qrModal: any = null;
+
+  loadingAccountDetails = false;
+  showAdvancedOptions = false;
   showEditAddressBook = false;
   addressBookModel = '';
-  showEditRepresentative = false;
   representativeModel = '';
   representativeResults$ = new BehaviorSubject([]);
   showRepresentatives = false;
@@ -84,6 +87,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   blockTypes: string[] = ['Send Nano', 'Change Representative'];
   blockTypeSelected: string = this.blockTypes[0];
   representativeList = [];
+  representativesOverview = [];
   // End remote signing
 
   constructor(
@@ -124,6 +128,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     });
 
+    const UIkit = window['UIkit'];
+    const qrModal = UIkit.modal('#qr-code-modal');
+    this.qrModal = qrModal;
+
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
 
@@ -143,6 +151,27 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // add the localReps to the list
     const localReps = this.repService.getSortedRepresentatives();
     this.representativeList.push(...localReps);
+
+    this.repService.walletReps$.subscribe(async reps => {
+      if ( reps[0] === null ) {
+        // initial state from new BehaviorSubject([null])
+        return;
+      }
+
+      this.representativesOverview = reps;
+      this.updateRepresentativeLabel();
+    });
+  }
+
+  clearAccountVars() {
+    this.accountHistory = [];
+    this.pendingBlocks = [];
+    this.accountID = '';
+    this.addressBookEntry = null;
+    this.addressBookModel = '';
+    this.walletAccount = null;
+    this.account = {};
+    this.qrCodeImage = null;
   }
 
   clearRemoteVars() {
@@ -167,21 +196,57 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.representativeListMatch = '';
   }
 
+  updateRepresentativeLabel() {
+    if (!this.account) {
+      return;
+    }
+
+    const representativeFromOverview =
+      this.representativesOverview.find(
+        (rep) =>
+          (rep.account === this.account.representative)
+      );
+
+    if (representativeFromOverview != null) {
+      this.repLabel = representativeFromOverview.label;
+      return;
+    }
+
+    const knownRepresentative = this.repService.getRepresentative(this.account.representative);
+
+    if (knownRepresentative != null) {
+      this.repLabel = knownRepresentative.name;
+      return;
+    }
+
+    this.repLabel = null;
+  }
+
   async loadAccountDetails(refresh= false) {
     if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
     setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
     this.pendingBlocks = [];
+
+    if (this.accountID !== this.router.snapshot.params.account) {
+      this.clearAccountVars();
+      this.loadingAccountDetails = true;
+    }
+
     this.accountID = this.router.snapshot.params.account;
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
+
     this.account = await this.api.accountInfo(this.accountID);
 
-    if (!this.account) return;
-    const knownRepresentative = this.repService.getRepresentative(this.account.representative);
-    this.repLabel = knownRepresentative ? knownRepresentative.name : null;
+    if (!this.account) {
+      this.loadingAccountDetails = false;
+      return;
+    }
+
+    this.updateRepresentativeLabel();
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
@@ -201,6 +266,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           this.pendingBlocks.push({
             account: pending.blocks[block].source,
             amount: pending.blocks[block].amount,
+            amountRaw: new BigNumber( pending.blocks[block].amount || 0 ).mod(this.nano),
             local_timestamp: pending.blocks[block].local_timestamp,
             addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
             hash: block,
@@ -231,8 +297,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.getAccountHistory(this.accountID);
 
 
-    const qrCode = await QRCode.toDataURL(`${this.accountID}`);
+    const qrCode = await QRCode.toDataURL(`${this.accountID}`, { errorCorrectionLevel: 'M', scale: 16 });
     this.qrCodeImage = qrCode;
+
+    this.loadingAccountDetails = false;
   }
 
   ngOnDestroy() {
@@ -297,37 +365,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.pageSize += 25;
       await this.getAccountHistory(this.accountID, false);
     }
-  }
-
-  async saveRepresentative() {
-    if (this.wallet.walletIsLocked()) return this.notifications.sendWarning(`Wallet must be unlocked`);
-    if (!this.walletAccount) return;
-    const repAccount = this.representativeModel;
-
-    const valid = this.util.account.isValidAccount(repAccount);
-    if (!valid) return this.notifications.sendWarning(`Account ID is not a valid account`);
-
-    try {
-      const changed = await this.nanoBlock.generateChange(this.walletAccount, repAccount, this.wallet.isLedgerWallet());
-      if (!changed) {
-        this.notifications.sendError(`Error changing representative, please try again`);
-        return;
-      }
-    } catch (err) {
-      this.notifications.sendError(err.message);
-      return;
-    }
-
-    // Reload some states, we are successful
-    this.representativeModel = '';
-    this.showEditRepresentative = false;
-
-    const accountInfo = await this.api.accountInfo(this.accountID);
-    this.account = accountInfo;
-    const newRep = this.repService.getRepresentative(repAccount);
-    this.repLabel = newRep ? newRep.name : '';
-
-    this.notifications.sendSuccess(`Successfully changed representative`);
   }
 
   async saveAddressBook() {
