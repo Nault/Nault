@@ -1,10 +1,8 @@
 # Nault
 
-![GitHub Pages](https://github.com/Nault/Nault/workflows/GitHub%20Pages/badge.svg)
-![Electron App](https://github.com/Nault/Nault/workflows/Electron%20App/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Nault_Nault&metric=alert_status)](https://sonarcloud.io/dashboard?id=Nault_Nault)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/nault/nault)
 [![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/Nault/Nault/releases/latest)
-[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg)](https://discord.nanocenter.org)
+[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
 
 Nault is a community driven fork of the popular Nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
