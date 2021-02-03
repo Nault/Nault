@@ -39,6 +39,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   qrModal: any = null;
 
+  loadingAccountDetails = false;
   showAdvancedOptions = false;
   showEditAddressBook = false;
   addressBookModel = '';
@@ -220,9 +221,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
+
+    this.loadingAccountDetails = true;
     this.account = await this.api.accountInfo(this.accountID);
 
-    if (!this.account) return;
+    if (!this.account) {
+      this.loadingAccountDetails = false;
+      return;
+    }
+
     this.updateRepresentativeLabel();
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
@@ -276,6 +283,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const qrCode = await QRCode.toDataURL(`${this.accountID}`);
     this.qrCodeImage = qrCode;
+
+    this.loadingAccountDetails = false;
   }
 
   ngOnDestroy() {

@@ -87,6 +87,8 @@
     padding-bottom: 1px;
     text-transform: uppercase;
     color: #FFF;
+    margin-top: -3px;
+    margin-bottom: -3px;
 }
 
 .incoming-label > .text-full {

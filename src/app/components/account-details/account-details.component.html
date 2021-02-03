@@ -66,8 +66,8 @@
 
             <div class="details-header">Representative</div>
 
-            <div *ngIf="(account && account.representative) else repLoading">
-              <div class="nano-address-monospace uk-width-auto uk-text-truncate">
+            <div *ngIf="!loadingAccountDetails else repLoading">
+              <div class="uk-width-auto uk-text-truncate" *ngIf="(account && account.representative) else noRepresentative">
                 <div class="representative-label-container">
                   <div class="account-label rep">{{ repLabel ? repLabel : 'Unknown Rep' }}</div>
                   <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
@@ -76,14 +76,17 @@
                     </ul>
                   </div>
                 </div>
-                <div>
+                <div class="nano-address-monospace">
                   <app-nano-account-id [accountID]="account.representative" middle="off"></app-nano-account-id>
                 </div>
               </div>
+              <ng-template #noRepresentative>
+                <div class="uk-text-muted" style="margin-top: 8px;">None</div>
+              </ng-template>
             </div>
             <ng-template #repLoading>
               <div class="uk-margin-small-top">
-                <div uk-spinner="ratio: 0.6;"></div>
+                <div uk-spinner="ratio: 0.5;" style="vertical-align: 2px;"></div>
               </div>
             </ng-template>
 
@@ -114,7 +117,10 @@
               </div>
             </div>
             <div class="account-amounts-converted">
-              {{ !account ? 0 : (account.balanceFiat | fiat: settings.settings.displayCurrency) }}
+              <ng-container *ngIf="!loadingAccountDetails else fiatLoading">
+                <ng-container *ngIf="account">{{ (account.balanceFiat | fiat: settings.settings.displayCurrency) }}</ng-container>
+              </ng-container>
+              <ng-template #fiatLoading><div uk-spinner="ratio: 0.5;" style="vertical-align: 2px;"></div></ng-template>
             </div>
           </div>
 
