@@ -427,8 +427,13 @@
             : 'External address'
           )
         }}</div>
-        <div class="nano-address-monospace uk-width-auto">
-          <app-nano-account-id [accountID]="accountID" middle="off"></app-nano-account-id>
+        <div class="uk-width-1-1">
+          <span class="nano-address-monospace">
+            <app-nano-account-id [accountID]="accountID" middle="off"></app-nano-account-id>
+          </span>
+          <span class="nano-address-actions" style="vertical-align: 1px;">
+            <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+          </span>
         </div>
       </div>
     </div>
