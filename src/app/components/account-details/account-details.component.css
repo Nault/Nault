@@ -214,3 +214,12 @@
 .form-amount {
     max-width: 450px;
 }
+
+.qr-code-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    background: #FFF;
+}
