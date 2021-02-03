@@ -413,7 +413,7 @@
     <button class="uk-modal-close-default" type="button" uk-close></button>
     <div class="uk-modal-body">
       <div class="uk-width-1-1 uk-text-center">
-        <img *ngIf="qrCodeImage else qrCodeGenerating" [src]="qrCodeImage" title="Deposit Address">
+        <img *ngIf="qrCodeImage else qrCodeGenerating" [src]="qrCodeImage" class="qr-code" title="Deposit Address">
         <ng-template #qrCodeGenerating>
           <div class="qr-code-placeholder uk-align-center"><div uk-spinner="ratio: 2;"></div></div>
         </ng-template>

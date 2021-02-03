@@ -217,11 +217,28 @@
     max-width: 450px;
 }
 
-.qr-code-placeholder {
+.uk-modal-body .qr-code-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 180px;
     height: 180px;
     background: #FFF;
+}
+.uk-modal-body .qr-code {
+    width: 180px;
+    height: 180px;
+}
+@media (max-width: 1199px) {
+    .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+        min-width: 180px;
+        width: 60%;
+        height: auto;
+    }
+}
+@media (max-width: 699px) {
+    .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+        width: 80%;
+        height: auto;
+    }
 }

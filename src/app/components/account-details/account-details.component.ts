@@ -281,7 +281,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.getAccountHistory(this.accountID);
 
 
-    const qrCode = await QRCode.toDataURL(`${this.accountID}`);
+    const qrCode = await QRCode.toDataURL(`${this.accountID}`, { errorCorrectionLevel: 'M', scale: 16 });
     this.qrCodeImage = qrCode;
 
     this.loadingAccountDetails = false;
