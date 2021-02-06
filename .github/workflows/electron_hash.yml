@@ -122,10 +122,11 @@ jobs:
           sed -i '/.AppImage/ s//-Linux.AppImage/g' desktop-app/build/latest-linux.yml | bash
         shell: bash
 
+      # Special sed command for mac
       - name: Rename file paths in .yml (Mac)
         if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/')
         run: |
-          sed -i '/.dmg/ s//-Mac.dmg/g' desktop-app/build/latest-mac.yml | bash
+          sed -i '' '/.dmg/ s//-Mac.dmg/g' desktop-app/build/latest-mac.yml
         shell: bash
 
       - name: Rename file paths in .yml (Windows)
