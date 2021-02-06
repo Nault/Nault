@@ -83,6 +83,14 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
+      name: 'PowerNode',
+      value: 'powernode',
+      api: 'https://proxy.powernode.cc/proxy',
+      ws: 'wss://ws.powernode.cc',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
       name: 'Nanex.cc',
       value: 'nanex',
       api: 'https://api.nanex.cc',
