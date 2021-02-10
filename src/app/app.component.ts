@@ -77,8 +77,8 @@ export class AppComponent implements OnInit {
 
     await this.walletService.loadStoredWallet();
 
-    // Navigate to accounts page if there is wallet, but only if coming from home
-    if (this.walletService.isConfigured() && window.location.pathname === '/') {
+    // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
+    if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
       this.router.navigate(['accounts']);
     }
 
