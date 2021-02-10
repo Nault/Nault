@@ -294,58 +294,70 @@
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-text-meta">
                       <table id="node-stats-table">
-                        <td>
-                          <tr>
+                        <tr>
+                          <td>
                             <strong>Server</strong>
-                          </tr>
-                          <tr>
-                            <strong>Block Count</strong>
-                          </tr>
-                          <tr>
-                            <strong>Uncemented Blocks</strong>
-                          </tr>
-                          <tr>
-                            <strong>Peers Stake Required</strong>
-                          </tr>
-                          <tr>
-                            <strong>Peers Stake Total</strong>
-                          </tr>
-                          <tr>
-                            <strong>Node Version</strong>
-                          </tr>
-                          <tr>
-                            <strong>Network</strong>
-                          </tr>
-                          <tr *ngIf="showServerValues() && !showServerConfigs()">
-                            <strong>Random Server</strong>
-                          </tr>
-                        </td>
-                        <td>
-                          <tr>
+                          </td>
+                          <td>
                             {{serverAPIUpdated ? serverAPI:'Save settings to update'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Block Count</strong>
+                          </td>
+                          <td>
                             {{nodeBlockCount || 'N/A'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Uncemented Blocks</strong>
+                          </td>
+                          <td>
                             {{nodeUncemented || 'N/A'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Peers Stake Required</strong>
+                          </td>
+                          <td>
                             {{peersStakeReq || 'N/A'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Peers Stake Total</strong>
+                          </td>
+                          <td>
                             {{peersStakeTotal || 'N/A'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Node Version</strong>
+                          </td>
+                          <td>
                             {{nodeVendor || 'N/A'}}
-                          </tr>
-                          <tr>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Network</strong>
+                          </td>
+                          <td>
                             {{nodeNetwork || 'N/A'}}
-                          </tr>
-                          <tr *ngIf="showServerValues() && !showServerConfigs()">
+                          </td>
+                        </tr>
+                        <tr *ngIf="showServerValues() && !showServerConfigs()">
+                          <td>
+                            <strong>Random Server</strong>
+                          </td>
+                          <td>
                             {{shouldRandom || 'No'}}
-                          </tr>
-                        </td>
+                          </td>
+                        </tr>
                       </table>
                     </span>
                   </div>
