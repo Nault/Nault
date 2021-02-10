@@ -9,3 +9,7 @@
 #node-stats-table td {
     padding-right: 20px;
 }
+
+#node-stats-table tr:not(:last-child) td {
+    border-bottom: 1px solid #dce9f9;
+}
