@@ -96,6 +96,10 @@ export class RepresentativesComponent implements OnInit {
     // populate representative list
     const verifiedReps = await this.ninja.recommendedRandomized();
 
+    // add the localReps to the list
+    const localReps = this.representativeService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
+
     for (const representative of verifiedReps) {
       const temprep = {
         id: representative.account,
@@ -104,10 +108,6 @@ export class RepresentativesComponent implements OnInit {
 
       this.representativeList.push(temprep);
     }
-
-    // add the localReps to the list
-    const localReps = this.representativeService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
 
     await this.loadRecommendedReps();
   }
@@ -178,6 +178,8 @@ export class RepresentativesComponent implements OnInit {
 
     const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      // remove duplicate accounts
+      .filter((item, pos, self) => this.util.array.findWithAttr(self, 'id', item.id) === pos)
       .slice(0, 5);
 
     this.representativeResults$.next(matches);
@@ -369,5 +371,4 @@ export class RepresentativesComponent implements OnInit {
     }, () => {}
     );
   }
-
 }

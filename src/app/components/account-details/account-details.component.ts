@@ -135,6 +135,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
 
+    // add the localReps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push(...localReps);
+
     // populate representative list
     if (!this.settings.settings.serverAPI) return;
     const verifiedReps = await this.ninja.recommendedRandomized();
@@ -147,10 +151,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
       this.representativeList.push(temprep);
     }
-
-    // add the localReps to the list
-    const localReps = this.repService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
 
     this.repService.walletReps$.subscribe(async reps => {
       if ( reps[0] === null ) {
@@ -403,6 +403,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      // remove duplicate accounts
+      .filter((item, pos, self) => this.util.array.findWithAttr(self, 'id', item.id) === pos)
       .slice(0, 5);
 
     this.representativeResults$.next(matches);
