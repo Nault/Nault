@@ -82,7 +82,8 @@ export class UtilService {
     multiplierFromDifficulty: multiplierFromDifficulty,
   };
   array = {
-    shuffle: shuffle
+    shuffle: shuffle,
+    findWithAttr: findWithAttr
   };
 
 }
@@ -463,6 +464,15 @@ function equal_arrays (array1, array2) {
   return true;
 }
 
+// find the position in an array given an attribute and value
+function findWithAttr(array, attr, value) {
+  for (let i = 0; i < array.length; i += 1) {
+      if (array[i][attr] === value) {
+          return i;
+      }
+  }
+  return -1;
+}
 
 function generateSeedBytes() {
   return nacl.randomBytes(32);
@@ -524,5 +534,9 @@ const util = {
     validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
     multiplierFromDifficulty: multiplierFromDifficulty,
+  },
+  array: {
+    shuffle: shuffle,
+    findWithAttr: findWithAttr
   }
 };
