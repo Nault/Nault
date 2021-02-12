@@ -172,16 +172,17 @@ export class PowService {
         break;
       case 'custom':
         const workServer = this.appSettings.settings.customWorkServer;
-        // Only use custom multiplier if the work server has been defined
-        const allowLocalMulti: Boolean =
-          workServer !== '' &&
-          !workServer.includes('mynano.ninja/api/node') &&
-          !workServer.includes('nault.nanos.cc/proxy') &&
-          !workServer.includes('proxy.nanos.cc/proxy') &&
-          !workServer.includes('vox.nanos.cc/api') &&
-          !workServer.includes('proxy.powernode.cc/proxy') &&
-          !workServer.includes('api.nanex.cc') &&
-          !workServer.includes('vault.nanocrawler.cc/api/node-api');
+        // Retreive the full list of defined API endpoints (plus other known)
+        const knownApiEndpoints = this.appSettings.serverOptions.reduce((acc, server) => {
+          if (!server.api) return acc;
+          acc.push( server.api.replace(/https?:\/\//g, '') );
+          return acc;
+        }, [
+          'proxy.nanos.cc/proxy',
+          'node.somenano.com'
+        ])
+        // Check all known APIs and return true if there is no match. Then allow local PoW mutliplier
+        const allowLocalMulti = workServer !== '' && knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl))
 
         work = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
         break;
