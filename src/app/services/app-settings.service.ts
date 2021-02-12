@@ -91,6 +91,14 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
+      name: 'Rainstorm City',
+      value: 'rainstorm',
+      api: 'https://rainstorm.city/api',
+      ws: 'wss://rainstorm.city/websocket',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
       name: 'Nanex.cc',
       value: 'nanex',
       api: 'https://api.nanex.cc',
