@@ -126,6 +126,16 @@ export class AppSettingsService {
     }
   ];
 
+  // Simplified list for comparison in other classes
+  knownApiEndpoints = this.serverOptions.reduce((acc, server) => {
+    if (!server.api) return acc;
+    acc.push( server.api.replace(/https?:\/\//g, '') );
+    return acc;
+  }, [
+    'proxy.nanos.cc/proxy',
+    'node.somenano.com'
+  ]);
+
   constructor() { }
 
   loadAppSettings() {
