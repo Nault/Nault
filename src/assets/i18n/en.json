@@ -13,6 +13,7 @@
     },
     "below-is-the-seed-and-mnemonic-backup": "Below is the seed and mnemonic backup. You can use whichever you prefer in any other compatible wallet.",
     "bip39-passphrase": "BIP39 Passphrase",
+    "configure-wallet": "Configure Wallet",
     "confirm-wallet-password": "Confirm Wallet Password",
     "connect-via-bluetooth": "Connect via Bluetooth",
     "connect-via-usb": "Connect via USB",
