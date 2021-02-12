@@ -107,7 +107,7 @@
                   </div>
                 </div>
               </div>
-              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU'">
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
                 <label class="uk-form-label">PoW Multiplier <span uk-icon="icon: info;" uk-tooltip title="Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."></span></label>
                 <div class="uk-form-controls">
 
@@ -117,6 +117,12 @@
                     </select>
                   </div>
                 </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
+                <label class="uk-form-label">Work Server <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using nault.cc. Try the desktop app."></span></label>
+                  <div class="uk-form-controls">
+                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
+                  </div>
               </div>
             </div>
           </div>

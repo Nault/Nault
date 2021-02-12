@@ -107,6 +107,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'Client Side - GPU/WebGL', value: 'clientWebGL' },
     { name: 'Client Side - CPU (Slowest)', value: 'clientCPU' },
     { name: 'Remote - Selected Server', value: 'server' },
+    { name: 'Custom Work Server', value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -161,6 +162,8 @@ export class ConfigureAppComponent implements OnInit {
   nodeNetwork = null;
   statsRefreshEnabled = true;
   shouldRandom = null;
+
+  customWorkServer = '';
 
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
   showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
@@ -237,6 +240,8 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingMultiplierOption = this.multiplierOptions.find(d => d.value === settings.multiplierSource);
     this.selectedMultiplierOption = matchingMultiplierOption ? matchingMultiplierOption.value : this.multiplierOptions[0].value;
+
+    this.customWorkServer = settings.customWorkServer;
 
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
@@ -317,7 +322,7 @@ export class ConfigureAppComponent implements OnInit {
         newPoW = 'best';
       }
       // reset multiplier when not using it to avoid user mistake
-      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU') {
+      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
         this.selectedMultiplierOption = this.multiplierOptions[0].value;
       }
     }
@@ -340,6 +345,7 @@ export class ConfigureAppComponent implements OnInit {
       lockInactivityMinutes: Number(this.selectedInactivityMinutes),
       powSource: newPoW,
       multiplierSource: Number(this.selectedMultiplierOption),
+      customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,

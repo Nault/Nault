@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as url from 'url';
 
 export type WalletStore = 'localStorage'|'none';
-export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
+export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
 export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
@@ -16,6 +16,7 @@ interface AppSettings {
   ledgerReconnect: LedgerConnectionType;
   powSource: PoWSource;
   multiplierSource: number;
+  customWorkServer: string;
   pendingOption: string;
   serverName: string;
   serverAPI: string | null;
@@ -40,6 +41,7 @@ export class AppSettingsService {
     ledgerReconnect: 'usb',
     powSource: 'best',
     multiplierSource: 1,
+    customWorkServer: '',
     pendingOption: 'amount',
     serverName: 'random',
     serverAPI: null,
@@ -199,6 +201,7 @@ export class AppSettingsService {
       ledgerReconnect: 'usb',
       powSource: 'best',
       multiplierSource: 1,
+      customWorkServer: '',
       pendingOption: 'amount',
       serverName: 'random',
       serverAPI: null,
