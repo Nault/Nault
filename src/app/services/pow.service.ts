@@ -173,7 +173,8 @@ export class PowService {
       case 'custom':
         const workServer = this.appSettings.settings.customWorkServer;
         // Check all known APIs and return true if there is no match. Then allow local PoW mutliplier
-        const allowLocalMulti = workServer !== '' && this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
+        const allowLocalMulti = workServer !== '' &&
+          this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
 
         work = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
         break;
