@@ -46,7 +46,7 @@ template: |
 
   Both nault.cc and the desktop app supports a custom work server. For example https://my-server.com or http://127.0.0.1:9999. However, direct requests to localhost may only work with the desktop app.
 
-  ### Official Work Server
+  ### Official Compatible Work Server Application
 
   * **[Download](https://github.com/nanocurrency/nano-work-server/releases)**
   * **Instructions**: `nano-work-server.exe --help`
