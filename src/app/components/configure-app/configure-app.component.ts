@@ -104,10 +104,10 @@ export class ConfigureAppComponent implements OnInit {
 
   powOptions = [
     { name: 'Best Option Available', value: 'best' },
-    { name: 'Client Side - GPU/WebGL', value: 'clientWebGL' },
-    { name: 'Client Side - CPU (Slowest)', value: 'clientCPU' },
-    { name: 'Remote - Selected Server', value: 'server' },
-    { name: 'Custom Work Server', value: 'custom' },
+    { name: 'Client-side - GPU/WebGL', value: 'clientWebGL' },
+    { name: 'Client-side - CPU (Slowest)', value: 'clientCPU' },
+    { name: 'External - Selected Server', value: 'server' },
+    { name: 'External - Custom Server', value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -476,7 +476,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   getRemotePoWOptionName() {
-    const optionName = 'Remote - Selected Server';
+    const optionName = 'External - Selected Server';
 
     if ( (this.selectedServer === 'random') || (this.selectedServer === 'offline') ) {
       return optionName;
