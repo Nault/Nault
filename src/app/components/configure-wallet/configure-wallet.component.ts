@@ -165,11 +165,19 @@ export class ConfigureWalletComponent implements OnInit {
     if (!this.isConfigured()) return true;
 
     const UIkit = window['UIkit'];
+    let msg;
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local Nault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>');
+      if (this.walletService.isLedgerWallet()) {
+        msg = '<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new local wallet<br>which will <b>disconnect your Ledger device from Nault</b></span><br><br>If you need to use the Ledger wallet, simply import your device again<br><br><b style="font-size: 18px;">Make sure you saved the recovery phrase you got when you initially set up your Ledger device</b><br><br><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b> if you lose both the recovery phrase and access to your Ledger device<br/></p>';
+      } else {
+        msg = '<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local Nault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>';
+      }
+      await UIkit.modal.confirm(msg);
       return true;
     } catch (err) {
-      this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Nano seed and/or mnemonic`);
+      if (!this.walletService.isLedgerWallet()) {
+        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Nano seed and/or mnemonic`);
+      }
       return false;
     }
   }
