@@ -1,6 +1,6 @@
 {
   "name": "nault",
-  "version": "1.9.6",
+  "version": "1.9.7",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "The Nano Community / Andrew Steele",
@@ -129,7 +129,7 @@
       "target": "AppImage",
       "icon": "desktop-app/assets/linux",
       "desktop": {
-          "GenericName": "Nano Wallet"
+        "GenericName": "Nano Wallet"
       }
     },
     "protocols": {
