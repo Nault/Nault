@@ -11,9 +11,9 @@ export class ApiService {
   difficultyCacheDuration = 60; // time to keep active_difficulty in cache [sec]
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
-  private async request(action, data, skipError= false): Promise<any> {
+  private async request(action, data, skipError, url = ''): Promise<any> {
     data.action = action;
-    const apiUrl = this.appSettings.settings.serverAPI;
+    const apiUrl = url === '' ? this.appSettings.settings.serverAPI : url;
     if (!apiUrl) {
       this.node.setOffline(null); // offline mode
       return;
@@ -35,14 +35,15 @@ export class ApiService {
         this.node.setOnline();
         return res;
       })
-      .catch(err => {
+      .catch(async err => {
         if (skipError) return;
         console.log('Node responded with error', err.status);
 
         if (this.appSettings.settings.serverName === 'random') {
           // choose a new backend and do the request again
           this.appSettings.loadServerSettings();
-          return this.request(action, data);
+          await this.sleep(1000); // delay if all servers are down
+          return this.request(action, data, skipError);
         } else {
           // hard exit
           if (err.status === 429) {
@@ -56,56 +57,56 @@ export class ApiService {
   }
 
   async accountsBalances(accounts: string[]): Promise<{balances: any }> {
-    return await this.request('accounts_balances', { accounts });
+    return await this.request('accounts_balances', { accounts }, false);
   }
   async accountsFrontiers(accounts: string[]): Promise<{frontiers: any }> {
-    return await this.request('accounts_frontiers', { accounts });
+    return await this.request('accounts_frontiers', { accounts }, false);
   }
   async accountsPending(accounts: string[], count: number = 50): Promise<{blocks: any }> {
-    return await this.request('accounts_pending', { accounts, count, source: true, include_only_confirmed: true });
+    return await this.request('accounts_pending', { accounts, count, source: true, include_only_confirmed: true }, false);
   }
   async accountsPendingLimit(accounts: string[], threshold: string, count: number = 50): Promise<{blocks: any }> {
-    return await this.request('accounts_pending', { accounts, count, threshold, source: true, include_only_confirmed: true });
+    return await this.request('accounts_pending', { accounts, count, threshold, source: true, include_only_confirmed: true }, false);
   }
   async delegatorsCount(account: string): Promise<{ count: string }> {
-    return await this.request('delegators_count', { account });
+    return await this.request('delegators_count', { account }, false);
   }
   async representativesOnline(): Promise<{ representatives: any }> {
-    return await this.request('representatives_online', { });
+    return await this.request('representatives_online', { }, false);
   }
 
   async blocksInfo(blocks): Promise<{blocks: any, error?: string}> {
-    return await this.request('blocks_info', { hashes: blocks, pending: true, source: true });
+    return await this.request('blocks_info', { hashes: blocks, pending: true, source: true }, false);
   }
   async blockInfo(hash): Promise<any> {
-    return await this.request('block_info', { hash: hash });
+    return await this.request('block_info', { hash: hash }, false);
   }
   async blockCount(): Promise<{count: number, unchecked: number, cemented: number }> {
-    return await this.request('block_count', { include_cemented: 'true'});
+    return await this.request('block_count', { include_cemented: 'true'}, false);
   }
-  async workGenerate(hash, difficulty): Promise<{ work: string }> {
-    return await this.request('work_generate', { hash, difficulty });
+  async workGenerate(hash, difficulty, workServer = ''): Promise<{ work: string }> {
+    return await this.request('work_generate', { hash, difficulty }, workServer !== '', workServer);
   }
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
-    return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] });
+    return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] }, false);
   }
   async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
-    return await this.request('account_history', { account, count, raw });
+    return await this.request('account_history', { account, count, raw }, false);
   }
   async accountInfo(account): Promise<any> {
-    return await this.request('account_info', { account, pending: true, representative: true, weight: true });
+    return await this.request('account_info', { account, pending: true, representative: true, weight: true }, false);
   }
   async pending(account, count): Promise<any> {
-    return await this.request('pending', { account, count, source: true, include_only_confirmed: true });
+    return await this.request('pending', { account, count, source: true, include_only_confirmed: true }, false);
   }
   async pendingLimit(account, count, threshold): Promise<any> {
-    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true });
+    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true }, false);
   }
   async pendingSorted(account, count): Promise<any> {
-    return await this.request('pending', { account, count, source: true, include_only_confirmed: true, sorting: true });
+    return await this.request('pending', { account, count, source: true, include_only_confirmed: true, sorting: true }, false);
   }
   async pendingLimitSorted(account, count, threshold): Promise<any> {
-    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true, sorting: true });
+    return await this.request('pending', { account, count, threshold, source: true, include_only_confirmed: true, sorting: true }, false);
   }
   async version(): Promise<{rpc_version: number, store_version: number, protocol_version: number, node_vendor: string, network: string,
     network_identifier: string, build_info: string }> {
@@ -151,5 +152,9 @@ export class ApiService {
 
   public deleteCache() {
     localStorage.removeItem(this.storeKey);
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

@@ -133,7 +133,7 @@ export class PowService {
       powSource = this.determineBestPoWMethod();
     }
 
-    if (powSource === 'clientCPU' || powSource === 'clientWebGL') {
+    if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom') {
       if (multiplierSource > 1) { // use manual difficulty
         localMultiplier = multiplierSource;
       } else if (multiplierSource === 0) { // use auto difficulty
@@ -170,6 +170,14 @@ export class PowService {
       case 'clientWebGL':
         work = await this.getHashWebGL(queueItem.hash, localMultiplier);
         break;
+      case 'custom':
+        const workServer = this.appSettings.settings.customWorkServer;
+        // Check all known APIs and return true if there is no match. Then allow local PoW mutliplier
+        const allowLocalMulti = workServer !== '' &&
+          this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
+
+        work = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
+        break;
     }
 
     this.PoWPool.shift(); // Remove this item from the queue
@@ -191,11 +199,12 @@ export class PowService {
   /**
    * Actual PoW functions
    */
-  async getHashServer(hash, multiplier) {
+  async getHashServer(hash, multiplier, workServer = '') {
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
+    const serverString = workServer === '' ? 'external' : 'custom';
     console.log('Generating work with multiplier ' + multiplier + ' at threshold ' +
-      newThreshold + ' using remote server for hash: ', hash);
-    return await this.api.workGenerate(hash, newThreshold)
+      newThreshold + ' using ' + serverString + ' server for hash: ', hash);
+    return await this.api.workGenerate(hash, newThreshold, workServer)
     .then(work => work.work)
     .catch(async err => await this.getHashCPUWorker(hash, multiplier));
   }

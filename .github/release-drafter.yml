@@ -41,3 +41,13 @@ template: |
   * **Bash:** `openssl sha256 Nault-$RESOLVED_VERSION-Linux.AppImage`
 
   Then compare the output hash with the one listed in the corresponding checksum.txt file. The .yml has a binary checksum that is more complicated.
+
+  ## Custom Work Server
+
+  Both nault.cc and the desktop app supports a custom work server. For example https://my-server.com or http://127.0.0.1:9999. However, direct requests to localhost may only work with the desktop app.
+
+  ### Official Compatible Work Server Application
+
+  * **[Download](https://github.com/nanocurrency/nano-work-server/releases)**
+  * **Instructions**: `nano-work-server.exe --help`
+  * **Example - Using default GPU:** `nano-work-server.exe -g 0:0 -l 127.0.0.1:9999`
