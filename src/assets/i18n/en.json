@@ -128,5 +128,24 @@
     "unlock-wallet-to-receive": "Unlock Wallet to Receive",
     "wallet-is-in-offline-mode": "Wallet is in offline mode",
     "wallet-sweeper": "Wallet Sweeper"
+  },
+  "welcome": {
+    "a-full-security-guide-is-found-here": "A full security guide is found here.",
+    "a-secure-open-source-wallet-for-nano": "A secure open source wallet for Nano",
+    "all-sensitive-operations-happen-in-your-browser": "All sensitive operations happen in your browser only - your seed and private keys are never sent across your network, or stored on any server in any format. (So there is no need for server-based authentication measures such as 2FA).",
+    "any-device-anywhere": "Any Device, Anywhere",
+    "because-no-information-is-ever-stored-on-a-server": "Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.",
+    "create-a-new-wallet": "Create A New Wallet",
+    "donation-address": "Donation Address",
+    "helpful-features": "Helpful Features",
+    "import-an-existing-wallet": "Import An Existing Wallet",
+    "no-strings-attached-wallet": "No Strings Attached\" Wallet",
+    "security-focused": "Security Focused",
+    "send-and-receive-nano-from-any-device-using-the-web-wallet": "Send and receive Nano from any device using the web wallet or use the desktop wallet available for Windows/Mac/Linux.",
+    "store-labels-for-your-friends-and-your-own-accounts": "Store labels for your friends and your own accounts in the address book, track your balances in your local currency, and more!",
+    "to-get-started-choose-an-option-below-to-configure-your-wallet": "To get started, choose an option below to configure your wallet",
+    "view-my-accounts": "View My Accounts",
+    "welcome-back-it-looks-like-your-wallet-is-already-configured": "Welcome back! It looks like your wallet is already configured.",
+    "why-use-nault": "Why Use Nault?"
   }
 }
