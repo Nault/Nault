@@ -15,6 +15,7 @@ import {BehaviorSubject} from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
 import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-account-details',
@@ -109,7 +110,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
     private qrModalService: QrModalService,
-    private ninja: NinjaService) {
+    private ninja: NinjaService,
+    private translate: TranslateService) {
       // to detect when the account changes if the view is already active
       route.events.subscribe((val) => {
         if (val instanceof NavigationEnd) {
@@ -520,7 +522,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   copied() {
     this.notifications.removeNotification('success-copied');
-    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+    this.notifications.sendSuccess(this.translate.instant('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' });
   }
 
   // Remote signing methods
