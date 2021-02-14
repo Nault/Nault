@@ -133,9 +133,15 @@ export class AppComponent implements OnInit {
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     // (if not receive priority is set to manual)
     if (this.wallet.locked && this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption !== 'manual') {
-      this.notifications.sendWarning(this.translate.instant('app.new-incoming-transaction-s-unlock-the-wallet-to-receive'), { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(
+        this.translate.instant('app.new-incoming-transaction-s-unlock-the-wallet-to-receive'),
+        { length: 10000, identifier: 'pending-locked' }
+      );
     } else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
-      this.notifications.sendWarning(this.translate.instant('app.incoming-transaction-s-found-set-to-be-received-manually'), { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(
+        this.translate.instant('app.incoming-transaction-s-found-set-to-be-received-manually'),
+        { length: 10000, identifier: 'pending-locked' }
+      );
     }
 
     // When the page closes, determine if we should lock the wallet
@@ -163,7 +169,9 @@ export class AppComponent implements OnInit {
       // Determine if we have been inactive for longer than our lock setting
       if (this.inactiveSeconds >= this.settings.settings.lockInactivityMinutes * 60) {
         this.walletService.lockWallet();
-        this.notifications.sendSuccess(this.translate.instant('app.wallet-locked-after-x-minutes-of-inactivity', { minutes: this.settings.settings.lockInactivityMinutes }));
+        this.notifications.sendSuccess(
+          this.translate.instant('app.wallet-locked-after-x-minutes-of-inactivity', { minutes: this.settings.settings.lockInactivityMinutes })
+        );
       }
     }, 1000);
 
@@ -171,7 +179,10 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(this.translate.instant('app.there-was-an-issue-retrieving-the-latest-fiat-price'), { length: 0, identifier: `price-issue` });
+      this.notifications.sendWarning(
+        this.translate.instant('app.there-was-an-issue-retrieving-the-latest-fiat-price'),
+        { length: 0, identifier: `price-issue` }
+      );
     }
   }
 
