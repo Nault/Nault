@@ -355,6 +355,11 @@ export class ConfigureWalletComponent implements OnInit {
 
   setPanel(panel) {
     this.activePanel = panel;
+    if (panel === panels.landing) {
+      this.isNewWallet = true;
+    } else if (panel === panels.import) {
+      this.isNewWallet = false;
+    }
   }
 
   copied() {
