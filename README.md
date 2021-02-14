@@ -34,18 +34,6 @@ The web version can additionally be pulled from the [dockerhub repo](https://hub
 
 A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
 
-#### Custom Work Server
-
-Both the web app and desktop app supports a custom work server via the app settings. For example https://my-server.com or http://127.0.0.1:9999. However, direct requests to localhost may only work with the desktop app.
-
-Using a local/external work server not only increases the speed by 10-20x compared to local webGL PoW, but also put less strain on the public servers. This is the way if you need to use higher multiplier like 64x difficulty.
-
-**Official Compatible Work Server Application**
-
-* **[Download](https://github.com/nanocurrency/nano-work-server/releases)**
-* **Instructions**: `nano-work-server.exe --help`
-* **Example - Using default GPU:** `nano-work-server.exe -g 0:0 -l 127.0.0.1:9999`
-
 ## How To Help
 
 Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
