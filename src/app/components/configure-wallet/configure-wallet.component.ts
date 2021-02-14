@@ -7,7 +7,14 @@ import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
 import { wallet } from 'nanocurrency-web';
 
-enum panels {'create', 'import', 'password', 'backup', 'final'}
+enum panels {
+  'landing',
+  'import',
+  'password',
+  'backup',
+  'final',
+}
+
 const INDEX_MAX = 4294967295; // seed index
 
 @Component({
@@ -17,7 +24,7 @@ const INDEX_MAX = 4294967295; // seed index
 })
 export class ConfigureWalletComponent implements OnInit {
   panels = panels;
-  activePanel = panels.create;
+  activePanel = panels.landing;
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;
   isNewWallet = true;
@@ -26,6 +33,7 @@ export class ConfigureWalletComponent implements OnInit {
   isExpanded = false;
   keyString = '';
 
+  iconSeed = '';
   newWalletSeed = '';
   newWalletMnemonic = '';
   newWalletMnemonicLines = [];
@@ -77,11 +85,21 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const toggleImport = this.router.snapshot.queryParams.import;
-    if (toggleImport) {
-      this.activePanel = panels.import;
-      this.isNewWallet = false;
-    }
+    // generate random hex symbols (must have both letters and numbers)
+    const seedBytes = this.util.account.generateSeedBytes();
+    const iconSeedFull = this.util.hex.fromUint8(seedBytes);
+
+    let iconSeedTrimmed = '';
+    let trimIdx = 0;
+    do {
+      iconSeedTrimmed = iconSeedFull.slice(trimIdx, trimIdx + 6);
+      trimIdx += 2;
+    } while (
+        (trimIdx < 50)
+      && ( iconSeedTrimmed.match(/^([0-9]+|[A-F]+)$/g) !== null )
+    );
+
+    this.iconSeed = iconSeedTrimmed + '...';
   }
 
   async importExistingWallet() {
@@ -324,11 +342,6 @@ export class ConfigureWalletComponent implements OnInit {
 
   setPanel(panel) {
     this.activePanel = panel;
-    if (panel === panels.create) {
-      this.isNewWallet = true;
-    } else if (panel === panels.import) {
-      this.isNewWallet = false;
-    }
   }
 
   copied() {

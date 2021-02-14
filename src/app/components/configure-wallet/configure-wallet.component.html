@@ -1,55 +1,76 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
-<p *ngIf="activePanel === panels.create || activePanel === panels.import">Use the options below to import an existing wallet or create a new one</p>
 
-<div *ngIf="isConfigured() && (activePanel === panels.create || activePanel === panels.import)" class="uk-alert uk-alert-danger">
-  <b>You already have a local Nault wallet configured</b><br>
-  Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
-  Without it, <b>any funds you have will become completely unrecoverable!</b>
-</div>
-
-<div uk-grid *ngIf="activePanel === panels.create || activePanel === panels.import">
-  <div class="uk-width-1-1">
-    <div class="uk-button-group uk-width-1-1">
-      <button (click)="setPanel(0)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel === panels.create, 'uk-button-secondary': activePanel !== panels.create }">Create New Wallet</button>
-      <button (click)="setPanel(1)" class="uk-button uk-width-1-2" [ngClass]="{ 'uk-button-primary': activePanel === panels.import, 'uk-button-secondary': activePanel !== panels.import }">Import Existing Wallet</button>
+<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import)" class="uk-alert uk-alert-danger uk-margin-medium-bottom">
+  <div uk-grid>
+    <div class="uk-width-auto uk-flex uk-flex-center uk-flex-middle">
+      <div class="uk-margin-small-left" uk-icon="icon: warning; ratio: 2;"></div>
+    </div>
+    <div class="uk-width-expand already-configured-text-column">
+      <b>You already have a local Nault wallet configured</b><br>
+      Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
+      Without it, <b>any funds you have will become completely unrecoverable!</b>
     </div>
   </div>
 </div>
 
-<div class="uk-card uk-card-default" *ngIf="activePanel === panels.create">
-  <div class="uk-card-body">
-    <p>
-      When you create a new wallet, a new Nano seed will be generated which can be used to create brand new accounts
-      on the Nano network.  Your Nano seed is the master key to all of your accounts and any money inside of them!
-    </p>
-    <div class="uk-alert-primary" uk-alert>
-      <p>Make sure you back up your seed, write it down, and keep it incredibly safe! All funds inside can be lost without it!</p>
-    </div>
+<div class="landing-container uk-grid-divider uk-margin-medium-top" uk-grid *ngIf="activePanel === panels.landing">
+  <div class="uk-width-auto@l uk-width-1-1@m">
+    <button class="wallet-option" (click)="setPasswordInit()">
+      <div class="icon">
+        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+         <path d="m132.03 98.355v26.667c0 1.662-1.338 3-3 3h-112.4c-1.662 0-3-1.338-3-3v-78.19c0-1.662 1.338-3 3-3h112.4c1.662 0 3 1.338 3 3v26.132" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+         <g>
+          <rect x="104.67" y="73.192" width="34.824" height="25.469" rx=".88236" ry=".90757" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+         </g>
+         <g>
+          <path d="m30.302 43.95 74.72-30.197c1.3768-0.55642 2.9319 0.12482 3.4851 1.5235l5.4462 13.77" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+         </g>
+         <g>
+          <path d="m31.086 43.794 87.915-15.48c1.4625-0.25752 2.8426 0.72898 3.0942 2.2119l2.0896 12.312" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+         </g>
+         <g fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2">
+          <rect transform="rotate(90)" x="136.31" y="-149.14" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
+          <rect x="139.78" y="127.49" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
+         </g>
+        </svg>
+      </div>
+      <h2>New<br>Wallet</h2>
+      <p>Generate seed<br>and mnemonic</p>
+    </button>
   </div>
-  <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" (click)="setPasswordInit()">Create Wallet</button>
+  <div class="uk-width-expand">
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
+      <div class="icon">
+        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+         <g>
+          <path d="m42.088 127.05-9.6353 7.2071c-1.3309 0.99548-3.2037 0.72546-4.1992-0.60542l-20.857-27.884c-0.99548-1.3309-0.72546-3.2037 0.60543-4.1992l105.07-78.588c1.3309-0.99548 3.2037-0.72546 4.1992 0.60543l20.857 27.884c0.99548 1.3309 0.72546 3.2037-0.60543 4.1992l-41.858 31.309" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+         </g>
+         <g fill="none" stroke="#000" stroke-width="2">
+          <circle cx="35.53" cy="106.97" r="10.756"/>
+          <path d="m153.08 86.935h-118.68s-19.277-0.014-19.277 20.789c0 19.291 19.655 19.655 19.655 19.655h118.31z"/>
+         </g>
+        </svg>
+      </div>
+      <h2>Use<br>Ledger</h2>
+      <p>Nano S / Nano X</p>
+    </button>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
+      <div class="icon">
+        <div class="seed">{{ iconSeed }}</div>
+      </div>
+      <h2>Import<br>Seed</h2>
+      <p>64 hex<br>characters</p>
+    </button>
   </div>
+</div>
+
+<div class="import-panel-navigation" *ngIf="activePanel === panels.import" (click)="setPanel(panels.landing)">
+  <span uk-icon="icon: arrow-left; ratio: 1.5;"></span>
+  <span class="label">Back</span>
 </div>
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.import">
   <div class="uk-card-body">
-    <div uk-grid>
-      <div class="uk-width-1-1">
-        <div class="uk-form-horizontal">
-          <div class="uk-margin">
-            <label class="uk-form-label" for="form-horizontal-select">Select Import Type</label>
-            <div class="uk-form-controls">
-              <select class="uk-select" [(ngModel)]="selectedImportOption" id="form-horizontal-select">
-                <option *ngFor="let option of importOptions" [value]="option.value">{{ option.name }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr class="uk-divider-icon" style="margin-top: 10px;">
-
     <div class="uk-alert-primary" uk-alert style="max-width: 700px;" *ngIf="(selectedImportOption === 'mnemonic') || (selectedImportOption === 'bip39-mnemonic')">
       <i><span uk-icon="icon: info;" style="vertical-align: 2px;"></span> Note for Ledger device owners:</i>
       <p>
