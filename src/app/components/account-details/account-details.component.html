@@ -1,7 +1,7 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
 
-    <h2 class="uk-heading-divider">{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
+    <h2 class="uk-heading-divider">{{ walletAccount ? ('account-details.account-details' | translate) : ('account-details.network-explorer' | translate) }}</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="account-details-header uk-card-header uk-visible-toggle">
@@ -12,15 +12,15 @@
 
           <div class="uk-width-expand">
 
-            <div *ngIf="walletAccount && addressBookEntry">{{ 'Account #' + walletAccount.index }}</div>
-            <div *ngIf="!walletAccount">External address</div>
+            <div *ngIf="walletAccount && addressBookEntry">{{ ('general.account' | translate) + ' #' + walletAccount.index }}</div>
+            <div *ngIf="!walletAccount">{{ 'account-details.external-address' | translate }}</div>
 
             <div uk-grid>
               <div class="uk-width-1-1" *ngIf="showEditAddressBook">
                 <div class="uk-margin">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="Save Changes"></a>
-                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="Cancel Changes - Set the label to blank to delete" uk-icon="icon: close"></a>
+                    <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="{{ 'general.save' | translate }}"></a>
+                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="{{ 'general.cancel' | translate }}" uk-icon="icon: close"></a>
                     <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Account Label (Set to blank to delete)" type="text" style="padding-right: 60px;">
                   </div>
                 </div>
@@ -33,12 +33,12 @@
                     ? addressBookEntry
                     : (
                         walletAccount
-                      ? ('Account #' + walletAccount.index)
-                      : 'No label set'
+                      ? (('general.account' | translate) + ' #' + walletAccount.index)
+                      : ('account-details.no-label-set' | translate)
                     )
                   }}</h3>
                     <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
-                      <a style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></a>
+                      <a style="display: contents;"><span uk-icon="icon: pencil;" title="{{ 'general.edit' | translate }}" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook"></span></a>
                     </div>
                   </div>
                 </div>
@@ -50,7 +50,7 @@
                   </div>
                   <div class="nano-address-actions uk-width-auto" style="margin-top: 0;">
                     <ul class="uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="{{ 'general.copy-to-clipboard' | translate }}" uk-tooltip></a></li>
                       <li><a (click)="qrModal.show()" title="Show QR Code" uk-tooltip class="icon-qr-code"></a></li>
                     </ul>
                   </div>
@@ -68,12 +68,12 @@
 
           <div class="representative-details uk-width-1-1@s uk-width-1-2@l">
 
-            <div class="details-header">Representative</div>
+            <div class="details-header">{{ 'general.representative' | translate }}</div>
 
             <div *ngIf="!loadingAccountDetails else repLoading">
               <div class="uk-width-auto uk-text-truncate" *ngIf="(account && account.representative) else noRepresentative">
                 <div class="representative-label-container">
-                  <div class="account-label rep">{{ repLabel ? repLabel : 'Unknown Rep' }}</div>
+                  <div class="account-label rep">{{ repLabel ? repLabel : ('general.unknown' | translate) }}</div>
                   <div class="uk-width-auto uk-flex-inline uk-flex-middle" style="padding-left: 10px;" *ngIf="account && account.representative">
                     <div class="uk-text-small text-half-muted" style="margin-right: 15px" *ngIf="!repVotingWeight.isZero()">{{ repVotingWeight.toFixed(2) }}%</div>
                     <ul class="uk-iconnav">
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <ng-template #noRepresentative>
-                <div class="uk-text-muted" style="margin-top: 8px;">None</div>
+                <div class="uk-text-muted" style="margin-top: 8px;">{{ 'account-details.representative-none' | translate }}</div>
               </ng-template>
             </div>
             <ng-template #repLoading>
@@ -103,7 +103,7 @@
           </div>
 
           <div class="balance-details uk-width-1-1@s uk-width-1-2@l">
-            <div class="details-header">Balance</div>
+            <div class="details-header">{{ 'general.balance' | translate }}</div>
             <ng-container *ngIf="!loadingAccountDetails else balanceLoading">
               <div>
                 <div class="account-amounts-primary">
@@ -120,7 +120,7 @@
                     class="incoming-label"
                     [title]="( (account && account.pendingRaw && account.pendingRaw.gt(0) ) ? ( '+' + ( account.pendingRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )"
                   >
-                    <div class="text-snippet">New</div>
+                    <div class="text-snippet">{{ 'general.new' | translate }}</div>
                     <div class="text-full">
                       <div class="amount-sign">+</div>
                       <div class="amount-integer">{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}</div>
@@ -147,7 +147,7 @@
       <div class="uk-card-header uk-form-horizontal" *ngIf="settings.settings.serverAPI">
 
         <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
-          Advanced options
+          {{ 'account-details.advanced-options' | translate }}
           <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
         </div>
 
@@ -164,7 +164,7 @@
             </div>
           </div>
           <div class="advanced-option">
-            <div>Enable Remote Signing</div>
+            <div>{{ 'account-details.enable-remote-signing' | translate }}</div>
             <input class="uk-checkbox" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="remoteVisible">
           </div>
         </div>
@@ -451,7 +451,7 @@
 
         <div uk-grid>
           <div class="uk-width-1-1">
-            <label class="uk-form-label" for="form-horizontal-text">Amount</label>
+            <label class="uk-form-label" for="form-horizontal-text">{{ 'general.amount' | translate }}</label>
             <div class="form-amount uk-form-controls">
               <div uk-grid>
                 <div class="uk-width-1-1">
@@ -541,7 +541,7 @@
           ? addressBookEntry
           : (
               walletAccount
-            ? ('Account #' + walletAccount.index)
+            ? (('general.account' | translate) + ' #' + walletAccount.index)
             : 'External address'
           )
         }}</div>

@@ -1,4 +1,17 @@
 {
+  "account-details": {
+    "account-details": "Account Details",
+    "advanced-options": "Advanced options",
+    "enable-remote-signing": "Enable Remote Signing",
+    "external-address": "External address",
+    "incoming-transaction": "Incoming Transaction",
+    "load-more-results": "Load More Results",
+    "network-explorer": "Network Explorer",
+    "no-account-history": "No account history",
+    "no-label-set": "No label set",
+    "recent-transactions": "Recent Transactions",
+    "representative-none": "None"
+  },
   "app": {
     "attempting-to-reconnect-to-server": "Attempting to reconnect to server",
     "incoming-transaction-s-found-set-to-be-received-manually": "Incoming transaction(s) found - Set to be received manually",
@@ -92,19 +105,28 @@
     "account": "Account",
     "accounts": "Accounts",
     "address-book": "Address Book",
+    "amount": "Amount",
+    "balance": "Balance",
+    "cancel": "Cancel",
     "copy-to-clipboard": "Copy to clipboard",
+    "date": "Date",
     "download": "Download",
+    "edit": "Edit",
+    "hash": "Hash",
     "import": "Import",
     "new": "New",
     "next": "Next",
     "receive": "Receive",
     "refresh": "Refresh",
+    "reload": "Reload",
     "representative": "Representative",
     "representatives": "Representatives",
+    "save": "Save",
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
     "settings": "Settings",
-    "total-balance": "Total Balance"
+    "total-balance": "Total Balance",
+    "unknown": "Unknown"
   },
   "navigation": {
     "advanced-tools": "Advanced Tools",
