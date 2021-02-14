@@ -12,6 +12,10 @@
     "recent-transactions": "Recent Transactions",
     "representative-none": "None"
   },
+  "accounts": {
+    "add-new-account": "Add New Account",
+    "confirm-address-on-ledger": "Confirm Address On Ledger"
+  },
   "app": {
     "attempting-to-reconnect-to-server": "Attempting to reconnect to server",
     "incoming-transaction-s-found-set-to-be-received-manually": "Incoming transaction(s) found - Set to be received manually",
@@ -105,14 +109,17 @@
     "account": "Account",
     "accounts": "Accounts",
     "address-book": "Address Book",
+    "advanced": "Advanced",
     "amount": "Amount",
     "balance": "Balance",
+    "basic": "Basic",
     "cancel": "Cancel",
     "copy-to-clipboard": "Copy to clipboard",
     "date": "Date",
     "download": "Download",
     "edit": "Edit",
     "hash": "Hash",
+    "hide": "Hide",
     "import": "Import",
     "new": "New",
     "next": "Next",
