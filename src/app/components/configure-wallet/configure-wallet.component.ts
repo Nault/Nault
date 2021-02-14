@@ -352,7 +352,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.walletService.saveWalletExport();
     this.walletService.informNewWallet();
 
-    this.notifications.sendSuccess(this.translate.instant('successfully-created-new-wallet-do-not-lose-the-seed-mnemonic'));
+    this.notifications.sendSuccess(this.translate.instant('configure-wallet.successfully-created-new-wallet-do-not-lose-the-seed-mnemonic'));
   }
 
   setPanel(panel) {
