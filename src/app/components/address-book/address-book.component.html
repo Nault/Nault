@@ -4,18 +4,18 @@
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
-          Address Book
-          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : 'IMPORT / EXPORT' }}</a>
+          {{ 'general.address-book' | translate }}
+          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : ('general.import-export' | translate) }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">Add New Contact</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">{{ 'address-book.add-new-contact' | translate }}</button>
       </div>
     </div>
 
     <div class="uk-width-1-1 nlt-page-intro" *ngIf="activePanel === 0">
       <p>
-        You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application.
+        {{ 'address-book.you-can-use-the-address-book-to-store-a-label' | translate }}
       </p>
     </div>
 
@@ -26,9 +26,9 @@
           <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
             <li class="uk-list-header">
               <div uk-grid>
-                <div class="uk-width-2-5">Name</div>
-                <div class="uk-width-expand">Account ID</div>
-                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
+                <div class="uk-width-2-5">{{ 'general.name' | translate }}</div>
+                <div class="uk-width-expand">{{ 'general.account' | translate }}</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">{{ 'general.options' | translate }}</div>
               </div>
             </li>
           </ul>
@@ -84,17 +84,17 @@
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <label class="uk-form-label" for="new-address-account">{{ 'general.account' | translate }}</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code" *ngIf="creatingNewEntry"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="{{ 'general.scan-qr-code' | translate }}" *ngIf="creatingNewEntry"></a>
                     <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newAddressAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
                   </div>
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-name">Name</label>
+                <label class="uk-form-label" for="new-address-name">{{ 'general.name' | translate }}</label>
                 <div class="uk-form-controls">
                   <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc">
                 </div>
@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s nlt-button-group">
-            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">Cancel</button>
+            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">{{ 'general.cancel' | translate }}</button>
             <button class="uk-button uk-button-primary" (click)="saveNewAddress()">Save</button>
           </div>
         </div>

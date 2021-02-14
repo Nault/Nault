@@ -16,6 +16,12 @@
     "add-new-account": "Add New Account",
     "confirm-address-on-ledger": "Confirm Address On Ledger"
   },
+  "address-book": {
+    "add-new-contact": "Add New Contact",
+    "import-address-book": "Import Address Book",
+    "save-new-contact": "Save New Contact",
+    "you-can-use-the-address-book-to-store-a-label": "You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application."
+  },
   "app": {
     "attempting-to-reconnect-to-server": "Attempting to reconnect to server",
     "incoming-transaction-s-found-set-to-be-received-manually": "Incoming transaction(s) found - Set to be received manually",
@@ -118,11 +124,16 @@
     "date": "Date",
     "download": "Download",
     "edit": "Edit",
+    "export-as-file": "Export As File",
+    "export-as-qr-code-url": "Export As QR Code / URL",
     "hash": "Hash",
     "hide": "Hide",
     "import": "Import",
+    "import-export": "Import / Export",
+    "name": "Name",
     "new": "New",
     "next": "Next",
+    "options": "Options",
     "receive": "Receive",
     "refresh": "Refresh",
     "reload": "Reload",
