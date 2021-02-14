@@ -42,6 +42,26 @@
       "unknown-status": "Unknown Status"
     }
   },
+  "configure-app": {
+    "advanced-options": "Advanced Options",
+    "display-settings": "Display Settings",
+    "fiat-currency": "FIAT Currency",
+    "language": "Language",
+    "lock-after-inactivity": {
+      "title": "Lock After Inactivity",
+      "tooltip": "Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"
+    },
+    "pow-source": {
+      "title": "PoW Source",
+      "tooltip": "Change how Proof of Work for your blocks are generated."
+    },
+    "server-settings": "Server Settings",
+    "wallet-settings": "Wallet Settings",
+    "wallet-storage": {
+      "title": "Wallet Storage",
+      "tooltip": "Change where your wallet is stored.  If you select none, your wallet is reset every time you reload."
+    }
+  },
   "configure-wallet": {
     "12-15-18-21-or-24-words-mnemonic": "12,15,18,21 or 24-words mnemonic",
     "24-words-mnemonic": "24-words mnemonic",
@@ -128,9 +148,11 @@
     "address-book": "Address Book",
     "advanced": "Advanced",
     "amount": "Amount",
+    "apply": "Apply",
     "balance": "Balance",
     "basic": "Basic",
     "cancel": "Cancel",
+    "change": "Change",
     "copy-to-clipboard": "Copy to clipboard",
     "date": "Date",
     "download": "Download",
