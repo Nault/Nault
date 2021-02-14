@@ -44,6 +44,32 @@
   },
   "configure-app": {
     "advanced-options": "Advanced Options",
+    "api-server": {
+      "title": "API Server",
+      "tooltip": "This has to be a valid Nano RPC endpoint or an API compliant with it."
+    },
+    "auth-header": {
+      "example": "For example with basic auth:",
+      "title": "Auth Header",
+      "tooltip": "This has to be a valid Authorization header."
+    },
+    "clear-work-cache": {
+      "title": "Clear Work Cache",
+      "tooltip": "This will delete all locally cached Proof of Work values"
+    },
+    "default-representative": {
+      "placeholder": "Leave blank to use a recommended one",
+      "title": "Default Representative",
+      "tooltip": "This representative will be used when creating the initial open block on a new account"
+    },
+    "delete-all-data": {
+      "title": "Delete ALL Data",
+      "tooltip": "This will delete ALL stored data and reset app settings, including your wallet, address book and more."
+    },
+    "delete-wallet-data": {
+      "title": "Delete Wallet Data",
+      "tooltip": "This will delete all data related to your wallet (Your seed and accounts)"
+    },
     "display-settings": "Display Settings",
     "fiat-currency": "FIAT Currency",
     "language": "Language",
@@ -51,15 +77,50 @@
       "title": "Lock After Inactivity",
       "tooltip": "Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"
     },
+    "min-receive": {
+      "title": "Min Receive",
+      "tooltip": "Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."
+    },
+    "node-stats": {
+      "block-count": "Block Count",
+      "network": "Network",
+      "node-version": "Node Version",
+      "peers-stake-required": "Peers Stake Required",
+      "peers-stake-total": "Peers Stake Total",
+      "random-server": "Random Server",
+      "server": "Server",
+      "title": "Node Stats",
+      "uncemented-blocks": "Uncemented Blocks"
+    },
+    "pow-multiplier": {
+      "title": "PoW Multiplier",
+      "tooltip": "Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."
+    },
     "pow-source": {
       "title": "PoW Source",
       "tooltip": "Change how Proof of Work for your blocks are generated."
+    },
+    "receive-method": {
+      "title": "Receive Method"
+    },
+    "server-configuration": {
+      "title": "Server Configuration",
+      "tooltip": "Change which server is used to communicate with the Nano network"
     },
     "server-settings": "Server Settings",
     "wallet-settings": "Wallet Settings",
     "wallet-storage": {
       "title": "Wallet Storage",
       "tooltip": "Change where your wallet is stored.  If you select none, your wallet is reset every time you reload."
+    },
+    "websocket-server": {
+      "note": "Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.",
+      "title": "WebSocket Server",
+      "tooltip": "This has to be a Nano Node Websocket or a WebSocket API compliant with it."
+    },
+    "work-server": {
+      "title": "Work Server",
+      "tooltip": "This has to be a valid Nano Work Server endpoint or an API compliant with it."
     }
   },
   "configure-wallet": {
@@ -164,21 +225,25 @@
     "import": "Import",
     "import-export": "Import / Export",
     "loading": "Loading...",
+    "more-info": "More info",
     "name": "Name",
     "new": "New",
     "next": "Next",
+    "no": "No",
     "options": "Options",
     "receive": "Receive",
     "refresh": "Refresh",
     "reload": "Reload",
     "representative": "Representative",
+    "representative-list-results": "Representative List Results",
     "representatives": "Representatives",
     "save": "Save",
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
     "settings": "Settings",
     "total-balance": "Total Balance",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "yes": "Yes"
   },
   "navigation": {
     "advanced-tools": "Advanced Tools",

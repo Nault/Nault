@@ -529,7 +529,7 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? 'Yes' : 'No';
+      this.shouldRandom = custom.shouldRandom;
     }
 
     // reset server stats until updated
