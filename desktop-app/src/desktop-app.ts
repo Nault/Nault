@@ -242,6 +242,10 @@ function getApplicationMenu() {
       role: 'help',
       submenu: [
         {
+          label: 'Nault Help Docs',
+          click () { loadExternal('https://docs.nault.cc/'); }
+        },
+        {
           label: 'Reddit (r/nanocurrency)',
           click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
         },
