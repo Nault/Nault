@@ -170,7 +170,10 @@ export class AppComponent implements OnInit {
       if (this.inactiveSeconds >= this.settings.settings.lockInactivityMinutes * 60) {
         this.walletService.lockWallet();
         this.notifications.sendSuccess(
-          this.translate.instant('app.wallet-locked-after-x-minutes-of-inactivity', { minutes: this.settings.settings.lockInactivityMinutes })
+          this.translate.instant(
+            'app.wallet-locked-after-x-minutes-of-inactivity',
+            { minutes: this.settings.settings.lockInactivityMinutes }
+          )
         );
       }
     }, 1000);
