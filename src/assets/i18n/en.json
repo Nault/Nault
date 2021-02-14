@@ -229,9 +229,11 @@
     "name": "Name",
     "new": "New",
     "next": "Next",
+    "next-page": "Next Page",
     "no": "No",
     "options": "Options",
     "or": "or",
+    "previous-page": "Previous Page",
     "receive": "Receive",
     "reconnect": "Reconnect",
     "refresh": "Refresh",
@@ -243,9 +245,12 @@
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
     "settings": "Settings",
+    "status": "Status",
     "total-balance": "Total Balance",
     "unknown": "Unknown",
     "unlock": "Unlock",
+    "uptime": "Uptime",
+    "voting-weight": "Voting Weight",
     "yes": "Yes"
   },
   "manage-wallet": {
@@ -290,6 +295,27 @@
     "unlock-wallet-to-receive": "Unlock Wallet to Receive",
     "wallet-is-in-offline-mode": "Wallet is in offline mode",
     "wallet-sweeper": "Wallet Sweeper"
+  },
+  "representatives": {
+    "accounts-to-change": "Accounts to Change",
+    "all-current-accounts": "All Current Accounts",
+    "change-your-representatives": "Change your representatives",
+    "fetching-information-about-your-representatives": "Fetching information about your representatives...",
+    "manage-representatives": "Manage Representatives",
+    "new-representative": "New Representative",
+    "none-of-your-accounts-have-delegated-any-voting-weight": "None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!",
+    "recommended-representatives": "Recommended Representatives",
+    "representatives-participate-in-the-nano-consensus-protocol": "Representatives participate in the Nano consensus protocol on your behalf. You can change them at any time.",
+    "select-accounts-to-change": "Select Accounts to Change",
+    "showing-x-x-of-x-representatives": "Showing {{startCount}} - {{endCount}} of {{totalCount}} representatives",
+    "update-representatives": "Update Representatives",
+    "updating-representatives": "Updating Representatives...",
+    "view-all-representatives": "View All"
+  },
+  "status": {
+    "acceptable": "Acceptable",
+    "bad": "Bad",
+    "good": "Good"
   },
   "wallet-widget": {
     "enter-wallet-password": "Enter wallet password",
