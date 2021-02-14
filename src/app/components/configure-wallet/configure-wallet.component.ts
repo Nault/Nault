@@ -9,6 +9,7 @@ import { wallet } from 'nanocurrency-web';
 
 enum panels {
   'landing',
+  'mnemonicTypeSelection',
   'import',
   'password',
   'backup',
@@ -34,6 +35,8 @@ export class ConfigureWalletComponent implements OnInit {
   keyString = '';
 
   iconSeed = '';
+  iconMnemonicWords = [];
+
   newWalletSeed = '';
   newWalletMnemonic = '';
   newWalletMnemonicLines = [];
@@ -100,6 +103,8 @@ export class ConfigureWalletComponent implements OnInit {
     );
 
     this.iconSeed = iconSeedTrimmed + '...';
+
+    this.iconMnemonicWords = bip39.entropyToMnemonic(iconSeedFull).split(' ');
   }
 
   async importExistingWallet() {

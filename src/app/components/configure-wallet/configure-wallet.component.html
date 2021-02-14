@@ -1,6 +1,6 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
 
-<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import)" class="uk-alert uk-alert-danger uk-margin-medium-bottom">
+<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-alert uk-alert-danger uk-margin-medium-bottom">
   <div uk-grid>
     <div class="uk-width-auto uk-flex uk-flex-center uk-flex-middle">
       <div class="uk-margin-small-left" uk-icon="icon: warning; ratio: 2;"></div>
@@ -61,25 +61,126 @@
       <h2>Import<br>Seed</h2>
       <p>64 hex<br>characters</p>
     </button>
+    <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
+      <div class="icon">
+        <div class="mnemonic">
+          <div class="mnemonic-row">
+            <div class="number">1.</div>
+            <div class="word">{{ iconMnemonicWords[0] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">2.</div>
+            <div class="word">{{ iconMnemonicWords[1] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">3.</div>
+            <div class="word">{{ iconMnemonicWords[2] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">4.</div>
+            <div class="word">{{ iconMnemonicWords[3] }}</div>
+          </div>
+        </div>
+      </div>
+      <h2>Import<br>Mnemonic</h2>
+      <p>12, 15, 18, 21<br>or 24 words</p>
+    </button>
   </div>
 </div>
 
-<div class="import-panel-navigation" *ngIf="activePanel === panels.import" (click)="setPanel(panels.landing)">
+<div
+  class="import-panel-navigation"
+  *ngIf="( (activePanel === panels.import) || (activePanel === panels.mnemonicTypeSelection) )"
+  (click)="
+      (
+          (activePanel === panels.import)
+        && (
+             (selectedImportOption === 'mnemonic')
+          || (selectedImportOption === 'bip39-mnemonic')
+        )
+      )
+    ? setPanel(panels.mnemonicTypeSelection)
+    : setPanel(panels.landing)
+  ">
   <span uk-icon="icon: arrow-left; ratio: 1.5;"></span>
   <span class="label">Back</span>
 </div>
 
+<div class="landing-container uk-grid-divider" uk-grid *ngIf="activePanel === panels.mnemonicTypeSelection">
+  <div>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'mnemonic';">
+      <div class="icon">
+        <div class="mnemonic">
+          <div class="mnemonic-row">
+            <div class="number">1.</div>
+            <div class="word">{{ iconMnemonicWords[0] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">2.</div>
+            <div class="word">{{ iconMnemonicWords[1] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">3.</div>
+            <div class="word">{{ iconMnemonicWords[2] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">4.</div>
+            <div class="word">{{ iconMnemonicWords[3] }}</div>
+          </div>
+        </div>
+      </div>
+      <h2>Nano<br>Mnemonic</h2>
+      <p>24 words</p>
+    </button>
+  </div>
+  <div>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'bip39-mnemonic';">
+      <div class="icon">
+        <div class="mnemonic">
+          <div class="mnemonic-row">
+            <div class="number">1.</div>
+            <div class="word">{{ iconMnemonicWords[0] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">2.</div>
+            <div class="word">{{ iconMnemonicWords[1] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">3.</div>
+            <div class="word">{{ iconMnemonicWords[2] }}</div>
+          </div>
+          <div class="mnemonic-row">
+            <div class="number">4.</div>
+            <div class="word">{{ iconMnemonicWords[3] }}</div>
+          </div>
+        </div>
+      </div>
+      <h2>BIP39<br>Mnemonic</h2>
+      <p>12, 15, 18, 21<br>or 24 words</p>
+    </button>
+  </div>
+</div>
+
+<div
+  class="uk-alert uk-alert-primary" uk-alert
+  *ngIf="(activePanel === panels.import) && ( (selectedImportOption === 'mnemonic') || (selectedImportOption === 'bip39-mnemonic') )"
+>
+  <div uk-grid>
+    <div class="uk-width-auto uk-flex uk-flex-center uk-flex-middle">
+      <div class="uk-margin-small-left" uk-icon="icon: info; ratio: 2;"></div>
+    </div>
+    <div class="uk-width-expand already-configured-text-column" style="max-width: 580px;">
+      <b>Note for Ledger device owners:</b><br>
+      Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet.
+    </div>
+  </div>
+</div>
+
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.import">
   <div class="uk-card-body">
-    <div class="uk-alert-primary" uk-alert style="max-width: 700px;" *ngIf="(selectedImportOption === 'mnemonic') || (selectedImportOption === 'bip39-mnemonic')">
-      <i><span uk-icon="icon: info;" style="vertical-align: 2px;"></span> Note for Ledger device owners:</i>
-      <p>
-        Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet.
-      </p>
-    </div>
-
     <div uk-grid *ngIf="selectedImportOption === 'file'">
       <div class="uk-width-1-1">
+        <h3>Import File</h3>
         <p>
           If you have saved your wallet to a file using Nault before, use the button below to import it.
         </p>
@@ -87,6 +188,7 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'seed'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Import Seed</h3>
         <p>
           Enter your seed from any Nano wallet to import it below.
         </p>
@@ -98,8 +200,9 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Import Nano Mnemonic</h3>
         <p>
-          Enter your mnemonic generated from Nault or other Nano wallets. If it came from a Ledger device or certain multi-currency wallets, use "BIP39 Mnemonic" import type instead.
+          Enter your mnemonic generated by Nault or other Nano wallets.<br>If it came from a Ledger device or certain multi-currency wallets, use <a (click)="selectedImportOption = 'bip39-mnemonic';">BIP39 Mnemonic</a> import type instead.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
@@ -109,8 +212,9 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'bip39-mnemonic'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Import BIP39 Mnemonic</h3>
         <p>
-          Enter your mnemonic generated from a Ledger device or certain multi-currency wallets. If it was generated in Nault, use "Nano Mnemonic" import type instead.
+          Enter your mnemonic generated by a Ledger device or certain multi-currency wallets.<br>If it was generated in Nault, use <a (click)="selectedImportOption = 'mnemonic';">Nano Mnemonic</a> import type instead.
         </p>
         <div class="uk-form-horizontal">
           <div class="uk-margin">
@@ -143,6 +247,7 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Use Ledger Hardware Wallet</h3>
         <p>
           Make sure you have the Nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
           <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
@@ -172,6 +277,7 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'privateKey'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Import Private Key</h3>
         <p>
           Enter your Nano private key below. These are not to be confused with Nano seeds, which are more common, and produce many private keys.
         </p>
@@ -183,6 +289,7 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'expandedKey'" class="uk-margin-top">
       <div class="uk-width-1-1">
+        <h3>Import Expanded Private Key</h3>
         <p>
           Enter your expanded private key below. These are rare, and are usually generated from multi-party cryptography magic.
         </p>
