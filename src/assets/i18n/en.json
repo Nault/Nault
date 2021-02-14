@@ -231,7 +231,9 @@
     "next": "Next",
     "no": "No",
     "options": "Options",
+    "or": "or",
     "receive": "Receive",
+    "reconnect": "Reconnect",
     "refresh": "Refresh",
     "reload": "Reload",
     "representative": "Representative",
@@ -243,7 +245,28 @@
     "settings": "Settings",
     "total-balance": "Total Balance",
     "unknown": "Unknown",
+    "unlock": "Unlock",
     "yes": "Yes"
+  },
+  "manage-wallet": {
+    "backup-wallet": "Backup Wallet",
+    "change-wallet-password": "Change Wallet Password",
+    "export-nault-wallet": {
+      "export-wallet": "Export Wallet",
+      "for-backup-purposes-always-store-the-seed": "For backup purposes, always store the seed and/or mnemonic from the \"Backup Wallet\" section above.",
+      "if-you-forget-the-wallet-password": "If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.",
+      "note-the-export-does-not-contain-your-address-book": "Note: The export does not contain your address book.",
+      "scan-the-qr-code-on-any-device-to-import-your-nault-wallet": "Scan the QR code on any device to import your Nault wallet!",
+      "title": "Export Nault Wallet",
+      "use-this-export-tool-to-simplify-wallet-transfer-to-other-devices": "Use this export tool to simplify wallet transfer to other devices.",
+      "you-can-also-import-your-wallet-by-using-the-url-below": "You can also import your wallet by using the URL below.",
+      "you-need-to-set-a-secure-wallet-password": "You need to set a secure wallet password before you can use this export tool.",
+      "your-data-will-be-encrypted-with-your-wallets-password": "Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!"
+    },
+    "password-must-be-at-least-x-characters-long": "Password must be at least {{chars}} characters long",
+    "to-backup-your-wallet-mnemonic-phrase-click-here": "To backup your wallet mnemonic phrase click here:",
+    "to-backup-your-wallet-seed-click-here": "To backup your wallet seed click here:",
+    "wallet-needs-to-be-unlocked": "Wallet needs to be unlocked"
   },
   "navigation": {
     "advanced-tools": "Advanced Tools",
@@ -267,6 +290,18 @@
     "unlock-wallet-to-receive": "Unlock Wallet to Receive",
     "wallet-is-in-offline-mode": "Wallet is in offline mode",
     "wallet-sweeper": "Wallet Sweeper"
+  },
+  "wallet-widget": {
+    "enter-wallet-password": "Enter wallet password",
+    "incorrect-password": "Incorrect password",
+    "ledger-disconnected": "Ledger disconnected",
+    "ledger-locked": "Ledger locked",
+    "ledger-ready": "Ledger Ready",
+    "unlock-the-device-then-click-here": "Unlock the device, then click here:",
+    "unlock-wallet": "Unlock Wallet",
+    "view-troubleshooting-guide": "view Troubleshooting Guide",
+    "wallet-locked": "Wallet Locked",
+    "wallet-unlocked": "Wallet Unlocked"
   },
   "welcome": {
     "a-full-security-guide-is-found-here": "A full security guide is found here.",
