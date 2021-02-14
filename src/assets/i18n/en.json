@@ -31,6 +31,17 @@
     "wallet-locked-after-x-minutes-of-inactivity": "Wallet locked after {{minutes}} minute(s) of inactivity",
     "wallet-server-settings-is-set-to-offline-mode": "Wallet server settings is set to offline mode. Please change server first!"
   },
+  "change-rep-widget": {
+    "receive-a-transaction-to-configure": "Receive a transaction to configure",
+    "representative-change-required": "Representative Change Required",
+    "representative-for": "Representative for",
+    "status": {
+      "acceptable-representative": "Acceptable Representative",
+      "bad-representative": "Bad Representative",
+      "good-representative": "Good Representative",
+      "unknown-status": "Unknown Status"
+    }
+  },
   "configure-wallet": {
     "12-15-18-21-or-24-words-mnemonic": "12,15,18,21 or 24-words mnemonic",
     "24-words-mnemonic": "24-words mnemonic",
@@ -130,6 +141,7 @@
     "hide": "Hide",
     "import": "Import",
     "import-export": "Import / Export",
+    "loading": "Loading...",
     "name": "Name",
     "new": "New",
     "next": "Next",
