@@ -1,4 +1,13 @@
 {
+  "app": {
+    "attempting-to-reconnect-to-server": "Attempting to reconnect to server",
+    "incoming-transaction-s-found-set-to-be-received-manually": "Incoming transaction(s) found - Set to be received manually",
+    "invalid-nano-account-or-transaction-hash": "Invalid Nano account or transaction hash!",
+    "new-incoming-transaction-s-unlock-the-wallet-to-receive": "New incoming transaction(s) - Unlock the wallet to receive",
+    "there-was-an-issue-retrieving-the-latest-fiat-price": "There was an issue retrieving the latest fiat price.",
+    "wallet-locked-after-x-minutes-of-inactivity": "Wallet locked after {{minutes}} minute(s) of inactivity",
+    "wallet-server-settings-is-set-to-offline-mode": "Wallet server settings is set to offline mode. Please change server first!"
+  },
   "configure-wallet": {
     "12-15-18-21-or-24-words-mnemonic": "12,15,18,21 or 24-words mnemonic",
     "24-words-mnemonic": "24-words mnemonic",
