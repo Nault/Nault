@@ -34,8 +34,11 @@ export class ConfigureWalletComponent implements OnInit {
   isExpanded = false;
   keyString = '';
 
-  iconSeed = '';
-  iconMnemonicWords = [];
+  exampleSeed = '';
+  examplePrivateKey = '';
+  exampleExpandedPrivateKey = '';
+  exampleMnemonicWords = [];
+  showMoreImportOptions = false;
 
   newWalletSeed = '';
   newWalletMnemonic = '';
@@ -88,23 +91,28 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // generate random hex symbols (must have both letters and numbers)
-    const seedBytes = this.util.account.generateSeedBytes();
-    const iconSeedFull = this.util.hex.fromUint8(seedBytes);
+    const exampleSeedBytes = this.util.account.generateSeedBytes();
+    const exampleSeedFull = this.util.hex.fromUint8(exampleSeedBytes);
 
-    let iconSeedTrimmed = '';
+    let exampleSeedTrimmed = '';
     let trimIdx = 0;
     do {
-      iconSeedTrimmed = iconSeedFull.slice(trimIdx, trimIdx + 6);
+      exampleSeedTrimmed = exampleSeedFull.slice(trimIdx, trimIdx + 6);
       trimIdx += 2;
     } while (
-        (trimIdx < 50)
-      && ( iconSeedTrimmed.match(/^([0-9]+|[A-F]+)$/g) !== null )
+        (trimIdx < 30)
+      && ( exampleSeedTrimmed.match(/^([0-9]+|[A-F]+)$/g) !== null )
     );
 
-    this.iconSeed = iconSeedTrimmed + '...';
+    // must have both letters and numbers
+    this.exampleSeed = exampleSeedTrimmed + '...';
 
-    this.iconMnemonicWords = bip39.entropyToMnemonic(iconSeedFull).split(' ');
+    // may have only letters or only numbers with enough luck
+    this.examplePrivateKey = exampleSeedFull.slice(trimIdx + 6, trimIdx + 12) + '...';
+    this.exampleExpandedPrivateKey = exampleSeedFull.slice(trimIdx + 12, trimIdx + 18) + '...';
+
+    // array of mnemonic words
+    this.exampleMnemonicWords = bip39.entropyToMnemonic(exampleSeedFull).split(' ');
   }
 
   async importExistingWallet() {
@@ -191,15 +199,15 @@ export class ConfigureWalletComponent implements OnInit {
     let msg;
     try {
       if (this.walletService.isLedgerWallet()) {
-        msg = '<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new local wallet<br>which will <b>disconnect your Ledger device from Nault</b></span><br><br>If you need to use the Ledger wallet, simply import your device again<br><br><b style="font-size: 18px;">Make sure you saved the recovery phrase you got when you initially set up your Ledger device</b><br><br><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b> if you lose both the recovery phrase and access to your Ledger device<br/></p>';
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
       } else {
-        msg = '<p style="text-align: center;"><span style="font-size: 18px;">You are about to create a new wallet<br>which will <b>reset the local Nault wallet you already have</b></span><br><br><b style="font-size: 18px;">Be sure you have saved your current Nano seed and/or mnemonic before continuing</b><br><br>Without a backup - <b>ALL FUNDS WILL BE UNRECOVERABLE</b><br/><br/></p>';
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>';
       }
       await UIkit.modal.confirm(msg);
       return true;
     } catch (err) {
       if (!this.walletService.isLedgerWallet()) {
-        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to back up your Nano seed and/or mnemonic`);
+        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your Nano seed and/or mnemonic`);
       }
       return false;
     }

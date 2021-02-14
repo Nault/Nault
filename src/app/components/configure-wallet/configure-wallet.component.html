@@ -56,7 +56,7 @@
     </button>
     <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
       <div class="icon">
-        <div class="seed">{{ iconSeed }}</div>
+        <div class="seed">{{ exampleSeed }}</div>
       </div>
       <h2>Import<br>Seed</h2>
       <p>64 hex<br>characters</p>
@@ -66,24 +66,54 @@
         <div class="mnemonic">
           <div class="mnemonic-row">
             <div class="number">1.</div>
-            <div class="word">{{ iconMnemonicWords[0] }}</div>
+            <div class="word">{{ exampleMnemonicWords[0] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">2.</div>
-            <div class="word">{{ iconMnemonicWords[1] }}</div>
+            <div class="word">{{ exampleMnemonicWords[1] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">3.</div>
-            <div class="word">{{ iconMnemonicWords[2] }}</div>
+            <div class="word">{{ exampleMnemonicWords[2] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">4.</div>
-            <div class="word">{{ iconMnemonicWords[3] }}</div>
+            <div class="word">{{ exampleMnemonicWords[3] }}</div>
           </div>
         </div>
       </div>
       <h2>Import<br>Mnemonic</h2>
       <p>12, 15, 18, 21<br>or 24 words</p>
+    </button>
+    <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
+      <div class="icon">
+        <div class="more-options">···</div>
+      </div>
+      <h2>More<br>Options</h2>
+      <p>Import from file<br>or a private key</p>
+    </button>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
+      <div class="icon">
+        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+         <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
+        </svg>
+      </div>
+      <h2>Import<br>File</h2>
+      <p>exported<br>Nault wallet</p>
+    </button>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
+      <div class="icon">
+        <div class="seed">{{ examplePrivateKey }}</div>
+      </div>
+      <h2>Import<br>Private Key</h2>
+      <p>64 hex<br>characters</p>
+    </button>
+    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'expandedKey';" *ngIf="showMoreImportOptions">
+      <div class="icon">
+        <div class="seed">{{ exampleExpandedPrivateKey }}</div>
+      </div>
+      <h2 class="long-header">Import<br>Expanded<br>Private Key</h2>
+      <p>64 or 128 hex<br>characters</p>
     </button>
   </div>
 </div>
@@ -113,19 +143,19 @@
         <div class="mnemonic">
           <div class="mnemonic-row">
             <div class="number">1.</div>
-            <div class="word">{{ iconMnemonicWords[0] }}</div>
+            <div class="word">{{ exampleMnemonicWords[0] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">2.</div>
-            <div class="word">{{ iconMnemonicWords[1] }}</div>
+            <div class="word">{{ exampleMnemonicWords[1] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">3.</div>
-            <div class="word">{{ iconMnemonicWords[2] }}</div>
+            <div class="word">{{ exampleMnemonicWords[2] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">4.</div>
-            <div class="word">{{ iconMnemonicWords[3] }}</div>
+            <div class="word">{{ exampleMnemonicWords[3] }}</div>
           </div>
         </div>
       </div>
@@ -139,19 +169,19 @@
         <div class="mnemonic">
           <div class="mnemonic-row">
             <div class="number">1.</div>
-            <div class="word">{{ iconMnemonicWords[0] }}</div>
+            <div class="word">{{ exampleMnemonicWords[0] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">2.</div>
-            <div class="word">{{ iconMnemonicWords[1] }}</div>
+            <div class="word">{{ exampleMnemonicWords[1] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">3.</div>
-            <div class="word">{{ iconMnemonicWords[2] }}</div>
+            <div class="word">{{ exampleMnemonicWords[2] }}</div>
           </div>
           <div class="mnemonic-row">
             <div class="number">4.</div>
-            <div class="word">{{ iconMnemonicWords[3] }}</div>
+            <div class="word">{{ exampleMnemonicWords[3] }}</div>
           </div>
         </div>
       </div>
@@ -324,7 +354,7 @@
   </div>
   <div class="uk-card-body">
     <p>
-      Below is the seed and mnemonic backup. You can use whichever you prefer in any other compatible wallet.
+      Below is the seed and mnemonic backup. You can use whichever you prefer in any compatible wallet.
     </p>
     <div class="uk-alert-danger uk-alert-primary">
       Make sure to write down your seed and/or mnemonic or save it somewhere safe, and <strong>never share it with anyone!</strong><br>

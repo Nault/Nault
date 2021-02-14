@@ -48,18 +48,16 @@ pre.mnemonic span.mnemonic-word::before {
   min-width: 100px;
 }
 
-.uk-width-1-2 {
-  border-radius: unset;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
 #create-wallet {
   margin-top: 20px;
 }
 
 .already-configured-text-column {
   padding-left: 20px;
+}
+
+.landing-container {
+  margin-bottom: 50px;
 }
 
 .landing-container > div {
@@ -84,10 +82,16 @@ pre.mnemonic span.mnemonic-word::before {
   cursor: pointer;
   transition: background 100ms ease-in-out;
 }
+.landing-container > div > .wallet-option.more-options {
+  border-color: #AAA;
+}
 
 .landing-container > div > .wallet-option:hover {
   background: #4A90E2;
   color: #FFF;
+}
+.landing-container > div > .wallet-option.more-options:hover {
+  border-color: #4A90E2;
 }
 .landing-container > div > .wallet-option:hover > .icon {
   transform: scale(1.1);
@@ -106,7 +110,7 @@ pre.mnemonic span.mnemonic-word::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 155px;
   height: 120px;
   margin-bottom: 10px;
   transition: transform 200ms ease-in-out;
@@ -117,6 +121,14 @@ pre.mnemonic span.mnemonic-word::before {
   margin: 0;
   line-height: 1.2;
   font-size: 24px;
+  font-weight: 300;
+}
+
+.landing-container > div > .wallet-option > .icon > .more-options {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  margin: 0;
+  line-height: 1.2;
+  font-size: 36px;
   font-weight: 300;
 }
 
@@ -163,6 +175,11 @@ pre.mnemonic span.mnemonic-word::before {
   color: #373656;
   font-size: 28px;
   margin-bottom: 15px;
+}
+.landing-container > div > .wallet-option > h2.long-header {
+  margin-top: 3px;
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .landing-container > div > .wallet-option > p {
