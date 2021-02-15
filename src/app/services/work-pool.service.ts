@@ -91,19 +91,18 @@ export class WorkPoolService {
       return null;
     }
 
-    const workString = work.work;
-    console.log('Work found: ' + workString);
+    console.log('Work found: ' + work.work);
 
     // remove duplicates
     this.workCache = this.workCache.filter(entry => (entry.hash !== hash));
 
-    this.workCache.push({ hash, workString });
+    this.workCache.push({ hash, work: work.work });
     delete this.currentlyProcessingHashes[hash];
 
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
     this.saveWorkCache();
 
-    return workString;
+    return work.work;
   }
 
   /**
