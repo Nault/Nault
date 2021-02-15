@@ -50,9 +50,14 @@ export class WorkPoolService {
 
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash, multiplier = 1) {
+    this.pow.shouldContinueQueue = true; // new pow should never be blocked
+    // additional pow for the same hash will have to wait
     while ( this.currentlyProcessingHashes[hash] === true ) {
       await this.sleep(100);
     }
+
+    // cancel any additional work that's coming from the wait loop above if user aborted during that loop
+    if (!this.pow.shouldContinueQueue) return null;
 
     const cached = this.workCache.find(p => p.hash === hash);
 
@@ -68,10 +73,17 @@ export class WorkPoolService {
 
     this.currentlyProcessingHashes[hash] = true;
 
-    const work = await this.pow.getPow(hash, multiplier);
+    let work;
+    try {
+      work = await this.pow.getPow(hash, multiplier);
+    } catch {
+      work = null;
+    }
 
     if (!work) {
-      this.notifications.sendWarning(`Failed to retrieve work for ${hash}. Try a different PoW method.`);
+      this.notifications.sendWarning(
+        `Failed to retrieve proof of work for ${hash}. Try a different PoW method from the app settings.`, {length: 5000}
+        );
       delete this.currentlyProcessingHashes[hash];
       return null;
     }

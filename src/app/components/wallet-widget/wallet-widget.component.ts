@@ -3,6 +3,7 @@ import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import {AppSettingsService} from '../../services/app-settings.service';
+import {PowService} from '../../services/pow.service';
 
 @Component({
   selector: 'app-wallet-widget',
@@ -13,6 +14,7 @@ export class WalletWidgetComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   ledgerStatus = 'not-connected';
+  powAlert = false;
 
   unlockPassword = '';
 
@@ -24,7 +26,8 @@ export class WalletWidgetComponent implements OnInit {
     public walletService: WalletService,
     private notificationService: NotificationService,
     public ledgerService: LedgerService,
-    public settings: AppSettingsService) { }
+    public settings: AppSettingsService,
+    private powService: PowService) { }
 
   @ViewChild('passwordInput') passwordInput: ElementRef;
 
@@ -35,6 +38,14 @@ export class WalletWidgetComponent implements OnInit {
 
     this.ledgerService.ledgerStatus$.subscribe((ledgerStatus: any) => {
       this.ledgerStatus = ledgerStatus.status;
+    });
+    // Detect if a PoW is taking too long and alert
+    this.powService.powAlert$.subscribe(async shouldAlert => {
+      if (shouldAlert) {
+        this.powAlert = true;
+      } else {
+        this.powAlert = false;
+      }
     });
   }
 
@@ -115,6 +126,10 @@ export class WalletWidgetComponent implements OnInit {
     } else {
       this.notificationService.sendError(`Incorrect password, please try again!`);
     }
+  }
+
+  cancelPow() {
+    this.powService.cancelAllPow();
   }
 
 }
