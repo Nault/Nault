@@ -12,7 +12,7 @@ export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch up
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
-export enum workState {'success', 'cancelled', 'error'};
+export enum workState {'success', 'cancelled', 'error'}
 
 @Injectable()
 export class PowService {
@@ -168,7 +168,7 @@ export class PowService {
       }
     }
 
-    let work = {state: null, work: ''};
+    const work = {state: null, work: ''};
     switch (powSource) {
       default:
       case 'server':
@@ -184,7 +184,7 @@ export class PowService {
         try {
           work.work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
           work.state = workState.success;
-        } catch(state) {
+        } catch (state) {
           work.state = state;
         }
         break;
@@ -192,7 +192,7 @@ export class PowService {
         try {
           work.work = await this.getHashWebGL(queueItem.hash, localMultiplier);
           work.state = workState.success;
-        } catch(state) {
+        } catch (state) {
           work.state = state;
         }
         break;

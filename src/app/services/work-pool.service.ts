@@ -76,7 +76,7 @@ export class WorkPoolService {
     let work;
     try {
       work = await this.pow.getPow(hash, multiplier);
-    } catch(workState) {
+    } catch (workState) {
       work = workState;
     }
 
