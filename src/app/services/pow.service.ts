@@ -11,7 +11,7 @@ const mod = window['Module'];
 export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
-const workerList = [];
+let workerList = [];
 
 @Injectable()
 export class PowService {
@@ -274,6 +274,7 @@ export class PowService {
       this.cpuWorkerReject = reject;
       console.log('Generating work with multiplier ' + multiplier + ' at threshold ' +
         newThreshold + ' using CPU workers for hash: ', hash);
+      workerList = [];
       for (let i = 0; i < workerCount; i++) {
         // const worker = new Worker()
         const worker = new (Worker as any)();
