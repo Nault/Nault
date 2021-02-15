@@ -24,6 +24,7 @@ interface AppSettings {
   serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
+  lightModeEnabled: boolean;
 }
 
 @Injectable()
@@ -48,7 +49,8 @@ export class AppSettingsService {
     serverWS: null,
     serverAuth: null,
     minimumReceive: null,
-    walletVersion: 1
+    walletVersion: 1,
+    lightModeEnabled: false
   };
 
   serverOptions = [
@@ -227,6 +229,7 @@ export class AppSettingsService {
       serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
+      lightModeEnabled: false,
     };
   }
 

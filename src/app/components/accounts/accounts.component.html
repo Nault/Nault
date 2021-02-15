@@ -30,7 +30,13 @@
             Account
           </th>
           <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
-          <th scope="col" class="table-header-delete-account uk-width-1-5@m uk-width-1-4 uk-text-right" *ngIf="!isSingleKeyWallet && viewAdvanced"></th>
+          <th scope="col" [class]="{
+            'table-header-delete-account': true,
+            'uk-width-1-5@m': true,
+            'uk-width-1-4': true,
+            'uk-text-right': true,
+            'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
+          }"></th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +82,10 @@
               {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             </div>
           </td>
-          <td class="uk-text-right" *ngIf="!isSingleKeyWallet && viewAdvanced">
+          <td [class]="{
+            'uk-text-right': true,
+            'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
+          }">
             <div class="uk-float-right">
               <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
@@ -85,10 +94,14 @@
         <tr *ngIf="!accounts.length">
           <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a>.</td>
         </tr>
-        <tr class="uk-alert uk-alert-primary missing-accounts-hint" *ngIf="!isSingleKeyWallet">
-          <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a class="hint-action" (click)="createAccount()">Add new account</a> to import a previously used address.</td>
-        </tr>
         </tbody>
+      </table>
+      <table class="uk-table uk-table-striped uk-table-small" *ngIf="!isSingleKeyWallet">
+        <thead>
+          <tr class="uk-alert uk-alert-primary missing-accounts-hint">
+            <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a class="hint-action" (click)="createAccount()">Add new account</a> to import a previously used address.</td>
+          </tr>
+        </thead>
       </table>
     </div>
 

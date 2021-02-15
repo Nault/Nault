@@ -3,6 +3,10 @@
 	min-width: 50px;
 }
 
+th.hidden-column, td.hidden-column {
+	display: none;
+}
+
 .account-container.narrow {
 	max-width: calc(100% - 35px);
 }
