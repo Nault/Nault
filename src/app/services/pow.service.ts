@@ -132,6 +132,7 @@ export class PowService {
     if (!this.PoWPool.length) return; // Nothing in the queue?
     this.processingQueueItem = true;
     const queueItem = this.PoWPool[0];
+    this.powAlert$.next(false); // extra safety to ensure the alert is always reset
 
     let powSource = this.appSettings.settings.powSource;
     const multiplierSource: Number = this.appSettings.settings.multiplierSource;
