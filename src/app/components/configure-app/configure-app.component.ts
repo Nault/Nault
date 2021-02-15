@@ -332,6 +332,12 @@ export class ConfigureAppComponent implements OnInit {
           reloadPending = true; // force reload balance => re-work pow
         }
       }
+    } else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
+      newMultiplier < this.appSettings.settings.multiplierSource) {
+      // Cancel pow and re-work if multiplier is lower than earlier
+      if (this.pow.cancelAllPow(false)) {
+        reloadPending = true;
+      }
     }
 
     // reset work cache so that the new PoW will be used but only if larger than before
