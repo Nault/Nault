@@ -19,7 +19,7 @@ export class PowService {
   webGLAvailable = false;
   webGLTested = false;
 
-  powAlertLimit = 10; // alert long pow after X sec
+  powAlertLimit = 60; // alert long pow after X sec
   PoWPool = [];
   parallelQueue = false;
   processingQueueItem = false;
