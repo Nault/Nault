@@ -1,6 +1,6 @@
 .table-header-delete-account {
 	width: 1%;
-	min-width: 100px;
+	min-width: 50px;
 }
 
 .account-container.narrow {
@@ -30,30 +30,8 @@
 	border-color: transparent;
 }
 
-.account-container:hover .account-index {
-	color: #4A90E2;
-}
-
-.account-container:hover .account-index span {
-	color: #A2CBFA;
-}
-
 .account-container .nano-address-clickable {
 	vertical-align: bottom;
-}
-
-.account-container .account-index {
-	display: inline-block;
-	font-size: 13px;
-	margin-right: 7px;
-	color: #676686;
-}
-
-.account-container .account-index span {
-	color: #AAA;
-	font-size: 15px;
-	vertical-align: -1px;
-	margin-right: 1px;
 }
 
 .account-container .account-label {
@@ -97,25 +75,4 @@
 
 .icon-delete-account {
 	vertical-align: -2px;
-}
-
-.missing-accounts-hint {
-	background: #F2F7EB !important;
-	color: rgb(85, 121, 33);
-}
-
-.missing-accounts-hint .uk-icon {
-	vertical-align: 1px;
-}
-
-.missing-accounts-hint a {
-	text-decoration: none;
-	padding-bottom: 2px;
-	border-bottom: 2px dotted rgba(85, 121, 33, 0.6);
-	transition: border-color 100ms ease-in-out;
-}
-
-.missing-accounts-hint a:hover {
-	border-color: rgba(85, 121, 33, 1);
-	border-bottom-style: solid;
 }

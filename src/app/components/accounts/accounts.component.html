@@ -3,9 +3,9 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">
+        <h2 class="uk-heading-divider uk-text-truncate">
           Accounts
-          <a (click)="viewAdvanced = !viewAdvanced" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BASIC' : 'ADVANCED' }}</a>
+          <a (click)="viewAdvanced = !viewAdvanced" class="uk-text-truncate" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BACK TO SIMPLE MODE' : 'MANAGE ACCOUNTS' }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@m uk-width-1-1 uk-text-right">
@@ -30,7 +30,7 @@
             Account
           </th>
           <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
-          <th scope="col" class="table-header-delete-account uk-width-1-5@m uk-width-1-4 uk-text-right"></th>
+          <th scope="col" class="table-header-delete-account uk-width-1-5@m uk-width-1-4 uk-text-right" *ngIf="!isSingleKeyWallet && viewAdvanced"></th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +76,7 @@
               {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             </div>
           </td>
-          <td class="uk-text-right">
+          <td class="uk-text-right" *ngIf="!isSingleKeyWallet && viewAdvanced">
             <div class="uk-float-right">
               <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
@@ -86,7 +86,7 @@
           <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a>.</td>
         </tr>
         <tr class="uk-alert uk-alert-primary missing-accounts-hint" *ngIf="!isSingleKeyWallet">
-          <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a (click)="createAccount()">Add new account</a> to import a previously used address.</td>
+          <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a class="hint-action" (click)="createAccount()">Add new account</a> to import a previously used address.</td>
         </tr>
         </tbody>
       </table>

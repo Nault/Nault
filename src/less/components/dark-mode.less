@@ -1,0 +1,225 @@
+@dark-mode-background-1: #19191B;
+@dark-mode-background-2: #1B1B20;
+@dark-mode-background-3: #1D1D22;
+@dark-mode-background-4: #22222A;
+@dark-mode-background-5: #25252D;
+@dark-mode-background-6: #2E2E38;
+
+@dark-mode-accent-1: #4A90E2;
+
+@dark-mode-text-1: #5F5F77;
+@dark-mode-text-2: #8F8FBB;
+@dark-mode-text-3: #ABABC4;
+@dark-mode-text-4: #B5B5C8;
+@dark-mode-text-5: #D5D5E8;
+
+.dark-mode {
+	// General
+	color: @dark-mode-text-4;
+
+	.content-container {
+		background: @dark-mode-background-1;
+	}
+
+	.uk-card-default {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-4;
+	}
+
+	.uk-card-default {
+		.uk-card-header {
+			border-color: @dark-mode-background-1;
+		}
+
+		.uk-card-footer {
+			border-top-color: @dark-mode-background-1;
+		}
+
+		.uk-heading-divider {
+			border-bottom-color: @dark-mode-background-1;
+		}
+	}
+
+	.uk-heading-divider {
+		border-bottom-color: @dark-mode-background-5;
+	}
+
+	.uk-grid-divider > :not(.uk-first-column)::before {
+		border-left-color: @dark-mode-background-6;
+	}
+
+	.nano-address-clickable, .nano-address-clickable:hover {
+		color: @dark-mode-text-3;
+	}
+
+	.account-label {
+		background: @dark-mode-background-6;
+	}
+
+	.account-label, .account-label:hover {
+		color: @dark-mode-text-3;
+	}
+
+	.account-container:hover .account-label {
+		border-color: @dark-mode-accent-1;
+		background: @dark-mode-accent-1;
+	}
+
+	.account-container .account-index {
+		color: @dark-mode-text-4;
+	}
+
+	.account-container .account-index span {
+		color: @dark-mode-text-1;
+	}
+	.account-container:hover .account-index span {
+		color: #335277;
+	}
+
+	.missing-accounts-hint {
+		background: @dark-mode-background-3 !important;
+		color: @dark-mode-text-3;
+	}
+
+	.missing-accounts-hint .uk-icon {
+		vertical-align: 1px;
+		margin-right: 2px;
+	}
+
+	.missing-accounts-hint .hint-action {
+		color: @dark-mode-text-3;
+		border-bottom: 2px dotted @dark-mode-text-1;
+	}
+
+	.missing-accounts-hint .hint-action:hover {
+		border-color: @dark-mode-text-3;
+	}
+
+	h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
+		color: #DDD;
+	}
+
+	// General (Table)
+	.uk-table thead {
+		background: @dark-mode-background-4;
+	}
+
+	.uk-table th {
+		color: @dark-mode-text-3;
+	}
+
+	.uk-table-striped > tr, .uk-table-striped tbody tr {
+		background: @dark-mode-background-2;
+	}
+
+	.uk-table-striped > tr:nth-of-type(2n+1), .uk-table-striped tbody tr:nth-of-type(2n+1) {
+		background: @dark-mode-background-3;
+		border-top: 1px solid @dark-mode-background-1;
+		border-bottom: 1px solid @dark-mode-background-1;
+	}
+
+	// General (List)
+	.uk-list {
+		background: @dark-mode-background-4;
+	}
+
+	// General (Icons)
+	.uk-iconnav > * > a, .uk-form-icon {
+		color: @dark-mode-text-2;
+	}
+
+	.uk-iconnav > * > a:hover, .uk-iconnav > * > a:focus, .uk-form-icon:focus, .uk-form-icon:hover {
+		color: @dark-mode-text-5;
+	}
+
+	// General (Buttons)
+	.uk-button-secondary, .uk-button-default {
+		border-color: @dark-mode-background-6;
+	}
+
+	.uk-button-default:focus, .uk-button-default:hover, .uk-button-secondary:focus, .uk-button-secondary:hover {
+		background: @dark-mode-background-5;
+		color: #3379ca;
+	}
+
+	.form-icon-btn, .form-icon-btn:focus, .form-icon-btn:hover {
+		color: #FFF;
+	}
+
+	// General (Inputs)
+	.uk-input, .uk-select, .uk-textarea {
+		border-color: @dark-mode-background-3;
+		background: @dark-mode-background-2;
+		color: @dark-mode-text-4;
+	}
+
+	.uk-radio, .uk-checkbox {
+		border-color: @dark-mode-text-1;
+	}
+
+	// Send page
+	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
+		color: @dark-mode-text-4 !important;
+		background: @dark-mode-background-4;
+	}
+
+	// Wallet Setup page
+	.landing-container > div > .wallet-option {
+		border-color: @dark-mode-accent-1;
+
+		&.more-options {
+			border-color: @dark-mode-text-1;
+
+			&:hover {
+				border-color: @dark-mode-accent-1;
+			}
+		}
+
+		&:hover {
+			background: @dark-mode-accent-1;
+			color: #FFF;
+
+			> .icon > .seed,
+			> .icon > .mnemonic > .mnemonic-row > .number,
+			> .icon > .mnemonic > .mnemonic-row > .word,
+			> .icon > .more-options {
+				color: #FFF;
+			}
+
+			> h2 {
+				color: #FFF;
+			}
+
+			> p {
+				color: #FFF;
+			}
+		}
+
+		> .icon > .mnemonic > .mnemonic-row {
+			border-color: @dark-mode-text-1;
+		}
+
+		> .icon > svg {
+			color: @dark-mode-text-5;
+		}
+
+		> .icon > .seed,
+		> .icon > .mnemonic > .mnemonic-row > .number,
+		> .icon > .mnemonic > .mnemonic-row > .word,
+		> .icon > .more-options {
+			color: @dark-mode-text-5;
+		}
+
+		> h2 {
+			color: @dark-mode-text-5;
+		}
+
+		> p {
+			color: @dark-mode-text-3;
+		}
+	}
+
+	.import-panel-navigation:hover .label {
+		border-bottom-color: @dark-mode-text-4;
+	}
+}

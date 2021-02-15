@@ -1,4 +1,4 @@
-<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
+<div uk-grid class="app dark-mode" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
@@ -240,7 +240,7 @@
 
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" style="background: #fff;" [style.height]="windowHeight + 'px'">
+      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" [style.height]="windowHeight + 'px'">
         <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
           <router-outlet></router-outlet>
         </div>

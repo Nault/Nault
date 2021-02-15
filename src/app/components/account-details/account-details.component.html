@@ -46,9 +46,11 @@
                   <div class="nano-address-monospace uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 60px);">
                     <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
                   </div>
-                  <div class="nano-address-actions uk-width-auto" style="margin-top: -3px;">
-                    <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                    <li><a (click)="qrModal.show()" title="Show QR Code" uk-tooltip class="icon-qr-code"></a></li>
+                  <div class="nano-address-actions uk-width-auto" style="margin-top: 0;">
+                    <ul class="uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a (click)="qrModal.show()" title="Show QR Code" uk-tooltip class="icon-qr-code"></a></li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -189,7 +191,7 @@
                         </span>
                       </a>
                     </div>
-                    <div class="nano-address-actions uk-width-auto">
+                    <div class="nano-address-actions uk-width-auto" style="margin-top: 3px;">
                       <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>
@@ -216,7 +218,7 @@
                         </span>
                       </a>
                     </div>
-                    <div class="nano-address-actions uk-width-auto">
+                    <div class="nano-address-actions uk-width-auto" style="margin-top: 3px;">
                       <ul class="uk-iconnav">
                         <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                       </ul>

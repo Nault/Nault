@@ -6,8 +6,8 @@
     <div uk-grid *ngIf="activePanel == 'send'" class="uk-animation-slide-left-small">
       <div class="send-types-wrapper uk-width-1-1 uk-text-center">
         <div class="send-types-frame">
-          <button [class]="['send-types-tab', (sendDestinationType === 'external-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'external-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('external-address')">Send to address</button>
-          <button [class]="['send-types-tab', (sendDestinationType === 'own-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'own-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('own-address')">Transfer between own accounts</button>
+          <button [class]="['send-types-tab', 'uk-text-truncate', (sendDestinationType === 'external-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'external-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('external-address')">Send to address</button>
+          <button [class]="['send-types-tab', 'uk-text-truncate', (sendDestinationType === 'own-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'own-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('own-address')">Transfer between own accounts</button>
         </div>
       </div>
 
@@ -98,7 +98,7 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sendTransaction()">{{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}</button>
+            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right" type="button" (click)="sendTransaction()">{{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}</button>
           </div>
         </div>
       </div>
