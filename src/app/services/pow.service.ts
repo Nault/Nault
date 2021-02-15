@@ -12,6 +12,7 @@ export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch up
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
+export enum workState {'success', 'cancelled', 'error'};
 
 @Injectable()
 export class PowService {
@@ -19,7 +20,7 @@ export class PowService {
   webGLAvailable = false;
   webGLTested = false;
 
-  powAlertLimit = 60; // alert long pow after X sec
+  powAlertLimit = 5; // alert long pow after X sec
   PoWPool = [];
   parallelQueue = false;
   processingQueueItem = false;
@@ -167,24 +168,32 @@ export class PowService {
       }
     }
 
-    let work;
+    let work = {state: null, work: ''};
     switch (powSource) {
       default:
       case 'server':
-        work = await this.getHashServer(queueItem.hash, queueItem.multiplier);
+        const serverWork = await this.getHashServer(queueItem.hash, queueItem.multiplier);
+        if (serverWork) {
+          work.work = serverWork;
+          work.state = workState.success;
+        } else {
+          work.state = workState.error;
+        }
         break;
       case 'clientCPU':
         try {
-          work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
-        } catch {
-          work = null;
+          work.work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
+          work.state = workState.success;
+        } catch(state) {
+          work.state = state;
         }
         break;
       case 'clientWebGL':
         try {
-          work = await this.getHashWebGL(queueItem.hash, localMultiplier);
-        } catch {
-          work = null;
+          work.work = await this.getHashWebGL(queueItem.hash, localMultiplier);
+          work.state = workState.success;
+        } catch(state) {
+          work.state = state;
         }
         break;
       case 'custom':
@@ -193,7 +202,13 @@ export class PowService {
         const allowLocalMulti = workServer !== '' &&
           this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
 
-        work = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
+        const customWork = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
+        if (customWork) {
+          work.work = customWork;
+          work.state = workState.success;
+        } else {
+          work.state = workState.error;
+        }
         break;
     }
 
@@ -201,12 +216,12 @@ export class PowService {
     this.PoWPool.shift(); // Remove this item from the queue
     this.processingQueueItem = false;
 
-    if (!work) {
-      // this.notifications.sendError(`Unable to generate work for ${queueItem.hash} using ${powSource}`);
-      queueItem.promise.reject(null);
-    } else {
-      queueItem.work = work;
+    if (work.state === workState.success) {
+      queueItem.work = work.work;
       queueItem.promise.resolve(work);
+    } else {
+      // this.notifications.sendError(`Unable to generate work for ${queueItem.hash} using ${powSource}`);
+      queueItem.promise.reject(work);
     }
 
     if (this.shouldContinueQueue) {
@@ -296,7 +311,7 @@ export class PowService {
     try {
       await work();
     } catch (msg) {
-      response.reject('cancelled');
+      response.reject(msg);
     }
 
     return response.promise;
@@ -321,7 +336,7 @@ export class PowService {
         n => {
           if (this.shouldAbortGpuPow) {
             this.shouldAbortGpuPow = false;
-            response.reject('cancelled');
+            response.reject(workState.cancelled);
             return true;
           }
         },
@@ -330,8 +345,9 @@ export class PowService {
     } catch (error) {
       if (error.message === 'webgl2_required') {
         this.webGLAvailable = false;
+        console.warn('WebGL is required for GPU pow');
       }
-      response.reject('cancelled');
+      response.reject(workState.error);
     }
 
     return response.promise;
@@ -373,13 +389,19 @@ export class PowService {
   }
 
   // Interupt running pow and empty the queue
-  public cancelAllPow() {
-    this.currentProcessTime = 0; // reset timer
-    this.powAlert$.next(false); // announce alert to close
-    this.shouldContinueQueue = false; // disable further processing
-    this.terminateCpuWorkers(false); // abort CPU worker if running
-    this.shouldAbortGpuPow = true; // abort GPU pow if running
-    this.notifications.sendInfo(`Ongoing Proof of Work successfully cancelled`);
+  public cancelAllPow(notify) {
+    if (this.currentProcessTime !== 0) {
+      this.currentProcessTime = 0; // reset timer
+      this.powAlert$.next(false); // announce alert to close
+      this.shouldContinueQueue = false; // disable further processing
+      this.terminateCpuWorkers(false); // abort CPU worker if running
+      this.shouldAbortGpuPow = true; // abort GPU pow if running
+      if (notify) {
+        this.notifications.sendInfo(`Proof of Work generation cancelled by the user`);
+      }
+      return true;
+    }
+    return false;
   }
 
   terminateCpuWorkers(successful) {
@@ -391,7 +413,7 @@ export class PowService {
     if (successful && this.cpuWorkerResolve) {
       this.cpuWorkerResolve();
     } else if (!successful && this.cpuWorkerReject) {
-      this.cpuWorkerReject('cancelled');
+      this.cpuWorkerReject(workState.cancelled);
     }
   }
 

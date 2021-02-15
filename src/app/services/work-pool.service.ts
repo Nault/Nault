@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {PowService, baseThreshold} from './pow.service';
+import {PowService, baseThreshold, workState} from './pow.service';
 import {NotificationService} from './notification.service';
 import {UtilService} from './util.service';
 
@@ -76,30 +76,34 @@ export class WorkPoolService {
     let work;
     try {
       work = await this.pow.getPow(hash, multiplier);
-    } catch {
-      work = null;
+    } catch(workState) {
+      work = workState;
     }
 
-    if (!work) {
-      this.notifications.sendWarning(
-        `Failed to retrieve proof of work for ${hash}. Try a different PoW method from the app settings.`, {length: 5000}
-        );
+    if (work.state === workState.error || work.state === workState.cancelled) {
+      // Only display notification on error
+      if (work.state === workState.error) {
+        this.notifications.sendWarning(
+          `Failed to retrieve proof of work for ${hash}. Try a different PoW method from the app settings.`, {length: 5000}
+          );
+      }
       delete this.currentlyProcessingHashes[hash];
       return null;
     }
 
-    console.log('Work found: ' + work);
+    const workString = work.work;
+    console.log('Work found: ' + workString);
 
     // remove duplicates
     this.workCache = this.workCache.filter(entry => (entry.hash !== hash));
 
-    this.workCache.push({ hash, work });
+    this.workCache.push({ hash, workString });
     delete this.currentlyProcessingHashes[hash];
 
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
     this.saveWorkCache();
 
-    return work;
+    return workString;
   }
 
   /**

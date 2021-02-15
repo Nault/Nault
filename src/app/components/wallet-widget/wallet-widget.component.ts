@@ -129,7 +129,7 @@ export class WalletWidgetComponent implements OnInit {
   }
 
   cancelPow() {
-    this.powService.cancelAllPow();
+    this.powService.cancelAllPow(true);
   }
 
 }
