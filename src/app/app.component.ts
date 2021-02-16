@@ -201,7 +201,7 @@ export class AppComponent implements OnInit {
     }
 
     this.canToggleLightMode = false;
-    setTimeout(() => { this.canToggleLightMode = true }, 300);
+    setTimeout(() => { this.canToggleLightMode = true; }, 300);
 
     this.settings.setAppSetting('lightModeEnabled', !this.settings.settings.lightModeEnabled);
     this.updateAppTheme();
