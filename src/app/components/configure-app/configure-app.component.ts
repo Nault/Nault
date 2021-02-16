@@ -325,6 +325,19 @@ export class ConfigureAppComponent implements OnInit {
       if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
         this.selectedMultiplierOption = this.multiplierOptions[0].value;
       }
+      // Cancel ongoing PoW if the old method was local PoW
+      if (this.appSettings.settings.powSource === 'clientWebGL' || this.appSettings.settings.powSource === 'clientCPU') {
+        // Check if work is ongoing, and cancel it
+        if (this.pow.cancelAllPow(false)) {
+          reloadPending = true; // force reload balance => re-work pow
+        }
+      }
+    } else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
+      newMultiplier < this.appSettings.settings.multiplierSource) {
+      // Cancel pow and re-work if multiplier is lower than earlier
+      if (this.pow.cancelAllPow(false)) {
+        reloadPending = true;
+      }
     }
 
     // reset work cache so that the new PoW will be used but only if larger than before

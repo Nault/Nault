@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {PowService, baseThreshold} from './pow.service';
+import {PowService, baseThreshold, workState} from './pow.service';
 import {NotificationService} from './notification.service';
 import {UtilService} from './util.service';
 
@@ -50,9 +50,14 @@ export class WorkPoolService {
 
   // Get work for a hash.  Uses the cache, or the current setting for generating it.
   public async getWork(hash, multiplier = 1) {
+    this.pow.shouldContinueQueue = true; // new pow should never be blocked
+    // additional pow for the same hash will have to wait
     while ( this.currentlyProcessingHashes[hash] === true ) {
       await this.sleep(100);
     }
+
+    // cancel any additional work that's coming from the wait loop above if user aborted during that loop
+    if (!this.pow.shouldContinueQueue) return null;
 
     const cached = this.workCache.find(p => p.hash === hash);
 
@@ -68,26 +73,36 @@ export class WorkPoolService {
 
     this.currentlyProcessingHashes[hash] = true;
 
-    const work = await this.pow.getPow(hash, multiplier);
+    let work;
+    try {
+      work = await this.pow.getPow(hash, multiplier);
+    } catch (workState) {
+      work = workState;
+    }
 
-    if (!work) {
-      this.notifications.sendWarning(`Failed to retrieve work for ${hash}. Try a different PoW method.`);
+    if (work.state === workState.error || work.state === workState.cancelled) {
+      // Only display notification on error
+      if (work.state === workState.error) {
+        this.notifications.sendWarning(
+          `Failed to retrieve proof of work for ${hash}. Try a different PoW method from the app settings.`, {length: 5000}
+          );
+      }
       delete this.currentlyProcessingHashes[hash];
       return null;
     }
 
-    console.log('Work found: ' + work);
+    console.log('Work found: ' + work.work);
 
     // remove duplicates
     this.workCache = this.workCache.filter(entry => (entry.hash !== hash));
 
-    this.workCache.push({ hash, work });
+    this.workCache.push({ hash, work: work.work });
     delete this.currentlyProcessingHashes[hash];
 
     if (this.workCache.length >= this.cacheLength) this.workCache.shift(); // Prune if we are at max length
     this.saveWorkCache();
 
-    return work;
+    return work.work;
   }
 
   /**

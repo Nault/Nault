@@ -27,6 +27,16 @@
   </div>
 </div>
 
+<div class="nav-status-row" *ngIf="powAlert">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Proof of Work is taking a while...</div>
+    <div class="label secondary"><a routerLink="/configure-app" routerLinkActive="active">Change PoW method</a> or <a (click)="cancelPow()">cancel PoW</a></div>
+  </div>
+</div>
+
 <ng-container *ngIf="walletService.isConfigured() && !walletService.isLedgerWallet()">
   <div class="nav-status-row half-muted interactable" (click)="modal.show()" *ngIf="walletService.isLocked()">
     <div class="status-icon">
