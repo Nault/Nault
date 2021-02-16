@@ -383,16 +383,23 @@
     <p>
       Below is the seed and mnemonic backup. You can use whichever you prefer in any compatible wallet.
     </p>
-    <div class="uk-alert-danger uk-alert-primary">
-      Make sure to write down your seed and/or mnemonic or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
+    <div>
+      <div class="uk-alert uk-alert-danger nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          Make sure to write down your seed and/or mnemonic or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
       It is the master key to all of your accounts, and the only way to recover your funds in an emergency.<br>
+        </p>
+      </div>
     </div>
     <br>
 
     <div uk-grid>
       <div class="uk-width-1-4">Nano Seed</div>
       <div class="uk-width-3-4 uk-text-truncate">
-        {{ newWalletSeed }}<br>
+        <div class="uk-margin-small-bottom">{{ newWalletSeed }}</div>
         <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy seed to clipboard</a>
       </div>
     </div>
@@ -408,11 +415,12 @@
         <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="newWalletMnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
       </div>
     </div>
-  </div>
-  <div class="uk-card-footer">
+    <hr/>
     <div class="uk-width-1-1">
       <label style="cursor: pointer;"><input type="checkbox" class="uk-checkbox" [(ngModel)]="hasConfirmedBackup"> &nbsp; I have securely stored the seed and/or mnemonic</label>
     </div>
+  </div>
+  <div class="uk-card-footer uk-text-right nlt-button-group">
     <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" id="create-wallet" [disabled]="!hasConfirmedBackup" (click)="confirmNewSeed()">CREATE WALLET</button>
   </div>
 </div>

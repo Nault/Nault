@@ -40,16 +40,11 @@ pre.mnemonic span.mnemonic-word::before {
 
 .mne-cont {
   display: block;
-  border-bottom: 1px dashed #449af373;
 }
 
 .mne-word {
   display: inline-block;
   min-width: 100px;
-}
-
-#create-wallet {
-  margin-top: 20px;
 }
 
 .landing-container {

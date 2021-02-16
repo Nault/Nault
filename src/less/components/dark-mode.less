@@ -34,6 +34,10 @@
 		background: @dark-mode-background-4;
 		color: @dark-mode-text-5;
 
+		.strength-meter {
+			background: @dark-mode-text-1 !important;
+		}
+
 		.strength-meter::after, .strength-meter::before {
 			border-color: @dark-mode-background-4 !important;
 		}
@@ -49,6 +53,12 @@
 		.uk-heading-divider {
 			border-bottom-color: @dark-mode-background-1;
 		}
+	}
+
+	pre {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-5;
+		border-color: @dark-mode-background-1;
 	}
 
 	.uk-heading-divider {
@@ -256,6 +266,12 @@
 		border-color: @dark-mode-text-1;
 	}
 
+	.uk-radio:checked, .uk-checkbox:checked, .uk-checkbox:indeterminate,
+	.uk-radio:checked:focus, .uk-checkbox:checked:focus, .uk-checkbox:indeterminate:focus {
+		background-color: #4a90e2;
+		border-color: #4a90e2;
+	}
+
 	.uk-select:not([multiple]):not([size]) option {
 		color: @dark-mode-text-5;
 	}
@@ -361,6 +377,11 @@
 	// App Settings page
 	#node-stats-table tr:not(:last-child) td {
 		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// New Wallet page
+	.mne-cont {
+		border-bottom-color: #5F5F77;
 	}
 
 	// Wallet Setup page
