@@ -9,7 +9,7 @@
 
 @dark-mode-text-1: #5F5F77;
 @dark-mode-text-2: #686882;
-@dark-mode-text-3: #8F8FBB;
+@dark-mode-text-3: #8F8FAB;
 @dark-mode-text-4: #ABABC4;
 @dark-mode-text-5: #B5B5C8;
 @dark-mode-text-6: #D5D5E8;
@@ -35,7 +35,7 @@
 		color: @dark-mode-text-5;
 
 		.strength-meter::after, .strength-meter::before {
-		    border-color: @dark-mode-background-4 !important;
+			border-color: @dark-mode-background-4 !important;
 		}
 	}
 
@@ -179,6 +179,12 @@
 		color: @dark-mode-text-4;
 	}
 
+	.nlt-dropdown {
+		border-left-color: @dark-mode-background-1;
+		border-right-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
+	}
+
 	// General (Icons)
 	.uk-iconnav > * > a, .uk-form-icon {
 		color: @dark-mode-text-3;
@@ -206,6 +212,20 @@
 		color: #FFF;
 	}
 
+	.uk-button-danger {
+		background: #CE425C;
+	}
+	.uk-button-danger:hover {
+		background: #BE324C;
+	}
+
+	.uk-button-primary {
+		background: #3782D9;
+	}
+	.uk-button-primary:hover {
+		background: #2772C9;
+	}
+
 	.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
 		background-color: @dark-mode-background-3;
 		color: #3E3E48 !important;
@@ -225,6 +245,11 @@
 
 	.uk-select:not([multiple]):not([size]) option {
 		color: @dark-mode-text-5;
+	}
+
+	.uk-form-danger, .uk-form-danger:focus {
+		color: #f0506e;
+		border-color: #f0506e;
 	}
 
 	// General (UIkit Modal)
@@ -249,6 +274,50 @@
 		.modal-header {
 			border-bottom-color: @dark-mode-background-1;
 		}
+	}
+
+	// General (Alerts)
+	.uk-alert-primary {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-4;
+	}
+
+	.uk-alert-danger,
+	.uk-alert-warning,
+	.uk-alert-success,
+	.uk-alert-info {
+		color: #EEE;
+	}
+
+	.uk-alert-danger {
+		background: #B94258;
+	}
+
+	.uk-alert-warning {
+		background: #D78B50;
+	}
+
+	.uk-alert-success {
+		background: #16A670;
+	}
+
+	.uk-alert-info {
+		background: #3782D9;
+	}
+
+	// General (Notifications)
+	.wallet-notification {
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	// Unlock Wallet modal
+	.password-input.uk-form-danger {
+		border-color: #F79743;
+		background: #372D24;
+	}
+
+	.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
+		color: #FFA556;
 	}
 
 	// Send page
@@ -277,6 +346,7 @@
 
 	// Wallet Setup page
 	.landing-container > div > .wallet-option {
+		background: @dark-mode-background-2;
 		border-color: @dark-mode-accent-1;
 
 		&.more-options {

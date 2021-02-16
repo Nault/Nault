@@ -74,6 +74,32 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     font-weight: 400;
 }
 
+.uk-alert {
+    border-radius: 6px;
+}
+
+.nlt-inline-alert {
+    display: inline-flex;
+
+    > .icon-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+
+    > p {
+        margin-top: 0;
+    }
+}
+
+.nlt-dropdown {
+    border-left: 1px solid #dce9f9;
+    border-right: 1px solid #dce9f9;
+    border-bottom: 1px solid #dce9f9;
+}
+
 @mobile-top-bar-height: 50px;
 
 .mobile-top-bar {
@@ -258,6 +284,20 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     }
 }
 
+.wallet-notification {
+    border: 4px solid rgba(83, 83, 83, 0.05);
+}
+
+// Unlock Wallet modal
+.password-input.uk-form-danger {
+    border-color: #F79743;
+    background: #FFF9F4;
+}
+
+.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
+    color: #F79743;
+}
+
 // Send page
 .send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
     color: #555 !important;
@@ -345,6 +385,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
     border-top-right-radius: @global-border-radius-small;
     padding: 0 10px;
     color: #fff;
+
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .nlt-page-intro {

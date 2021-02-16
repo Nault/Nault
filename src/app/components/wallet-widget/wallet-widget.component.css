@@ -12,11 +12,3 @@
 .password-input {
   transition: border-color 100ms ease-in-out, background 100ms ease-in-out;
 }
-.password-input.uk-form-danger {
-  border-color: #F79743;
-  background: #FFF9F4;
-  color: #F79743;
-}
-.password-input.uk-form-danger::placeholder {
-  color: #F79743;
-}

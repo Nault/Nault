@@ -1,15 +1,15 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
 
-<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-alert uk-alert-danger uk-margin-medium-bottom">
-  <div uk-grid>
-    <div class="uk-width-auto uk-flex uk-flex-center uk-flex-middle">
-      <div class="uk-margin-small-left" uk-icon="icon: warning; ratio: 2;"></div>
+<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-medium-bottom">
+  <div class="uk-alert uk-alert-danger nlt-inline-alert">
+    <div class="icon-column">
+      <div uk-icon="icon: warning; ratio: 2;"></div>
     </div>
-    <div class="uk-width-expand already-configured-text-column">
+    <p>
       <b>You already have a local Nault wallet configured</b><br>
       Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
       Without it, <b>any funds you have will become completely unrecoverable!</b>
-    </div>
+    </p>
   </div>
 </div>
 
@@ -192,17 +192,16 @@
 </div>
 
 <div
-  class="uk-alert uk-alert-primary" uk-alert
   *ngIf="(activePanel === panels.import) && ( (selectedImportOption === 'mnemonic') || (selectedImportOption === 'bip39-mnemonic') )"
 >
-  <div uk-grid>
-    <div class="uk-width-auto uk-flex uk-flex-center uk-flex-middle">
-      <div class="uk-margin-small-left" uk-icon="icon: info; ratio: 2;"></div>
+  <div class="uk-alert uk-alert-primary nlt-inline-alert">
+    <div class="icon-column">
+      <div uk-icon="icon: info; ratio: 2;"></div>
     </div>
-    <div class="uk-width-expand already-configured-text-column" style="max-width: 580px;">
+    <p style="max-width: 580px;">
       <b>Note for Ledger device owners:</b><br>
       Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet.
-    </div>
+    </p>
   </div>
 </div>
 
@@ -283,24 +282,52 @@
           <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
           <br>
         </p>
-        <div *ngIf="!ledgerService.supportsUSB" class="uk-alert uk-alert-danger">
-          <b>Unsupported Browser</b><br>
-          It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.<br>
-          Note: iOS is currently unsupported. On Mac, use any browser other than Safari.
+        <div *ngIf="!ledgerService.supportsUSB">
+          <div class="uk-alert uk-alert-warning nlt-inline-alert">
+            <div class="icon-column">
+              <div uk-icon="icon: warning; ratio: 2;"></div>
+            </div>
+            <p>
+              <b>Unsupported Browser</b><br>
+              It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.<br>
+              Note: iOS is currently unsupported. On Mac, use any browser other than Safari.
+            </p>
+          </div>
         </div>
         <div *ngIf="ledgerService.supportsUSB">
-          <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED" class="uk-alert uk-alert-warning">
-            <b>Ledger Device Not Connected</b><br>
-            Connect your Ledger device and make sure you have the Nano app installed and running, then press the button below.<br>
-            <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
+          <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED">
+            <div class="uk-alert uk-alert-warning nlt-inline-alert">
+              <div class="icon-column">
+                <div uk-icon="icon: warning; ratio: 2;"></div>
+              </div>
+              <p>
+                <b>Ledger Device Not Connected</b><br>
+                Connect your Ledger device and make sure you have the Nano app installed and running, then press the button below.<br>
+                <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
+              </p>
+            </div>
           </div>
-          <div *ngIf="ledger.status === ledgerStatus.LOCKED" class="uk-alert uk-alert-warning">
-            <b>Ledger Device Locked</b><br>
-            Unlock your Ledger device, then press the button below to retry
+          <div *ngIf="ledger.status === ledgerStatus.LOCKED">
+            <div class="uk-alert uk-alert-warning nlt-inline-alert">
+              <div class="icon-column">
+                <div uk-icon="icon: warning; ratio: 2;"></div>
+              </div>
+              <p>
+                <b>Ledger Device Locked</b><br>
+                Unlock your Ledger device, then press the button below to retry
+              </p>
+            </div>
           </div>
-          <div *ngIf="ledger.status === ledgerStatus.READY" class="uk-alert uk-alert-success">
-            <b>Ledger Device Ready</b><br>
-            Press the import button below to use your ledger wallet
+          <div *ngIf="ledger.status === ledgerStatus.READY">
+            <div class="uk-alert uk-alert-success nlt-inline-alert">
+              <div class="icon-column">
+                <div uk-icon="icon: check; ratio: 2;"></div>
+              </div>
+              <p>
+                <b>Ledger Device Ready</b><br>
+                Press the import button below to use your ledger wallet
+              </p>
+            </div>
           </div>
         </div>
       </div>
