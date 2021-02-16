@@ -18,6 +18,7 @@ import {UtilService} from '../../services/util.service';
 export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
+  creatingNewEntry = false;
 
   // Set the online status of each representative
   representatives$ = this.repService.representatives$.pipe(map(reps => {
@@ -50,11 +51,17 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
+  addEntry() {
+    this.creatingNewEntry = true;
+    this.activePanel = 1;
+  }
+
   editEntry(representative) {
     this.newRepAccount = representative.id;
     this.newRepName = representative.name;
     this.newRepTrusted = !!representative.trusted;
     this.newRepWarn = !!representative.warn;
+    this.creatingNewEntry = false;
     this.activePanel = 1;
     setTimeout(() => {
       document.getElementById('new-address-name').focus();
