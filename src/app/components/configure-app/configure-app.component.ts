@@ -512,7 +512,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearWalletData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to <b>delete all locally stored data about your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -523,7 +523,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all your data stored in Nault and reset all settings.<br>This includes all of your wallet data and address book!<br><br><b>Make sure you have your seed and/or mnemonic backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to delete all data stored in Nault, <b>which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
