@@ -1,4 +1,4 @@
-<div uk-grid [class]="[ 'app', (settings.settings.lightModeEnabled ? 'light-mode' : 'dark-mode') ]" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
+<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
@@ -245,7 +245,7 @@
             <div class="section-caption">Community</div>
           </div>
           <div class="uk-width-1-3 uk-text-center dark-mode-column">
-            <div [class]="{'dark-mode-click-area': true, 'enabled': !settings.settings.lightModeEnabled}" (click)="settings.setAppSetting('lightModeEnabled', !settings.settings.lightModeEnabled)">
+            <div [class]="{'dark-mode-click-area': true, 'enabled': !settings.settings.lightModeEnabled}" (click)="toggleLightMode()">
               <div class="dark-mode-area">
                 <div class="dark-mode-switch">
                   <svg width="16" height="16" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">

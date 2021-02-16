@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
     background-color: #ddd;
-    color: #999;
+    color: #999 !important;
     border-color: #dce9f9;
 }
 
@@ -276,6 +276,11 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .delegating-account-row:last-child {
     border-bottom: 1px solid #DCE9F9 !important;
+}
+
+// App Settings page
+#node-stats-table tr:not(:last-child) td {
+    border-bottom: 1px solid #dce9f9;
 }
 
 // Wallet Setup page

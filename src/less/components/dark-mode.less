@@ -8,17 +8,22 @@
 @dark-mode-accent-1: #4A90E2;
 
 @dark-mode-text-1: #5F5F77;
-@dark-mode-text-2: #8F8FBB;
-@dark-mode-text-3: #ABABC4;
-@dark-mode-text-4: #B5B5C8;
-@dark-mode-text-5: #D5D5E8;
+@dark-mode-text-2: #686882;
+@dark-mode-text-3: #8F8FBB;
+@dark-mode-text-4: #ABABC4;
+@dark-mode-text-5: #B5B5C8;
+@dark-mode-text-6: #D5D5E8;
 
 .dark-mode {
 	// General
-	color: @dark-mode-text-4;
+	color: @dark-mode-text-5;
 
 	.uk-text-muted {
 		color: @dark-mode-text-1 !important;
+	}
+
+	.uk-text-meta {
+		color: @dark-mode-text-2 !important;
 	}
 
 	.content-container {
@@ -27,7 +32,11 @@
 
 	.uk-card-default {
 		background: @dark-mode-background-4;
-		color: @dark-mode-text-4;
+		color: @dark-mode-text-5;
+
+		.strength-meter::after, .strength-meter::before {
+		    border-color: @dark-mode-background-4 !important;
+		}
 	}
 
 	.uk-card-default {
@@ -53,7 +62,7 @@
 	}
 
 	.nano-address-clickable, .nano-address-clickable:hover {
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	.account-label {
@@ -61,7 +70,7 @@
 	}
 
 	.account-label, .account-label:hover {
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	.account-container:hover .account-label {
@@ -70,7 +79,7 @@
 	}
 
 	.account-container .account-index {
-		color: @dark-mode-text-4;
+		color: @dark-mode-text-5;
 	}
 
 	.account-container .account-index span {
@@ -82,7 +91,7 @@
 
 	.missing-accounts-hint {
 		background: #1E1E24 !important;
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	.missing-accounts-hint .uk-icon {
@@ -91,12 +100,12 @@
 	}
 
 	.missing-accounts-hint .hint-action {
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 		border-bottom: 2px dotted @dark-mode-text-1;
 	}
 
 	.missing-accounts-hint .hint-action:hover {
-		border-color: @dark-mode-text-3;
+		border-color: @dark-mode-text-4;
 	}
 
 	h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
@@ -104,7 +113,7 @@
 	}
 
 	.uk-form-label {
-		color: @dark-mode-text-2;
+		color: @dark-mode-text-3;
 	}
 
 	// General (Lines)
@@ -126,7 +135,7 @@
 	}
 
 	.uk-table th {
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	.uk-table-striped > tr, .uk-table-striped tbody tr {
@@ -154,12 +163,12 @@
 
 	.uk-list > li.uk-list-header {
 		background: @dark-mode-background-4;
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	// General (Nav)
 	.uk-nav-default .uk-nav-header {
-		color: @dark-mode-text-2;
+		color: @dark-mode-text-3;
 	}
 
 	.uk-nav-default .uk-nav-divider {
@@ -167,16 +176,16 @@
 	}
 
 	.uk-nav-default > li > a {
-		color: @dark-mode-text-3;
+		color: @dark-mode-text-4;
 	}
 
 	// General (Icons)
 	.uk-iconnav > * > a, .uk-form-icon {
-		color: @dark-mode-text-2;
+		color: @dark-mode-text-3;
 	}
 
 	.uk-iconnav > * > a:hover, .uk-iconnav > * > a:focus, .uk-form-icon:focus, .uk-form-icon:hover {
-		color: @dark-mode-text-5;
+		color: @dark-mode-text-6;
 	}
 
 	.uk-icon-button {
@@ -197,11 +206,17 @@
 		color: #FFF;
 	}
 
+	.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+		background-color: @dark-mode-background-3;
+		color: #3E3E48 !important;
+		border-color: @dark-mode-background-3;
+	}
+
 	// General (Inputs)
 	.uk-input, .uk-select, .uk-textarea {
 		border-color: @dark-mode-background-3;
 		background: @dark-mode-background-2;
-		color: @dark-mode-text-4;
+		color: @dark-mode-text-5;
 	}
 
 	.uk-radio, .uk-checkbox {
@@ -209,12 +224,36 @@
 	}
 
 	.uk-select:not([multiple]):not([size]) option {
-		color: @dark-mode-text-4;
+		color: @dark-mode-text-5;
+	}
+
+	// General (UIkit Modal)
+	.uk-modal-dialog {
+		background: @dark-mode-background-4;
+	}
+
+	.uk-modal-header {
+		background: @dark-mode-background-4;
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	.uk-modal-footer {
+		background: @dark-mode-background-4;
+		border-top-color: @dark-mode-background-1;
+	}
+
+	// General (QR Modal)
+	.scanner-modal .modal-content {
+		background: @dark-mode-background-4;
+
+		.modal-header {
+			border-bottom-color: @dark-mode-background-1;
+		}
 	}
 
 	// Send page
 	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
-		color: @dark-mode-text-4 !important;
+		color: @dark-mode-text-5 !important;
 		background: @dark-mode-background-4;
 	}
 
@@ -229,6 +268,11 @@
 
 	.delegating-account-row:last-child {
 		border-bottom: 1px solid @dark-mode-background-1 !important;
+	}
+
+	// App Settings page
+	#node-stats-table tr:not(:last-child) td {
+		border-bottom-color: @dark-mode-background-1;
 	}
 
 	// Wallet Setup page
@@ -268,26 +312,26 @@
 		}
 
 		> .icon > svg {
-			color: @dark-mode-text-5;
+			color: @dark-mode-text-6;
 		}
 
 		> .icon > .seed,
 		> .icon > .mnemonic > .mnemonic-row > .number,
 		> .icon > .mnemonic > .mnemonic-row > .word,
 		> .icon > .more-options {
-			color: @dark-mode-text-5;
+			color: @dark-mode-text-6;
 		}
 
 		> h2 {
-			color: @dark-mode-text-5;
+			color: @dark-mode-text-6;
 		}
 
 		> p {
-			color: @dark-mode-text-3;
+			color: @dark-mode-text-4;
 		}
 	}
 
 	.import-panel-navigation:hover .label {
-		border-bottom-color: @dark-mode-text-4;
+		border-bottom-color: @dark-mode-text-5;
 	}
 }

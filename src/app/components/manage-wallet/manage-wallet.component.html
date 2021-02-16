@@ -69,7 +69,7 @@
               </div>
 
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
-                <img [src]="QRExportImg" alt="QR code">
+                <img [src]="QRExportImg" alt="QR code" style="border-radius: 6px;">
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
@@ -86,7 +86,7 @@
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
-            <button (click)="exportWallet()" class="uk-button uk-button-secondary uk-width-auto@s uk-width-1-1">Export Wallet</button>
+            <button (click)="exportWallet()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Wallet</button>
           </div>
         </ng-container>
         <ng-template #walletHasNoPassword>

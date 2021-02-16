@@ -222,6 +222,7 @@
 .uk-modal-body .qr-code {
     width: 180px;
     height: 180px;
+    border-radius: 6px;
 }
 @media (max-width: 1199px) {
     .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {

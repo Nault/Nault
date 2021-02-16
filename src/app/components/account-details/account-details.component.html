@@ -433,12 +433,16 @@
           )
         }}</div>
         <div class="uk-width-1-1">
-          <span class="nano-address-monospace">
-            <app-nano-account-id [accountID]="accountID" middle="off"></app-nano-account-id>
-          </span>
-          <span class="nano-address-actions" style="vertical-align: 1px;">
-            <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-          </span>
+          <div uk-grid class="uk-flex uk-flex-center">
+            <span class="nano-address-monospace uk-width-auto">
+              <app-nano-account-id [accountID]="accountID" middle="off"></app-nano-account-id>
+            </span>
+            <span class="nano-address-actions uk-width-auto" style="vertical-align: 1px;">
+              <ul class="uk-iconnav">
+                <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+              </ul>
+            </span>
+          </div>
         </div>
       </div>
     </div>
