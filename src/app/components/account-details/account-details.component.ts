@@ -235,6 +235,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.accountID = this.router.snapshot.params.account;
+    this.generateReceiveQR(this.accountID);
+
     this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(this.accountID);
@@ -296,10 +298,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     await this.getAccountHistory(this.accountID);
 
-
-    const qrCode = await QRCode.toDataURL(`${this.accountID}`, { errorCorrectionLevel: 'M', scale: 16 });
-    this.qrCodeImage = qrCode;
-
     this.loadingAccountDetails = false;
   }
 
@@ -310,6 +308,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (this.priceSub) {
       this.priceSub.unsubscribe();
     }
+  }
+
+  async generateReceiveQR(accountID) {
+    const qrCode = await QRCode.toDataURL(`${accountID}`, { errorCorrectionLevel: 'M', scale: 16 });
+    this.qrCodeImage = qrCode;
   }
 
   async getAccountHistory(account, resetPage = true) {
