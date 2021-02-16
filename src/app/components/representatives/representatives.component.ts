@@ -93,23 +93,32 @@ export class RepresentativesComponent implements OnInit {
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
     this.loadingRepresentatives = false;
 
-    // populate representative list
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    // add the localReps to the list
-    const localReps = this.representativeService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
+    this.populateRepresentativeList();
 
     await this.loadRecommendedReps();
+  }
+
+  async populateRepresentativeList() {
+    // add trusted/regular local reps to the list
+    const localReps = this.representativeService.getSortedRepresentatives();
+    this.representativeList.push( ...localReps.filter(rep => (!rep.warn)) );
+
+    if (this.settings.settings.serverAPI) {
+      const verifiedReps = await this.ninja.recommendedRandomized();
+
+      // add random recommended reps to the list
+      for (const representative of verifiedReps) {
+        const temprep = {
+          id: representative.account,
+          name: representative.alias
+        };
+
+        this.representativeList.push(temprep);
+      }
+    }
+
+    // add untrusted local reps to the list
+    this.representativeList.push( ...localReps.filter(rep => (rep.warn)) );
   }
 
   getAccountLabel(account) {

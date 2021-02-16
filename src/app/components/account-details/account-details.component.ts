@@ -135,22 +135,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
 
-    // add the localReps to the list
-    const localReps = this.repService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
-
-    // populate representative list
-    if (!this.settings.settings.serverAPI) return;
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
+    this.populateRepresentativeList();
 
     this.repService.walletReps$.subscribe(async reps => {
       if ( reps[0] === null ) {
@@ -161,6 +146,29 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.representativesOverview = reps;
       this.updateRepresentativeLabel();
     });
+  }
+
+  async populateRepresentativeList() {
+    // add trusted/regular local reps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push( ...localReps.filter(rep => (!rep.warn)) );
+
+    if (this.settings.settings.serverAPI) {
+      const verifiedReps = await this.ninja.recommendedRandomized();
+
+      // add random recommended reps to the list
+      for (const representative of verifiedReps) {
+        const temprep = {
+          id: representative.account,
+          name: representative.alias
+        };
+
+        this.representativeList.push(temprep);
+      }
+    }
+
+    // add untrusted local reps to the list
+    this.representativeList.push( ...localReps.filter(rep => (rep.warn)) );
   }
 
   clearAccountVars() {

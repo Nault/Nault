@@ -184,8 +184,8 @@
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">
                             {{ rep.name }}
-                            <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
-                            <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                            <span *ngIf="rep.trusted" class="uk-text-success" style="margin-left: 4px;"><span uk-icon="icon: star;"></span></span>
+                            <span *ngIf="rep.warn" class="uk-text-warning" style="margin-left: 4px;"><span uk-icon="icon: warning;"></span> Avoid</span>
                           </a>
                         </li>
                       </ul>
