@@ -176,8 +176,8 @@
                   <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
                   <!--<h4>Or, Select a recommended representative</h4>-->
                   <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-                    <li style="background: #fff; border-bottom: 0;">
-                      <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+                    <li class="uk-list-header">
+                      <div uk-grid>
                         <div class="uk-width-expand">Representative</div>
                         <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
                         <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
@@ -209,9 +209,9 @@
                   </ul>
                   <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
                   <ul class="uk-pagination uk-flex-center uk-flex-middle">
-                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous></span></a></li>
+                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous class="uk-icon-button"></span></a></li>
                     <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
-                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next></span></a></li>
+                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next class="uk-icon-button"></span></a></li>
                   </ul>
                 </div>
 

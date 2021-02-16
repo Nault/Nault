@@ -14,7 +14,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	font-family: @global-secondary-font-family;
 }
 
-.uk-card, .uk-card-default, .uk-table {
+.uk-card, .uk-card-default, .uk-table, .uk-list {
 	border-radius: @global-border-radius-medium;
 }
 
@@ -60,6 +60,18 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .uk-iconnav > * > a {
     color: #676686;
+}
+
+.uk-list > li.uk-list-header {
+    border-left: 1px solid #dce9f9;
+    border-right: 1px solid #dce9f9;
+    border-radius: 10px 10px 0 0;
+    background: #FFF;
+    border-bottom: none;
+    color: #999;
+    text-transform: uppercase;
+    font-size: .875rem;
+    font-weight: 400;
 }
 
 @mobile-top-bar-height: 50px;
@@ -250,6 +262,20 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 .send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
     color: #555 !important;
     background: #F4FAFF;
+}
+
+// Representatives page
+.delegating-account-row {
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.delegating-account-row + .representative-row {
+    border-top: 1px solid #DCE9F9 !important;
+}
+
+.delegating-account-row:last-child {
+    border-bottom: 1px solid #DCE9F9 !important;
 }
 
 // Wallet Setup page

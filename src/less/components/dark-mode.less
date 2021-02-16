@@ -17,6 +17,10 @@
 	// General
 	color: @dark-mode-text-4;
 
+	.uk-text-muted {
+		color: @dark-mode-text-1 !important;
+	}
+
 	.content-container {
 		background: @dark-mode-background-1;
 	}
@@ -99,6 +103,23 @@
 		color: #DDD;
 	}
 
+	.uk-form-label {
+		color: @dark-mode-text-2;
+	}
+
+	// General (Lines)
+	hr, .uk-hr {
+		border-top-color: @dark-mode-background-1;
+	}
+
+	.uk-divider-icon {
+		background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Ccircle%20fill%3D%22none%22%20stroke%3D%22%2319191B%22%20stroke-width%3D%222%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%227%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+	}
+
+	.uk-divider-icon::before, .uk-divider-icon::after {
+		border-bottom-color: @dark-mode-background-1;
+	}
+
 	// General (Table)
 	.uk-table thead {
 		background: @dark-mode-background-4;
@@ -114,13 +135,39 @@
 
 	.uk-table-striped > tr:nth-of-type(2n+1), .uk-table-striped tbody tr:nth-of-type(2n+1) {
 		background: @dark-mode-background-3;
-		border-top: 1px solid @dark-mode-background-1;
-		border-bottom: 1px solid @dark-mode-background-1;
+		border-top-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
 	}
 
 	// General (List)
 	.uk-list {
+		background: @dark-mode-background-2;
+	}
+
+	.uk-list-striped > li:nth-of-type(2n+1) {
+		background: @dark-mode-background-3;
+		border-top-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
+		border-left: none;
+		border-right: none;
+	}
+
+	.uk-list > li.uk-list-header {
 		background: @dark-mode-background-4;
+		color: @dark-mode-text-3;
+	}
+
+	// General (Nav)
+	.uk-nav-default .uk-nav-header {
+		color: @dark-mode-text-2;
+	}
+
+	.uk-nav-default .uk-nav-divider {
+		border-top-color: @dark-mode-background-1;
+	}
+
+	.uk-nav-default > li > a {
+		color: @dark-mode-text-3;
 	}
 
 	// General (Icons)
@@ -130,6 +177,10 @@
 
 	.uk-iconnav > * > a:hover, .uk-iconnav > * > a:focus, .uk-form-icon:focus, .uk-form-icon:hover {
 		color: @dark-mode-text-5;
+	}
+
+	.uk-icon-button {
+		background: @dark-mode-background-2;
 	}
 
 	// General (Buttons)
@@ -157,10 +208,27 @@
 		border-color: @dark-mode-text-1;
 	}
 
+	.uk-select:not([multiple]):not([size]) option {
+		color: @dark-mode-text-4;
+	}
+
 	// Send page
 	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
 		color: @dark-mode-text-4 !important;
 		background: @dark-mode-background-4;
+	}
+
+	// Representatives page
+	.delegating-account-row, .representative-row {
+		background: @dark-mode-background-3 !important;
+	}
+
+	.delegating-account-row + .representative-row {
+		border-top: 1px solid @dark-mode-background-1 !important;
+	}
+
+	.delegating-account-row:last-child {
+		border-bottom: 1px solid @dark-mode-background-1 !important;
 	}
 
 	// Wallet Setup page
