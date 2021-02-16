@@ -204,7 +204,7 @@
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">Representatives</div></a></li>
               <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">App Settings</div></a></li>
-              <li><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
               <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
