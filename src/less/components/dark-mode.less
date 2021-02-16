@@ -37,9 +37,7 @@
 		.strength-meter::after, .strength-meter::before {
 			border-color: @dark-mode-background-4 !important;
 		}
-	}
 
-	.uk-card-default {
 		.uk-card-header {
 			border-color: @dark-mode-background-1;
 		}
@@ -108,12 +106,19 @@
 		border-color: @dark-mode-text-4;
 	}
 
+	.uk-form-label {
+		color: @dark-mode-text-3;
+	}
+
+	// General (Headers)
 	h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
 		color: #DDD;
 	}
 
-	.uk-form-label {
-		color: @dark-mode-text-3;
+	.uk-card-default {
+		h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
+			color: @dark-mode-text-6;
+		}
 	}
 
 	// General (Lines)
@@ -164,6 +169,10 @@
 	.uk-list > li.uk-list-header {
 		background: @dark-mode-background-4;
 		color: @dark-mode-text-4;
+	}
+
+	.uk-sortable-drag {
+		background: @dark-mode-background-5;
 	}
 
 	// General (Nav)
