@@ -50,7 +50,7 @@ export class AddressBookService {
 
   async saveAddress(account, name) {
     const existingName = this.addressBook.find(a => a.name.toLowerCase() === name.toLowerCase());
-    if (existingName) throw new Error(`Name already exists in the address book`);
+    if (existingName) return;
 
     const existingAccount = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
     if (existingAccount) {

@@ -28,6 +28,7 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
     });
   }));
 
+  previousRepName = '';
   newRepAccount = '';
   newRepName = '';
   newRepTrusted = false;
@@ -52,12 +53,14 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
   }
 
   addEntry() {
+    this.previousRepName = '';
     this.creatingNewEntry = true;
     this.activePanel = 1;
   }
 
   editEntry(representative) {
     this.newRepAccount = representative.id;
+    this.previousRepName = representative.name;
     this.newRepName = representative.name;
     this.newRepTrusted = !!representative.trusted;
     this.newRepWarn = !!representative.warn;
@@ -75,6 +78,11 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
 
     this.newRepAccount = this.newRepAccount.replace(/ /g, ''); // Remove spaces
 
+    // If the name has been changed, make sure no other entries are using that name
+    if ( (this.newRepName !== this.previousRepName) && this.repService.nameExists(this.newRepName) ) {
+      return this.notificationService.sendError(`This name is already in use! Please use a unique name`);
+    }
+
     // Make sure the address is valid
     const valid = this.util.account.isValidAccount(this.newRepAccount);
     if (!valid) {
@@ -83,7 +91,7 @@ export class ManageRepresentativesComponent implements OnInit, AfterViewInit {
 
     try {
       await this.repService.saveRepresentative(this.newRepAccount, this.newRepName, this.newRepTrusted, this.newRepWarn);
-      this.notificationService.sendSuccess(`Successfully saved new representative!`);
+      this.notificationService.sendSuccess(`Representative entry saved successfully!`);
 
       this.cancelNewRep();
     } catch (err) {

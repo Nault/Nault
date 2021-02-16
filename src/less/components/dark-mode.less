@@ -248,6 +248,10 @@
 		color: @dark-mode-text-5;
 	}
 
+	.uk-input::placeholder, .uk-select::placeholder, .uk-textarea::placeholder {
+		color: @dark-mode-text-1;
+	}
+
 	.uk-radio, .uk-checkbox {
 		border-color: @dark-mode-text-1;
 	}
@@ -259,6 +263,12 @@
 	.uk-form-danger, .uk-form-danger:focus {
 		color: #f0506e;
 		border-color: #f0506e;
+	}
+
+	.uk-input:disabled, .uk-select:disabled, .uk-textarea:disabled {
+		background-color: @dark-mode-background-3;
+		color: #3E3E48 !important;
+		border-color: @dark-mode-background-3;
 	}
 
 	// General (UIkit Modal)
