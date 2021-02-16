@@ -16,6 +16,7 @@ import * as QRCode from 'qrcode';
 export class AddressBookComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
+  creatingNewEntry = false;
 
   addressBook$ = this.addressBookService.addressBook$;
   newAddressAccount = '';
@@ -52,9 +53,15 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     });
   }
 
+  addEntry() {
+    this.creatingNewEntry = true;
+    this.activePanel = 1;
+  }
+
   editEntry(addressBook) {
     this.newAddressAccount = addressBook.account;
     this.newAddressName = addressBook.name;
+    this.creatingNewEntry = false;
     this.activePanel = 1;
     setTimeout(() => {
       document.getElementById('new-address-name').focus();

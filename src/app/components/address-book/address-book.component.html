@@ -9,7 +9,7 @@
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="activePanel = 1;" *ngIf="activePanel === 0">Add New Contact</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">Add New Contact</button>
       </div>
     </div>
 
@@ -67,7 +67,7 @@
 
             </li>
             <li *ngIf="!(addressBook$ | async).length" class="uk-text-center">
-              You do not have any address book entries saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+              You do not have any address book entries saved yet, <a (click)="addEntry()">click here to create one</a>.
             </li>
           </ul>
 
@@ -79,7 +79,7 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">Add New Contact</h2>
+            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Contact' : 'Edit Contact' }}</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
@@ -101,15 +101,9 @@
               </div>
             </div>
           </div>
-          <div class="uk-card-footer">
-            <div uk-grid>
-              <div class="uk-width-1-2@s uk-text-left">
-                <button class="uk-button uk-button-danger uk-width-1-1" (click)="cancelNewAddress()">Cancel</button>
-              </div>
-              <div class="uk-width-1-2@s uk-text-right">
-                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewAddress()">Save New Contact</button>
-              </div>
-            </div>
+          <div class="uk-card-footer uk-text-right@s nlt-button-group">
+            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">Cancel</button>
+            <button class="uk-button uk-button-primary" (click)="saveNewAddress()">Save</button>
           </div>
         </div>
       </div>
