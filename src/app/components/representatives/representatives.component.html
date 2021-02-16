@@ -82,7 +82,12 @@
               </ng-container>
               </ng-container>
               <tr *ngIf="!loadingRepresentatives && ( !representativeOverview || !representativeOverview.length )" class="uk-text-center">
-                <td colspan="3" style="text-align: center;">None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!</td>
+                <td colspan="3" style="text-align: center;" *ngIf="settings.settings.serverAPI">
+                  None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!
+                </td>
+                <td colspan="3" style="text-align: center;" *ngIf="!settings.settings.serverAPI">
+                  Wallet is in offline mode.
+                </td>
               </tr>
               <tr *ngIf="loadingRepresentatives">
                 <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
