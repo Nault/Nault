@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   donationAccount = environment.donationAddress;
 
   @HostListener('window:resize', ['$event']) onResize (e) {
-    this.windowHeight = e.target.innerHeight;
+    this.updateWindowHeight(e.target);
   }
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.windowHeight = window.innerHeight;
+    this.updateWindowHeight(window);
     this.settings.loadAppSettings();
 
     this.updateAppTheme();
@@ -170,6 +170,11 @@ export class AppComponent implements OnInit {
     } catch (err) {
       this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
+  }
+
+  updateWindowHeight(windowReference) {
+    const mobileOffset = (windowReference.innerWidth > 939) ? 0 : 50;
+    this.windowHeight = windowReference.innerHeight - mobileOffset;
   }
 
   /*

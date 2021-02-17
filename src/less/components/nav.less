@@ -42,7 +42,7 @@
 
 	@mobile-top-bar-height: 50px;
 
-	@media (max-width: 639px) {
+	@media (max-width: 939px) {
 		position: absolute;
 		width: 360px;
 		height: calc(100vh - @mobile-top-bar-height);
@@ -115,10 +115,11 @@
 	position: relative;
 	overflow: hidden;
 
-	height: 155px;
-	@media (min-width: 640px) {
-		height: 11vw;
-		min-height: 155px;
+	height: 11vw;
+	min-height: 155px;
+	@media (max-width: 939px) {
+		height: 155px;
+		min-height: unset;
 	}
 
 	&.is-wallet {

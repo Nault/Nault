@@ -7,6 +7,10 @@
 // extensions
 // ========================================================================
 
+body {
+	overflow: hidden;
+}
+
 h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
 .uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
 .accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar,
@@ -18,7 +22,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	border-radius: @global-border-radius-medium;
 }
 
-@media (max-width: @breakpoint-small) {
+@media (max-width: 939px) {
 	button, .uk-button {
 		margin-bottom: @nlt-intro-margin / 2!important;
 	}
@@ -128,6 +132,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 @mobile-top-bar-height: 50px;
 
 .mobile-top-bar {
+	display: none;
 	height: @mobile-top-bar-height;
 	color: #FFF;
 
@@ -145,6 +150,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 			font-weight: 400;
 		}
 	}
+
+	@media (max-width: 939px) {
+		display: flex;
+	}
 }
 
 .app-grid {
@@ -154,7 +163,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	min-height: calc(100vh);
 	max-height: calc(100vh);
 
-	@media (max-width: 639px) {
+	@media (max-width: 939px) {
 		min-height: calc(100vh - @mobile-top-bar-height);
 		max-height: calc(100vh - @mobile-top-bar-height);
 	}
@@ -172,13 +181,9 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 	> .uk-panel-scrollable > *:last-child > *:last-child {
 		margin-bottom: 20px;
-
-		@media (max-width: 639px) {
-			margin-bottom: 70px;
-		}
 	}
 
-	@media (max-width: 639px) {
+	@media (max-width: 939px) {
 		transition: transform 0.5s ease;
 
 		&.nav-expanded {
@@ -329,6 +334,11 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 	color: #F79743;
+}
+
+// Account details page
+.representative-details::after {
+	border-bottom: 1px solid #dce9f9;
 }
 
 // Send page
