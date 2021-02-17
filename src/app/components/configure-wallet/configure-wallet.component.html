@@ -1,6 +1,6 @@
 <h2 class="uk-heading-divider">Configure Wallet</h2>
 
-<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-medium-bottom">
+<div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-small-bottom">
   <div class="uk-alert uk-alert-danger nlt-inline-alert">
     <div class="icon-column">
       <div uk-icon="icon: warning; ratio: 2;"></div>
@@ -13,108 +13,112 @@
   </div>
 </div>
 
-<div class="landing-container uk-grid-divider uk-margin-medium-top" uk-grid *ngIf="activePanel === panels.landing">
-  <div class="uk-width-auto@l uk-width-1-1@m">
-    <button class="wallet-option" (click)="setPasswordInit()">
-      <div class="icon">
-        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-         <path d="m132.03 98.355v26.667c0 1.662-1.338 3-3 3h-112.4c-1.662 0-3-1.338-3-3v-78.19c0-1.662 1.338-3 3-3h112.4c1.662 0 3 1.338 3 3v26.132" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
-         <g>
-          <rect x="104.67" y="73.192" width="34.824" height="25.469" rx=".88236" ry=".90757" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
-         </g>
-         <g>
-          <path d="m30.302 43.95 74.72-30.197c1.3768-0.55642 2.9319 0.12482 3.4851 1.5235l5.4462 13.77" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
-         </g>
-         <g>
-          <path d="m31.086 43.794 87.915-15.48c1.4625-0.25752 2.8426 0.72898 3.0942 2.2119l2.0896 12.312" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
-         </g>
-         <g fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2">
-          <rect transform="rotate(90)" x="136.31" y="-149.14" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
-          <rect x="139.78" y="127.49" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
-         </g>
-        </svg>
-      </div>
-      <h2>New<br>Wallet</h2>
-      <p>Generate seed<br>and mnemonic</p>
-    </button>
-  </div>
-  <div class="uk-width-expand">
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
-      <div class="icon">
-        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-         <g>
-          <path d="m42.088 127.05-9.6353 7.2071c-1.3309 0.99548-3.2037 0.72546-4.1992-0.60542l-20.857-27.884c-0.99548-1.3309-0.72546-3.2037 0.60543-4.1992l105.07-78.588c1.3309-0.99548 3.2037-0.72546 4.1992 0.60543l20.857 27.884c0.99548 1.3309 0.72546 3.2037-0.60543 4.1992l-41.858 31.309" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
-         </g>
-         <g fill="none" stroke="#000" stroke-width="2">
-          <circle cx="35.53" cy="106.97" r="10.756"/>
-          <path d="m153.08 86.935h-118.68s-19.277-0.014-19.277 20.789c0 19.291 19.655 19.655 19.655 19.655h118.31z"/>
-         </g>
-        </svg>
-      </div>
-      <h2>Use<br>Ledger</h2>
-      <p>Nano S / Nano X</p>
-    </button>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
-      <div class="icon">
-        <div class="seed">{{ exampleSeed }}</div>
-      </div>
-      <h2>Import<br>Seed</h2>
-      <p>64 hex<br>characters</p>
-    </button>
-    <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
-      <div class="icon">
-        <div class="mnemonic">
-          <div class="mnemonic-row">
-            <div class="number">1.</div>
-            <div class="word">{{ exampleMnemonicWords[0] }}</div>
+<div class="uk-card uk-card-default wallet-setup-card" *ngIf="activePanel === panels.landing">
+  <div class="uk-card-body">
+    <div class="landing-container uk-grid-divider" uk-grid>
+      <div class="uk-width-auto@l uk-width-1-1@m">
+        <button class="wallet-option" (click)="setPasswordInit()">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <path d="m132.03 98.355v26.667c0 1.662-1.338 3-3 3h-112.4c-1.662 0-3-1.338-3-3v-78.19c0-1.662 1.338-3 3-3h112.4c1.662 0 3 1.338 3 3v26.132" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+              <g>
+                <rect x="104.67" y="73.192" width="34.824" height="25.469" rx=".88236" ry=".90757" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+              </g>
+              <g>
+                <path d="m30.302 43.95 74.72-30.197c1.3768-0.55642 2.9319 0.12482 3.4851 1.5235l5.4462 13.77" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+              </g>
+              <g>
+                <path d="m31.086 43.794 87.915-15.48c1.4625-0.25752 2.8426 0.72898 3.0942 2.2119l2.0896 12.312" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+              </g>
+              <g fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2">
+                <rect transform="rotate(90)" x="136.31" y="-149.14" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
+                <rect x="139.78" y="127.49" width=".53454" height="18.174" rx="3" ry="3" stop-color="#000000" style="font-variation-settings:normal"/>
+              </g>
+            </svg>
           </div>
-          <div class="mnemonic-row">
-            <div class="number">2.</div>
-            <div class="word">{{ exampleMnemonicWords[1] }}</div>
+          <h2>New<br>Wallet</h2>
+          <p>Generate seed<br>and mnemonic</p>
+        </button>
+      </div>
+      <div class="uk-width-expand">
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <g>
+                <path d="m42.088 127.05-9.6353 7.2071c-1.3309 0.99548-3.2037 0.72546-4.1992-0.60542l-20.857-27.884c-0.99548-1.3309-0.72546-3.2037 0.60543-4.1992l105.07-78.588c1.3309-0.99548 3.2037-0.72546 4.1992 0.60543l20.857 27.884c0.99548 1.3309 0.72546 3.2037-0.60543 4.1992l-41.858 31.309" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+              </g>
+              <g fill="none" stroke="#000" stroke-width="2">
+                <circle cx="35.53" cy="106.97" r="10.756"/>
+                <path d="m153.08 86.935h-118.68s-19.277-0.014-19.277 20.789c0 19.291 19.655 19.655 19.655 19.655h118.31z"/>
+              </g>
+            </svg>
           </div>
-          <div class="mnemonic-row">
-            <div class="number">3.</div>
-            <div class="word">{{ exampleMnemonicWords[2] }}</div>
+          <h2>Use<br>Ledger</h2>
+          <p>Nano S / Nano X</p>
+        </button>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
+          <div class="icon">
+            <div class="seed">{{ exampleSeed }}</div>
           </div>
-          <div class="mnemonic-row">
-            <div class="number">4.</div>
-            <div class="word">{{ exampleMnemonicWords[3] }}</div>
+          <h2>Import<br>Seed</h2>
+          <p>64 hex<br>characters</p>
+        </button>
+        <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
+          <div class="icon">
+            <div class="mnemonic">
+              <div class="mnemonic-row">
+                <div class="number">1.</div>
+                <div class="word">{{ exampleMnemonicWords[0] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">2.</div>
+                <div class="word">{{ exampleMnemonicWords[1] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">3.</div>
+                <div class="word">{{ exampleMnemonicWords[2] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">4.</div>
+                <div class="word">{{ exampleMnemonicWords[3] }}</div>
+              </div>
+            </div>
           </div>
-        </div>
+          <h2>Import<br>Mnemonic</h2>
+          <p>12, 15, 18, 21<br>or 24 words</p>
+        </button>
+        <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
+          <div class="icon">
+            <div class="more-options">···</div>
+          </div>
+          <h2>More<br>Options</h2>
+          <p>Import from file<br>or a private key</p>
+        </button>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+          </div>
+          <h2>Import<br>File</h2>
+          <p>exported<br>Nault wallet</p>
+        </button>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
+          <div class="icon">
+            <div class="seed">{{ examplePrivateKey }}</div>
+          </div>
+          <h2>Import<br>Private Key</h2>
+          <p>64 hex<br>characters</p>
+        </button>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'expandedKey';" *ngIf="showMoreImportOptions">
+          <div class="icon">
+            <div class="seed">{{ exampleExpandedPrivateKey }}</div>
+          </div>
+          <h2 class="long-header">Import<br>Expanded<br>Private Key</h2>
+          <p>64 or 128 hex<br>characters</p>
+        </button>
       </div>
-      <h2>Import<br>Mnemonic</h2>
-      <p>12, 15, 18, 21<br>or 24 words</p>
-    </button>
-    <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
-      <div class="icon">
-        <div class="more-options">···</div>
-      </div>
-      <h2>More<br>Options</h2>
-      <p>Import from file<br>or a private key</p>
-    </button>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
-      <div class="icon">
-        <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-         <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
-        </svg>
-      </div>
-      <h2>Import<br>File</h2>
-      <p>exported<br>Nault wallet</p>
-    </button>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
-      <div class="icon">
-        <div class="seed">{{ examplePrivateKey }}</div>
-      </div>
-      <h2>Import<br>Private Key</h2>
-      <p>64 hex<br>characters</p>
-    </button>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'expandedKey';" *ngIf="showMoreImportOptions">
-      <div class="icon">
-        <div class="seed">{{ exampleExpandedPrivateKey }}</div>
-      </div>
-      <h2 class="long-header">Import<br>Expanded<br>Private Key</h2>
-      <p>64 or 128 hex<br>characters</p>
-    </button>
+    </div>
   </div>
 </div>
 
@@ -136,58 +140,62 @@
   <span class="label">Back</span>
 </div>
 
-<div class="landing-container uk-grid-divider" uk-grid *ngIf="activePanel === panels.mnemonicTypeSelection">
-  <div>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'mnemonic';">
-      <div class="icon">
-        <div class="mnemonic">
-          <div class="mnemonic-row">
-            <div class="number">1.</div>
-            <div class="word">{{ exampleMnemonicWords[0] }}</div>
+<div class="uk-card uk-card-default wallet-setup-card" *ngIf="activePanel === panels.mnemonicTypeSelection">
+  <div class="uk-card-body">
+    <div class="landing-container uk-grid-divider" uk-grid>
+      <div>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'mnemonic';">
+          <div class="icon">
+            <div class="mnemonic">
+              <div class="mnemonic-row">
+                <div class="number">1.</div>
+                <div class="word">{{ exampleMnemonicWords[0] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">2.</div>
+                <div class="word">{{ exampleMnemonicWords[1] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">3.</div>
+                <div class="word">{{ exampleMnemonicWords[2] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">4.</div>
+                <div class="word">{{ exampleMnemonicWords[3] }}</div>
+              </div>
+            </div>
           </div>
-          <div class="mnemonic-row">
-            <div class="number">2.</div>
-            <div class="word">{{ exampleMnemonicWords[1] }}</div>
-          </div>
-          <div class="mnemonic-row">
-            <div class="number">3.</div>
-            <div class="word">{{ exampleMnemonicWords[2] }}</div>
-          </div>
-          <div class="mnemonic-row">
-            <div class="number">4.</div>
-            <div class="word">{{ exampleMnemonicWords[3] }}</div>
-          </div>
-        </div>
+          <h2>Nano<br>Mnemonic</h2>
+          <p>24 words</p>
+        </button>
       </div>
-      <h2>Nano<br>Mnemonic</h2>
-      <p>24 words</p>
-    </button>
-  </div>
-  <div>
-    <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'bip39-mnemonic';">
-      <div class="icon">
-        <div class="mnemonic">
-          <div class="mnemonic-row">
-            <div class="number">1.</div>
-            <div class="word">{{ exampleMnemonicWords[0] }}</div>
+      <div>
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'bip39-mnemonic';">
+          <div class="icon">
+            <div class="mnemonic">
+              <div class="mnemonic-row">
+                <div class="number">1.</div>
+                <div class="word">{{ exampleMnemonicWords[0] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">2.</div>
+                <div class="word">{{ exampleMnemonicWords[1] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">3.</div>
+                <div class="word">{{ exampleMnemonicWords[2] }}</div>
+              </div>
+              <div class="mnemonic-row">
+                <div class="number">4.</div>
+                <div class="word">{{ exampleMnemonicWords[3] }}</div>
+              </div>
+            </div>
           </div>
-          <div class="mnemonic-row">
-            <div class="number">2.</div>
-            <div class="word">{{ exampleMnemonicWords[1] }}</div>
-          </div>
-          <div class="mnemonic-row">
-            <div class="number">3.</div>
-            <div class="word">{{ exampleMnemonicWords[2] }}</div>
-          </div>
-          <div class="mnemonic-row">
-            <div class="number">4.</div>
-            <div class="word">{{ exampleMnemonicWords[3] }}</div>
-          </div>
-        </div>
+          <h2>BIP39<br>Mnemonic</h2>
+          <p>12, 15, 18, 21<br>or 24 words</p>
+        </button>
       </div>
-      <h2>BIP39<br>Mnemonic</h2>
-      <p>12, 15, 18, 21<br>or 24 words</p>
-    </button>
+    </div>
   </div>
 </div>
 

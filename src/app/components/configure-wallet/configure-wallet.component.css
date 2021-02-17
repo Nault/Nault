@@ -47,10 +47,6 @@ pre.mnemonic span.mnemonic-word::before {
   min-width: 100px;
 }
 
-.landing-container {
-  margin-bottom: 50px;
-}
-
 .landing-container > div {
   display: flex;
   flex-direction: row;

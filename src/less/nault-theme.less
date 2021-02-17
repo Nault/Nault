@@ -343,12 +343,16 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 }
 
 // Wallet Setup page
+.wallet-setup-card {
+	background: #FCFCFF;
+}
+
 .landing-container > div > .wallet-option {
 	background: none;
 	border: 2px solid #4A90E2;
 
 	&.more-options {
-		border-color: #AAA;
+		border-color: #AAAACC;
 
 		&:hover {
 			border-color: #4A90E2;
@@ -359,7 +363,18 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 		background: #4A90E2;
 		color: #FFF;
 
+		> .icon > .seed,
+		> .icon > .mnemonic > .mnemonic-row > .number,
+		> .icon > .mnemonic > .mnemonic-row > .word,
+		> .icon > .more-options {
+			color: #FFF;
+		}
+
 		> h2 {
+			color: #FFF;
+		}
+
+		> p {
 			color: #FFF;
 		}
 	}
@@ -376,7 +391,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	> .icon > .mnemonic > .mnemonic-row > .number,
 	> .icon > .mnemonic > .mnemonic-row > .word,
 	> .icon > .more-options {
-		color: #676686;
+		color: #373656;
 	}
 
 	> h2 {
@@ -384,7 +399,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	}
 
 	> p {
-		color: #676686;
+		color: #434355;
 	}
 }
 
