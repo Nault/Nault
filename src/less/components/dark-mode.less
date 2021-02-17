@@ -18,6 +18,23 @@
 	// General
 	color: @dark-mode-text-5;
 
+	.uk-panel-scrollable {
+		@scrollbar-color: #4E4E5A;
+
+		// Scrollbar - Gecko (Firefox)
+		scrollbar-color: @scrollbar-color @dark-mode-background-1;
+
+		// Scrollbar - WebKit (Chrome, Edge)
+		&::-webkit-scrollbar-track {
+			background: @dark-mode-background-1;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: @scrollbar-color;
+			border-color: @dark-mode-background-1;
+		}
+	}
+
 	.uk-text-muted {
 		color: @dark-mode-text-1 !important;
 	}

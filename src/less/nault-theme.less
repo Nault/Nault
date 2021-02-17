@@ -19,7 +19,6 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 }
 
 @media (max-width: @breakpoint-small) {
-	
 	button, .uk-button {
 		margin-bottom: @nlt-intro-margin / 2!important;
 	}
@@ -38,6 +37,27 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	overflow-x: auto;
 	overflow-y: scroll;
 	resize: none;
+
+	@scrollbar-color: #AAB;
+
+	// Scrollbar - Gecko (Firefox)
+	scrollbar-width: thin;
+	scrollbar-color: @scrollbar-color #FFF;
+
+	// Scrollbar - WebKit (Chrome, Edge)
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #FFF;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: @scrollbar-color;
+		border-radius: 9px;
+		border: 2px solid #FFF;
+	}
 }
 
 .uk-card-body > ul > li > a {
