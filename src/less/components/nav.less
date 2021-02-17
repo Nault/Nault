@@ -8,7 +8,7 @@
 
 @nav-background-color:                          #1F1F24;
 @nav-scrollbar-color:                           #4E4E5A;
-@nav-border-color:                              #383844;
+@nav-border-color:                              #16161B;
 @nav-half-muted-color:                          #B6BED5;
 
 @nav-tooltip-color-background:                  #343740;
@@ -364,7 +364,7 @@
 	min-width: 300px;
 	max-width: 600px;
 	max-height: 400px;
-	border: 2px solid #FFF;
+	border: 2px solid #8F8FAB;
 	background: @nav-tooltip-color-background;
 	border-radius: 10px;
 	z-index: 2;
@@ -398,7 +398,7 @@
 		display: flex;
 		justify-content: space-between;
 		background: @nav-tooltip-color-background;
-		border-bottom: 1px solid #565C70;
+		border-bottom: 1px solid #1C1F28;
 		padding: 8px;
 		cursor: pointer;
 		transition: background-color 100ms ease-in-out;
@@ -777,7 +777,7 @@
 			padding-left: 20px;
 			border-left: 4px solid transparent;
 			border-top: 1px solid transparent;
-			border-bottom: 1px solid #383844;
+			border-bottom: 1px solid @nav-border-color;
 			transition: color 100ms ease-in-out, border-left-color 100ms ease-in-out;
 
 			&:focus {
@@ -885,7 +885,7 @@
 			content: '';
 			display: block;
 			height: 1px;
-			background: rgba(56, 56, 68, 0.3);
+			background: @nav-border-color;
 			position: absolute;
 			bottom: 0;
 			left: calc(15% + 15px);
