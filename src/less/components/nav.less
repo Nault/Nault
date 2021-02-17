@@ -11,7 +11,7 @@
 @nav-border-color:                              #16161B;
 @nav-half-muted-color:                          #B6BED5;
 
-@nav-tooltip-color-background:                  #343740;
+@nav-tooltip-color-background:                  #2c2d39;
 
 @nav-default-item-color:                        #FFF;
 @nav-default-item-hover-color:                  @global-link-color;
@@ -123,10 +123,11 @@
 	}
 
 	&.is-wallet {
-		background: #506279;
+		@wallet-card-background-color: #31333F;
+		background: @wallet-card-background-color;
 
 		> .logo {
-			filter: saturate(0.5) brightness(0.75);
+			filter: hue-rotate(15deg) saturate(0.5) brightness(0.40);
 		}
 
 		&::after {
@@ -135,10 +136,14 @@
 			width: calc(100% - 10px);
 			height: calc(100% - 10px);
 			display: block;
-			border: 1px dashed @nav-background-color;
+			border: 1px dashed #555573;
 			margin: 4px;
 			border-radius: 10px;
 			pointer-events: none;
+		}
+
+		> .card-contents > .account-name-container > .select-button.open > .circle {
+			background: @wallet-card-background-color;
 		}
 	}
 
