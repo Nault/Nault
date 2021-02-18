@@ -1,0 +1,480 @@
+@dark-mode-background-1: #19191B;
+@dark-mode-background-2: #1B1B20;
+@dark-mode-background-3: #1D1D22;
+@dark-mode-background-4: #22222A;
+@dark-mode-background-5: #25252D;
+@dark-mode-background-6: #2E2E38;
+
+@dark-mode-accent-1: #4A90E2;
+
+@dark-mode-text-1: #5F5F77;
+@dark-mode-text-2: #686882;
+@dark-mode-text-3: #8F8FAB;
+@dark-mode-text-4: #ABABC4;
+@dark-mode-text-5: #B5B5C8;
+@dark-mode-text-6: #D5D5E8;
+
+.dark-mode {
+	// General
+	color: @dark-mode-text-5;
+
+	.uk-panel-scrollable {
+		@scrollbar-color: #4E4E5A;
+
+		// Scrollbar - Gecko (Firefox)
+		scrollbar-color: @scrollbar-color @dark-mode-background-1;
+
+		// Scrollbar - WebKit (Chrome, Edge)
+		&::-webkit-scrollbar-track {
+			background: @dark-mode-background-1;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: @scrollbar-color;
+			border-color: @dark-mode-background-1;
+		}
+	}
+
+	.uk-text-muted {
+		color: @dark-mode-text-1 !important;
+	}
+
+	.uk-text-meta {
+		color: @dark-mode-text-2 !important;
+	}
+
+	.content-container {
+		background: @dark-mode-background-1;
+	}
+
+	.uk-card-default {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-5;
+
+		.strength-meter {
+			background: @dark-mode-text-1 !important;
+		}
+
+		.strength-meter::after, .strength-meter::before {
+			border-color: @dark-mode-background-4 !important;
+		}
+
+		.uk-card-header {
+			border-color: @dark-mode-background-1;
+		}
+
+		.uk-card-footer {
+			border-top-color: @dark-mode-background-1;
+		}
+
+		.uk-heading-divider {
+			border-bottom-color: @dark-mode-background-1;
+		}
+	}
+
+	pre {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-5;
+		border-color: @dark-mode-background-1;
+	}
+
+	.uk-heading-divider {
+		border-bottom-color: @dark-mode-background-5;
+	}
+
+	.uk-grid-divider > :not(.uk-first-column)::before {
+		border-left-color: @dark-mode-background-6;
+	}
+
+	.uk-grid-divider.uk-grid-stack > .uk-grid-margin::before {
+		border-top-color: @dark-mode-background-6;
+	}
+
+	.nano-address-clickable, .nano-address-clickable:hover {
+		color: @dark-mode-text-4;
+	}
+
+	.account-label {
+		background: @dark-mode-background-6;
+	}
+
+	.account-label, .account-label:hover {
+		color: @dark-mode-text-4;
+	}
+
+	.account-container:hover .account-label {
+		border-color: @dark-mode-accent-1;
+		background: @dark-mode-accent-1;
+	}
+
+	.account-container .account-index {
+		color: @dark-mode-text-5;
+	}
+
+	.account-container .account-index span {
+		color: @dark-mode-text-1;
+	}
+	.account-container:hover .account-index span {
+		color: #335277;
+	}
+
+	.missing-accounts-hint {
+		background: #1E1E24 !important;
+		color: @dark-mode-text-4;
+	}
+
+	.missing-accounts-hint .uk-icon {
+		vertical-align: 1px;
+		margin-right: 2px;
+	}
+
+	.missing-accounts-hint .hint-action {
+		color: @dark-mode-text-4;
+		border-bottom: 2px dotted @dark-mode-text-1;
+	}
+
+	.missing-accounts-hint .hint-action:hover {
+		border-color: @dark-mode-text-4;
+	}
+
+	.uk-form-label {
+		color: @dark-mode-text-3;
+	}
+
+	// General (Headers)
+	h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
+		color: #DDD;
+	}
+
+	.uk-card-default {
+		h1, .uk-h1, h2, .uk-h2, h3, .uk-h3, h4, .uk-h4, h5, .uk-h5, h6, .uk-h6, .uk-heading-small, .uk-heading-medium, .uk-heading-large, .uk-heading-xlarge, .uk-heading-2xlarge {
+			color: @dark-mode-text-6;
+		}
+	}
+
+	// General (Lines)
+	hr, .uk-hr {
+		border-top-color: @dark-mode-background-1;
+	}
+
+	.uk-divider-icon {
+		background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Ccircle%20fill%3D%22none%22%20stroke%3D%22%2319191B%22%20stroke-width%3D%222%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%227%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+	}
+
+	.uk-divider-icon::before, .uk-divider-icon::after {
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// General (Table)
+	.uk-table thead {
+		background: @dark-mode-background-4;
+	}
+
+	.uk-table th {
+		color: @dark-mode-text-4;
+	}
+
+	.uk-table-striped > tr, .uk-table-striped tbody tr {
+		background: @dark-mode-background-2;
+	}
+
+	.uk-table-striped > tr:nth-of-type(2n+1), .uk-table-striped tbody tr:nth-of-type(2n+1) {
+		background: @dark-mode-background-3;
+		border-top-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// General (List)
+	.uk-list {
+		background: @dark-mode-background-2;
+	}
+
+	.uk-list-striped > li:nth-of-type(2n+1) {
+		background: @dark-mode-background-3;
+		border-top-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
+		border-left: none;
+		border-right: none;
+	}
+
+	.uk-list > li.uk-list-header {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-4;
+	}
+
+	.uk-sortable-drag {
+		background: @dark-mode-background-5;
+	}
+
+	// General (Nav)
+	.uk-nav-default:not(.left-nav) .uk-nav-header {
+		color: @dark-mode-text-3;
+	}
+
+	.uk-nav-default:not(.left-nav) .uk-nav-divider {
+		border-top-color: @dark-mode-background-1;
+	}
+
+	.uk-nav-default:not(.left-nav) > li > a {
+		color: @dark-mode-text-4;
+	}
+
+	.nlt-dropdown {
+		border-left-color: @dark-mode-background-1;
+		border-right-color: @dark-mode-background-1;
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// General (Icons)
+	.uk-iconnav > * > a, .uk-form-icon {
+		color: @dark-mode-text-3;
+	}
+
+	.uk-iconnav > * > a:hover, .uk-iconnav > * > a:focus, .uk-form-icon:focus, .uk-form-icon:hover {
+		color: @dark-mode-text-6;
+	}
+
+	.uk-icon-button {
+		background: @dark-mode-background-2;
+	}
+
+	// General (Buttons)
+	.uk-button-secondary, .uk-button-default {
+		border-color: @dark-mode-background-6;
+	}
+
+	.uk-button-default:focus, .uk-button-default:hover, .uk-button-secondary:focus, .uk-button-secondary:hover {
+		background: @dark-mode-background-5;
+		color: #3379ca;
+	}
+
+	.form-icon-btn, .form-icon-btn:focus, .form-icon-btn:hover {
+		color: #FFF;
+	}
+
+	.uk-button-danger {
+		background: #CE425C;
+	}
+	.uk-button-danger:hover {
+		background: #BE324C;
+	}
+
+	.uk-button-primary {
+		background: #3782D9;
+	}
+	.uk-button-primary:hover {
+		background: #2772C9;
+	}
+
+	.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+		background-color: @dark-mode-background-3;
+		color: #3E3E48 !important;
+		border-color: @dark-mode-background-3;
+	}
+
+	// General (Inputs)
+	.uk-input, .uk-select, .uk-textarea {
+		border-color: @dark-mode-background-3;
+		background: @dark-mode-background-2;
+		color: @dark-mode-text-5;
+	}
+
+	.uk-input::placeholder, .uk-select::placeholder, .uk-textarea::placeholder {
+		color: @dark-mode-text-1;
+	}
+
+	.uk-radio, .uk-checkbox {
+		border-color: @dark-mode-text-1;
+	}
+
+	.uk-radio:checked, .uk-checkbox:checked, .uk-checkbox:indeterminate,
+	.uk-radio:checked:focus, .uk-checkbox:checked:focus, .uk-checkbox:indeterminate:focus {
+		background-color: #4a90e2;
+		border-color: #4a90e2;
+	}
+
+	.uk-select:not([multiple]):not([size]) option {
+		color: @dark-mode-text-5;
+	}
+
+	.uk-select:invalid {
+		color: @dark-mode-text-1;
+	}
+
+	.uk-form-danger, .uk-form-danger:focus {
+		color: #f0506e;
+		border-color: #f0506e;
+	}
+
+	.uk-input:disabled, .uk-select:disabled, .uk-textarea:disabled {
+		background-color: @dark-mode-background-3;
+		color: #3E3E48 !important;
+		border-color: @dark-mode-background-3;
+	}
+
+	// General (UIkit Modal)
+	.uk-modal-dialog {
+		background: @dark-mode-background-4;
+	}
+
+	.uk-modal-header {
+		background: @dark-mode-background-4;
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	.uk-modal-footer {
+		background: @dark-mode-background-4;
+		border-top-color: @dark-mode-background-1;
+	}
+
+	// General (QR Modal)
+	.scanner-modal .modal-content {
+		background: @dark-mode-background-4;
+
+		.modal-header {
+			border-bottom-color: @dark-mode-background-1;
+		}
+	}
+
+	// General (Alerts)
+	.uk-alert-primary {
+		background: @dark-mode-background-4;
+		color: @dark-mode-text-4;
+	}
+
+	.uk-alert-danger,
+	.uk-alert-warning,
+	.uk-alert-success,
+	.uk-alert-info {
+		color: #EEE;
+	}
+
+	.uk-alert-danger {
+		background: #B94258;
+	}
+
+	.uk-alert-warning {
+		background: #D78B50;
+	}
+
+	.uk-alert-success {
+		background: #16A670;
+	}
+
+	.uk-alert-info {
+		background: #3782D9;
+	}
+
+	// General (Notifications)
+	.wallet-notification {
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	// Unlock Wallet modal
+	.password-input.uk-form-danger {
+		border-color: #F79743;
+		background: #372D24;
+	}
+
+	.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
+		color: #FFA556 !important;
+	}
+
+	// Account details page
+	.representative-details::after {
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// Send page
+	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
+		color: @dark-mode-text-5 !important;
+		background: @dark-mode-background-4;
+	}
+
+	// Representatives page
+	.delegating-account-row, .representative-row {
+		background: @dark-mode-background-3 !important;
+	}
+
+	.delegating-account-row + .representative-row {
+		border-top: 1px solid @dark-mode-background-1 !important;
+	}
+
+	.delegating-account-row:last-child {
+		border-bottom: 1px solid @dark-mode-background-1 !important;
+	}
+
+	// App Settings page
+	#node-stats-table tr:not(:last-child) td {
+		border-bottom-color: @dark-mode-background-1;
+	}
+
+	// New Wallet page
+	.mne-cont {
+		border-bottom-color: #5F5F77;
+	}
+
+	// Wallet Setup page
+	.wallet-setup-card {
+		background: @dark-mode-background-4;
+	}
+
+	.landing-container > div > .wallet-option {
+		border-color: @dark-mode-accent-1;
+
+		&.more-options {
+			border-color: @dark-mode-text-1;
+
+			&:hover {
+				border-color: @dark-mode-accent-1;
+			}
+		}
+
+		&:hover {
+			background: @dark-mode-accent-1;
+			color: #FFF;
+
+			> .icon > .seed,
+			> .icon > .mnemonic > .mnemonic-row > .number,
+			> .icon > .mnemonic > .mnemonic-row > .word,
+			> .icon > .more-options {
+				color: #FFF;
+			}
+
+			> h2 {
+				color: #FFF;
+			}
+
+			> p {
+				color: #FFF;
+			}
+		}
+
+		> .icon > .mnemonic > .mnemonic-row {
+			border-color: @dark-mode-text-1;
+		}
+
+		> .icon > svg {
+			color: @dark-mode-text-6;
+		}
+
+		> .icon > .seed,
+		> .icon > .mnemonic > .mnemonic-row > .number,
+		> .icon > .mnemonic > .mnemonic-row > .word,
+		> .icon > .more-options {
+			color: @dark-mode-text-6;
+		}
+
+		> h2 {
+			color: @dark-mode-text-6;
+		}
+
+		> p {
+			color: @dark-mode-text-4;
+		}
+	}
+
+	.import-panel-navigation:hover .label {
+		border-bottom-color: @dark-mode-text-5;
+	}
+}

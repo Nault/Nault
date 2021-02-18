@@ -3,13 +3,13 @@
 
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">
+        <h2 class="uk-heading-divider uk-text-truncate">
           Representatives Book
           <a [routerLink]="'/representatives'" style="font-size: 12px; margin-left: 25px;">BACK TO REPRESENTATIVES OVERVIEW</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right" *ngIf="activePanel == 0">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="activePanel = 1;">Add Representative</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()">Add Representative</button>
       </div>
     </div>
 
@@ -24,8 +24,8 @@
         <div class="uk-card uk-margin">
 
           <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-            <li style="background: #fff; border-bottom: 0;">
-              <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+            <li class="uk-list-header">
+              <div uk-grid>
                 <div class="uk-width-2-5">Name</div>
                 <div class="uk-width-expand">Account ID</div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Actions</div>
@@ -39,12 +39,12 @@
                 <div class="uk-width-2-5 uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a (click)="editEntry(representative)" class="uk-link-text" title="Edit Representative" uk-tooltip>{{ representative.name }}</a>
+                      <a (click)="editEntry(representative)" class="uk-link-text" title="Edit Entry" uk-tooltip>{{ representative.name }}</a>
                     </div>
                     <ul class="uk-iconnav uk-width-auto" style="padding-left: 0;">
                       <!--<li><span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span></li>-->
                       <li *ngIf="representative.trusted"><span class="uk-text-success" uk-icon="icon: star" uk-tooltip title="Representative marked as trusted"></span></li>
-                      <li *ngIf="representative.warn"><span class="uk-text-warning" uk-icon="icon: warning" uk-tooltip title="Representative marked as avoid"></span></li>
+                      <li *ngIf="representative.warn"><span class="uk-text-small uk-text-warning" uk-tooltip title="Representative marked as 'should be avoided'"><span uk-icon="icon: warning"></span> Avoid</span></li>
                     </ul>
                   </div>
                 </div>
@@ -62,13 +62,13 @@
 
                 </div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
-                  <a (click)="deleteRepresentative(representative.id)" class="uk-text-danger" title="Delete Representative" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+                  <a (click)="deleteRepresentative(representative.id)" class="uk-text-danger" title="Delete Entry" uk-tooltip><span uk-icon="icon: trash;"></span></a>
                 </div>
               </div>
 
             </li>
             <li *ngIf="!(representatives$ | async).length" class="uk-text-center">
-              You do not have any representatives saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+              You do not have any representatives saved yet, <a (click)="addEntry()">click here to add new entry</a>.
             </li>
           </ul>
 
@@ -80,14 +80,14 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">Add Representative</h2>
+            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Entry' : 'Edit Entry' }}</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
                 <label class="uk-form-label" for="new-address-account">Account ID</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" placeholder="nano_abc123">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
                 </div>
               </div>
 
@@ -115,15 +115,9 @@
 
             </div>
           </div>
-          <div class="uk-card-footer">
-            <div uk-grid>
-              <div class="uk-width-1-2@s uk-text-left">
-                <button class="uk-button uk-button-danger uk-width-1-1" (click)="cancelNewRep()">Cancel</button>
-              </div>
-              <div class="uk-width-1-2@s uk-text-right">
-                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewRepresentative()">Save New Representative</button>
-              </div>
-            </div>
+          <div class="uk-card-footer uk-text-right@s nlt-button-group">
+            <button class="uk-button uk-button-danger" (click)="cancelNewRep()">Cancel</button>
+            <button class="uk-button uk-button-primary" (click)="saveNewRepresentative()">Save</button>
           </div>
         </div>
       </div>

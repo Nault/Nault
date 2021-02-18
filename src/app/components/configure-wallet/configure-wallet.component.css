@@ -40,24 +40,11 @@ pre.mnemonic span.mnemonic-word::before {
 
 .mne-cont {
   display: block;
-  border-bottom: 1px dashed #449af373;
 }
 
 .mne-word {
   display: inline-block;
   min-width: 100px;
-}
-
-#create-wallet {
-  margin-top: 20px;
-}
-
-.already-configured-text-column {
-  padding-left: 20px;
-}
-
-.landing-container {
-  margin-bottom: 50px;
 }
 
 .landing-container > div {
@@ -72,8 +59,6 @@ pre.mnemonic span.mnemonic-word::before {
   display: flex;
   width: 200px;
   height: 300px;
-  border: 2px solid #4A90E2;
-  background: none;
   border-radius: 10px;
   padding: 15px 20px;
   margin: 20px;
@@ -82,17 +67,7 @@ pre.mnemonic span.mnemonic-word::before {
   cursor: pointer;
   transition: background 100ms ease-in-out;
 }
-.landing-container > div > .wallet-option.more-options {
-  border-color: #AAA;
-}
 
-.landing-container > div > .wallet-option:hover {
-  background: #4A90E2;
-  color: #FFF;
-}
-.landing-container > div > .wallet-option.more-options:hover {
-  border-color: #4A90E2;
-}
 .landing-container > div > .wallet-option:hover > .icon {
   transform: scale(1.1);
 }
@@ -101,9 +76,6 @@ pre.mnemonic span.mnemonic-word::before {
 }
 .landing-container > div > .wallet-option:hover > .icon > .mnemonic > .mnemonic-row {
   border-bottom-color: rgba(255, 255, 255, 0.4);
-}
-.landing-container > div > .wallet-option:hover > h2 {
-  color: #FFF;
 }
 
 .landing-container > div > .wallet-option > .icon {
@@ -139,7 +111,6 @@ pre.mnemonic span.mnemonic-word::before {
   margin-bottom: 7px;
   margin-left: -10px;
   padding-bottom: 1px;
-  border-bottom: 1px dashed #AAA;
 }
 .landing-container > div > .wallet-option > .icon > .mnemonic > .mnemonic-row > .number {
   width: 10px;
@@ -160,10 +131,6 @@ pre.mnemonic span.mnemonic-word::before {
   font-weight: 300;
 }
 
-.landing-container > div > .wallet-option > .icon > svg {
-  color: #373656;
-}
-
 .landing-container > div > .wallet-option > .icon > svg * {
   stroke: currentcolor;
 }
@@ -172,7 +139,6 @@ pre.mnemonic span.mnemonic-word::before {
   margin: 0;
   font-weight: 400;
   line-height: 1.2;
-  color: #373656;
   font-size: 28px;
   margin-bottom: 15px;
 }
@@ -198,10 +164,6 @@ pre.mnemonic span.mnemonic-word::before {
 }
 .import-panel-navigation .label {
   margin-top: -2px;
-  border-bottom: 2px solid transparent;
   transition: border-color 100ms ease-in-out;
   margin-left: 5px;
-}
-.import-panel-navigation:hover .label {
-  border-bottom-color: #373656;
 }

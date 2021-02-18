@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild, Renderer2} from '@angular/core';
 import {WalletService} from './services/wallet.service';
 import {AddressBookService} from './services/address-book.service';
 import {AppSettingsService} from './services/app-settings.service';
@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private workPool: WorkPoolService,
     private ledger: LedgerService,
-    public price: PriceService) {
+    public price: PriceService,
+    private renderer: Renderer2) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
@@ -48,12 +49,13 @@ export class AppComponent implements OnInit {
   windowHeight = 1000;
   navExpanded = false;
   showAccountsDropdown = false;
+  canToggleLightMode = true;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
   donationAccount = environment.donationAddress;
 
   @HostListener('window:resize', ['$event']) onResize (e) {
-    this.windowHeight = e.target.innerHeight;
+    this.updateWindowHeight(e.target);
   }
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
@@ -66,8 +68,10 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.windowHeight = window.innerHeight;
+    this.updateWindowHeight(window);
     this.settings.loadAppSettings();
+
+    this.updateAppTheme();
 
     // New for v19: Patch saved xrb_ prefixes to nano_
     await this.patchXrbToNanoPrefixData();
@@ -168,6 +172,11 @@ export class AppComponent implements OnInit {
     }
   }
 
+  updateWindowHeight(windowReference) {
+    const mobileOffset = (windowReference.innerWidth > 939) ? 0 : 50;
+    this.windowHeight = windowReference.innerHeight - mobileOffset;
+  }
+
   /*
     This is important as it looks through saved data using hardcoded xrb_ prefixes
     (Your wallet, address book, rep list, etc) and updates them to nano_ prefix for v19 RPC
@@ -189,6 +198,28 @@ export class AppComponent implements OnInit {
 
   closeNav() {
     this.navExpanded = false;
+  }
+
+  toggleLightMode() {
+    if (this.canToggleLightMode === false) {
+      return;
+    }
+
+    this.canToggleLightMode = false;
+    setTimeout(() => { this.canToggleLightMode = true; }, 300);
+
+    this.settings.setAppSetting('lightModeEnabled', !this.settings.settings.lightModeEnabled);
+    this.updateAppTheme();
+  }
+
+  updateAppTheme() {
+    if (this.settings.settings.lightModeEnabled) {
+      this.renderer.addClass(document.body, 'light-mode');
+      this.renderer.removeClass(document.body, 'dark-mode');
+    } else {
+      this.renderer.addClass(document.body, 'dark-mode');
+      this.renderer.removeClass(document.body, 'light-mode');
+    }
   }
 
   toggleAccountsDropdown() {

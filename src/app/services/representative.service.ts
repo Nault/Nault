@@ -433,6 +433,10 @@ export class RepresentativeService {
     return weightedReps.sort((a, b) => b.weight - a.weight);
   }
 
+  nameExists(name: string): boolean {
+    return this.representatives.findIndex(a => a.name.toLowerCase() === name.toLowerCase()) !== -1;
+  }
+
   // Default representatives list
   // tslint:disable-next-line:member-ordering
   defaultRepresentatives = [

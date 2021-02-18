@@ -34,8 +34,8 @@
         <div uk-grid>
           <div class="uk-width-1-1">
             <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-              <li style="background: #fff; border-bottom: 0;">
-                <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+              <li class="uk-list-header">
+                <div uk-grid>
                   <div class="uk-width-1-4">New Label</div>
                   <div class="uk-width-1-4">Current Label</div>
                   <div class="uk-width-1-2 uk-text-truncate" style="padding-left: 0;">Account</div>
@@ -64,11 +64,9 @@
       </div>
       <div class="uk-card-footer">
         <div uk-grid>
-          <div class="uk-width-1-2 uk-text-left">
+          <div class="nlt-button-group uk-width-1-1 uk-text-right">
             <button routerLink="/address-book" class="uk-button uk-button-danger">Cancel</button>
-          </div>
-          <div class="uk-width-1-2 uk-text-right">
-            <button (click)="confirmImport()" class="uk-button uk-button-secondary">Import Entries</button>
+            <button (click)="confirmImport()" class="uk-button uk-button-primary">Import Entries</button>
           </div>
         </div>
       </div>

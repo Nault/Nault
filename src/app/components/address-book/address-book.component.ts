@@ -16,8 +16,10 @@ import * as QRCode from 'qrcode';
 export class AddressBookComponent implements OnInit, AfterViewInit {
 
   activePanel = 0;
+  creatingNewEntry = false;
 
   addressBook$ = this.addressBookService.addressBook$;
+  previousAddressName = '';
   newAddressAccount = '';
   newAddressName = '';
   addressBookShowQRExport = false;
@@ -52,9 +54,17 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
     });
   }
 
+  addEntry() {
+    this.previousAddressName = '';
+    this.creatingNewEntry = true;
+    this.activePanel = 1;
+  }
+
   editEntry(addressBook) {
     this.newAddressAccount = addressBook.account;
+    this.previousAddressName = addressBook.name;
     this.newAddressName = addressBook.name;
+    this.creatingNewEntry = false;
     this.activePanel = 1;
     setTimeout(() => {
       document.getElementById('new-address-name').focus();
@@ -66,9 +76,9 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
 
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, ''); // Remove spaces
 
-    // Make sure name doesn't exist
-    if (this.addressBookService.nameExists(this.newAddressName)) {
-      return this.notificationService.sendError(`This name is already in use!  Please use a unique name`);
+    // If the name has been changed, make sure no other entries are using that name
+    if ( (this.newAddressName !== this.previousAddressName) && this.addressBookService.nameExists(this.newAddressName) ) {
+      return this.notificationService.sendError(`This name is already in use! Please use a unique name`);
     }
 
     // Make sure the address is valid
@@ -77,7 +87,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
 
     try {
       await this.addressBookService.saveAddress(this.newAddressAccount, this.newAddressName);
-      this.notificationService.sendSuccess(`Successfully created new name for account!`);
+      this.notificationService.sendSuccess(`Address book entry saved successfully!`);
       // IF this is one of our accounts, set its name, and hope things update?
       const walletAccount = this.walletService.wallet.accounts.find(a => a.id.toLowerCase() === this.newAddressAccount.toLowerCase());
       if (walletAccount) {

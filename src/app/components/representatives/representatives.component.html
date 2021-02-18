@@ -3,7 +3,7 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">Representatives</h2>
+        <h2 class="uk-heading-divider uk-text-truncate">Representatives</h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
         <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Reps</a>
@@ -14,7 +14,7 @@
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-overflow-auto" *ngIf="!hideOverview">
-          <p>Representatives participate in the Nano consensus protocol on your behalf. You can change them at any time.</p>
+          <p>Representatives participate in the <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">Nano consensus protocol</a> on your behalf. You can change them at any time.</p>
 
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
@@ -82,7 +82,12 @@
               </ng-container>
               </ng-container>
               <tr *ngIf="!loadingRepresentatives && ( !representativeOverview || !representativeOverview.length )" class="uk-text-center">
-                <td colspan="3" style="text-align: center;">None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!</td>
+                <td colspan="3" style="text-align: center;" *ngIf="settings.settings.serverAPI">
+                  None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!
+                </td>
+                <td colspan="3" style="text-align: center;" *ngIf="!settings.settings.serverAPI">
+                  Wallet is in offline mode.
+                </td>
               </tr>
               <tr *ngIf="loadingRepresentatives">
                 <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
@@ -138,15 +143,15 @@
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Representative Account" #repInput>
 
-                    <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
+                    <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
                         <li class="uk-nav-header">Representative List Results</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">
                             {{ rep.name }}
-                            <span *ngIf="rep.trusted" uk-icon="icon: star;" class="uk-text-success"></span>
-                            <span *ngIf="rep.warn" uk-icon="icon: warning;" class="uk-text-warning"></span>
+                            <span *ngIf="rep.trusted" class="uk-text-success" style="margin-left: 4px;"><span uk-icon="icon: star;"></span></span>
+                            <span *ngIf="rep.warn" class="uk-text-warning" style="margin-left: 4px;"><span uk-icon="icon: warning;"></span> Avoid</span>
                           </a>
                         </li>
                       </ul>
@@ -176,8 +181,8 @@
                   <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
                   <!--<h4>Or, Select a recommended representative</h4>-->
                   <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-                    <li style="background: #fff; border-bottom: 0;">
-                      <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+                    <li class="uk-list-header">
+                      <div uk-grid>
                         <div class="uk-width-expand">Representative</div>
                         <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
                         <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
@@ -209,9 +214,9 @@
                   </ul>
                   <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
                   <ul class="uk-pagination uk-flex-center uk-flex-middle">
-                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous></span></a></li>
+                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous class="uk-icon-button"></span></a></li>
                     <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
-                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next></span></a></li>
+                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next class="uk-icon-button"></span></a></li>
                   </ul>
                 </div>
 
