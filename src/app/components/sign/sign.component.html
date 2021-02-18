@@ -11,7 +11,7 @@
           <span *ngIf="qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
           <span *ngIf="!blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You are about to {{txTypeMessage}}</span>
           <span *ngIf="blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You have processed a block to {{txTypeMessage}}</span>
-          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
           <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
         </div>
         <br>

@@ -96,8 +96,13 @@
     font-weight: 700;
 }
 
-.incoming-label > .text-full > .amount-fractional {
+.incoming-label > .text-full > .amount-fractional,
+.incoming-label > .text-full > .amount-currency-name {
     display: inline-block;
+}
+
+.incoming-label > .text-full > .amount-currency-name {
+    margin-left: 4px;
 }
 
 .incoming-label > .text-snippet {
@@ -135,8 +140,13 @@
     font-weight: 700;
 }
 
-.account-amounts-primary-confirmed > .amount-fractional {
+.account-amounts-primary-confirmed > .amount-fractional,
+.account-amounts-primary-confirmed > .amount-currency-name {
     font-size: 16px;
+}
+
+.account-amounts-primary-confirmed > .amount-currency-name {
+    margin-left: 4px;
 }
 
 .account-amounts-converted {
