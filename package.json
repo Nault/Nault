@@ -47,6 +47,8 @@
     "@ledgerhq/hw-transport-webusb": "^5.39.0",
     "@ledgerhq/logs": "^5.39.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@types/crypto-js": "^3.1.38",
     "@zxing/ngx-scanner": "^3.0.0",
     "angular-password-strength-meter": "^3.0.0",

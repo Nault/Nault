@@ -1,19 +1,19 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
 
-    <h2 class="uk-heading-divider">Manage Wallet</h2>
+    <h2 class="uk-heading-divider">{{ 'navigation.manage-wallet' | translate }}</h2>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Change Wallet Password</h3>
+        <h3 class="uk-card-title">{{ 'manage-wallet.change-wallet-password' | translate }}</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
           <div class="uk-width-1-2@s">
             <input class="uk-input" [(ngModel)]="newPassword" placeholder="New Password" type="password">
             <password-strength-meter *ngIf="newPassword.length > 0" [password]="newPassword" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
-            <span class="password-helper" *ngIf="newPassword.length > 0 && newPassword.length < 6">Password must be at least 6 characters long</span>
-            <span class="password-helper" *ngIf="confirmPassword.length >= 6 && newPassword !== confirmPassword">Passwords do not match!</span>
+            <span class="password-helper" *ngIf="newPassword.length > 0 && newPassword.length < 6">{{ 'manage-wallet.password-must-be-at-least-x-characters-long' | translate: { chars: 6 } }}</span>
+            <span class="password-helper" *ngIf="confirmPassword.length >= 6 && newPassword !== confirmPassword">{{ 'configure-wallet.passwords-do-not-match' | translate }}</span>
           </div>
           <div class="uk-width-1-2@s">
             <input class="uk-input" [(ngModel)]="confirmPassword" placeholder="Confirm New Password" type="password">
@@ -21,43 +21,43 @@
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-        <button [disabled]="newPassword.length < 6 || (newPassword !== confirmPassword)" (click)="changePassword()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Password</button>
+        <button [disabled]="newPassword.length < 6 || (newPassword !== confirmPassword)" (click)="changePassword()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'general.change' | translate }}</button>
       </div>
     </div>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Backup Wallet</h3>
+        <h3 class="uk-card-title">{{ 'manage-wallet.backup-wallet' | translate }}</h3>
       </div>
       <div class="uk-card-body">
         <p *ngIf="wallet.locked">
-          <span uk-icon="icon: lock;"></span> Unlock wallet to access the seed/mnemonic.
+          <span uk-icon="icon: lock;"></span> {{ 'manage-wallet.wallet-needs-to-be-unlocked' | translate }}
         </p>
         <p *ngIf="!wallet.locked">
-          To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          {{ 'manage-wallet.to-backup-your-wallet-mnemonic-phrase-click-here' | translate }} <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>{{ 'general.copy-to-clipboard' | translate }}</a><br>
           <br>
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          {{ 'manage-wallet.to-backup-your-wallet-seed-click-here' | translate }} <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>{{ 'general.copy-to-clipboard' | translate }}</a><br>
         </p>
       </div>
     </div>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Export Nault Wallet</h3>
+        <h3 class="uk-card-title">{{ 'manage-wallet.export-nault-wallet.title' | translate }}</h3>
       </div>
       <ng-container *ngIf="wallet.locked else walletUnlocked">
         <div class="uk-card-body">
-          <span uk-icon="icon: lock;"></span> Unlock wallet to access the export tool.
+          <span uk-icon="icon: lock;"></span> {{ 'manage-wallet.wallet-needs-to-be-unlocked' | translate }}
         </div>
       </ng-container>
       <ng-template #walletUnlocked>
         <ng-container *ngIf="wallet.password else walletHasNoPassword">
           <div class="uk-card-body">
-            Use this export tool to simplify wallet transfer to other devices.
+            {{ 'manage-wallet.export-nault-wallet.use-this-export-tool-to-simplify-wallet-transfer-to-other-devices' | translate }}
             <br>
-            Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!
+            {{ 'manage-wallet.export-nault-wallet.your-data-will-be-encrypted-with-your-wallets-password' | translate }}
             <br><br>
-            Note: The export does not contain your address book.<br>
+            {{ 'manage-wallet.export-nault-wallet.note-the-export-does-not-contain-your-address-book' | translate }}<br>
             <div *ngIf="showQRExport" uk-grid>
               <div class="uk-width-1-1">
                 <hr class="uk-divider-icon uk-margin-small-top">
@@ -66,9 +66,9 @@
                     <div uk-icon="icon: warning; ratio: 2;"></div>
                   </div>
                   <p>
-                    <b>If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.</b>
+                    <b>{{ 'manage-wallet.export-nault-wallet.if-you-forget-the-wallet-password' | translate }}</b>
                     <br><br>
-                    For backup purposes, <b>always store the seed and/or mnemonic</b> from the "Backup Wallet" section above.
+                    {{ 'manage-wallet.export-nault-wallet.for-backup-purposes-always-store-the-seed' | translate }}
                   </p>
                 </div>
               </div>
@@ -78,25 +78,25 @@
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
-                Scan the QR code on any device to import your Nault wallet!<br>
+                {{ 'manage-wallet.export-nault-wallet.scan-the-qr-code-on-any-device-to-import-your-nault-wallet' | translate }}<br>
                 <br>
-                You can also import your wallet by using the URL below.
+                {{ 'manage-wallet.export-nault-wallet.you-can-also-import-your-wallet-by-using-the-url-below' | translate }}
                 <br><br>
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}">
                 <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
-                  <button (click)="exportToFile()" class="uk-button uk-button-primary">Export As File</button>
+                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">{{ 'general.copy-to-clipboard' | translate }}</button>
+                  <button (click)="exportToFile()" class="uk-button uk-button-primary">{{ 'general.export-as-file' | translate }}</button>
                 </div>
               </div>
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
-            <button (click)="exportWallet()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Wallet</button>
+            <button (click)="exportWallet()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'manage-wallet.export-nault-wallet.export-wallet' | translate }}</button>
           </div>
         </ng-container>
         <ng-template #walletHasNoPassword>
           <div class="uk-card-body">
-            You need to set a secure wallet password before you can use this export tool.
+            {{ 'manage-wallet.export-nault-wallet.you-need-to-set-a-secure-wallet-password' | translate }}
           </div>
         </ng-template>
       </ng-template>

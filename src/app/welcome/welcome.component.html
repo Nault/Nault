@@ -3,18 +3,18 @@
     <div uk-grid class="uk-text-center" style="margin-bottom: 90px;">
       <div class="uk-width-1-1" style="margin-top: 45px;">
         <img [src]="( settingsService.settings.lightModeEnabled ? '/assets/img/nault-logo.svg' : '/assets/img/nault-logo-night-mode.svg' )" width="250px" style="display: block; margin: 0 auto 20px auto;" alt="Logo"/>
-        <span class="uk-text-lead">A secure open source wallet for <a href="https://nano.org" class="uk-link-text" target="_blank" rel="noopener noreferrer">Nano</a></span><br>
+        <span class="uk-text-lead">{{ 'welcome.a-secure-open-source-wallet-for-nano' | translate }}</span><br>
       </div>
       <div class="uk-width-1-1" *ngIf="!isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 10px;">
-            <span class="uk-text-small">To get started, choose an option below to configure your wallet</span>
+            <span class="uk-text-small">{{ 'welcome.to-get-started-choose-an-option-below-to-configure-your-wallet' | translate }}</span>
           </div>
           <div class="uk-width-1-2@m">
-            <button routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Create A New Wallet</button>
+            <button routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">{{ 'welcome.create-a-new-wallet' | translate }}</button>
           </div>
           <div class="uk-width-1-2@m">
-            <button routerLink="/configure-wallet" [queryParams]="{ import: 1}" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Import An Existing Wallet</button>
+            <button routerLink="/configure-wallet" [queryParams]="{ import: 1}" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">{{ 'welcome.import-an-existing-wallet' | translate }}</button>
           </div>
         </div>
       </div>
@@ -22,10 +22,10 @@
       <div class="uk-width-1-1" *ngIf="isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 10px;">
-            <span class="uk-text-small">Welcome back!  It looks like your wallet is already configured.</span>
+            <span class="uk-text-small">{{ 'welcome.welcome-back-it-looks-like-your-wallet-is-already-configured' | translate }}</span>
           </div>
           <div class="uk-width-1-1@m">
-            <button routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">View My Accounts</button>
+            <button routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">{{ 'welcome.view-my-accounts' | translate }}</button>
           </div>
         </div>
       </div>
@@ -40,19 +40,20 @@
             <ul uk-accordion="">
               <li class="uk-open">
 
-                <a class="uk-accordion-title uk-link-text" href="#">Why Use Nault?</a>
+                <a class="uk-accordion-title uk-link-text" href="#">{{ 'welcome.why-use-nault' | translate }}</a>
                 <div class="uk-accordion-content">
-                  <!--Nault is an open source web wallet which makes it incredibly easy to send and receive <a href="https://nano.org" target="_blank" rel="noopener noreferrer">Nano</a> from anywhere in the world.<br>-->
-
                   <dl class="uk-description-list">
-                    <dt>Security Focused</dt>
-                    <dd>All sensitive operations happen in your browser only - your seed and private keys are never sent across your network, or stored on any server in any format. (So there is no need for server-based authentication measures such as 2FA). A full security guide is found <a href="https://docs.nault.cc/2020/08/05/security-of-nano.html">here</a>.</dd>
-                    <dt>"No Strings Attached" Wallet</dt>
-                    <dd>Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.</dd>
-                    <dt>Any Device, Anywhere</dt>
-                    <dd>Send and receive Nano from any device using the web wallet, or <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">download the desktop wallet</a> available for Windows/Mac/Linux.</dd>
-                    <dt>Helpful Features</dt>
-                    <dd>Store labels for your friends and your own accounts in the address book, track your balances in your local currency, and more!</dd>
+                    <dt>{{ 'welcome.security-focused' | translate }}</dt>
+                    <dd>
+                      {{ 'welcome.all-sensitive-operations-happen-in-your-browser' | translate }}<br>
+                      <a href="https://docs.nault.cc/2020/08/05/security-of-nano.html">{{ 'welcome.a-full-security-guide-is-found-here' | translate }}</a>
+                    </dd>
+                    <dt>{{ 'welcome.no-strings-attached-wallet' | translate }}</dt>
+                    <dd>{{ 'welcome.because-no-information-is-ever-stored-on-a-server' | translate }}</dd>
+                    <dt>{{ 'welcome.any-device-anywhere' | translate }}</dt>
+                    <dd>{{ 'welcome.send-and-receive-nano-from-any-device-using-the-web-wallet' | translate }}</dd>
+                    <dt>{{ 'welcome.helpful-features' | translate }}</dt>
+                    <dd>{{ 'welcome.store-labels-for-your-friends-and-your-own-accounts' | translate }}</dd>
                   </dl>
                 </div>
               </li>
@@ -82,7 +83,7 @@
         </div>
 
         <div class="uk-text-center uk-text-small uk-text-truncate">
-          Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }" uk-tooltip title="Contribute to this wallet with a custom donation!">{{ donationAccount }}</a>
+          {{ 'welcome.donation-address' | translate }}: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }">{{ donationAccount }}</a>
         </div>
       </div>
     </div>

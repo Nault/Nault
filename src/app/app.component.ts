@@ -11,6 +11,7 @@ import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { LedgerService } from './services';
 import { environment } from 'environments/environment';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -32,10 +33,15 @@ export class AppComponent implements OnInit {
     private workPool: WorkPoolService,
     private ledger: LedgerService,
     public price: PriceService,
-    private renderer: Renderer2) {
+    private renderer: Renderer2,
+    private translate: TranslateService) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
+
+      // available languages
+      translate.addLangs(['en', 'de', 'sv-se']);
+      translate.setDefaultLang('en');
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
@@ -70,6 +76,9 @@ export class AppComponent implements OnInit {
 
     // New for v19: Patch saved xrb_ prefixes to nano_
     await this.patchXrbToNanoPrefixData();
+
+    // set translation language
+    this.translate.use(this.settings.settings.language);
 
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
@@ -121,9 +130,15 @@ export class AppComponent implements OnInit {
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     // (if not receive priority is set to manual)
     if (this.wallet.locked && this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption !== 'manual') {
-      this.notifications.sendWarning(`New incoming transaction(s) - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(
+        this.translate.instant('app.new-incoming-transaction-s-unlock-the-wallet-to-receive'),
+        { length: 10000, identifier: 'pending-locked' }
+      );
     } else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
-      this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(
+        this.translate.instant('app.incoming-transaction-s-found-set-to-be-received-manually'),
+        { length: 10000, identifier: 'pending-locked' }
+      );
     }
 
     // When the page closes, determine if we should lock the wallet
@@ -155,7 +170,12 @@ export class AppComponent implements OnInit {
       // Determine if we have been inactive for longer than our lock setting
       if (this.inactiveSeconds >= this.settings.settings.lockInactivityMinutes * 60) {
         this.walletService.lockWallet();
-        this.notifications.sendSuccess(`Wallet locked after ${this.settings.settings.lockInactivityMinutes} minutes of inactivity`);
+        this.notifications.sendSuccess(
+          this.translate.instant(
+            'app.wallet-locked-after-x-minutes-of-inactivity',
+            { minutes: this.settings.settings.lockInactivityMinutes }
+          )
+        );
       }
     }, 1000);
 
@@ -163,7 +183,10 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+      this.notifications.sendWarning(
+        this.translate.instant('app.there-was-an-issue-retrieving-the-latest-fiat-price'),
+        { length: 0, identifier: `price-issue` }
+      );
     }
   }
 
@@ -240,7 +263,7 @@ export class AppComponent implements OnInit {
     } else if (searchData.length === 64) {
       this.router.navigate(['transaction', searchData]);
     } else {
-      this.notifications.sendWarning(`Invalid Nano account or transaction hash!`);
+      this.notifications.sendWarning(this.translate.instant('app.invalid-nano-account-or-transaction-hash'));
     }
     this.searchData = '';
   }
@@ -251,11 +274,11 @@ export class AppComponent implements OnInit {
 
   retryConnection() {
     if (!this.settings.settings.serverAPI) {
-      this.notifications.sendInfo(`Wallet server settings is set to offline mode. Please change server first!`);
+      this.notifications.sendInfo(this.translate.instant('app.wallet-server-settings-is-set-to-offline-mode'));
       return;
     }
     this.walletService.reloadBalances(true);
-    this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
+    this.notifications.sendInfo(this.translate.instant('app.attempting-to-reconnect-to-server'));
   }
 
   async updateFiatPrices() {

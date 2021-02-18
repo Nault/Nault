@@ -4,7 +4,7 @@
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
-          Accounts
+          {{ 'general.accounts' | translate }}
           <a (click)="viewAdvanced = !viewAdvanced" class="uk-text-truncate" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BACK TO SIMPLE MODE' : 'MANAGE ACCOUNTS' }}</a>
         </h2>
       </div>
@@ -15,7 +15,7 @@
           </div>
           <div class="uk-width-auto@m">
             <button class="uk-button uk-button-secondary uk-width-1-1@m" (click)="createAccount()">
-              Add New Account
+              {{ 'accounts.add-new-account' | translate }}
             </button>
           </div>
         </div>
@@ -27,9 +27,9 @@
         <thead>
         <tr>
           <th scope="col" class="uk-width-3-5@m uk-width-1-2">
-            Account
+            {{ 'general.account' | translate }}
           </th>
-          <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
+          <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">{{ 'general.balance' | translate }}</th>
           <th scope="col" [class]="{
             'table-header-delete-account': true,
             'uk-width-1-5@m': true,
@@ -51,8 +51,8 @@
                     ? account.addressBookName
                     : (
                         viewAdvanced
-                      ? 'Account'
-                      : 'Account #' + account.index
+                      ? ('general.account' | translate)
+                      : ('general.account' | translate) + ' #' + account.index
                     )
                   }}</div>
                 </div>
@@ -62,8 +62,8 @@
               </a>
               <div class="nano-address-actions uk-width-auto copy-container">
                 <ul class="uk-iconnav copy-icons">
-                  <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                  <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
+                  <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="{{ 'general.copy-to-clipboard' | translate }}" uk-tooltip></a></li>
+                  <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="{{ 'accounts.confirm-address-on-ledger' | translate }}" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
                 </ul>
               </div>
             </div>
@@ -71,7 +71,7 @@
           <td class="account-amounts-column uk-text-right">
             <div class="account-amounts-primary uk-width-1-1">
               <div *ngIf="account.pending.gt(0)" class="incoming-label">
-                <div class="text-snippet">New</div>
+                <div class="text-snippet">{{ 'general.new' | translate }}</div>
                 <div class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
               </div>
               <span [title]="( account.balanceRaw.gt(0) ? ( '+' + ( account.balanceRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
@@ -87,7 +87,7 @@
             'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
           }">
             <div class="uk-float-right">
-              <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
+              <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="{{ 'general.hide' | translate }}" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
           </td>
         </tr>

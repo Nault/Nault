@@ -3,10 +3,10 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider uk-text-truncate">Representatives</h2>
+        <h2 class="uk-heading-divider uk-text-truncate">{{ 'general.representatives' | translate }}</h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Reps</a>
+        <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">{{ 'representatives.manage-representatives' | translate }}</a>
       </div>
     </div>
 
@@ -14,14 +14,14 @@
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-overflow-auto" *ngIf="!hideOverview">
-          <p>Representatives participate in the <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">Nano consensus protocol</a> on your behalf. You can change them at any time.</p>
+          <p>{{ 'representatives.representatives-participate-in-the-nano-consensus-protocol' | translate }}</p>
 
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
-                <th scope="col" class="representative-health-column-header">Status</th>
-                <th scope="col" class="uk-width-expand">Representative</th>
-                <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">Voting Weight</th>
+                <th scope="col" class="representative-health-column-header">{{ 'general.status' | translate }}</th>
+                <th scope="col" class="uk-width-expand">{{ 'general.representative' | translate }}</th>
+                <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">{{ 'general.voting-weight' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -32,28 +32,28 @@
                     <ng-container [ngSwitch]="true">
                       <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
                         <div class="health-icon"></div>
-                        <div class="label">Good</div>
+                        <div class="label">{{ 'status.good' | translate }}</div>
                       </div>
                       <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'ok')">
                         <div class="health-icon"></div>
-                        <div class="label">Good</div>
+                        <div class="label">{{ 'status.good' | translate }}</div>
                       </div>
                       <div class="representative-health-status health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
                         <div class="health-icon"></div>
-                        <div class="label">Acceptable</div>
+                        <div class="label">{{ 'status.acceptable' | translate }}</div>
                       </div>
                       <div class="representative-health-status health-red" *ngSwitchCase="(rep.statusText == 'alert')">
                         <div class="health-icon"></div>
-                        <div class="label">Bad</div>
+                        <div class="label">{{ 'status.bad' | translate }}</div>
                       </div>
                       <div class="representative-health-status health-unknown" *ngSwitchDefault>
                         <div class="health-icon"></div>
-                        <div class="label">Unknown</div>
+                        <div class="label">{{ 'general.unknown' | translate }}</div>
                       </div>
                     </ng-container>
                   </td>
                   <td class="representative-name-column uk-text-truncate rep-container" (click)="addSelectedAccounts(rep.accounts)">
-                    <div class="account-label rep">{{ rep.label ? rep.label : 'Unknown Rep' }}</div><div class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                    <div class="account-label rep">{{ rep.label ? rep.label : ('general.unknown' | translate) }}</div><div class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                   </td>
                   <td class="voting-weight-column uk-width-1-4">
                     <div class="uk-text-small uk-text-muted">Total</div>
@@ -83,14 +83,14 @@
               </ng-container>
               <tr *ngIf="!loadingRepresentatives && ( !representativeOverview || !representativeOverview.length )" class="uk-text-center">
                 <td colspan="3" style="text-align: center;" *ngIf="settings.settings.serverAPI">
-                  None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!
+                  {{ 'representatives.none-of-your-accounts-have-delegated-any-voting-weight' | translate }}
                 </td>
                 <td colspan="3" style="text-align: center;" *ngIf="!settings.settings.serverAPI">
                   Wallet is in offline mode.
                 </td>
               </tr>
               <tr *ngIf="loadingRepresentatives">
-                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
+                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> {{ 'representatives.fetching-information-about-your-representatives' | translate }}</td>
               </tr>
             </tbody>
           </table>
@@ -103,17 +103,17 @@
         <div class="uk-card uk-card-default">
           <div class="uk-card-body" style="padding-bottom: 0;">
 
-            <p class="uk-text-lead uk-text-center">Change your representatives</p>
+            <p class="uk-text-lead uk-text-center">{{ 'representatives.change-your-representatives' | translate }}</p>
 
 
             <div class="change-representative-form uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">Accounts to Change</label>
+                <label class="uk-form-label" for="form-horizontal-select">{{ 'representatives.accounts-to-change' | translate }}</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
-                    <option [value]="null">Select Accounts to Change</option>
-                    <option [value]="'all'">All Current Accounts</option>
+                    <option [value]="null">{{ 'representatives.select-accounts-to-change' | translate }}</option>
+                    <option [value]="'all'">{{ 'representatives.all-current-accounts' | translate }}</option>
                     <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
@@ -137,15 +137,15 @@
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-text2">New Representative</label>
+                <label class="uk-form-label" for="form-horizontal-text2">{{ 'representatives.new-representative' | translate }}</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Representative Account" #repInput>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="{{ 'general.scan-qr-code' | translate }}"></a>
+                    <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="toRepresentativeID" class="uk-input" id="form-horizontal-text2" type="text" placeholder="nano_1abc..." #repInput>
 
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">Representative List Results</li>
+                        <li class="uk-nav-header">{{ 'general.representative-list-results' | translate }}</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">
@@ -178,20 +178,20 @@
                 <hr>
 
                 <div class="uk-margin">
-                  <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
+                  <p class="uk-text-lead uk-text-center">{{ 'representatives.recommended-representatives' | translate }}</p>
                   <!--<h4>Or, Select a recommended representative</h4>-->
                   <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
                     <li class="uk-list-header">
                       <div uk-grid>
-                        <div class="uk-width-expand">Representative</div>
-                        <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
+                        <div class="uk-width-expand">{{ 'general.representative' | translate }}</div>
+                        <div class="uk-width-1-2">{{ 'general.voting-weight' | translate }} / {{ 'general.uptime' | translate }}</div>
                         <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
                       </div>
                     </li>
                   </ul>
                   <ul class="uk-list uk-list-striped" style="margin-top: 0;">
                     <li *ngIf="recommendedRepsLoading" class="uk-text-center">
-                      <span uk-icon="load"></span> Loading reps...
+                      <span uk-icon="load"></span> {{ 'general.loading' | translate }}
                     </li>
                     <li *ngIf="recommendedRepsLoading === null" class="uk-text-center">
                       <span uk-icon="load"></span> Unable to load representatives from My Nano Ninja
@@ -203,19 +203,19 @@
 
                         </div>
                         <div class="uk-width-1-2">
-                          <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a>
+                          <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="{{ 'general.more-info' | translate }}" class="uk-link-muted"><span uk-icon="search"></span></a>
 
-                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
-                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
+                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="{{ 'general.voting-weight' | translate }}" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
+                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="{{ 'general.uptime' | translate }}" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
 
                         </div>
                       </div>
                     </li>
                   </ul>
-                  <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
+                  <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted">{{ 'representatives.view-all-representatives' | translate }} <span uk-icon="icon: push; ratio: 0.9;"></span></a>
                   <ul class="uk-pagination uk-flex-center uk-flex-middle">
                     <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous class="uk-icon-button"></span></a></li>
-                    <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
+                    <li>{{ 'representatives.showing-x-x-of-x-representatives' | translate: { startCount: ((currentRepPage * repsPerPage)+1), endCount: ((currentRepPage * repsPerPage)+repsPerPage), totalCount: recommendedReps.length} }}</li>
                     <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next class="uk-icon-button"></span></a></li>
                   </ul>
                 </div>
@@ -226,8 +226,8 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="changeRepresentatives()" *ngIf="!changingRepresentatives">Update Representatives</button>
-            <button class="uk-button uk-button-primary uk-width-1-1 uk-disabled" type="button" *ngIf="changingRepresentatives"><span uk-spinner></span> Updating Representatives...</button>
+            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="changeRepresentatives()" *ngIf="!changingRepresentatives">{{ 'representatives.update-representatives' | translate }}</button>
+            <button class="uk-button uk-button-primary uk-width-1-1 uk-disabled" type="button" *ngIf="changingRepresentatives"><span uk-spinner></span> {{ 'representatives.updating-representatives' | translate }}</button>
           </div>
       </div>
     </div>

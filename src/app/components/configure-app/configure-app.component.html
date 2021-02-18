@@ -1,19 +1,36 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2 class="uk-heading-divider">Configure Nault</h2>
+    <h2 class="uk-heading-divider">{{ 'navigation.app-settings' | translate }}</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Display Settings</h3>
+        <h3 class="uk-card-title">{{ 'configure-app.display-settings' | translate }}</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
+          
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="languageselector">
+                  {{ 'configure-app.language' | translate }}
+                </label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedLanguage" id="languageselector">
+                    <option *ngFor="let language of languages" [value]="language.value">{{ language.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
+                <label class="uk-form-label" for="form-horizontal-select">{{ 'configure-app.fiat-currency' | translate }}</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedCurrency" id="form-horizontal-select">
                     <option *ngFor="let currency of currencies" [value]="currency.value">{{ currency.name }}</option>
@@ -24,34 +41,17 @@
             </div>
           </div>
 
-          <!--<div class="uk-width-1-1">-->
-            <!--<div class="uk-form-horizontal">-->
-
-              <!--<div class="uk-margin">-->
-                <!--<label class="uk-form-label">Account Prefix <span uk-icon="icon: info;" uk-tooltip title="Change the Nano account prefix used throughout the application.  Both are valid when sending"></span></label>-->
-                <!--<div class="uk-form-controls">-->
-
-                  <!--<div class="uk-inline uk-width-1-1">-->
-                    <!--<select class="uk-select" [(ngModel)]="selectedPrefix">-->
-                      <!--<option *ngFor="let prefix of prefixOptions" [value]="prefix.value">{{ prefix.name }}</option>-->
-                    <!--</select>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-        <button (click)="updateDisplaySettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Display Settings</button>
+        <button (click)="updateDisplaySettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'general.apply' | translate }}</button>
       </div>
     </div>
 
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Wallet Settings</h3>
+        <h3 class="uk-card-title">{{ 'configure-app.wallet-settings' | translate }}</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
@@ -60,7 +60,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Lock After Inactivity <span uk-icon="icon: info;" uk-tooltip title="Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"></span></label>
+                <label class="uk-form-label">{{ 'configure-app.lock-after-inactivity.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.lock-after-inactivity.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -77,7 +77,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Wallet Storage <span uk-icon="icon: info;" uk-tooltip title="Change where your wallet is stored.  If you select none, your wallet is reset every time you reload."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.wallet-storage.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.wallet-storage.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -94,7 +94,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">PoW Source <span uk-icon="icon: info;" uk-tooltip title="Change how Proof of Work for your blocks are generated."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.pow-source.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.pow-source.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -108,16 +108,16 @@
                 </div>
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
-                <label class="uk-form-label">Work Server <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using nault.cc. Try the desktop app."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.work-server.title' | translate }}</label>
                   <div class="uk-form-controls">
                       <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
                       <span class="uk-text-meta">
-                        This has to be a valid <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">Nano Work Server</a> endpoint or an API compliant with it.
+                        {{ 'configure-app.work-server.tooltip' | translate }} <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">{{ 'general.more-info' | translate }}</a>
                       </span>
                   </div>
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
-                <label class="uk-form-label">PoW Multiplier <span uk-icon="icon: info;" uk-tooltip title="Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.pow-multiplier.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.pow-multiplier.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -134,7 +134,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Receive Method <span uk-icon="icon: info;" uk-tooltip title="If automatically receiving incoming transactions with the largest amount first or chronological from recorded time. Manual will allow you to pick your own transactions from the receive screen."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.receive-method.title' | translate }}</label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -151,7 +151,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Min Receive [NANO] <span uk-icon="icon: info;" uk-tooltip title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.min-receive.title' | translate }} [NANO] <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.min-receive.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
@@ -170,16 +170,16 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Default Representative <span uk-icon="icon: info;" uk-tooltip title="This representative will be used when creating the initial open block on a new account"></span></label>
+                <label class="uk-form-label">{{ 'configure-app.default-representative.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.default-representative.tooltip' | translate }}"></span></label>
 
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="{{ 'general.scan-qr-code' | translate }}"></a>
                     <input (blur)="validateRepresentative()" (keyup)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="Leave blank to use a recommended one" #repInput>
                     
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">Representative List Results</li>
+                        <li class="uk-nav-header">{{ 'general.representative-list-results' | translate }}</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">
@@ -206,14 +206,14 @@
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-        <button (click)="updateWalletSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Wallet Settings</button>
+        <button (click)="updateWalletSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'general.apply' | translate }}</button>
       </div>
     </div>
 
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header" id="server-settings">
-        <h3 class="uk-card-title">Server Settings</h3>
+        <h3 class="uk-card-title">{{ 'configure-app.server-settings' | translate }}</h3>
       </div>
       <div class="uk-card-body">
         <div uk-grid>
@@ -222,7 +222,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">Server Configuration <span uk-icon="icon: info;" uk-tooltip title="Change which server is used to communicate with the Nano network"></span></label>
+                <label class="uk-form-label" for="form-horizontal-select">{{ 'configure-app.server-configuration.title' | translate }} <span uk-icon="icon: info;" uk-tooltip title="{{ 'configure-app.server-configuration.tooltip' | translate }}"></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedServer" (change)="serverConfigChange(selectedServer)" id="form-horizontal-select">
                     <option *ngFor="let server of serverOptions" [value]="server.value">{{ server.name }}</option>
@@ -236,7 +236,7 @@
           <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
-                <label class="uk-form-label uk-text-right">API Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to load, cache, and enhance results from the Nano node"></span></label>
+                <label class="uk-form-label uk-text-right">{{ 'configure-app.api-server.title' | translate }}</label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
@@ -245,7 +245,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://domain.com/path">
                     <span class="uk-text-meta">
-                      This has to be a valid <a href="https://docs.nano.org/commands/rpc-protocol/" target="_blank" rel="noopener noreferrer">Nano RPC endpoint</a> or an API compliant with it.
+                      {{ 'configure-app.api-server.tooltip' | translate }} <a href="https://docs.nano.org/commands/rpc-protocol/" target="_blank" rel="noopener noreferrer">{{ 'general.more-info' | translate }}</a>
                     </span>
                   </div>
                 </div>
@@ -256,7 +256,7 @@
           <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
-                <label class="uk-form-label uk-text-right">WebSocket Server <span uk-icon="icon: info;" uk-tooltip title="This server is used to notify the wallet in real time when new transactions arrive"></span></label>
+                <label class="uk-form-label uk-text-right">{{ 'configure-app.websocket-server.title' | translate }}</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
                     <strong>{{ serverWS }}</strong>
@@ -265,8 +265,8 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="wss://domain.com/path">
                     <span class="uk-text-meta">
-                      This has to be a <a href="https://docs.nano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener noreferrer">Nano Node Websocket</a> or a WebSocket API compliant with it.<br>
-                      <i>Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.</i>
+                      {{ 'configure-app.websocket-server.tooltip' | translate }} <a href="https://docs.nano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener noreferrer">{{ 'general.more-info' | translate }}</a><br>
+                      <i>{{ 'configure-app.websocket-server.note' | translate }}</i>
                     </span>
                   </div>
                 </div>
@@ -277,7 +277,7 @@
           <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
-                <label class="uk-form-label uk-text-right">Auth Header <span uk-icon="icon: info;" uk-tooltip title="If API requires authentication. For example using basic auth: Basic xyz"></span></label>
+                <label class="uk-form-label uk-text-right">{{ 'configure-app.auth-header.title' | translate }}</label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
@@ -286,8 +286,8 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAuth" class="uk-input uk-margin-small-bottom" type="text" placeholder="Optional">
                     <span class="uk-text-meta">
-                      This has to be a valid Authorization header.<br>
-                      <i>For example, basic auth defined as "Authorization: Basic base64Encode(username:password)"<br>In that case, enter: Basic dHV0c3BsdXM6MTIzNDU2</i>
+                      {{ 'configure-app.auth-header.tooltip' | translate }}<br>
+                      <i>{{ 'configure-app.auth-header.example' | translate }} "Authorization: Basic dHV0c3BsdXM6MTIzNDU2"</i>
                     </span>
                   </div>
                 </div>
@@ -298,14 +298,14 @@
           <div class="uk-width-1-1" *ngIf="showStatValues() || showServerConfigs()">
             <div class="uk-form-horizontal">
               <div>
-                <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
+                <label class="uk-form-label uk-text-right">{{ 'configure-app.node-stats.title' | translate }} <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="{{ 'general.refresh' | translate }}"></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-text-meta">
                       <table id="node-stats-table">
                         <tr>
                           <td>
-                            <strong>Server</strong>
+                            <strong>{{ 'configure-app.node-stats.server' | translate }}</strong>
                           </td>
                           <td>
                             {{serverAPIUpdated ? serverAPI:'Save settings to update'}}
@@ -313,7 +313,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Block Count</strong>
+                            <strong>{{ 'configure-app.node-stats.block-count' | translate }}</strong>
                           </td>
                           <td>
                             {{nodeBlockCount || 'N/A'}}
@@ -321,7 +321,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Uncemented Blocks</strong>
+                            <strong>{{ 'configure-app.node-stats.uncemented-blocks' | translate }}</strong>
                           </td>
                           <td>
                             {{nodeUncemented || 'N/A'}}
@@ -329,7 +329,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Peers Stake Required</strong>
+                            <strong>{{ 'configure-app.node-stats.peers-stake-required' | translate }}</strong>
                           </td>
                           <td>
                             {{peersStakeReq || 'N/A'}}
@@ -337,7 +337,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Peers Stake Total</strong>
+                            <strong>{{ 'configure-app.node-stats.peers-stake-total' | translate }}</strong>
                           </td>
                           <td>
                             {{peersStakeTotal || 'N/A'}}
@@ -345,7 +345,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Node Version</strong>
+                            <strong>{{ 'configure-app.node-stats.node-version' | translate }}</strong>
                           </td>
                           <td>
                             {{nodeVendor || 'N/A'}}
@@ -353,7 +353,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <strong>Network</strong>
+                            <strong>{{ 'configure-app.node-stats.network' | translate }}</strong>
                           </td>
                           <td>
                             {{nodeNetwork || 'N/A'}}
@@ -361,10 +361,10 @@
                         </tr>
                         <tr *ngIf="showServerValues() && !showServerConfigs()">
                           <td>
-                            <strong>Random Server</strong>
+                            <strong>{{ 'configure-app.node-stats.random-server' | translate }}</strong>
                           </td>
                           <td>
-                            {{shouldRandom || 'No'}}
+                            {{shouldRandom ?  ('general.yes' | translate) : ('general.no' | translate) }}
                           </td>
                         </tr>
                       </table>
@@ -378,32 +378,28 @@
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center">
-        <button (click)="updateServerSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Server Settings</button>
+        <button (click)="updateServerSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'general.apply' | translate }}</button>
       </div>
     </div>
 
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Advanced Options</h3>
+        <h3 class="uk-card-title">{{ 'configure-app.advanced-options' | translate }}</h3>
       </div>
       <div class="uk-card-body uk-text-center">
         <div uk-grid>
-
           <div class="uk-width-1-3@m">
-            <button class="uk-button uk-button-danger" (click)="clearWorkCache()" uk-tooltip title="This will delete all locally cached Proof of Work values">Clear Work Cache</button>
+            <button class="uk-button uk-button-danger" (click)="clearWorkCache()" uk-tooltip title="{{ 'configure-app.clear-work-cache.tooltip' | translate }}">{{ 'configure-app.clear-work-cache.title' | translate }}</button>
           </div>
           <div class="uk-width-1-3@m">
-            <button class="uk-button uk-button-danger" (click)="clearWalletData()" uk-tooltip title="This will delete all data related to your wallet (Your seed and accounts)">Delete Wallet Data</button>
+            <button class="uk-button uk-button-danger" (click)="clearWalletData()" uk-tooltip title="{{ 'configure-app.delete-wallet-data.tooltip' | translate }}">{{ 'configure-app.delete-wallet-data.title' | translate }}</button>
           </div>
           <div class="uk-width-1-3@m">
-            <button class="uk-button uk-button-danger" (click)="clearAllData()" uk-tooltip title="This will delete ALL stored data and reset app settings, including your wallet, address book and more.">Delete ALL Data</button>
+            <button class="uk-button uk-button-danger" (click)="clearAllData()" uk-tooltip title="{{ 'configure-app.delete-all-data.tooltip' | translate }}">{{ 'configure-app.delete-all-data.title' | translate }}</button>
           </div>
         </div>
       </div>
-      <!--<div class="uk-card-footer uk-text-right">-->
-        <!--<button (click)="updateWalletSettings()" class="uk-button uk-button-secondary">Update Wallet Settings</button>-->
-      <!--</div>-->
     </div>
 
   </div>

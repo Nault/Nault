@@ -1,45 +1,45 @@
 <div class="nav-representative-info" *ngIf="(displayedRepresentatives.length > 0) else noRepresentatives">
   <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
-    <h2>Representative{{
+    <h2>{{
         (repIdx !== 0)
       ? (
-          ' for '
+          ('change-rep-widget.representative-for' | translate) + ' '
         + (
             rep.accounts[0].addressBookName
           ? ( '"' + rep.accounts[0].addressBookName + '"' )
           : ( rep.accounts[0].id.slice(0, 10) + '...' )
         )
       )
-      : ''
+      : ('general.representative' | translate)
     }}</h2>
     <div class="representative-name-row">
-      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || ('general.unknown' | translate) }}</a>
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
       <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
         <div class="health-icon"></div>
-        <div class="label">Good Representative</div>
+        <div class="label">{{ 'change-rep-widget.status.good-representative' | translate }}</div>
       </div>
       <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'ok')">
         <div class="health-icon"></div>
-        <div class="label">Good Representative</div>
+        <div class="label">{{ 'change-rep-widget.status.good-representative' | translate }}</div>
       </div>
       <div class="representative-health-row health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
         <div class="health-icon"></div>
-        <div class="label">Acceptable Representative</div>
+        <div class="label">{{ 'change-rep-widget.status.acceptable-representative' | translate }}</div>
       </div>
       <div class="representative-health-row health-red" *ngSwitchCase="(rep.statusText == 'alert')">
         <div class="health-icon"></div>
-        <div class="label">Bad Representative</div>
+        <div class="label">{{ 'change-rep-widget.status.bad-representative' | translate }}</div>
       </div>
       <div class="representative-health-row health-unknown" *ngSwitchDefault>
         <div class="health-icon"></div>
-        <div class="label">Unknown Status</div>
+        <div class="label">{{ 'change-rep-widget.status.unknown-status' | translate }}</div>
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
-      <p class="primary"><b>{{ rep.label || 'Unknown Rep' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
+      <p class="primary"><b>{{ rep.label || ('general.unknown' | translate) }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
       <p>You can change representative at any time by clicking on its name above.</p>
       <div class="header-row">
         <div class="separator"></div>
@@ -90,9 +90,9 @@
 <ng-template #noRepresentatives>
   <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
     <div class="representative">
-      <h2>Representative</h2>
+      <h2>{{ 'general.representative' | translate }}</h2>
       <div class="representative-name-row">
-        <div class="name no-interact">Loading...</div>
+        <div class="name no-interact">{{ 'general.loading' | translate }}</div>
       </div>
       <div class="representative-health-row health-unknown health-loading">
         <div uk-spinner="ratio: 0.5;"></div>
@@ -103,13 +103,13 @@
   <ng-template #selectedAccountHasNoRep>
     <div class="nav-representative-info">
       <div class="representative">
-        <h2>Representative</h2>
+        <h2>{{ 'general.representative' | translate }}</h2>
         <div class="representative-name-row">
           <div class="name no-interact">None</div>
         </div>
         <div class="representative-health-row health-unknown">
           <div class="health-icon"></div>
-          <div class="label">Receive a transaction to configure</div>
+          <div class="label">{{ 'change-rep-widget.receive-a-transaction-to-configure' | translate }}</div>
         </div>
       </div>
     </div>
@@ -121,6 +121,6 @@
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
   <div class="status-labels">
-    <div class="label primary uk-text-warning">Representative Change Required</div>
+    <div class="label primary uk-text-warning">{{ 'change-rep-widget.representative-change-required' | translate }}</div>
   </div>
 </div>

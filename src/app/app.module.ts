@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -63,6 +63,15 @@ import { NinjaService } from './services';
 import { ConverterComponent } from './components/converter/converter.component';
 import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
 
+// ngx-translate
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+// AoT requires an exported function for factories
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -108,6 +117,13 @@ import { QrGeneratorComponent } from './components/qr-generator/qr-generator.com
     ZXingScannerModule,
     NgbModule,
     PasswordStrengthMeterModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
+    }),
   ],
   providers: [
     UtilService,

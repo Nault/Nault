@@ -1,0 +1,334 @@
+{
+  "account-details": {
+    "account-details": "Account Details",
+    "advanced-options": "Advanced options",
+    "enable-remote-signing": "Enable Remote Signing",
+    "external-address": "External address",
+    "incoming-transaction": "Incoming Transaction",
+    "load-more-results": "Load More Results",
+    "network-explorer": "Network Explorer",
+    "no-account-history": "No account history",
+    "no-label-set": "No label set",
+    "recent-transactions": "Recent Transactions",
+    "representative-none": "None"
+  },
+  "accounts": {
+    "add-new-account": "Add New Account",
+    "confirm-address-on-ledger": "Confirm Address On Ledger"
+  },
+  "address-book": {
+    "add-new-contact": "Add New Contact",
+    "you-can-use-the-address-book-to-store-a-label": "You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application."
+  },
+  "app": {
+    "attempting-to-reconnect-to-server": "Attempting to reconnect to server",
+    "incoming-transaction-s-found-set-to-be-received-manually": "Incoming transaction(s) found - Set to be received manually",
+    "invalid-nano-account-or-transaction-hash": "Invalid Nano account or transaction hash!",
+    "new-incoming-transaction-s-unlock-the-wallet-to-receive": "New incoming transaction(s) - Unlock the wallet to receive",
+    "there-was-an-issue-retrieving-the-latest-fiat-price": "There was an issue retrieving the latest fiat price.",
+    "wallet-locked-after-x-minutes-of-inactivity": "Wallet locked after {{minutes}} minute(s) of inactivity",
+    "wallet-server-settings-is-set-to-offline-mode": "Wallet server settings is set to offline mode. Please change server first!"
+  },
+  "change-rep-widget": {
+    "receive-a-transaction-to-configure": "Receive a transaction to configure",
+    "representative-change-required": "Representative Change Required",
+    "representative-for": "Representative for",
+    "status": {
+      "acceptable-representative": "Acceptable Representative",
+      "bad-representative": "Bad Representative",
+      "good-representative": "Good Representative",
+      "unknown-status": "Unknown Status"
+    }
+  },
+  "configure-app": {
+    "advanced-options": "Advanced Options",
+    "api-server": {
+      "title": "API Server",
+      "tooltip": "This has to be a valid Nano RPC endpoint or an API compliant with it."
+    },
+    "auth-header": {
+      "example": "For example with basic auth:",
+      "title": "Auth Header",
+      "tooltip": "This has to be a valid Authorization header."
+    },
+    "clear-work-cache": {
+      "title": "Clear Work Cache",
+      "tooltip": "This will delete all locally cached Proof of Work values"
+    },
+    "default-representative": {
+      "title": "Default Representative",
+      "tooltip": "This representative will be used when creating the initial open block on a new account"
+    },
+    "delete-all-data": {
+      "title": "Delete ALL Data",
+      "tooltip": "This will delete ALL stored data and reset app settings, including your wallet, address book and more."
+    },
+    "delete-wallet-data": {
+      "title": "Delete Wallet Data",
+      "tooltip": "This will delete all data related to your wallet (Your seed and accounts)"
+    },
+    "display-settings": "Display Settings",
+    "fiat-currency": "FIAT Currency",
+    "language": "Language",
+    "lock-after-inactivity": {
+      "title": "Lock After Inactivity",
+      "tooltip": "Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time"
+    },
+    "min-receive": {
+      "title": "Min Receive",
+      "tooltip": "Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."
+    },
+    "node-stats": {
+      "block-count": "Block Count",
+      "network": "Network",
+      "node-version": "Node Version",
+      "peers-stake-required": "Peers Stake Required",
+      "peers-stake-total": "Peers Stake Total",
+      "random-server": "Random Server",
+      "server": "Server",
+      "title": "Node Stats",
+      "uncemented-blocks": "Uncemented Blocks"
+    },
+    "pow-multiplier": {
+      "title": "PoW Multiplier",
+      "tooltip": "Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."
+    },
+    "pow-source": {
+      "title": "PoW Source",
+      "tooltip": "Change how Proof of Work for your blocks are generated."
+    },
+    "receive-method": {
+      "title": "Receive Method"
+    },
+    "server-configuration": {
+      "title": "Server Configuration",
+      "tooltip": "Change which server is used to communicate with the Nano network"
+    },
+    "server-settings": "Server Settings",
+    "wallet-settings": "Wallet Settings",
+    "wallet-storage": {
+      "title": "Wallet Storage",
+      "tooltip": "Change where your wallet is stored.  If you select none, your wallet is reset every time you reload."
+    },
+    "websocket-server": {
+      "note": "Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.",
+      "title": "WebSocket Server",
+      "tooltip": "This has to be a Nano Node Websocket or a WebSocket API compliant with it."
+    },
+    "work-server": {
+      "title": "Work Server",
+      "tooltip": "This has to be a valid Nano Work Server endpoint or an API compliant with it."
+    }
+  },
+  "configure-wallet": {
+    "12-15-18-21-or-24-words-mnemonic": "12,15,18,21 or 24-words mnemonic",
+    "24-words-mnemonic": "24-words mnemonic",
+    "64-hex-character-nano-private-key": "64 hex character Nano Private Key",
+    "64-hex-character-nano-seed": "64 hex character Nano Seed",
+    "64-or-128-hex-character-nano-expanded-private-key": "64 or 128 hex character Nano Expanded Private Key",
+    "account-index": "Account Index",
+    "already-configured": {
+    },
+    "backupseed": {
+      "it-is-the-master-key-to-all-of-your-accounts": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency.",
+      "make-sure-to-write-down-your-seed": "Make sure to write down your seed and/or mnemonic or save it somewhere safe.",
+      "never-share-it-with-anyone": "Never share it with anyone!"
+    },
+    "below-is-the-seed-and-mnemonic-backup": "Below is the seed and mnemonic backup. You can use whichever you prefer in any other compatible wallet.",
+    "bip39-mnemonic": "BIP39 Mnemonic",
+    "bip39-passphrase": "BIP39 Passphrase",
+    "configure-wallet": "Configure Wallet",
+    "confirm-wallet-password": "Confirm Wallet Password",
+    "connect-via-bluetooth": "Connect via Bluetooth",
+    "connect-via-usb": "Connect via USB",
+    "create-wallet": "Create Wallet",
+    "enter-your-expanded-private-key-below": "Enter your expanded private key below. These are rare, and are usually generated from multi-party cryptography magic.",
+    "enter-your-mnemonic-generated-by-a-ledger-device": "Enter your mnemonic generated by a Ledger device or certain multi-currency wallets.",
+    "enter-your-mnemonic-generated-by-nault-or-other-nano-wallets": "Enter your mnemonic generated by Nault or other Nano wallets.",
+    "enter-your-nano-private-key-below": "Enter your Nano private key below. These are not to be confused with Nano seeds, which are more common, and produce many private keys.",
+    "enter-your-seed-from-any-nano-wallet-to-import-it-below": "Enter your seed from any Nano wallet to import it below.",
+    "for-the-safety-of-your-funds-use-a-secure-und-unique-password": "For the safety of your funds, use a secure und unique password.",
+    "i-have-securely-stored-the-seed-and-or-mnemonic": "I have securely stored the seed and/or mnemonic",
+    "if-wallet-file": "If you have saved your wallet to a file using Nault before, use the button below to import it.",
+    "if-you-lose-your-password-you-can-always-restore": "If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.",
+    "import-bip39-mnemonic": "Import BIP39 Mnemonic",
+    "import-expanded-private-key": "Import Expanded Private Key",
+    "import-file": "Import File",
+    "import-nano-mnemonic": "Import Nano Mnemonic",
+    "import-seed": "Import Seed",
+    "import-wallet": "Import Wallet",
+    "ledger-device-locked": {
+    },
+    "ledger-device-not-connected": {
+    },
+    "ledger-device-ready": {
+    },
+    "ledger-nault-user-guide-and-troubleshooting": "Ledger/Nault User Guide and Troubleshooting",
+    "make-sure-you-have-the-nano-app-installed": "Make sure you have the Nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.",
+    "nano-mnemonic": "Nano Mnemonic",
+    "nano-seed": "Nano Seed",
+    "note-for-ledger-device-owners": {
+    },
+    "password-must-be-at-least-x-characters-long": "Password must be at least {{numchars}} characters long",
+    "passwords-do-not-match": "Passwords do not match!",
+    "press-the-ledger-status-bar-on-the-left-side-to-reload": "Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.",
+    "protip": "ProTip:",
+    "refresh-ledger-status": "Refresh Ledger Status",
+    "required-only-if-the-bip39-seed-is-protected-by-a-password-or-passphrase": "Required only if the BIP39 seed is protected by a password or passphrase.",
+    "save-wallet-backup": "Save Wallet Backup",
+    "set-wallet-password": "Set Wallet Password",
+    "successfully-created-new-wallet-do-not-lose-the-seed-mnemonic": "Successfully created new wallet! Do not lose the seed/mnemonic!",
+    "the-wallet-will-be-imported-as-a-single-private-key-for-the-account-index-you-provide": "The wallet will be imported as a single private key for the account index you provide.",
+    "unsupported-browser": {
+      "browser-does-not-support-usb-communication": "It looks like your browser does not support USB communication. Recommended browsers are: Chrome, Edge, Brave, or Opera.",
+      "note-ios-is-currently-unsupported": "Note: iOS is currently unsupported. On Mac, use any browser other than Safari.",
+      "title": "Unsupported Browser"
+    },
+    "use-ledger-hardware-wallet": "Use Ledger Hardware Wallet",
+    "view-accounts": "View Accounts",
+    "wallet-configured": {
+    },
+    "wallet-created": "Wallet created!",
+    "your-password-is-used-to-encrypt-the-sensitive-parts": "Your password is used to encrypt the sensitive parts of your wallet when it is locked, which disables sending, receiving, creating accounts, and other operations.",
+    "your-wallet-has-been-created": "Your wallet has been created and you are ready to send and receive Nano!"
+  },
+  "general": {
+    "account": "Account",
+    "accounts": "Accounts",
+    "address-book": "Address Book",
+    "amount": "Amount",
+    "apply": "Apply",
+    "back": "Back",
+    "balance": "Balance",
+    "cancel": "Cancel",
+    "change": "Change",
+    "copy-to-clipboard": "Copy to clipboard",
+    "date": "Date",
+    "edit": "Edit",
+    "export-as-file": "Export As File",
+    "hash": "Hash",
+    "hide": "Hide",
+    "import": "Import",
+    "import-export": "Import / Export",
+    "loading": "Loading...",
+    "more-info": "More info",
+    "name": "Name",
+    "new": "New",
+    "next": "Next",
+    "no": "No",
+    "options": "Options",
+    "or": "or",
+    "receive": "Receive",
+    "reconnect": "Reconnect",
+    "refresh": "Refresh",
+    "representative": "Representative",
+    "representative-list-results": "Representative List Results",
+    "representatives": "Representatives",
+    "save": "Save",
+    "scan-qr-code": "Scan QR Code",
+    "send": "Send",
+    "settings": "Settings",
+    "status": "Status",
+    "successfully-copied-to-clipboard": "Successfully copied to clipboard!",
+    "total-balance": "Total Balance",
+    "unknown": "Unknown",
+    "unlock": "Unlock",
+    "uptime": "Uptime",
+    "voting-weight": "Voting Weight",
+    "yes": "Yes"
+  },
+  "manage-wallet": {
+    "backup-wallet": "Backup Wallet",
+    "change-wallet-password": "Change Wallet Password",
+    "export-nault-wallet": {
+      "export-wallet": "Export Wallet",
+      "for-backup-purposes-always-store-the-seed": "For backup purposes, always store the seed and/or mnemonic from the \"Backup Wallet\" section above.",
+      "if-you-forget-the-wallet-password": "If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.",
+      "note-the-export-does-not-contain-your-address-book": "Note: The export does not contain your address book.",
+      "scan-the-qr-code-on-any-device-to-import-your-nault-wallet": "Scan the QR code on any device to import your Nault wallet!",
+      "title": "Export Nault Wallet",
+      "use-this-export-tool-to-simplify-wallet-transfer-to-other-devices": "Use this export tool to simplify wallet transfer to other devices.",
+      "you-can-also-import-your-wallet-by-using-the-url-below": "You can also import your wallet by using the URL below.",
+      "you-need-to-set-a-secure-wallet-password": "You need to set a secure wallet password before you can use this export tool.",
+      "your-data-will-be-encrypted-with-your-wallets-password": "Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!"
+    },
+    "password-must-be-at-least-x-characters-long": "Password must be at least {{chars}} characters long",
+    "to-backup-your-wallet-mnemonic-phrase-click-here": "To backup your wallet mnemonic phrase click here:",
+    "to-backup-your-wallet-seed-click-here": "To backup your wallet seed click here:",
+    "wallet-needs-to-be-unlocked": "Wallet needs to be unlocked"
+  },
+  "navigation": {
+    "advanced-tools": "Advanced Tools",
+    "app-settings": "App Settings",
+    "attempting-to-connect-to-nano-node": "Attempting to connect to Nano node",
+    "based-on-x": "Based on",
+    "configure-new-wallet": "Configure New Wallet",
+    "currently-selected": "Currently Selected",
+    "incoming-balance": "Incoming Balance",
+    "manage-wallet": "Manage Wallet",
+    "processing-transactions": "Processing Transactions...",
+    "qr-generator": "QR Generator",
+    "remote-signing": "Remote Signing",
+    "search-for-an-account-or-block-hash": "Search for an account or block hash",
+    "select-a-different-server": "Select a different server",
+    "select-a-server-to-interact-with-the-network": "Select a server to interact with the network",
+    "set-to-receive-manually": "Set to Receive Manually",
+    "unable-to-connect-to-the-server": "Unable to connect to the server",
+    "unit-converter": "Unit Converter",
+    "unlock-wallet-to-receive": "Unlock Wallet to Receive",
+    "wallet-is-in-offline-mode": "Wallet is in offline mode",
+    "wallet-sweeper": "Wallet Sweeper"
+  },
+  "representatives": {
+    "accounts-to-change": "Accounts to Change",
+    "all-current-accounts": "All Current Accounts",
+    "change-your-representatives": "Change your representatives",
+    "fetching-information-about-your-representatives": "Fetching information about your representatives...",
+    "manage-representatives": "Manage Representatives",
+    "new-representative": "New Representative",
+    "none-of-your-accounts-have-delegated-any-voting-weight": "None of your accounts have delegated any voting weight yet, you must receive a transaction to change your representative!",
+    "recommended-representatives": "Recommended Representatives",
+    "representatives-participate-in-the-nano-consensus-protocol": "Representatives participate in the Nano consensus protocol on your behalf. You can change them at any time.",
+    "select-accounts-to-change": "Select Accounts to Change",
+    "showing-x-x-of-x-representatives": "Showing {{startCount}} - {{endCount}} of {{totalCount}} representatives",
+    "update-representatives": "Update Representatives",
+    "updating-representatives": "Updating Representatives...",
+    "view-all-representatives": "View All"
+  },
+  "status": {
+    "acceptable": "Acceptable",
+    "bad": "Bad",
+    "good": "Good"
+  },
+  "wallet-widget": {
+    "enter-wallet-password": "Enter wallet password",
+    "incorrect-password": "Incorrect password",
+    "ledger-disconnected": "Ledger disconnected",
+    "ledger-locked": "Ledger locked",
+    "ledger-ready": "Ledger Ready",
+    "unlock-the-device-then-click-here": "Unlock the device, then click here:",
+    "unlock-wallet": "Unlock Wallet",
+    "view-troubleshooting-guide": "view Troubleshooting Guide",
+    "wallet-locked": "Wallet Locked",
+    "wallet-unlocked": "Wallet Unlocked"
+  },
+  "welcome": {
+    "a-full-security-guide-is-found-here": "A full security guide is found here.",
+    "a-secure-open-source-wallet-for-nano": "A secure open source wallet for Nano",
+    "all-sensitive-operations-happen-in-your-browser": "All sensitive operations happen in your browser only - your seed and private keys are never sent across your network, or stored on any server in any format. (So there is no need for server-based authentication measures such as 2FA).",
+    "any-device-anywhere": "Any Device, Anywhere",
+    "because-no-information-is-ever-stored-on-a-server": "Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.",
+    "create-a-new-wallet": "Create A New Wallet",
+    "donation-address": "Donation Address",
+    "helpful-features": "Helpful Features",
+    "import-an-existing-wallet": "Import An Existing Wallet",
+    "no-strings-attached-wallet": "No Strings Attached\" Wallet",
+    "security-focused": "Security Focused",
+    "send-and-receive-nano-from-any-device-using-the-web-wallet": "Send and receive Nano from any device using the web wallet or use the desktop wallet available for Windows/Mac/Linux.",
+    "store-labels-for-your-friends-and-your-own-accounts": "Store labels for your friends and your own accounts in the address book, track your balances in your local currency, and more!",
+    "to-get-started-choose-an-option-below-to-configure-your-wallet": "To get started, choose an option below to configure your wallet",
+    "view-my-accounts": "View My Accounts",
+    "welcome-back-it-looks-like-your-wallet-is-already-configured": "Welcome back! It looks like your wallet is already configured.",
+    "why-use-nault": "Why Use Nault?"
+  }
+}
