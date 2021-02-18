@@ -161,101 +161,119 @@
 
       </div>
 
-      <div>
-
-        <div uk-grid style="margin-top: 25px;">
-          <div class="uk-width-1-1">
-            <h3 class="uk-heading-divider uk-text-center" style="margin-bottom: 0;">Recent Transactions<span class="{{statsRefreshEnabled ? '':'refresh-disabled'}}" id="refresh" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></span></h3>
-          <div class="uk-overflow-hidden">
-
-
-            <table class="uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
-              <thead>
-              <tr>
-                <th scope="col" class="uk-width-1-6@m uk-width-1-6">Date</th>
-                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Account</th>
-                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Amount</th>
-                <th scope="col" class="uk-width-1-5@m uk-width-1-4">Hash</th>
-                <th scope="col" *ngIf="remoteVisible" class="uk-width-1-5@m uk-width-1-4">Incoming</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr *ngFor="let pending of pendingBlocks" class="uk-text-muted">
-                <td class="uk-text-truncate" *ngIf="pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</td>
-                <td class="uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
-                <td class="uk-visible-toggle">
-                  <div uk-grid>
-                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                      <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="pending.addressBookName" class="account-label uk-margin-small-right">{{ pending.addressBookName }}</span>
-                        <span class="nano-address-clickable nano-address-monospace">
-                          <app-nano-account-id [accountID]="pending.account" middle="off"></app-nano-account-id>
-                        </span>
-                      </a>
-                    </div>
-                    <div class="nano-address-actions uk-width-auto" style="margin-top: 3px;">
-                      <ul class="uk-iconnav">
-                        <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </td>
-                <td class="uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
-                  +{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO*
-                </td>
-                <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ pending.hash }}</a></td>
-                <td *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto" style="height: 28px; line-height: 28px; padding-top: 0;" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></td>
-              </tr>
-
-              <tr *ngFor="let history of accountHistory">
-                <td class="uk-text-truncate" *ngIf="history.local_timestamp">{{ history.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</td>
-                <td class="uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
-                <td class="uk-visible-toggle">
-                  <div uk-grid>
-                    <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                      <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-link-text" title="View Account Details" uk-tooltip>
-                        <span *ngIf="history.addressBookName" class="account-label uk-margin-small-right">{{ history.addressBookName }}</span>
-                        <span class="nano-address-clickable nano-address-monospace">
-                          <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="off"></app-nano-account-id>
-                        </span>
-                      </a>
-                    </div>
-                    <div class="nano-address-actions uk-width-auto" style="margin-top: 3px;">
-                      <ul class="uk-iconnav">
-                        <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </td>
-                <td [ngClass]="{ 'uk-text-success': history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open', 'uk-text-danger': history.type == 'send' || history.subtype == 'send' }">
-                  <span *ngIf="isNaN(history.amount)">NEW REP</span>
-                  <span *ngIf="!isNaN(history.amount)">
-                    {{ (history.type == 'send' || history.subtype == 'send') ? '-' : '+' }}{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO
-                  </span>
-                </td>
-                <td class="uk-text-truncate"><a [routerLink]="'/transaction/' + history.hash" class="uk-link-text" title="View Block Details" uk-tooltip>{{ history.hash }}</a></td>
-              </tr>
-              <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
-                <td colspan="4" style="text-align: center;">No account history</td>
-              </tr>
-              <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
-                <td colspan="4" style="text-align: center;">
-                  <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          </div>
-
-        </div>
-
-      </div>
     </div>
 
-    <div class="uk-width-1-1 uk-text-center uk-text-muted uk-text-small uk-margin-medium-bottom" *ngIf="pendingBlocks.length">
-      * Incoming Transaction
+    <div class="uk-width-1-1">
+      <h3 class="uk-text-center uk-margin-small-bottom">Transactions<span class="{{statsRefreshEnabled ? '':'refresh-disabled'}}" id="refresh" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></span></h3>
+    </div>
+
+    <div class="uk-overflow-hidden">
+
+
+      <table class="transactions-list uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
+        <thead>
+        <tr>
+          <th scope="col" class="type-column"></th>
+          <th scope="col" class="account-column">Account / Block</th>
+          <th scope="col" class="amount-column">Amount</th>
+          <th scope="col" class="date-column uk-text-right">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let pending of pendingBlocks" [class]="{ 'uk-text-muted': true, 'uk-hidden': pending.received }">
+          <td class="type-column">
+            <span class="type uk-text-small" uk-icon="icon: plus-circle; ratio: 1.2;"></span>
+          </td>
+          <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
+            <div uk-grid class="uk-flex-nowrap">
+              <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <span class="account-label-placeholder"></span><span class="account-label" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</span><br>
+                  <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                    <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
+                  </span>
+                </a>
+              </div>
+              <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom" style="margin-bottom: 11px !important; flex-shrink: 0;">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
+            <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
+          </td>
+          <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
+            <span class="uk-text-small">Ready to receive</span><br><span class="amount-nano">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span><span class="currency-name">NANO</span>
+          </td>
+          <td class="date-column uk-text-middle uk-text-right uk-text-truncate uk-text-muted" *ngIf="walletAccount">
+            <div>
+              <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
+              <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span uk-spinner="ratio: 0.5;"></span> Receiving</button>
+            </div>
+            <div *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></div>
+          </td>
+          <td class="date-column uk-text-middle uk-text-right uk-text-truncate uk-text-muted" *ngIf="!walletAccount && !pending.local_timestamp">N/A</td>
+          <td class="date-column uk-text-middle uk-text-right uk-text-truncate" *ngIf="!walletAccount && pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+        </tr>
+
+        <tr *ngFor="let history of accountHistory">
+          <td class="type-column">
+            <span class="type uk-text-small uk-text-success" uk-icon="icon: plus-circle; ratio: 1.2;" *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')"></span>
+            <span class="type uk-text-small uk-text-danger" uk-icon="icon: minus-circle; ratio: 1.2;" *ngIf="(history.type == 'send' || history.subtype == 'send')"></span>
+            <span class="type uk-text-small uk-text-primary" uk-icon="icon: cog; ratio: 1.2;" *ngIf="(history.type == 'change' || history.subtype == 'change')"></span>
+          </td>
+          <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
+            <div uk-grid class="uk-flex-nowrap">
+              <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <span class="account-label-placeholder"></span><span class="account-label" *ngIf="history.addressBookName">{{ history.addressBookName }}</span><br>
+                  <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                    <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="auto"></app-nano-account-id>
+                  </span>
+                </a>
+              </div>
+              <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom" style="margin-bottom: 11px !important; flex-shrink: 0;">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
+            <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
+          </td>
+          <td [ngClass]="{
+            'amount-column': true,
+            'uk-text-middle': true,
+            'uk-text-success': (history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open'),
+            'uk-text-danger': (history.type == 'send' || history.subtype == 'send'),
+            'uk-text-primary': (history.type == 'change' || history.subtype == 'change')
+          }">
+            <span *ngIf="isNaN(history.amount)">
+              <span class="uk-text-small">Rep. Change</span>
+            </span>
+            <span *ngIf="!isNaN(history.amount)">
+              <ng-container *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')">
+                <span class="uk-text-small">Received</span><br>
+              </ng-container>
+              <ng-container *ngIf="(history.type == 'send' || history.subtype == 'send')">
+                <span class="uk-text-small">Sent</span><br>
+              </ng-container>
+              <span class="amount-nano">{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              <span class="currency-name">NANO</span>
+            </span>
+          </td>
+          <td class="date-column uk-text-middle uk-text-right uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
+          <td class="date-column uk-text-middle uk-text-right uk-text-truncate" *ngIf="history.local_timestamp">{{ history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+        </tr>
+        <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
+          <td colspan="4" style="text-align: center;">No account history</td>
+        </tr>
+        <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
+          <td colspan="4" style="text-align: center;">
+            <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>
@@ -274,7 +292,7 @@
         <li><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the new signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</li>
       </ol>
 
-      <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+      <div *ngIf="blockHashReceive" class="uk-width-1-1 uk-text-center uk-margin-small-bottom" style="display: flex; justify-content: center;">
         <span class="uk-text-small" uk-tooltip title="Unsigned block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Unsigned Block</strong></span>
         <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>

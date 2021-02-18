@@ -18,7 +18,7 @@
 	// General
 	color: @dark-mode-text-5;
 
-	.uk-panel-scrollable {
+	.content-container {
 		@scrollbar-color: #4E4E5A;
 
 		// Scrollbar - Gecko (Firefox)
@@ -94,17 +94,15 @@
 		color: @dark-mode-text-4;
 	}
 
-	.account-label {
+	.account-label:not(.rep):not(.blue), .account-label:not(.rep):not(.blue):hover {
 		background: @dark-mode-background-6;
-	}
-
-	.account-label, .account-label:hover {
 		color: @dark-mode-text-4;
 	}
 
 	.account-container:hover .account-label {
 		border-color: @dark-mode-accent-1;
-		background: @dark-mode-accent-1;
+		background: @dark-mode-accent-1 !important;
+		color: #FFF !important;
 	}
 
 	.account-container .account-index {
@@ -378,6 +376,15 @@
 
 	.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 		color: #FFA556 !important;
+	}
+
+	// Transactions list
+	.transactions-list {
+		.account-column {
+			.block-hash:hover {
+				border-bottom-color: @dark-mode-text-1;
+			}
+		}
 	}
 
 	// Account details page

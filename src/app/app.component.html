@@ -1,9 +1,9 @@
-<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
+<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()" style="overflow-y: hidden;">
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
     <div uk-grid class="mobile-top-bar uk-background-primary">
-      <div class="uk-width-1-2">
+      <div class="uk-width-1-2 button-column">
         <div class="nav-button" (click)="toggleNav()" style="cursor: pointer;">
           <span uk-icon="icon: menu;"></span>
           <span class="app-name">Nault</span>
@@ -270,10 +270,8 @@
 
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" [style.height]="windowHeight + 'px'">
-        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
-          <router-outlet></router-outlet>
-        </div>
+      <div class="uk-width-expand content-container uk-panel" [class.nav-expanded]="navExpanded" (click)="closeNav()">
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

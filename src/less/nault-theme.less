@@ -37,33 +37,6 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	color: @global-color;
 }
 
-.uk-panel-scrollable {
-	overflow-x: auto;
-	overflow-y: scroll;
-	resize: none;
-
-	@scrollbar-color: #AAB;
-
-	// Scrollbar - Gecko (Firefox)
-	scrollbar-width: thin;
-	scrollbar-color: @scrollbar-color #FFF;
-
-	// Scrollbar - WebKit (Chrome, Edge)
-	&::-webkit-scrollbar {
-		width: 9px;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: #FFF;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background: @scrollbar-color;
-		border-radius: 9px;
-		border: 2px solid #FFF;
-	}
-}
-
 .uk-card-body > ul > li > a {
 	color: @global-color;
 }
@@ -136,23 +109,32 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	height: @mobile-top-bar-height;
 	color: #FFF;
 
-	.nav-button {
-		display: flex;
-		align-items: center;
-		margin: 9px 0 8px 14px;
+	> .button-column {
+		padding-left: 0;
 
-		> .uk-icon {
-			margin-right: 10px;
-		}
+		> .nav-button {
+			display: flex;
+			align-items: center;
+			margin: 9px 0 8px 14px;
 
-		> .app-name {
-			font-size: 22px;
-			font-weight: 400;
+			> .uk-icon {
+				margin-right: 10px;
+			}
+
+			> .app-name {
+				font-size: 22px;
+				font-weight: 400;
+			}
 		}
 	}
 
 	@media (max-width: 939px) {
 		display: flex;
+		position: fixed;
+		width: 100vw;
+		left: 0;
+		margin-left: 0;
+		z-index: 2;
 	}
 }
 
@@ -160,39 +142,68 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	margin-top: 0;
 	overflow: hidden;
 	margin-left: 0;
-	min-height: calc(100vh);
-	max-height: calc(100vh);
-
-	@media (max-width: 939px) {
-		min-height: calc(100vh - @mobile-top-bar-height);
-		max-height: calc(100vh - @mobile-top-bar-height);
-	}
+	height: 100vh;
 }
 
 .content-container {
 	background: #FFF;
-	min-height: 100%;
-	padding: 0;
+	padding: 15px 20px;
 	z-index: 1;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 100vh;
 
-	> .uk-panel {
-		padding: 15px 20px;
-	}
-
-	> .uk-panel-scrollable > *:last-child > *:last-child {
+	> *:last-child > *:last-child {
 		margin-bottom: 20px;
 	}
 
 	@media (max-width: 939px) {
+		margin-top: @mobile-top-bar-height;
+		height: calc(100vh - @mobile-top-bar-height);
+		padding: 15px 15px;
 		transition: transform 0.5s ease;
 
 		&.nav-expanded {
 			transform: translateX(360px);
-		}
+			position: relative;
+			overflow-y: hidden;
 
-		> .uk-panel {
-			padding: 15px;
+			&::after {
+				content: '';
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 90000px;
+				background: rgba(0, 0, 0, 0.5);
+				top: 0;
+				left: 0;
+
+				> * {
+					pointer-events: none;
+				}
+			}
 		}
+	}
+
+	@scrollbar-color: #AAB;
+
+	// Scrollbar - Gecko (Firefox)
+	scrollbar-width: thin;
+	scrollbar-color: @scrollbar-color #FFF;
+
+	// Scrollbar - WebKit (Chrome, Edge)
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #FFF;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: @scrollbar-color;
+		border-radius: 9px;
+		border: 2px solid #FFF;
 	}
 }
 
@@ -334,6 +345,99 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 	color: #F79743;
+}
+
+// Transactions list
+.transactions-list {
+	.type-column {
+		min-width: 25px;
+		text-align: center;
+	}
+	.type-column .type {
+		margin-top: 35px;
+	}
+
+	.account-column {
+		width: 45%;
+		min-width: 210px;
+
+		.account-label {
+			margin-bottom: 6px;
+		}
+
+		.account-label-placeholder {
+			height: 32px;
+			width: 1px;
+			display: inline-block;
+			vertical-align: -14px;
+		}
+
+		.block-hash {
+			text-decoration: none;
+			display: inline-block;
+			border-bottom: 2px solid transparent;
+			transition: border-color 100ms ease-in-out;
+
+			&:hover {
+				border-color: #999;
+			}
+		}
+	}
+
+	.amount-column {
+		width: 35%;
+		padding-left: 30px;
+		white-space: nowrap;
+
+		.amount-nano {
+			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+			font-weight: 700;
+			font-size: 16px;
+		}
+
+		.currency-name {
+			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+			font-weight: 400;
+			margin-left: 5px;
+		}
+	}
+
+	.date-column {
+		width: 20%;
+		min-width: 180px;
+
+		button {
+			white-space: nowrap;
+
+			&.remote-sign {
+				margin-top: 10px;
+			}
+
+			.uk-spinner {
+				margin-right: 5px;
+				vertical-align: 2px;
+			}
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.account-column {
+			width: 55%;
+		}
+
+		.amount-column {
+			width: 25%;
+		}
+	}
+	@media (min-width: 1400px) {
+		.account-column {
+			width: 65%;
+		}
+
+		.amount-column {
+			width: 15%;
+		}
+	}
 }
 
 // Account details page

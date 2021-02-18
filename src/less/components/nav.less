@@ -46,6 +46,7 @@
 		position: absolute;
 		width: 360px;
 		height: calc(100vh - @mobile-top-bar-height);
+		margin-top: @mobile-top-bar-height;
 	}
 
 	// Scrollbar - Gecko (Firefox)
@@ -148,7 +149,7 @@
 	}
 
 	&.incoming-card {
-		background: rgba(78, 145, 224, 0.2);
+		background: #272837;
 
 		min-height: 125px;
 		height: 125px;
@@ -863,7 +864,7 @@
 }
 
 .nav-search {
-	background: rgba(56, 56, 68, 0.3);
+	background: rgba(56, 56, 76, 0.3);
 	padding: 3px 12px 3px 8px;
 	font-size: 14px;
 	border-radius: 10px;
@@ -872,11 +873,16 @@
 	.uk-search-icon {
 		width: 30px;
 		margin-right: -8px;
+		color: #8F8FAB;
 	}
 
 	input {
 		color: @nav-half-muted-color;
 		border: 0 !important;
+
+		&::placeholder {
+			color: #8F8FAB;
+		}
 	}
 }
 
