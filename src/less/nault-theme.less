@@ -337,6 +337,16 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	border: 4px solid rgba(83, 83, 83, 0.05);
 }
 
+.nano-address-prefix {
+	color: #4A90E2;
+}
+.nano-address-middle {
+	min-width: 1.4em;
+}
+.nano-address-suffix {
+	color: #D5AF4E;
+}
+
 // Unlock Wallet modal
 .password-input.uk-form-danger {
 	border-color: #F79743;
@@ -352,15 +362,13 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	.type-column {
 		min-width: 25px;
 		text-align: center;
-	}
-	.type-column .type {
-		margin-top: 35px;
+
+		> .type {
+			margin-top: 35px;
+		}
 	}
 
 	.account-column {
-		width: 45%;
-		min-width: 210px;
-
 		.account-label {
 			margin-bottom: 6px;
 		}
@@ -370,6 +378,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 			width: 1px;
 			display: inline-block;
 			vertical-align: -14px;
+		}
+
+		.nano-address-clickable {
+			flex-shrink: 0;
 		}
 
 		.block-hash {
@@ -385,9 +397,8 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	}
 
 	.amount-column {
-		width: 35%;
-		padding-left: 30px;
 		white-space: nowrap;
+		text-align: right;
 
 		.amount-nano {
 			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
@@ -403,7 +414,6 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	}
 
 	.date-column {
-		width: 20%;
 		min-width: 180px;
 
 		button {
@@ -420,22 +430,132 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 		}
 	}
 
+	.more-results {
+		text-align: center;
+
+		a:hover {
+			text-decoration: none;
+		}
+	}
+
+	// Adaptive properties only
+	.account-column {
+		min-width: 155px;
+		width: 45%;
+
+		.nano-address-actions {
+			margin-bottom: 22px !important;
+		}
+	}
+
+	.amount-column {
+		width: 55%;
+	}
+
+	.date-column {
+		display: none;
+	}
+
+	@media (max-width: 599px) {
+		th {
+			font-size: 0.9rem;
+		}
+
+		.type-column {
+			padding-right: 2px;
+		}
+
+		.account-column {
+			// Not on table headings
+			td& {
+				font-size: 0.8rem;
+			}
+
+			.nano-address-clickable > .uk-flex {
+				flex-wrap: wrap;
+				width: 125px;
+
+				.nano-address-middle {
+					width: 0;
+				}
+
+				.nano-address-suffix {
+					margin-left: 69px; // Nice
+				}
+			}
+
+			.block-hash {
+				max-width: 155px;
+			}
+		}
+
+		.amount-column {
+			font-size: 12px;
+
+			.amount-nano {
+				font-size: 13px;
+				margin: 5px 0 -3px 0;
+				display: block;
+			}
+
+			.currency-name {
+				font-size: 13px;
+				margin-left: 0;
+				display: block;
+			}
+		}
+	}
+
+	@media (min-width: 800px) and (max-width: 939px) {
+		.account-column {
+			width: 45%;
+			min-width: 210px;
+
+			.nano-address-actions {
+				margin-bottom: 11px !important;
+			}
+		}
+
+		.amount-column {
+			width: 35%;
+			text-align: left;
+			padding-left: 30px;
+		}
+
+		.date-column {
+			display: table-cell;
+			width: 20%;
+		}
+	}
+
 	@media (min-width: 1200px) {
 		.account-column {
 			width: 55%;
+			min-width: 210px;
+
+			.nano-address-actions {
+				margin-bottom: 11px !important;
+			}
 		}
 
 		.amount-column {
 			width: 25%;
+			text-align: left;
+		}
+
+		.date-column {
+			display: table-cell;
+			width: 20%;
 		}
 	}
-	@media (min-width: 1400px) {
+
+	@media (min-width: 1600px) {
 		.account-column {
-			width: 65%;
+			width: 60%;
 		}
 
 		.amount-column {
-			width: 15%;
+			width: 20%;
 		}
 	}
 }
