@@ -375,13 +375,17 @@
 	background: @nav-tooltip-color-background;
 	border-radius: 10px;
 	z-index: 2;
-	top: 70px;
 	overflow-y: scroll;
 	line-height: 1;
 	box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.15);
 	opacity: 0;
 	transition: opacity 200ms ease-in-out;
 	pointer-events: none;
+
+	top: 70px;
+	@media (max-width: 939px) {
+		top: @mobile-top-bar-height + 70px;
+	}
 
 	left: 62px;
 	@media (min-width: 1200px) {
