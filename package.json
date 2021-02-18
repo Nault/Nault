@@ -24,7 +24,8 @@
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
-    "desktop:publish": "electron-builder -wml --x64 -p always"
+    "desktop:publish": "electron-builder -wml --x64 -p always",
+    "preinstall": "npx npm-force-resolutions"
   },
   "private": true,
   "dependencies": {
@@ -100,6 +101,9 @@
     "uikit": "^3.0.0-beta.40",
     "worker-loader": "^2.0.0",
     "zxcvbn3": "^0.1.1"
+  },
+  "resolutions": {
+    "u2f-api": "1.2.1"
   },
   "build": {
     "appId": "cc.nault",
