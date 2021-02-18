@@ -13,7 +13,7 @@
           <span *ngIf="blockType == 'open'">Receive</span>
           <span *ngIf="blockType == 'receive'">Receive</span>
         </span>
-        <span style="display:block; font-size: 32px;">{{ transaction?.amount | rai: settings.settings.displayDenomination }}</span>
+        <span style="display:block; font-size: 32px;">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
         <span *ngIf="amountRaw.gt(0)" style="display:block; font-size: 12px;">+{{ amountRaw.toString(10) }} raw</span>
       </div>
       <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType == 'change'">
@@ -28,7 +28,8 @@
 
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="uk-label" *ngIf="fromAddressBook">{{ fromAddressBook }}</span> {{ fromAccountID }}
+                  <span class="confirm-title uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</span>
+                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                 </a>
               </span>
               <span class="confirm-subtitle" *ngIf="blockType != 'change'">From Account</span>
@@ -41,7 +42,8 @@
             <div class="uk-text-truncate" style="padding: 20px 20px;">
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID }}
+                  <span class="confirm-title uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</span>
+                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></span>
                 </a>
               </span>
               <span class="confirm-subtitle" *ngIf="blockType != 'change'">To Account</span>
@@ -77,8 +79,9 @@
         <div class="uk-margin" *ngIf="transaction?.contents?.balance">
           <label class="uk-form-label">Balance:</label>
           <div class="uk-form-controls uk-text-truncate">
-            {{ (isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance)) | rai: settings.settings.displayDenomination }}<br>
-            <span class="uk-text-small">{{ transaction?.contents?.balance }}</span>
+            {{ ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 0 }}{{
+              ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 1 }} NANO<br>
+            <span class="uk-text-small">{{ transaction?.contents?.balance }} raw</span>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.representative">

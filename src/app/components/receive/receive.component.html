@@ -19,7 +19,7 @@
       <div class="uk-width-3-4@s">
         <select class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
           <option [value]="0">All Accounts</option>
-          <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: settings.settings.displayDenomination }})</option>
+          <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
         </select>
       </div>
       <div class="uk-width-auto@s">
@@ -78,7 +78,7 @@
                 </div>
               </td>
               <td *ngIf="block.account == pendingAccountModel || pendingAccountModel === '0'">
-                {{ block.amount | rai: settings.settings.displayDenomination }}
+                {{ block.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ block.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO
                 <div *ngIf="toBigNumber(block.amount).mod(nano).gt(0)">
                   <span *ngIf="toBigNumber(block.amount); let rawAmount" style="display: block; font-size: 12px;" class="uk-text-muted">+{{ rawAmount.mod(nano).toString(10) }} raw</span>
                 </div>
@@ -92,10 +92,10 @@
               <td colspan="4" style="text-align: center;">No incoming transactions</td>
             </tr>
             <tr *ngIf="pendingAccountModel === '0' && pendingBelowThreshold.length > 0 && pendingBelowThreshold[0].gt(0)">
-              <td colspan="4" style="text-align: center;">Some transactions ({{pendingBelowThreshold[0] | rai: settings.settings.displayDenomination}} total) were hidden due to a Minimum Receive Amount of {{minAmount | rai: settings.settings.displayDenomination}} <a routerLink="/configure-app" routerLinkActive="active">(configure)</a></td>
+              <td colspan="4" style="text-align: center;">Some transactions ({{ pendingBelowThreshold[0] | rai: 'mnano,true' | amountsplit: 0 }}{{ pendingBelowThreshold[0] | rai: 'mnano,true' | amountsplit: 1 }} NANO total) were hidden due to a Minimum Receive Amount of {{ minAmount | rai: 'mnano,true' | amountsplit: 0 }}{{ minAmount | rai: 'mnano,true' | amountsplit: 1 }} NANO <a routerLink="/configure-app" routerLinkActive="active">(configure)</a></td>
             </tr>
             <tr *ngIf="pendingAccountModel !== '0' && walletAccount && walletAccount.pendingBelowThreshold.length > 0 && walletAccount.pendingBelowThreshold[0].gt(0)">
-              <td colspan="4" style="text-align: center;">Some transactions ({{walletAccount.pendingBelowThreshold[0] | rai: settings.settings.displayDenomination}} total) were hidden due to a Minimum Receive Amount of {{minAmount | rai: settings.settings.displayDenomination}} <a routerLink="/configure-app" routerLinkActive="active">(configure)</a></td>
+              <td colspan="4" style="text-align: center;">Some transactions ({{ walletAccount.pendingBelowThreshold[0] | rai: 'mnano,true' | amountsplit: 0 }}{{ walletAccount.pendingBelowThreshold[0] | rai: 'mnano,true' | amountsplit: 1 }} NANO total) were hidden due to a Minimum Receive Amount of {{ minAmount | rai: 'mnano,true' | amountsplit: 0 }}{{ minAmount | rai: 'mnano,true' | amountsplit: 1 }} NANO <a routerLink="/configure-app" routerLinkActive="active">(configure)</a></td>
             </tr>
             <tr *ngIf="loadingIncomingTxList">
               <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</td>
