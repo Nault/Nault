@@ -46,6 +46,7 @@
 		position: absolute;
 		width: 360px;
 		height: calc(100vh - @mobile-top-bar-height);
+		margin-top: @mobile-top-bar-height;
 	}
 
 	// Scrollbar - Gecko (Firefox)
@@ -148,7 +149,7 @@
 	}
 
 	&.incoming-card {
-		background: rgba(78, 145, 224, 0.2);
+		background: #272837;
 
 		min-height: 125px;
 		height: 125px;
@@ -374,13 +375,17 @@
 	background: @nav-tooltip-color-background;
 	border-radius: 10px;
 	z-index: 2;
-	top: 70px;
 	overflow-y: scroll;
 	line-height: 1;
 	box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.15);
 	opacity: 0;
 	transition: opacity 200ms ease-in-out;
 	pointer-events: none;
+
+	top: 70px;
+	@media (max-width: 939px) {
+		top: @mobile-top-bar-height + 70px;
+	}
 
 	left: 62px;
 	@media (min-width: 1200px) {
@@ -863,7 +868,7 @@
 }
 
 .nav-search {
-	background: rgba(56, 56, 68, 0.3);
+	background: rgba(56, 56, 76, 0.3);
 	padding: 3px 12px 3px 8px;
 	font-size: 14px;
 	border-radius: 10px;
@@ -872,11 +877,16 @@
 	.uk-search-icon {
 		width: 30px;
 		margin-right: -8px;
+		color: #8F8FAB;
 	}
 
 	input {
 		color: @nav-half-muted-color;
 		border: 0 !important;
+
+		&::placeholder {
+			color: #8F8FAB;
+		}
 	}
 }
 

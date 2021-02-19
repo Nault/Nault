@@ -1,3 +1,3 @@
-<span style="color: #4A90E2;">{{ firstCharacters }}</span>
-<span [class.uk-text-truncate]="middle === 'auto'" style="min-width: 1.4em;">{{ middleCharacters || '...'}}</span>
-<span style="color: #D5AF4E;">{{ lastCharacters }}</span>
+<span class="nano-address-prefix">{{ firstCharacters }}</span>
+<span [class]="{ 'nano-address-middle': true, 'uk-text-truncate': (middle === 'auto') }">{{ middleCharacters || '...'}}</span>
+<span class="nano-address-suffix">{{ lastCharacters }}</span>

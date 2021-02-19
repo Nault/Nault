@@ -280,6 +280,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             local_timestamp: pending.blocks[block].local_timestamp,
             addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
             hash: block,
+            loading: false,
+            received: false,
           });
 
           // Update the actual account pending amount with this above-threshold-value
@@ -336,6 +338,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           // For Open and receive blocks, we need to look up block info to get originating account
           if (h.subtype === 'open' || h.subtype === 'receive') {
             additionalBlocksInfo.push({ hash: h.hash, link: h.link });
+          } else if (h.subtype === 'change') {
+            h.link_as_account = h.representative;
+            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
           } else {
             h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
             h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
@@ -346,8 +351,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         return h;
       });
 
-      // Remove change blocks now that we are using the raw output
-      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change' && h.subtype !== 'change');
+      // Currently not supporting non-state rep change or state epoch blocks
+      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change' && h.subtype !== 'epoch');
 
       if (additionalBlocksInfo.length) {
         const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
@@ -570,6 +575,33 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       case 'knano': return this.util.nano.rawToKnano(value);
       case 'mnano': return this.util.nano.rawToMnano(value);
     }
+  }
+
+  async receivePending(pendingBlock) {
+    const sourceBlock = pendingBlock.hash;
+
+    if (this.wallet.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
+    pendingBlock.loading = true;
+
+    const newBlock = await this.nanoBlock.generateReceive(this.walletAccount, sourceBlock, this.wallet.isLedgerWallet());
+
+    if (newBlock) {
+      pendingBlock.received = true;
+      this.notifications.removeNotification('success-receive');
+      this.notifications.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
+      // clear the list of pending blocks. Updated again with reloadBalances()
+      this.wallet.clearPendingBlocks();
+    } else {
+      if (!this.wallet.isLedgerWallet()) {
+        this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+      }
+    }
+
+    pendingBlock.loading = false;
+
+    await this.wallet.reloadBalances();
   }
 
   async generateSend() {

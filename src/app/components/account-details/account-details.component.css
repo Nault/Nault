@@ -168,8 +168,8 @@
         display: block;
         position: absolute;
         width: calc(100% + 30px);
-        height: 100%;
-        top: 14px;
+        top: calc(100% + 13px);
+        height: 1px;
         left: 0;
     }
 }
