@@ -6,9 +6,9 @@
       <div uk-icon="icon: warning; ratio: 2;"></div>
     </div>
     <p>
-      <b>You already have a local Nault wallet configured</b><br>
-      Before going any further, be 100% certain you have backed up the seed to your current wallet!<br>
-      Without it, <b>any funds you have will become completely unrecoverable!</b>
+      <b>{{ 'configure-wallet.already-configured.you-already-have-a-local-nault-wallet-configured' | translate }}</b><br>
+      {{ 'configure-wallet.already-configured.before-going-any-further-be-100-certain' | translate }}<br>
+      <b>{{ 'configure-wallet.already-configured.without-it-any-funds-you-have-will-become-completely-unrecoverable' | translate }}</b>
     </p>
   </div>
 </div>
@@ -36,8 +36,8 @@
               </g>
             </svg>
           </div>
-          <h2>New<br>Wallet</h2>
-          <p>Generate seed<br>and mnemonic</p>
+          <h2>{{ 'configure-wallet.new-wallet' | translate }}</h2>
+          <p>{{ 'configure-wallet.generate-seed-and-mnemonic' | translate }}</p>
         </button>
       </div>
       <div class="uk-width-expand">
@@ -53,15 +53,15 @@
               </g>
             </svg>
           </div>
-          <h2>Use<br>Ledger</h2>
+          <h2>{{ 'configure-wallet.use-ledger' | translate }}</h2>
           <p>Nano S / Nano X</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
           <div class="icon">
             <div class="seed">{{ exampleSeed }}</div>
           </div>
-          <h2>Import<br>Seed</h2>
-          <p>64 hex<br>characters</p>
+          <h2>{{ 'configure-wallet.import-seed' | translate }}</h2>
+          <p>{{ 'configure-wallet.64-hex-characters' | translate }}</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
           <div class="icon">
@@ -84,15 +84,15 @@
               </div>
             </div>
           </div>
-          <h2>Import<br>Mnemonic</h2>
-          <p>12, 15, 18, 21<br>or 24 words</p>
+          <h2>{{ 'configure-wallet.import-mnemonic' | translate }}</h2>
+          <p>{{ 'configure-wallet.12-15-18-21-or-24-words' | translate }}</p>
         </button>
         <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
           <div class="icon">
             <div class="more-options">···</div>
           </div>
-          <h2>More<br>Options</h2>
-          <p>Import from file<br>or a private key</p>
+          <h2>{{ 'configure-wallet.more-options' | translate }}</h2>
+          <p>{{ 'configure-wallet.import-from-file-or-a-private-key' | translate }}</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
           <div class="icon">
@@ -100,22 +100,22 @@
               <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
             </svg>
           </div>
-          <h2>Import<br>File</h2>
-          <p>exported<br>Nault wallet</p>
+          <h2>{{ 'configure-wallet.import-file' | translate }}</h2>
+          <p>{{ 'configure-wallet.exported-nault-wallet' | translate }}</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
           <div class="icon">
             <div class="seed">{{ examplePrivateKey }}</div>
           </div>
-          <h2>Import<br>Private Key</h2>
-          <p>64 hex<br>characters</p>
+          <h2>{{ 'configure-wallet.import-private-key' | translate }}</h2>
+          <p>{{ 'configure-wallet.64-hex-characters' | translate }}</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'expandedKey';" *ngIf="showMoreImportOptions">
           <div class="icon">
             <div class="seed">{{ exampleExpandedPrivateKey }}</div>
           </div>
-          <h2 class="long-header">Import<br>Expanded<br>Private Key</h2>
-          <p>64 or 128 hex<br>characters</p>
+          <h2 class="long-header">{{ 'configure-wallet.import-expanded-private-key' | translate }}</h2>
+          <p>{{ 'configure-wallet.64-or-128-hex-characters' | translate }}</p>
         </button>
       </div>
     </div>
@@ -165,8 +165,8 @@
               </div>
             </div>
           </div>
-          <h2>Nano<br>Mnemonic</h2>
-          <p>24 words</p>
+          <h2>{{ 'configure-wallet.nano-mnemonic' | translate }}</h2>
+          <p>{{ 'configure-wallet.24-words' | translate }}</p>
         </button>
       </div>
       <div>
@@ -191,8 +191,8 @@
               </div>
             </div>
           </div>
-          <h2>BIP39<br>Mnemonic</h2>
-          <p>12, 15, 18, 21<br>or 24 words</p>
+          <h2>{{ 'configure-wallet.bip39-mnemonic' | translate }}</h2>
+          <p>{{ 'configure-wallet.12-15-18-21-or-24-words' | translate }}</p>
         </button>
       </div>
     </div>
@@ -207,8 +207,8 @@
       <div uk-icon="icon: info; ratio: 2;"></div>
     </div>
     <p style="max-width: 580px;">
-      <b>Note for Ledger device owners:</b><br>
-      Entering the mnemonic of your Ledger on this or any other device may expose your private keys, and should only be used as an emergency option to access the wallet.
+      <b>{{ 'configure-wallet.ledger-note.note-for-ledger-device-owners' | translate }}</b><br>
+      {{ 'configure-wallet.ledger-note.entering-the-mnemonic-of-your-ledger' | translate }}
     </p>
   </div>
 </div>
@@ -311,9 +311,9 @@
                 <div uk-icon="icon: warning; ratio: 2;"></div>
               </div>
               <p>
-                <b>Ledger Device Not Connected</b><br>
-                Connect your Ledger device and make sure you have the Nano app installed and running, then press the button below.<br>
-                <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
+                <b>{{ 'configure-wallet.ledger-not-connected.ledger-device-not-connected' | translate }}</b><br>
+                {{ 'configure-wallet.ledger-not-connected.connect-your-ledger-device' | translate }}<br>
+                <span *ngIf=!ledgerService.supportsBluetooth>{{ 'configure-wallet.ledger-not-connected.bluetooth-is-currently-not-supported' | translate }} <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">{{ 'general.more-info' | translate }}</a></span>
               </p>
             </div>
           </div>
@@ -323,8 +323,8 @@
                 <div uk-icon="icon: warning; ratio: 2;"></div>
               </div>
               <p>
-                <b>Ledger Device Locked</b><br>
-                Unlock your Ledger device, then press the button below to retry
+                <b>{{ 'configure-wallet.ledger-locked.ledger-device-locked' | translate }}</b><br>
+                {{ 'configure-wallet.ledger-locked.unlock-your-ledger-device' | translate }}
               </p>
             </div>
           </div>
@@ -334,8 +334,8 @@
                 <div uk-icon="icon: check; ratio: 2;"></div>
               </div>
               <p>
-                <b>Ledger Device Ready</b><br>
-                Press the import button below to use your ledger wallet
+                <b>{{ 'configure-wallet.ledger-ready.ledger-device-ready' | translate }}</b><br>
+                {{ 'configure-wallet.ledger-ready.press-the-import-button-below-to-use-your-ledger-wallet' | translate }}
               </p>
             </div>
           </div>
@@ -344,7 +344,7 @@
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'privateKey'" class="uk-margin-top">
       <div class="uk-width-1-1">
-        <h3>Import Private Key</h3>
+        <h3>{{ 'configure-wallet.import-private-key' | translate }}</h3>
         <p>
           {{ 'configure-wallet.enter-your-nano-private-key-below' | translate }}
         </p>
