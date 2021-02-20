@@ -205,15 +205,19 @@
           <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
             <span class="uk-text-small">Ready to receive</span><br><span class="amount-nano">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span><span class="currency-name">NANO</span>
           </td>
-          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="walletAccount">
-            <div>
+          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
+            <div class="button-container" *ngIf="walletAccount">
               <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
               <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span uk-spinner="ratio: 0.5;"></span> Receiving</button>
             </div>
-            <div *ngIf="remoteVisible"><button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button></div>
+            <div class="button-container" *ngIf="remoteVisible">
+              <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button>
+            </div>
           </td>
-          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!walletAccount && !pending.local_timestamp">N/A</td>
-          <td class="date-column uk-text-middle uk-text-truncate" *ngIf="!walletAccount && pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+          <ng-template #noActionsAvailable>
+            <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
+            <td class="date-column uk-text-middle uk-text-truncate" *ngIf="pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+          </ng-template>
         </tr>
 
         <tr *ngFor="let history of accountHistory">
