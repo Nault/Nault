@@ -11,6 +11,7 @@ const log = require('electron-log');
 // Too annoying if there would be long-term problems with the source
 // Error would pop up on every launch
 let showUpdateErrors = false;
+let saveTimeout = null;
 
 /** 
  * By default, the logger writes logs to the following locations:
@@ -62,11 +63,19 @@ function windowStateKeeper() {
     };
   }
   function saveState() {
-    if (!windowState.isMaximized) {
-      windowState = window.getBounds();
+    if (saveTimeout !== null) {
+      clearTimeout(saveTimeout);
     }
-    windowState.isMaximized = window.isMaximized();
-    settings.setSync(`windowState.${'main'}`, windowState);
+    saveTimeout = setTimeout(
+      () => {
+        if (!windowState.isMaximized) {
+          windowState = window.getBounds();
+        }
+        windowState.isMaximized = window.isMaximized();
+        settings.setSync(`windowState.${'main'}`, windowState);
+      },
+      100
+    );
   }
   function track(win) {
     window = win;
