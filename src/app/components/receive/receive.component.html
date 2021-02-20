@@ -53,8 +53,13 @@
             <div class="uk-form-controls">
 
               <div *ngIf="qrCodeImage">
-                <!-- <div class="qr-code qr-confirmation"><div></div></div> -->
-                <img class="qr-code" [src]="qrCodeImage" alt="QR code">
+                <div class="qr-code">
+                  <div class="qr-confirmation">
+                    <div uk-icon="icon: check; ratio: 5"></div>
+                    <span class="uk-text-large uk-text-center">Nano Received</span>
+                  </div>
+                  <img [src]="qrCodeImage" alt="QR code">
+                </div>
                 <br>
                 <div class="uk-flex">
                   <app-nano-account-id [accountID]="pendingAccountModel" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
