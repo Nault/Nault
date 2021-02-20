@@ -5,6 +5,7 @@ import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 import { initialize } from './lib/ledger';
+import * as settings from 'electron-settings';
 const log = require('electron-log');
 // Don't want errors to display when checking for update
 // Too annoying if there would be long-term problems with the source
@@ -32,6 +33,56 @@ switch (process.platform) {
   case 'darwin':
     logLocation = '~/Library/Logs/nault/main.log';
     break;
+}
+
+// Keep track of window size and position
+function windowStateKeeper() {
+  let window, windowState;
+  let newWidth = 1000;
+  let newHeight = 600;
+  try {
+    const mainScreen = screen.getPrimaryDisplay();
+    const dimensions = mainScreen.size;
+    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
+    newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
+  } catch {log.warn('Could not calculate default screen size')}
+
+  async function setBounds() {
+    // Restore from appConfig
+    if (settings.hasSync(`windowState.${'main'}`)) {
+      windowState = settings.getSync(`windowState.${'main'}`);
+      return;
+    }
+    // Default
+    windowState = {
+      x: undefined,
+      y: undefined,
+      width: newWidth,
+      height: newHeight,
+    };
+  }
+  function saveState() {
+    if (!windowState.isMaximized) {
+      windowState = window.getBounds();
+    }
+    windowState.isMaximized = window.isMaximized();
+    settings.setSync(`windowState.${'main'}`, windowState);
+  }
+  function track(win) {
+    window = win;
+    ['resize', 'move', 'close'].forEach(event => {
+      win.on(event, saveState);
+    });
+  }
+  setBounds();
+  return({
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
+    height: windowState.height,
+    isMaximized: windowState.isMaximized,
+    track,
+  });
 }
 
 class AppUpdater {
@@ -96,19 +147,15 @@ initialize();
 let mainWindow;
 
 function createWindow () {
-  let newWidth = 1000;
-  let newHeight = 600;
-  try {
-    const mainScreen = screen.getPrimaryDisplay();
-    const dimensions = mainScreen.size;
-    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
-    newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
-  } catch {}
+  // Get window state
+  const mainWindowStateKeeper = windowStateKeeper();
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: newWidth,
-    height: newHeight,
+    x: mainWindowStateKeeper.x,
+    y: mainWindowStateKeeper.y,
+    width: mainWindowStateKeeper.width,
+    height: mainWindowStateKeeper.height,
     webPreferences:
     {
       webSecurity: false,
@@ -116,6 +163,9 @@ function createWindow () {
       nodeIntegration: true
     }
   });
+
+  // Track window state
+  mainWindowStateKeeper.track(mainWindow);
 
   // mainWindow.loadURL('http://localhost:4200/'); // Only use this for development
   mainWindow.loadURL(url.format({
