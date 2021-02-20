@@ -6,8 +6,8 @@
     width: 19px;
     height: 19px;
     background-color: currentcolor;
-    -webkit-mask-image: url('/assets/img/qr-code.svg');
-    mask-image: url('/assets/img/qr-code.svg');
+    -webkit-mask-image: url('assets/img/qr-code.svg');
+    mask-image: url('assets/img/qr-code.svg');
 }
 
 .block-qr {
