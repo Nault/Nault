@@ -5,7 +5,7 @@
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
           {{ 'general.address-book' | translate }}
-          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : ('general.import-export' | translate) }}</a>
+          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? ('address-book.back-to-address-book' | translate | uppercase) : ('general.import-export' | translate | uppercase) }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
@@ -42,7 +42,7 @@
                       {{ addressBook.name }}
                     </div>
                     <ul class="uk-iconnav uk-width-auto">
-                      <li><a (click)="editEntry(addressBook)" title="Edit Account Label" uk-tooltip uk-icon="icon: pencil;" class="edit-name-icon"></a></li>
+                      <li><a (click)="editEntry(addressBook)" title="{{ 'general.edit' | translate }}" uk-tooltip uk-icon="icon: pencil;" class="edit-name-icon"></a></li>
                       <li><a class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a></li>
                     </ul>
                   </div>
@@ -50,18 +50,18 @@
                 <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" title="View Account Details" uk-tooltip>
+                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" title="{{ 'general.view-account-details' | translate }}" uk-tooltip>
                         <app-nano-account-id [accountID]="addressBook.account"></app-nano-account-id>
                       </a>
                     </div>
                     <ul class="nano-address-actions uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="{{ 'general.copy-to-clipboard' | translate }}" uk-tooltip></a></li>
                     </ul>
                   </div>
 
                 </div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
-                  <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+                  <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="{{ 'general.delete' | translate }}" uk-tooltip><span uk-icon="icon: trash;"></span></a>
                 </div>
               </div>
 
@@ -79,7 +79,7 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Contact' : 'Edit Contact' }}</h2>
+            <h2 class="uk-card-title">{{ creatingNewEntry ? ('address-book.add-new-contact' | translate) : ('address-book.edit-contact' | translate) }}</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
@@ -113,15 +113,15 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h3 class="uk-card-title">Address Book Import</h3>
+            <h3 class="uk-card-title">{{ 'address-book.address-book-import' | translate }}</h3>
           </div>
           <div class="uk-card-body">
-            <p>Import address book entries from a file.</p>
+            <p>{{ 'address-book.import-address-book-entries-from-a-file' | translate }}</p>
           </div>
           <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
             <div class="js-upload uk-text-left uk-width-auto@s uk-width-1-1" style="display: inline-block;" uk-form-custom>
               <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-              <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import Address Book</button>
+              <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">{{ 'general.import' | translate }}</button>
             </div>
           </div>
         </div>
@@ -129,10 +129,10 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h3 class="uk-card-title">Address Book Export</h3>
+            <h3 class="uk-card-title">{{ 'address-book.address-book-export' | translate }}</h3>
           </div>
           <div class="uk-card-body">
-            <p>Export all address book entries to a file or QR Code/URL.<br><br>Note: Exported address book will NOT be encrypted by your wallet password.</p>
+            <p>{{ 'address-book.export.export-all-address-book-entries-to-a-file-or-qr-code-url' | translate }}<br><br>{{ 'address-book.export.note-exported-address-book-will-not-be-encrypted-by-your-wallet-password' | translate }}</p>
             <div *ngIf="addressBookShowQRExport" uk-grid>
               <div class="uk-width-1-1">
                 <hr class="uk-divider-icon">
@@ -142,20 +142,20 @@
                 <img [src]="addressBookQRExportImg" alt="QR code" style="border-radius: 6px;">
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
-                Scan the QR code on any device to import your address book!<br>
+                {{ 'address-book.import.scan-the-qr-code-on-any-device-to-import-your-address-book' | translate }}<br>
                 <br>
-                You can also import your address book by using the URL below.
+                {{ 'address-book.import.you-can-also-import-your-address-book-by-using-the-url-below' | translate }}
                 <br><br>
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ addressBookQRExportUrl }}"><br>
                 <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
-                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary">Export As File</button>
+                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">{{ 'general.copy-to-clipboard' | translate }}</button>
+                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary">{{ 'general.export-as-file' | translate }}</button>
                 </div>
               </div>
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-            <button (click)="exportAddressBook()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Address Book</button>
+            <button (click)="exportAddressBook()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'general.export' | translate }}</button>
           </div>
         </div>
       </div>
