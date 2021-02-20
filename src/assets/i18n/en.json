@@ -18,6 +18,19 @@
   },
   "address-book": {
     "add-new-contact": "Add New Contact",
+    "address-book-export": "Address Book Export",
+    "address-book-import": "Address Book Import",
+    "back-to-address-book": "Back to Address Book",
+    "edit-contact": "Edit Contact",
+    "export": {
+      "export-all-address-book-entries-to-a-file-or-qr-code-url": "Export all address book entries to a file or QR Code/URL.",
+      "note-exported-address-book-will-not-be-encrypted-by-your-wallet-password": "Note: Exported address book will NOT be encrypted by your wallet password."
+    },
+    "import": {
+      "scan-the-qr-code-on-any-device-to-import-your-address-book": "Scan the QR code on any device to import your address book!",
+      "you-can-also-import-your-address-book-by-using-the-url-below": "You can also import your address book by using the URL below."
+    },
+    "import-address-book-entries-from-a-file": "Import address book entries from a file.",
     "you-can-use-the-address-book-to-store-a-label": "You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application."
   },
   "app": {
@@ -229,7 +242,9 @@
     "change": "Change",
     "copy-to-clipboard": "Copy to clipboard",
     "date": "Date",
+    "delete": "Delete",
     "edit": "Edit",
+    "export": "Export",
     "export-as-file": "Export As File",
     "hash": "Hash",
     "hide": "Hide",
