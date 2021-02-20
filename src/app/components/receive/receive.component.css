@@ -9,3 +9,15 @@
 .span-icon {
     margin-left: 5px;
 }
+
+.qr-code {
+    display: block;
+    border-radius: 15px;
+    max-width: 270px;
+    max-height: 270px;
+}
+@media (max-width: 959px) {
+    .qr-code {
+        margin: 0 auto;
+    }
+}

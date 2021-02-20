@@ -7,6 +7,7 @@ import {UtilService} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {NanoBlockService} from '../../services/nano-block.service';
+import {PriceService} from '../../services/price.service';
 import * as QRCode from 'qrcode';
 import BigNumber from 'bignumber.js';
 
@@ -32,6 +33,10 @@ export class ReceiveComponent implements OnInit {
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
+  amountNano = ''
+  amountFiat = ''
+  validNano = true
+  validFiat = true
 
   constructor(
     private walletService: WalletService,
@@ -41,6 +46,7 @@ export class ReceiveComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
+    public price: PriceService,
     private util: UtilService) { }
 
   async ngOnInit() {
@@ -100,27 +106,78 @@ export class ReceiveComponent implements OnInit {
     await this.loadPendingForAll();
   }
 
+  async nanoAmountChange() {
+    if (!this.validateNanoAmount() || Number(this.amountNano) === 0) {
+      this.amountFiat = ''
+      this.changeQRAmount()
+      return;
+    }
+    const rawAmount = this.util.nano.mnanoToRaw(this.amountNano || 0);
+
+    // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
+    const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+
+    // Determine fiat value of the amount
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+
+    this.amountFiat = fiatAmount.toString();
+    this.changeQRAmount(rawAmount.toFixed())
+  }
+
+  async fiatAmountChange() {
+    if (!this.validateFiatAmount() || Number(this.amountFiat) === 0) {
+      this.amountNano = '';
+      this.changeQRAmount()
+      return;
+    }
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
+    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const rawRounded = this.util.nano.nanoToRaw(nanoVal)
+    const nanoAmount = this.util.nano.rawToMnano(rawRounded);
+
+    this.amountNano = nanoAmount.toFixed();
+    this.changeQRAmount(rawRounded.toFixed());
+  }
+
+  validateNanoAmount() {
+    if (!this.amountNano) {
+      this.validNano = true
+      return true
+    }
+    this.validNano = this.amountNano !== '-' && (this.util.account.isValidNanoAmount(this.amountNano) || Number(this.amountNano) === 0);
+    return this.validNano;
+  }
+
+  validateFiatAmount() {
+    if (!this.amountFiat) {
+      this.validFiat = true
+      return true
+    }
+    this.validFiat = this.util.string.isNumeric(this.amountFiat) && Number(this.amountFiat) >= 0
+    return this.validFiat
+  } 
+
   async changeQRAccount(account) {
     this.walletAccount = this.walletService.wallet.accounts.find(a => a.id === account) || null;
     this.qrAccount = '';
     let qrCode = null;
     if (account.length > 1) {
       this.qrAccount = account;
-      qrCode = await QRCode.toDataURL('nano:' + account + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''));
+      qrCode = await QRCode.toDataURL('nano:' + account + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 6 });
     }
     this.qrCodeImage = qrCode;
   }
 
-  async changeQRAmount(amount) {
+  async changeQRAmount(raw?) {
     this.qrAmount = null;
     let qrCode = null;
-    if (amount !== '') {
-      if (this.util.account.isValidNanoAmount(amount)) {
-        this.qrAmount = this.util.nano.mnanoToRaw(amount);
+    if (raw) {
+      if (this.util.account.isValidAmount(raw)) {
+        this.qrAmount = raw;
       }
     }
     if (this.qrAccount.length > 1) {
-      qrCode = await QRCode.toDataURL('nano:' + this.qrAccount + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''));
+      qrCode = await QRCode.toDataURL('nano:' + this.qrAccount + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 6 });
       this.qrCodeImage = qrCode;
     }
   }
