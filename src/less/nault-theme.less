@@ -264,6 +264,18 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	}
 }
 
+.rep-donation-icon {
+	color: #B08DE3 !important;
+
+	&:hover {
+		color: @rep-label-color !important;
+
+		svg path {
+			fill: @rep-label-color;
+		}
+	}
+}
+
 .nano-address-monospace {
 	font-family: 'Roboto Mono', monospace;
 }
@@ -365,6 +377,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 		> .type {
 			margin-top: 35px;
+
+			&.rep-change {
+				color: #A478E3;
+			}
 		}
 	}
 
@@ -410,6 +426,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 			font-weight: 400;
 			margin-left: 5px;
+		}
+
+		&.rep-change {
+			color: #A478E3;
 		}
 	}
 

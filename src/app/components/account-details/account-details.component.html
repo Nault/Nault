@@ -72,9 +72,15 @@
               <div class="uk-width-auto uk-text-truncate" *ngIf="(account && account.representative) else noRepresentative">
                 <div class="representative-label-container">
                   <div class="account-label rep">{{ repLabel ? repLabel : 'Unknown Rep' }}</div>
-                  <div class="uk-width-auto" style="padding-left: 10px;" *ngIf="walletAccount && account && account.representative">
+                  <div class="uk-width-auto uk-flex-inline uk-flex-middle" style="padding-left: 10px;" *ngIf="account && account.representative">
+                    <div class="uk-text-small text-half-muted" style="margin-right: 15px" *ngIf="!repVotingWeight.isZero()">{{ repVotingWeight.toFixed(2) }}%</div>
                     <ul class="uk-iconnav">
-                      <li><a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a></li>
+                      <li *ngIf="repDonationAddress">
+                        <a class="rep-donation-icon" uk-icon="icon: heart;" title="Donate To Representative" uk-tooltip routerLink="/send" [queryParams]="{ to: repDonationAddress }"></a>
+                      </li>
+                      <li *ngIf="walletAccount">
+                        <a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -122,7 +128,7 @@
                   </div>
                 </div>
               </div>
-              <div class="account-amounts-converted">
+              <div class="account-amounts-converted text-half-muted">
                 <ng-container *ngIf="account">{{ (account.balanceFiat | fiat: settings.settings.displayCurrency) }}</ng-container>
               </div>
             </ng-container>
@@ -224,7 +230,7 @@
           <td class="type-column">
             <span class="type uk-text-small uk-text-success" uk-icon="icon: plus-circle; ratio: 1.2;" *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')"></span>
             <span class="type uk-text-small uk-text-danger" uk-icon="icon: minus-circle; ratio: 1.2;" *ngIf="(history.type == 'send' || history.subtype == 'send')"></span>
-            <span class="type uk-text-small uk-text-primary" uk-icon="icon: cog; ratio: 1.2;" *ngIf="(history.type == 'change' || history.subtype == 'change')"></span>
+            <span class="type uk-text-small rep-change" uk-icon="icon: cog; ratio: 1.2;" *ngIf="(history.type == 'change' || history.subtype == 'change')"></span>
           </td>
           <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
             <div uk-grid class="uk-flex-nowrap">
@@ -249,7 +255,7 @@
             'uk-text-middle': true,
             'uk-text-success': (history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open'),
             'uk-text-danger': (history.type == 'send' || history.subtype == 'send'),
-            'uk-text-primary': (history.type == 'change' || history.subtype == 'change')
+            'rep-change': (history.type == 'change' || history.subtype == 'change')
           }">
             <span *ngIf="isNaN(history.amount)">
               <span class="uk-text-small">Rep. Change</span>

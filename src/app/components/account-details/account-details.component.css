@@ -2,6 +2,10 @@
     margin-top: 2px;
 }
 
+.text-half-muted {
+    color: #81809f;
+}
+
 .icon-qr-code {
     width: 19px;
     height: 19px;
@@ -147,10 +151,6 @@
 
 .account-amounts-primary-confirmed > .amount-currency-name {
     margin-left: 4px;
-}
-
-.account-amounts-converted {
-    color: #81809f;
 }
 
 .representative-details {
