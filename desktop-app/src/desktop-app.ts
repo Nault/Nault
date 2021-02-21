@@ -108,20 +108,21 @@ class AppUpdater {
         buttons: ['Update', 'Ask Later'],
         title: 'New Version',
         message: 'An update for Nault is available!',
-        detail: 'More info in Help/Release notes. Do you want to download and install it?'
+        detail: 'Do you want to download and install it?'
       }
     
+      isDownloading = true;
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
         if (returnValue.response === 0) {
           showUpdateErrors = true; // enable errors
-          isDownloading = true;
           autoUpdater.downloadUpdate();
-        } 
+        } else {
+          isDownloading = false;
+        }
       })
     })
 
     autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-      isDownloading = false;
       autoUpdater.quitAndInstall(true, true);
     })
 
