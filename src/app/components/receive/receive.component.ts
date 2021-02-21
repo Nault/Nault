@@ -34,11 +34,11 @@ export class ReceiveComponent implements OnInit {
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
-  amountNano = ''
-  amountFiat = ''
-  validNano = true
-  validFiat = true
-  qrSuccessClass = ''
+  amountNano = '';
+  amountFiat = '';
+  validNano = true;
+  validFiat = true;
+  qrSuccessClass = '';
 
   constructor(
     private walletService: WalletService,
@@ -70,15 +70,15 @@ export class ReceiveComponent implements OnInit {
     }
 
     // Listen as new transactions come in. Ignore the latest transaction that is already present on page load.
-    const latest = this.websocket.newTransactions$.getValue()
+    const latest = this.websocket.newTransactions$.getValue();
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (transaction && latest !== transaction) {
-        const rawAmount = new BigNumber(transaction.amount)
+        const rawAmount = new BigNumber(transaction.amount);
         if (transaction.block.link_as_account === this.qrAccount && rawAmount.gte(this.qrAmount || 0)) {
-          this.showQrConfirmation()
+          this.showQrConfirmation();
         }
       }
-    })
+    });
   }
 
   async loadPendingForAll() {
@@ -122,8 +122,8 @@ export class ReceiveComponent implements OnInit {
 
   async nanoAmountChange() {
     if (!this.validateNanoAmount() || Number(this.amountNano) === 0) {
-      this.amountFiat = ''
-      this.changeQRAmount()
+      this.amountFiat = '';
+      this.changeQRAmount();
       return;
     }
     const rawAmount = this.util.nano.mnanoToRaw(this.amountNano || 0);
@@ -132,21 +132,22 @@ export class ReceiveComponent implements OnInit {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).times(precision).floor().div(precision).toNumber();
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
+      .times(precision).floor().div(precision).toNumber();
 
     this.amountFiat = fiatAmount.toString();
-    this.changeQRAmount(rawAmount.toFixed())
+    this.changeQRAmount(rawAmount.toFixed());
   }
 
   async fiatAmountChange() {
     if (!this.validateFiatAmount() || Number(this.amountFiat) === 0) {
       this.amountNano = '';
-      this.changeQRAmount()
+      this.changeQRAmount();
       return;
     }
     const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
     const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
-    const rawRounded = this.util.nano.nanoToRaw(nanoVal)
+    const rawRounded = this.util.nano.nanoToRaw(nanoVal);
     const nanoAmount = this.util.nano.rawToMnano(rawRounded);
 
     this.amountNano = nanoAmount.toFixed();
@@ -155,8 +156,8 @@ export class ReceiveComponent implements OnInit {
 
   validateNanoAmount() {
     if (!this.amountNano) {
-      this.validNano = true
-      return true
+      this.validNano = true;
+      return true;
     }
     this.validNano = this.amountNano !== '-' && (this.util.account.isValidNanoAmount(this.amountNano) || Number(this.amountNano) === 0);
     return this.validNano;
@@ -164,12 +165,12 @@ export class ReceiveComponent implements OnInit {
 
   validateFiatAmount() {
     if (!this.amountFiat) {
-      this.validFiat = true
-      return true
+      this.validFiat = true;
+      return true;
     }
-    this.validFiat = this.util.string.isNumeric(this.amountFiat) && Number(this.amountFiat) >= 0
-    return this.validFiat
-  } 
+    this.validFiat = this.util.string.isNumeric(this.amountFiat) && Number(this.amountFiat) >= 0;
+    return this.validFiat;
+  }
 
   async changeQRAccount(account) {
     this.walletAccount = this.walletService.wallet.accounts.find(a => a.id === account) || null;
@@ -177,7 +178,7 @@ export class ReceiveComponent implements OnInit {
     let qrCode = null;
     if (account.length > 1) {
       this.qrAccount = account;
-      qrCode = await QRCode.toDataURL('nano:' + account + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 7 });
+      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, { scale: 7 });
     }
     this.qrCodeImage = qrCode;
   }
@@ -191,15 +192,15 @@ export class ReceiveComponent implements OnInit {
       }
     }
     if (this.qrAccount.length > 1) {
-      qrCode = await QRCode.toDataURL('nano:' + this.qrAccount + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 7 });
+      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, { scale: 7 });
       this.qrCodeImage = qrCode;
     }
   }
 
   async showQrConfirmation() {
-    this.qrSuccessClass = 'in'
-    setTimeout(() => { this.qrSuccessClass = 'out' }, 7000)
-    setTimeout(() => { this.qrSuccessClass = '' }, 12000)
+    this.qrSuccessClass = 'in';
+    setTimeout(() => { this.qrSuccessClass = 'out' }, 7000);
+    setTimeout(() => { this.qrSuccessClass = '' }, 12000);
   }
 
   async receivePending(pendingBlock) {
