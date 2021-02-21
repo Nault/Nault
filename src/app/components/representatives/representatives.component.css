@@ -70,7 +70,7 @@
 	cursor: pointer;
 }
 
-.representative-name-column > .account-label {
+.representative-name-column .account-label {
 	margin-bottom: 3px;
 }
 
@@ -99,8 +99,8 @@
 	width: 18px;
 	min-width: 18px;
 	height: 13px;
-	border-left: 1px solid #777;
-	border-bottom: 1px solid #777;
+	border-left: 1px solid #778;
+	border-bottom: 1px solid #778;
 	border-radius: 0 0 0 2px;
 }
 
