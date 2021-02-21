@@ -8,6 +8,7 @@ import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {NanoBlockService} from '../../services/nano-block.service';
 import {PriceService} from '../../services/price.service';
+import {WebsocketService} from '../../services/websocket.service';
 import * as QRCode from 'qrcode';
 import BigNumber from 'bignumber.js';
 
@@ -37,6 +38,7 @@ export class ReceiveComponent implements OnInit {
   amountFiat = ''
   validNano = true
   validFiat = true
+  qrSuccessClass = ''
 
   constructor(
     private walletService: WalletService,
@@ -47,6 +49,7 @@ export class ReceiveComponent implements OnInit {
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
     public price: PriceService,
+    private websocket: WebsocketService,
     private util: UtilService) { }
 
   async ngOnInit() {
@@ -65,6 +68,17 @@ export class ReceiveComponent implements OnInit {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
       this.changeQRAccount(this.pendingAccountModel);
     }
+
+    // Listen as new transactions come in. Ignore the latest transaction that is already present on page load.
+    const latest = this.websocket.newTransactions$.getValue()
+    this.websocket.newTransactions$.subscribe(async (transaction) => {
+      if (transaction && latest !== transaction) {
+        const rawAmount = new BigNumber(transaction.amount)
+        if (transaction.block.link_as_account === this.qrAccount && rawAmount.gte(this.qrAmount || 0)) {
+          this.showQrConfirmation()
+        }
+      }
+    })
   }
 
   async loadPendingForAll() {
@@ -163,7 +177,7 @@ export class ReceiveComponent implements OnInit {
     let qrCode = null;
     if (account.length > 1) {
       this.qrAccount = account;
-      qrCode = await QRCode.toDataURL('nano:' + account + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 6 });
+      qrCode = await QRCode.toDataURL('nano:' + account + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 7 });
     }
     this.qrCodeImage = qrCode;
   }
@@ -177,9 +191,15 @@ export class ReceiveComponent implements OnInit {
       }
     }
     if (this.qrAccount.length > 1) {
-      qrCode = await QRCode.toDataURL('nano:' + this.qrAccount + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 6 });
+      qrCode = await QRCode.toDataURL('nano:' + this.qrAccount + (this.qrAmount ? '?amount=' + this.qrAmount.toString(10) : ''), { scale: 7 });
       this.qrCodeImage = qrCode;
     }
+  }
+
+  async showQrConfirmation() {
+    this.qrSuccessClass = 'in'
+    setTimeout(() => { this.qrSuccessClass = 'out' }, 7000)
+    setTimeout(() => { this.qrSuccessClass = '' }, 12000)
   }
 
   async receivePending(pendingBlock) {

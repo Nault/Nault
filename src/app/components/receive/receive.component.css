@@ -10,17 +10,27 @@
     margin-left: 5px;
 }
 
+.form-account {
+	max-width: 800px;
+}
+
+.form-amount {
+	max-width: 450px;
+}
+
 .qr-code {
     display: block;
-    border-radius: 15px;
-    max-width: 270px;
-    max-height: 270px;
+    border-radius: 20px;
+    max-width: 315px;
+    max-height: 315px;
     overflow: hidden;
     position: relative;
 }
 @media (max-width: 959px) {
     .qr-code {
         margin: 0 auto;
+        max-width: 250px;
+        max-height: 250px;
     }
 }
 
@@ -48,7 +58,7 @@
     animation: slidedown 0.7s;
 }
 .qr-confirmation.in > :last-child {
-    animation: slideup 1.4s;
+    animation: slideup 1.2s;
 }
 .qr-confirmation.out {
     animation: fadeout 5s;
