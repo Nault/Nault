@@ -5,11 +5,14 @@ import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
 import { initialize } from './lib/ledger';
+import * as settings from 'electron-settings';
 const log = require('electron-log');
 // Don't want errors to display when checking for update
 // Too annoying if there would be long-term problems with the source
 // Error would pop up on every launch
 let showUpdateErrors = false;
+let saveTimeout = null;
+let isDownloading = false;
 
 /** 
  * By default, the logger writes logs to the following locations:
@@ -34,6 +37,64 @@ switch (process.platform) {
     break;
 }
 
+// Keep track of window size and position
+function windowStateKeeper() {
+  let window, windowState;
+  let newWidth = 1000;
+  let newHeight = 600;
+  try {
+    const mainScreen = screen.getPrimaryDisplay();
+    const dimensions = mainScreen.size;
+    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
+    newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
+  } catch {log.warn('Could not calculate default screen size')}
+
+  async function setBounds() {
+    // Restore from appConfig
+    if (settings.hasSync(`windowState.${'main'}`)) {
+      windowState = settings.getSync(`windowState.${'main'}`);
+      return;
+    }
+    // Default
+    windowState = {
+      x: undefined,
+      y: undefined,
+      width: newWidth,
+      height: newHeight,
+    };
+  }
+  function saveState() {
+    if (saveTimeout !== null) {
+      clearTimeout(saveTimeout);
+    }
+    saveTimeout = setTimeout(
+      () => {
+        if (!windowState.isMaximized) {
+          windowState = window.getBounds();
+        }
+        windowState.isMaximized = window.isMaximized();
+        settings.setSync(`windowState.${'main'}`, windowState);
+      },
+      100
+    );
+  }
+  function track(win) {
+    window = win;
+    ['resize', 'move', 'close'].forEach(event => {
+      win.on(event, saveState);
+    });
+  }
+  setBounds();
+  return({
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
+    height: windowState.height,
+    isMaximized: windowState.isMaximized,
+    track,
+  });
+}
+
 class AppUpdater {
   constructor() {
     // We want the user to proactively download the install
@@ -41,6 +102,7 @@ class AppUpdater {
     autoUpdater.logger = log;
 
     autoUpdater.on('update-available', (event, releaseNotes, releaseName) => {
+      if (isDownloading) return;
       const dialogOpts = {
         type: 'info',
         buttons: ['Update', 'Ask Later'],
@@ -49,11 +111,14 @@ class AppUpdater {
         detail: 'Do you want to download and install it?'
       }
     
+      isDownloading = true;
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
         if (returnValue.response === 0) {
           showUpdateErrors = true; // enable errors
           autoUpdater.downloadUpdate();
-        } 
+        } else {
+          isDownloading = false;
+        }
       })
     })
 
@@ -68,6 +133,7 @@ class AppUpdater {
     autoUpdater.on('error', message => {
       log.error('There was a problem updating the application');
       log.error(message);
+      isDownloading = false;
 
       if (!showUpdateErrors) {
         return;
@@ -96,19 +162,15 @@ initialize();
 let mainWindow;
 
 function createWindow () {
-  let newWidth = 1000;
-  let newHeight = 600;
-  try {
-    const mainScreen = screen.getPrimaryDisplay();
-    const dimensions = mainScreen.size;
-    newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
-    newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
-  } catch {}
+  // Get window state
+  const mainWindowStateKeeper = windowStateKeeper();
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: newWidth,
-    height: newHeight,
+    x: mainWindowStateKeeper.x,
+    y: mainWindowStateKeeper.y,
+    width: mainWindowStateKeeper.width,
+    height: mainWindowStateKeeper.height,
     webPreferences:
     {
       webSecurity: false,
@@ -116,6 +178,9 @@ function createWindow () {
       nodeIntegration: true
     }
   });
+
+  // Track window state
+  mainWindowStateKeeper.track(mainWindow);
 
   // mainWindow.loadURL('http://localhost:4200/'); // Only use this for development
   mainWindow.loadURL(url.format({

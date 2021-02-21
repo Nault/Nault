@@ -31,6 +31,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   maxPageSize = 200;
 
   repLabel: any = '';
+  repVotingWeight: BigNumber;
+  repDonationAddress: any = '';
+
   addressBookEntry: any = null;
   account: any = {};
   accountID = '';
@@ -144,7 +147,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.representativesOverview = reps;
-      this.updateRepresentativeLabel();
+      this.updateRepresentativeInfo();
     });
   }
 
@@ -204,7 +207,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.representativeListMatch = '';
   }
 
-  updateRepresentativeLabel() {
+  updateRepresentativeInfo() {
     if (!this.account) {
       return;
     }
@@ -217,8 +220,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (representativeFromOverview != null) {
       this.repLabel = representativeFromOverview.label;
+      this.repVotingWeight = representativeFromOverview.percent;
+      this.repDonationAddress = representativeFromOverview.donationAddress;
       return;
     }
+
+    this.repVotingWeight = new BigNumber(0);
+    this.repDonationAddress = null;
 
     const knownRepresentative = this.repService.getRepresentative(this.account.representative);
 
@@ -256,7 +264,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.updateRepresentativeLabel();
+    this.updateRepresentativeInfo();
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
