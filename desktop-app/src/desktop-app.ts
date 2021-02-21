@@ -12,6 +12,7 @@ const log = require('electron-log');
 // Error would pop up on every launch
 let showUpdateErrors = false;
 let saveTimeout = null;
+let isDownloading = false;
 
 /** 
  * By default, the logger writes logs to the following locations:
@@ -101,6 +102,7 @@ class AppUpdater {
     autoUpdater.logger = log;
 
     autoUpdater.on('update-available', (event, releaseNotes, releaseName) => {
+      if (isDownloading) return;
       const dialogOpts = {
         type: 'info',
         buttons: ['Update', 'Ask Later'],
@@ -112,12 +114,14 @@ class AppUpdater {
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
         if (returnValue.response === 0) {
           showUpdateErrors = true; // enable errors
+          isDownloading = true;
           autoUpdater.downloadUpdate();
         } 
       })
     })
 
     autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+      isDownloading = false;
       autoUpdater.quitAndInstall(true, true);
     })
 
@@ -128,6 +132,7 @@ class AppUpdater {
     autoUpdater.on('error', message => {
       log.error('There was a problem updating the application');
       log.error(message);
+      isDownloading = false;
 
       if (!showUpdateErrors) {
         return;
