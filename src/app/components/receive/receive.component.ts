@@ -178,7 +178,7 @@ export class ReceiveComponent implements OnInit {
     let qrCode = null;
     if (account.length > 1) {
       this.qrAccount = account;
-      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, { scale: 7 });
+      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
     }
     this.qrCodeImage = qrCode;
   }
@@ -192,15 +192,15 @@ export class ReceiveComponent implements OnInit {
       }
     }
     if (this.qrAccount.length > 1) {
-      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, { scale: 7 });
+      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
       this.qrCodeImage = qrCode;
     }
   }
 
   async showQrConfirmation() {
     this.qrSuccessClass = 'in';
-    setTimeout(() => { this.qrSuccessClass = 'out' }, 7000);
-    setTimeout(() => { this.qrSuccessClass = '' }, 12000);
+    setTimeout(() => { this.qrSuccessClass = 'out'; }, 7000);
+    setTimeout(() => { this.qrSuccessClass = ''; }, 12000);
   }
 
   async receivePending(pendingBlock) {
