@@ -106,7 +106,7 @@ class AppUpdater {
         buttons: ['Update', 'Ask Later'],
         title: 'New Version',
         message: 'An update for Nault is available!',
-        detail: 'Do you want to download and install it?'
+        detail: 'More info in Help/Release notes. Do you want to download and install it?'
       }
     
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
