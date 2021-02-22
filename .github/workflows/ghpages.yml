@@ -32,7 +32,7 @@ jobs:
           npm run wallet:build
 
       - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@releases/v4.0.0
+        uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           ssh-key: ${{ secrets.DEPLOY_KEY }}
           branch: gh-pages # The branch the action should deploy to.
