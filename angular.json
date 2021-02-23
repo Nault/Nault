@@ -95,6 +95,22 @@
                   "with": "src/environments/environment.desktop.ts"
                 }
               ]
+            },
+            "banano": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.banano.ts"
+                }
+              ]
+            },
+            "beta": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
+                }
+              ]
             }
           }
         },
@@ -109,6 +125,12 @@
             },
             "desktop": {
               "browserTarget": "nault:build:desktop"
+            },
+            "banano": {
+              "browserTarget": "nault:build:banano"
+            },
+            "beta": {
+              "browserTarget": "nault:build:beta"
             }
           }
         },

@@ -10,6 +10,7 @@ import {
   RepresentativeService,
   WalletService
 } from '../../services';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-accounts',
@@ -17,6 +18,7 @@ import {
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsComponent implements OnInit {
+  currencyTicker = environment.currency.ticker;
   accounts = this.walletService.wallet.accounts;
   isLedgerWallet = this.walletService.isLedgerWallet();
   isSingleKeyWallet = this.walletService.isSingleKeyWallet();

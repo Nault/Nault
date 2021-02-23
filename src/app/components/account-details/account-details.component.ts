@@ -15,6 +15,7 @@ import {BehaviorSubject} from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
 import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-account-details',
@@ -24,6 +25,8 @@ import { QrModalService } from '../../services/qr-modal.service';
 export class AccountDetailsComponent implements OnInit, OnDestroy {
   nano = 1000000000000000000000000;
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
+
+  currencyTicker = environment.currency.ticker;
 
   accountHistory: any[] = [];
   pendingBlocks = [];
