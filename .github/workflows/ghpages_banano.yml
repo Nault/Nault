@@ -29,7 +29,7 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm run wallet:build
+          npm run wallet:build -- -c banano
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@4.0.0
