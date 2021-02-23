@@ -137,7 +137,7 @@ export class ReceiveComponent implements OnInit {
 
     this.amountFiat = fiatAmount.toString();
     this.changeQRAmount(rawAmount.toFixed());
-    this.validateFiatAmount()
+    this.validateFiatAmount();
   }
 
   async fiatAmountChange() {
@@ -153,7 +153,7 @@ export class ReceiveComponent implements OnInit {
 
     this.amountNano = nanoAmount.toFixed();
     this.changeQRAmount(rawRounded.toFixed());
-    this.validateNanoAmount()
+    this.validateNanoAmount();
   }
 
   validateNanoAmount() {

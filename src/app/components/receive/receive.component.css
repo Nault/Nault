@@ -18,6 +18,13 @@
 	max-width: 450px;
 }
 
+.icon-nano-logo {
+    margin: 11px 6px;
+    background-color: currentcolor;
+    -webkit-mask-image: url('assets/img/nano-mark-simple.svg');
+    mask-image: url('assets/img/nano-mark-simple.svg');
+}
+
 .qr-code {
     display: block;
     border-radius: 20px;

@@ -73,7 +73,8 @@
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1">
                           <a class="uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
-                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}" maxlength="40">
+                          <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
+                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="text" placeholder="Amount of {{ selectedAmount.name }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}" maxlength="40">
                         </div>
 
                       </div>
