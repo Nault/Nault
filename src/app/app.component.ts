@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
   searchData = '';
   isConfigured = this.walletService.isConfigured;
   donationAccount = environment.donationAddress;
+  currencyTicker = environment.currency.ticker;
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
     if (

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Nano from 'hw-app-nano';
+import * as HwAppNano from 'hw-app-nano';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
@@ -45,7 +45,7 @@ const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000
 
 @Injectable()
 export class LedgerService {
-  walletPrefix = `44'/165'/`;
+  walletPrefix = environment.currency.ledgerWalletPrefix;
 
   waitTimeout = 300000;
   normalTimeout = 5000;
@@ -272,7 +272,7 @@ export class LedgerService {
         // LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.nano = new Nano(this.ledger.transport);
+        this.ledger.nano = new HwAppNano[environment.currency.name](this.ledger.transport);
 
         resolve(this.ledger.transport);
       }).catch(reject);

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
-import * as nanocurrency from 'nanocurrency';
+import * as nanocurrency from '@thelamer/nanocurrency';
+import { environment } from '../../environments/environment';
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
@@ -284,7 +285,7 @@ function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
-function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
+function getPublicAccountID(accountPublicKeyBytes, prefix = environment.currency.prefix) {
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
@@ -346,7 +347,7 @@ function setPrefix(account, prefix = 'xrb') {
 /**
  * Conversion functions
  */
-const mnano = 1000000000000000000000000000000;
+const mnano = Math.pow(10, environment.currency.precision);
 const knano = 1000000000000000000000000000;
 const nano  = 1000000000000000000000000;
 function mnanoToRaw(value) {

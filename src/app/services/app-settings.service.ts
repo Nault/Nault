@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as url from 'url';
+import { environment } from '../../environments/environment';
 
 export type WalletStore = 'localStorage'|'none';
 export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
@@ -63,62 +64,6 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://nault.nanos.cc/proxy',
-      ws: 'wss://nault-ws.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'VoxPopuli',
-      value: 'voxpopuli',
-      api: 'https://vox.nanos.cc/api',
-      ws: 'wss://vox.nanos.cc/websocket',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'PowerNode',
-      value: 'powernode',
-      api: 'https://proxy.powernode.cc/proxy',
-      ws: 'wss://ws.powernode.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Rainstorm City',
-      value: 'rainstorm',
-      api: 'https://rainstorm.city/api',
-      ws: 'wss://rainstorm.city/websocket',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
       name: 'Custom',
       value: 'custom',
       api: null,
@@ -146,7 +91,9 @@ export class AppSettingsService {
     'node.somenano.com'
   ]);
 
-  constructor() { }
+  constructor() {
+    this.serverOptions = this.serverOptions.concat(environment.backends);
+  }
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;

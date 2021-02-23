@@ -1,7 +1,8 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import * as LedgerLogs from '@ledgerhq/logs';
-import Nano from 'hw-app-nano';
+import * as HwAppNano from 'hw-app-nano';
+import { environment } from '../../../src/environments/environment';
 
 import * as rx from 'rxjs';
 
@@ -26,7 +27,7 @@ const LedgerStatus = {
  * talks to the USB device directly and relays messages over Electron IPC
  */
 export class LedgerService {
-  walletPrefix = `44'/165'/`;
+  walletPrefix = environment.currency.ledgerWalletPrefix;
   waitTimeout = 300000;
   normalTimeout = 5000;
   pollInterval = 45000;
@@ -61,7 +62,7 @@ export class LedgerService {
         // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.nano = new Nano(this.ledger.transport);
+        this.ledger.nano = new HwAppNano[environment.currency.name](this.ledger.transport);
 
         resolve(this.ledger.transport);
       }).catch(reject);
