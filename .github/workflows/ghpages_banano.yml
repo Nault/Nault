@@ -34,7 +34,7 @@ jobs:
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
-          ssh-key: ${{ secrets.ACCESS_TOKEN }}
+          ssh-key: ${{ secrets.DEPLOY_KEY_BANANO }}
           repository-name: Nault/Banault
           branch: gh-pages # The branch the action should deploy to.
           folder: dist # The folder the action should deploy.
