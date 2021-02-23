@@ -7,7 +7,7 @@ import {Component, Input, OnChanges, HostBinding} from '@angular/core';
 })
 export class NanoAccountIdComponent implements OnChanges {
 
-  @HostBinding('class') classes: string
+  @HostBinding('class') classes: string;
   @Input() accountID: string;
   @Input() middle: 'on'|'off'|'auto'|'break' = 'auto';
 
@@ -19,7 +19,7 @@ export class NanoAccountIdComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.middle === 'auto') this.classes = 'uk-flex';
-    if (this.middle === 'break') this.classes = 'nano-address-breakable'
+    if (this.middle === 'break') this.classes = 'nano-address-breakable';
     const accountID = this.accountID;
     const openingChars = 10;
     const closingChars = 5;
