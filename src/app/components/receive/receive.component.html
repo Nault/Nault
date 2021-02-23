@@ -45,8 +45,8 @@
                 <img [src]="qrCodeImage" alt="QR code">
               </div>
               <br>
-              <div class="uk-flex uk-flex-center">
-                <app-nano-account-id [accountID]="pendingAccountModel" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
+              <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center">
+                <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
                 <a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
             </div>
