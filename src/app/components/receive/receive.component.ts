@@ -9,6 +9,7 @@ import {AppSettingsService} from '../../services/app-settings.service';
 import {NanoBlockService} from '../../services/nano-block.service';
 import * as QRCode from 'qrcode';
 import BigNumber from 'bignumber.js';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-receive',
@@ -19,6 +20,7 @@ import BigNumber from 'bignumber.js';
 
 
 export class ReceiveComponent implements OnInit {
+  currencyTicker = environment.currency.ticker;
   nano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
   pendingBelowThreshold = [];
