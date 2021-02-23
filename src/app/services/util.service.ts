@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
-import * as nanocurrency from 'nanocurrency';
+import * as nanocurrency from '@thelamer/nanocurrency';
 import { environment } from '../../environments/environment';
 
 const nacl = window['nacl'];
@@ -347,7 +347,7 @@ function setPrefix(account, prefix = 'xrb') {
 /**
  * Conversion functions
  */
-const mnano = 1000000000000000000000000000000;
+const mnano = Math.pow(10, environment.currency.precision);
 const knano = 1000000000000000000000000000;
 const nano  = 1000000000000000000000000;
 function mnanoToRaw(value) {
