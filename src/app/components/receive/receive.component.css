@@ -25,6 +25,20 @@
     mask-image: url('assets/img/nano-mark-simple.svg');
 }
 
+.receive-columns {
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 640px) {
+    .receive-columns {
+        flex-direction: row-reverse;
+    }
+    .qr-column {
+        width: 0;
+        margin-right: 20px;
+    }
+}
+
 .qr-code {
     display: block;
     border-radius: 20px;
@@ -32,10 +46,10 @@
     max-height: 315px;
     overflow: hidden;
     position: relative;
+    margin: 0 auto;
 }
 @media (max-width: 959px) {
     .qr-code {
-        margin: 0 auto;
         max-width: 250px;
         max-height: 250px;
     }

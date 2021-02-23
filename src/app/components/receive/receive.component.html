@@ -5,49 +5,49 @@
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-body">
-        <div class="uk-form-horizontal">
+        <div class="uk-form-horizontal receive-columns">
 
-          <div class="uk-margin">
-            <label for="form-horizontal-select" class="uk-form-label">Account</label>
-            <div class="uk-form-controls form-account">
-              <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
-                <option [value]="0">All Accounts</option>
-                <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="uk-margin">
-            <label for="form-horizontal-amount" class="uk-form-label">Optional Amount</label>
-            <div class="uk-form-controls form-amount">
-              <div class="uk-width-1-1 uk-inline">
-                <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
-                <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" autocomplete="off" class="uk-input" id="form-horizontal-amount" (keyup)="nanoAmountChange()" (change)="nanoAmountChange()" style="padding-left: 50px !important;" type="number" placeholder="Amount of NANO to receive" maxlength="40">
+          <div class="uk-flex-1">
+            <div class="uk-margin">
+              <label for="form-horizontal-select" class="uk-form-label">Account</label>
+              <div class="form-account">
+                <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
+                  <option [value]="0">All Accounts</option>
+                  <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                </select>
               </div>
-              <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+            </div>
+  
+            <div class="uk-margin">
+              <label for="form-horizontal-amount" class="uk-form-label">Optional Amount</label>
+              <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
-                  <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                  <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" autocomplete="off" (keyup)="fiatAmountChange()" (change)="fiatAmountChange()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" placeholder="Amount of {{ settings.settings.displayCurrency }} to receive">
+                  <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
+                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" autocomplete="off" class="uk-input" id="form-horizontal-amount" (keyup)="nanoAmountChange()" (change)="nanoAmountChange()" style="padding-left: 50px !important;" type="number" placeholder="Amount of NANO to receive" maxlength="40">
+                </div>
+                <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                  <div class="uk-width-1-1 uk-inline">
+                    <a class="uk-form-icon uk-link-reset uk-link-muted" style="padding-left: 7px;" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                    <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" autocomplete="off" (keyup)="fiatAmountChange()" (change)="fiatAmountChange()" style="padding-left: 50px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" placeholder="Amount of {{ settings.settings.displayCurrency }} to receive">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="uk-margin">
-            <div class="uk-form-controls">
-              <div *ngIf="qrCodeImage">
-                <div class="qr-code">
-                  <div class="qr-confirmation" [class]="qrSuccessClass">
-                    <div uk-icon="icon: check; ratio: 5"></div>
-                    <span class="uk-text-large uk-text-center">Nano Received</span>
-                  </div>
-                  <img [src]="qrCodeImage" alt="QR code">
+          <div class="uk-flex-1 uk-margin qr-column">
+            <div *ngIf="qrCodeImage">
+              <div class="qr-code">
+                <div class="qr-confirmation" [class]="qrSuccessClass">
+                  <div uk-icon="icon: check; ratio: 5"></div>
+                  <span class="uk-text-large uk-text-center">Nano Received</span>
                 </div>
-                <br>
-                <div class="uk-flex">
-                  <app-nano-account-id [accountID]="pendingAccountModel" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
-                  <a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
-                </div>
+                <img [src]="qrCodeImage" alt="QR code">
+              </div>
+              <br>
+              <div class="uk-flex uk-flex-center">
+                <app-nano-account-id [accountID]="pendingAccountModel" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
+                <a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
             </div>
           </div>
