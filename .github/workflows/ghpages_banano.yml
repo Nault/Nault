@@ -1,0 +1,40 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches: [ master, multicurrency-new ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        with:
+          persist-credentials: false
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install APT dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential git -y
+          sudo apt-get install libudev-dev -y
+          sudo apt-get install libusb-1.0-0-dev -y
+          sudo apt-get install gcc-4.8 g++-4.8 -y
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run wallet:build
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          ssh-key: ${{ secrets.ACCESS_TOKEN }}
+          repository-name: Nault/Banault
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
