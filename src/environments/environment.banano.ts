@@ -13,7 +13,8 @@ export const environment = {
     precision: 29,
     maxSupply: 3402823669.2,
     prefix: 'ban',
-    supportsMyNanoNinja: false
+    supportsMyNanoNinja: false,
+    ledgerWalletPrefix: `44'/198'/`,
   },
   backends: [
     {
