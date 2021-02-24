@@ -55,12 +55,6 @@
     bottom: 3px;
 }
 
-#refresh {
-    cursor: pointer;
-    margin-left: 10px;
-    position: relative;
-    bottom: 3px;
-}
 .refresh-disabled {
     color: #bbb;
 }
