@@ -9,7 +9,7 @@
 
           <div class="uk-flex-1">
             <div class="uk-margin">
-              <label for="form-horizontal-select" class="uk-form-label">Account</label>
+              <label for="form-horizontal-select" class="uk-form-label label-block">Account</label>
               <div class="form-account">
                 <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="changeQRAccount(pendingAccountModel)">
                   <option [value]="0">All Accounts</option>
@@ -19,7 +19,7 @@
             </div>
   
             <div class="uk-margin">
-              <label for="form-horizontal-amount" class="uk-form-label">Optional Amount</label>
+              <label for="form-horizontal-amount" class="uk-form-label label-block">Amount <span class="uk-text-muted">(optional)</span></label>
               <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
                   <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
