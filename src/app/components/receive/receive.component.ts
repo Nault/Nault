@@ -76,6 +76,7 @@ export class ReceiveComponent implements OnInit {
         const rawAmount = new BigNumber(transaction.amount);
         if (transaction.block.link_as_account === this.qrAccount && rawAmount.gte(this.qrAmount || 0)) {
           this.showQrConfirmation();
+          setTimeout(() => this.resetAmount(), 500);
         }
       }
     });
@@ -199,10 +200,16 @@ export class ReceiveComponent implements OnInit {
     }
   }
 
-  async showQrConfirmation() {
+  showQrConfirmation() {
     this.qrSuccessClass = 'in';
     setTimeout(() => { this.qrSuccessClass = 'out'; }, 7000);
     setTimeout(() => { this.qrSuccessClass = ''; }, 12000);
+  }
+
+  resetAmount() {
+    this.amountNano = '';
+    this.amountFiat = '';
+    this.changeQRAmount();
   }
 
   async receivePending(pendingBlock) {
