@@ -23,12 +23,12 @@
               <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
                   <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
-                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" autocomplete="off" class="uk-input" id="form-horizontal-amount" (keyup)="nanoAmountChange()" (change)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" placeholder="Amount of NANO to receive" maxlength="40">
+                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (keyup)="nanoAmountChange()" (change)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" placeholder="Amount of NANO to receive" maxlength="40">
                 </div>
                 <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                   <div class="uk-width-1-1 uk-inline">
                     <a class="uk-form-icon uk-link-reset uk-link-muted fiat-currency-ticker" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                    <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" autocomplete="off" (keyup)="fiatAmountChange()" (change)="fiatAmountChange()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" placeholder="Amount of {{ settings.settings.displayCurrency }} to receive">
+                    <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" (keyup)="fiatAmountChange()" (change)="fiatAmountChange()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" placeholder="Amount of {{ settings.settings.displayCurrency }} to receive">
                   </div>
                 </div>
               </div>
@@ -36,7 +36,7 @@
           </div>
 
           <div class="uk-flex-1 uk-margin qr-column">
-            <div *ngIf="qrCodeImage">
+            <div *ngIf="qrCodeImage; else placeholder">
               <div class="qr-code">
                 <div class="qr-confirmation" [class]="qrSuccessClass">
                   <div uk-icon="icon: check; ratio: 5"></div>
@@ -50,6 +50,12 @@
                 <a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
             </div>
+            <ng-template #placeholder>
+              <div class="qr-code qr-placeholder">
+                <div class="uk-position-absolute text-half-muted">Select an account<br/>to view QR code</div>
+                <div style="padding-top: 100%"></div>
+              </div>
+            </ng-template>
           </div>
                   
         </div>

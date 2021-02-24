@@ -49,8 +49,8 @@
 .qr-code {
     display: block;
     border-radius: 20px;
-    max-width: 315px;
-    max-height: 315px;
+    max-width: 290px;
+    max-height: 290px;
     overflow: hidden;
     position: relative;
     margin: 0 auto;
@@ -60,6 +60,14 @@
         max-width: 250px;
         max-height: 250px;
     }
+}
+.qr-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #FFF;
+    padding: 20px;
 }
 
 .qr-confirmation {
