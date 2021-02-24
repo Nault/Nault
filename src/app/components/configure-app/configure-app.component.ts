@@ -14,6 +14,7 @@ import {BehaviorSubject} from 'rxjs';
 import {RepresentativeService} from '../../services/representative.service';
 import {NinjaService} from '../../services/ninja.service';
 import {QrModalService} from '../../services/qr-modal.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-configure-app',
@@ -164,6 +165,8 @@ export class ConfigureAppComponent implements OnInit {
   shouldRandom = null;
 
   customWorkServer = '';
+
+  currencyTicker = environment.currency.ticker;
 
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
   showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';

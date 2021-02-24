@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import BigNumber from 'bignumber.js';
 import {BehaviorSubject} from 'rxjs';
 import { QrModalService } from '../../services/qr-modal.service';
+import { environment } from '../../../environments/environment';
 
 import {
   ApiService,
@@ -23,6 +24,8 @@ import {
 })
 export class RepresentativesComponent implements OnInit {
   @ViewChild('repInput') repInput;
+
+  currencyTicker = environment.currency.ticker;
 
   changeAccountID: any = null;
   toRepresentativeID = '';

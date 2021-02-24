@@ -22,6 +22,7 @@ const nacl = window['nacl'];
   styleUrls: ['./send.component.css']
 })
 export class SendComponent implements OnInit {
+  currencyTicker = environment.currency.ticker;
   nano = 1000000000000000000000000;
 
   activePanel = 'send';
