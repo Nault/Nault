@@ -79,14 +79,6 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
-      name: 'VoxPopuli',
-      value: 'voxpopuli',
-      api: 'https://vox.nanos.cc/api',
-      ws: 'wss://vox.nanos.cc/websocket',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
       name: 'PowerNode',
       value: 'powernode',
       api: 'https://proxy.powernode.cc/proxy',
@@ -171,6 +163,7 @@ export class AppSettingsService {
 
       this.settings.serverAPI = randomServerOption.api;
       this.settings.serverWS = randomServerOption.ws;
+      this.settings.serverName = 'random';
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
     } else if (this.settings.serverName === 'offline') {
