@@ -148,7 +148,7 @@ export class SendComponent implements OnInit {
 
     // Determine fiat value of the amount
     const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
-      .times(precision).floor().div(precision).toNumber();
+      .times(precision).decimalPlaces(0, 1).div(precision).toNumber();
 
     this.amountFiat = fiatAmount;
   }
@@ -161,7 +161,7 @@ export class SendComponent implements OnInit {
     }
     if (!this.util.string.isNumeric(this.amountFiat)) return;
     const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoVal = this.util.nano.rawToNano(rawAmount).decimalPlaces(0, 1);
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
     this.amount = nanoAmount.toNumber();
@@ -280,7 +280,7 @@ export class SendComponent implements OnInit {
 
     const nanoAmount = this.rawAmount.div(this.nano);
 
-    if (this.amount < 0 || rawAmount.lessThan(0)) {
+    if (this.amount < 0 || rawAmount.isLessThan(0)) {
       return this.notificationService.sendWarning(`Amount is invalid`);
     }
     if (from.balanceBN.minus(rawAmount).lessThan(0)) {
@@ -354,7 +354,7 @@ export class SendComponent implements OnInit {
 
     this.amountRaw = walletAccount.balanceRaw;
 
-    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
+    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).decimalPlaces(0, 1);
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
