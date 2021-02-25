@@ -283,7 +283,7 @@ export class SendComponent implements OnInit {
     if (this.amount < 0 || rawAmount.isLessThan(0)) {
       return this.notificationService.sendWarning(`Amount is invalid`);
     }
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) {
+    if (from.balanceBN.minus(rawAmount).isLessThan(0)) {
       return this.notificationService.sendError(`From account does not have enough NANO`);
     }
 
