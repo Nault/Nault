@@ -169,8 +169,11 @@
 
     </div>
 
-    <div class="uk-width-1-1">
-      <h3 class="uk-text-center uk-margin-small-bottom">Transactions<span class="{{statsRefreshEnabled ? '':'refresh-disabled'}}" id="refresh" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></span></h3>
+    <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
+      <h3 class="uk-margin-remove-bottom">Transactions</h3>
+      <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
+        <li><a [class]="{ 'refresh-disabled': !statsRefreshEnabled }" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></a></li>
+      </ul>
     </div>
 
     <div class="uk-overflow-hidden">

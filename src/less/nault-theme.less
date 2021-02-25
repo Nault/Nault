@@ -103,7 +103,27 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 }
 
 .text-half-muted {
-    color: #81809f;
+	color: #81809f;
+}
+
+a.fiat-currency-ticker {
+	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+	color: #81809f !important;
+	font-weight: 500;
+	padding-left: 7px;
+	height: 41px;
+	line-height: 1.1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+	box-shadow: none;
 }
 
 @mobile-top-bar-height: 50px;
@@ -307,6 +327,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 .nano-address-clickable-hover-styles() {
 	border-color: @global-primary-background;
+}
+
+.nano-address-breakable {
+	line-break: anywhere;
 }
 
 .account-container .account-index {

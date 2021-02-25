@@ -314,6 +314,10 @@
 		border-color: @dark-mode-background-3;
 	}
 
+	.uk-input:disabled::placeholder, .uk-select:disabled::placeholder, .uk-textarea:disabled::placeholder {
+		color: #3E3E48 !important;
+	}
+
 	// General (UIkit Modal)
 	.uk-modal-dialog {
 		background: @dark-mode-background-4;
@@ -405,6 +409,11 @@
 	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
 		color: @dark-mode-text-5 !important;
 		background: @dark-mode-background-4;
+	}
+
+	// Receive page
+	.qr-placeholder {
+		background: @dark-mode-background-2 !important;
 	}
 
 	// Representatives page
