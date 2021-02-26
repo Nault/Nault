@@ -80,7 +80,7 @@ function windowStateKeeper() {
   }
   function track(win) {
     window = win;
-    ['resize', 'move', 'close'].forEach(event => {
+    ['resize', 'move'].forEach(event => {
       win.on(event, saveState);
     });
   }
