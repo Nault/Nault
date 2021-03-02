@@ -24,7 +24,6 @@ jobs:
           sudo apt-get install build-essential git -y
           sudo apt-get install libudev-dev -y
           sudo apt-get install libusb-1.0-0-dev -y
-          sudo apt-get install gcc-4.8 g++-4.8 -y
 
       - name: Install and Build
         run: |
