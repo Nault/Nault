@@ -228,7 +228,7 @@ function sendStatusToWindow(progressObj) {
   mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
-
+// run only one app
 const appLock = app.requestSingleInstanceLock();
 
 if (!appLock) {
@@ -238,6 +238,7 @@ if (!appLock) {
     // Once the app is ready, launch the wallet window
     createWindow();
 
+    // on windows, handle deep links on launch
     if (process.platform === 'win32') {
       handleDeeplink(process.argv.slice(-1)[0]);
     }
@@ -250,8 +251,6 @@ if (!appLock) {
   app.on('second-instance', (event, argv, workingDirectory) => {
     if (mainWindow) {
 
-      console.log(argv);
-
       // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
       if (process.platform === 'win32') {
         handleDeeplink(argv.slice(-1)[0]);
@@ -260,7 +259,6 @@ if (!appLock) {
       if (mainWindow.isMinimized()) {
         mainWindow.restore();
       }
-
       mainWindow.focus();
     }
   });
@@ -293,6 +291,7 @@ if (!appLock) {
     }
   });
 }
+
 function checkForUpdates() {
   autoUpdater.checkForUpdates();
 }
@@ -427,10 +426,10 @@ function loadExternal(externalurl: string) {
 }
 
 let protocolReady = false;
-
 function handleDeeplink(deeplink: string) {
   if (!deeplink) return;
 
+  // need angular to attach the event handler before we can call it
   if (protocolReady) {
     mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${deeplink}' }))`);
   } else {
