@@ -11,7 +11,6 @@ import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { LedgerService, UtilService } from './services';
 import { environment } from 'environments/environment';
-const { ipcRenderer } = window.require('electron'); // import doesn't work
 
 @Component({
   selector: 'app-root',
@@ -151,7 +150,10 @@ export class AppComponent implements OnInit {
     });
 
     // signal to electron that protocol-load is ready
-    ipcRenderer.send('APP_CHANNEL', 'protocol-ready');
+    if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
+      const { ipcRenderer } = window.require('electron');
+      ipcRenderer.send('APP_CHANNEL', 'protocol-ready');
+    }
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
