@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
       // Soon: Load seed, automatic send page?
     });
 
-    // signal to electron that protocol-load is ready
+    // if in electron, tell electron that protocol-load is ready
     if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
       const { ipcRenderer } = window.require('electron');
       ipcRenderer.send('APP_CHANNEL', 'protocol-ready');
