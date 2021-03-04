@@ -9,7 +9,7 @@ import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { LedgerService, UtilService } from './services';
+import { DesktopService, LedgerService, UtilService } from './services';
 import { environment } from 'environments/environment';
 
 @Component({
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
     private ledger: LedgerService,
     public price: PriceService,
     private util: UtilService,
+    private desktop: DesktopService,
     private renderer: Renderer2) {
       router.events.subscribe(() => {
         this.navExpanded = false;
@@ -149,11 +150,8 @@ export class AppComponent implements OnInit {
       // Soon: Load seed, automatic send page?
     });
 
-    // if in electron, tell electron that protocol-load is ready
-    if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
-      const { ipcRenderer } = window.require('electron');
-      ipcRenderer.send('APP_CHANNEL', 'protocol-ready');
-    }
+    // tell electron that protocol-load is ready
+    this.desktop.send('APP_CHANNEL', 'protocol-ready');
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
