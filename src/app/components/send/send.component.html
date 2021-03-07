@@ -74,7 +74,7 @@
                         <div class="uk-inline uk-width-1-1">
                           <a class="uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
                           <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
-                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="number" step="any" placeholder="Amount of {{ selectedAmount.name }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}" maxlength="40">
+                          <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="number" step="any" placeholder="Amount of {{ selectedAmount.name }}" maxlength="40">
                         </div>
 
                       </div>
@@ -86,7 +86,7 @@
                       <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                         <div class="uk-width-1-1 uk-inline">
                           <a class="uk-form-icon uk-link-reset uk-link-muted fiat-currency-ticker" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" step="any" placeholder="Amount of {{ settings.settings.displayCurrency }} to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}">
+                          <input [(ngModel)]="amountFiat" (keyup)="syncNanoPrice()" (change)="syncNanoPrice()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" step="any" placeholder="Amount of {{ settings.settings.displayCurrency }}">
                         </div>
                       </div>
 
@@ -99,7 +99,13 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right" type="button" (click)="sendTransaction()">{{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}</button>
+            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" (click)="sendTransaction()" *ngIf="!preparingTransaction">
+              {{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}
+            </button>
+            <button class="uk-button uk-button-secondary uk-disabled uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" *ngIf="preparingTransaction">
+              <span class="spinner" uk-spinner="ratio: 0.5;"></span>
+              Preparing transaction
+            </button>
           </div>
         </div>
       </div>
@@ -186,7 +192,7 @@
           </div>
           <div class="uk-width-1-2@s">
             <button *ngIf="!confirmingTransaction" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Send</button>
-            <button *ngIf="confirmingTransaction" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
+            <button *ngIf="confirmingTransaction" class="uk-button uk-button-secondary uk-disabled uk-width-1-1 nlt-icon-button"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Sending</button>
           </div>
         </div>
       </div>

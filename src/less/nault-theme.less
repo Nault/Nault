@@ -102,6 +102,17 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	border-bottom: 1px solid #dce9f9;
 }
 
+.nlt-icon-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.spinner {
+		margin-right: 8px;
+		margin-top: -1px;
+	}
+}
+
 .text-half-muted {
 	color: #81809f;
 }
@@ -466,11 +477,6 @@ input[type=number] {
 
 		button {
 			white-space: nowrap;
-
-			.uk-spinner {
-				margin-right: 5px;
-				vertical-align: 2px;
-			}
 		}
 
 		.button-container + .button-container {

@@ -52,6 +52,7 @@ export class SendComponent implements OnInit {
   toAddressBook = '';
   toAccountStatus = null;
   amountStatus = null;
+  preparingTransaction = false;
   confirmingTransaction = false;
   selAccountInit = false;
 
@@ -262,8 +263,13 @@ export class SendComponent implements OnInit {
       return this.notificationService.sendWarning(`Invalid NANO Amount`);
     }
 
+    this.preparingTransaction = true;
+
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
     const to = await this.nodeApi.accountInfo(destinationID);
+
+    this.preparingTransaction = false;
+
     if (!from) {
       return this.notificationService.sendError(`From account not found`);
     }

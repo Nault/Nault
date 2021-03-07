@@ -217,7 +217,7 @@
           <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
             <div class="button-container" *ngIf="walletAccount">
               <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
-              <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small"><span uk-spinner="ratio: 0.5;"></span> Receiving</button>
+              <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
             </div>
             <div class="button-container" *ngIf="remoteVisible">
               <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button>
