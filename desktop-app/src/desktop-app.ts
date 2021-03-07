@@ -13,6 +13,7 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
+const nano_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
 
 /**
  * By default, the logger writes logs to the following locations:
@@ -156,10 +157,10 @@ new AppUpdater();
 
 // Register handler for nano: links
 if (process.platform === 'darwin') {
-  app.setAsDefaultProtocolClient('nano');
+  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
 } else {
   const args = process.argv[1] ? [path.resolve(process.argv[1])] : [];
-  app.setAsDefaultProtocolClient('nano', process.execPath, args);
+  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme, process.execPath, args));
 }
 
 // Initialize Ledger device detection
@@ -240,8 +241,7 @@ if (!appLock) {
 
     // on windows, handle deep links on launch
     if (process.platform === 'win32') {
-      const deeplink = process.argv.find((s) => s.startsWith('nano:'));
-
+      const deeplink = findDeeplink(process.argv);
       if (deeplink) handleDeeplink(deeplink);
     }
 
@@ -255,8 +255,7 @@ if (!appLock) {
 
       // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
       if (process.platform === 'win32') {
-        const deeplink = argv.find((s) => s.startsWith('nano:'));
-
+        const deeplink = findDeeplink(argv);
         if (deeplink) handleDeeplink(deeplink);
       }
 
@@ -439,4 +438,9 @@ function handleDeeplink(deeplink: string) {
   } else {
     mainWindow.webContents.send('deeplink', deeplink);
   }
+}
+
+function findDeeplink(argv: string[]) {
+  const nano_scheme = new RegExp(`^(${nano_schemes.join('|')}):.+$`, 'g');
+  return argv.find((s) => nano_scheme.test(s));
 }
