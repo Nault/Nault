@@ -9,9 +9,9 @@ import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { LedgerService } from './services';
+import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
-
+import { DeeplinkService } from './services/deeplink.service';
 
 @Component({
   selector: 'app-root',
@@ -30,9 +30,11 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
-    private ledger: LedgerService,
     public price: PriceService,
-    private renderer: Renderer2) {
+    private desktop: DesktopService,
+    private ledger: LedgerService,
+    private renderer: Renderer2,
+    private deeplinkService: DeeplinkService) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
@@ -136,15 +138,11 @@ export class AppComponent implements OnInit {
       this.walletService.lockWallet();
     });
 
-    // Listen for an xrb: protocol link, triggered by the desktop application
-    window.addEventListener('protocol-load', (e: CustomEvent) => {
-      const protocolText = e.detail;
-      const stripped = protocolText.split('').splice(4).join(''); // Remove xrb:
-      if (stripped.startsWith('xrb_')) {
-        this.router.navigate(['account', stripped]);
-      }
-      // Soon: Load seed, automatic send page?
+    // handle deeplinks
+    this.desktop.on('deeplink', (e, deeplink) => {
+      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', { length: 5000 });
     });
+    this.desktop.send('deeplink-ready');
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {

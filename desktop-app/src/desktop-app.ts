@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 
-import { app, BrowserWindow, shell, Menu, screen, dialog } from 'electron';
+import { app, BrowserWindow, shell, Menu, screen, dialog, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
@@ -13,8 +13,9 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
+const nano_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
 
-/** 
+/**
  * By default, the logger writes logs to the following locations:
   on Linux: ~/.config/nault/logs/{process type}.log
   on macOS: ~/Library/Logs/nault/{process type}.log
@@ -110,7 +111,7 @@ class AppUpdater {
         message: 'An update for Nault is available!',
         detail: 'Do you want to download and install it?'
       }
-    
+
       isDownloading = true;
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
         if (returnValue.response === 0) {
@@ -147,19 +148,25 @@ class AppUpdater {
         message: 'Something went wrong while downloading Nault.',
         detail: `You will be notified again on next start.\nMore details in the log at: ${logLocation}`
       }
-    
+
       dialog.showMessageBox(dialogOpts).then((returnValue) => {})
     })
   }
 }
 new AppUpdater();
 
-app.setAsDefaultProtocolClient('nano'); // Register handler for nano: links
+// Register handler for nano: links
+if (process.platform === 'darwin') {
+  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
+} else {
+  const args = process.argv[1] ? [path.resolve(process.argv[1])] : [];
+  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme, process.execPath, args));
+}
 
 // Initialize Ledger device detection
 initialize();
 
-let mainWindow;
+let mainWindow: BrowserWindow;
 
 function createWindow () {
   // Get window state
@@ -222,44 +229,71 @@ function sendStatusToWindow(progressObj) {
   mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
-app.on('ready', () => {
-  // Once the app is ready, launch the wallet window
-  createWindow();
+// run only one app
+const appLock = app.requestSingleInstanceLock();
 
-  // Detect when the application has been loaded using an nano: link, send it to the wallet to load
-  app.on('open-url', (event, eventpath) => {
-    if (!mainWindow) {
-      createWindow();
+if (!appLock) {
+  app.quit();
+} else {
+  app.on('ready', () => {
+    // Once the app is ready, launch the wallet window
+    createWindow();
+
+    // on windows, handle deep links on launch
+    if (process.platform === 'win32') {
+      const deeplink = findDeeplink(process.argv);
+      if (deeplink) handleDeeplink(deeplink);
     }
-    if (!mainWindow.webContents.isLoading()) {
-      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${eventpath}' }));`);
-    }
-    mainWindow.webContents.once('did-finish-load', () => {
-      mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${eventpath}' }));`);
-    });
-    event.preventDefault();
+
+    // Check for any updates on GitHub
+    checkForUpdates();
   });
 
-  // Check for any updates on GitHub
-  checkForUpdates();
-});
+  // Refocus the window if the user attempts to open Nault while it is already open
+  app.on('second-instance', (event, argv, workingDirectory) => {
+    if (mainWindow) {
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+      // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
+      if (process.platform === 'win32') {
+        const deeplink = findDeeplink(argv);
+        if (deeplink) handleDeeplink(deeplink);
+      }
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+
+  // Detect on macos when the application has been loaded using a nano: link, send it to the wallet to load
+  app.on('will-finish-launching', () => {
+    app.on('open-url', (event, eventpath) => {
+      if (!mainWindow) {
+        createWindow();
+      }
+      handleDeeplink(eventpath);
+      event.preventDefault();
+    });
+  });
+
+  // Quit when all windows are closed.
+  app.on('window-all-closed', function () {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('activate', function () {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) {
+      createWindow();
+    }
+  });
+}
 
 function checkForUpdates() {
   autoUpdater.checkForUpdates();
@@ -392,4 +426,21 @@ function getApplicationMenu() {
 
 function loadExternal(externalurl: string) {
   shell.openExternal(externalurl);
+}
+
+let deeplinkReady = false;
+ipcMain.once('deeplink-ready', () => deeplinkReady = true);
+function handleDeeplink(deeplink: string) {
+  if (!deeplinkReady) {
+    ipcMain.once('deeplink-ready', (e) => {
+      mainWindow.webContents.send('deeplink', deeplink);
+    });
+  } else {
+    mainWindow.webContents.send('deeplink', deeplink);
+  }
+}
+
+function findDeeplink(argv: string[]) {
+  const nano_scheme = new RegExp(`^(${nano_schemes.join('|')}):.+$`, 'g');
+  return argv.find((s) => nano_scheme.test(s));
 }
