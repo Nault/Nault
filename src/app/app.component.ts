@@ -140,7 +140,7 @@ export class AppComponent implements OnInit {
 
     // handle deeplinks
     this.desktop.on('deeplink-reply', (e, deeplink) => {
-      this.deeplinkService.navigate(deeplink);
+      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', { length: 5000 });
       this.desktop.send('deeplink-ready');
     });
     this.desktop.send('deeplink-ready');

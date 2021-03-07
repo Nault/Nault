@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
+import { NotificationService } from 'app/services';
 import { BehaviorSubject } from 'rxjs';
 import { DeeplinkService } from '../../services/deeplink.service';
 
@@ -32,6 +33,7 @@ export class QrScanComponent implements OnInit {
 
   constructor(
     private deeplinkService: DeeplinkService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void { }
@@ -48,7 +50,7 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    if(!this.deeplinkService.navigate(resultString)) this.notifcationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });;
+    if(!this.deeplinkService.navigate(resultString)) this.notificationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });;
   }
 
   onDeviceSelectChange(selected: string) {
