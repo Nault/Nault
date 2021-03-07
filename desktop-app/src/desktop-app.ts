@@ -165,7 +165,7 @@ if (process.platform === 'darwin') {
 // Initialize Ledger device detection
 initialize();
 
-let mainWindow;
+let mainWindow: BrowserWindow;
 
 function createWindow () {
   // Get window state
@@ -240,7 +240,9 @@ if (!appLock) {
 
     // on windows, handle deep links on launch
     if (process.platform === 'win32') {
-      handleDeeplink(process.argv.find(s => s.startsWith('nano:')));
+      const deeplink = process.argv.find(s => s.startsWith('nano:'));
+
+      if (deeplink) handleDeeplink(deeplink);
     }
 
     // Check for any updates on GitHub
@@ -253,7 +255,9 @@ if (!appLock) {
 
       // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
       if (process.platform === 'win32') {
-        handleDeeplink(argv.find(s => s.startsWith('nano:')));
+        const deeplink = argv.find(s => s.startsWith('nano:'));
+
+        if (deeplink) handleDeeplink(deeplink);
       }
 
       if (mainWindow.isMinimized()) {
