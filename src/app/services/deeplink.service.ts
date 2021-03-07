@@ -8,8 +8,6 @@ import { RemoteSignService } from './remote-sign.service';
 @Injectable()
 export class DeeplinkService {
 
-  hasAccounts = this.walletService.wallet.accounts.length > 0;
-
   constructor(
     private router: Router,
     private notifcationService: NotificationService,
@@ -77,8 +75,12 @@ export class DeeplinkService {
     return true;
   }
 
+  hasAccounts() {
+    return this.walletService.wallet.accounts.length > 0;
+  }
+
   handleSeed(seed) {
-    if (this.hasAccounts) {
+    if (this.hasAccounts()) {
       // Wallet already set up, sweeping...
       this.router.navigate(['sweeper'], { state: { seed: seed } });
     } else {
@@ -88,7 +90,7 @@ export class DeeplinkService {
   }
 
   handlePrivateKey(key) {
-    if (this.hasAccounts) {
+    if (this.hasAccounts()) {
       // Wallet already set up, sweeping...
       this.router.navigate(['sweeper'], { state: { seed: key } });
     } else {
