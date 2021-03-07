@@ -425,17 +425,10 @@ function loadExternal(externalurl: string) {
   shell.openExternal(externalurl);
 }
 
-let protocolReady = false;
 function handleDeeplink(deeplink: string) {
   if (!deeplink) return;
 
-  // need angular to attach the event handler before we can call it
-  if (protocolReady) {
-    mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${deeplink}' }))`);
-  } else {
-    ipcMain.once('APP_CHANNEL', (event, args) => {
-      protocolReady = true;
-      if (args === 'protocol-ready') mainWindow.webContents.executeJavaScript(`window.dispatchEvent(new CustomEvent('protocol-load', { detail: '${deeplink}' }))`);
-    });
-  }
+  ipcMain.once('deeplink-ready', (e) => {
+    e.reply('deeplink-reply', deeplink);
+  })
 }

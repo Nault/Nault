@@ -9,8 +9,9 @@ import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { DesktopService, LedgerService, UtilService } from './services';
+import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
+import { DeeplinkService } from './services/deeplink.service';
 
 @Component({
   selector: 'app-root',
@@ -29,11 +30,11 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
-    private ledger: LedgerService,
     public price: PriceService,
-    private util: UtilService,
     private desktop: DesktopService,
-    private renderer: Renderer2) {
+    private ledger: LedgerService,
+    private renderer: Renderer2,
+    private deeplinkService: DeeplinkService) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
@@ -137,21 +138,12 @@ export class AppComponent implements OnInit {
       this.walletService.lockWallet();
     });
 
-    // Listen for an xrb: protocol link, triggered by the desktop application
-    window.addEventListener('protocol-load', (e: CustomEvent) => {
-      const protocolText = e.detail;
-      const [protocol, query] = protocolText.split(':');
-      if (protocol !== 'nano' && protocol !== 'xrb') return;
-      const [address, paramText] = query.split('?');
-      const params = new URLSearchParams(paramText);
-      this.router.navigate(['send'], {
-        queryParams: { to: address, amount: params.has('amount') ? this.util.nano.rawToMnano(params.get('amount')) : null }
-      });
-      // Soon: Load seed, automatic send page?
+    // handle deeplinks
+    this.desktop.on('deeplink-reply', (e, deeplink) => {
+      this.deeplinkService.navigate(deeplink);
+      this.desktop.send('deeplink-ready');
     });
-
-    // tell electron that protocol-load is ready
-    this.desktop.send('APP_CHANNEL', 'protocol-ready');
+    this.desktop.send('deeplink-ready');
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
