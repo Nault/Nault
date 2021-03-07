@@ -240,7 +240,7 @@ if (!appLock) {
 
     // on windows, handle deep links on launch
     if (process.platform === 'win32') {
-      handleDeeplink(process.argv.slice(-1)[0]);
+      handleDeeplink(process.argv.find(s => s.startsWith('nano:')));
     }
 
     // Check for any updates on GitHub
@@ -253,7 +253,7 @@ if (!appLock) {
 
       // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
       if (process.platform === 'win32') {
-        handleDeeplink(argv.slice(-1)[0]);
+        handleDeeplink(argv.find(s => s.startsWith('nano:')));
       }
 
       if (mainWindow.isMinimized()) {
@@ -426,8 +426,6 @@ function loadExternal(externalurl: string) {
 }
 
 function handleDeeplink(deeplink: string) {
-  if (!deeplink) return;
-
   ipcMain.once('deeplink-ready', (e) => {
     e.reply('deeplink-reply', deeplink);
   })
