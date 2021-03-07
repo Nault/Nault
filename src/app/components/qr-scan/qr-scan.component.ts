@@ -50,7 +50,9 @@ export class QrScanComponent implements OnInit {
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
-    if(!this.deeplinkService.navigate(resultString)) this.notificationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });;
+    if (!this.deeplinkService.navigate(resultString)) {
+      this.notificationService.sendWarning('This QR code is not recognized.', { length: 5000, identifier: 'qr-not-recognized' });
+    }
   }
 
   onDeviceSelectChange(selected: string) {
