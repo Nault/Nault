@@ -1,6 +1,12 @@
 .label-block {
     margin-left: 10px;
     margin-bottom: 10px;
+    width: unset;
+}
+
+.label-block > .label-optional {
+    margin-left: 6px;
+    font-size: 12px;
 }
 
 .nano-address-actions {
@@ -12,7 +18,8 @@
 }
 
 .span-icon {
-    margin-left: 5px;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .form-account {
@@ -56,10 +63,17 @@
     margin: 0 auto;
     box-sizing: border-box;
 }
+.qr-address {
+    max-width: 280px;
+    margin: 0 auto;
+}
 @media (max-width: 959px) {
     .qr-code {
         max-width: 250px;
         max-height: 250px;
+    }
+    .qr-address {
+        max-width: 280px;
     }
 }
 .qr-placeholder {

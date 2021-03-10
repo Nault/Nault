@@ -102,6 +102,17 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	border-bottom: 1px solid #dce9f9;
 }
 
+.nlt-icon-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.spinner {
+		margin-right: 8px;
+		margin-top: -1px;
+	}
+}
+
 .text-half-muted {
 	color: #81809f;
 }
@@ -444,14 +455,20 @@ input[type=number] {
 		white-space: nowrap;
 		text-align: right;
 
-		.amount-nano {
+		.amount-integer, .amount-fractional, .currency-name {
 			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-			font-weight: 700;
 			font-size: 16px;
 		}
 
+		.amount-integer {
+			font-weight: 700;
+		}
+
+		.amount-fractional {
+			font-weight: 500;
+		}
+
 		.currency-name {
-			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 			font-weight: 400;
 			margin-left: 5px;
 		}
@@ -466,11 +483,6 @@ input[type=number] {
 
 		button {
 			white-space: nowrap;
-
-			.uk-spinner {
-				margin-right: 5px;
-				vertical-align: 2px;
-			}
 		}
 
 		.button-container + .button-container {
@@ -540,10 +552,9 @@ input[type=number] {
 		td.amount-column {
 			font-size: 12px;
 
-			.amount-nano {
+			.amount-integer, .amount-fractional {
 				font-size: 13px;
 				margin: 5px 0 -3px 0;
-				display: block;
 			}
 
 			.currency-name {
