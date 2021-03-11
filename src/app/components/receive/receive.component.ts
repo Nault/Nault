@@ -139,7 +139,7 @@ export class ReceiveComponent implements OnInit {
     this.pendingBlocks = [];
     this.pendingBlocksForSelectedAccount = [];
     this.loadingIncomingTxList = true;
-    await this.walletService.reloadBalances(true);
+    await this.walletService.reloadBalances();
     this.loadingIncomingTxList = false;
   }
 
@@ -253,10 +253,8 @@ export class ReceiveComponent implements OnInit {
     pendingBlock.loading = true;
 
     const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
-    let successfullyReceived = false;
 
     if (newBlock) {
-      successfullyReceived = true;
       pendingBlock.received = true;
       this.notificationService.removeNotification('success-receive');
       this.notificationService.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
@@ -270,8 +268,7 @@ export class ReceiveComponent implements OnInit {
 
     pendingBlock.loading = false;
 
-    const shouldReloadPendingBlocks = (successfullyReceived === false);
-    await this.walletService.reloadBalances(shouldReloadPendingBlocks);
+    await this.walletService.reloadBalances();
   }
 
   copied() {

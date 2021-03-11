@@ -163,7 +163,7 @@ export class WalletService {
       // I'm not sure about that because what happens if the websocket is disconnected and misses a transaction?
       // won't the balance be incorrect if relying only on the websocket? / Json
       if (shouldNotify) {
-        await this.reloadBalances(false);
+        await this.reloadBalances();
       }
     });
 
@@ -287,7 +287,7 @@ export class WalletService {
       }));
     } else return false;
 
-    await this.reloadBalances(true);
+    await this.reloadBalances();
 
     if (this.wallet.accounts.length) {
       this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
@@ -627,7 +627,7 @@ export class WalletService {
     this.wallet.hasPending = false;
   }
 
-  async reloadBalances(reloadPending = true) {
+  async reloadBalances() {
     // to block two reloads to happen at the same time (websocket)
     if (this.wallet.updatingBalance) return;
 
@@ -653,9 +653,7 @@ export class WalletService {
       return;
     }
 
-    if (reloadPending === true) {
-      this.clearPendingBlocks();
-    }
+    this.clearPendingBlocks();
 
     for (const accountID in accounts.balances) {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
