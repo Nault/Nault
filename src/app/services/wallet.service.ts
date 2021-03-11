@@ -703,7 +703,13 @@ export class WalletService {
                 continue;
               }
 
-              const isNewBlock = this.addPendingBlock(walletAccount.id, hash, pending.blocks[block][hash].amount, pending.blocks[block][hash].source);
+              const isNewBlock =
+                this.addPendingBlock(
+                  walletAccount.id,
+                  hash,
+                  pending.blocks[block][hash].amount,
+                  pending.blocks[block][hash].source
+                );
 
               if (isNewBlock === true) {
                 accountPending = accountPending.plus(pending.blocks[block][hash].amount);

@@ -110,7 +110,7 @@ export class ReceiveComponent implements OnInit {
   }
 
   filterPendingBlocksForDestinationAccount(selectedAccountID) {
-    if(selectedAccountID === '0') {
+    if (selectedAccountID === '0') {
       // Blocks for all accounts
       this.pendingBlocksForSelectedAccount = [...this.pendingBlocks];
       return;
