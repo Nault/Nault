@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
       this.wallet.selectedAccount = currentUpdatedAccount;
     }
 
-    await this.walletService.reloadBalances(true);
+    await this.walletService.reloadBalances();
 
     // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
@@ -252,7 +252,7 @@ export class AppComponent implements OnInit {
       this.notifications.sendInfo(`Wallet server settings is set to offline mode. Please change server first!`);
       return;
     }
-    this.walletService.reloadBalances(true);
+    this.walletService.reloadBalances();
     this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
   }
 

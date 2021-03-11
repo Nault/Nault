@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WalletService, WalletAccount} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
+import {AddressBookService} from '../../services/address-book.service';
 import {ModalService} from '../../services/modal.service';
 import {ApiService} from '../../services/api.service';
 import {UtilService} from '../../services/util.service';
@@ -23,14 +24,13 @@ import BigNumber from 'bignumber.js';
 export class ReceiveComponent implements OnInit {
   nano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
-  pendingBelowThreshold = [];
 
   pendingAccountModel = '0';
   pendingBlocks = [];
+  pendingBlocksForSelectedAccount = [];
   qrCodeImage = null;
   qrAccount = '';
   qrAmount: BigNumber = null;
-  minAmount: BigNumber = this.settings.settings.minimumReceive ? this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive) : null;
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
@@ -43,6 +43,7 @@ export class ReceiveComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private notificationService: NotificationService,
+    private addressBook: AddressBookService,
     public modal: ModalService,
     private api: ApiService,
     private workPool: WorkPoolService,
@@ -57,15 +58,22 @@ export class ReceiveComponent implements OnInit {
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
       if (this.selAccountInit) {
         this.pendingAccountModel = acc ? acc.id : '0';
+        this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
         this.changeQRAccount(this.pendingAccountModel);
       }
       this.selAccountInit = true;
     });
 
-    await this.loadPendingForAll();
+    this.walletService.wallet.pendingBlocksUpdate$.subscribe(async acc => {
+      this.updatePendingBlocks();
+    });
+
+    await this.updatePendingBlocks();
+
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
+      this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
       this.changeQRAccount(this.pendingAccountModel);
     }
 
@@ -82,43 +90,57 @@ export class ReceiveComponent implements OnInit {
     });
   }
 
-  async loadPendingForAll() {
-    const walletPendingBlocks = this.walletService.wallet.pendingBlocks;
-    const walletPendingBlocksBelowThreshold = this.walletService.wallet.pendingBelowThreshold;
-
-    this.pendingBlocks = [];
-    this.pendingBelowThreshold = [];
-
-    // Now, only if we have results, do a unique on the account names, and run account info on all of them?
-    if (walletPendingBlocks.length) {
-      this.loadingIncomingTxList = true;
-      const frontiers = await this.api.accountsFrontiers(walletPendingBlocks.map(p => p.account));
-      if (frontiers && frontiers.frontiers) {
-        for (const account in frontiers.frontiers) {
-          if (!frontiers.frontiers.hasOwnProperty(account)) {
-            continue;
+  async updatePendingBlocks() {
+    this.pendingBlocks = this.walletService.wallet.pendingBlocks.map(
+      (pendingBlock) =>
+        Object.assign(
+          {},
+          pendingBlock,
+          {
+            sourceAddressBookName: (
+                this.addressBook.getAccountName(pendingBlock.source)
+              || this.getAccountLabel(pendingBlock.source, null)
+            ),
+            accountAddressBookName: (
+                this.addressBook.getAccountName(pendingBlock.account)
+              || this.getAccountLabel(pendingBlock.account, 'Account')
+            ),
           }
-          // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
-          // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
-          // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework in case a send is made instead
-          // The typical user scenario would be to let the wallet auto receive first
-          console.log('Adding pending to work cache');
-          this.workPool.addWorkToCache(frontiers.frontiers[account], 1 / 64);
-        }
-      }
+        )
+    );
+
+    this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
+  }
+
+  filterPendingBlocksForDestinationAccount(selectedAccountID) {
+    if (selectedAccountID === '0') {
+      // Blocks for all accounts
+      this.pendingBlocksForSelectedAccount = [...this.pendingBlocks];
+      return;
     }
 
-    this.loadingIncomingTxList = false;
-    this.pendingBlocks = walletPendingBlocks;
-    this.pendingBelowThreshold = walletPendingBlocksBelowThreshold;
+    // Blocks for selected account
+    this.pendingBlocksForSelectedAccount =
+      this.pendingBlocks.filter(block => (block.account === selectedAccountID));
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   async getPending() {
     // clear the list of pending blocks. Updated again with reloadBalances()
     this.pendingBlocks = [];
+    this.pendingBlocksForSelectedAccount = [];
     this.loadingIncomingTxList = true;
-    await this.walletService.reloadBalances(true);
-    await this.loadPendingForAll();
+    await this.walletService.reloadBalances();
+    this.loadingIncomingTxList = false;
   }
 
   async nanoAmountChange() {
@@ -175,6 +197,11 @@ export class ReceiveComponent implements OnInit {
     return this.validFiat;
   }
 
+  onSelectedAccountChange(account) {
+    this.changeQRAccount(account);
+    this.filterPendingBlocksForDestinationAccount(account);
+  }
+
   async changeQRAccount(account) {
     this.walletAccount = this.walletService.wallet.accounts.find(a => a.id === account) || null;
     this.qrAccount = '';
@@ -228,6 +255,7 @@ export class ReceiveComponent implements OnInit {
     const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
     if (newBlock) {
+      pendingBlock.received = true;
       this.notificationService.removeNotification('success-receive');
       this.notificationService.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
       // clear the list of pending blocks. Updated again with reloadBalances()

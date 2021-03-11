@@ -379,7 +379,7 @@ export class ConfigureAppComponent implements OnInit {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
     }
     if (reloadPending) {
-      this.walletService.reloadBalances(true);
+      this.walletService.reloadBalances();
     }
   }
 

@@ -269,13 +269,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
       // Take minimum receive into account
+      let pendingBalance = '0';
       let pending;
+
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
-        pending = await this.api.pendingLimit(this.accountID, 50, minAmount.toString(10));
-        this.account.pending = '0';
+        pending = await this.api.pendingLimitSorted(this.accountID, 50, minAmount.toString(10));
       } else {
-        pending = await this.api.pending(this.accountID, 50);
+        pending = await this.api.pendingSorted(this.accountID, 50);
       }
 
       if (pending && pending.blocks) {
@@ -292,12 +293,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             received: false,
           });
 
-          // Update the actual account pending amount with this above-threshold-value
-          if (this.settings.settings.minimumReceive) {
-            this.account.pending = new BigNumber(this.account.pending).plus(pending.blocks[block].amount).toString(10);
-          }
+          pendingBalance = new BigNumber(pendingBalance).plus(pending.blocks[block].amount).toString(10);
         }
       }
+
+      this.account.pending = pendingBalance;
     }
 
     // If the account doesnt exist, set the pending balance manually
