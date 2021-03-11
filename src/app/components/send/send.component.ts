@@ -81,6 +81,11 @@ export class SendComponent implements OnInit {
 
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.activePanel !== 'send') {
+        // Transaction details already finalized
+        return;
+      }
+
       if (this.selAccountInit) {
         if (acc) {
           this.fromAccountID = acc.id;
