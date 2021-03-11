@@ -23,8 +23,6 @@ export interface WalletAccount {
   index: number;
   balance: BigNumber;
   pending: BigNumber;
-  pendingBelowThreshold: BigNumber[];
-  pendingOriginal: BigNumber;
   balanceRaw: BigNumber;
   pendingRaw: BigNumber;
   balanceFiat: number;
@@ -51,6 +49,7 @@ export interface FullWallet {
   balanceFiat: number;
   pendingFiat: number;
   hasPending: boolean;
+  updatingBalance: boolean;
   accounts: WalletAccount[];
   selectedAccountId: string|null;
   selectedAccount: WalletAccount|null;
@@ -58,7 +57,7 @@ export interface FullWallet {
   locked: boolean;
   password: string;
   pendingBlocks: Block[];
-  pendingBelowThreshold: BigNumber[];
+  pendingBlocksUpdate$: BehaviorSubject<boolean|false>;
   newWallet$: BehaviorSubject<boolean|false>;
 }
 
@@ -96,6 +95,7 @@ export class WalletService {
     balanceFiat: 0,
     pendingFiat: 0,
     hasPending: false,
+    updatingBalance: false,
     accounts: [],
     selectedAccountId: null,
     selectedAccount: null,
@@ -103,13 +103,12 @@ export class WalletService {
     locked: false,
     password: '',
     pendingBlocks: [],
-    pendingBelowThreshold: [new BigNumber(0)],
+    pendingBlocksUpdate$: new BehaviorSubject(false),
     newWallet$: new BehaviorSubject(false),
   };
 
   processingPending = false;
   successfulBlocks = [];
-  reloadingBalance = false;
 
   constructor(
     private util: UtilService,
@@ -180,31 +179,23 @@ export class WalletService {
       const walletAccount = this.wallet.accounts.find(a => a.id === transaction.block.link_as_account);
       if (!walletAccount) return; // Not for our wallet?
 
-      // Check for a min receive
       const txAmount = new BigNumber(transaction.amount);
+      let aboveMinimumReceive = true;
 
       if (this.appSettings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+        aboveMinimumReceive = txAmount.gte(minAmount);
+      }
 
-        if (txAmount.gte(minAmount)) {
+      if (aboveMinimumReceive === true) {
+        const isNewBlock = this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
+
+        if (isNewBlock === true) {
           this.wallet.pending = this.wallet.pending.plus(txAmount);
           this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
           this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
           this.wallet.hasPending = true;
-          this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
-        } else {
-          // The resons for using push and shift is to keep the reference when used in another component
-          this.wallet.pendingBelowThreshold.push(this.wallet.pendingBelowThreshold[0].plus(txAmount));
-          this.wallet.pendingBelowThreshold.shift();
-          walletAccount.pendingBelowThreshold.push(walletAccount.pendingBelowThreshold[0].plus(txAmount));
-          walletAccount.pendingBelowThreshold.shift();
         }
-      } else {
-        this.wallet.pending = this.wallet.pending.plus(txAmount);
-        this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
-        this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
-        this.wallet.hasPending = true;
-        this.addPendingBlock(walletAccount.id, transaction.hash, txAmount, transaction.account);
       }
 
       await this.processPendingBlocks();
@@ -506,8 +497,6 @@ export class WalletService {
       keyPair: null,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
-      pendingBelowThreshold: [new BigNumber(0)],
-      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -531,8 +520,6 @@ export class WalletService {
       keyPair: accountKeyPair,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
-      pendingBelowThreshold: [new BigNumber(0)],
-      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -580,7 +567,6 @@ export class WalletService {
     this.wallet.selectedAccountId = null;
     this.wallet.selectedAccount = null;
     this.wallet.selectedAccount$.next(null);
-    this.wallet.pendingBelowThreshold = [new BigNumber(0)];
     this.wallet.pendingBlocks = [];
   }
 
@@ -631,12 +617,7 @@ export class WalletService {
     this.wallet.pendingFiat = this.util.nano.rawToMnano(this.wallet.pending).times(fiatPrice).toNumber();
   }
 
-  async reloadBalances(reloadPending = true) {
-    // to block two reloads to happen at the same time (websocket)
-    if (this.reloadingBalance) return;
-
-    this.reloadingBalance = true;
-    const fiatPrice = this.price.price.lastPrice;
+  resetBalances() {
     this.wallet.balance = new BigNumber(0);
     this.wallet.pending = new BigNumber(0);
     this.wallet.balanceRaw = new BigNumber(0);
@@ -644,6 +625,14 @@ export class WalletService {
     this.wallet.balanceFiat = 0;
     this.wallet.pendingFiat = 0;
     this.wallet.hasPending = false;
+  }
+
+  async reloadBalances(reloadPending = true) {
+    // to block two reloads to happen at the same time (websocket)
+    if (this.wallet.updatingBalance) return;
+
+    this.wallet.updatingBalance = true;
+    const fiatPrice = this.price.price.lastPrice;
 
     const accountIDs = this.wallet.accounts.map(a => a.id);
     const accounts = await this.api.accountsBalances(accountIDs);
@@ -655,100 +644,110 @@ export class WalletService {
     // const frontierBlocks = await this.api.blocksInfo(allFrontiers.map(f => f.frontier));
 
     let walletBalance = new BigNumber(0);
-    let walletPending = new BigNumber(0);
-    let walletPendingReal = new BigNumber(0);
+    let walletPendingInclUnconfirmed = new BigNumber(0);
+    let walletPendingAboveThresholdConfirmed = new BigNumber(0);
 
     if (!accounts) {
-      this.reloadingBalance = false;
+      this.resetBalances();
+      this.wallet.updatingBalance = false;
       return;
     }
+
+    if (reloadPending === true) {
+      this.clearPendingBlocks();
+    }
+
     for (const accountID in accounts.balances) {
       if (!accounts.balances.hasOwnProperty(accountID)) continue;
-      // Find the account, update it
-      // const prefixedAccount = this.util.account.setPrefix(accountID, this.appSettings.settings.displayPrefix);
+
       const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
-      // console.log(`Finding account by id: ${accountID} - prefixed: ${accountID} - resulting account: `, walletAccount);
+
       if (!walletAccount) continue;
+
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
-      walletAccount.pendingOriginal = new BigNumber(accounts.balances[accountID].pending);
+      const accountBalancePendingInclUnconfirmed = new BigNumber(accounts.balances[accountID].pending);
 
       walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
 
       walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
 
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
-      walletAccount.pendingBelowThreshold = [new BigNumber(0)];
 
       walletBalance = walletBalance.plus(walletAccount.balance);
-      walletPending = walletPending.plus(walletAccount.pendingOriginal);
+      walletPendingInclUnconfirmed = walletPendingInclUnconfirmed.plus(accountBalancePendingInclUnconfirmed);
     }
 
-    let hasPending = false;
+    if (walletPendingInclUnconfirmed.gt(0)) {
+      let pending;
 
-    // Check if there is a pending balance at all
-    if (walletPending.gt(0)) {
-      // If we have a minimum receive amount, check accounts for actual receivable transactions
       if (this.appSettings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
-        const pending = await this.api.accountsPendingLimit(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
+        pending = await this.api.accountsPendingLimitSorted(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
+      } else {
+        pending = await this.api.accountsPendingSorted(this.wallet.accounts.map(a => a.id));
+      }
 
-        if (pending && pending.blocks) {
-          for (const block in pending.blocks) {
-            if (!pending.blocks.hasOwnProperty(block)) {
-              continue;
-            }
-            const walletAccount = this.wallet.accounts.find(a => a.id === block);
-            if (pending.blocks[block]) {
-              hasPending = true;
-              let accountPending = new BigNumber(0);
-              for (const hash in pending.blocks[block]) {
-                if (!pending.blocks[block].hasOwnProperty(hash)) {
-                  continue;
-                }
-                walletPendingReal = walletPendingReal.plus(pending.blocks[block][hash].amount);
+      if (pending && pending.blocks) {
+        for (const block in pending.blocks) {
+          if (!pending.blocks.hasOwnProperty(block)) {
+            continue;
+          }
+
+          const walletAccount = this.wallet.accounts.find(a => a.id === block);
+
+          if (pending.blocks[block]) {
+            let accountPending = new BigNumber(0);
+
+            for (const hash in pending.blocks[block]) {
+              if (!pending.blocks[block].hasOwnProperty(hash)) {
+                continue;
+              }
+
+              const isNewBlock = this.addPendingBlock(walletAccount.id, hash, pending.blocks[block][hash].amount, pending.blocks[block][hash].source);
+
+              if (isNewBlock === true) {
                 accountPending = accountPending.plus(pending.blocks[block][hash].amount);
+                walletPendingAboveThresholdConfirmed = walletPendingAboveThresholdConfirmed.plus(pending.blocks[block][hash].amount);
               }
-              // Update the actual account pending amount with this above-threshold-value
-              walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal.minus(accountPending));
-              walletAccount.pendingBelowThreshold.shift();
-              walletAccount.pending = accountPending;
-              walletAccount.pendingRaw = accountPending.mod(this.nano);
-              walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
+            }
 
-              // If there is a pending, it means we want to add to work cache as receive-threshold
-              if (walletAccount.pending.gt(0)) {
-                console.log('Adding single pending account within limit to work cache');
-                // Use frontier or public key if open block
-                const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id);
-                // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
-                // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
-                // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
-                // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
-                this.workPool.addWorkToCache(hash, 1 / 64);
-                walletAccount.receivePow = true;
-              } else {
-                walletAccount.receivePow = false;
-              }
+            walletAccount.pending = accountPending;
+            walletAccount.pendingRaw = accountPending.mod(this.nano);
+            walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
+
+            // If there is a pending, it means we want to add to work cache as receive-threshold
+            if (walletAccount.pending.gt(0)) {
+              console.log('Adding single pending account within limit to work cache');
+              // Use frontier or public key if open block
+              const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id);
+              // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
+              // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
+              // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
+              // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
+              this.workPool.addWorkToCache(hash, 1 / 64);
+              walletAccount.receivePow = true;
             } else {
-              walletAccount.pendingBelowThreshold.push(walletAccount.pendingOriginal);
-              walletAccount.pendingBelowThreshold.shift();
-              walletAccount.pending = new BigNumber(0);
-              walletAccount.pendingRaw = new BigNumber(0);
-              walletAccount.pendingFiat = 0;
               walletAccount.receivePow = false;
             }
+          } else {
+            walletAccount.pending = new BigNumber(0);
+            walletAccount.pendingRaw = new BigNumber(0);
+            walletAccount.pendingFiat = 0;
+            walletAccount.receivePow = false;
           }
         }
-      } else {
-        hasPending = true; // No minimum receive, but pending balance, set true
-        walletPendingReal = walletPending;
-
-        // update the individual pending here to avoid setting it twice (GUI flickering)
-        this.updateAccountPending(accounts);
       }
     } else {
-      // update pending also when they are zero
-      this.updateAccountPending(accounts);
+      // Not clearing those values to zero earlier to avoid zero values while blocks are being loaded
+      for (const accountID in accounts.balances) {
+        if (!accounts.balances.hasOwnProperty(accountID)) continue;
+        const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
+        if (!walletAccount) continue;
+        walletAccount.pending = new BigNumber(0);
+        walletAccount.pendingRaw = new BigNumber(0);
+        walletAccount.pendingFiat = 0;
+        walletAccount.receivePow = false;
+      }
     }
 
     // Make sure any frontiers are in the work pool
@@ -759,56 +758,21 @@ export class WalletService {
     hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)); // use high pow here since we don't know what tx type will be next
 
     this.wallet.balance = walletBalance;
-    this.wallet.pending = walletPendingReal;
+    this.wallet.pending = walletPendingAboveThresholdConfirmed;
 
     this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.nano);
-    this.wallet.pendingRaw = new BigNumber(walletPendingReal).mod(this.nano);
+    this.wallet.pendingRaw = new BigNumber(walletPendingAboveThresholdConfirmed).mod(this.nano);
 
     this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
-    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPendingReal).times(fiatPrice).toNumber();
-
-    // Save pending that will be ignored, to be displayed to the user
-    // The resons for using push and shift is to keep the reference when used in another component
-    this.wallet.pendingBelowThreshold.push(walletPending.minus(walletPendingReal));
-    this.wallet.pendingBelowThreshold.shift();
+    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPendingAboveThresholdConfirmed).times(fiatPrice).toNumber();
 
     // tslint:disable-next-line
-    this.wallet.hasPending = hasPending;
+    this.wallet.hasPending = walletPendingAboveThresholdConfirmed.gt(0);
 
-    if (reloadPending) {
-      this.clearPendingBlocks();
-    }
+    this.wallet.updatingBalance = false;
 
-    // If there is a pending balance, search for the actual pending transactions
-    if (reloadPending && walletPending.gt(0)) {
-      await this.loadPendingBlocksForWallet();
-    }
-    this.reloadingBalance = false;
-  }
-
-  updateAccountPending(accounts) {
-    for (const accountID in accounts.balances) {
-      if (!accounts.balances.hasOwnProperty(accountID)) continue;
-      const walletAccount = this.wallet.accounts.find(a => a.id === accountID);
-      if (!walletAccount) continue;
-      walletAccount.pending = new BigNumber(accounts.balances[accountID].pending);
-      walletAccount.pendingRaw = new BigNumber(walletAccount.pending).mod(this.nano);
-      walletAccount.pendingFiat = this.util.nano.rawToMnano(walletAccount.pending).times(this.price.price.lastPrice).toNumber();
-
-      // If there is a pending, it means we want to add to work cache as receive-threshold
-      if (walletAccount.pending.gt(0)) {
-        console.log('Adding single pending account to work cache');
-        // Use frontier or public key if open block
-        const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id);
-        // Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
-        // a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
-        // On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
-        // in case a send is made instead. The typical user scenario would be to let the wallet auto receive first
-        this.workPool.addWorkToCache(hash, 1 / 64);
-        walletAccount.receivePow = true;
-      } else {
-        walletAccount.receivePow = false;
-      }
+    if (this.wallet.pendingBlocks.length) {
+      await this.processPendingBlocks();
     }
   }
 
@@ -823,8 +787,6 @@ export class WalletService {
       keyPair: null,
       balance: new BigNumber(0),
       pending: new BigNumber(0),
-      pendingBelowThreshold: [new BigNumber(0)],
-      pendingOriginal: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
       balanceFiat: 0,
@@ -896,12 +858,16 @@ export class WalletService {
   }
 
   addPendingBlock(accountID, blockHash, amount, source) {
-    if (this.successfulBlocks.indexOf(blockHash) !== -1) return; // Already successful with this block
+    if (this.successfulBlocks.indexOf(blockHash) !== -1) return false; // Already successful with this block
+
     const existingHash = this.wallet.pendingBlocks.find(b => b.hash === blockHash);
-    if (existingHash) return; // Already added
+
+    if (existingHash) return false; // Already added
 
     this.wallet.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount, source: source });
-    this.wallet.hasPending = true;
+    this.wallet.pendingBlocksUpdate$.next(true);
+    this.wallet.pendingBlocksUpdate$.next(false);
+    return true;
   }
 
   // Remove a pending account from the pending list
@@ -913,34 +879,6 @@ export class WalletService {
   // Clear the list of pending blocks
   async clearPendingBlocks() {
     this.wallet.pendingBlocks.splice(0, this.wallet.pendingBlocks.length);
-  }
-
-  async loadPendingBlocksForWallet() {
-    if (!this.wallet.accounts.length) return;
-
-    // Check minimum receive
-    let pending;
-    if (this.appSettings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
-      pending = await this.api.accountsPendingLimit(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
-    } else {
-      pending = await this.api.accountsPending(this.wallet.accounts.map(a => a.id));
-    }
-    if (!pending || !pending.blocks) return;
-
-    for (const account in pending.blocks) {
-      if (!pending.blocks.hasOwnProperty(account)) continue;
-      for (const block in pending.blocks[account]) {
-        if (!pending.blocks[account].hasOwnProperty(block)) continue;
-        if (pending.blocks[account] === '') continue; // Accounts show up as nothing with threshold there...
-
-        this.addPendingBlock(account, block, pending.blocks[account][block].amount, pending.blocks[account][block].source);
-      }
-    }
-
-    if (this.wallet.pendingBlocks.length) {
-      this.processPendingBlocks();
-    }
   }
 
   sortByAmount(a, b) {

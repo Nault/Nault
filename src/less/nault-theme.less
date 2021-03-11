@@ -412,10 +412,12 @@ input[type=number] {
 .transactions-list {
 	.type-column {
 		min-width: 25px;
-		text-align: center;
+		position: relative;
 
 		> .type {
-			margin-top: 35px;
+			position: absolute;
+			top: calc(50% - 12px);
+			left: 13px;
 
 			&.rep-change {
 				color: #A478E3;
@@ -448,6 +450,10 @@ input[type=number] {
 			&:hover {
 				border-color: #999;
 			}
+		}
+
+		.arrow-down {
+			margin: 3px 0 14px -2px;
 		}
 	}
 
