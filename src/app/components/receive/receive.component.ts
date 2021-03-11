@@ -97,11 +97,14 @@ export class ReceiveComponent implements OnInit {
           {},
           pendingBlock,
           {
+            sourceAddressBookName: (
+                this.addressBook.getAccountName(pendingBlock.source)
+              || this.getAccountLabel(pendingBlock.source, null)
+            ),
             accountAddressBookName: (
                 this.addressBook.getAccountName(pendingBlock.account)
-              || this.getDestinationAccountLabel(pendingBlock.account)
+              || this.getAccountLabel(pendingBlock.account, 'Account')
             ),
-            sourceAddressBookName: this.addressBook.getAccountName(pendingBlock.source) || null,
           }
         )
     );
@@ -121,11 +124,11 @@ export class ReceiveComponent implements OnInit {
       this.pendingBlocks.filter(block => (block.account === selectedAccountID));
   }
 
-  getDestinationAccountLabel(accountID) {
+  getAccountLabel(accountID, defaultLabel) {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
 
     if (walletAccount == null) {
-      return 'Account';
+      return defaultLabel;
     }
 
     return ('Account #' + walletAccount.index);

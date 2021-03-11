@@ -88,7 +88,7 @@
             <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
               <div uk-grid class="uk-flex-nowrap">
                 <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                  <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <a [routerLink]="'/account/' + pending.source" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
                     <span class="account-label-placeholder"></span><span class="account-label" *ngIf="pending.sourceAddressBookName">{{ pending.sourceAddressBookName }}</span><br>
                     <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
                       <app-nano-account-id [accountID]="pending.source" middle="auto"></app-nano-account-id>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                   <ul class="uk-iconnav">
-                    <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    <li><a ngxClipboard [cbContent]="pending.source" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   </ul>
                 </div>
               </div>
