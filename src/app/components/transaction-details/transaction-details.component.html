@@ -2,8 +2,29 @@
   <div class="uk-width-1-1">
     <h2 class="uk-heading-divider">Transaction Details</h2>
 
-    <div class="uk-alert uk-alert-primary" *ngIf="!transaction">
-      Unable to load the transaction, double check that the hash is correct and try again!
+    <div *ngIf="!transaction">
+      <div class="uk-alert uk-alert-warning nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>Unable to find the block with specified hash</b><br>
+          Please double check that the block hash is correct<br>
+          Additionally, try selecting a different server in the app settings
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="isUnconfirmedBlock">
+      <div class="uk-alert uk-alert-danger nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>This block has not yet been confirmed by the network</b><br>
+          The information provided below is not final until the network verifies this block
+        </p>
+      </div>
     </div>
 
     <div class="uk-width-1-1" *ngIf="transaction">
@@ -130,7 +151,7 @@
       </div>
     </div>
 
-    <div uk-grid>
+    <div uk-grid *ngIf="transaction">
       <div class="uk-width-1-1 uk-text-center">
         <a (click)="showBlockData = !showBlockData" class="uk-link-text">{{ showBlockData ? 'Hide' : 'Show' }} Block Data</a>
       </div>
