@@ -50,6 +50,7 @@ export interface FullWallet {
   pendingFiat: number;
   hasPending: boolean;
   updatingBalance: boolean;
+  balanceInitialized: boolean;
   accounts: WalletAccount[];
   selectedAccountId: string|null;
   selectedAccount: WalletAccount|null;
@@ -96,6 +97,7 @@ export class WalletService {
     pendingFiat: 0,
     hasPending: false,
     updatingBalance: false,
+    balanceInitialized: false,
     accounts: [],
     selectedAccountId: null,
     selectedAccount: null,
@@ -650,6 +652,7 @@ export class WalletService {
     if (!accounts) {
       this.resetBalances();
       this.wallet.updatingBalance = false;
+      this.wallet.balanceInitialized = true;
       return;
     }
 
@@ -774,6 +777,7 @@ export class WalletService {
     this.wallet.hasPending = walletPendingAboveThresholdConfirmed.gt(0);
 
     this.wallet.updatingBalance = false;
+    this.wallet.balanceInitialized = true;
 
     if (this.wallet.pendingBlocks.length) {
       await this.processPendingBlocks();
