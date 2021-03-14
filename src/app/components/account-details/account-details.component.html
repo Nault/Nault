@@ -278,8 +278,13 @@
               <span class="currency-name">NANO</span>
             </span>
           </td>
-          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
-          <td class="date-column uk-text-middle uk-text-truncate" *ngIf="history.local_timestamp">{{ history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+          <td class="date-column uk-text-middle uk-text-truncate" [class.uk-text-muted]="!history.local_timestamp">
+            {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' ) : 'N/A' }}
+            <ng-container *ngIf="(history.confirmed === false)">
+              <br>
+              <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
+            </ng-container>
+          </td>
         </tr>
         <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
           <td colspan="4" style="text-align: center;">No account history</td>
