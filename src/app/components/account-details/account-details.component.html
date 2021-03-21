@@ -264,14 +264,36 @@
             'rep-change': (history.type == 'change' || history.subtype == 'change')
           }">
             <span *ngIf="isNaN(history.amount)">
-              <span class="uk-text-small">Rep. Change</span>
+              <span
+                class="uk-text-small"
+                [class.text-half-muted]="(history.confirmed === false)"
+                [title]="( (history.confirmed === false) ? 'This change has not yet been confirmed by the network' : '' )"
+                uk-tooltip
+              >
+                Rep. Change
+                <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+              </span>
             </span>
             <span *ngIf="!isNaN(history.amount)">
               <ng-container *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')">
-                <span class="uk-text-small">Received</span><br>
+                <span class="uk-text-small"
+                [class.text-half-muted]="(history.confirmed === false)"
+                [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                uk-tooltip
+              >
+                  Received
+                  <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+                </span><br>
               </ng-container>
               <ng-container *ngIf="(history.type == 'send' || history.subtype == 'send')">
-                <span class="uk-text-small">Sent</span><br>
+                <span class="uk-text-small"
+                  [class.text-half-muted]="(history.confirmed === false)"
+                  [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                  uk-tooltip
+                >
+                  Sent
+                  <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+                </span><br>
               </ng-container>
               <span class="amount-integer">{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
