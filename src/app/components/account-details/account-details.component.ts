@@ -340,6 +340,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const history = await this.api.accountHistory(account, this.pageSize, true);
     const additionalBlocksInfo = [];
 
+    const accountConfirmationHeight = (
+        this.account.confirmation_height
+      ? parseInt(this.account.confirmation_height, 10)
+      : null
+    );
+
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
         if (h.type === 'state') {
@@ -356,6 +362,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         } else {
           h.addressBookName = this.addressBook.getAccountName(h.account) || null;
         }
+
+        if (
+              (accountConfirmationHeight != null)
+            && (h.height != null)
+            && ( accountConfirmationHeight < parseInt(h.height, 10) )
+          ) {
+            h.confirmed = false;
+        }
+
         return h;
       });
 
@@ -369,13 +384,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
           const matchingBlock = additionalBlocksInfo.find(a => a.link === block);
           if (!matchingBlock) continue;
-          const accountInHistory = this.accountHistory.find(h => h.hash === matchingBlock.hash);
-          if (!accountInHistory) continue;
+          const accountHistoryBlock = this.accountHistory.find(h => h.hash === matchingBlock.hash);
+          if (!accountHistoryBlock) continue;
 
           const blockData = blocksInfo.blocks[block];
 
-          accountInHistory.link_as_account = blockData.block_account;
-          accountInHistory.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
+          accountHistoryBlock.link_as_account = blockData.block_account;
+          accountHistoryBlock.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
         }
       }
 
