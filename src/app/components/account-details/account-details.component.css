@@ -201,6 +201,10 @@
     margin-bottom: 4px;
 }
 
+.advanced-option + .advanced-option {
+    margin-top: 14px;
+}
+
 .advanced-option .uk-checkbox {
     margin-left: 12px;
     margin-top: -1px;
