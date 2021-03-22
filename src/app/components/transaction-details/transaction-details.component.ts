@@ -19,7 +19,7 @@ export class TransactionDetailsComponent implements OnInit {
   blockType = 'send';
   isStateBlock = true;
   isUnconfirmedBlock = false;
-  blockHeight = 0;
+  blockHeight = -1;
 
   toAccountID = '';
   fromAccountID = '';
@@ -53,8 +53,10 @@ export class TransactionDetailsComponent implements OnInit {
     this.fromAccountID = '';
     this.toAddressBook = '';
     this.fromAddressBook = '';
+    this.transaction = {};
     this.transactionJSON = '';
     this.isUnconfirmedBlock = false;
+    this.blockHeight = -1;
     this.showBlockData = false;
     let legacyFromAccount = '';
     this.amountRaw = new BigNumber(0);
