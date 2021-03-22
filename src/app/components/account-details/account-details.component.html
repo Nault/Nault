@@ -264,22 +264,49 @@
             'rep-change': (history.type == 'change' || history.subtype == 'change')
           }">
             <span *ngIf="isNaN(history.amount)">
-              <span class="uk-text-small">Rep. Change</span>
+              <span
+                class="uk-text-small"
+                [class.text-half-muted]="(history.confirmed === false)"
+                [title]="( (history.confirmed === false) ? 'This change has not yet been confirmed by the network' : '' )"
+                uk-tooltip
+              >
+                Rep. Change
+                <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+              </span>
             </span>
             <span *ngIf="!isNaN(history.amount)">
               <ng-container *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')">
-                <span class="uk-text-small">Received</span><br>
+                <span class="uk-text-small"
+                [class.text-half-muted]="(history.confirmed === false)"
+                [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                uk-tooltip
+              >
+                  Received
+                  <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+                </span><br>
               </ng-container>
               <ng-container *ngIf="(history.type == 'send' || history.subtype == 'send')">
-                <span class="uk-text-small">Sent</span><br>
+                <span class="uk-text-small"
+                  [class.text-half-muted]="(history.confirmed === false)"
+                  [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                  uk-tooltip
+                >
+                  Sent
+                  <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
+                </span><br>
               </ng-container>
               <span class="amount-integer">{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
               <span class="currency-name">NANO</span>
             </span>
           </td>
-          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!history.local_timestamp">N/A</td>
-          <td class="date-column uk-text-middle uk-text-truncate" *ngIf="history.local_timestamp">{{ history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
+          <td class="date-column uk-text-middle uk-text-truncate" [class.uk-text-muted]="!history.local_timestamp">
+            {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' ) : 'N/A' }}
+            <ng-container *ngIf="(history.confirmed === false)">
+              <br>
+              <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
+            </ng-container>
+          </td>
         </tr>
         <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
           <td colspan="4" style="text-align: center;">No account history</td>
