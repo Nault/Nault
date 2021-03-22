@@ -109,8 +109,10 @@
           <label class="uk-form-label">Representative:</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/account/' + transaction?.contents?.representative" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
-              <span class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="transaction?.contents?.representative"></app-nano-account-id>
-            </span></a>
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <app-nano-account-id [accountID]="transaction?.contents?.representative"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.previous">
@@ -134,7 +136,11 @@
         <div class="uk-margin" *ngIf="transaction?.contents?.link_as_account && blockType == 'send'">
           <label class="uk-form-label">Link (Destination):</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.link_as_account }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <app-nano-account-id [accountID]="transaction?.contents?.link_as_account"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
         <div class="uk-margin" *ngIf="blockHeight != -1">
