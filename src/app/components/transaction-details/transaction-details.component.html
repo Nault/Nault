@@ -79,7 +79,7 @@
       <div class="uk-card-body uk-padding-small uk-form-horizontal">
 
         <div class="uk-margin">
-          <label class="uk-form-label">Block:</label>
+          <label class="uk-form-label">Block Hash:</label>
           <div class="uk-form-controls uk-text-truncate">
             {{ hashID }}
           </div>
@@ -93,7 +93,7 @@
         <div class="uk-margin">
           <label class="uk-form-label">Date:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</span>
+            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</span>
             <span *ngIf="!transaction.local_timestamp" class="uk-text-muted">N/A</span>
           </div>
         </div>
@@ -108,7 +108,9 @@
         <div class="uk-margin" *ngIf="transaction?.contents?.representative">
           <label class="uk-form-label">Representative:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.representative }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="transaction?.contents?.representative"></app-nano-account-id>
+            </span></a>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.previous">
@@ -133,6 +135,12 @@
           <label class="uk-form-label">Link (Destination):</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.link_as_account }}</a>
+          </div>
+        </div>
+        <div class="uk-margin">
+          <label class="uk-form-label">Height:</label>
+          <div class="uk-form-controls uk-text-truncate">
+            {{ blockHeight }}
           </div>
         </div>
         <div class="uk-margin">

@@ -12,3 +12,7 @@
   display: block;
   font-size: 10px;
 }
+
+.uk-form-label {
+  margin-top: 2px;
+}

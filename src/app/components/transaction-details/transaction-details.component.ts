@@ -19,6 +19,7 @@ export class TransactionDetailsComponent implements OnInit {
   blockType = 'send';
   isStateBlock = true;
   isUnconfirmedBlock = false;
+  blockHeight = 0;
 
   toAccountID = '';
   fromAccountID = '';
@@ -71,6 +72,7 @@ export class TransactionDetailsComponent implements OnInit {
     this.transactionJSON = JSON.stringify(hashData.contents, null , 4);
 
     this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
+    this.blockHeight = hashData.height;
 
     this.blockType = hashData.contents.type;
     if (this.blockType === 'state') {
