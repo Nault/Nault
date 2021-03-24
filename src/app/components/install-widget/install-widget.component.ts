@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from 'app/services/notification.service';
 
 interface InstallEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed', platform: string }>;
@@ -14,9 +15,11 @@ export class InstallWidgetComponent implements OnInit {
 
   installEvent: InstallEvent;
   showInstallPromotion = false;
-  promotablePlatforms = ['Android', 'iOS', 'iPadOS', 'Chrome OS'];
+  promotablePlatforms = ['Windows', 'Android', 'iOS', 'iPadOS', 'Chrome OS'];
 
-  constructor() { }
+  constructor(
+    private notifications: NotificationService,
+  ) { }
 
   ngOnInit(): void {
     if (!this.isPromotable()) {
@@ -51,6 +54,7 @@ export class InstallWidgetComponent implements OnInit {
     this.installEvent.prompt();
     this.installEvent.userChoice.then((result) => {
       if (result.outcome === 'accepted') {
+        this.notifications.sendSuccess('Nault was successfully installed to the device.');
         this.dismiss();
       }
     });
