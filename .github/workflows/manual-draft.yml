@@ -1,0 +1,14 @@
+name: Manual Release Draft
+
+on:
+  # only allow manual run, for example to analyze changes before a realease
+  workflow_dispatch:
+
+jobs:
+  manual-draft:
+    runs-on: ubuntu-latest
+    steps:
+      # Drafts the next release notes
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

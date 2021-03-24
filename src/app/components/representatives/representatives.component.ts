@@ -42,6 +42,7 @@ export class RepresentativesComponent implements OnInit {
   recommendedRepsLoading = false;
   selectedRecommendedRep = null;
   showRecommendedReps = false;
+  loadingRepresentatives = false;
 
   repsPerPage = 5;
   currentRepPage = 0;
@@ -52,7 +53,7 @@ export class RepresentativesComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
-    public wallet: WalletService,
+    public walletService: WalletService,
     private api: ApiService,
     private notifications: NotificationService,
     private nanoBlock: NanoBlockService,
@@ -82,6 +83,7 @@ export class RepresentativesComponent implements OnInit {
       }
     });
 
+    this.loadingRepresentatives = true;
     let repOverview = await this.representativeService.getRepresentativesOverview();
     // Sort by weight delegated
     repOverview = repOverview.sort(
@@ -89,24 +91,50 @@ export class RepresentativesComponent implements OnInit {
     );
     this.representativeOverview = repOverview;
     repOverview.forEach(o => this.fullAccounts.push(...o.accounts));
+    this.loadingRepresentatives = false;
 
-    // populate representative list
-    const verifiedReps = await this.ninja.recommendedRandomized();
-
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
-
-      this.representativeList.push(temprep);
-    }
-
-    // add the localReps to the list
-    const localReps = this.representativeService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
+    this.populateRepresentativeList();
 
     await this.loadRecommendedReps();
+  }
+
+  async populateRepresentativeList() {
+    // add trusted/regular local reps to the list
+    const localReps = this.representativeService.getSortedRepresentatives();
+    this.representativeList.push( ...localReps.filter(rep => (!rep.warn)) );
+
+    if (this.settings.settings.serverAPI) {
+      const verifiedReps = await this.ninja.recommendedRandomized();
+
+      // add random recommended reps to the list
+      for (const representative of verifiedReps) {
+        const temprep = {
+          id: representative.account,
+          name: representative.alias
+        };
+
+        this.representativeList.push(temprep);
+      }
+    }
+
+    // add untrusted local reps to the list
+    this.representativeList.push( ...localReps.filter(rep => (rep.warn)) );
+  }
+
+  getAccountLabel(account) {
+    const addressBookName = account.addressBookName;
+
+    if (addressBookName != null) {
+      return addressBookName;
+    }
+
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === account.id);
+
+    if (walletAccount == null) {
+      return 'Account';
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   addSelectedAccounts(accounts) {
@@ -142,7 +170,7 @@ export class RepresentativesComponent implements OnInit {
         this.selectedAccounts.push({ id: 'All Current Accounts' });
       }
     } else {
-      const walletAccount = this.wallet.getWalletAccount(newAccount);
+      const walletAccount = this.walletService.getWalletAccount(newAccount);
       this.selectedAccounts.push(walletAccount);
     }
 
@@ -159,6 +187,8 @@ export class RepresentativesComponent implements OnInit {
 
     const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      // remove duplicate accounts
+      .filter((item, pos, self) => this.util.array.findWithAttr(self, 'id', item.id) === pos)
       .slice(0, 5);
 
     this.representativeResults$.next(matches);
@@ -255,7 +285,7 @@ export class RepresentativesComponent implements OnInit {
     if (this.changingRepresentatives) {
       return; // Already running
     }
-    if (this.wallet.walletIsLocked()) {
+    if (this.walletService.walletIsLocked()) {
       return this.notifications.sendWarning(`Wallet must be unlocked`);
     }
     if (!accounts || !accounts.length) {
@@ -271,7 +301,7 @@ export class RepresentativesComponent implements OnInit {
     }
 
     const allAccounts = accounts.find(a => a.id === 'All Current Accounts');
-    const accountsToChange = allAccounts ? this.wallet.wallet.accounts : accounts;
+    const accountsToChange = allAccounts ? this.walletService.wallet.accounts : accounts;
 
     // Remove any that don't need their represetatives to be changed
     const accountsNeedingChange = accountsToChange.filter(account => {
@@ -294,13 +324,13 @@ export class RepresentativesComponent implements OnInit {
 
     // Now loop and change them
     for (const account of accountsNeedingChange) {
-      const walletAccount = this.wallet.getWalletAccount(account.id);
+      const walletAccount = this.walletService.getWalletAccount(account.id);
       if (!walletAccount) {
         continue; // Unable to find account in the wallet? wat?
       }
 
       try {
-        const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.wallet.isLedgerWallet());
+        const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.walletService.isLedgerWallet());
         if (!changed) {
           this.notifications.sendError(`Error changing representative for ${account.id}, please try again`);
         }
@@ -327,7 +357,9 @@ export class RepresentativesComponent implements OnInit {
 
     // If the overview panel is displayed, reload its data now
     if (!this.hideOverview) {
+      this.loadingRepresentatives = true;
       this.representativeOverview = await this.representativeService.getRepresentativesOverview();
+      this.loadingRepresentatives = false;
       useCachedReps = true;
     }
 
@@ -348,5 +380,4 @@ export class RepresentativesComponent implements OnInit {
     }, () => {}
     );
   }
-
 }

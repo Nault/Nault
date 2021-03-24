@@ -3,10 +3,10 @@
     <div>
         <div class="label">Install Nault for {{ getPlatform() }}</div>
         <div class="description" *ngIf="isIosInstallable()">
-            1. Press the <span uk-icon="icon: push; ratio: 0.9"></span> share button 
+            1. Tap the <span uk-icon="icon: push; ratio: 0.9"></span> share button 
             <span *ngIf="getPlatform() === 'iOS'">below</span>
             <span *ngIf="getPlatform() === 'iPadOS'">in the top right</span> <br/>
-            2. Select <span uk-icon="icon: plus; ratio: 0.9"></span> Add to home screen
+            2. Select <span uk-icon="icon: plus-circle; ratio: 0.9"></span> Add to home screen
         </div>
     </div>
 </div>

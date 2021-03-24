@@ -66,15 +66,12 @@ export class SignComponent implements OnInit {
   privateKeyExpanded = false; // if a private key is provided manually and it's expanded 128 char
   processedHash: string = null;
   finalSignature: string = null;
-  // TODO: These are based on the node v20 levels. With v21 the 8x will be the new 1x and max will be 8x due to the webgl threshold
+  // With v21 the 1x is the old 8x and max will be 8x due to the webgl threshold is max ffffffff00000000
   thresholds = [
     { name: '1x', value: 1 },
     { name: '2x', value: 2 },
     { name: '4x', value: 4 },
-    { name: '8x', value: 8 },
-    { name: '16x', value: 16 },
-    { name: '32x', value: 32 },
-    { name: '64x', value: 64 },
+    { name: '8x', value: 8 }
   ];
   selectedThreshold = this.thresholds[0].value;
   selectedThresholdOld = this.selectedThreshold;
@@ -385,10 +382,16 @@ export class SignComponent implements OnInit {
     if (this.shouldGenWork) {
       // For open blocks which don't have a frontier, use the public key of the account
       if (!this.workPool.workExists(workBlock)) {
-        this.notificationService.sendInfo(`Generating Proof of Work...`);
+        this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
       }
 
-      this.currentBlock.work = await this.workPool.getWork(workBlock);
+      if (this.txType === TxType.receive || this.txType === TxType.open) {
+        this.currentBlock.work = await this.workPool.getWork(workBlock, 1 / 64);
+      } else {
+        this.currentBlock.work = await this.workPool.getWork(workBlock, 1);
+      }
+      this.notificationService.removeNotification('pow');
+
       this.workPool.removeFromCache(workBlock);
     }
 
@@ -433,7 +436,8 @@ export class SignComponent implements OnInit {
   }
 
   copied() {
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`);
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
   clean(obj) {

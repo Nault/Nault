@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2 class="uk-heading-divider">Import Address Book</h2>
+    <h2 class="uk-heading-divider">Import Address Book Entries</h2>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="activePanel == 'error'">
       <div class="uk-card-header">
@@ -17,6 +17,9 @@
       </div>
       <div class="uk-card-body">
         <p class="uk-text-center">
+          You are about to import the following address book entries {{hostname ? 'from ' + hostname : ''}}
+        </p>
+        <p class="uk-text-center">
           <span class="import-warning" *ngIf="conflictingEntries">
             {{ conflictingEntries }} Labels already exist and will have their name changed.
           </span>
@@ -31,8 +34,8 @@
         <div uk-grid>
           <div class="uk-width-1-1">
             <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-              <li style="background: #fff; border-bottom: 0;">
-                <div uk-grid style="color: #999; text-transform: uppercase; font-size: .875rem; font-weight: 400;">
+              <li class="uk-list-header">
+                <div uk-grid>
                   <div class="uk-width-1-4">New Label</div>
                   <div class="uk-width-1-4">Current Label</div>
                   <div class="uk-width-1-2 uk-text-truncate" style="padding-left: 0;">Account</div>
@@ -61,28 +64,13 @@
       </div>
       <div class="uk-card-footer">
         <div uk-grid>
-          <div class="uk-width-1-2 uk-text-left">
+          <div class="nlt-button-group uk-width-1-1 uk-text-right">
             <button routerLink="/address-book" class="uk-button uk-button-danger">Cancel</button>
-          </div>
-          <div class="uk-width-1-2 uk-text-right">
-            <button (click)="confirmImport()" class="uk-button uk-button-secondary">Import Address Book</button>
+            <button (click)="confirmImport()" class="uk-button uk-button-primary">Import Entries</button>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="uk-card uk-card-default uk-margin" *ngIf="activePanel == 'imported'">
-      <div class="uk-card-header">
-        <h3 class="uk-card-title">Address Book Imported</h3>
-      </div>
-      <div class="uk-card-body">
-        <p>Your address book has been successfully imported!</p>
-      </div>
-      <div class="uk-card-footer uk-text-right">
-        <button routerLink="/address-book" class="uk-button uk-button-secondary">View Address Book</button>
-      </div>
-    </div>
-
 
   </div>
 </div>

@@ -3,9 +3,9 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider">
+        <h2 class="uk-heading-divider uk-text-truncate">
           Accounts
-          <a (click)="viewAdvanced = !viewAdvanced" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BASIC' : 'ADVANCED' }}</a>
+          <a (click)="viewAdvanced = !viewAdvanced" class="uk-text-truncate" style="font-size: 12px; margin-left: 25px;">{{ viewAdvanced ? 'BACK TO SIMPLE MODE' : 'MANAGE ACCOUNTS' }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@m uk-width-1-1 uk-text-right">
@@ -22,32 +22,45 @@
       </div>
     </div>
 
-    <div class="uk-card uk-overflow-auto">
+    <div class="uk-card uk-overflow-hidden">
       <table class="uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
-          <th class="uk-width-3-5@m uk-width-1-2">
+          <th scope="col" class="uk-width-3-5@m uk-width-1-2">
             Account
           </th>
-          <th class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
-          <th class="uk-width-1-5@m uk-width-1-4 uk-text-right"></th>
+          <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
+          <th scope="col" [class]="{
+            'table-header-delete-account': true,
+            'uk-width-1-5@m': true,
+            'uk-width-1-4': true,
+            'uk-text-right': true,
+            'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
+          }"></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
           <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
-              <div [class]="[ 'uk-width-auto', 'uk-text-truncate', !isLedgerWallet ? 'account-container' : 'account-container-wide' ]">
+              <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-width-1-1">
-                  <a class="uk-label uk-label-default account-index" [routerLink]="'/account/' + account.id" title="View Account Details" uk-tooltip>
-                    {{ account.addressBookName ? account.addressBookName : 'Account #' + account.index }}
-                  </a>
+                  <div class="account-index" *ngIf="viewAdvanced"><span>#</span>{{ account.index }}</div>
+                  <div class="account-label">{{
+                      account.addressBookName
+                    ? account.addressBookName
+                    : (
+                        viewAdvanced
+                      ? 'Account'
+                      : 'Account #' + account.index
+                    )
+                  }}</div>
                 </div>
-                <a [routerLink]="'/account/' + account.id" class="uk-link-text" title="View Account Details" uk-tooltip>
-                  <app-nano-account-id [accountID]="account.id" middle="on"></app-nano-account-id>
-                </a>
-              </div>
-              <div class="uk-width-auto copy-container">
+                <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                  <app-nano-account-id [accountID]="account.id" middle="auto"></app-nano-account-id>
+                </div>
+              </a>
+              <div class="nano-address-actions uk-width-auto copy-container">
                 <ul class="uk-iconnav copy-icons">
                   <li><a ngxClipboard [cbContent]="account.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   <li *ngIf="isLedgerWallet"><a uk-icon="icon: commenting" title="Confirm Address On Ledger" (click)="showLedgerAddress(account)" uk-tooltip></a></li>
@@ -55,34 +68,44 @@
               </div>
             </div>
           </td>
-          <td class="uk-text-right" style="white-space: nowrap;">
-            <div class="uk-width-1-1">
+          <td class="account-amounts-column uk-text-right">
+            <div class="account-amounts-primary uk-width-1-1">
               <div *ngIf="account.pending.gt(0)" class="incoming-label">
                 <div class="text-snippet">New</div>
-                <div class="text-full">+{{ account.pending | rai: settings.settings.displayDenomination + ',true' }}</div>
+                <div class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
               </div>
               <span [title]="( account.balanceRaw.gt(0) ? ( '+' + ( account.balanceRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
-                {{ account.balance | rai: settings.settings.displayDenomination }}
+                <span class="amount-integer">{{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                <span class="amount-fractional">{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                <span class="currency-name">NANO</span>
               </span>
             </div>
-            <div class="uk-width-1-1">
+            <div class="uk-width-1-1 text-half-muted">
               {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             </div>
           </td>
-          <td class="uk-text-right">
+          <td [class]="{
+            'uk-text-right': true,
+            'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
+          }">
             <div class="uk-float-right">
-              <a (click)="deleteAccount(account)" class="uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
+              <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
             </div>
           </td>
         </tr>
-        <tr *ngIf="!(accounts).length">
-          <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a></td>
+        <tr *ngIf="!accounts.length">
+          <td colspan="4" style="text-align: center;">You don't have any accounts yet, <a (click)="createAccount()">click here to create one</a>.</td>
         </tr>
         </tbody>
       </table>
+      <table class="uk-table uk-table-striped uk-table-small" *ngIf="!isSingleKeyWallet">
+        <thead>
+          <tr class="uk-alert uk-alert-primary missing-accounts-hint">
+            <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Missing accounts? <a class="hint-action" (click)="createAccount()">Add new account</a> to import a previously used address.</td>
+          </tr>
+        </thead>
+      </table>
     </div>
-
-    <p class="uk-text-center uk-text-small">Click on an account to view more details!</p>
 
   </div>
 </div>

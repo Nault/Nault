@@ -14,7 +14,7 @@ export class InstallWidgetComponent implements OnInit {
 
   installEvent: InstallEvent;
   showInstallPromotion = false;
-  hideOnDesktop = false;
+  promotablePlatforms = ['Android', 'iOS', 'iPadOS', 'Chrome OS'];
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class InstallWidgetComponent implements OnInit {
       return;
     }
 
-    // Show clickable installation banner (Chrome / Edge)
+    // Show clickable installation banner (Chrome / Edge only)
     window.addEventListener('beforeinstallprompt', (e: InstallEvent) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
@@ -51,9 +51,7 @@ export class InstallWidgetComponent implements OnInit {
     this.installEvent.prompt();
     this.installEvent.userChoice.then((result) => {
       if (result.outcome === 'accepted') {
-        console.log('User accepted the install prompt', result);
-      } else {
-        console.log('User dismissed the install prompt', result);
+        this.dismiss();
       }
     });
   }
@@ -96,7 +94,7 @@ export class InstallWidgetComponent implements OnInit {
       return false;
     }
     const platform = this.getPlatform();
-    return !this.hideOnDesktop || !(platform === 'Windows' || platform === 'Mac' || platform === 'Linux');
+    return this.promotablePlatforms.includes(platform);
   }
 
   isInstalled() {

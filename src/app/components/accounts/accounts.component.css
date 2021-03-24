@@ -1,36 +1,78 @@
-.account-index {
-  margin-right: 5px;
+.table-header-delete-account {
+	width: 1%;
+	min-width: 50px;
 }
 
-.account-index:hover {
-  color: #333;
+th.hidden-column, td.hidden-column {
+	display: none;
 }
 
-.account-container {
-  max-width: calc(100% - 35px);
+.account-container.narrow {
+	max-width: calc(100% - 35px);
 }
 
-.account-container-wide {
-  max-width: calc(100% - 100px);
+.account-container.wide {
+	max-width: calc(100% - 100px);
 }
 
 .copy-container {
-  padding-left: 10px;
-  padding-bottom: 3px;
-  display: grid;
+	padding-left: 10px;
+	padding-bottom: 3px;
+	display: grid;
 }
 
 .copy-icons {
-  align-self: end;
+	align-self: end;
+}
+
+.account-amounts-column {
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.account-container:hover .nano-address-clickable {
+	border-color: transparent;
+}
+
+.account-container .nano-address-clickable {
+	vertical-align: bottom;
+}
+
+.account-container .account-label {
+	margin-bottom: 3px;
+}
+
+.account-amounts-column .account-amounts-primary {
+	margin-bottom: 3px;
+}
+
+.account-amounts-column .account-amounts-primary .amount-integer,
+.account-amounts-column .account-amounts-primary .amount-fractional,
+.account-amounts-column .account-amounts-primary .currency-name {
+	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+
+.account-amounts-column .account-amounts-primary .amount-integer {
+	font-weight: 700;
+}
+
+.account-amounts-column .account-amounts-primary .amount-fractional {
+	font-weight: 500;
+}
+
+.account-amounts-column .account-amounts-primary .currency-name {
+	font-weight: 400;
+	margin-left: 5px;
 }
 
 .incoming-label {
 	display: inline-block;
 	background: #4a90e2;
 	border-radius: 20px;
-	font-size: 12px;
+	font-size: 13px;
 	padding: 2px 10px;
-	margin-right: 2px;
+	margin-right: 9px;
 	vertical-align: 1px;
 	padding-bottom: 1px;
 	text-transform: uppercase;
@@ -53,4 +95,8 @@
 	.incoming-label > .text-snippet {
 		display: none;
 	}
+}
+
+.icon-delete-account {
+	vertical-align: -2px;
 }

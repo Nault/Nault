@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NotificationService} from '../../services/notification.service';
 import {ActivatedRoute} from '@angular/router';
 import {AddressBookService} from '../../services/address-book.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-import-address-book',
@@ -17,15 +18,22 @@ export class ImportAddressBookComponent implements OnInit {
   conflictingEntries = 0;
   newEntries = 0;
   existingEntries = 0;
+  hostname = '';
 
-  constructor(private route: ActivatedRoute, private notifications: NotificationService, private addressBook: AddressBookService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private notifications: NotificationService,
+    private addressBook: AddressBookService,
+    private router: Router) { }
 
   ngOnInit() {
     const importData = this.route.snapshot.fragment;
+    const queryData = this.route.snapshot.queryParams;
     if (!importData || !importData.length) {
       return this.importDataError(`No import data found.  Check your link and try again.`);
     }
 
+    if ('hostname' in queryData) this.hostname = queryData.hostname;
     const decodedData = atob(importData);
 
     try {
@@ -70,8 +78,8 @@ export class ImportAddressBookComponent implements OnInit {
       }
     }
 
+    this.router.navigate(['address-book']);
     this.notifications.sendSuccess(`Successfully imported ${importedCount} address book entries`);
-    this.activePanel = 'imported';
   }
 
   importDataError(message) {

@@ -1,11 +1,17 @@
+.form-select-source, .form-input-destination, .form-select-destination {
+	max-width: 800px;
+}
+
+.form-amount {
+	max-width: 450px;
+}
+
 .confirm-title {
-  font-weight: bolder;
   display: block;
   font-size: 24px;
 }
 
 .confirm-currency {
-  font-weight: bolder;
   display: block;
   font-size: 20px;
 }
@@ -13,17 +19,6 @@
 .confirm-subtitle {
   display: block;
   font-size: 10px;
-}
-
-.dropdown-nav-container {
-    background: white;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    box-shadow: 0 5px 15px rgba(0,0,0,.08) !important;
-}
-
-.uk-nav-header {
-    font-weight: 500;
 }
 
 @media (max-width: 12450px) {
@@ -39,4 +34,29 @@
 
 .uk-dropdown-spacing {
   padding: 5px 0;
+}
+
+.send-types-wrapper {
+  margin: -5px;
+  padding-bottom: 15px;
+}
+.send-types-frame {
+  display: inline-block;
+}
+.send-types-tab {
+  width: 400px;
+  margin: 5px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.send-types-tab-active {
+  border-color: transparent;
+}
+
+.icon-nano-logo {
+  margin: 13px 11px;
+  width: 32px;
+  background-color: currentcolor;
+  -webkit-mask-image: url('assets/img/nano-mark-simple.svg');
+  mask-image: url('assets/img/nano-mark-simple.svg');
 }

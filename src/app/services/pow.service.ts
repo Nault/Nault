@@ -5,14 +5,14 @@ import {NotificationService} from './notification.service';
 import { PoWSource } from './app-settings.service';
 import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
 import {UtilService} from './util.service';
+import {BehaviorSubject} from 'rxjs';
 
 const mod = window['Module'];
-// NEW v21 THRESHOLD BELOW TO BE ACTIVATED
-// const baseThreshold = 'fffffff800000000'
-const baseThreshold = 'ffffffc000000000';
+export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
+export enum workState {'success', 'cancelled', 'error'}
 
 @Injectable()
 export class PowService {
@@ -20,9 +20,16 @@ export class PowService {
   webGLAvailable = false;
   webGLTested = false;
 
+  powAlertLimit = 60; // alert long pow after X sec
   PoWPool = [];
   parallelQueue = false;
   processingQueueItem = false;
+  currentProcessTime = 0; // start timestamp for PoW
+  powAlert$: BehaviorSubject<boolean|false> = new BehaviorSubject(false);
+  public shouldContinueQueue = true; // set to false to disable further processing
+  cpuWorkerResolve = null; // global worker promise to allow termination
+  cpuWorkerReject = null; // global worker promise to allow termination
+  shouldAbortGpuPow = false; // set to true to abort GPU pow
 
   constructor(
     private appSettings: AppSettingsService,
@@ -123,41 +130,103 @@ export class PowService {
    * Uses the latest app settings to determine which type of PoW to use
    */
   private async processNextQueueItem() {
-    this.processingQueueItem = true;
     if (!this.PoWPool.length) return; // Nothing in the queue?
+    this.processingQueueItem = true;
     const queueItem = this.PoWPool[0];
+    this.powAlert$.next(false); // extra safety to ensure the alert is always reset
 
     let powSource = this.appSettings.settings.powSource;
+    const multiplierSource: Number = this.appSettings.settings.multiplierSource;
+    let localMultiplier: Number = 1;
+
     if (powSource === 'best') {
       powSource = this.determineBestPoWMethod();
     }
 
-    let work;
+    if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom') {
+      if (multiplierSource > 1) { // use manual difficulty
+        localMultiplier = multiplierSource;
+      } else if (multiplierSource === 0) { // use auto difficulty
+        const activeDifficulty = await this.api.activeDifficulty();
+        if (activeDifficulty?.network_current?.length === 16 && activeDifficulty?.network_receive_current?.length === 16) {
+          if (queueItem.multiplier === 1 / 64) { // receive pow
+            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_receive_current, baseThreshold);
+          } else { // send pow
+            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_current, baseThreshold);
+          }
+          // clamp to max and min
+          if (localMultiplier > 8) {
+            localMultiplier = 8;
+          } else if (localMultiplier < 1 / 64) {
+            localMultiplier = 1 / 64;
+          }
+        } else {
+          localMultiplier = queueItem.multiplier;
+        }
+      } else { // use default requested difficulty
+        localMultiplier = queueItem.multiplier;
+      }
+    }
+
+    const work = {state: null, work: ''};
     switch (powSource) {
       default:
       case 'server':
-        work = this.getHashServer(queueItem.hash, queueItem.multiplier);
+        const serverWork = await this.getHashServer(queueItem.hash, queueItem.multiplier);
+        if (serverWork) {
+          work.work = serverWork;
+          work.state = workState.success;
+        } else {
+          work.state = workState.error;
+        }
         break;
       case 'clientCPU':
-        work = await this.getHashCPUWorker(queueItem.hash, queueItem.multiplier);
+        try {
+          work.work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
+          work.state = workState.success;
+        } catch (state) {
+          work.state = state;
+        }
         break;
       case 'clientWebGL':
-        work = await this.getHashWebGL(queueItem.hash, queueItem.multiplier);
+        try {
+          work.work = await this.getHashWebGL(queueItem.hash, localMultiplier);
+          work.state = workState.success;
+        } catch (state) {
+          work.state = state;
+        }
+        break;
+      case 'custom':
+        const workServer = this.appSettings.settings.customWorkServer;
+        // Check all known APIs and return true if there is no match. Then allow local PoW mutliplier
+        const allowLocalMulti = workServer !== '' &&
+          this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
+
+        const customWork = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
+        if (customWork) {
+          work.work = customWork;
+          work.state = workState.success;
+        } else {
+          work.state = workState.error;
+        }
         break;
     }
 
+    this.currentProcessTime = 0; // Reset timer
     this.PoWPool.shift(); // Remove this item from the queue
     this.processingQueueItem = false;
 
-    if (!work) {
-      this.notifications.sendError(`Unable to generate work for ${queueItem.hash} using ${powSource}`);
-      queueItem.promise.reject(null);
-    } else {
-      queueItem.work = work;
+    if (work.state === workState.success) {
+      queueItem.work = work.work;
       queueItem.promise.resolve(work);
+    } else {
+      // this.notifications.sendError(`Unable to generate work for ${queueItem.hash} using ${powSource}`);
+      queueItem.promise.reject(work);
     }
 
-    this.processQueue();
+    if (this.shouldContinueQueue) {
+      this.processQueue();
+    }
 
     return queueItem;
   }
@@ -165,10 +234,16 @@ export class PowService {
   /**
    * Actual PoW functions
    */
-  async getHashServer(hash, multiplier) {
-    return await this.api.workGenerate(hash)
+  async getHashServer(hash, multiplier, workServer = '') {
+    const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
+    const serverString = workServer === '' ? 'external' : 'custom';
+    console.log('Generating work with multiplier ' + multiplier + ' at threshold ' +
+      newThreshold + ' using ' + serverString + ' server for hash: ', hash);
+    return await this.api.workGenerate(hash, newThreshold, workServer)
     .then(work => work.work)
-    .catch(async err => await this.getHashCPUWorker(hash, multiplier));
+    // Do not fallback to CPU pow. Let the user decide
+    // .catch(async err => await this.getHashCPUWorker(hash, multiplier))
+    .catch(err => null);
   }
 
   /**
@@ -191,6 +266,7 @@ export class PowService {
    * Generate PoW using CPU and WebWorkers
    */
   async getHashCPUWorker(hash, multiplier) {
+    this.checkPowProcessLength(); // start alert timer
     // console.log('Generating work using CPU for', hash);
 
     const response = this.getDeferredPromise();
@@ -209,9 +285,11 @@ export class PowService {
 
     // calculate threshold from multiplier
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
-
-    const work = () => new Promise(resolve => {
-      console.log('Generating work at threshold ' + newThreshold + ' using CPU workers for', hash);
+    const work = () => new Promise<void>((resolve, reject) => {
+      this.cpuWorkerResolve = resolve;
+      this.cpuWorkerReject = reject;
+      console.log('Generating work with multiplier ' + multiplier + ' at threshold ' +
+        newThreshold + ' using CPU workers for hash: ', hash);
       workerList = [];
       for (let i = 0; i < workerCount; i++) {
         // const worker = new Worker()
@@ -225,17 +303,16 @@ export class PowService {
         worker.onmessage = (workerwork) => {
           console.log(`CPU Worker: Found work (${workerwork.data}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${workerCount} Workers]`);
           response.resolve(workerwork.data);
-          for (const workerIndex in workerList) {
-            if (Object.prototype.hasOwnProperty.call(workerList, workerIndex)) {
-              workerList[workerIndex].terminate();
-            }
-          }
-          resolve();
+          this.terminateCpuWorkers(true);
         };
         workerList.push(worker);
       }
     });
-    await work();
+    try {
+      await work();
+    } catch (msg) {
+      response.reject(msg);
+    }
 
     return response.promise;
   }
@@ -244,8 +321,9 @@ export class PowService {
    * Generate PoW using WebGL
    */
   getHashWebGL(hash, multiplier) {
+    this.checkPowProcessLength(); // start alert timer
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
-    console.log('Generating work at threshold ' + newThreshold + ' using WebGL for', hash);
+    console.log('Generating work with multiplier ' + multiplier + ' at threshold ' + newThreshold + ' using WebGL for hash: ', hash);
 
     const response = this.getDeferredPromise();
 
@@ -255,15 +333,21 @@ export class PowService {
           console.log(`WebGL Worker: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${n} iterations]`);
           response.resolve(work);
         },
-        n => {},
+        n => {
+          if (this.shouldAbortGpuPow) {
+            this.shouldAbortGpuPow = false;
+            response.reject(workState.cancelled);
+            return true;
+          }
+        },
         '0x' + newThreshold.substring(0, 8).toUpperCase() // max threshold for webglpow is currently ffffffff00000000
       );
     } catch (error) {
       if (error.message === 'webgl2_required') {
         this.webGLAvailable = false;
+        console.warn('WebGL is required for GPU pow');
       }
-      response.resolve(null);
-      // response.reject(error);
+      response.reject(workState.error);
     }
 
     return response.promise;
@@ -284,6 +368,53 @@ export class PowService {
     });
 
     return defer;
+  }
+
+  // Check if pow takes longer than limit, then notify user
+  async checkPowProcessLength() {
+    this.shouldAbortGpuPow = false;
+    this.currentProcessTime = Date.now();
+    while (this.currentProcessTime !== 0) {
+      // display alert of PoW has been running more than X ms
+      if (Date.now() - this.currentProcessTime >= this.powAlertLimit * 1000) {
+        this.powAlert$.next(true);
+      }
+      await this.sleep(1000);
+    }
+    this.powAlert$.next(false);
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Interupt running pow and empty the queue
+  public cancelAllPow(notify) {
+    if (this.currentProcessTime !== 0) {
+      this.currentProcessTime = 0; // reset timer
+      this.powAlert$.next(false); // announce alert to close
+      this.shouldContinueQueue = false; // disable further processing
+      this.terminateCpuWorkers(false); // abort CPU worker if running
+      this.shouldAbortGpuPow = true; // abort GPU pow if running
+      if (notify) {
+        this.notifications.sendInfo(`Proof of Work generation cancelled by the user`);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  terminateCpuWorkers(successful) {
+    for (const workerIndex in workerList) {
+      if (Object.prototype.hasOwnProperty.call(workerList, workerIndex)) {
+        workerList[workerIndex].terminate();
+      }
+    }
+    if (successful && this.cpuWorkerResolve) {
+      this.cpuWorkerResolve();
+    } else if (!successful && this.cpuWorkerReject) {
+      this.cpuWorkerReject(workState.cancelled);
+    }
   }
 
 }

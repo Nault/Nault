@@ -13,13 +13,14 @@ import {UtilService} from '../../services/util.service';
 import {BehaviorSubject} from 'rxjs';
 import {RepresentativeService} from '../../services/representative.service';
 import {NinjaService} from '../../services/ninja.service';
-import { QrModalService } from '../../services/qr-modal.service';
+import {QrModalService} from '../../services/qr-modal.service';
 
 @Component({
   selector: 'app-configure-app',
   templateUrl: './configure-app.component.html',
   styleUrls: ['./configure-app.component.css']
 })
+
 export class ConfigureAppComponent implements OnInit {
 
   constructor(
@@ -40,9 +41,9 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'NANO (1 Mnano)', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', value: 'nano' },
+    { name: 'NANO', value: 'mnano' },
+    { name: 'knano', value: 'knano' },
+    { name: 'nano', value: 'nano' },
   ];
   selectedDenomination = this.denominations[0].value;
 
@@ -103,11 +104,24 @@ export class ConfigureAppComponent implements OnInit {
 
   powOptions = [
     { name: 'Best Option Available', value: 'best' },
-    { name: 'Client Side - WebGL [Recommended] (Chrome/Firefox)', value: 'clientWebGL' },
-    { name: 'Client Side - CPU', value: 'clientCPU' },
-    { name: 'Server - Nault Server', value: 'server' },
+    { name: 'Client-side - GPU/WebGL', value: 'clientWebGL' },
+    { name: 'Client-side - CPU (Slowest)', value: 'clientCPU' },
+    { name: 'External - Selected Server', value: 'server' },
+    { name: 'External - Custom Server', value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;
+
+  multiplierOptions = [
+    { name: 'Default (1x or 1/64x)', value: 1 },
+    { name: 'Automatic (max 8x)', value: 0 },
+    { name: '2x', value: 2 },
+    { name: '4x', value: 4 },
+    { name: '8x', value: 8 },
+    { name: '16x', value: 16 },
+    { name: '32x', value: 32 },
+    { name: '64x', value: 64 },
+  ];
+  selectedMultiplierOption: number = this.multiplierOptions[0].value;
 
   pendingOptions = [
     { name: 'Largest Amount First', value: 'amount' },
@@ -149,6 +163,8 @@ export class ConfigureAppComponent implements OnInit {
   statsRefreshEnabled = true;
   shouldRandom = null;
 
+  customWorkServer = '';
+
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
   showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
   showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
@@ -157,22 +173,30 @@ export class ConfigureAppComponent implements OnInit {
     this.loadFromSettings();
     this.updateNodeStats();
 
-    // populate representative list
-    if (!this.serverAPI) return;
-    const verifiedReps = await this.ninja.recommendedRandomized();
+    setTimeout(() => this.populateRepresentativeList(), 500);
+  }
 
-    for (const representative of verifiedReps) {
-      const temprep = {
-        id: representative.account,
-        name: representative.alias
-      };
+  async populateRepresentativeList() {
+    // add trusted/regular local reps to the list
+    const localReps = this.repService.getSortedRepresentatives();
+    this.representativeList.push( ...localReps.filter(rep => (!rep.warn)) );
 
-      this.representativeList.push(temprep);
+    if (this.serverAPI) {
+      const verifiedReps = await this.ninja.recommendedRandomized();
+
+      // add random recommended reps to the list
+      for (const representative of verifiedReps) {
+        const temprep = {
+          id: representative.account,
+          name: representative.alias
+        };
+
+        this.representativeList.push(temprep);
+      }
     }
 
-    // add the localReps to the list
-    const localReps = this.repService.getSortedRepresentatives();
-    this.representativeList.push(...localReps);
+    // add untrusted local reps to the list
+    this.representativeList.push( ...localReps.filter(rep => (rep.warn)) );
   }
 
   async updateNodeStats(refresh= false) {
@@ -213,9 +237,6 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const matchingDenomination = this.denominations.find(d => d.value === settings.displayDenomination);
-    this.selectedDenomination = matchingDenomination.value || this.denominations[0].value;
-
     const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
@@ -224,6 +245,11 @@ export class ConfigureAppComponent implements OnInit {
 
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
     this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
+
+    const matchingMultiplierOption = this.multiplierOptions.find(d => d.value === settings.multiplierSource);
+    this.selectedMultiplierOption = matchingMultiplierOption ? matchingMultiplierOption.value : this.multiplierOptions[0].value;
+
+    this.customWorkServer = settings.customWorkServer;
 
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
@@ -246,7 +272,6 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-    this.appSettings.setAppSetting('displayDenomination', this.selectedDenomination);
     this.notifications.sendSuccess(`App display settings successfully updated!`);
 
     if (reloadFiat) {
@@ -275,6 +300,7 @@ export class ConfigureAppComponent implements OnInit {
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
     let newPoW = this.selectedPoWOption;
+    const newMultiplier = this.selectedMultiplierOption;
     const pendingOption = this.selectedPendingOption;
     let minReceive = null;
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
@@ -284,7 +310,7 @@ export class ConfigureAppComponent implements OnInit {
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
-    const reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
+    let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
     || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
@@ -303,12 +329,44 @@ export class ConfigureAppComponent implements OnInit {
         this.notifications.sendWarning(`CPU Worker support not available, set PoW to Best`);
         newPoW = 'best';
       }
+      // reset multiplier when not using it to avoid user mistake
+      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+        this.selectedMultiplierOption = this.multiplierOptions[0].value;
+      }
+      // Cancel ongoing PoW if the old method was local PoW
+      if (this.appSettings.settings.powSource === 'clientWebGL' || this.appSettings.settings.powSource === 'clientCPU') {
+        // Check if work is ongoing, and cancel it
+        if (this.pow.cancelAllPow(false)) {
+          reloadPending = true; // force reload balance => re-work pow
+        }
+      }
+    } else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
+      newMultiplier < this.appSettings.settings.multiplierSource) {
+      // Cancel pow and re-work if multiplier is lower than earlier
+      if (this.pow.cancelAllPow(false)) {
+        reloadPending = true;
+      }
+    }
+
+    // reset work cache so that the new PoW will be used but only if larger than before
+    if (
+      newMultiplier > this.appSettings.settings.multiplierSource &&
+      newMultiplier > 1 &&
+      ((newPoW === 'clientWebGL' && this.pow.hasWebGLSupport()) ||
+      (newPoW === 'clientCPU' && this.pow.hasWorkerSupport()))
+    ) {
+      // if user accept to reset cache
+      if (await this.clearWorkCache()) {
+        reloadPending = true; // force reload balance => re-work pow
+      }
     }
 
     const newSettings = {
       walletStore: newStorage,
       lockInactivityMinutes: Number(this.selectedInactivityMinutes),
       powSource: newPoW,
+      multiplierSource: Number(this.selectedMultiplierOption),
+      customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
@@ -321,7 +379,7 @@ export class ConfigureAppComponent implements OnInit {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
     }
     if (reloadPending) {
-      this.walletService.reloadBalances(true);
+      this.walletService.reloadBalances();
     }
   }
 
@@ -372,7 +430,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   searchRepresentatives() {
-    if (this.defaultRepresentative !== '' && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
+    if (this.defaultRepresentative && !this.util.account.isValidAccount(this.defaultRepresentative)) this.repStatus = 0;
     else this.repStatus = null;
 
     this.showRepresentatives = true;
@@ -380,6 +438,8 @@ export class ConfigureAppComponent implements OnInit {
 
     const matches = this.representativeList
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      // remove duplicate accounts
+      .filter((item, pos, self) => this.util.array.findWithAttr(self, 'id', item.id) === pos)
       .slice(0, 5);
 
     this.representativeResults$.next(matches);
@@ -396,7 +456,7 @@ export class ConfigureAppComponent implements OnInit {
     setTimeout(() => this.showRepresentatives = false, 400);
     if (this.defaultRepresentative) this.defaultRepresentative = this.defaultRepresentative.replace(/ /g, '');
 
-    if (this.defaultRepresentative === '') {
+    if (!this.defaultRepresentative) {
       this.representativeListMatch = '';
       return;
     }
@@ -436,19 +496,36 @@ export class ConfigureAppComponent implements OnInit {
     this.statsRefreshEnabled = newServer === 'random' ? false : true;
   }
 
+  getRemotePoWOptionName() {
+    const optionName = 'External - Selected Server';
+
+    if ( (this.selectedServer === 'random') || (this.selectedServer === 'offline') ) {
+      return optionName;
+    }
+
+    const selectedServerOption = this.appSettings.serverOptions.find(d => d.value === this.selectedServer);
+
+    if (!selectedServerOption) {
+      return optionName;
+    }
+
+    return ( optionName + ' (' + selectedServerOption.name + ')' );
+  }
+
   async clearWorkCache() {
     const UIkit = window['UIkit'];
     try {
       await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>');
       this.workPool.clearCache();
       this.notifications.sendSuccess(`Successfully cleared the work cache!`);
-    } catch (err) {}
+      return true;
+    } catch (err) { return false; }
   }
 
   async clearWalletData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all of your wallet data stored in Nault!<br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to <b>delete all locally stored data about your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -459,7 +536,7 @@ export class ConfigureAppComponent implements OnInit {
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete ALL of your data stored in Nault.<br>This includes all of your wallet data, your address book, and your application settings!<br><br><b>Make sure you have your seed backed up!!</b><br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to delete all data stored in Nault, <b>which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -467,10 +544,14 @@ export class ConfigureAppComponent implements OnInit {
       this.addressBook.clearAddressBook();
       this.appSettings.clearAppSettings();
       this.repService.resetRepresentativeList();
+      this.api.deleteCache();
 
       this.loadFromSettings();
 
-      this.notifications.sendSuccess(`Successfully deleted ALL locally stored data!`);
+      this.notifications.sendSuccess(`Successfully deleted locally stored data and reset the settings!`);
+
+      // Get a new random API server or Nault will get stuck in offline mode
+      this.updateServerSettings();
     } catch (err) {}
   }
 

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
+import {NanoBlockService} from '../../services/nano-block.service';
 import {RepresentativeService} from '../../services/representative.service';
 import {Router} from '@angular/router';
 
@@ -16,22 +17,27 @@ export class ChangeRepWidgetComponent implements OnInit {
   showRepChangeRequired = false;
   showRepHelp = false;
   selectedAccount = null;
+  selectedAccountHasRep = false;
+  initialLoadComplete = false;
 
   constructor(
     private walletService: WalletService,
+    private blockService: NanoBlockService,
     private repService: RepresentativeService,
     private router: Router
     ) { }
 
   async ngOnInit() {
-    this.representatives = await this.repService.getRepresentativesOverview();
-    await this.updateChangeableRepresentatives();
-    this.updateDisplayedRepresentatives();
-
     this.repService.walletReps$.subscribe(async reps => {
+      if ( reps[0] === null ) {
+        // initial state from new BehaviorSubject([null])
+        return;
+      }
+
       this.representatives = reps;
       await this.updateChangeableRepresentatives();
       this.updateDisplayedRepresentatives();
+      this.initialLoadComplete = true;
     });
 
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
@@ -46,6 +52,13 @@ export class ChangeRepWidgetComponent implements OnInit {
       }
     });
 
+    // Detect if a new open block is received
+    this.blockService.newOpenBlock$.subscribe(async shouldReload => {
+      if (shouldReload) {
+        await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+      }
+    });
+
     this.repService.changeableReps$.subscribe(async reps => {
       // Includes both acceptable and bad reps
       // When user clicks 'Rep Change Required' action, acceptable reps will also be included
@@ -56,16 +69,21 @@ export class ChangeRepWidgetComponent implements OnInit {
 
       this.updateDisplayedRepresentatives();
     });
+
+    this.selectedAccount = this.walletService.wallet.selectedAccount;
+    this.updateSelectedAccountHasRep();
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
   }
 
   async resetRepresentatives() {
     console.log('Reloading representatives..');
+    this.initialLoadComplete = false;
     this.selectedAccount = null;
     this.representatives = [];
     this.changeableRepresentatives = [];
     this.showRepChangeRequired = false;
     this.updateDisplayedRepresentatives();
-    this.representatives = await this.repService.getRepresentativesOverview(); // calls walletReps$.next
+    await this.repService.getRepresentativesOverview(); // calls walletReps$.next
     console.log('Representatives reloaded');
   }
 
@@ -74,6 +92,7 @@ export class ChangeRepWidgetComponent implements OnInit {
   }
 
   updateDisplayedRepresentatives() {
+    this.updateSelectedAccountHasRep();
     this.displayedRepresentatives = this.getDisplayedRepresentatives(this.representatives);
   }
 
@@ -96,6 +115,19 @@ export class ChangeRepWidgetComponent implements OnInit {
     }
 
     return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
+  }
+
+  updateSelectedAccountHasRep() {
+    if (this.selectedAccount != null) {
+      this.selectedAccountHasRep = !!this.selectedAccount.frontier;
+      return;
+    }
+
+    this.selectedAccountHasRep =
+      this.walletService.wallet.accounts.some(
+        (acc) =>
+          (acc.frontier)
+      );
   }
 
   getDisplayedRepresentatives(representatives: any[]) {

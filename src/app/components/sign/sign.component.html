@@ -11,7 +11,7 @@
           <span *ngIf="qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
           <span *ngIf="!blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You are about to {{txTypeMessage}}</span>
           <span *ngIf="blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You have processed a block to {{txTypeMessage}}</span>
-          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano' }}</span>
+          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
           <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
         </div>
         <br>
@@ -21,12 +21,12 @@
               <div class="uk-card-header uk-text-left" style="padding: 20px 20px; line-height: 22px;">
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="fromAddressBook">
-                    <span class="confirm-title">{{ fromAddressBook }}</span>
+                    <span class="confirm-title uk-text-truncate">{{ fromAddressBook }}</span>
                     <span class="confirm-subtitle">From Account</span>
-                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
+                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!fromAddressBook">
-                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
+                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                     <span class="confirm-subtitle">From Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -55,12 +55,12 @@
 
                 <span class="confirm-title uk-text-truncate">
                   <div *ngIf="toAddressBook">
-                    <span class="confirm-title">{{ toAddressBook }}</span>
+                    <span class="confirm-title uk-text-truncate">{{ toAddressBook }}</span>
                     <span class="confirm-subtitle">To Account</span>
-                    <span class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                   </div>
                   <div *ngIf="!toAddressBook">
-                    <span class="confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
                     <span class="confirm-subtitle">To Account</span>
                     <br class="br-spacer" />
                   </div>
@@ -109,7 +109,7 @@
                   <div class="uk-form-controls">
                     <div class="uk-inline uk-width-1-1" style="height: 40px;">
                       <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','generic')" uk-tooltip title="Scan from QR code"></a>
-                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, bip39 seed or 24-word passphrase" autocomplete="off">
+                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, BIP39 seed or 24-word mnemonic" autocomplete="off">
                     </div>
                   </div>
                 </div>
@@ -224,7 +224,7 @@
       </div>
 
       <div class="uk-width-1-1 uk-text-center">
-        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock"><br />
+        <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" alt="QR code"><br />
       </div>
     </div>
   </div>

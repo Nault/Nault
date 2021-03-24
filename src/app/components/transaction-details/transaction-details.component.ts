@@ -18,6 +18,8 @@ export class TransactionDetailsComponent implements OnInit {
   hashID = '';
   blockType = 'send';
   isStateBlock = true;
+  isUnconfirmedBlock = false;
+  blockHeight = -1;
 
   toAccountID = '';
   fromAccountID = '';
@@ -51,7 +53,10 @@ export class TransactionDetailsComponent implements OnInit {
     this.fromAccountID = '';
     this.toAddressBook = '';
     this.fromAddressBook = '';
+    this.transaction = {};
     this.transactionJSON = '';
+    this.isUnconfirmedBlock = false;
+    this.blockHeight = -1;
     this.showBlockData = false;
     let legacyFromAccount = '';
     this.amountRaw = new BigNumber(0);
@@ -67,6 +72,9 @@ export class TransactionDetailsComponent implements OnInit {
     hashData.contents = hashContents;
 
     this.transactionJSON = JSON.stringify(hashData.contents, null , 4);
+
+    this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
+    this.blockHeight = hashData.height;
 
     this.blockType = hashData.contents.type;
     if (this.blockType === 'state') {

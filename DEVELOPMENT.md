@@ -38,7 +38,7 @@ Build a production version of the wallet for web:
 npm run wallet:build
 ```
 
-Build a production version of the wallet for desktop: *(Required for all desktop builds)*
+Build a production version of the wallet for desktop: *(Required for the desktop builds below)*
 ```bash
 npm run wallet:build-desktop
 ```
@@ -60,6 +60,11 @@ Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 npm run desktop:local
 ```
 
+Can also run a complete build for your local OS. The "wallet:build-desktop" command is run automatically. (Will be in `desktop-app\build`):
+```bash
+npm run desktop:build-local
+```
+
 Build the desktop wallet for Windows+Mac+Linux (May require dependencies for your OS [View them here](https://www.electron.build/multi-platform-build)):
 ```bash
 npm run desktop:full
@@ -72,3 +77,19 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Publishing New Release
+
+This will only be done by repo admins. It's dependent on github workflows so if you have forked the repo and want to test releases yourself, you must change the GITHUB_TOKEN in all workflow files to another key for example WORKFLOW. Then add this key to your repo secrets with writing rights. You also need to activate workflows because it's disabled by default when you fork.
+
+1. Bump new version (major, minor or patch). It will change the package.json version, commit and create a new tag:
+```bash
+npm version patch
+```
+
+2. Push the new commit and tag to origin:
+```bash
+git push --follow-tags
+```
+
+3. The github actions will take care of the rest. Linting, release draft, docker, desktop app building and uploading binaries based on the new version

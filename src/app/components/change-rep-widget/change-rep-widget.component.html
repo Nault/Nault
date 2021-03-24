@@ -1,17 +1,17 @@
-<div *ngIf="displayedRepresentatives.length > 0" class="nav-representative-info">
+<div class="nav-representative-info" *ngIf="(displayedRepresentatives.length > 0) else noRepresentatives">
   <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
-      <h2>Representative{{
-          (repIdx !== 0)
-        ? (
-            ' for '
-          + (
-              rep.accounts[0].addressBookName
-            ? ( '"' + rep.accounts[0].addressBookName + '"' )
-            : ( rep.accounts[0].id.slice(0, 10) + '...' )
-          )
+    <h2>Representative{{
+        (repIdx !== 0)
+      ? (
+          ' for '
+        + (
+            rep.accounts[0].addressBookName
+          ? ( '"' + rep.accounts[0].addressBookName + '"' )
+          : ( rep.accounts[0].id.slice(0, 10) + '...' )
         )
-        : ''
-      }}</h2>
+      )
+      : ''
+    }}</h2>
     <div class="representative-name-row">
       <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
@@ -49,6 +49,9 @@
       <p class="uk-text-danger" *ngIf="rep.status.markedToAvoid">
         <span uk-icon="icon: warning;"></span>This representative is <b>marked as "avoid"</b> in the list of known reps.
       </p>
+      <p class="uk-text-danger" *ngIf="rep.status.closing">
+        <span uk-icon="icon: warning;"></span>This representative has announced plans to <b>permanently shutdown</b>.
+      </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
         <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
       </p>
@@ -62,7 +65,7 @@
         <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
       </p>
       <p class="uk-text-danger" *ngIf="!rep.status.online && rep.status.uptime === 0">
-        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past 7 days</b>.
+        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past {{ rep.status.daysSinceLastVoted }} days</b>.
       </p>
       <ng-container [ngSwitch]="true">
         <p *ngSwitchCase="(rep.statusText == 'trusted')">
@@ -84,6 +87,34 @@
     </div>
   </div>
 </div>
+<ng-template #noRepresentatives>
+  <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
+    <div class="representative">
+      <h2>Representative</h2>
+      <div class="representative-name-row">
+        <div class="name no-interact">Loading...</div>
+      </div>
+      <div class="representative-health-row health-unknown health-loading">
+        <div uk-spinner="ratio: 0.5;"></div>
+        <div class="label">Checking Status...</div>
+      </div>
+    </div>
+  </div>
+  <ng-template #selectedAccountHasNoRep>
+    <div class="nav-representative-info">
+      <div class="representative">
+        <h2>Representative</h2>
+        <div class="representative-name-row">
+          <div class="name no-interact">None</div>
+        </div>
+        <div class="representative-health-row health-unknown">
+          <div class="health-icon"></div>
+          <div class="label">Receive a transaction to configure</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
 
 <div class="nav-status-row interactable uk-animation-slide-left" (click)="showRepSelectionForAllChangeableReps()" *ngIf="showRepChangeRequired">
   <div class="status-icon">

@@ -41,7 +41,13 @@
                "u2f-api",
                "create-hash",
                "randombytes",
-               "pbkdf2"
+               "pbkdf2",
+               "zxcvbn",
+               "url",
+               "punycode",
+               "querystring",
+               "hw-transport-webusb",
+               "hw-transport-web-ble"
             ]
           },
           "configurations": {

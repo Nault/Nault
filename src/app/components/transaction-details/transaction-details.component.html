@@ -2,8 +2,29 @@
   <div class="uk-width-1-1">
     <h2 class="uk-heading-divider">Transaction Details</h2>
 
-    <div class="uk-alert uk-alert-primary" *ngIf="!transaction">
-      Unable to load the transaction, double check that the hash is correct and try again!
+    <div *ngIf="!transaction">
+      <div class="uk-alert uk-alert-warning nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>Unable to find the block with specified hash</b><br>
+          Please double check that the block hash is correct<br>
+          Additionally, try selecting a different server in the app settings
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="isUnconfirmedBlock">
+      <div class="uk-alert uk-alert-danger nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>This block has not yet been confirmed by the network</b><br>
+          The information provided below is not final until the network verifies this block
+        </p>
+      </div>
     </div>
 
     <div class="uk-width-1-1" *ngIf="transaction">
@@ -13,7 +34,7 @@
           <span *ngIf="blockType == 'open'">Receive</span>
           <span *ngIf="blockType == 'receive'">Receive</span>
         </span>
-        <span style="display:block; font-size: 32px;">{{ transaction?.amount | rai: settings.settings.displayDenomination }}</span>
+        <span style="display:block; font-size: 32px;" *ngIf="transaction?.amount">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
         <span *ngIf="amountRaw.gt(0)" style="display:block; font-size: 12px;">+{{ amountRaw.toString(10) }} raw</span>
       </div>
       <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType == 'change'">
@@ -28,7 +49,8 @@
 
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="uk-label" *ngIf="fromAddressBook">{{ fromAddressBook }}</span> {{ fromAccountID }}
+                  <span class="confirm-title uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</span>
+                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
                 </a>
               </span>
               <span class="confirm-subtitle" *ngIf="blockType != 'change'">From Account</span>
@@ -41,7 +63,8 @@
             <div class="uk-text-truncate" style="padding: 20px 20px;">
               <span class="confirm-title">
                 <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="uk-label" *ngIf="toAddressBook">{{ toAddressBook }}</span> {{ toAccountID }}
+                  <span class="confirm-title uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</span>
+                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></span>
                 </a>
               </span>
               <span class="confirm-subtitle" *ngIf="blockType != 'change'">To Account</span>
@@ -56,35 +79,40 @@
       <div class="uk-card-body uk-padding-small uk-form-horizontal">
 
         <div class="uk-margin">
-          <label class="uk-form-label">Block:</label>
+          <label class="uk-form-label">Block Hash:</label>
           <div class="uk-form-controls uk-text-truncate">
             {{ hashID }}
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="transaction?.contents?.type">
           <label class="uk-form-label">Type:</label>
           <div class="uk-form-controls uk-text-truncate">
             {{ transaction?.contents?.type }}
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="transaction?.local_timestamp">
           <label class="uk-form-label">Date:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</span>
+            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</span>
             <span *ngIf="!transaction.local_timestamp" class="uk-text-muted">N/A</span>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.balance">
           <label class="uk-form-label">Balance:</label>
           <div class="uk-form-controls uk-text-truncate">
-            {{ (isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance)) | rai: settings.settings.displayDenomination }}<br>
-            <span class="uk-text-small">{{ transaction?.contents?.balance }}</span>
+            {{ ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 0 }}{{
+              ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 1 }} NANO<br>
+            <span class="uk-text-small">{{ transaction?.contents?.balance }} raw</span>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.representative">
           <label class="uk-form-label">Representative:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.representative }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <app-nano-account-id [accountID]="transaction?.contents?.representative"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.previous">
@@ -108,16 +136,26 @@
         <div class="uk-margin" *ngIf="transaction?.contents?.link_as_account && blockType == 'send'">
           <label class="uk-form-label">Link (Destination):</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.link_as_account }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <app-nano-account-id [accountID]="transaction?.contents?.link_as_account"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="blockHeight != -1">
+          <label class="uk-form-label">Height:</label>
+          <div class="uk-form-controls uk-text-truncate">
+            {{ blockHeight }}
+          </div>
+        </div>
+        <div class="uk-margin" *ngIf="transaction?.contents?.work">
           <label class="uk-form-label">Work:</label>
           <div class="uk-form-controls uk-text-truncate">
             {{ transaction?.contents?.work }}
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="transaction?.contents?.signature">
           <label class="uk-form-label">Signature:</label>
           <div class="uk-form-controls uk-text-small uk-text-truncate">
             {{ transaction?.contents?.signature }}
@@ -127,7 +165,7 @@
       </div>
     </div>
 
-    <div uk-grid>
+    <div uk-grid *ngIf="transaction">
       <div class="uk-width-1-1 uk-text-center">
         <a (click)="showBlockData = !showBlockData" class="uk-link-text">{{ showBlockData ? 'Hide' : 'Show' }} Block Data</a>
       </div>

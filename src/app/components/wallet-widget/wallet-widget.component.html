@@ -5,7 +5,7 @@
     </div>
     <div class="status-labels">
       <div class="label primary uk-text-warning">Ledger disconnected</div>
-      <div class="label secondary"><a (click)="reloadLedger()">Click here</a> to reconnect</div>
+      <div class="label secondary"><a (click)="reloadLedger()">Reconnect</a> or <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting">view Troubleshooting Guide</a></div>
     </div>
   </div>
   <div class="nav-status-row" *ngIf="( ledgerStatus === 'locked' )">
@@ -13,8 +13,8 @@
       <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
     </div>
     <div class="status-labels">
-      <div class="label primary uk-text-warning">Ledger app was closed</div>
-      <div class="label secondary"><a (click)="reloadLedger()">Click here</a> to reconnect</div>
+      <div class="label primary uk-text-warning">Ledger locked</div>
+      <div class="label secondary">Unlock the device, then <a (click)="reloadLedger()">click here</a> to reconnect</div>
     </div>
   </div>
   <div class="nav-status-row interactable" (click)="reloadLedger()" *ngIf="( ledgerStatus === 'ready' )">
@@ -24,6 +24,16 @@
     <div class="status-labels">
       <div class="label primary uk-text-success">Ledger Ready</div>
     </div>
+  </div>
+</div>
+
+<div class="nav-status-row" *ngIf="powAlert">
+  <div class="status-icon">
+    <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
+  </div>
+  <div class="status-labels">
+    <div class="label primary uk-text-warning">Proof of Work is taking a while...</div>
+    <div class="label secondary"><a routerLink="/configure-app" routerLinkActive="active">Change PoW method</a> or <a (click)="cancelPow()">cancel PoW</a></div>
   </div>
 </div>
 
@@ -62,11 +72,15 @@
       <h2 class="uk-modal-title">Unlock Wallet</h2>
     </div>
     <div class="uk-modal-body">
-      <input autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()" class="uk-input" placeholder="Enter wallet password">
+      <input #passwordInput autofocus type="password" [(ngModel)]="unlockPassword" (keyup.enter)="unlockWallet()"
+        [class]="{ 'uk-input': true, 'password-input': true, 'uk-form-danger': !mayAttemptUnlock }"
+        [placeholder]="( mayAttemptUnlock ? 'Enter wallet password' : 'Incorrect password' )"
+        [disabled]="!mayAttemptUnlock"
+      >
     </div>
     <div class="uk-modal-footer uk-text-right nlt-button-group">
       <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()">Unlock</button>
+      <button class="uk-button uk-button-primary" type="button" (click)="unlockWallet()" [disabled]="!mayAttemptUnlock">Unlock</button>
     </div>
   </div>
 </div>

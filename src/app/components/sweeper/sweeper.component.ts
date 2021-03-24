@@ -254,7 +254,7 @@ export class SweeperComponent implements OnInit {
     // make an extra check on valid destination
     if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
       this.appendLog('Transfer started: ' + address);
-      const work = await this.workPool.getWork(previous);
+      const work = await this.workPool.getWork(previous, 1); // send threshold
       // create the block with the work found
       const block = nanocurrency.createBlock(privKey, {balance: '0', representative: this.representative,
       work: work, link: this.destinationAccount, previous: previous});
@@ -304,7 +304,7 @@ export class SweeperComponent implements OnInit {
         // input hash is the opening address public key
         workInputHash = this.pubKey;
       }
-      const work = await this.workPool.getWork(workInputHash);
+      const work = await this.workPool.getWork(workInputHash, 1 / 64); // receive threshold
       // create the block with the work found
       const block = nanocurrency.createBlock(this.privKey, {balance: this.adjustedBalance, representative: this.representative,
       work: work, link: key, previous: this.previous});
@@ -487,7 +487,7 @@ export class SweeperComponent implements OnInit {
       // input is mnemonic
       if (keyType === 'mnemonic') {
         seed = bip39.mnemonicToEntropy(this.sourceWallet).toUpperCase();
-        bip39Seed = bip39.mnemonicToSeedSync(this.sourceWallet).toString('hex');
+        bip39Seed = this.util.string.mnemonicToSeedSync(this.sourceWallet).toString('hex');
         // Seed must be 64 for regular nano blake derivation to happen
         // For other lengths, only bip39/44 derivation is possible
         if (seed.length !== 32 && seed.length !== 40 && seed.length !== 48 && seed.length !== 56 && seed.length !== 64) {

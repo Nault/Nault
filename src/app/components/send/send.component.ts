@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 import {PriceService} from '../../services/price.service';
 import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import { environment } from 'environments/environment';
 
 const nacl = window['nacl'];
 
@@ -24,6 +25,7 @@ export class SendComponent implements OnInit {
   nano = 1000000000000000000000000;
 
   activePanel = 'send';
+  sendDestinationType = 'external-address';
 
   accounts = this.walletService.wallet.accounts;
   addressBookResults$ = new BehaviorSubject([]);
@@ -31,9 +33,9 @@ export class SendComponent implements OnInit {
   addressBookMatch = '';
 
   amounts = [
-    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+    { name: 'NANO', shortName: 'NANO', value: 'mnano' },
+    { name: 'knano', shortName: 'knano', value: 'knano' },
+    { name: 'nano', shortName: 'nano', value: 'nano' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -46,8 +48,11 @@ export class SendComponent implements OnInit {
   fromAddressBook = '';
   toAccount: any = false;
   toAccountID = '';
+  toOwnAccountID: any = '';
   toAddressBook = '';
   toAccountStatus = null;
+  amountStatus = null;
+  preparingTransaction = false;
   confirmingTransaction = false;
   selAccountInit = false;
 
@@ -67,13 +72,7 @@ export class SendComponent implements OnInit {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
 
-    if (params && params.amount) {
-      this.amount = params.amount;
-    }
-    if (params && params.to) {
-      this.toAccountID = params.to;
-      this.validateDestination();
-    }
+    this.updateQueries(params);
 
     this.addressBookService.loadAddressBook();
 
@@ -82,6 +81,11 @@ export class SendComponent implements OnInit {
 
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.activePanel !== 'send') {
+        // Transaction details already finalized
+        return;
+      }
+
       if (this.selAccountInit) {
         if (acc) {
           this.fromAccountID = acc.id;
@@ -92,12 +96,28 @@ export class SendComponent implements OnInit {
       this.selAccountInit = true;
     });
 
+    // Update the account if query params changes. For example donation button while active on this page
+    this.router.queryParams.subscribe(queries => {
+      this.updateQueries(queries);
+    });
+
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.fromAccountID = this.walletService.wallet.selectedAccount.id;
     } else {
       // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
       this.findFirstAccount();
+    }
+  }
+
+  updateQueries(params) {
+    if (params && params.amount) {
+      this.amount = params.amount;
+    }
+    if (params && params.to) {
+      this.toAccountID = params.to;
+      this.validateDestination();
+      this.sendDestinationType = 'external-address';
     }
   }
 
@@ -121,6 +141,7 @@ export class SendComponent implements OnInit {
 
   // An update to the Nano amount, sync the fiat value
   syncFiatPrice() {
+    if (!this.validateAmount()) return;
     const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
     if (rawAmount.lte(0)) {
       this.amountFiat = 0;
@@ -139,8 +160,12 @@ export class SendComponent implements OnInit {
 
   // An update to the fiat amount, sync the nano value based on currently selected denomination
   syncNanoPrice() {
-    const fiatAmount = this.amountFiat || 0;
-    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(fiatAmount).div(this.price.price.lastPrice));
+    if (!this.amountFiat) {
+      this.amount = '';
+      return;
+    }
+    if (!this.util.string.isNumeric(this.amountFiat)) return;
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
     const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
@@ -166,6 +191,10 @@ export class SendComponent implements OnInit {
     this.validateDestination();
   }
 
+  setSendDestinationType(newType: string) {
+    this.sendDestinationType = newType;
+  }
+
   async validateDestination() {
     // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
     setTimeout(() => this.showAddressBook = false, 400);
@@ -174,32 +203,78 @@ export class SendComponent implements OnInit {
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
     this.addressBookMatch = this.addressBookService.getAccountName(this.toAccountID);
+    if (!this.addressBookMatch && this.toAccountID === environment.donationAddress) {
+      this.addressBookMatch = 'Nault Donations';
+    }
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
-    const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);
-    if (accountInfo.error) {
-      if (accountInfo.error === 'Account not found') {
-        this.toAccountStatus = 1;
-      } else {
-        this.toAccountStatus = 0;
+    this.toAccountStatus = null;
+    if (this.util.account.isValidAccount(this.toAccountID)) {
+      const accountInfo = await this.nodeApi.accountInfo(this.toAccountID);
+      if (accountInfo.error) {
+        if (accountInfo.error === 'Account not found') {
+          this.toAccountStatus = 1;
+        }
       }
-    }
-    if (accountInfo && accountInfo.frontier) {
-      this.toAccountStatus = 2;
+      if (accountInfo && accountInfo.frontier) {
+        this.toAccountStatus = 2;
+      }
+    } else {
+      this.toAccountStatus = 0;
     }
   }
 
+  validateAmount() {
+    if (this.util.account.isValidNanoAmount(this.amount)) {
+      this.amountStatus = 1;
+      return true;
+    } else {
+      this.amountStatus = 0;
+      return false;
+    }
+  }
+
+  getDestinationID() {
+    if (this.sendDestinationType === 'external-address') {
+      return this.toAccountID;
+    }
+
+    // 'own-address'
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.toOwnAccountID);
+
+    if (!walletAccount) {
+      // Unable to find receiving account in wallet
+      return '';
+    }
+
+    if (this.toOwnAccountID === this.fromAccountID) {
+      // Sending to the same address is only allowed via 'external-address'
+      return '';
+    }
+
+    return this.toOwnAccountID;
+  }
+
   async sendTransaction() {
-    const isValid = this.util.account.isValidAccount(this.toAccountID);
+    const destinationID = this.getDestinationID();
+    const isValid = this.util.account.isValidAccount(destinationID);
     if (!isValid) {
       return this.notificationService.sendWarning(`To account address is not valid`);
     }
-    if (!this.fromAccountID || !this.toAccountID) {
+    if (!this.fromAccountID || !destinationID) {
       return this.notificationService.sendWarning(`From and to account are required`);
     }
+    if (!this.validateAmount()) {
+      return this.notificationService.sendWarning(`Invalid NANO Amount`);
+    }
+
+    this.preparingTransaction = true;
 
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
-    const to = await this.nodeApi.accountInfo(this.toAccountID);
+    const to = await this.nodeApi.accountInfo(destinationID);
+
+    this.preparingTransaction = false;
+
     if (!from) {
       return this.notificationService.sendError(`From account not found`);
     }
@@ -218,9 +293,6 @@ export class SendComponent implements OnInit {
     if (this.amount < 0 || rawAmount.lessThan(0)) {
       return this.notificationService.sendWarning(`Amount is invalid`);
     }
-    if (nanoAmount.lessThan(1)) {
-      return this.notificationService.sendWarning(`Transactions for less than 1 nano will be ignored by the node.`);
-    }
     if (from.balanceBN.minus(rawAmount).lessThan(0)) {
       return this.notificationService.sendError(`From account does not have enough NANO`);
     }
@@ -231,10 +303,10 @@ export class SendComponent implements OnInit {
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
-    // Start precopmuting the work...
+    // Start precomputing the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
-    this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
-    this.workPool.addWorkToCache(this.fromAccount.frontier);
+    this.toAddressBook = this.addressBookService.getAccountName(destinationID);
+    this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
   }
@@ -251,15 +323,20 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = true;
 
     try {
-      const newHash = await this.nanoBlock.generateSend(walletAccount, this.toAccountID,
+      const destinationID = this.getDestinationID();
+
+      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,
         this.rawAmount, this.walletService.isLedgerWallet());
+
       if (newHash) {
-        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`);
+        this.notificationService.removeNotification('success-send');
+        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;
         this.resetRaw();
         this.toAccountID = '';
+        this.toOwnAccountID = '';
         this.toAccountStatus = null;
         this.fromAddressBook = '';
         this.toAddressBook = '';

@@ -5,6 +5,7 @@ import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
+const pbkdf2_1 = require('pbkdf2');
 
 export interface StateBlock {
   account: string;
@@ -50,6 +51,7 @@ export class UtilService {
   };
   string = {
     isNumeric: isNumeric,
+    mnemonicToSeedSync: mnemonicToSeedSync,
   };
   account = {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
@@ -75,10 +77,13 @@ export class UtilService {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
+    multiplierFromDifficulty: multiplierFromDifficulty,
   };
   array = {
-    shuffle: shuffle
+    shuffle: shuffle,
+    findWithAttr: findWithAttr
   };
 
 }
@@ -252,6 +257,17 @@ function isNumeric(val) {
   return isnum && String(val).slice(-1) !== '.';
 }
 
+function mnemonicToSeedSync(mnemonic, password= null) {
+  // const mnemonicBuffer = Buffer.from((mnemonic || '').normalize('NFKD'), 'utf8');
+  // const saltBuffer = Buffer.from(this.salt((password || '').normalize('NFKD')), 'utf8');
+  // Using textencoder here instead ensures it returns an Uint8Array when using the desktop app
+  // and not a Buffer object that messes up the bip39 seed
+  const enc = new TextEncoder();
+  const mnemonicBuffer = enc.encode(mnemonic);
+  const saltBuffer = enc.encode('mnemonic' + (password || ''));
+  return pbkdf2_1.pbkdf2Sync(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
+}
+
 
 /** Account Functions **/
 function generateAccountSecretKeyBytes(seedBytes, accountIndex) {
@@ -286,7 +302,7 @@ function isValidNanoAmount(val: string) {
   // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
-    if (parseFloat(val) > 0 && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+    if (val !== '' && mnanoToRaw(val).gte(1) && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
       return true;
     } else {
       return false;
@@ -296,6 +312,7 @@ function isValidNanoAmount(val: string) {
   }
 }
 
+// Check if valid raw amount
 function isValidAmount(val: string) {
   return nanocurrency.checkAmount(val);
 }
@@ -374,6 +391,10 @@ function isValidWork(val: string) {
   return nanocurrency.checkWork(val);
 }
 
+function validateWork(blockHash: string, threshold: string, work: string) {
+  return nanocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
+}
+
 function hashStateBlock(block: StateBlock) {
   const balance = new BigNumber(block.balance);
   if (balance.isNegative() || balance.isNaN()) {
@@ -397,6 +418,14 @@ export function difficultyFromMultiplier(multiplier, base_difficulty) {
   const big_multiplier = new BigNumber(multiplier);
   const big_base = new BigNumber(base_difficulty, 16);
   return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16);
+}
+
+// Determine new multiplier from base difficulty (hexadecimal string) and target difficulty (hexadecimal string). Returns Number
+export function multiplierFromDifficulty(difficulty, base_difficulty) {
+  const big64 = new BigNumber(2).pow(64);
+  const big_diff = new BigNumber(difficulty, 16);
+  const big_base = new BigNumber(base_difficulty, 16);
+  return big64.minus(big_base).dividedBy(big64.minus(big_diff)).toNumber();
 }
 
 // shuffle any array
@@ -435,6 +464,15 @@ function equal_arrays (array1, array2) {
   return true;
 }
 
+// find the position in an array given an attribute and value
+function findWithAttr(array, attr, value) {
+  for (let i = 0; i < array.length; i += 1) {
+      if (array[i][attr] === value) {
+          return i;
+      }
+  }
+  return -1;
+}
 
 function generateSeedBytes() {
   return nacl.randomBytes(32);
@@ -467,6 +505,7 @@ const util = {
   },
   string: {
     isNumeric: isNumeric,
+    mnemonicToSeedSync: mnemonicToSeedSync,
   },
   account: {
     generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
@@ -492,6 +531,12 @@ const util = {
     isValidIndex: isValidIndex,
     isValidSignature: isValidSignature,
     isValidWork: isValidWork,
+    validateWork: validateWork,
     difficultyFromMultiplier: difficultyFromMultiplier,
+    multiplierFromDifficulty: multiplierFromDifficulty,
+  },
+  array: {
+    shuffle: shuffle,
+    findWithAttr: findWithAttr
   }
 };

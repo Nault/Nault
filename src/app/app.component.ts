@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild, Renderer2} from '@angular/core';
 import {WalletService} from './services/wallet.service';
 import {AddressBookService} from './services/address-book.service';
 import {AppSettingsService} from './services/app-settings.service';
@@ -10,14 +10,15 @@ import {Router} from '@angular/router';
 import {SwUpdate} from '@angular/service-worker';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { LedgerService } from './services';
-
+import { DesktopService, LedgerService } from './services';
+import { environment } from 'environments/environment';
+import { DeeplinkService } from './services/deeplink.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
 
@@ -32,9 +33,14 @@ export class AppComponent implements OnInit {
     private router: Router,
     public updates: SwUpdate,
     private workPool: WorkPoolService,
+    public price: PriceService,
+    private desktop: DesktopService,
     private ledger: LedgerService,
-    public price: PriceService) {
-      router.events.subscribe(() => { this.navExpanded = false; });
+    private renderer: Renderer2,
+    private deeplinkService: DeeplinkService) {
+      router.events.subscribe(() => {
+        this.navExpanded = false;
+      });
     }
 
   @ViewChild('selectButton') selectButton: ElementRef;
@@ -47,11 +53,10 @@ export class AppComponent implements OnInit {
   inactiveSeconds = 0;
   navExpanded = false;
   showAccountsDropdown = false;
+  canToggleLightMode = true;
   searchData = '';
   isConfigured = this.walletService.isConfigured;
-  @HostListener('window:resize', ['$event']) onResize () {
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
-  }
+  donationAccount = environment.donationAddress;
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
     if (
@@ -63,8 +68,9 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.onResize();
     this.settings.loadAppSettings();
+
+    this.updateAppTheme();
 
     // New for v19: Patch saved xrb_ prefixes to nano_
     await this.patchXrbToNanoPrefixData();
@@ -74,20 +80,42 @@ export class AppComponent implements OnInit {
 
     await this.walletService.loadStoredWallet();
 
+    // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
+    if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
+      this.router.navigate(['accounts']);
+    }
+
     // update selected account object with the latest balance, pending, etc
     if (this.wallet.selectedAccountId) {
       const currentUpdatedAccount = this.wallet.accounts.find(a => a.id === this.wallet.selectedAccountId);
       this.wallet.selectedAccount = currentUpdatedAccount;
     }
 
-    await this.walletService.reloadBalances(true);
+    await this.walletService.reloadBalances();
 
     // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
     const path = localStorage.getItem('path');
+
     if (path) {
+      const search = localStorage.getItem('query'); // ?param=value
+      const fragment = localStorage.getItem('fragment'); // #value
       localStorage.removeItem('path');
-      this.router.navigate([path]);
+      localStorage.removeItem('query');
+      localStorage.removeItem('fragment');
+
+      if (search && search.length) {
+        const queryParams = {};
+        const urlSearch = new URLSearchParams(search);
+        urlSearch.forEach(function(value, key) {
+          queryParams[key] = value;
+        });
+        this.router.navigate([path], { queryParams: queryParams});
+      } else if (fragment && fragment.length) {
+        this.router.navigate([path], { fragment: fragment});
+      } else {
+        this.router.navigate([path]);
+      }
     }
 
     this.websocket.connect();
@@ -102,11 +130,6 @@ export class AppComponent implements OnInit {
       this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
     }
 
-    // If they are using a Ledger device with a bad browser, warn them
-    if (this.walletService.isLedgerWallet() && this.ledger.isBrokenBrowser()) {
-      this.notifications.sendLedgerChromeWarning();
-    }
-
     // When the page closes, determine if we should lock the wallet
     window.addEventListener('beforeunload',  (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
@@ -117,15 +140,11 @@ export class AppComponent implements OnInit {
       this.walletService.lockWallet();
     });
 
-    // Listen for an xrb: protocol link, triggered by the desktop application
-    window.addEventListener('protocol-load', (e: CustomEvent) => {
-      const protocolText = e.detail;
-      const stripped = protocolText.split('').splice(4).join(''); // Remove xrb:
-      if (stripped.startsWith('xrb_')) {
-        this.router.navigate(['account', stripped]);
-      }
-      // Soon: Load seed, automatic send page?
+    // handle deeplinks
+    this.desktop.on('deeplink', (e, deeplink) => {
+      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', { length: 5000 });
     });
+    this.desktop.send('deeplink-ready');
 
     // Notify user if service-worker update is available
     this.updates.available.subscribe((event) => {
@@ -176,6 +195,28 @@ export class AppComponent implements OnInit {
     this.navExpanded = false;
   }
 
+  toggleLightMode() {
+    if (this.canToggleLightMode === false) {
+      return;
+    }
+
+    this.canToggleLightMode = false;
+    setTimeout(() => { this.canToggleLightMode = true; }, 300);
+
+    this.settings.setAppSetting('lightModeEnabled', !this.settings.settings.lightModeEnabled);
+    this.updateAppTheme();
+  }
+
+  updateAppTheme() {
+    if (this.settings.settings.lightModeEnabled) {
+      this.renderer.addClass(document.body, 'light-mode');
+      this.renderer.removeClass(document.body, 'dark-mode');
+    } else {
+      this.renderer.addClass(document.body, 'dark-mode');
+      this.renderer.removeClass(document.body, 'light-mode');
+    }
+  }
+
   toggleAccountsDropdown() {
     if (this.showAccountsDropdown === true) {
       this.showAccountsDropdown = false;
@@ -218,7 +259,7 @@ export class AppComponent implements OnInit {
       this.notifications.sendInfo(`Wallet server settings is set to offline mode. Please change server first!`);
       return;
     }
-    this.walletService.reloadBalances(true);
+    this.walletService.reloadBalances();
     this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
   }
 

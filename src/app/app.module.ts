@@ -56,10 +56,13 @@ import { InstallWidgetComponent } from './components/install-widget/install-widg
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { NinjaService } from './services';
+import { DeeplinkService, NinjaService } from './services';
+import { ConverterComponent } from './components/converter/converter.component';
+import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
@@ -95,6 +98,8 @@ import { environment } from '../environments/environment';
     SignComponent,
     RemoteSigningComponent,
     QrModalComponent,
+    ConverterComponent,
+    QrGeneratorComponent,
     InstallWidgetComponent,
   ],
   imports: [
@@ -106,6 +111,7 @@ import { environment } from '../environments/environment';
     ClipboardModule,
     ZXingScannerModule,
     NgbModule,
+    PasswordStrengthMeterModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
@@ -129,6 +135,7 @@ import { environment } from '../environments/environment';
     NinjaService,
     NgbActiveModal,
     QrModalService,
+    DeeplinkService,
   ],
   bootstrap: [AppComponent]
 })

@@ -3,15 +3,15 @@ tag-template: 'v$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
     labels:
-      - 'feature'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'fix'
-      - 'bugfix'
       - 'bug'
   - title: '🧰 Maintenance'
-    label: 'chore'
+    labels:
+      - 'dependencies'
+      - 'documentation'
+      - 'maintenance'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
@@ -28,3 +28,16 @@ template: |
   ## Changes
 
   $CHANGES
+
+  ## Contributors
+
+  $CONTRIBUTORS
+
+  ## Checksum Validation
+
+  If you want to verify the binary checksum there are plenty of apps to do this. One way is using a powershell or bash terminal:
+
+  * **Powershell:** `Get-FileHash -Path '.\Nault-Setup-$RESOLVED_VERSION-Windows.exe' -Algorithm SHA256`
+  * **Bash:** `openssl sha256 Nault-$RESOLVED_VERSION-Linux.AppImage`
+
+  Then compare the output hash with the one listed in the corresponding checksum.txt file. The .yml has a binary checksum that is more complicated.

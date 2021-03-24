@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import * as url from 'url';
 
 export type WalletStore = 'localStorage'|'none';
-export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best';
+export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
+export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
   displayDenomination: string;
@@ -12,7 +13,10 @@ interface AppSettings {
   defaultRepresentative: string | null;
   lockOnClose: number;
   lockInactivityMinutes: number;
+  ledgerReconnect: LedgerConnectionType;
   powSource: PoWSource;
+  multiplierSource: number;
+  customWorkServer: string;
   pendingOption: string;
   serverName: string;
   serverAPI: string | null;
@@ -20,6 +24,7 @@ interface AppSettings {
   serverAuth: string | null;
   minimumReceive: string | null;
   walletVersion: number | null;
+  lightModeEnabled: boolean;
 }
 
 @Injectable()
@@ -34,14 +39,18 @@ export class AppSettingsService {
     defaultRepresentative: null,
     lockOnClose: 1,
     lockInactivityMinutes: 30,
+    ledgerReconnect: 'usb',
     powSource: 'best',
+    multiplierSource: 1,
+    customWorkServer: '',
     pendingOption: 'amount',
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
     serverAuth: null,
     minimumReceive: null,
-    walletVersion: 1
+    walletVersion: 1,
+    lightModeEnabled: false
   };
 
   serverOptions = [
@@ -64,18 +73,26 @@ export class AppSettingsService {
     {
       name: 'Nanos.cc',
       value: 'nanos',
-      api: 'https://proxy.nanos.cc/proxy',
-      ws: 'wss://socket.nanos.cc',
+      api: 'https://nault.nanos.cc/proxy',
+      ws: 'wss://nault-ws.nanos.cc',
       auth: null,
       shouldRandom: true,
     },
     {
-      name: 'VoxPopuli',
-      value: 'voxpopuli',
-      api: 'https://voxpopuli.network/api',
-      ws: 'wss://voxpopuli.network/websocket',
+      name: 'PowerNode',
+      value: 'powernode',
+      api: 'https://proxy.powernode.cc/proxy',
+      ws: 'wss://ws.powernode.cc',
       auth: null,
-      shouldRandom: false,
+      shouldRandom: true,
+    },
+    {
+      name: 'Rainstorm City',
+      value: 'rainstorm',
+      api: 'https://rainstorm.city/api',
+      ws: 'wss://rainstorm.city/websocket',
+      auth: null,
+      shouldRandom: true,
     },
     {
       name: 'Nanex.cc',
@@ -111,6 +128,16 @@ export class AppSettingsService {
     }
   ];
 
+  // Simplified list for comparison in other classes
+  knownApiEndpoints = this.serverOptions.reduce((acc, server) => {
+    if (!server.api) return acc;
+    acc.push( server.api.replace(/https?:\/\//g, '') );
+    return acc;
+  }, [
+    'proxy.nanos.cc/proxy',
+    'node.somenano.com'
+  ]);
+
   constructor() { }
 
   loadAppSettings() {
@@ -136,6 +163,7 @@ export class AppSettingsService {
 
       this.settings.serverAPI = randomServerOption.api;
       this.settings.serverWS = randomServerOption.ws;
+      this.settings.serverName = 'random';
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
     } else if (this.settings.serverName === 'offline') {
@@ -183,7 +211,10 @@ export class AppSettingsService {
       defaultRepresentative: null,
       lockOnClose: 1,
       lockInactivityMinutes: 30,
+      ledgerReconnect: 'usb',
       powSource: 'best',
+      multiplierSource: 1,
+      customWorkServer: '',
       pendingOption: 'amount',
       serverName: 'random',
       serverAPI: null,
@@ -191,6 +222,7 @@ export class AppSettingsService {
       serverAuth: null,
       minimumReceive: null,
       walletVersion: 1,
+      lightModeEnabled: false,
     };
   }
 

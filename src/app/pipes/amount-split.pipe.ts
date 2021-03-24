@@ -18,6 +18,12 @@ export class AmountSplitPipe implements PipeTransform {
       return '';
     }
 
-    return ( '.' + splitAmount );
+    const fractionalAmount = splitAmount.replace(/0+$/g, '');
+
+    if (fractionalAmount === '') {
+      return '';
+    }
+
+    return ( '.' + fractionalAmount );
   }
 }
