@@ -16,7 +16,7 @@ export class TransactionDetailsComponent implements OnInit {
   routerSub = null;
   transaction: any = {};
   hashID = '';
-  blockType = 'send';
+  blockType = '';
   isStateBlock = true;
   isUnconfirmedBlock = false;
   blockHeight = -1;
@@ -59,6 +59,7 @@ export class TransactionDetailsComponent implements OnInit {
     this.blockHeight = -1;
     this.showBlockData = false;
     let legacyFromAccount = '';
+    this.blockType = '';
     this.amountRaw = new BigNumber(0);
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
@@ -76,9 +77,10 @@ export class TransactionDetailsComponent implements OnInit {
     this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
     this.blockHeight = hashData.height;
 
-    this.blockType = hashData.contents.type;
-    if (this.blockType === 'state') {
+    const blockType = hashData.contents.type;
+    if (blockType === 'state') {
       const isOpen = hashData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000';
+
       if (isOpen) {
         this.blockType = 'open';
       } else {
@@ -103,6 +105,7 @@ export class TransactionDetailsComponent implements OnInit {
         }
       }
     } else {
+      this.blockType = blockType;
       this.isStateBlock = false;
     }
     if (hashData.amount) {

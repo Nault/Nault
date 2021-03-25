@@ -28,7 +28,7 @@
     </div>
 
     <div class="uk-width-1-1" *ngIf="transaction">
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType !== 'change'">
+      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="(blockType !== 'change') && (blockType !== '')">
         <span style="display: block; padding-top: 8px;">
           <span *ngIf="blockType == 'send'">Send</span>
           <span *ngIf="blockType == 'open'">Receive</span>
@@ -37,7 +37,7 @@
         <span style="display:block; font-size: 32px;" *ngIf="transaction?.amount">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
         <span *ngIf="amountRaw.gt(0)" style="display:block; font-size: 12px;">+{{ amountRaw.toString(10) }} raw</span>
       </div>
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType == 'change'">
+      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="(blockType == 'change')">
         <span style="display:block; font-size: 32px;">Change Representative</span>
       </div>
       <br>
