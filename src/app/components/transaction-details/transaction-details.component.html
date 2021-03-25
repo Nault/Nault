@@ -127,7 +127,7 @@
             <a [routerLink]="'/transaction/' + transaction?.contents?.source" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.source }}</a>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.link && blockType == 'receive'">
+        <div class="uk-margin" *ngIf="transaction?.contents?.link && (blockType == 'open' || blockType == 'receive')">
           <label class="uk-form-label">Link (Source):</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/transaction/' + transaction?.contents?.link" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.link }}</a>
