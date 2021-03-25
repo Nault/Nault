@@ -115,7 +115,7 @@
             </a>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.previous">
+        <div class="uk-margin" *ngIf="transaction?.contents?.previous && (blockType != 'open')">
           <label class="uk-form-label">Previous:</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/transaction/' + transaction?.contents?.previous" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.previous }}</a>
