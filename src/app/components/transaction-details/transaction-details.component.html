@@ -28,7 +28,7 @@
     </div>
 
     <div class="uk-width-1-1" *ngIf="transaction">
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType !== 'change'">
+      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="(blockType !== 'change') && (blockType !== '')">
         <span style="display: block; padding-top: 8px;">
           <span *ngIf="blockType == 'send'">Send</span>
           <span *ngIf="blockType == 'open'">Receive</span>
@@ -37,8 +37,8 @@
         <span style="display:block; font-size: 32px;" *ngIf="transaction?.amount">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
         <span *ngIf="amountRaw.gt(0)" style="display:block; font-size: 12px;">+{{ amountRaw.toString(10) }} raw</span>
       </div>
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType == 'change'">
-        <span style="display:block; font-size: 32px;">Change Representative</span>
+      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="(blockType == 'change')">
+        <span style="display:block; font-size: 32px;">Representative Change</span>
       </div>
       <br>
       <div uk-grid>
@@ -115,7 +115,7 @@
             </a>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.previous">
+        <div class="uk-margin" *ngIf="transaction?.contents?.previous && (blockType != 'open')">
           <label class="uk-form-label">Previous:</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/transaction/' + transaction?.contents?.previous" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.previous }}</a>
@@ -127,7 +127,7 @@
             <a [routerLink]="'/transaction/' + transaction?.contents?.source" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.source }}</a>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.link && blockType == 'receive'">
+        <div class="uk-margin" *ngIf="transaction?.contents?.link && (blockType == 'open' || blockType == 'receive')">
           <label class="uk-form-label">Link (Source):</label>
           <div class="uk-form-controls uk-text-truncate">
             <a [routerLink]="'/transaction/' + transaction?.contents?.link" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.link }}</a>
