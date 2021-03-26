@@ -2,7 +2,7 @@
   "name": "nault",
   "short_name": "nault",
   "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "background_color": "#1f1f24",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
