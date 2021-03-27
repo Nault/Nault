@@ -146,10 +146,18 @@ export class AppComponent implements OnInit {
     });
     this.desktop.send('deeplink-ready');
 
-    // Notify user if service-worker update is available
+    // Notify user if service worker update is available
     this.updates.available.subscribe((event) => {
-      this.notifications.sendInfo('A Nault update has been downloaded in the background. Please refresh.', { length: 10000 });
+      this.notifications.sendInfo(
+        'An update was downloaded in the background and will be applied the next time Nault opens. <a href="#" (click)="applySwUpdate()">Apply immediately</a>', 
+        { length: 10000 }
+      );
     });
+
+    // Notify user after service worker was updated
+    this.updates.activated.subscribe((event) => {
+      this.notifications.sendSuccess('Nault was updated successfully.');
+    })
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
@@ -185,6 +193,10 @@ export class AppComponent implements OnInit {
     this.representative.patchXrbPrefixData();
 
     this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
+  }
+
+  applySwUpdate() {
+    this.updates.activateUpdate();
   }
 
   toggleNav() {
