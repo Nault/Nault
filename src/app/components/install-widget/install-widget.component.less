@@ -10,14 +10,18 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: 0 20px;
+    padding: 0 15px;
     color: white;
-    transition: all 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
     
     &:not(.ios) {
         cursor: pointer;
         &:hover > .label {
             border-color: white;
+        }
+        &:active {
+            background: rgba(255, 255, 255, 0.1);
         }
     }
     
@@ -26,8 +30,9 @@
         border-bottom: 2px solid transparent;
     }
     .description {
-        opacity: 0.7;
+        color: #BBB;
         font-size: 0.8rem;
+        line-height: 1.4rem;
     }
 
     .icon {
