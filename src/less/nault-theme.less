@@ -408,6 +408,60 @@ input[type=number] {
 	color: #F79743;
 }
 
+// Accounts list
+.accounts-list {
+	.nano-identicon {
+		width: 54px;
+		margin-right: 20px;
+
+		.canvas-container canvas {
+			border-radius: 3px;
+		}
+	}
+
+	.nano-address-clickable {
+		margin-top: 2px;
+	}
+
+	.account-amounts-column .account-amounts-primary .amount-integer,
+	.account-amounts-column .account-amounts-primary .amount-fractional,
+	.account-amounts-column .account-amounts-primary .currency-name {
+		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+		font-size: 16px;
+	}
+
+	@media (max-width: 599px) {
+		.nano-address-clickable > .uk-flex {
+			flex-wrap: wrap;
+			width: 125px;
+
+			.nano-address-middle {
+				width: 0;
+			}
+
+			.nano-address-suffix {
+				margin-left: 69px; // Nice
+			}
+		}
+
+		.account-amounts-column .account-amounts-primary .amount-integer,
+		.account-amounts-column .account-amounts-primary .amount-fractional,
+		.account-amounts-column .account-amounts-primary .currency-name {
+			font-size: 13px;
+		}
+
+		.account-amounts-column .account-amounts-primary .currency-name {
+			display: block;
+			margin-top: -2px;
+		}
+
+		.account-amounts-converted {
+			font-size: 13px;
+			margin-top: 10px;
+		}
+	}
+}
+
 // Transactions list
 .transactions-list {
 	.type-column {

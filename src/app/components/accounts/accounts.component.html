@@ -23,7 +23,7 @@
     </div>
 
     <div class="uk-card uk-overflow-hidden">
-      <table class="uk-table uk-table-striped uk-table-small">
+      <table class="accounts-list uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
           <th scope="col" class="uk-width-3-5@m uk-width-1-2">
@@ -44,20 +44,25 @@
           <td class="uk-visible-toggle uk-text-truncate">
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
-                <div class="uk-width-1-1">
-                  <div class="account-index" *ngIf="viewAdvanced"><span>#</span>{{ account.index }}</div>
-                  <div class="account-label">{{
-                      account.addressBookName
-                    ? account.addressBookName
-                    : (
-                        viewAdvanced
-                      ? 'Account'
-                      : 'Account #' + account.index
-                    )
-                  }}</div>
-                </div>
-                <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                  <app-nano-account-id [accountID]="account.id" middle="auto"></app-nano-account-id>
+                <div class="uk-flex">
+                  <app-nano-identicon [accountID]="account.id" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                  <div class="uk-width-expand">
+                    <div class="uk-width-1-1">
+                      <div class="account-index" *ngIf="viewAdvanced"><span>#</span>{{ account.index }}</div>
+                      <div class="account-label">{{
+                          account.addressBookName
+                        ? account.addressBookName
+                        : (
+                            viewAdvanced
+                          ? 'Account'
+                          : 'Account #' + account.index
+                        )
+                      }}</div>
+                    </div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                      <app-nano-account-id [accountID]="account.id" middle="auto"></app-nano-account-id>
+                    </div>
+                  </div>
                 </div>
               </a>
               <div class="nano-address-actions uk-width-auto copy-container">
@@ -80,7 +85,7 @@
                 <span class="currency-name">NANO</span>
               </span>
             </div>
-            <div class="uk-width-1-1 text-half-muted">
+            <div class="account-amounts-converted uk-width-1-1 text-half-muted">
               {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
             </div>
           </td>

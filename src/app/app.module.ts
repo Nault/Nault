@@ -36,6 +36,7 @@ import { FiatPipe } from './pipes/fiat.pipe';
 import { AmountSplitPipe } from './pipes/amount-split.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
+import { NanoIdenticonComponent } from './components/helpers/nano-identicon/nano-identicon.component';
 import {PowService} from './services/pow.service';
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
@@ -84,6 +85,7 @@ import { QrGeneratorComponent } from './components/qr-generator/qr-generator.com
     AmountSplitPipe,
     ImportWalletComponent,
     NanoAccountIdComponent,
+    NanoIdenticonComponent,
     ImportAddressBookComponent,
     CurrencySymbolPipe,
     RepresentativesComponent,

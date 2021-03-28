@@ -24,22 +24,35 @@
             </div>
           </div>
 
-          <!--<div class="uk-width-1-1">-->
-            <!--<div class="uk-form-horizontal">-->
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
 
-              <!--<div class="uk-margin">-->
-                <!--<label class="uk-form-label">Account Prefix <span uk-icon="icon: info;" uk-tooltip title="Change the Nano account prefix used throughout the application.  Both are valid when sending"></span></label>-->
-                <!--<div class="uk-form-controls">-->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Night Mode</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedNightModeOption" id="form-horizontal-select">
+                    <option *ngFor="let nightModeOption of nightModeOptions" [value]="nightModeOption.value">{{ nightModeOption.name }}</option>
+                  </select>
+                </div>
+              </div>
 
-                  <!--<div class="uk-inline uk-width-1-1">-->
-                    <!--<select class="uk-select" [(ngModel)]="selectedPrefix">-->
-                      <!--<option *ngFor="let prefix of prefixOptions" [value]="prefix.value">{{ prefix.name }}</option>-->
-                    <!--</select>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Identicons</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedIdenticonOption" id="form-horizontal-select">
+                    <option *ngFor="let identiconOption of identiconOptions" [value]="identiconOption.value">{{ identiconOption.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
         </div>
       </div>
