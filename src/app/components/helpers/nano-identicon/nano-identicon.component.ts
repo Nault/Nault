@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core';
 import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
 
 @Component({
@@ -6,7 +6,7 @@ import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
   templateUrl: './nano-identicon.component.html',
   styleUrls: ['./nano-identicon.component.css'],
 })
-export class NanoIdenticonComponent implements OnChanges {
+export class NanoIdenticonComponent implements OnChanges, AfterViewInit {
 
   @Input() accountID: string;
   @Input() scale: number;
