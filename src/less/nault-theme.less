@@ -412,7 +412,7 @@ input[type=number] {
 .accounts-list {
 	.nano-identicon {
 		width: 54px;
-		margin-right: 20px;
+		margin-right: 25px;
 
 		.canvas-container canvas {
 			border-radius: 3px;
@@ -431,6 +431,10 @@ input[type=number] {
 	}
 
 	@media (max-width: 599px) {
+		.nano-identicon {
+			margin-right: 20px;
+		}
+
 		.nano-address-clickable > .uk-flex {
 			flex-wrap: wrap;
 			width: 125px;
@@ -442,6 +446,13 @@ input[type=number] {
 			.nano-address-suffix {
 				margin-left: 69px; // Nice
 			}
+		}
+
+		.account-amounts-column .account-amounts-primary .incoming-label {
+			font-size: 10px;
+			padding: 2px 8px;
+			margin-right: 6px;
+			margin-bottom: 4px;
 		}
 
 		.account-amounts-column .account-amounts-primary .amount-integer,
@@ -458,6 +469,24 @@ input[type=number] {
 		.account-amounts-converted {
 			font-size: 13px;
 			margin-top: 10px;
+		}
+	}
+}
+
+// Account Details header
+.account-details-header {
+	.nano-identicon {
+		width: 96px;
+		margin-right: -5px;
+
+		.canvas-container canvas {
+			border-radius: 6px;
+		}
+	}
+
+	@media (max-width: 599px) {
+		.nano-identicon {
+			flex-basis: 100%;
 		}
 	}
 }
@@ -484,6 +513,17 @@ input[type=number] {
 			margin-bottom: 6px;
 		}
 
+		.nano-identicon {
+			display: inline-block;
+			width: 27px;
+			margin-right: 11px;
+			margin-left: 1px;
+
+			.canvas-container canvas {
+				border-radius: 1px;
+			}
+		}
+
 		.account-label-placeholder {
 			height: 32px;
 			width: 1px;
@@ -493,6 +533,7 @@ input[type=number] {
 
 		.nano-address-clickable {
 			flex-shrink: 0;
+			margin-top: 2px;
 		}
 
 		.block-hash {
@@ -507,7 +548,7 @@ input[type=number] {
 		}
 
 		.arrow-down {
-			margin: 3px 0 14px -2px;
+			margin: 3px 0 15px -2px;
 		}
 	}
 

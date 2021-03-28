@@ -89,6 +89,7 @@
               <div uk-grid class="uk-flex-nowrap">
                 <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + pending.source" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
+                    <app-nano-identicon scale="6" [accountID]="pending.source" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                     <span class="account-label-placeholder"></span><span class="account-label" *ngIf="pending.sourceAddressBookName">{{ pending.sourceAddressBookName }}</span><br>
                     <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
                       <app-nano-account-id [accountID]="pending.source" middle="auto"></app-nano-account-id>
@@ -109,6 +110,7 @@
                 <div uk-grid class="uk-flex-nowrap">
                   <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                     <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
+                      <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                       <span class="account-label-placeholder"></span><span class="account-label" *ngIf="pending.accountAddressBookName">{{ pending.accountAddressBookName }}</span><br>
                       <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
                         <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>

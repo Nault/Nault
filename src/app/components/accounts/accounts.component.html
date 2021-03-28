@@ -45,7 +45,7 @@
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-flex">
-                  <app-nano-identicon [accountID]="account.id" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                  <app-nano-identicon scale="12" [accountID]="account.id" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                   <div class="uk-width-expand">
                     <div class="uk-width-1-1">
                       <div class="account-index" *ngIf="viewAdvanced"><span>#</span>{{ account.index }}</div>

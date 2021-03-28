@@ -9,6 +9,7 @@ import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
 export class NanoIdenticonComponent implements OnChanges {
 
   @Input() accountID: string;
+  @Input() scale: number;
   @Input() settingIdenticonsStyle: string;
 
   renderedIdenticon = '';
@@ -38,7 +39,7 @@ export class NanoIdenticonComponent implements OnChanges {
 
     const canvas = createIcon({
       seed: this.accountID,
-      scale: 12,
+      scale: this.scale,
     });
 
     const canvasContainerNative = this.canvasContainer.nativeElement;
