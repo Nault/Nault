@@ -151,10 +151,15 @@
 
         <div class="advanced-options" *ngIf="showAdvancedOptions">
           <div class="advanced-option" *ngIf="(account.confirmation_height != null) && (account.block_count != null) && (account.block_count > 0)">
-            Confirmed Blocks: {{ account.confirmation_height | number:'':'en-US' }} / {{ account.block_count | number:'':'en-US' }}
-            <span class="uk-text-small text-half-muted uk-margin-small-left">
-              {{ ( (account.confirmation_height / account.block_count) * 100 ) | number:'1.0-2' }}%
-            </span>
+            <div>
+              <div>Confirmed Blocks:</div>
+              <div>
+                {{ account.confirmation_height | number:'':'en-US' }} / {{ account.block_count | number:'':'en-US' }}
+              </div>
+              <div class="uk-text-small text-half-muted">
+                {{ ( (account.confirmation_height / account.block_count) * 100 ) | number:'1.0-2' }}%
+              </div>
+            </div>
           </div>
           <div class="advanced-option">
             <div>Enable Remote Signing</div>
