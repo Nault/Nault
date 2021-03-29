@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
     // Notify user if service worker update is available
     this.updates.available.subscribe((event) => {
       this.notifications.sendInfo(
-        'An update was downloaded in the background and will be applied the next time Nault opens. <a href="#" (click)="applySwUpdate()">Apply immediately</a>', 
+        'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
         { length: 10000 }
       );
     });
@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
     // Notify user after service worker was updated
     this.updates.activated.subscribe((event) => {
       this.notifications.sendSuccess('Nault was updated successfully.');
-    })
+    });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
