@@ -26,7 +26,7 @@
       <table class="accounts-list uk-table uk-table-striped uk-table-small">
         <thead>
         <tr>
-          <th scope="col" class="uk-width-3-5@m uk-width-1-2">
+          <th scope="col" class="account-column uk-width-3-5@m uk-width-1-2" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
             Account
           </th>
           <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
-          <td class="uk-visible-toggle uk-text-truncate">
+          <td class="account-column uk-visible-toggle uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
                 <div class="uk-flex">
