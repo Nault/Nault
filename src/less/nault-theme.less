@@ -398,6 +398,10 @@ input[type=number] {
 	color: #D5AF4E;
 }
 
+.natricon-placeholder > img {
+	opacity: 0.2;
+}
+
 // Unlock Wallet modal
 .password-input.uk-form-danger {
 	border-color: #F79743;
@@ -406,6 +410,91 @@ input[type=number] {
 
 .password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 	color: #F79743;
+}
+
+// Accounts list
+.accounts-list {
+	.nano-identicon {
+		width: 54px;
+		height: 54px;
+		margin-right: 25px;
+
+		.canvas-container canvas {
+			border-radius: 3px;
+		}
+	}
+
+	.nano-address-clickable {
+		margin-top: 2px;
+	}
+
+	.account-amounts-column .account-amounts-primary .amount-integer,
+	.account-amounts-column .account-amounts-primary .amount-fractional,
+	.account-amounts-column .account-amounts-primary .currency-name {
+		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+		font-size: 16px;
+	}
+
+	@media (max-width: 599px) {
+		.nano-identicon {
+			margin-right: 20px;
+		}
+
+		.nano-address-clickable > .uk-flex {
+			flex-wrap: wrap;
+			width: 125px;
+
+			.nano-address-middle {
+				width: 0;
+			}
+
+			.nano-address-suffix {
+				margin-left: 69px; // Nice
+			}
+		}
+
+		.account-amounts-column .account-amounts-primary .incoming-label {
+			font-size: 10px;
+			padding: 2px 8px;
+			margin-right: 6px;
+			margin-bottom: 4px;
+		}
+
+		.account-amounts-column .account-amounts-primary .amount-integer,
+		.account-amounts-column .account-amounts-primary .amount-fractional,
+		.account-amounts-column .account-amounts-primary .currency-name {
+			font-size: 13px;
+		}
+
+		.account-amounts-column .account-amounts-primary .currency-name {
+			display: block;
+			margin-top: -2px;
+		}
+
+		.account-amounts-converted {
+			font-size: 13px;
+			margin-top: 10px;
+		}
+	}
+}
+
+// Account Details header
+.account-details-header {
+	.nano-identicon {
+		width: 96px;
+		height: 96px;
+		margin-right: -5px;
+
+		.canvas-container canvas {
+			border-radius: 6px;
+		}
+	}
+
+	@media (max-width: 599px) {
+		.nano-identicon {
+			flex-basis: 100%;
+		}
+	}
 }
 
 // Transactions list
@@ -430,6 +519,18 @@ input[type=number] {
 			margin-bottom: 6px;
 		}
 
+		.nano-identicon {
+			display: inline-block;
+			width: 27px;
+			height: 27px;
+			margin-right: 11px;
+			margin-left: 1px;
+
+			.canvas-container canvas {
+				border-radius: 3px;
+			}
+		}
+
 		.account-label-placeholder {
 			height: 32px;
 			width: 1px;
@@ -439,6 +540,7 @@ input[type=number] {
 
 		.nano-address-clickable {
 			flex-shrink: 0;
+			margin-top: 2px;
 		}
 
 		.block-hash {
@@ -453,7 +555,7 @@ input[type=number] {
 		}
 
 		.arrow-down {
-			margin: 3px 0 14px -2px;
+			margin: 3px 0 15px -2px;
 		}
 	}
 

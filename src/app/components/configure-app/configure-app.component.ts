@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {AppSettingsService} from '../../services/app-settings.service';
@@ -37,6 +37,7 @@ export class ConfigureAppComponent implements OnInit {
     private util: UtilService,
     private price: PriceService,
     private ninja: NinjaService,
+    private renderer: Renderer2,
     private qrModalService: QrModalService) { }
   wallet = this.walletService.wallet;
 
@@ -90,6 +91,19 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'ZAR - South African Rand', value: 'ZAR' },
   ];
   selectedCurrency = this.currencies[0].value;
+
+  nightModeOptions = [
+    { name: 'Enabled', value: 'enabled' },
+    { name: 'Disabled', value: 'disabled' },
+  ];
+  selectedNightModeOption = this.nightModeOptions[0].value;
+
+  identiconOptions = [
+    { name: 'None', value: 'none' },
+    { name: 'Nanoidenticons (by keerifox)', value: 'nanoidenticons' },
+    { name: 'Natricon (by Appditto)', value: 'natricon' },
+  ];
+  selectedIdenticonOption = this.identiconOptions[0].value;
 
   inactivityOptions = [
     { name: 'Never', value: 0 },
@@ -237,6 +251,13 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
+    const nightModeOptionString = (settings.lightModeEnabled === true) ? 'disabled' : 'enabled';
+    const matchingNightModeOption = this.nightModeOptions.find(d => d.value === nightModeOptionString);
+    this.selectedNightModeOption = matchingNightModeOption.value || this.nightModeOptions[0].value;
+
+    const matchingIdenticonOptions = this.identiconOptions.find(d => d.value === settings.identiconsStyle);
+    this.selectedIdenticonOption = matchingIdenticonOptions.value || this.identiconOptions[0].value;
+
     const matchingStorage = this.storageOptions.find(d => d.value === settings.walletStore);
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
@@ -269,6 +290,18 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   async updateDisplaySettings() {
+    if (this.selectedNightModeOption === 'disabled') {
+      this.renderer.addClass(document.body, 'light-mode');
+      this.renderer.removeClass(document.body, 'dark-mode');
+      this.appSettings.setAppSetting('lightModeEnabled', true);
+    } else {
+      this.renderer.addClass(document.body, 'dark-mode');
+      this.renderer.removeClass(document.body, 'light-mode');
+      this.appSettings.setAppSetting('lightModeEnabled', false);
+    }
+
+    this.appSettings.setAppSetting('identiconsStyle', this.selectedIdenticonOption);
+
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
