@@ -1,3 +1,9 @@
 img.natricon {
 	transform: scale(1.5) translateY(4%);
 }
+
+.natricon-placeholder > img {
+	width: 90%;
+	height: 90%;
+	margin: 5%;
+}

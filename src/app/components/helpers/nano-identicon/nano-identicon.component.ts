@@ -13,6 +13,7 @@ export class NanoIdenticonComponent implements OnChanges, AfterViewInit {
   @Input() settingIdenticonsStyle: string;
 
   renderedIdenticon = '';
+  imageLoadErrorOccurred = false;
 
   constructor() { }
 
