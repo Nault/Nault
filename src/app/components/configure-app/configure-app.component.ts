@@ -138,8 +138,8 @@ export class ConfigureAppComponent implements OnInit {
   selectedMultiplierOption: number = this.multiplierOptions[0].value;
 
   pendingOptions = [
-    { name: 'Largest Amount First', value: 'amount' },
-    { name: 'Oldest Transaction First', value: 'date' },
+    { name: 'Automatic - Largest Amount First', value: 'amount' },
+    { name: 'Automatic - Oldest Transaction First', value: 'date' },
     { name: 'Manual', value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
