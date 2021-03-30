@@ -279,7 +279,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       let pendingBalance = '0';
       let pending;
 
-
       this.pendingBlocks = [];
       this.loadingIncomingTxList = true;
       if (this.settings.settings.minimumReceive) {
