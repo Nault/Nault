@@ -60,8 +60,13 @@
     bottom: 3px;
 }
 
-.refresh-disabled {
-    color: #bbb;
+.icon-transactions-refresh.spinner {
+    margin-left: 3px;
+    margin-right: 2px;
+}
+
+.icon-transactions-refresh.disabled {
+    cursor: default;
 }
 
 .incoming-label {

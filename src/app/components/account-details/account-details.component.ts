@@ -40,9 +40,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   walletAccount = null;
 
+  timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
 
   loadingAccountDetails = false;
+  loadingIncomingTxList = false;
+  loadingTxList = false;
   showAdvancedOptions = false;
   showEditAddressBook = false;
   addressBookModel = '';
@@ -241,14 +244,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async loadAccountDetails(refresh= false) {
     if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
-    setTimeout(() => this.statsRefreshEnabled = true, 5000);
+
+    if (this.timeoutIdAllowingRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingRefresh);
+    }
+    this.timeoutIdAllowingRefresh = setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
     this.pendingBlocks = [];
 
-    if (this.accountID !== this.router.snapshot.params.account) {
+    // if (this.accountID !== this.router.snapshot.params.account) {
       this.clearAccountVars();
       this.loadingAccountDetails = true;
-    }
+    // }
 
     this.accountID = this.router.snapshot.params.account;
     this.generateReceiveQR(this.accountID);
@@ -272,12 +279,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       let pendingBalance = '0';
       let pending;
 
+
+      this.pendingBlocks = [];
+      this.loadingIncomingTxList = true;
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
         pending = await this.api.pendingLimitSorted(this.accountID, 50, minAmount.toString(10));
       } else {
         pending = await this.api.pendingSorted(this.accountID, 50);
       }
+      this.loadingIncomingTxList = false;
 
       if (pending && pending.blocks) {
         for (const block in pending.blocks) {
@@ -335,8 +346,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async getAccountHistory(account, resetPage = true) {
     if (resetPage) {
+      this.accountHistory = [];
       this.pageSize = 25;
     }
+
+    this.loadingTxList = true;
+
     const history = await this.api.accountHistory(account, this.pageSize, true);
     const additionalBlocksInfo = [];
 
@@ -397,6 +412,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.accountHistory = [];
     }
+
+    this.loadingTxList = false;
   }
 
   async loadMore() {
