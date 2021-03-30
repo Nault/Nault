@@ -355,7 +355,10 @@
           </tr>
           <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
             <td colspan="4" class="more-results">
-              <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
+              <a (click)="loadMore()" class="uk-link-text">
+                Show More<br>
+                <div class="chevron chevron-down"></div>
+              </a>
             </td>
           </tr>
         </ng-template>

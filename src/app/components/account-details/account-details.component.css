@@ -206,6 +206,13 @@
     margin-top: -1px;
 }
 
+.more-results > a {
+    display: block;
+}
+.more-results > a > .chevron {
+    margin: 0 40px -4px 40px;
+}
+
 .form-input-destination {
     max-width: 800px;
 }
