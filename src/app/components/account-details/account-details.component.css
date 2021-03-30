@@ -60,15 +60,6 @@
     bottom: 3px;
 }
 
-.icon-transactions-refresh.spinner {
-    margin-left: 3px;
-    margin-right: 2px;
-}
-
-.icon-transactions-refresh.disabled {
-    cursor: default;
-}
-
 .incoming-label {
     display: inline-block;
     background: #4a90e2;

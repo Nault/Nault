@@ -65,7 +65,16 @@
     <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
       <h3 class="uk-margin-remove-bottom">Incoming Transactions</h3>
       <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
-        <li><a uk-icon="icon: refresh;" (click)="getPending()" uk-tooltip title="Reload incoming transactions from the network"></a></li>
+        <li>
+          <div
+            uk-spinner="ratio: 0.5;"
+            class="icon-transactions-refresh spinner"
+            *ngIf="loadingIncomingTxList else notUpdatingTxList"
+          ></div>
+          <ng-template #notUpdatingTxList>
+            <a uk-icon="icon: refresh;" class="icon-transactions-refresh" (click)="getPending()" uk-tooltip title="Reload incoming transactions from the network"></a>
+          </ng-template>
+        </li>
       </ul>
     </div>
 
