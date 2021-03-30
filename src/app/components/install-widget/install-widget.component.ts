@@ -15,26 +15,24 @@ export class InstallWidgetComponent implements OnInit {
 
   installEvent: InstallEvent;
   showInstallPromotion = false;
-  promotablePlatforms = ['Windows', 'Android', 'iOS', 'iPadOS', 'Chrome OS'];
+  platform = this.getPlatform();
+  promotablePlatforms = ['Android', 'iOS', 'iPadOS', 'Chrome OS'];
 
   constructor(
     private notifications: NotificationService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (!this.isPromotable()) {
       return;
     }
 
     // Show clickable installation banner (Chrome / Edge only)
-    window.addEventListener('beforeinstallprompt', (e: InstallEvent) => {
+    window.addEventListener('beforeinstallprompt', (event: InstallEvent) => {
       // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
+      event.preventDefault();
 
-      // Keep event for later
-      this.installEvent = e;
-
-      // Show promotion
+      this.installEvent = event;
       this.showInstallPromotion = true;
     });
 
@@ -89,19 +87,19 @@ export class InstallWidgetComponent implements OnInit {
     if (!this.isPromotable() || this.isInstalled()) {
       return false;
     }
-    const platform = this.getPlatform();
-    return (platform === 'iOS' || platform === 'iPadOS') && (window.navigator.userAgent.includes('Version'));
+    return this.platform === 'iOS' || this.platform === 'iPadOS' && 'standalone' in window.navigator;
   }
 
   isPromotable() {
     if (this.isInstalled()) {
       return false;
     }
-    const platform = this.getPlatform();
-    return this.promotablePlatforms.includes(platform);
+    return this.promotablePlatforms.includes(this.platform);
   }
 
   isInstalled() {
-    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.userAgent.includes('Electron');
+    return window.matchMedia('(display-mode: standalone)').matches // Chrome & Edge
+      || (window.navigator as any).standalone === true // Safari
+      || window.navigator.userAgent.includes('Electron'); // Electron
   }
 }
