@@ -60,10 +60,6 @@
     bottom: 3px;
 }
 
-.refresh-disabled {
-    color: #bbb;
-}
-
 .incoming-label {
     display: inline-block;
     background: #4a90e2;
@@ -208,6 +204,13 @@
 .advanced-option .uk-checkbox {
     margin-left: 12px;
     margin-top: -1px;
+}
+
+.more-results > a {
+    display: block;
+}
+.more-results > a > .chevron {
+    margin: 0 40px -4px 40px;
 }
 
 .form-input-destination {

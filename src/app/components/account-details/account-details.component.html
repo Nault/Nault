@@ -185,12 +185,28 @@
     <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
       <h3 class="uk-margin-remove-bottom">Transactions</h3>
       <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
-        <li><a [class]="{ 'refresh-disabled': !statsRefreshEnabled }" uk-icon="icon: refresh;" (click)="loadAccountDetails(true)" uk-tooltip title="Reload the transaction history from the network."></a></li>
+        <li>
+          <div
+            uk-spinner="ratio: 0.5;"
+            class="icon-transactions-refresh spinner"
+            *ngIf="(loadingIncomingTxList || loadingTxList || loadingAccountDetails) else notUpdatingTxList"
+          ></div>
+          <ng-template #notUpdatingTxList>
+            <a
+              class="icon-transactions-refresh"
+              [class.disabled]="!statsRefreshEnabled"
+              [class.uk-text-muted]="!statsRefreshEnabled"
+              uk-icon="icon: refresh;"
+              title="Reload transaction history from the network"
+              uk-tooltip
+              (click)="loadAccountDetails(true)"
+            ></a>
+          </ng-template>
+        </li>
       </ul>
     </div>
 
     <div class="uk-overflow-hidden">
-
 
       <table class="transactions-list uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
         <thead>
@@ -202,6 +218,7 @@
         </tr>
         </thead>
         <tbody>
+
         <tr *ngFor="let pending of pendingBlocks" [class]="{ 'uk-text-muted': true, 'uk-hidden': pending.received }">
           <td class="type-column">
             <span class="type uk-text-small" uk-icon="icon: plus-circle; ratio: 1.2;"></span>
@@ -244,6 +261,11 @@
             <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
             <td class="date-column uk-text-middle uk-text-truncate" *ngIf="pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
           </ng-template>
+        </tr>
+
+        <!-- Don't show if "Loading transactions..." is already shown -->
+        <tr *ngIf="(loadingIncomingTxList && !loadingTxList && !loadingAccountDetails)">
+          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</td>
         </tr>
 
         <tr *ngFor="let history of accountHistory">
@@ -323,14 +345,23 @@
             </ng-container>
           </td>
         </tr>
-        <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
-          <td colspan="4" style="text-align: center;">No account history</td>
+
+        <tr *ngIf="(loadingIncomingTxList || loadingTxList || loadingAccountDetails) else notLoadingTransactions">
+          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading transactions...</td>
         </tr>
-        <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
-          <td colspan="4" class="more-results">
-            <a (click)="loadMore()" class="uk-link-text">Load More Results</a>
-          </td>
-        </tr>
+        <ng-template #notLoadingTransactions>
+          <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
+            <td colspan="4" style="text-align: center;">No transactions</td>
+          </tr>
+          <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
+            <td colspan="4" class="more-results">
+              <a (click)="loadMore()" class="uk-link-text">
+                Show More<br>
+                <div class="chevron chevron-down"></div>
+              </a>
+            </td>
+          </tr>
+        </ng-template>
         </tbody>
       </table>
     </div>
