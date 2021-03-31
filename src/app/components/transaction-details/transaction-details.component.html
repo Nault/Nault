@@ -68,20 +68,22 @@
       <div class="account-snippet-container" *ngIf="loadingBlock === false">
         <div class="account-snippet uk-text-truncate">
           <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
-            <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType !== 'change')">From Account</div>
-            <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType === 'change')">Account</div>
-            <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-              <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
-                <div class="identicon-address-book-row">
-                  <app-nano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                  <div class="account-label uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</div>
+            <div class="uk-card-header">
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType !== 'change')">From Account</div>
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType === 'change')">Account</div>
+              <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                  <div class="identicon-address-book-row">
+                    <app-nano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></div>
+                </a>
+                <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                  <ul class="uk-iconnav">
+                    <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  </ul>
                 </div>
-                <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></div>
-              </a>
-              <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
-                <ul class="uk-iconnav">
-                  <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                </ul>
               </div>
             </div>
           </div>
@@ -89,20 +91,22 @@
 
         <div class="account-snippet uk-text-truncate">
           <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
-            <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType != 'change')">To Account</div>
-            <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType == 'change')">New Representative</div>
-            <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-              <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
-                <div class="identicon-address-book-row">
-                  <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                  <div class="account-label uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</div>
+            <div class="uk-card-header">
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType != 'change')">To Account</div>
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType == 'change')">New Representative</div>
+              <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                  <div class="identicon-address-book-row">
+                    <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></div>
+                </a>
+                <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                  <ul class="uk-iconnav">
+                    <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  </ul>
                 </div>
-                <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></div>
-              </a>
-              <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
-                <ul class="uk-iconnav">
-                  <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                </ul>
               </div>
             </div>
           </div>

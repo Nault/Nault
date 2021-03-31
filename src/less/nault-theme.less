@@ -448,13 +448,22 @@ input[type=number] {
 	margin: 10px;
 
 	max-width: calc(50% - 20px);
-	@media (max-width: 599px) {
+
+	.force-one-per-row() {
 		max-width: unset;
 		flex-basis: 100%;
 	}
+	@media (max-width: 849px) {
+		.force-one-per-row();
+	}
+	@media (min-width: 940px) and (max-width: 1200px) {
+		.force-one-per-row();
+	}
 
 	> .uk-card {
-		padding: 10px 15px;
+		> .uk-card-header, > .uk-card-body {
+			padding: 10px 15px;
+		}
 
 		min-width: 235px;
 		&.identicons-enabled {
@@ -978,7 +987,7 @@ input[type=number] {
 	margin-bottom: @nlt-intro-margin;
 }
 
-@media (min-width: @breakpoint-xsmall-max) {
+@media (min-width: 960px) {
 	.nlt-button-group button {
 		margin-left: @global-margin;
 	}
