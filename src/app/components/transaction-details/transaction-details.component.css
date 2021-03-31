@@ -1,18 +1,59 @@
-.confirm-title {
-  /*display: block;*/
-  font-size: 24px;
+.block-amount-primary {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  line-height: 1;
 }
 
-.confirm-currency {
-  display: block;
-  font-size: 20px;
+.block-amount-primary > .amount-integer {
+  font-size: 32px;
+  font-weight: 700;
 }
 
-.confirm-subtitle {
-  display: block;
-  font-size: 10px;
+.block-amount-primary > .amount-fractional,
+.block-amount-primary > .currency-name {
+  font-size: 21px;
+}
+
+.block-amount-primary > .currency-name {
+  margin-left: 6px;
+}
+
+.icon-unconfirmed {
+  margin-left: 6px;
+  vertical-align: 2px;
 }
 
 .uk-form-label {
   margin-top: 2px;
+}
+
+.block-hash-actions {
+  flex-shrink: 0;
+  margin-top: 2px !important;
+  padding-left: 10px;
+}
+
+.block-signature {
+  max-width: 654px;
+  padding-right: 5px;
+  word-break: break-all;
+}
+
+.block-balance .balance-amount-primary .amount-integer,
+.block-balance .balance-amount-primary .amount-fractional,
+.block-balance .balance-amount-primary .currency-name {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.block-balance .balance-amount-primary .amount-integer {
+  font-weight: 700;
+}
+
+.block-balance .balance-amount-primary .amount-fractional {
+  font-weight: 500;
+}
+
+.block-balance .balance-amount-primary .currency-name {
+  font-weight: 400;
+  margin-left: 5px;
 }

@@ -407,4 +407,9 @@ export class SendComponent implements OnInit {
     );
   }
 
+  copied() {
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+  }
+
 }

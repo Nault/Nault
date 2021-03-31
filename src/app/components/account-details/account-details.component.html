@@ -240,7 +240,7 @@
                 </ul>
               </div>
             </div>
-            <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
+            <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
           </td>
           <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
             <span class="uk-text-small">Ready to receive</span><br>
@@ -291,7 +291,7 @@
                 </ul>
               </div>
             </div>
-            <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
+            <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
           </td>
           <td [ngClass]="{
             'amount-column': true,

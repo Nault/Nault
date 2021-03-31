@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
+import {NotificationService} from '../../services/notification.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
@@ -17,6 +18,7 @@ export class TransactionDetailsComponent implements OnInit {
   transaction: any = {};
   hashID = '';
   blockType = '';
+  loadingBlock = false;
   isStateBlock = true;
   isUnconfirmedBlock = false;
   blockHeight = -1;
@@ -31,11 +33,13 @@ export class TransactionDetailsComponent implements OnInit {
 
   amountRaw = new BigNumber(0);
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private addressBook: AddressBookService,
-              private api: ApiService,
-              public settings: AppSettingsService
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private addressBook: AddressBookService,
+    private api: ApiService,
+    private notifications: NotificationService,
+    public settings: AppSettingsService
   ) { }
 
   async ngOnInit() {
@@ -63,11 +67,16 @@ export class TransactionDetailsComponent implements OnInit {
     this.amountRaw = new BigNumber(0);
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
+
+    this.loadingBlock = true;
     const blockData = await this.api.blocksInfo([hash]);
-    if (!blockData || blockData.error || !blockData.blocks[hash]) {
+
+    if ( !blockData || blockData.error || !blockData.blocks[hash] ) {
+      this.loadingBlock = false;
       this.transaction = null;
       return;
     }
+
     const hashData = blockData.blocks[hash];
     const hashContents = JSON.parse(hashData.contents);
     hashData.contents = hashContents;
@@ -108,6 +117,7 @@ export class TransactionDetailsComponent implements OnInit {
       this.blockType = blockType;
       this.isStateBlock = false;
     }
+
     if (hashData.amount) {
       this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
     }
@@ -142,6 +152,7 @@ export class TransactionDetailsComponent implements OnInit {
     this.fromAddressBook = this.addressBook.getAccountName(fromAccount);
     this.toAddressBook = this.addressBook.getAccountName(toAccount);
 
+    this.loadingBlock = false;
   }
 
   getBalanceFromHex(balance) {
@@ -150,6 +161,11 @@ export class TransactionDetailsComponent implements OnInit {
 
   getBalanceFromDec(balance) {
     return new BigNumber(balance, 10);
+  }
+
+  copied() {
+    this.notifications.removeNotification('success-copied');
+    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
 }
