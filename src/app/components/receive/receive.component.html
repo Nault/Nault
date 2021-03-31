@@ -111,7 +111,7 @@
                   </ul>
                 </div>
               </div>
-              <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
+              <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
               <ng-container *ngIf="(pendingAccountModel === '0')">
                 <div class="arrow-down">
                   <div class="icon" uk-icon="icon: chevron-down; ratio: 1.2;"></div>
