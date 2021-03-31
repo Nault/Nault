@@ -297,7 +297,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             amount: pending.blocks[block].amount,
             amountRaw: new BigNumber( pending.blocks[block].amount || 0 ).mod(this.nano),
             local_timestamp: pending.blocks[block].local_timestamp,
-            addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
+            addressBookName: (
+                this.addressBook.getAccountName( pending.blocks[block].source )
+              || this.getAccountLabel( pending.blocks[block].source, null )
+            ),
             hash: block,
             loading: false,
             received: false,
@@ -327,6 +330,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     await this.getAccountHistory(this.accountID);
 
     this.loadingAccountDetails = false;
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.wallet.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   ngOnDestroy() {
@@ -368,13 +381,22 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             additionalBlocksInfo.push({ hash: h.hash, link: h.link });
           } else if (h.subtype === 'change') {
             h.link_as_account = h.representative;
-            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           } else {
             h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
-            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           }
         } else {
-          h.addressBookName = this.addressBook.getAccountName(h.account) || null;
+          h.addressBookName = (
+              this.addressBook.getAccountName(h.account)
+            || this.getAccountLabel(h.account, null)
+          );
         }
 
         if (
@@ -404,7 +426,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           const blockData = blocksInfo.blocks[block];
 
           accountHistoryBlock.link_as_account = blockData.block_account;
-          accountHistoryBlock.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
+          accountHistoryBlock.addressBookName = (
+              this.addressBook.getAccountName(blockData.block_account)
+            || this.getAccountLabel(blockData.block_account, null)
+          );
         }
       }
 
@@ -560,7 +585,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
-    this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
+    this.addressBookMatch = (
+        this.addressBook.getAccountName(this.toAccountID)
+      || this.getAccountLabel(this.toAccountID, null)
+    );
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     this.toAccountStatus = null;
