@@ -202,7 +202,11 @@ export class SendComponent implements OnInit {
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
-    this.addressBookMatch = this.addressBookService.getAccountName(this.toAccountID);
+    this.addressBookMatch = (
+        this.addressBookService.getAccountName(this.toAccountID)
+      || this.getAccountLabel(this.toAccountID, null)
+    );
+
     if (!this.addressBookMatch && this.toAccountID === environment.donationAddress) {
       this.addressBookMatch = 'Nault Donations';
     }
@@ -222,6 +226,16 @@ export class SendComponent implements OnInit {
     } else {
       this.toAccountStatus = 0;
     }
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   validateAmount() {
@@ -303,9 +317,17 @@ export class SendComponent implements OnInit {
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
+    this.fromAddressBook = (
+        this.addressBookService.getAccountName(this.fromAccountID)
+      || this.getAccountLabel(this.fromAccountID, 'Account')
+    );
+
+    this.toAddressBook = (
+        this.addressBookService.getAccountName(destinationID)
+      || this.getAccountLabel(destinationID, null)
+    );
+
     // Start precomputing the work...
-    this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
-    this.toAddressBook = this.addressBookService.getAccountName(destinationID);
     this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
