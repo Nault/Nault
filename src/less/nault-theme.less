@@ -117,6 +117,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	color: #81809f;
 }
 
+.text-rep-change {
+	color: #A478E3;
+}
+
 a.fiat-currency-ticker {
 	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 	color: #81809f !important;
@@ -315,6 +319,10 @@ input[type=number] {
 	font-family: 'Roboto Mono', monospace;
 }
 
+.block-hash-monospace {
+	font-family: 'Roboto Mono', monospace;
+}
+
 .nano-address-clickable {
 	display: inline-block;
 	border-bottom: 2px solid transparent;
@@ -328,6 +336,22 @@ input[type=number] {
 
 	&:hover {
 		.nano-address-clickable-hover-styles();
+	}
+}
+
+.block-hash-clickable {
+	text-decoration: none;
+	display: inline-block;
+	border-bottom: 2px solid transparent;
+	transition: border-color 100ms ease-in-out;
+
+	&, &:hover {
+		color: @global-primary-background;
+		text-decoration: none;
+	}
+
+	&:hover {
+		border-color: currentcolor;
 	}
 }
 
@@ -410,6 +434,91 @@ input[type=number] {
 
 .password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 	color: #F79743;
+}
+
+// Account Snippet (used for operations to/from)
+.account-snippet-container {
+	margin: -10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.account-snippet {
+	flex: 1;
+	margin: 10px;
+
+	max-width: calc(50% - 20px);
+	@media (max-width: 599px) {
+		max-width: unset;
+		flex-basis: 100%;
+	}
+
+	> .uk-card {
+		padding: 10px 15px;
+
+		min-width: 235px;
+		&.identicons-enabled {
+			min-width: 305px;
+		}
+	}
+
+	.snippet-caption {
+		margin-bottom: 15px;
+	}
+
+	.account-container {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		.nano-identicon {
+			display: inline-block;
+			width: 54px;
+			height: 54px;
+			margin-right: 20px;
+			margin-left: 1px;
+
+			.canvas-container canvas {
+				border-radius: 3px;
+			}
+		}
+
+		.identicon-address-book-row {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			min-height: 55px;
+		}
+
+		.account-label {
+			padding: 15px 12px;
+		}
+
+		.nano-address-clickable {
+			margin-top: 10px;
+		}
+	}
+
+	.snippet-address-actions {
+		margin-bottom: 5px !important;
+		flex-shrink: 0;
+		padding-left: 10px;
+	}
+
+	@media (max-width: 349px) {
+		.nano-address-clickable > .uk-flex {
+			flex-wrap: wrap;
+			width: 125px;
+
+			.nano-address-middle {
+				width: 0;
+			}
+
+			.nano-address-suffix {
+				margin-left: 69px; // Nice
+			}
+		}
+	}
 }
 
 // Accounts list
