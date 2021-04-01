@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
+import {WalletService} from '../../services/wallet.service';
 import {ApiService} from '../../services/api.service';
 import {NotificationService} from '../../services/notification.service';
 import {AppSettingsService} from '../../services/app-settings.service';
@@ -34,6 +35,7 @@ export class TransactionDetailsComponent implements OnInit {
   amountRaw = new BigNumber(0);
 
   constructor(
+    private walletService: WalletService,
     private route: ActivatedRoute,
     private router: Router,
     private addressBook: AddressBookService,
@@ -149,10 +151,27 @@ export class TransactionDetailsComponent implements OnInit {
     this.toAccountID = toAccount;
     this.fromAccountID = fromAccount;
 
-    this.fromAddressBook = this.addressBook.getAccountName(fromAccount);
-    this.toAddressBook = this.addressBook.getAccountName(toAccount);
+    this.fromAddressBook = (
+        this.addressBook.getAccountName(fromAccount)
+      || this.getAccountLabel(fromAccount, null)
+    );
+
+    this.toAddressBook = (
+        this.addressBook.getAccountName(toAccount)
+      || this.getAccountLabel(toAccount, null)
+    );
 
     this.loadingBlock = false;
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   getBalanceFromHex(balance) {

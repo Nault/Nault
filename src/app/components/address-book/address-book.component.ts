@@ -72,7 +72,13 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
   }
 
   async saveNewAddress() {
-    if (!this.newAddressAccount || !this.newAddressName) return this.notificationService.sendError(`Account and name are required`);
+    if (!this.newAddressAccount || !this.newAddressName) {
+      return this.notificationService.sendError(`Account and name are required`);
+    }
+
+    if ( /^Account #\d+$/g.test(this.newAddressName) === true ) {
+      return this.notificationService.sendError(`This name is reserved for wallet accounts without a label`);
+    }
 
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, ''); // Remove spaces
 
