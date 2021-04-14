@@ -5,7 +5,7 @@
     <div uk-grid class="uk-animation-slide-left-small">
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
-          <div class="uk-card-body">
+          <div class="uk-card-header uk-form-horizontal">
             <p><strong>An extremely secure way of transacting on the Nano network without exposing your private keys to the Internet, ensuring only non-sensitive data is transferred between devices.</strong>
             <br>
             A full security and user guide is found <a href="https://docs.nault.cc/2020/08/05/security-of-nano.html#transact-using-a-remote-signing-procedure">here</a>.
@@ -20,15 +20,16 @@
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (keyup)="validateDestination()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_abc..123" autocomplete="off">
+                    <input (keyup)="validateDestination()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
                   </div>
                 </div>
               </div>
             </div>
             <div class="uk-inline uk-width-1-1">
-              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="start()">CREATE</button>
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="start()">CREATE</button>
             </div>
-
+          </div>
+          <div class="uk-card-header uk-form-horizontal">
             <h4>STEP 2 - Sign Block (Offline Device)</h4>
             <p><a routerLink="/qr-scan" routerLinkActive="active">Scan the unsigned QR code</a> from Step 1 <strong>OR</strong> paste the block below. Sign it using a key owning the account from step 1.<br>
             Nault can optionally be set in Offline Mode from the <a routerLink="/configure-app" routerLinkActive="active">Server Configuration</a> to avoid network notifications.</p>
@@ -44,9 +45,10 @@
               </div>
             </div>
             <div class="uk-inline uk-width-1-1">
-              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="navigateBlock(unsignedBlock)">SIGN</button>
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="navigateBlock(unsignedBlock)">SIGN</button>
             </div>
-
+          </div>
+          <div class="uk-card-header uk-form-horizontal">
             <h4>STEP 3 - Process Block (Online Device)</h4>
             <p><a routerLink="/qr-scan" routerLinkActive="active">Scan the signed QR code</a> from Step 2 <strong>OR</strong> paste the block below. Confirm and send it to the live network!</p>
 
@@ -61,7 +63,7 @@
               </div>
             </div>
             <div class="uk-inline uk-width-1-1">
-              <button class="uk-button uk-button-primary uk-width-1-6@m uk-width-1-1" (click)="navigateBlock(signedBlock)">PROCESS</button>
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="navigateBlock(signedBlock)">PROCESS</button>
             </div>
           </div>
         </div>
