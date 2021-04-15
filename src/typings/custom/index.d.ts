@@ -4,3 +4,7 @@ declare module "worker-loader!*" {
   }
   export default WebpackWorker;
 }
+declare module "*.b64" {
+  const importedWasm: string;
+  export default importedWasm;
+}

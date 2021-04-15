@@ -1,0 +1,103 @@
+<div uk-grid>
+  <div class="uk-width-1-1">
+    <h2>Multi Signature</h2>
+
+    <div uk-grid class="uk-animation-slide-left-small">
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header uk-form-horizontal">
+            <p><strong>Multisig is an alternative way of storing and transacting Nano by having multiple private keys bound to a single account. The keys can be owned my multiple users.</strong>
+            <br>
+            A full user guide is found <a href="https://docs.nault.cc/2021/04/14/multisig.html">here</a>.
+            </p>
+
+            <h4>Create a Multisig Account</h4>
+            <p>Add 2 or more regular Nano accounts to form a new multisig account.<br>
+            Each account MUST have a known corresponding private key (or seed) or your Nano will be locked.</p>
+            
+            <p> This multisig is "m of m", meaning all keys must be available. Losing one key will invalidate the account.</p>
+            <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
+              MORE INFO
+              <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
+            </div>
+            <div *ngIf="showAdvancedOptions">
+              <p>To simulate "m of n" for 3 participants the following sharing scheme can be used:</p>
+              <ul>
+                <li>User 1 genererates key A and B. Shares key A with user 2 and key B with user 3.</li>
+                <li>User 2 genererates key C and shares it with user 3.</li>
+                <li>User 1 will own A and B. User 2 will own A and C. User 3 will own B and C.</li>
+              </ul>
+              <p>By doing this you ensure no single user can take the funds but also ensure that one user can lose both their keys and still allow full recover among the remaining two.</p>
+            </div>
+
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Participating Account <span uk-icon="icon: info;" uk-tooltip title="Account to participate in the multisig account. Hit + or enter to add"></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <a class="uk-form-icon uk-form-icon-flip second-icon" uk-icon="icon: plus" (click)="addAccount()" uk-tooltip title="Add account"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('accountAdd','account')" uk-tooltip title="Scan from QR code"></a>
+                    <input (keyup)="validateAccountAdd()" (keyup.enter)="addAccount()" [(ngModel)]="accountAdd" class="uk-input" [ngClass]="{ 'uk-form-danger': accountAddStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Stored Accounts <span uk-icon="icon: info;" uk-tooltip title="Accounts to participate in the multisig account"></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <textarea class="uk-input uk-margin-small-bottom data-text-box" [(ngModel)]="inputAccountData" rows="3" disabled placeholder=""></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="generateMultisig()">GENERATE ACCOUNT</button>
+            </div>
+          </div>
+        </div>
+        <div class="uk-card uk-card-default" style="margin-top: 20px;">
+          <div class="uk-card-header uk-form-horizontal">
+            <h4>Sign Transaction: Prepare</h4>
+            <p>Create a SEND, RECEIVE or CHANGE block. No login is needed.</p>
+            
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Multisig Account</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('multisig','account')" uk-tooltip title="Scan from QR code"></a>
+                    <a *ngIf="multisigAccount !== ''" class="uk-form-icon uk-form-icon-flip second-icon" ngxClipboard [cbContent]="multisigAccount" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account" uk-tooltip></a>
+                    <input (keyup)="validateMultisig()" (keyup.enter)="navigateAccount()" [(ngModel)]="multisigAccount" class="uk-input" [ngClass]="{ 'uk-form-success': multisigAccountStatus === 1, 'uk-form-danger': multisigAccountStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="navigateAccount()">CREATE BLOCK</button>
+            </div>
+          </div>
+          <div class="uk-card-header uk-form-horizontal">
+            <h4>Sign Transaction: Participant(s)</h4>
+            <p>Use the data that was shared with you to participate in the signing procedure.</p>
+            
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Signing Data</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (keyup)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <button class="uk-button uk-button-primary uk-width-1-4@l uk-width-1-1" (click)="navigateBlock(unsignedBlock)">SIGN</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

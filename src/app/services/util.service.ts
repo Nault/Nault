@@ -59,6 +59,7 @@ export class UtilService {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
+    getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
@@ -83,7 +84,8 @@ export class UtilService {
   };
   array = {
     shuffle: shuffle,
-    findWithAttr: findWithAttr
+    findWithAttr: findWithAttr,
+    equalArrays: equalArrays
   };
 
 }
@@ -280,6 +282,13 @@ function generateAccountSecretKeyBytes(seedBytes, accountIndex) {
   return newKey;
 }
 
+function getAccountChecksum(pubkey) {
+  const context = blake.blake2bInit(5);
+  blake.blake2bUpdate(context, pubkey);
+  const out = blake.blake2bFinal(context);
+  return out.reverse();
+}
+
 function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
@@ -330,7 +339,7 @@ function getAccountPublicKey(account) {
   const key_array = uint4ToUint8(key_uint4);
   const blake_hash = blake.blake2b(key_array, null, 5).reverse();
 
-  if (!equal_arrays(hash_uint4, uint8ToUint4(blake_hash))) throw new Error(`Incorrect checksum`);
+  if (!equalArrays(hash_uint4, uint8ToUint4(blake_hash))) throw new Error(`Incorrect checksum`);
 
   return uint4ToHex(key_uint4);
 }
@@ -457,7 +466,10 @@ function array_crop (array) {
   return cropped_array;
 }
 
-function equal_arrays (array1, array2) {
+function equalArrays (array1, array2) {
+  if (array1.length !== array2.length) {
+    return false;
+  }
   for (let i = 0; i < array1.length; i++) {
     if (array1[i] !== array2[i])	return false;
   }
@@ -513,6 +525,7 @@ const util = {
     getPublicAccountID: getPublicAccountID,
     generateSeedBytes: generateSeedBytes,
     getAccountPublicKey: getAccountPublicKey,
+    getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
     isValidNanoAmount: isValidNanoAmount,
@@ -537,6 +550,7 @@ const util = {
   },
   array: {
     shuffle: shuffle,
-    findWithAttr: findWithAttr
+    findWithAttr: findWithAttr,
+    equalArrays: equalArrays
   }
 };

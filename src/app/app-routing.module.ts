@@ -19,9 +19,9 @@ import {SignComponent} from './components/sign/sign.component';
 import {RemoteSigningComponent} from './components/remote-signing/remote-signing.component';
 import {ConverterComponent} from './components/converter/converter.component';
 import {QrGeneratorComponent} from './components/qr-generator/qr-generator.component';
-
 import { environment } from '../environments/environment';
 import {ManageRepresentativesComponent} from './components/manage-representatives/manage-representatives.component';
+import { MultisigComponent } from './components/multisig/multisig.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -42,6 +42,7 @@ const routes: Routes = [
   { path: 'sweeper', component: SweeperComponent },
   { path: 'sign', component: SignComponent },
   { path: 'remote-signing', component: RemoteSigningComponent },
+  { path: 'multisig', component: MultisigComponent },
   { path: 'converter', component: ConverterComponent },
   { path: 'qr-generator', component: QrGeneratorComponent },
 ];
