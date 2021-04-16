@@ -7,7 +7,7 @@ import {NotificationService} from '../../services/notification.service';
 import {UtilService, StateBlock, TxType} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NanoBlockService} from '../../services/nano-block.service';
 import {ApiService} from '../../services/api.service';
 import * as QRCode from 'qrcode';
@@ -19,7 +19,8 @@ import * as nanocurrency from 'nanocurrency';
 import { MusigService } from '../../services/musig.service';
 
 const INDEX_MAX = 4294967295;
-
+// navigation source for cancel command (excluding camera source because too complicated to fix)
+enum navSource {'remote', 'multisig'}
 @Component({
   selector: 'app-sign',
   templateUrl: './sign.component.html',
@@ -79,6 +80,7 @@ export class SignComponent implements OnInit {
   ];
   selectedThreshold = this.thresholds[0].value;
   selectedThresholdOld = this.selectedThreshold;
+  navigationSource = navSource.remote;
 
   /**
    MULTISIG
@@ -108,6 +110,7 @@ export class SignComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
+    private routerService: Router,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
@@ -192,6 +195,7 @@ export class SignComponent implements OnInit {
         this.signTypeSelected = this.signTypes[3];
         this.participants = parseInt(params.participants, 10);
         this.participantChange(this.participants);
+        this.navigationSource = navSource.multisig;
       }
 
       // check if both new block and previous block hashes matches (balances has not been tampered with) and have valid parameters
@@ -287,6 +291,17 @@ export class SignComponent implements OnInit {
     }
 
     this.addressBookService.loadAddressBook();
+  }
+
+  // abort and navigate back
+  cancel() {
+    switch (this.navigationSource) {
+      case navSource.remote:
+        this.routerService.navigate(['remote-signing']);
+        break;
+      case navSource.multisig:
+        this.routerService.navigate(['multisig']);
+    }
   }
 
   verifyBlock(block: StateBlock) {
@@ -965,16 +980,6 @@ export class SignComponent implements OnInit {
     if (this.savedParticipants >= this.participants) {
       this.notificationService.sendWarning('You already have all data needed');
     }
-    // Derive address and add to stored list (not used but could be nice feedback for the user)
-    /** 
-    if (this.activeStep === 2) {
-      this.inputMultisigAccounts = this.inputMultisigAccounts +
-      nanocurrency.deriveAddress(this.inputAdd.substring(66), {useNanoPrefix: true}) + '\n';
-      // Don't calculate multisig account until all participant data has been entered
-      if (this.savedParticipants === this.participants - 1) {
-        this.multisigAccount = this.musigService.runAggregate(this.inputMultisigAccounts, null)?.multisig;
-      }
-    }*/
 
     this.inputMultisigData = this.inputMultisigData + this.inputAdd.substring(2).toUpperCase() + '\n',
     this.savedParticipants = this.savedParticipants + 1;
@@ -1028,7 +1033,8 @@ export class SignComponent implements OnInit {
     if (result?.stage === 0) {
       console.log('Started multisig using block hash: ' + this.blockHash);
       // Combine output with public key
-      const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) + nanocurrency.derivePublicKey(this.privateKey);
+      const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
+        nanocurrency.derivePublicKey(this.privateKey);
       this.activeStep = this.activeStep + 1;
       this.outputMultisigData = output.toUpperCase();
       this.generateOutputQR();
