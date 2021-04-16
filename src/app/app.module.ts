@@ -57,6 +57,7 @@ import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
+import {MusigService} from './services/musig.service';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -135,6 +136,7 @@ import { MultisigComponent } from './components/multisig/multisig.component';
     NgbActiveModal,
     QrModalService,
     DeeplinkService,
+    MusigService,
   ],
   bootstrap: [AppComponent]
 })

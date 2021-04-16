@@ -14,11 +14,9 @@ import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39';
 import * as bip39Wallet from 'nanocurrency-web';
 import { QrModalService } from '../../services/qr-modal.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import hermes from 'hermes-channel';
 import * as nanocurrency from 'nanocurrency';
-const base32 = window['base32'];
+import { MusigService } from '../../services/musig.service';
 
 const INDEX_MAX = 4294967295;
 
@@ -29,9 +27,6 @@ const INDEX_MAX = 4294967295;
 })
 
 export class SignComponent implements OnInit {
-  // The multisig wasm library can be validated by running build-or-validate_musig_wasm.sh
-  private wasmURL = '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
-
   paramsString = '';
   activePanel = 'error';
   shouldSign: boolean = null; // if a block has been scanned for signing (or if it is a block to process)
@@ -92,11 +87,6 @@ export class SignComponent implements OnInit {
   participants = 2;
   validParticipants = true;
   savedParticipants = 0;
-  wasm = null;
-  wasmErrors = ['No error', 'Internal error', 'Invalid parameter(s)', 'Invalid Participant Input'];
-  musigStagePtr = null;
-  musigStageNum = null;
-  savedPublicKeys = [];
   tabData = [];
   tabListenerActive = false;
   tabCount = null;
@@ -104,7 +94,6 @@ export class SignComponent implements OnInit {
   multisigAccount = '';
   outputMultisigData = '';
   activeStep = 1;
-  isInvalidStage = false;
   inputAdd = '';
   validInputAdd = false;
   isInputAddDisabled = false;
@@ -128,50 +117,7 @@ export class SignComponent implements OnInit {
     private api: ApiService,
     private util: UtilService,
     private qrModalService: QrModalService,
-    private http: HttpClient) {
-      // Read the wasm file for multisig
-      this.getWASM().subscribe(data => {
-        const wasmString = atob(data);
-        const wasmBytes = new Uint8Array(wasmString.length);
-        for (let i = 0; i < wasmString.length; i++) {
-          wasmBytes[i] = wasmString.charCodeAt(i);
-        }
-
-        const imports = {
-          wasi_snapshot_preview1: {
-            fd_write: (fd, iovs, errno, nwritten) => {
-              console.error('fd_write called: unimplemented');
-              return 0;
-            },
-            proc_exit: () => {
-              console.error('proc_exit called: unimplemented');
-              return 0;
-            },
-            environ_sizes_get: () => {
-              console.error('environ_sizes_get called: unimplemented');
-              return 0;
-            },
-            environ_get: () => {
-              console.error('environ_get called: unimplemented');
-              return 0;
-            },
-            random_get: (ptr, len) => {
-              crypto.getRandomValues(new Uint8Array(this.wasm.memory.buffer, ptr, len));
-              return 0;
-            }
-            },
-            wasi_unstable: {
-              random_get: (ptr, len) => {
-                crypto.getRandomValues(new Uint8Array(this.wasm.memory.buffer, ptr, len));
-                return 0;
-              }
-            },
-        };
-        WebAssembly.instantiate(wasmBytes, imports).then(w => {
-          this.wasm = w.instance.exports;
-        }).catch(console.error);
-      });
-  }
+    private musigService: MusigService) { }
 
   async ngOnInit() {
     const UIkit = window['UIkit'];
@@ -191,9 +137,9 @@ export class SignComponent implements OnInit {
         this.tabChecked = true;
         this.participants = parseInt(data[2], 10);
         this.tabListener(false); // start in passive mode
-        this.alertError(this.multiSign.bind(this)).bind(this)();
+        this.multiSign();
       } else {
-        console.log('Non-matching block hash');
+        console.log('Non-matching block hash: This: ' + this.blockHash + ' - Remote: ' + data[0]);
         this.notificationService.sendWarning('This tab has the wrong block hash', {length: 0});
       }
     });
@@ -522,6 +468,7 @@ export class SignComponent implements OnInit {
         this.notificationService.removeNotification('pow');
         this.workPool.removeFromCache(workBlock);
       }
+      this.resetMultisig();
     }
 
     this.qrString = null;
@@ -819,15 +766,6 @@ export class SignComponent implements OnInit {
    * MULTISIG
    */
 
-  // Load multisig rust library from local file via http
-  getWASM(): Observable<any> {
-    return this.http.get(this.wasmURL, {headers: new HttpHeaders({
-      'Accept': 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }),
-    responseType: 'text'});
-  }
-
   privkeyChangeMulti(input) {
     const privKey = this.convertPrivateKey(input);
     if (privKey !== null) {
@@ -862,7 +800,7 @@ export class SignComponent implements OnInit {
           console.log('Starting step 1 from local tab');
           this.tabListener(false); // start in passive mode to wait for signing process
           // Init step
-          this.alertError(this.multiSign.bind(this)).bind(this)();
+          this.multiSign();
         }
       }
     });
@@ -870,11 +808,11 @@ export class SignComponent implements OnInit {
     console.log('Send ping to other tabs');
     hermes.send('tab-ping', [this.blockHash, '', this.participants]);
     // Set a timeout
-    setTimeout(() => {  this.checkTabs(); }, 2000);
+    setTimeout(() => {  this.checkTabs(); }, 10000);
   }
 
   checkTabs() {
-    if (this.tabCount < this.participants) {
+    if (this.tabCount && this.tabCount < this.participants) {
       hermes.off('tab-pong'); // unsubscribe
       return this.notificationService.sendWarning('Make sure you have enough tabs running with the same block hash');
     }
@@ -902,7 +840,7 @@ export class SignComponent implements OnInit {
     }
 
     if (this.tabMode) {
-      setTimeout(() => {  this.tabListener(); }, 100);
+      setTimeout(() => {  this.tabListener(); }, 200);
     }
   }
 
@@ -910,9 +848,6 @@ export class SignComponent implements OnInit {
     this.participants = 2;
     this.validParticipants = true;
     this.savedParticipants = 0;
-    this.musigStagePtr = null;
-    this.musigStageNum = null;
-    this.savedPublicKeys = [];
     this.tabData = [];
     this.tabListenerActive = false;
     this.tabCount = null;
@@ -921,7 +856,6 @@ export class SignComponent implements OnInit {
     this.outputMultisigData = '';
     this.qrCodeImageOutput = null;
     this.activeStep = 1;
-    this.isInvalidStage = false;
     this.inputAdd = '';
     this.validInputAdd = false;
     this.isInputAddDisabled = false;
@@ -936,6 +870,8 @@ export class SignComponent implements OnInit {
 
     this.setURLParams(this.paramsString + '&participants=' + this.participants);
     this.multisigLink = this.getMultisigLink();
+    this.musigService.resetMusig();
+    hermes.off('tab-pong'); // unsubscribe
   }
   // activating multi-tab mode
   tabModeCheck() {
@@ -1030,14 +966,15 @@ export class SignComponent implements OnInit {
       this.notificationService.sendWarning('You already have all data needed');
     }
     // Derive address and add to stored list (not used but could be nice feedback for the user)
+    /** 
     if (this.activeStep === 2) {
       this.inputMultisigAccounts = this.inputMultisigAccounts +
       nanocurrency.deriveAddress(this.inputAdd.substring(66), {useNanoPrefix: true}) + '\n';
       // Don't calculate multisig account until all participant data has been entered
       if (this.savedParticipants === this.participants - 1) {
-        this.alertError(this.aggregate.bind(this)).bind(this)();
+        this.multisigAccount = this.musigService.runAggregate(this.inputMultisigAccounts, null)?.multisig;
       }
-    }
+    }*/
 
     this.inputMultisigData = this.inputMultisigData + this.inputAdd.substring(2).toUpperCase() + '\n',
     this.savedParticipants = this.savedParticipants + 1;
@@ -1048,7 +985,7 @@ export class SignComponent implements OnInit {
       // Automatic tab mode is running, go ahead with the next step
       if (this.tabMode) {
         this.tabListenerActive = false; // pause processing input data
-        this.alertError(this.multiSign.bind(this)).bind(this)();
+        this.multiSign();
       }
     }
   }
@@ -1069,117 +1006,12 @@ export class SignComponent implements OnInit {
     }
   }
 
-  alertError(f) {
-    return function () {
-      try {
-        f();
-      } catch (err) {
-        console.error(err.toString());
-        this.notificationService.sendError(err.toString(), {length: 6000});
-      }
-    };
-  }
-
-  copyToWasm(bytes, ptr = null) {
-    if (!ptr) {
-      ptr = this.wasm.musig_malloc(bytes.length);
-    }
-    const buf = new Uint8Array(this.wasm.memory.buffer, ptr, bytes.length);
-    for (let i = 0; i < bytes.length; i++) {
-      buf[i] = bytes[i];
-    }
-    return ptr;
-  }
-  copyFromWasm(ptr, length) {
-    const out = new Uint8Array(length);
-    for (let i = 0; i < length; i++) {
-      out[i] = this.wasm.memory.buffer[ptr + i];
-    }
-    return out;
-  }
-
-  wasmError(errCode) {
-    throw new Error('Multisig error ' + errCode + ': ' + this.wasmErrors[errCode]);
-  }
-
-  // combine public keys into a multisig account
-  aggregate(runWithPubkeys) {
-    let addresses = [];
-    if (this.savedPublicKeys.length > 1) {
-      for (const pubKey of this.savedPublicKeys) {
-        addresses.push(nanocurrency.deriveAddress(pubKey, {useNanoPrefix: true}));
-      }
-    } else {
-      addresses = this.inputMultisigAccounts.trim().split('\n');
-      if (addresses.length < 2) {
-          throw new Error('This requires at least 2 newline-separated addresses');
-      }
-    }
-
-    const pubkeys = [];
-    for (let address of addresses) {
-      address = address.trim();
-      if (!address.startsWith('xrb_') && !address.startsWith('nano_')) {
-        throw new Error('Nano addresses must start with xrb_ or nano_');
-      }
-      address = address.split('_', 2)[1];
-      try {
-        const bytes = base32.decode(address);
-        if (bytes.length !== 37) {
-          throw new Error('Wrong nano address length');
-        }
-        const pubkey = bytes.subarray(0, 32);
-        const checksum_ = this.util.account.getAccountChecksum(pubkey);
-        if (!this.util.array.equalArrays(bytes.subarray(32), checksum_)) {
-          throw new Error('Invalid nano address checksum');
-        }
-        pubkeys.push(pubkey);
-      } catch (err_) {
-          console.error(err_.toString());
-          throw new Error('Invalid nano address (bad character?)');
-      }
-    }
-    const pubkeyPtrs = this.wasm.musig_malloc(pubkeys.length * 4);
-    const pubkeyPtrsBuf = new Uint32Array(this.wasm.memory.buffer, pubkeyPtrs, pubkeys.length);
-    for (let i = 0; i < pubkeys.length; i++) {
-      pubkeyPtrsBuf[i] = this.copyToWasm(pubkeys[i]);
-    }
-    const outPtr = this.wasm.musig_malloc(33);
-    const outBuf = new Uint8Array(this.wasm.memory.buffer, outPtr, 33);
-    outBuf[0] = 0;
-    this.wasm.musig_aggregate_public_keys(pubkeyPtrs, pubkeys.length, outPtr, outPtr + 1);
-    if (runWithPubkeys) runWithPubkeys(pubkeyPtrs, pubkeys.length);
-    for (let i = 0; i < pubkeyPtrsBuf.length; i++) {
-      this.wasm.musig_free(pubkeyPtrsBuf[i]);
-    }
-    this.wasm.musig_free(pubkeyPtrs);
-    const err = outBuf[0];
-    if (err !== 0) {
-      this.wasm.musig_free(outPtr);
-        throw this.wasmError(err);
-    }
-    const aggPubkey = outBuf.subarray(1).slice();
-    const checksum = this.util.account.getAccountChecksum(aggPubkey);
-    const fullAddress = new Uint8Array(37);
-    for (let i = 0; i < 32; i++) {
-      fullAddress[i] = aggPubkey[i];
-    }
-    for (let i = 0; i < 5; i++) {
-      fullAddress[32 + i] = checksum[i];
-    }
-    const fullAddressFinal = 'nano_' + base32.encode(fullAddress);
-    this.multisigAccount = fullAddressFinal;
-    console.log('Multisig Account: ' + fullAddressFinal);
-    this.wasm.musig_free(outPtr);
-    return aggPubkey;
-  }
-
   startMultisig() {
     if (this.validPrivkey) {
       if (this.tabChecked) {
         this.runMultiTabs();
       } else {
-        this.alertError(this.multiSign.bind(this)).bind(this)();
+        this.multiSign();
       }
     } else {
       this.notificationService.sendWarning('Invalid private key!');
@@ -1187,43 +1019,20 @@ export class SignComponent implements OnInit {
   }
 
   multiSign() {
-    // Stage 0 (init)
-    if (!this.musigStagePtr) {
-      if (!this.util.nano.isValidHash(this.privateKey)) {
-        throw new Error('Invalid private key');
-      }
-      if (!this.util.nano.isValidHash(this.blockHash)) {
-        throw new Error('Invalid block hash');
-      }
-      const outPtr = this.wasm.musig_malloc(65);
-      const outBuf = new Uint8Array(this.wasm.memory.buffer, outPtr, 65);
-      outBuf[0] = 0;
-      try {
-        this.musigStagePtr = this.wasm.musig_stage0(outPtr, outPtr + 33);
-        this.musigStageNum = 0;
-      } catch (err_) {
-        if (this.musigStagePtr) {
-          this.wasm.musig_free_stage0(this.musigStagePtr);
-        }
-        this.musigStagePtr = undefined;
-        this.musigStageNum = undefined;
-        throw err_;
-      }
-      const err = outBuf[0];
-      if (err !== 0) {
-        this.musigStagePtr = undefined;
-        this.musigStageNum = undefined;
-        this.wasm.musig_free(outPtr);
-        throw this.wasmError(err);
-      }
+    const result = this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData);
+    // used for validation when the final Nano block is created
+    if (result && result.multisig !== '') {
+      this.multisigAccount = result.multisig;
+    }
 
+    if (result?.stage === 0) {
+      console.log('Started multisig using block hash: ' + this.blockHash);
       // Combine output with public key
-      const output = this.activeStep + ':' + this.util.hex.fromUint8(outBuf.subarray(33)) + nanocurrency.derivePublicKey(this.privateKey);
+      const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) + nanocurrency.derivePublicKey(this.privateKey);
       this.activeStep = this.activeStep + 1;
       this.outputMultisigData = output.toUpperCase();
       this.generateOutputQR();
-      this.multisigAccount = '';
-      this.wasm.musig_free(outPtr);
+      this.multisigAccount = ''; // reset for this new run
 
       // If using multi-tabs, send back the result
       if (this.tabMode) {
@@ -1239,77 +1048,18 @@ export class SignComponent implements OnInit {
           hermes.send('sign-remote', [this.blockHash, this.outputMultisigData]);
         }
       }
-
-      // Further steps
-    } else {
-      const protocolInputs = this.inputMultisigData.trim().split('\n').map(s => s.trim().toLowerCase().substring(0, 64));
-      const protocolInputPtrs = this.wasm.musig_malloc(protocolInputs.length * 4);
-      const protocolInputPtrsBuf = new Uint32Array(this.wasm.memory.buffer, protocolInputPtrs, protocolInputs.length);
-      for (let i = 0; i < protocolInputs.length; i++) {
-          protocolInputPtrsBuf[i] = this.copyToWasm(this.util.hex.toUint8(protocolInputs[i]));
-      }
-
-      let privateKeyPtr;
-      if (this.musigStageNum === 0) {
-        privateKeyPtr = this.copyToWasm(this.util.hex.toUint8(this.privateKey));
-      }
-
-      const outLen = (this.musigStageNum === 2) ? 65 : 33;
-      const outPtr = this.wasm.musig_malloc(outLen);
-      const outBuf = new Uint8Array(this.wasm.memory.buffer, outPtr, outLen);
-      outBuf[0] = 0;
-      let newStagePtr;
-
-      if (this.musigStageNum === 0) {
-        // Extract public keys from the participants
-        this.savedPublicKeys = this.inputMultisigData.trim().split('\n').map(s => s.trim().toLowerCase().substring(64, 128));
-        // Add the public key from self
-        const pub = nanocurrency.derivePublicKey(this.privateKey);
-        this.savedPublicKeys.push(pub);
-
-        const blockhash = this.util.hex.toUint8(this.blockHash);
-        const blockhashPtr = this.copyToWasm(blockhash);
-        this.aggregate((pubkeys, pubkeysLen) => {
-          const flags = 0; // Set to 1 if private key is a raw/expanded scalar (unusual)
-          newStagePtr = this.wasm.musig_stage1(this.musigStagePtr, privateKeyPtr, pubkeys, pubkeysLen, flags,
-            blockhashPtr, blockhash.length, protocolInputPtrs, protocolInputs.length, outPtr, null, outPtr + 1);
-        });
-        this.musigStageNum = 0;
-        this.wasm.musig_free(privateKeyPtr);
-        this.wasm.musig_free(blockhashPtr);
-
-      } else if (this.musigStageNum === 1) {
-          newStagePtr = this.wasm.musig_stage2(this.musigStagePtr, protocolInputPtrs, protocolInputs.length, outPtr, outPtr + 1);
-      } else if (this.musigStageNum === 2) {
-          newStagePtr = this.wasm.musig_stage3(this.musigStagePtr, protocolInputPtrs, protocolInputs.length, outPtr, outPtr + 1);
-      } else {
-        this.wasm.musig_free(outPtr);
-          throw new Error('Unexpected musigStageNum ' + this.musigStageNum);
-      }
-      const err = outBuf[0];
-      if (err !== 0) {
-        this.wasm.musig_free(outPtr);
-          if (err === 1) {
-              // Now in an invalid state
-              this.isInvalidStage = true;
-          }
-          throw this.wasmError(err);
-      }
-      this.musigStagePtr = newStagePtr;
-      this.musigStageNum++;
-
+    } else if (result) {
       // Finished
-      if (this.musigStageNum === 3) {
-        this.isInvalidStage = true;
+      if (result.stage === 3) {
         this.inputMultisigData = '';
         this.outputMultisigData = '';
         this.qrCodeImageOutput = null;
         this.tabMode = false;
         this.tabListenerActive = false;
         this.inputMultisigAccounts = '';
-        this.confirmTransaction(this.util.hex.fromUint8(outBuf.subarray(1)));
+        this.confirmTransaction(this.util.hex.fromUint8(result.outbuf.subarray(1)));
       } else {
-        this.outputMultisigData = this.activeStep + ':' + this.util.hex.fromUint8(outBuf.subarray(1));
+        this.outputMultisigData = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(1));
         this.generateOutputQR();
         this.inputMultisigData = '';
         this.isInputAddDisabled = false;
@@ -1324,7 +1074,6 @@ export class SignComponent implements OnInit {
           hermes.send('sign-remote', [this.blockHash, this.outputMultisigData]);
         }
       }
-      this.wasm.musig_free(outPtr);
     }
   }
   // END MULTISIG
