@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UtilService } from '../../services/util.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
@@ -13,7 +13,8 @@ import { MusigService } from '../../services/musig.service';
 })
 export class MultisigComponent implements OnInit {
   accountAdd = '';
-  inputAccountData = '';
+  showAddBox = false;
+  storedAccounts = [];
   accountAddStatus: number = null;
   createdMultisig = '';
   multisigAccount = '';
@@ -32,6 +33,8 @@ export class MultisigComponent implements OnInit {
     private musigService: MusigService,
   ) { }
 
+  @ViewChild('accountAddFocus') _el: ElementRef;
+
   async ngOnInit() {
   }
 
@@ -40,29 +43,45 @@ export class MultisigComponent implements OnInit {
     this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
+  setFocus() {
+    this.showAddBox = true;
+    // Auto set focus to the box (but must be rendered first!)
+    setTimeout(() => { this._el.nativeElement.focus(); }, 200);
+  }
+
   addAccount() {
     if (this.accountAddStatus !== 1) {
-      this.notificationService.sendWarning('Invalid Nano address!');
+      this.notificationService.removeNotification('account-invalid');
+      this.notificationService.sendWarning('Invalid Nano address!', {identifier: 'account-invalid'});
       return;
     }
-    if (this.inputAccountData.includes(this.accountAdd.replace('xrb_', 'nano_'))) {
-      this.notificationService.sendWarning('Account already added!');
+    if (this.storedAccounts.includes(this.accountAdd.replace('xrb_', 'nano_').toLocaleLowerCase())) {
+      this.notificationService.removeNotification('account-added');
+      this.notificationService.sendWarning('Account already added!', {identifier: 'account-added'});
       return;
     }
-    this.inputAccountData = this.inputAccountData + this.accountAdd.replace('xrb_', 'nano_') + '\n',
+    this.storedAccounts.push(this.accountAdd.replace('xrb_', 'nano_').toLocaleLowerCase());
     this.accountAdd = '';
     this.accountAddStatus = null;
+    this.showAddBox = false;
+    this.createdMultisig = ''; // invalidate previous multisig to avoid mistakes
+  }
+
+  removeSelectedAccount(account) {
+    this.storedAccounts.splice(this.storedAccounts.indexOf(account), 1);
+    this.createdMultisig = ''; // invalidate previous multisig to avoid mistakes
   }
 
   generateMultisig() {
-    this.createdMultisig = this.musigService.runAggregate(this.inputAccountData, null)?.multisig;
+    this.createdMultisig = this.musigService.runAggregate(this.storedAccounts, null)?.multisig;
   }
 
   reset() {
     this.accountAdd = '';
-    this.inputAccountData = '';
+    this.storedAccounts = [];
     this.accountAddStatus = null;
     this.createdMultisig = '';
+    this.showAddBox = false;
   }
 
   validateAccountAdd() {
@@ -72,6 +91,7 @@ export class MultisigComponent implements OnInit {
     }
     if (this.util.account.isValidAccount(this.accountAdd)) {
       this.accountAddStatus = 1;
+      this.addAccount();
       return true;
     } else {
       this.accountAddStatus = 0;

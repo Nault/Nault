@@ -105,9 +105,9 @@ export class MusigService {
     throw new Error('Multisig error ' + errCode + ': ' + this.wasmErrors[errCode]);
   }
 
-  runAggregate(inputMultisigAccounts, runWithPubkeys = null) {
+  runAggregate(storedAccounts, runWithPubkeys = null) {
     try {
-      return this.aggregate(inputMultisigAccounts, runWithPubkeys);
+      return this.aggregate(storedAccounts, runWithPubkeys);
     } catch (err) {
       this.notificationService.sendError(err.toString(), {length: 6000});
       return null;
@@ -123,14 +123,14 @@ export class MusigService {
     }
   }
 
-  aggregate(inputMultisigAccounts, runWithPubkeys = null) {
+  aggregate(storedAccounts, runWithPubkeys = null) {
     let addresses = [];
     if (runWithPubkeys && this.savedPublicKeys?.length > 1) {
       for (const pubKey of this.savedPublicKeys) {
         addresses.push(nanocurrency.deriveAddress(pubKey, {useNanoPrefix: true}));
       }
     } else {
-      addresses = inputMultisigAccounts.trim().split('\n');
+      addresses = storedAccounts;
       if (addresses.length < 2) {
           throw new Error('Must have at least 2 participating addresses!');
       }
@@ -230,7 +230,11 @@ export class MusigService {
 
       // Further steps
     } else {
-      const protocolInputs = inputMultisigData.trim().split('\n').map(s => s.trim().toLowerCase().substring(0, 64));
+      const protocolInputs = [];
+      // only use the first part of the data
+      for (const input of inputMultisigData) {
+        protocolInputs.push(input.substring(0, 64).toLowerCase());
+      }
       const protocolInputPtrs = this.wasm.musig_malloc(protocolInputs.length * 4);
       const protocolInputPtrsBuf = new Uint32Array(this.wasm.memory.buffer, protocolInputPtrs, protocolInputs.length);
       for (let i = 0; i < protocolInputs.length; i++) {
@@ -250,7 +254,11 @@ export class MusigService {
 
       if (this.musigStageNum === 0) {
         // Extract public keys from the participants
-        this.savedPublicKeys = inputMultisigData.trim().split('\n').map(s => s.trim().toLowerCase().substring(64, 128));
+        this.savedPublicKeys = [];
+        // only use the second part of the data
+        for (const input of inputMultisigData) {
+          this.savedPublicKeys.push(input.substring(64, 128).toLowerCase());
+        }
         // Add the public key from self
         const pub = nanocurrency.derivePublicKey(privateKey);
         if (this.savedPublicKeys.includes(pub.toLowerCase())) {

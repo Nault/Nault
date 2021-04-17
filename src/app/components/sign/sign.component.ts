@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
 import {BehaviorSubject} from 'rxjs';
@@ -92,7 +92,7 @@ export class SignComponent implements OnInit {
   tabData = [];
   tabListenerActive = false;
   tabCount = null;
-  inputMultisigData = '';
+  inputMultisigData = [];
   multisigAccount = '';
   outputMultisigData = '';
   activeStep = 1;
@@ -105,7 +105,7 @@ export class SignComponent implements OnInit {
   remoteTabInit = false;
   qrModal: any = null;
   qrCodeImageOutput = null;
-  inputMultisigAccounts = '';
+  showAddBox = false;
   // END MULTISIG
 
   constructor(
@@ -121,6 +121,8 @@ export class SignComponent implements OnInit {
     private util: UtilService,
     private qrModalService: QrModalService,
     private musigService: MusigService) { }
+
+  @ViewChild('dataAddFocus') _el: ElementRef;
 
   async ngOnInit() {
     const UIkit = window['UIkit'];
@@ -291,6 +293,20 @@ export class SignComponent implements OnInit {
     }
 
     this.addressBookService.loadAddressBook();
+  }
+
+  setFocus() {
+    this.showAddBox = true;
+    // Auto set focus to the box (but must be rendered first!)
+    setTimeout(() => { this._el.nativeElement.focus(); }, 200);
+  }
+
+  removeSelectedData(data) {
+    this.inputMultisigData.splice(this.inputMultisigData.indexOf(data), 1);
+    if (this.savedParticipants > 0) {
+      this.savedParticipants = this.savedParticipants - 1;
+      this.isInputAddDisabled = false;
+    }
   }
 
   // abort and navigate back
@@ -823,7 +839,7 @@ export class SignComponent implements OnInit {
     console.log('Send ping to other tabs');
     hermes.send('tab-ping', [this.blockHash, '', this.participants]);
     // Set a timeout
-    setTimeout(() => {  this.checkTabs(); }, 10000);
+    setTimeout(() => {  this.checkTabs(); }, 5000);
   }
 
   checkTabs() {
@@ -866,7 +882,7 @@ export class SignComponent implements OnInit {
     this.tabData = [];
     this.tabListenerActive = false;
     this.tabCount = null;
-    this.inputMultisigData = '';
+    this.inputMultisigData = [];
     this.multisigAccount = '';
     this.outputMultisigData = '';
     this.qrCodeImageOutput = null;
@@ -880,8 +896,8 @@ export class SignComponent implements OnInit {
     this.privateKey = '';
     this.sourcePriv = '';
     this.validPrivkey = false;
-    this.inputMultisigAccounts = '';
     this.confirmingTransaction = false;
+    this.showAddBox = false;
 
     this.setURLParams(this.paramsString + '&participants=' + this.participants);
     this.multisigLink = this.getMultisigLink();
@@ -969,21 +985,22 @@ export class SignComponent implements OnInit {
       this.notificationService.sendWarning('Data not in valid format');
       return;
     }
-    if (this.outputMultisigData.includes(this.inputAdd.substring(2))) {
+    if (this.outputMultisigData.includes(this.inputAdd.substring(2).toUpperCase())) {
       this.notificationService.sendWarning('Don\'t add your own output');
       return;
     }
-    if (this.inputMultisigData.includes(this.inputAdd.substring(2))) {
+    if (this.inputMultisigData.includes(this.inputAdd.substring(2).toUpperCase())) {
       this.notificationService.sendWarning('Data already added');
       return;
     }
     if (this.savedParticipants >= this.participants) {
-      this.notificationService.sendWarning('You already have all data needed');
+      this.notificationService.sendWarning('You already have all data needed given number of participants');
     }
 
-    this.inputMultisigData = this.inputMultisigData + this.inputAdd.substring(2).toUpperCase() + '\n',
+    this.inputMultisigData.push(this.inputAdd.substring(2).toUpperCase());
     this.savedParticipants = this.savedParticipants + 1;
     this.inputAdd = '';
+    this.showAddBox = false;
     this.validInputAdd = false;
     if (this.savedParticipants === this.participants - 1) {
       this.isInputAddDisabled = true;
@@ -1057,21 +1074,19 @@ export class SignComponent implements OnInit {
     } else if (result) {
       // Finished
       if (result.stage === 3) {
-        this.inputMultisigData = '';
+        this.inputMultisigData = [];
         this.outputMultisigData = '';
         this.qrCodeImageOutput = null;
         this.tabMode = false;
         this.tabListenerActive = false;
-        this.inputMultisigAccounts = '';
         this.confirmTransaction(this.util.hex.fromUint8(result.outbuf.subarray(1)));
       } else {
         this.outputMultisigData = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(1));
         this.generateOutputQR();
-        this.inputMultisigData = '';
+        this.inputMultisigData = [];
         this.isInputAddDisabled = false;
         this.savedParticipants = 0;
         this.inputAdd = '';
-        this.inputMultisigAccounts = '';
         this.validInputAdd = false;
         this.activeStep = this.activeStep + 1;
         // If using dual tabs, send back the result

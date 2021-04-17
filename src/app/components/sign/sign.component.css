@@ -94,7 +94,10 @@
   margin-right:35px;
 }
 
-.data-text-box {
-  height: 80px;
-  line-height: 25px;
+.add-button {
+  cursor: pointer;
+}
+
+.add-button span {
+  vertical-align: text-bottom;
 }

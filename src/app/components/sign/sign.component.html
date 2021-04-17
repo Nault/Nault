@@ -194,7 +194,7 @@
               <div class="uk-width-1-1 narrow-div" >
                 <div class="uk-form-horizontal">
                   <div class="uk-margin">
-                    <label class="uk-form-label" for="output-data">Output Data <span uk-icon="icon: info;" uk-tooltip title="Copy this to the 'Input Data' for each participant."></span></label>
+                    <label class="uk-form-label" for="output-data">Output Data <span uk-icon="icon: info;" uk-tooltip title="Copy this to the 'Input Data' for each participant"></span></label>
                     <div class="uk-form-controls">
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
@@ -211,29 +211,29 @@
               <div class="uk-width-1-1 narrow-div" >
                 <div class="uk-form-horizontal">
                   <div class="uk-margin">
-                    <label class="uk-form-label" for="input-data">Input Data | Step {{(this.activeStep - 1)}} <span uk-icon="icon: info;" uk-tooltip title="Output data from participants to be added."></span></label>
+                    <label class="uk-form-label">Input Data <span uk-icon="icon: info;" uk-tooltip title="Output data from participants to be added"></span></label>
                     <div class="uk-form-controls">
-                      <div class="uk-width-1-1">
-                        <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
-                          <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus" (click)="addMultisigInputData()" uk-tooltip title="Add input data"></a>
-                          <input [(ngModel)]="inputAdd" [disabled]="this.isInputAddDisabled" maxLength="130" class="uk-input uk-margin-small-bottom {{validInputAdd ? '':'uk-form-danger'}}" id="input-data" type="text" placeholder="{{(this.activeStep - 1) + ':abc...'}}" (ngModelChange)="inputAddChange(inputAdd)" (keyup.enter)="addMultisigInputData()" autocomplete="off">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="uk-width-1-1 narrow-div" >
-                <div class="uk-form-horizontal">
-                  <div class="uk-margin">
-                    <label class="uk-form-label" for="stored-data">Stored Data <span uk-icon="icon: info;" uk-tooltip title="Added input-data to be used for the next step"></span></label>
-                    <div class="uk-form-controls">
-                      <div class="uk-width-1-1">
-                        <div class="uk-inline uk-width-1-1" style="height: 100px; margin-bottom: 10px;">
-                          <textarea class="uk-input uk-margin-small-bottom data-text-box" [(ngModel)]="inputMultisigData" rows="3" disabled placeholder=""></textarea>
-                        </div>
-                      </div>
+                      <ul class="uk-list uk-list-striped">
+                        <li *ngFor="let data of inputMultisigData">
+                          <div uk-grid>
+                            <div class="uk-width-5-6 uk-text-truncate">
+                              <ng-container>
+                                <div class="uk-text-truncate">{{ data }}</div>
+                              </ng-container>
+                            </div>
+                            <div class="action-remove uk-width-1-6 uk-text-right">
+                              <a (click)="removeSelectedData(data)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div *ngIf="!showAddBox && !this.isInputAddDisabled" class="add-button uk-width-auto" (click)="setFocus()"><span uk-icon="icon: plus"></span> Add participant data from step {{(this.activeStep - 1)}}</div>
+                          <div *ngIf="showAddBox" class="uk-inline uk-width-1-1">
+                            <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus" (click)="addMultisigInputData()" uk-tooltip title="Add input data"></a>
+                            <input [(ngModel)]="inputAdd" [disabled]="this.isInputAddDisabled" maxLength="130" class="uk-input {{validInputAdd ? '':'uk-form-danger'}}" type="text" placeholder="{{(this.activeStep - 1) + ':abc...'}}" (ngModelChange)="inputAddChange(inputAdd)" (keyup.enter)="addMultisigInputData()" autocomplete="off" #dataAddFocus>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
