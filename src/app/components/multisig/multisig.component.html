@@ -6,21 +6,23 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header uk-form-horizontal">
-            <p><strong>Multisig is an alternative way of storing and transacting Nano by having multiple private keys bound to a single account. The keys can be owned my multiple users.</strong>
+            <p><strong>Multisig is an alternative way of storing and transacting Nano by having multiple private keys bound to a single address. The keys can be owned my multiple users.</strong>
             <br>
             A full user guide is found <a href="https://docs.nault.cc/2021/04/14/multisig.html">here</a>.
             </p>
 
-            <h4>Create a Multisig Account</h4>
-            <p>Add 2 or more regular Nano accounts to form a new multisig account.</p>
+            <h4>1 - Create a Multisig Address</h4>
+            <p>Add 2 or more Nano addresses to form a new multisig address.<br>
+            If you (or the participants) don't have any, they can be generated with the <a routerLink="/keygenerator" class="name">Keypair Generator</a> and stored safely.
+            </p>
             <div>
               <div class="uk-alert uk-alert-danger nlt-inline-alert">
                 <div class="icon-column">
                   <div uk-icon="icon: warning; ratio: 2;"></div>
                 </div>
                 <p>
-                  Each account MUST have a known corresponding private key (or seed).<br>
-                  This multisig is "m of m", meaning all keys must be available. <strong>Losing one key will invalidate the account!</strong><br>
+                  Each address MUST have a known corresponding Private Key.<br>
+                  This multisig is "m of m", meaning all keys must be available. <strong>Losing one key will invalidate the address!</strong><br>
                 </p>
               </div>
             </div>
@@ -40,7 +42,7 @@
 
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Participating Accounts <span uk-icon="icon: info;" uk-tooltip title="Accounts to participate in the multisig account"></span></label>
+                <label class="uk-form-label">Participating Addresses <span uk-icon="icon: info;" uk-tooltip title="Addresses to participate in the multisig address"></span></label>
                 <div class="uk-form-controls">
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of storedAccounts">
@@ -56,9 +58,9 @@
                       </div>
                     </li>
                     <li>
-                      <div *ngIf="!showAddBox" class="add-button uk-width-auto" (click)="setFocus()"><span uk-icon="icon: plus"></span> Add account</div>
+                      <div *ngIf="!showAddBox" class="add-button uk-width-auto" (click)="setFocus()"><span uk-icon="icon: plus"></span> Add address</div>
                       <div *ngIf="showAddBox" class="uk-inline uk-width-1-1">
-                        <a class="uk-form-icon uk-form-icon-flip second-icon" uk-icon="icon: plus" (click)="addAccount()" uk-tooltip title="Add account"></a>
+                        <a class="uk-form-icon uk-form-icon-flip second-icon" uk-icon="icon: plus" (click)="addAccount()" uk-tooltip title="Add address"></a>
                         <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('accountAdd','account')" uk-tooltip title="Scan from QR code"></a>
                         <input (keyup)="validateAccountAdd()" (keyup.enter)="addAccount()" [(ngModel)]="accountAdd" class="uk-input" [ngClass]="{ 'uk-form-danger': accountAddStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off" #accountAddFocus>
                       </div>
@@ -70,14 +72,14 @@
 
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label">Multisig Account <span uk-icon="icon: info;" uk-tooltip title="Final account to use with multisig transactions"></span></label>
+                <label class="uk-form-label">Multisig Address <span uk-icon="icon: info;" uk-tooltip title="Final account to use with multisig transactions"></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1 multisig-result">
                     <div uk-grid>
                       <div *ngIf="createdMultisig == ''" class="uk-margin-small-bottom">...</div>
                       <div *ngIf="createdMultisig !== ''">
                         <div class="uk-margin-small-bottom"><app-nano-account-id [accountID]="createdMultisig" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
-                        <a title="Copy Account To Clipboard" ngxClipboard [cbContent]="createdMultisig" (cbOnSuccess)="copied()" uk-tooltip>Copy account to clipboard</a>
+                        <a title="Copy Address To Clipboard" ngxClipboard [cbContent]="createdMultisig" (cbOnSuccess)="copied()" uk-tooltip>Copy address to clipboard</a>
                       </div>
                     </div>
                   </div>
@@ -91,7 +93,7 @@
                   <div uk-icon="icon: warning; ratio: 2;"></div>
                 </div>
                 <p>
-                  Before funding the multisig account, make sure that you added the correct participating accounts above.<br>
+                  Before funding the multisig address, make sure that you added the correct participating addresses above.<br>
                 </p>
               </div>
             </div>
@@ -110,12 +112,12 @@
         </div>
         <div class="uk-card uk-card-default" style="margin-top: 20px;">
           <div class="uk-card-header uk-form-horizontal">
-            <h4>Create a Multisig Transaction</h4>
-            <p>Create a SEND, RECEIVE or CHANGE block. No login is needed.</p>
+            <h4>2 - Create a Multisig Transaction</h4>
+            <p>Create a SEND, RECEIVE or CHANGE block using the Remote Signing method.</p>
             
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-text2">Multisig Account</label>
+                <label class="uk-form-label" for="form-horizontal-text2">Multisig Address</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('multisig','account')" uk-tooltip title="Scan from QR code"></a>
@@ -134,8 +136,8 @@
             </div>
           </div>
           <div class="uk-card-header uk-form-horizontal">
-            <h4>Multisignature for Participant(s)</h4>
-            <p>Use the data that was shared with you to participate in the signing procedure.</p>
+            <h4>3 - Multisig for Participants</h4>
+            <p>If multiple co-signers, enter the data that was shared with you to participate in the signing procedure.</p>
             
             <div class="uk-form-horizontal">
               <div class="uk-margin">

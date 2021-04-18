@@ -22,6 +22,7 @@ import {QrGeneratorComponent} from './components/qr-generator/qr-generator.compo
 import { environment } from '../environments/environment';
 import {ManageRepresentativesComponent} from './components/manage-representatives/manage-representatives.component';
 import { MultisigComponent } from './components/multisig/multisig.component';
+import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'sign', component: SignComponent },
   { path: 'remote-signing', component: RemoteSigningComponent },
   { path: 'multisig', component: MultisigComponent },
+  { path: 'keygenerator', component: KeygeneratorComponent },
   { path: 'converter', component: ConverterComponent },
   { path: 'qr-generator', component: QrGeneratorComponent },
 ];

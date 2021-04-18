@@ -65,6 +65,7 @@ import { DeeplinkService, NinjaService } from './services';
 import { ConverterComponent } from './components/converter/converter.component';
 import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
 import { MultisigComponent } from './components/multisig/multisig.component';
+import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { MultisigComponent } from './components/multisig/multisig.component';
     ConverterComponent,
     QrGeneratorComponent,
     MultisigComponent,
+    KeygeneratorComponent,
   ],
   imports: [
     BrowserModule,
