@@ -175,7 +175,7 @@
 
         <div class="details-header">Remote Signing</div>
 
-        <p>Create a new SEND or CHANGE block below. For any incoming transaction in the table: Use REMOTE SIGN.</p>
+        <p>Create a new SEND or CHANGE block below. For any incoming transaction in the table: Use SIGN BLOCK.</p>
         <button class="uk-button uk-button-primary" (click)="showRemoteModal()">CREATE NEW BLOCK</button>
 
       </div>
@@ -254,7 +254,7 @@
               <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
             </div>
             <div class="button-container" *ngIf="remoteVisible">
-              <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">REMOTE SIGN</button>
+              <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">SIGN BLOCK</button>
             </div>
           </td>
           <ng-template #noActionsAvailable>
@@ -415,7 +415,7 @@
 
       <div class="uk-margin-small-bottom">
         <strong style="margin-right: 6px;">Block Type</strong>
-        <span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Recent Transactions below."></span>
+        <span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Transaction table."></span>
       </div>
       <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[0]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[0]}}</label>
       <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[1]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[1]}}</label>
