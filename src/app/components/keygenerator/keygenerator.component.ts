@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UtilService} from '../../services/util.service';
 import * as bip39 from 'bip39';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   selector: 'app-keygenerator',
@@ -15,7 +16,8 @@ export class KeygeneratorComponent implements OnInit {
   newWalletMnemonicLines = [];
 
   constructor(
-    private util: UtilService
+    private util: UtilService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -43,5 +45,10 @@ export class KeygeneratorComponent implements OnInit {
       words.slice(20, 24),
     ];
     this.newWalletMnemonicLines = lines;
+  }
+
+  copied() {
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 }

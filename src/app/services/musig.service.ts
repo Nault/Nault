@@ -109,7 +109,7 @@ export class MusigService {
     try {
       return this.aggregate(storedAccounts, runWithPubkeys);
     } catch (err) {
-      this.notificationService.sendError(err.toString(), {length: 6000});
+      this.notificationService.sendError(err.toString(), {length: 0});
       return null;
     }
   }
@@ -118,7 +118,7 @@ export class MusigService {
     try {
       return this.multiSign(privateKey, blockHash, inputMultisigData);
     } catch (err) {
-      this.notificationService.sendError(err.toString(), {length: 6000});
+      this.notificationService.sendError(err.toString(), {length: 0});
       return null;
     }
   }
@@ -233,7 +233,7 @@ export class MusigService {
       const protocolInputs = [];
       // only use the first part of the data
       for (const input of inputMultisigData) {
-        protocolInputs.push(input.substring(0, 64).toLowerCase());
+        protocolInputs.push(input.substring(2, 66).toLowerCase());
       }
       const protocolInputPtrs = this.wasm.musig_malloc(protocolInputs.length * 4);
       const protocolInputPtrsBuf = new Uint32Array(this.wasm.memory.buffer, protocolInputPtrs, protocolInputs.length);
@@ -257,7 +257,7 @@ export class MusigService {
         this.savedPublicKeys = [];
         // only use the second part of the data
         for (const input of inputMultisigData) {
-          this.savedPublicKeys.push(input.substring(64, 128).toLowerCase());
+          this.savedPublicKeys.push(input.substring(66, 130).toLowerCase());
         }
         // Add the public key from self
         const pub = nanocurrency.derivePublicKey(privateKey);

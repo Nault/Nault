@@ -145,7 +145,9 @@ export class SignComponent implements OnInit {
         this.multiSign();
       } else {
         console.log('Non-matching block hash: This: ' + this.blockHash + ' - Remote: ' + data[0]);
-        this.notificationService.sendWarning('This tab has the wrong block hash', {length: 0});
+        // When having 3 or more tabs, sometime one of the tabs are pinged twice for unknown reason
+        // and results in this false positive warning. Some cached herms data in the pipeline?
+        this.notificationService.sendWarning('Tab was pinged but the block hash does not match');
       }
     });
 
@@ -250,11 +252,6 @@ export class SignComponent implements OnInit {
 
         this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
 
-        // Extract block hash (used with multisig)
-        const block: StateBlock = {account: this.currentBlock.account, link: this.currentBlock.link, previous: this.currentBlock.previous,
-          representative: this.currentBlock.representative, balance: this.currentBlock.balance, signature: null, work: null};
-        this.blockHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
-
         this.prepareTransaction();
       } else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
         // No previous block present (open block)
@@ -291,6 +288,11 @@ export class SignComponent implements OnInit {
       this.notificationService.sendError(`Incorrect parameters provided for signing!`, {length: 0});
       return;
     }
+
+    // Extract block hash (used with multisig)
+    const block: StateBlock = {account: this.currentBlock.account, link: this.currentBlock.link, previous: this.currentBlock.previous,
+      representative: this.currentBlock.representative, balance: this.currentBlock.balance, signature: null, work: null};
+    this.blockHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
 
     this.addressBookService.loadAddressBook();
   }
@@ -495,7 +497,10 @@ export class SignComponent implements OnInit {
           this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
         }
 
-        block.work = await this.workPool.getWork(workBlock, this.selectedThreshold);
+        const tempWork = await this.workPool.getWork(workBlock, this.selectedThreshold);
+        if (tempWork.length === 16 ) {
+          block.work = tempWork;
+        }
         this.notificationService.removeNotification('pow');
         this.workPool.removeFromCache(workBlock);
       }
@@ -511,6 +516,10 @@ export class SignComponent implements OnInit {
     modal.show();
 
     this.finalSignature = block.signature;
+    // remove work param if empty
+    if (block.work === '') {
+      delete block['work'];
+    }
 
     try {
       this.clean(block);
@@ -533,7 +542,7 @@ export class SignComponent implements OnInit {
     }
 
     this.confirmingTransaction = false;
-    this.notificationService.sendSuccess('The block has been signed and can be sent to the network!');
+    this.notificationService.sendSuccess('The block has been signed and can be sent to the network!', {length: 0});
   }
 
   // Send signed block to the network
@@ -997,7 +1006,7 @@ export class SignComponent implements OnInit {
       this.notificationService.sendWarning('You already have all data needed given number of participants');
     }
 
-    this.inputMultisigData.push(this.inputAdd.substring(2).toUpperCase());
+    this.inputMultisigData.push(this.inputAdd.toUpperCase());
     this.savedParticipants = this.savedParticipants + 1;
     this.inputAdd = '';
     this.showAddBox = false;
