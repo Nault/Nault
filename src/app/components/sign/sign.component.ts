@@ -17,6 +17,7 @@ import { QrModalService } from '../../services/qr-modal.service';
 import hermes from 'hermes-channel';
 import * as nanocurrency from 'nanocurrency';
 import { MusigService } from '../../services/musig.service';
+import { environment } from 'environments/environment';
 
 const INDEX_MAX = 4294967295;
 // navigation source for cancel command (excluding camera source because too complicated to fix)
@@ -106,6 +107,7 @@ export class SignComponent implements OnInit {
   qrModal: any = null;
   qrCodeImageOutput = null;
   showAddBox = false;
+  isDesktop = environment.desktop;
   // END MULTISIG
 
   constructor(

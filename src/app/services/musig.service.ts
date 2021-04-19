@@ -4,6 +4,7 @@ import { NotificationService } from './notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
+import { environment } from 'environments/environment';
 const base32 = require('nano-base32');
 
 @Injectable({
@@ -11,7 +12,8 @@ const base32 = require('nano-base32');
 })
 export class MusigService {
   // The multisig wasm library can be validated by running build-or-validate_musig_wasm.sh
-  private wasmURL = '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
+  private wasmURL = environment.desktop ?
+    '../../../resources/app.asar/dist/assets/lib/musig-nano/musig_nano.wasm.b64' : '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
 
   wasm = null;
   wasmErrors = ['No error', 'Internal error', 'Invalid parameter(s)', 'Invalid Participant Input'];

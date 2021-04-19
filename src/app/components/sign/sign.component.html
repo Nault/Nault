@@ -185,7 +185,7 @@
                       </div>
                     </div>
                   </div>
-                  <label><input class="uk-checkbox" type="checkbox" name="multitab" value='multitab' [(ngModel)]="tabChecked" (change)="tabModeCheck()"> Multi-Tab Mode </label><span uk-icon="icon: info;" uk-tooltip title="If using one browser tab for each private key on the same computer."></span>
+                  <label *ngIf="!isDesktop"><input class="uk-checkbox" type="checkbox" name="multitab" value='multitab' [(ngModel)]="tabChecked" (change)="tabModeCheck()"> Multi-Tab Mode </label><span *ngIf="!isDesktop" uk-icon="icon: info;" uk-tooltip title="If using one browser tab for each private key on the same computer."></span>
                 </div>
               </div>
             </div>
