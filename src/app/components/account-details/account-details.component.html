@@ -175,7 +175,7 @@
 
         <div class="details-header">Block Signing</div>
 
-        <p>Create a new SEND or CHANGE block below. For any incoming transaction in the table: Use SIGN BLOCK.</p>
+        <p>Create a new SEND or CHANGE block below. For any incoming transaction in the list: Use SIGN BLOCK.</p>
         <button class="uk-button uk-button-primary" (click)="showRemoteModal()">CREATE NEW BLOCK</button>
 
       </div>
@@ -412,7 +412,7 @@
 
       <div class="uk-margin-small-bottom">
         <strong style="margin-right: 6px;">Block Type</strong>
-        <span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the Transaction table."></span>
+        <span uk-icon="icon: info;" uk-tooltip title="The block type to create for remote signing. Receiving can be done from the transactions list."></span>
       </div>
       <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[0]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[0]}}</label>
       <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="blocktype" value={{blockTypes[1]}} [(ngModel)]="blockTypeSelected"> {{blockTypes[1]}}</label>
