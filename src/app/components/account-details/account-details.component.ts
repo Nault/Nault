@@ -121,7 +121,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
-      this.remoteVisible = params.sign === 1;
+      this.remoteVisible = params.sign === '1';
+      this.showAdvancedOptions = params.sign === '1';
     }
 
     this.routerSub = this.route.events.subscribe(event => {

@@ -28,7 +28,7 @@ export class RemoteSignService {
         n_balance: data.block.balance,
         n_link: data.block.link,
       };
-      // only include if it exist
+      // include previous block if exists
       if (data.previous) {
         paramsSign = {...paramsSign, ...{
           p_account: data.previous.account,
@@ -37,6 +37,12 @@ export class RemoteSignService {
           p_balance: data.previous.balance,
           p_link: data.previous.link,
           p_signature: data.previous.signature,
+        }};
+      }
+      // include multisig if exists
+      if (data.participants) {
+        paramsSign = {...paramsSign, ...{
+          participants: data.participants,
         }};
       }
       this.router.navigate(['sign'], { queryParams: paramsSign});

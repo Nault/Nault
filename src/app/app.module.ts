@@ -57,12 +57,15 @@ import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
+import {MusigService} from './services/musig.service';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { DeeplinkService, NinjaService } from './services';
 import { ConverterComponent } from './components/converter/converter.component';
 import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
+import { MultisigComponent } from './components/multisig/multisig.component';
+import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +102,8 @@ import { QrGeneratorComponent } from './components/qr-generator/qr-generator.com
     QrModalComponent,
     ConverterComponent,
     QrGeneratorComponent,
+    MultisigComponent,
+    KeygeneratorComponent,
   ],
   imports: [
     BrowserModule,
@@ -133,6 +138,7 @@ import { QrGeneratorComponent } from './components/qr-generator/qr-generator.com
     NgbActiveModal,
     QrModalService,
     DeeplinkService,
+    MusigService,
   ],
   bootstrap: [AppComponent]
 })

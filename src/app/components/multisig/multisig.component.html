@@ -1,0 +1,163 @@
+<div uk-grid>
+  <div class="uk-width-1-1">
+    <h2>Multi Signature</h2>
+
+    <div uk-grid class="uk-animation-slide-left-small">
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header uk-form-horizontal">
+            <p><strong>Multi-signature approach allows to create addresses where multiple private keys are required to access and transfer the funds. Users can own a subset of private keys, and they are able to sign transactions only if they collectively own all of the participating keys.</strong>
+            <br>
+            A full user guide is found <a href="https://docs.nault.cc/2021/04/20/multisig.html" target="_blank">here</a>.
+            </p>
+
+            <h4>1 - Create a Multisig Address</h4>
+            <p>Add 2 or more Nano addresses to form a new multisig address.<br>
+            If you (or the participants) don't have any, they can be generated with the <a routerLink="/keygenerator" class="name">Keypair Generator</a> and stored safely.
+            </p>
+            <div>
+              <div class="uk-alert uk-alert-danger nlt-inline-alert">
+                <div class="icon-column">
+                  <div uk-icon="icon: warning; ratio: 2;"></div>
+                </div>
+                <p>
+                  Each address MUST have a known corresponding Private Key.<br>
+                  This multisig is "m of m", meaning all keys must be available. <strong>Losing one key will invalidate the address!</strong><br>
+                </p>
+              </div>
+            </div>
+            <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
+              MORE INFO
+              <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
+            </div>
+            <div *ngIf="showAdvancedOptions">
+              <p>To simulate "m of n" for 3 participants the following sharing scheme can be used:</p>
+              <ul>
+                <li>User 1 genererates key A and B. Shares key A with user 2 and key B with user 3.</li>
+                <li>User 2 genererates key C and shares it with user 3.</li>
+                <li>User 1 will own A and B. User 2 will own A and C. User 3 will own B and C.</li>
+              </ul>
+              <p>By doing this you ensure no single user can take the funds but also ensure that one user can lose both their keys and still allow full recover among the remaining two.</p>
+            </div>
+
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Participating Addresses <span uk-icon="icon: info;" uk-tooltip title="Addresses to participate in the multisig address"></span></label>
+                <div class="uk-form-controls">
+                  <ul class="uk-list uk-list-striped">
+                    <li *ngFor="let account of storedAccounts">
+                      <div uk-grid>
+                        <div class="uk-width-5-6 uk-text-truncate">
+                          <ng-container>
+                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                          </ng-container>
+                        </div>
+                        <div class="action-remove uk-width-1-6 uk-text-right">
+                          <a (click)="removeSelectedAccount(account)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div *ngIf="!showAddBox" class="add-button uk-width-auto" (click)="setFocus()"><span uk-icon="icon: plus"></span> Add address</div>
+                      <div *ngIf="showAddBox" class="uk-inline uk-width-1-1">
+                        <a class="uk-form-icon uk-form-icon-flip second-icon" uk-icon="icon: plus" (click)="addAccount()" uk-tooltip title="Add address"></a>
+                        <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('accountAdd','account')" uk-tooltip title="Scan from QR code"></a>
+                        <input (keyup)="validateAccountAdd()" (keyup.enter)="addAccount()" [(ngModel)]="accountAdd" class="uk-input" [ngClass]="{ 'uk-form-danger': accountAddStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off" #accountAddFocus>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Multisig Address <span uk-icon="icon: info;" uk-tooltip title="Final account to use with multisig transactions"></span></label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1 multisig-result">
+                    <div uk-grid>
+                      <div *ngIf="createdMultisig == ''" class="uk-margin-small-bottom">...</div>
+                      <div *ngIf="createdMultisig !== ''">
+                        <div class="uk-margin-small-bottom"><app-nano-account-id [accountID]="createdMultisig" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                        <a title="Copy Address To Clipboard" ngxClipboard [cbContent]="createdMultisig" (cbOnSuccess)="copied()" uk-tooltip>Copy address to clipboard</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div *ngIf="createdMultisig !== ''" class="uk-alert uk-alert-danger nlt-inline-alert">
+                <div class="icon-column">
+                  <div uk-icon="icon: warning; ratio: 2;"></div>
+                </div>
+                <p>
+                  Before funding the multisig address, make sure that you added the correct participating addresses above.<br>
+                </p>
+              </div>
+            </div>
+            
+            <div class="uk-inline uk-width-1-1">
+              <div uk-grid>
+                <div class="uk-width-1-3@l uk-width-1-1">
+                  <button class="uk-button uk-button-primary uk-width-1-1" [disabled]="storedAccounts.length < 2" (click)="generateMultisig()">GENERATE MULTISIG</button>
+                </div>
+                <div class="uk-width-1-3@l uk-width-1-1">
+                  <button class="uk-button uk-button-primary uk-width-1-1" (click)="reset()">RESET</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="uk-card uk-card-default" style="margin-top: 20px;">
+          <div class="uk-card-header uk-form-horizontal">
+            <h4>2 - Create a Multisig Transaction</h4>
+            <p>Create a SEND, RECEIVE or CHANGE block using the Remote Signing method.</p>
+            
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Multisig Address</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('multisig','account')" uk-tooltip title="Scan from QR code"></a>
+                    <a *ngIf="multisigAccount !== ''" class="uk-form-icon uk-form-icon-flip second-icon" ngxClipboard [cbContent]="multisigAccount" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account" uk-tooltip></a>
+                    <input (keyup)="validateMultisig()" (keyup.enter)="navigateAccount()" [(ngModel)]="multisigAccount" class="uk-input" [ngClass]="{ 'uk-form-success': multisigAccountStatus === 1, 'uk-form-danger': multisigAccountStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <div uk-grid>
+                <div class="uk-width-1-3@l uk-width-1-1">
+                  <button class="uk-button uk-button-primary uk-width-1-1" (click)="navigateAccount()">CREATE BLOCK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="uk-card-header uk-form-horizontal">
+            <h4>3 - Multisig for Participants</h4>
+            <p>If multiple co-signers, enter the data that was shared with you to participate in the signing procedure.</p>
+            
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text2">Signing Data</label>
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1">
+                    <input (keyup)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="uk-inline uk-width-1-1">
+              <div uk-grid>
+                <div class="uk-width-1-3@l uk-width-1-1">
+                  <button class="uk-button uk-button-primary uk-width-1-1" (click)="navigateBlock(unsignedBlock)">SIGN</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
