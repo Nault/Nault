@@ -86,12 +86,17 @@
         <br>
 
         <div *ngIf="shouldSign" class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
-          <span><strong>Signing Method</strong></span><span uk-icon="icon: info;" uk-tooltip title="The block is signed with a private key. If using the build-in wallet, it first needs to be created using any of the available methods."></span><br>
-          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[0]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[0]}}</label>
-          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[1]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[1]}}</label>
-          <label class="uk-margin-medium-right"><input class="uk-radio" type="radio" name="signtype" value={{signTypes[2]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[2]}}</label>
+          <span><strong>Signing Method </strong></span><span uk-icon="icon: info;" uk-tooltip title="The block is signed with a private key. If using the build-in wallet, it first needs to be created using any of the available methods."></span><br>
+          <div class="uk-inline uk-width-1-1" style="margin-top: 10px; max-width: 1000px;">
+            <div uk-grid>
+              <div class="uk-width-1-4@m" style="margin-top: 10px !important;"><label><input class="uk-radio" type="radio" name="signtype" value={{signTypes[0]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[0]}}</label></div>
+              <div class="uk-width-1-4@m" style="margin-top: 10px !important;"><label><input class="uk-radio" type="radio" name="signtype" value={{signTypes[1]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[1]}}</label></div>
+              <div class="uk-width-1-4@m" style="margin-top: 10px !important;"><label><input class="uk-radio" type="radio" name="signtype" value={{signTypes[2]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[2]}}</label></div>
+              <div class="uk-width-1-4@m" style="margin-top: 10px !important;"><label><input class="uk-radio" type="radio" name="signtype" value={{signTypes[3]}} [(ngModel)]="signTypeSelected" (change)="signTypeChange()"> {{signTypes[3]}}</label></div>
+            </div>
+          </div>
           <br><br>
-          <span><strong>Proof of Work</strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published. The threshold of 1x is normally ok but you may need higher if the network is saturated with transactions and you want it prioritized. Custom multiplier only works for local PoW source CPU/GPU."></span><br>
+          <span><strong>Proof of Work </strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published. The threshold of 1x is normally ok but you may need higher if the network is saturated with transactions and you want it prioritized. Custom multiplier only works for local PoW source CPU/GPU."></span><br>
           <div class="uk-inline uk-width-auto">
             <select class="uk-select" [(ngModel)]="selectedThreshold" (change)="changeThreshold()">
               <option *ngFor="let option of thresholds" [value]="option.value">{{ option.name }}</option>
@@ -141,9 +146,9 @@
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
                         <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
-                        <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="privkeyChange(sourcePriv)" placeholder="Private key or Expanded private key" autocomplete="off">
+                        <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" maxLength="128" id="source-wallet" type="text" (ngModelChange)="privkeyChange(sourcePriv)" placeholder="Private key or Expanded private key" autocomplete="off">
                       </div>
-                      <label><input class="uk-checkbox" type="checkbox" name="expanded" value='expanded' [(ngModel)]="privateKeyExpanded" (change)="privkeyChange(sourcePriv)"> Expanded private key</label><span uk-icon="icon: info;" uk-tooltip title="If using a 64 or 128 char expanded key."></span>
+                      <label><input class="uk-checkbox" type="checkbox" name="expanded" value='expanded' [(ngModel)]="privateKeyExpanded" (change)="privkeyChange(sourcePriv)"> Expanded private key </label><span uk-icon="icon: info;" uk-tooltip title="If using a 64 or 128 char expanded key."></span>
                     </div>
                   </div>
                 </div>
@@ -151,6 +156,104 @@
             </div>
           </div>
           <!-- END Private key-->
+
+          <!-- Multisig-->
+          <div *ngIf="signTypeSelected === signTypes[3]">
+            <div class="uk-width-1-1 narrow-div">
+              <p>Each participant of the multisig will provide their key. Enter number of participants, copy the signing link and share it with the others.</p>
+              <div class="uk-form-horizontal">
+                <div class="uk-margin">
+                  <label class="uk-form-label" for="participants">Participants <span uk-icon="icon: info;" uk-tooltip title="Number of participants to multi-sign including yourself"></span></label>
+                  <div class="uk-form-controls">
+                    <div class="uk-inline uk-width-1-1">
+                      <input [(ngModel)]="participants" class="uk-input uk-margin-small-bottom {{validParticipants ? '':'uk-form-danger'}}" [disabled]="this.activeStep > 1" id="participants" type="number" maxLength="3" (ngModelChange)="participantChange(participants)" placeholder="2 to 999" autocomplete="off">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="uk-width-1-1 narrow-div">
+              <div class="uk-form-horizontal">
+                <div class="uk-margin">
+                  <label class="uk-form-label" for="source-wallet">Private Key <span uk-icon="icon: info;" uk-tooltip title="Any private key that is part of the multisig address you want to sign."></span></label>
+                  <div class="uk-form-controls">
+                    <div class="uk-width-1-1">
+                      <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
+                        <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
+                        <input [(ngModel)]="sourcePriv" class="uk-input uk-margin-small-bottom {{validPrivkey ? '':'uk-form-danger'}}" [disabled]="this.activeStep > 1" maxLength="64" id="source-wallet" type="text" (ngModelChange)="privkeyChangeMulti(sourcePriv)" placeholder="Private key" autocomplete="off">
+                      </div>
+                    </div>
+                  </div>
+                  <label *ngIf="!isDesktop"><input class="uk-checkbox" type="checkbox" name="multitab" value='multitab' [(ngModel)]="tabChecked" (change)="tabModeCheck()"> Multi-Tab Mode </label><span *ngIf="!isDesktop" uk-icon="icon: info;" uk-tooltip title="If using one browser tab for each private key on the same computer."></span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="this.activeStep > 1">
+              <div class="uk-width-1-1 narrow-div" >
+                <div class="uk-form-horizontal">
+                  <div class="uk-margin">
+                    <label class="uk-form-label" for="output-data">Output Data <span uk-icon="icon: info;" uk-tooltip title="Copy this to the 'Input Data' for each participant"></span></label>
+                    <div class="uk-form-controls">
+                      <div class="uk-width-1-1">
+                        <div class="uk-inline uk-width-1-1" style="height: 40px; margin-bottom: 10px;">
+                          <a *ngIf="outputMultisigData !== ''" class="uk-form-icon uk-form-icon-flip second-icon" ngxClipboard [cbContent]="outputMultisigData" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Output Value" uk-tooltip></a>
+                          <a *ngIf="outputMultisigData !== ''" class="uk-form-icon uk-form-icon-flip icon-qr-code" (click)="qrModal.show()" uk-tooltip title="Show QR Code"></a>
+                          <input [(ngModel)]="outputMultisigData" class="uk-input uk-margin-small-bottom" style="padding-right:70px !important" disabled id="output-data" type="text" placeholder="" autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="uk-width-1-1 narrow-div" >
+                <div class="uk-form-horizontal">
+                  <div class="uk-margin">
+                    <label class="uk-form-label">Input Data <span uk-icon="icon: info;" uk-tooltip title="Output data from participants to be added"></span></label>
+                    <div class="uk-form-controls">
+                      <ul class="uk-list uk-list-striped">
+                        <li *ngFor="let data of inputMultisigData">
+                          <div uk-grid>
+                            <div class="uk-width-5-6 uk-text-truncate">
+                              <ng-container>
+                                <div class="uk-text-truncate">{{ data }}</div>
+                              </ng-container>
+                            </div>
+                            <div class="action-remove uk-width-1-6 uk-text-right">
+                              <a (click)="removeSelectedData(data)" class="uk-text-danger" title="Remove From List" uk-tooltip><span uk-icon="icon: close;"></span></a>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div *ngIf="!showAddBox && !this.isInputAddDisabled" class="add-button uk-width-auto" (click)="setFocus()"><span uk-icon="icon: plus"></span> Add participant data from step {{(this.activeStep - 1)}}</div>
+                          <div *ngIf="showAddBox" class="uk-inline uk-width-1-1">
+                            <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: plus" (click)="addMultisigInputData()" uk-tooltip title="Add input data"></a>
+                            <input [(ngModel)]="inputAdd" [disabled]="this.isInputAddDisabled" maxLength="130" class="uk-input {{validInputAdd ? '':'uk-form-danger'}}" type="text" placeholder="{{(this.activeStep - 1) + ':abc...'}}" (ngModelChange)="inputAddChange(inputAdd)" (keyup.enter)="addMultisigInputData()" autocomplete="off" #dataAddFocus>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="uk-width-1-1 narrow-div">
+              <div class="uk-inline uk-width-1-1">
+                <div uk-grid>
+                  <div class="uk-width-1-2@l" style="max-width: 350px; margin-top: 20px !important;">
+                    <a class="uk-button uk-button-primary uk-width-1-1" ngxClipboard [cbContent]="multisigLink" (cbOnSuccess)="copied()">COPY SIGNING LINK</a>
+                  </div>
+                  <div class="uk-width-1-2@l" style="max-width: 350px; margin-top: 20px !important;">
+                    <button class="uk-button uk-button-primary uk-width-1-1" (click)="resetMultisig()">RESET MULTISIG</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END Multisig-->
 
           <span class="uk-text-danger">{{signatureMessage}}</span>
           <span class="uk-text-success">{{signatureMessageSuccess}}</span>
@@ -178,10 +281,11 @@
 
         <div *ngIf="!processedHash" uk-grid>
           <div class="uk-width-1-2@s">
-            <a class="uk-button uk-button-danger uk-width-1-1" routerLink="/qr-scan" routerLinkActive="active">Cancel</a>
+            <a class="uk-button uk-button-danger uk-width-1-1" (click)="cancel()">Cancel</a>
           </div>
           <div class="uk-width-1-2@s">
-            <button *ngIf="!confirmingTransaction && shouldSign" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
+            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected !== signTypes[3]" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
+            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected === signTypes[3]" class="uk-button uk-button-primary uk-width-1-1" (click)="startMultisig()" [disabled]="!this.validPrivkey || !this.validParticipants || finalSignature || (this.activeStep > 1 && !this.isInputAddDisabled)">{{this.activeStep !== 4 ? (this.activeStep === 1 ? 'Start Multi-signing' : 'Step '+ (this.activeStep - 1) + '/3 | Next') : 'Step '+ (this.activeStep - 1) + '/3 | Final Step'}}</button>
             <button *ngIf="confirmingTransaction && shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
             <button *ngIf="!confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmBlock()">Confirm & Process</button>
             <button *ngIf="confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
@@ -212,7 +316,7 @@
     <div class="uk-modal-body modal-qr-body">
       <p><a routerLink="/qr-scan" routerLinkActive="active" class="uk-modal-close">Scan</a> the signed QR with an online Nault, or copy the "Signed Block" to <a routerLink="/remote-signing" routerLinkActive="active" class="uk-modal-close">Step 3</a>.</p>
       
-      <div *ngIf="finalSignature" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
+      <div *ngIf="qrString && finalSignature" class="uk-width-1-1 uk-text-center" style="display: flex; justify-content: center;">
         <span class="uk-text-small" uk-tooltip title="Signed block string to be copied to remote device" style="overflow-wrap: anywhere;"><strong>Signed Block</strong></span>
         <ul class="uk-iconnav" style="padding-left: 0;">
           <li><a ngxClipboard [cbContent]="qrString" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy" uk-tooltip></a></li>
@@ -225,6 +329,21 @@
 
       <div class="uk-width-1-1 uk-text-center">
         <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" alt="QR code"><br />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for output data QR -->
+<div id="qr-code-modal" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-body">
+      <div class="uk-width-1-1 uk-text-center">
+        <img *ngIf="qrCodeImageOutput else qrCodeGenerating" [src]="qrCodeImageOutput" class="qr-code" title="Output Data">
+        <ng-template #qrCodeGenerating>
+          <div class="qr-code-placeholder uk-align-center"><div uk-spinner="ratio: 2;"></div></div>
+        </ng-template>
       </div>
     </div>
   </div>

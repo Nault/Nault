@@ -46,13 +46,6 @@ th.hidden-column, td.hidden-column {
 	margin-bottom: 3px;
 }
 
-.account-amounts-column .account-amounts-primary .amount-integer,
-.account-amounts-column .account-amounts-primary .amount-fractional,
-.account-amounts-column .account-amounts-primary .currency-name {
-	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-	font-size: 16px;
-}
-
 .account-amounts-column .account-amounts-primary .amount-integer {
 	font-weight: 700;
 }

@@ -40,9 +40,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   walletAccount = null;
 
+  timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
 
   loadingAccountDetails = false;
+  loadingIncomingTxList = false;
+  loadingTxList = false;
   showAdvancedOptions = false;
   showEditAddressBook = false;
   addressBookModel = '';
@@ -118,7 +121,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
-      this.remoteVisible = params.sign === 1;
+      this.remoteVisible = params.sign === '1';
+      this.showAdvancedOptions = params.sign === '1';
     }
 
     this.routerSub = this.route.events.subscribe(event => {
@@ -241,14 +245,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async loadAccountDetails(refresh= false) {
     if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
-    setTimeout(() => this.statsRefreshEnabled = true, 5000);
+
+    if (this.timeoutIdAllowingRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingRefresh);
+    }
+    this.timeoutIdAllowingRefresh = setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
     this.pendingBlocks = [];
 
-    if (this.accountID !== this.router.snapshot.params.account) {
+    // if (this.accountID !== this.router.snapshot.params.account) {
       this.clearAccountVars();
       this.loadingAccountDetails = true;
-    }
+    // }
 
     this.accountID = this.router.snapshot.params.account;
     this.generateReceiveQR(this.accountID);
@@ -272,12 +280,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       let pendingBalance = '0';
       let pending;
 
+      this.pendingBlocks = [];
+      this.loadingIncomingTxList = true;
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
         pending = await this.api.pendingLimitSorted(this.accountID, 50, minAmount.toString(10));
       } else {
         pending = await this.api.pendingSorted(this.accountID, 50);
       }
+      this.loadingIncomingTxList = false;
 
       if (pending && pending.blocks) {
         for (const block in pending.blocks) {
@@ -287,7 +298,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             amount: pending.blocks[block].amount,
             amountRaw: new BigNumber( pending.blocks[block].amount || 0 ).mod(this.nano),
             local_timestamp: pending.blocks[block].local_timestamp,
-            addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
+            addressBookName: (
+                this.addressBook.getAccountName( pending.blocks[block].source )
+              || this.getAccountLabel( pending.blocks[block].source, null )
+            ),
             hash: block,
             loading: false,
             received: false,
@@ -319,6 +333,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.loadingAccountDetails = false;
   }
 
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.wallet.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
+  }
+
   ngOnDestroy() {
     if (this.routerSub) {
       this.routerSub.unsubscribe();
@@ -335,8 +359,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async getAccountHistory(account, resetPage = true) {
     if (resetPage) {
+      this.accountHistory = [];
       this.pageSize = 25;
     }
+
+    this.loadingTxList = true;
+
     const history = await this.api.accountHistory(account, this.pageSize, true);
     const additionalBlocksInfo = [];
 
@@ -354,13 +382,22 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             additionalBlocksInfo.push({ hash: h.hash, link: h.link });
           } else if (h.subtype === 'change') {
             h.link_as_account = h.representative;
-            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           } else {
             h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
-            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           }
         } else {
-          h.addressBookName = this.addressBook.getAccountName(h.account) || null;
+          h.addressBookName = (
+              this.addressBook.getAccountName(h.account)
+            || this.getAccountLabel(h.account, null)
+          );
         }
 
         if (
@@ -390,13 +427,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           const blockData = blocksInfo.blocks[block];
 
           accountHistoryBlock.link_as_account = blockData.block_account;
-          accountHistoryBlock.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
+          accountHistoryBlock.addressBookName = (
+              this.addressBook.getAccountName(blockData.block_account)
+            || this.getAccountLabel(blockData.block_account, null)
+          );
         }
       }
 
     } else {
       this.accountHistory = [];
     }
+
+    this.loadingTxList = false;
   }
 
   async loadMore() {
@@ -544,7 +586,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
-    this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
+    this.addressBookMatch = (
+        this.addressBook.getAccountName(this.toAccountID)
+      || this.getAccountLabel(this.toAccountID, null)
+    );
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     this.toAccountStatus = null;

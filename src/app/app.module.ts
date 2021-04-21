@@ -36,6 +36,7 @@ import { FiatPipe } from './pipes/fiat.pipe';
 import { AmountSplitPipe } from './pipes/amount-split.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
+import { NanoIdenticonComponent } from './components/helpers/nano-identicon/nano-identicon.component';
 import {PowService} from './services/pow.service';
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
@@ -57,6 +58,7 @@ import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
+import {MusigService} from './services/musig.service';
 
 // QR code module
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
@@ -65,6 +67,8 @@ import { ConverterComponent } from './components/converter/converter.component';
 import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { MultisigComponent } from './components/multisig/multisig.component';
+import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +91,7 @@ import { environment } from '../environments/environment';
     AmountSplitPipe,
     ImportWalletComponent,
     NanoAccountIdComponent,
+    NanoIdenticonComponent,
     ImportAddressBookComponent,
     CurrencySymbolPipe,
     RepresentativesComponent,
@@ -101,6 +106,8 @@ import { environment } from '../environments/environment';
     ConverterComponent,
     QrGeneratorComponent,
     InstallWidgetComponent,
+    MultisigComponent,
+    KeygeneratorComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,6 +143,7 @@ import { environment } from '../environments/environment';
     NgbActiveModal,
     QrModalService,
     DeeplinkService,
+    MusigService,
   ],
   bootstrap: [AppComponent]
 })

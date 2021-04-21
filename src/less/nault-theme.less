@@ -121,6 +121,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	color: #81809f;
 }
 
+.text-rep-change {
+	color: #A478E3;
+}
+
 a.fiat-currency-ticker {
 	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 	color: #81809f !important;
@@ -321,6 +325,10 @@ input[type=number] {
 	font-family: 'Roboto Mono', monospace;
 }
 
+.block-hash-monospace {
+	font-family: 'Roboto Mono', monospace;
+}
+
 .nano-address-clickable {
 	display: inline-block;
 	border-bottom: 2px solid transparent;
@@ -334,6 +342,22 @@ input[type=number] {
 
 	&:hover {
 		.nano-address-clickable-hover-styles();
+	}
+}
+
+.block-hash-clickable {
+	text-decoration: none;
+	display: inline-block;
+	border-bottom: 2px solid transparent;
+	transition: border-color 100ms ease-in-out;
+
+	&, &:hover {
+		color: @global-primary-background;
+		text-decoration: none;
+	}
+
+	&:hover {
+		border-color: currentcolor;
 	}
 }
 
@@ -404,6 +428,10 @@ input[type=number] {
 	color: #D5AF4E;
 }
 
+.natricon-placeholder > img {
+	opacity: 0.2;
+}
+
 // Unlock Wallet modal
 .password-input.uk-form-danger {
 	border-color: #F79743;
@@ -414,7 +442,205 @@ input[type=number] {
 	color: #F79743;
 }
 
+// Account Snippet (used for operations to/from)
+.account-snippet-container {
+	margin: -10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.account-snippet {
+	flex: 1;
+	margin: 10px;
+
+	max-width: calc(50% - 20px);
+
+	.force-one-per-row() {
+		max-width: unset;
+		flex-basis: 100%;
+	}
+	@media (max-width: 849px) {
+		.force-one-per-row();
+	}
+	@media (min-width: 940px) and (max-width: 1200px) {
+		.force-one-per-row();
+	}
+
+	> .uk-card {
+		> .uk-card-header, > .uk-card-body {
+			padding: 10px 15px;
+		}
+
+		min-width: 235px;
+		&.identicons-enabled {
+			min-width: 305px;
+		}
+	}
+
+	.snippet-caption {
+		margin-bottom: 15px;
+	}
+
+	.account-container {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		.nano-identicon {
+			display: inline-block;
+			width: 54px;
+			height: 54px;
+			margin-right: 20px;
+			margin-left: 1px;
+
+			.canvas-container canvas {
+				border-radius: 3px;
+			}
+		}
+
+		.identicon-address-book-row {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			min-height: 55px;
+		}
+
+		.account-label {
+			padding: 15px 12px;
+		}
+
+		.nano-address-clickable {
+			margin-top: 10px;
+		}
+	}
+
+	.snippet-address-actions {
+		margin-bottom: 5px !important;
+		flex-shrink: 0;
+		padding-left: 10px;
+	}
+
+	@media (max-width: 349px) {
+		.nano-address-clickable > .uk-flex {
+			flex-wrap: wrap;
+			width: 125px;
+
+			.nano-address-middle {
+				width: 0;
+			}
+
+			.nano-address-suffix {
+				margin-left: 69px; // Nice
+			}
+		}
+	}
+}
+
+// Accounts list
+.accounts-list {
+	.account-column {
+		min-width: 155px;
+
+		&.identicons-enabled {
+			min-width: 225px;
+		}
+	}
+
+	.nano-identicon {
+		width: 54px;
+		height: 54px;
+		margin-right: 25px;
+
+		.canvas-container canvas {
+			border-radius: 3px;
+		}
+	}
+
+	.nano-address-clickable {
+		margin-top: 2px;
+	}
+
+	.account-amounts-column .account-amounts-primary .amount-integer,
+	.account-amounts-column .account-amounts-primary .amount-fractional,
+	.account-amounts-column .account-amounts-primary .currency-name {
+		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+		font-size: 16px;
+	}
+
+	@media (max-width: 599px) {
+		.nano-identicon {
+			margin-right: 20px;
+		}
+
+		.nano-address-clickable > .uk-flex {
+			flex-wrap: wrap;
+			width: 125px;
+
+			.nano-address-middle {
+				width: 0;
+			}
+
+			.nano-address-suffix {
+				margin-left: 69px; // Nice
+			}
+		}
+
+		.account-amounts-column .account-amounts-primary .incoming-label {
+			font-size: 10px;
+			padding: 2px 8px;
+			margin-right: 6px;
+			margin-bottom: 4px;
+		}
+
+		.account-amounts-column .account-amounts-primary .amount-integer,
+		.account-amounts-column .account-amounts-primary .amount-fractional,
+		.account-amounts-column .account-amounts-primary .currency-name {
+			font-size: 13px;
+		}
+
+		.account-amounts-column .account-amounts-primary .currency-name {
+			display: block;
+			margin-top: -2px;
+		}
+
+		.account-amounts-converted {
+			font-size: 13px;
+			margin-top: 10px;
+		}
+	}
+}
+
+// Account Details header
+.account-details-header {
+	.nano-identicon {
+		width: 96px;
+		height: 96px;
+		margin-right: -5px;
+
+		.canvas-container canvas {
+			border-radius: 6px;
+		}
+	}
+
+	@media (max-width: 599px) {
+		.nano-identicon {
+			flex-basis: 100%;
+		}
+	}
+}
+
 // Transactions list
+.icon-transactions-refresh {
+	&.spinner {
+		margin-left: 3px;
+		margin-right: 2px;
+	}
+
+	&.disabled {
+		cursor: default;
+	}
+}
+
 .transactions-list {
 	.type-column {
 		min-width: 25px;
@@ -432,12 +658,20 @@ input[type=number] {
 	}
 
 	.account-column {
-		.account-label {
-			margin-bottom: 6px;
+		.nano-identicon {
+			display: inline-block;
+			width: 27px;
+			height: 27px;
+			margin-right: 11px;
+			margin-left: 1px;
+
+			.canvas-container canvas {
+				border-radius: 3px;
+			}
 		}
 
 		.account-label-placeholder {
-			height: 32px;
+			height: 33px;
 			width: 1px;
 			display: inline-block;
 			vertical-align: -14px;
@@ -445,6 +679,7 @@ input[type=number] {
 
 		.nano-address-clickable {
 			flex-shrink: 0;
+			margin-top: 3px;
 		}
 
 		.block-hash {
@@ -459,7 +694,7 @@ input[type=number] {
 		}
 
 		.arrow-down {
-			margin: 3px 0 14px -2px;
+			margin: 3px 0 15px -2px;
 		}
 	}
 
@@ -754,7 +989,7 @@ input[type=number] {
 	margin-bottom: @nlt-intro-margin;
 }
 
-@media (min-width: @breakpoint-xsmall-max) {
+@media (min-width: 960px) {
 	.nlt-button-group button {
 		margin-left: @global-margin;
 	}

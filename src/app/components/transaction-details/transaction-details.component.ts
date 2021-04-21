@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
+import {WalletService} from '../../services/wallet.service';
 import {ApiService} from '../../services/api.service';
+import {NotificationService} from '../../services/notification.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
@@ -16,7 +18,8 @@ export class TransactionDetailsComponent implements OnInit {
   routerSub = null;
   transaction: any = {};
   hashID = '';
-  blockType = 'send';
+  blockType = '';
+  loadingBlock = false;
   isStateBlock = true;
   isUnconfirmedBlock = false;
   blockHeight = -1;
@@ -31,11 +34,14 @@ export class TransactionDetailsComponent implements OnInit {
 
   amountRaw = new BigNumber(0);
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private addressBook: AddressBookService,
-              private api: ApiService,
-              public settings: AppSettingsService
+  constructor(
+    private walletService: WalletService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private addressBook: AddressBookService,
+    private api: ApiService,
+    private notifications: NotificationService,
+    public settings: AppSettingsService
   ) { }
 
   async ngOnInit() {
@@ -59,14 +65,20 @@ export class TransactionDetailsComponent implements OnInit {
     this.blockHeight = -1;
     this.showBlockData = false;
     let legacyFromAccount = '';
+    this.blockType = '';
     this.amountRaw = new BigNumber(0);
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
+
+    this.loadingBlock = true;
     const blockData = await this.api.blocksInfo([hash]);
-    if (!blockData || blockData.error || !blockData.blocks[hash]) {
+
+    if ( !blockData || blockData.error || !blockData.blocks[hash] ) {
+      this.loadingBlock = false;
       this.transaction = null;
       return;
     }
+
     const hashData = blockData.blocks[hash];
     const hashContents = JSON.parse(hashData.contents);
     hashData.contents = hashContents;
@@ -76,9 +88,10 @@ export class TransactionDetailsComponent implements OnInit {
     this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
     this.blockHeight = hashData.height;
 
-    this.blockType = hashData.contents.type;
-    if (this.blockType === 'state') {
+    const blockType = hashData.contents.type;
+    if (blockType === 'state') {
       const isOpen = hashData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000';
+
       if (isOpen) {
         this.blockType = 'open';
       } else {
@@ -103,8 +116,10 @@ export class TransactionDetailsComponent implements OnInit {
         }
       }
     } else {
+      this.blockType = blockType;
       this.isStateBlock = false;
     }
+
     if (hashData.amount) {
       this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
     }
@@ -136,9 +151,27 @@ export class TransactionDetailsComponent implements OnInit {
     this.toAccountID = toAccount;
     this.fromAccountID = fromAccount;
 
-    this.fromAddressBook = this.addressBook.getAccountName(fromAccount);
-    this.toAddressBook = this.addressBook.getAccountName(toAccount);
+    this.fromAddressBook = (
+        this.addressBook.getAccountName(fromAccount)
+      || this.getAccountLabel(fromAccount, null)
+    );
 
+    this.toAddressBook = (
+        this.addressBook.getAccountName(toAccount)
+      || this.getAccountLabel(toAccount, null)
+    );
+
+    this.loadingBlock = false;
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   getBalanceFromHex(balance) {
@@ -147,6 +180,11 @@ export class TransactionDetailsComponent implements OnInit {
 
   getBalanceFromDec(balance) {
     return new BigNumber(balance, 10);
+  }
+
+  copied() {
+    this.notifications.removeNotification('success-copied');
+    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
 }

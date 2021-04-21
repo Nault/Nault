@@ -13,6 +13,15 @@
   font-size: 10px;
 }
 
+.icon-qr-code {
+  width: 19px;
+  height: 19px;
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: currentcolor;
+  -webkit-mask-image: url('assets/img/qr-code.svg');
+  mask-image: url('assets/img/qr-code.svg');
+}
 
 @media (max-width: 12450px) {
   .br-spacer {
@@ -23,10 +32,6 @@
   .br-spacer {
     display: none;
   }
-}
-
-.uk-dropdown-spacing {
-  padding: 5px 0;
 }
 
 .block-qr {
@@ -54,4 +59,45 @@
   .modal-qr-body {
       padding: 30px 5px;
   }
+}
+
+.uk-modal-body .qr-code-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  height: 350px;
+  background: #FFF;
+  margin-bottom: 0;
+}
+.uk-modal-body .qr-code {
+  width: 350px;
+  height: 350px;
+  border-radius: 6px;
+}
+@media (max-width: 1199px) {
+  .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+      min-width: 350px;
+      min-height: 350px;
+      width: 60%;
+      height: auto;
+  }
+}
+@media (max-width: 699px) {
+  .uk-modal-body .qr-code-placeholder, .uk-modal-body .qr-code {
+      width: 80%;
+      height: auto;
+  }
+}
+
+.second-icon {
+  margin-right:35px;
+}
+
+.add-button {
+  cursor: pointer;
+}
+
+.add-button span {
+  vertical-align: text-bottom;
 }
