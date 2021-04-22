@@ -270,24 +270,31 @@ export class WalletService {
   }
 
   // Using full list of indexes is the latest standard with back compatability with accountsIndex
-  async loadImportedWallet(seed: string, password: string, accountsIndex: number, indexes: Array<number>) {
+  async loadImportedWallet(seed: string, password: string, accountsIndex: number, indexes: Array<number>, walletType: WalletType) {
     this.resetWallet();
 
     this.wallet.seed = seed;
     this.wallet.seedBytes = this.util.hex.toUint8(seed);
     this.wallet.password = password;
+    this.wallet.type = walletType;
 
-    // Old method
-    if (accountsIndex > 0) {
-      for (let i = 0; i < accountsIndex; i++) {
-        await this.addWalletAccount(i, false);
-      }
-    } else if (indexes) {
-      // New method (the promise ensures all wallets have been added before moving on)
-      await Promise.all(indexes.map(async (i) => {
-        await this.addWalletAccount(i, false);
-      }));
-    } else return false;
+    if (walletType === 'seed') {
+      // Old method
+      if (accountsIndex > 0) {
+        for (let i = 0; i < accountsIndex; i++) {
+          await this.addWalletAccount(i, false);
+        }
+      } else if (indexes) {
+        // New method (the promise ensures all wallets have been added before moving on)
+        await Promise.all(indexes.map(async (i) => {
+          await this.addWalletAccount(i, false);
+        }));
+      } else return false;
+    } else if (walletType === 'privateKey' || walletType === 'expandedKey') {
+      this.wallet.accounts.push(this.createSingleKeyAccount(walletType === 'expandedKey'));
+    } else { // invalid wallet type
+      return false;
+    }
 
     await this.reloadBalances();
 
@@ -302,10 +309,19 @@ export class WalletService {
     const exportData: any = {
       indexes: this.wallet.accounts.map(a => a.index),
     };
+    let secret = '';
     if (this.wallet.locked) {
-      exportData.seed = this.wallet.seed;
+      secret = this.wallet.seed;
     } else {
-      exportData.seed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password).toString();
+      secret = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password).toString();
+    }
+
+    if (this.wallet.type === 'seed') {
+      exportData.seed = secret;
+    } else if (this.wallet.type === 'privateKey') {
+      exportData.privateKey = secret;
+    } else if (this.wallet.type === 'expandedKey') {
+      exportData.expandedKey = secret;
     }
 
     return exportData;

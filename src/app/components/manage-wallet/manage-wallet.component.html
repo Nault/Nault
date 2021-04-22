@@ -30,13 +30,20 @@
         <h3 class="uk-card-title">Backup Wallet</h3>
       </div>
       <div class="uk-card-body">
-        <p *ngIf="wallet.locked">
+        <p *ngIf="wallet.locked && wallet.type === 'seed'">
           <span uk-icon="icon: lock;"></span> Unlock wallet to access the seed/mnemonic.
         </p>
-        <p *ngIf="!wallet.locked">
-          To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
-          <br>
+        <p *ngIf="wallet.locked && (wallet.type === 'privateKey' || wallet.type === 'expandedKey')">
+          <span uk-icon="icon: lock;"></span> Unlock wallet to access the private key.
+        </p>
+        <p *ngIf="!wallet.locked && wallet.type === 'seed'">
+          To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.
+        </p>
+        <p *ngIf="!wallet.locked && wallet.type === 'seed'">
           To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+        </p>
+        <p *ngIf="!wallet.locked && (wallet.type === 'privateKey' || wallet.type === 'expandedKey')">
+          To backup your private key, <a title="Copy Private Key To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Private Key copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
         </p>
       </div>
     </div>
