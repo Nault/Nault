@@ -173,6 +173,8 @@ export class SignComponent implements OnInit {
       this.participants = data;
     });
 
+    let shouldGetFromAccount = false;
+
     if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params &&
       'n_balance' in params && 'n_link' in params) {
       this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative,
@@ -235,16 +237,7 @@ export class SignComponent implements OnInit {
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance));
 
-          // get from-account info if online
-          let recipientInfo = null;
-          try {
-            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
-          } catch {}
-          if (recipientInfo && 'block_account' in recipientInfo) {
-            this.fromAccountID = recipientInfo.block_account;
-          } else {
-            this.fromAccountID = null;
-          }
+          shouldGetFromAccount = true;
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(this.previousBlock.balance);
@@ -263,17 +256,7 @@ export class SignComponent implements OnInit {
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance);
 
-          // get from-account info if online
-          let recipientInfo = null;
-          try {
-            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
-          } catch {}
-
-          if (recipientInfo && 'block_account' in recipientInfo) {
-            this.fromAccountID = recipientInfo.block_account;
-          } else {
-            this.fromAccountID = null;
-          }
+          shouldGetFromAccount = true;
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(0);
@@ -297,6 +280,21 @@ export class SignComponent implements OnInit {
     this.blockHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
 
     this.addressBookService.loadAddressBook();
+
+    // do this last since it can technically get stuck or take some time if connection is bad
+    // for example when using offline computer on ubuntu it has been reported it get stuck if not
+    // set to offline mode in the settings
+    if (shouldGetFromAccount) {
+      // get from-account info if online
+      let recipientInfo = null;
+      this.fromAccountID = null;
+      try {
+        recipientInfo = await this.api.blockInfo(this.currentBlock.link);
+      } catch {}
+      if (recipientInfo && 'block_account' in recipientInfo) {
+        this.fromAccountID = recipientInfo.block_account;
+      }
+    }
   }
 
   setFocus() {
