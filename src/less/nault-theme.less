@@ -23,8 +23,8 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 }
 
 @media (max-width: 939px) {
-	button, .uk-button {
-		margin-bottom: @nlt-intro-margin / 2!important;
+	.nlt-button-group button {
+		margin-bottom: @nlt-intro-margin / 2 !important;
 	}
 
 	h2:not(.uk-card-title):not(.uk-modal-title) {
@@ -110,6 +110,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	.spinner {
 		margin-right: 8px;
 		margin-top: -1px;
+	}
+
+	&.nlt-icon-button-inline {
+		display: inline-flex;
 	}
 }
 
@@ -652,28 +656,37 @@ input[type=number] {
 	}
 
 	.account-column {
-		.nano-identicon {
-			display: inline-block;
-			width: 27px;
-			height: 27px;
-			margin-right: 11px;
-			margin-left: 1px;
+		.account-container {
+			text-decoration: none;
 
-			.canvas-container canvas {
-				border-radius: 3px;
+			.identicon-name-row {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				height: 28px;
+				padding-bottom: 8px;
+
+				.nano-identicon {
+					display: inline-block;
+					width: 27px;
+					height: 27px;
+					margin-right: 12px;
+					margin-left: 1px;
+					flex-shrink: 0;
+
+					.canvas-container canvas {
+						border-radius: 3px;
+					}
+				}
+			}
+
+			.nano-address-clickable {
+				flex-shrink: 0;
 			}
 		}
 
-		.account-label-placeholder {
-			height: 33px;
-			width: 1px;
-			display: inline-block;
-			vertical-align: -14px;
-		}
-
-		.nano-address-clickable {
-			flex-shrink: 0;
-			margin-top: 3px;
+		.nano-address-actions {
+			margin-bottom: 11px !important;
 		}
 
 		.block-hash {
@@ -688,7 +701,7 @@ input[type=number] {
 		}
 
 		.arrow-down {
-			margin: 3px 0 15px -2px;
+			margin: 1px 0 16px -2px;
 		}
 	}
 
@@ -717,6 +730,27 @@ input[type=number] {
 		&.rep-change {
 			color: #A478E3;
 		}
+
+		.compact-actions-date {
+			margin-top: 20px;
+
+			button {
+				font-size: 12px;
+				padding: 8px 20px;
+			}
+
+			.button-container + .button-container {
+				margin-top: 10px;
+			}
+
+			.label-unconfirmed {
+				display: none;
+			}
+
+			.date-unknown {
+				display: none;
+			}
+		}
 	}
 
 	.date-column {
@@ -743,14 +777,18 @@ input[type=number] {
 	.account-column {
 		min-width: 155px;
 		width: 45%;
-
-		.nano-address-actions {
-			margin-bottom: 22px !important;
-		}
 	}
 
 	.amount-column {
 		width: 55%;
+
+		.compact-actions-date {
+			display: block;
+
+			.transaction-date {
+				font-size: 15px;
+			}
+		}
 	}
 
 	.date-column {
@@ -803,6 +841,16 @@ input[type=number] {
 				margin-left: 0;
 				display: block;
 			}
+
+			.compact-actions-date {
+				.transaction-date {
+					font-size: 14px;
+
+					.date, .time {
+						display: block;
+					}
+				}
+			}
 		}
 	}
 
@@ -810,16 +858,16 @@ input[type=number] {
 		.account-column {
 			width: 45%;
 			min-width: 210px;
-
-			.nano-address-actions {
-				margin-bottom: 11px !important;
-			}
 		}
 
 		.amount-column {
 			width: 35%;
 			text-align: left;
 			padding-left: 30px;
+
+			.compact-actions-date {
+				display: none;
+			}
 		}
 
 		.date-column {
@@ -832,15 +880,15 @@ input[type=number] {
 		.account-column {
 			width: 55%;
 			min-width: 210px;
-
-			.nano-address-actions {
-				margin-bottom: 11px !important;
-			}
 		}
 
 		.amount-column {
 			width: 25%;
 			text-align: left;
+
+			.compact-actions-date {
+				display: none;
+			}
 		}
 
 		.date-column {
