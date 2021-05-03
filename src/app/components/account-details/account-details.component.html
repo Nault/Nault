@@ -223,15 +223,17 @@
           <td class="type-column">
             <span class="type uk-text-small" uk-icon="icon: plus-circle; ratio: 1.2;"></span>
           </td>
-          <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
+          <td class="account-column uk-visible-toggle uk-text-truncate">
             <div uk-grid class="uk-flex-nowrap">
               <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                <a [routerLink]="'/account/' + pending.account" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
-                  <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                  <span class="account-label-placeholder"></span><span class="account-label" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</span><br>
-                  <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <div class="identicon-name-row uk-text-truncate">
+                    <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
                     <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
-                  </span>
+                  </div>
                 </a>
               </div>
               <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
@@ -242,25 +244,35 @@
             </div>
             <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
           </td>
+          <ng-template #transactionActionsOrDate>
+            <ng-container *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
+              <div class="button-container" *ngIf="walletAccount">
+                <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
+                <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button nlt-icon-button-inline"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
+              </div>
+              <div class="button-container" *ngIf="remoteVisible">
+                <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">SIGN BLOCK</button>
+              </div>
+            </ng-container>
+            <ng-template #noActionsAvailable>
+              <span class="transaction-date" [class.uk-text-muted]="!pending.local_timestamp" [class.date-unknown]="!pending.local_timestamp">
+                <span class="date">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
+                <span class="time">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
+              </span>
+            </ng-template>
+          </ng-template>
           <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
             <span class="uk-text-small">Ready to receive</span><br>
             <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
             <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
             <span class="currency-name">NANO</span>
-          </td>
-          <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
-            <div class="button-container" *ngIf="walletAccount">
-              <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
-              <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
-            </div>
-            <div class="button-container" *ngIf="remoteVisible">
-              <button class="uk-button uk-button-primary uk-text-center uk-width-auto remote-sign" type="button" (click)="generateReceive(pending.hash)">SIGN BLOCK</button>
+            <div class="compact-actions-date">
+              <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
             </div>
           </td>
-          <ng-template #noActionsAvailable>
-            <td class="date-column uk-text-middle uk-text-truncate uk-text-muted" *ngIf="!pending.local_timestamp">N/A</td>
-            <td class="date-column uk-text-middle uk-text-truncate" *ngIf="pending.local_timestamp">{{ pending.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</td>
-          </ng-template>
+          <td class="date-column uk-text-middle uk-text-truncate">
+            <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
+          </td>
         </tr>
 
         <!-- Don't show if "Loading transactions..." is already shown -->
@@ -277,12 +289,14 @@
           <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
             <div uk-grid class="uk-flex-nowrap">
               <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-link-text uk-text-truncate" title="View Account Details" uk-tooltip>
-                  <app-nano-identicon scale="6" [accountID]="history.link_as_account || history.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                  <span class="account-label-placeholder"></span><span class="account-label" *ngIf="history.addressBookName">{{ history.addressBookName }}</span><br>
-                  <span class="nano-address-clickable nano-address-monospace uk-text-truncate">
+                <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <div class="identicon-name-row uk-text-truncate">
+                    <app-nano-identicon scale="6" [accountID]="history.link_as_account || history.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="history.addressBookName">{{ history.addressBookName }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
                     <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="auto"></app-nano-account-id>
-                  </span>
+                  </div>
                 </a>
               </div>
               <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom" style="margin-bottom: 11px !important; flex-shrink: 0;">
@@ -293,6 +307,16 @@
             </div>
             <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
           </td>
+          <ng-template #transactionActionsOrDate>
+            <span class="transaction-date" [class.uk-text-muted]="!history.local_timestamp" [class.date-unknown]="!history.local_timestamp">
+              <span class="date">{{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
+              <span class="time"> {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
+              <span class="unconfirmed-text" *ngIf="(history.confirmed === false)">
+                <br>
+                <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
+              </span>
+            </span>
+          </ng-template>
           <td [ngClass]="{
             'amount-column': true,
             'uk-text-middle': true,
@@ -335,14 +359,13 @@
               <span class="amount-integer">{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
               <span class="currency-name">NANO</span>
+              <div class="compact-actions-date text-half-muted">
+                <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
+              </div>
             </span>
           </td>
-          <td class="date-column uk-text-middle uk-text-truncate" [class.uk-text-muted]="!history.local_timestamp">
-            {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' ) : 'N/A' }}
-            <ng-container *ngIf="(history.confirmed === false)">
-              <br>
-              <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
-            </ng-container>
+          <td class="date-column uk-text-middle uk-text-truncate">
+            <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
           </td>
         </tr>
 
