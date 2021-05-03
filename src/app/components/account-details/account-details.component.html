@@ -255,7 +255,11 @@
               </div>
             </ng-container>
             <ng-template #noActionsAvailable>
-              <span class="transaction-date" [class.uk-text-muted]="!pending.local_timestamp" [class.date-unknown]="!pending.local_timestamp">
+              <span
+                class="transaction-date"
+                [class.uk-text-muted]="!pending.local_timestamp"
+                [class.date-unknown]="!pending.local_timestamp"
+              >
                 <span class="date">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
                 <span class="time">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
               </span>
@@ -308,14 +312,17 @@
             <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
           </td>
           <ng-template #transactionActionsOrDate>
-            <span class="transaction-date" [class.uk-text-muted]="!history.local_timestamp" [class.date-unknown]="!history.local_timestamp">
+            <span
+              class="transaction-date"
+              [class.uk-text-muted]="!history.local_timestamp"
+              [class.date-unknown]="!history.local_timestamp"
+            >
               <span class="date">{{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
               <span class="time"> {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
-              <span class="unconfirmed-text" *ngIf="(history.confirmed === false)">
-                <br>
-                <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
-              </span>
             </span>
+            <div class="label-unconfirmed" *ngIf="(history.confirmed === false)">
+              <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
+            </div>
           </ng-template>
           <td [ngClass]="{
             'amount-column': true,
