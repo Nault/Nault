@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
 
     // Notify user if service worker update is available
     this.updates.available.subscribe((event) => {
-      console.log(`SW update available. Current: ${event.current.hash}. New: ${event.available.hash}`)
+      console.log(`SW update available. Current: ${event.current.hash}. New: ${event.available.hash}`);
       this.notifications.sendInfo(
         'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
         { length: 10000 }
@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
 
     // Notify user after service worker was updated
     this.updates.activated.subscribe((event) => {
-      console.log(`SW update successful. Current: ${event.current.hash}`)
+      console.log(`SW update successful. Current: ${event.current.hash}`);
       this.notifications.sendSuccess('Nault was updated successfully.');
     });
 
