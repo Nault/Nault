@@ -1,5 +1,5 @@
 <div (click)="install()" [tabindex]="isIosInstallable() ? -1 : 0" class="nav-install-row half-muted" [class.interactable]="!isIosInstallable()" [class.large]="isIosInstallable()" [class.visible]="showInstallPromotion" [class.uk-hidden]="!isPromotable()">
-    <span uk-icon="icon: download; ratio: 1.8" class="icon"></span>
+    <span uk-icon="icon: download; ratio: 1.2" class="icon"></span>
     <div>
         <div class="label">Install Nault for {{ platform }}</div>
         <div class="description" *ngIf="isIosInstallable()">
