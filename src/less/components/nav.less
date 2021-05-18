@@ -415,6 +415,7 @@
 		justify-content: space-between;
 		background: @nav-tooltip-color-background;
 		border-bottom: 1px solid #1C1F28;
+		min-height: 32px;
 		padding: 8px 8px 6px 8px;
 		cursor: pointer;
 		transition: background-color 100ms ease-in-out;
@@ -460,7 +461,10 @@
 		}
 
 		> .balance-column {
-			text-align: right;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			justify-content: center;
 			margin-left: 20px;
 
 			> .balance {
