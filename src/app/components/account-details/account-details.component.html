@@ -12,16 +12,28 @@
 
           <div class="uk-width-expand">
 
-            <div *ngIf="walletAccount && addressBookEntry">{{ 'Account #' + walletAccount.index }}</div>
-            <div *ngIf="!walletAccount">External address</div>
+            <div
+              *ngIf="walletAccount && (addressBookEntry || showEditAddressBook)"
+              class="account-type-label"
+              [class.editing-name]="showEditAddressBook"
+            >
+              {{ 'Account #' + walletAccount.index }}
+            </div>
+            <div
+              *ngIf="!walletAccount"
+              class="account-type-label"
+              [class.editing-name]="showEditAddressBook"
+            >
+              External address
+            </div>
 
             <div uk-grid>
               <div class="uk-width-1-1" *ngIf="showEditAddressBook">
                 <div class="uk-margin">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="Save Changes"></a>
-                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="Cancel Changes - Set the label to blank to delete" uk-icon="icon: close"></a>
-                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Account Label (Set to blank to delete)" type="text" style="padding-right: 60px;">
+                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="Cancel Changes - To remove the label, leave the text field blank and save changes" uk-icon="icon: close"></a>
+                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Address Book Name (Leave blank to remove)" type="text" style="padding-right: 60px;">
                   </div>
                 </div>
               </div>
