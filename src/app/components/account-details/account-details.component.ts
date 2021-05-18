@@ -184,6 +184,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.accountID = '';
     this.addressBookEntry = null;
     this.addressBookModel = '';
+    this.showEditAddressBook = false;
     this.walletAccount = null;
     this.account = {};
     this.qrCodeImage = null;
