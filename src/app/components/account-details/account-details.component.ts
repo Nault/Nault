@@ -253,19 +253,23 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     this.pendingBlocks = [];
 
-    // if (this.accountID !== this.router.snapshot.params.account) {
-      this.clearAccountVars();
-      this.loadingAccountDetails = true;
-    // }
+    this.clearAccountVars();
+    this.loadingAccountDetails = true;
 
-    this.accountID = this.router.snapshot.params.account;
-    this.generateReceiveQR(this.accountID);
+    const accountID = this.router.snapshot.params.account;
+    this.accountID = accountID;
+    this.generateReceiveQR(accountID);
 
-    this.addressBookEntry = this.addressBook.getAccountName(this.accountID);
+    this.addressBookEntry = this.addressBook.getAccountName(accountID);
     this.addressBookModel = this.addressBookEntry || '';
-    this.walletAccount = this.wallet.getWalletAccount(this.accountID);
+    this.walletAccount = this.wallet.getWalletAccount(accountID);
 
-    this.account = await this.api.accountInfo(this.accountID);
+    this.account = await this.api.accountInfo(accountID);
+
+    if (accountID !== this.accountID) {
+      // Navigated to a different account while account info was loading
+      return;
+    }
 
     if (!this.account) {
       this.loadingAccountDetails = false;
@@ -282,12 +286,19 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
       this.pendingBlocks = [];
       this.loadingIncomingTxList = true;
+
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
-        pending = await this.api.pendingLimitSorted(this.accountID, 50, minAmount.toString(10));
+        pending = await this.api.pendingLimitSorted(accountID, 50, minAmount.toString(10));
       } else {
-        pending = await this.api.pendingSorted(this.accountID, 50);
+        pending = await this.api.pendingSorted(accountID, 50);
       }
+
+      if (accountID !== this.accountID) {
+        // Navigated to a different account while incoming tx were loading
+        return;
+      }
+
       this.loadingIncomingTxList = false;
 
       if (pending && pending.blocks) {
@@ -312,6 +323,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.account.pending = pendingBalance;
+    } else {
+      // Unset variable that may still be set to true from old request
+      this.loadingIncomingTxList = false;
     }
 
     // If the account doesnt exist, set the pending balance manually
@@ -328,7 +342,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.nano);
     this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
     this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
-    await this.getAccountHistory(this.accountID);
+
+    await this.getAccountHistory(accountID);
+
+    if (accountID !== this.accountID) {
+      // Navigated to a different account while account history was loading
+      return;
+    }
 
     this.loadingAccountDetails = false;
   }
@@ -357,7 +377,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.qrCodeImage = qrCode;
   }
 
-  async getAccountHistory(account, resetPage = true) {
+  async getAccountHistory(accountID, resetPage = true) {
     if (resetPage) {
       this.accountHistory = [];
       this.pageSize = 25;
@@ -365,7 +385,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     this.loadingTxList = true;
 
-    const history = await this.api.accountHistory(account, this.pageSize, true);
+    const history = await this.api.accountHistory(accountID, this.pageSize, true);
+
+    if (accountID !== this.accountID) {
+      // Navigated to a different account while account history was loading
+      return;
+    }
+
     const additionalBlocksInfo = [];
 
     const accountConfirmationHeight = (
@@ -416,6 +442,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
       if (additionalBlocksInfo.length) {
         const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
+
+        if (accountID !== this.accountID) {
+          // Navigated to a different account while block info was loading
+          return;
+        }
+
         for (const block in blocksInfo.blocks) {
           if (!blocksInfo.blocks.hasOwnProperty(block)) continue;
 
