@@ -41,6 +41,9 @@ MIT
 @angular/router
 MIT
 
+@angular/service-worker
+MIT
+
 @ledgerhq/devices
 Apache-2.0
                                  Apache License

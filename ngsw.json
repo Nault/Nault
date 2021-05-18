@@ -1,0 +1,185 @@
+{
+  "configVersion": 1,
+  "timestamp": 1621359913598,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/4d30c39b186663482e8c.worker.js",
+        "/index.html",
+        "/main-es2015.f98c4119bcf30bd5eb56.js",
+        "/main-es5.f98c4119bcf30bd5eb56.js",
+        "/manifest.webmanifest",
+        "/polyfills-es2015.83f2efa2a89f054b5c12.js",
+        "/polyfills-es5.76c01e976c0bef157d11.js",
+        "/runtime-es2015.409e6590615fb48d139f.js",
+        "/runtime-es5.409e6590615fb48d139f.js",
+        "/styles.b949409754e8c70fbc75.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/favicon/android-chrome-192x192.png",
+        "/assets/favicon/android-chrome-512x512.png",
+        "/assets/favicon/apple-touch-icon.png",
+        "/assets/favicon/browserconfig.xml",
+        "/assets/favicon/favicon-16x16.png",
+        "/assets/favicon/favicon-32x32.png",
+        "/assets/favicon/favicon.ico",
+        "/assets/favicon/mstile-150x150.png",
+        "/assets/favicon/safari-pinned-tab.svg",
+        "/assets/favicon/site.webmanifest",
+        "/assets/img/nano-mark-simple.svg",
+        "/assets/img/nano-mark.svg",
+        "/assets/img/natricon-placeholder.svg",
+        "/assets/img/nault-logo-night-mode.svg",
+        "/assets/img/nault-logo-solo-simple.svg",
+        "/assets/img/nault-logo-solo.svg",
+        "/assets/img/nault-logo.svg",
+        "/assets/img/preview.png",
+        "/assets/img/qr-code.svg",
+        "/assets/lib/base/uikit-icons.js",
+        "/assets/lib/base/uikit-icons.min.js",
+        "/assets/lib/base/uikit.css",
+        "/assets/lib/base/uikit.js",
+        "/assets/lib/base/uikit.min.css",
+        "/assets/lib/base/uikit.min.js",
+        "/assets/lib/blake2b/blake2b.js",
+        "/assets/lib/cpupow.js",
+        "/assets/lib/musig-nano/build-or-validate_musig_wasm.sh",
+        "/assets/lib/musig-nano/musig_nano.wasm.b64",
+        "/assets/lib/nanoidenticons.min.js",
+        "/assets/lib/pow/nano-webgl-pow.js",
+        "/assets/lib/pow/pow.js",
+        "/assets/lib/pow/pow.wasm",
+        "/assets/lib/pow/startThreads.js",
+        "/assets/lib/pow/thread.js",
+        "/assets/lib/tweetnacl/nacl.js",
+        "/assets/logo_source/nault-logo-favicon.ai",
+        "/assets/logo_source/nault-logo-favicon.eps",
+        "/assets/logo_source/nault-logo.ai",
+        "/assets/logo_source/nault-logo.eps",
+        "/assets/logo_source/nault-logo.svg",
+        "/nano-mark-simple.5fc9dd351b26f23af445.svg",
+        "/nano-mark.974cac05f8829859b2f4.svg",
+        "/qr-code.a7ba346f480aec769179.svg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "coingecko",
+      "patterns": [
+        "https:\\/\\/api\\.coingecko\\.com\\/.*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 3,
+      "maxAge": 5184000000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
+    {
+      "name": "ninja",
+      "patterns": [
+        "https:\\/\\/mynano\\.ninja\\/api\\/.*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 50,
+      "maxAge": 5184000000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/4d30c39b186663482e8c.worker.js": "5b31ee12f7c6b0e9057bbd88951afacd10eac449",
+    "/assets/favicon/android-chrome-192x192.png": "e8f4f408d513ed3554f50beeb592d0b0c86b7fff",
+    "/assets/favicon/android-chrome-512x512.png": "19885642935085c59602e7595f16b0cd4d4bbd6c",
+    "/assets/favicon/apple-touch-icon.png": "0895caa56e43a9f1d422dcd8c2ba55439ded70d4",
+    "/assets/favicon/browserconfig.xml": "28c6b76e88e2d4ceaf5bc7c1f05099c53892e942",
+    "/assets/favicon/favicon-16x16.png": "e03c836d51a163b797e4b0ff7ece1d7346d33c2c",
+    "/assets/favicon/favicon-32x32.png": "49fb4d1f8060b1d60fe012bca1b128368547508b",
+    "/assets/favicon/favicon.ico": "b3f2e010bd2654cdc57663523170e29bcb8f900b",
+    "/assets/favicon/mstile-150x150.png": "443f0b98803b261fc89e11208f6cded77bc3185a",
+    "/assets/favicon/safari-pinned-tab.svg": "d10e2a825e084f9945643f9279f78807730f3d60",
+    "/assets/favicon/site.webmanifest": "cb85ce83e9a38a4741a6e9cb0bf3868d6eac0ddd",
+    "/assets/img/nano-mark-simple.svg": "6dab14a9969976fc0793df3505e1a5b954786011",
+    "/assets/img/nano-mark.svg": "71ae7c4f1be7d46dbb7f59cb70a42bf082428e97",
+    "/assets/img/natricon-placeholder.svg": "6daf26f9a61a0d4d1818f003652588f7943804df",
+    "/assets/img/nault-logo-night-mode.svg": "03d4186b744e568a1638297e532c4fded7e358ee",
+    "/assets/img/nault-logo-solo-simple.svg": "5317698722e07aeea11d3344a224abb97db2b99c",
+    "/assets/img/nault-logo-solo.svg": "3895c03fb5cc666c5d723f132afbc68260e63965",
+    "/assets/img/nault-logo.svg": "d9682092a80a1e825c646a1e7cebd8e4e9aead49",
+    "/assets/img/preview.png": "bc2dac8d198aeae7054f3d67a6f464bc39a5bda8",
+    "/assets/img/qr-code.svg": "a694020661b8f41d2b6a4eb4ffb98243a0cb9ab9",
+    "/assets/lib/base/uikit-icons.js": "5acba89d34a7a461c8bfd8ee50468a17b9168ec3",
+    "/assets/lib/base/uikit-icons.min.js": "e24633ec76743c3cefba8fe6fc7500f8fa0ce1a0",
+    "/assets/lib/base/uikit.css": "6ffa73e4b240826e3a69817fcda501ca70124abf",
+    "/assets/lib/base/uikit.js": "c105592322d68208295e6ff8cdd3eff858984ebe",
+    "/assets/lib/base/uikit.min.css": "56b007bb29e03f56b23f623b71990304f5a6ec31",
+    "/assets/lib/base/uikit.min.js": "ef73359196e5311284cf1d843e31c173418f7a2c",
+    "/assets/lib/blake2b/blake2b.js": "edf7ed8da86dfee03d4b46452f01e850ea71ea87",
+    "/assets/lib/cpupow.js": "b5f194cbe49bc0f26f8f9c4a8ecba2e20cd1f396",
+    "/assets/lib/musig-nano/build-or-validate_musig_wasm.sh": "e02da5b3f9b1332d9f2e258a3bd2354155458861",
+    "/assets/lib/musig-nano/musig_nano.wasm.b64": "8af94e4346c3df1bad1e2c513a92272b43e17885",
+    "/assets/lib/nanoidenticons.min.js": "987814b85bbe6ed5919d40507f98e9de1b77a356",
+    "/assets/lib/pow/nano-webgl-pow.js": "8a035bb8de592b6e3300bf624772cc3fb5b3a025",
+    "/assets/lib/pow/pow.js": "1b1692d8886bbe0745565e6e574f81387f17423f",
+    "/assets/lib/pow/pow.wasm": "217ded079c25fb1aa2d50556e2d82616d30fbc0d",
+    "/assets/lib/pow/startThreads.js": "7e9bd2c1e10336f6822e0b03f92cffc0eabcdf2b",
+    "/assets/lib/pow/thread.js": "a9b8d4c8aa9c999cc1833510e67d776648d39755",
+    "/assets/lib/tweetnacl/nacl.js": "00891a2e7cbe79082f28f6d5f0dbd085f516ac83",
+    "/assets/logo_source/nault-logo-favicon.ai": "e80d39929637163df0db97e4710c4f63e36ddff1",
+    "/assets/logo_source/nault-logo-favicon.eps": "d5264bcb1b414c39677397ba691dea8b7d108b0c",
+    "/assets/logo_source/nault-logo.ai": "22d5d60e0e6c226c118b5faf41e90a5dcd977fed",
+    "/assets/logo_source/nault-logo.eps": "a2147e36015ef5497c846a0b74dfb2a4828fd2cd",
+    "/assets/logo_source/nault-logo.svg": "d9682092a80a1e825c646a1e7cebd8e4e9aead49",
+    "/index.html": "2bf71d5cdbf56eeafd91dcc652369c94d8b37af1",
+    "/main-es2015.f98c4119bcf30bd5eb56.js": "15dd1d94d13b29cc93e82c730d0b6bb7223ee56b",
+    "/main-es5.f98c4119bcf30bd5eb56.js": "11b02548afa04d1a4f45d1bc8e949766fea8a59f",
+    "/manifest.webmanifest": "fb9ce0116a92808e43c4203fa61fdcb255708437",
+    "/nano-mark-simple.5fc9dd351b26f23af445.svg": "6dab14a9969976fc0793df3505e1a5b954786011",
+    "/nano-mark.974cac05f8829859b2f4.svg": "71ae7c4f1be7d46dbb7f59cb70a42bf082428e97",
+    "/polyfills-es2015.83f2efa2a89f054b5c12.js": "6f671f0484b68d1857dc1205f9591826741a022d",
+    "/polyfills-es5.76c01e976c0bef157d11.js": "84295d8a86d51aaabd5d25ebcfea1390f4414f17",
+    "/qr-code.a7ba346f480aec769179.svg": "a694020661b8f41d2b6a4eb4ffb98243a0cb9ab9",
+    "/runtime-es2015.409e6590615fb48d139f.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/runtime-es5.409e6590615fb48d139f.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/styles.b949409754e8c70fbc75.css": "cf0a8d48f146b7537cf90d892545c00bdcfce275"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
