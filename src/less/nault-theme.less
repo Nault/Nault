@@ -94,6 +94,19 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	> p {
 		margin-top: 0;
 	}
+
+	.inline-link {
+		font-weight: 600;
+		color: currentColor;
+		text-decoration: none !important;
+		border-bottom: 2px dotted rgba(255, 255, 255, 0.6);
+		transition: border-color 100ms ease-in-out;
+
+		&:hover {
+			border-bottom-style: solid;
+			border-bottom-color: currentColor;
+		}
+	}
 }
 
 .nlt-dropdown {
