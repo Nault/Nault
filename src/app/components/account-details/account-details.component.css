@@ -2,12 +2,17 @@
     margin-top: 2px;
 }
 
+.icon-unconfirmed {
+    margin-left: 2px;
+    vertical-align: 2px;
+}
+
 .icon-qr-code {
     width: 19px;
     height: 19px;
     background-color: currentcolor;
-    -webkit-mask-image: url('/assets/img/qr-code.svg');
-    mask-image: url('/assets/img/qr-code.svg');
+    -webkit-mask-image: url('assets/img/qr-code.svg');
+    mask-image: url('assets/img/qr-code.svg');
 }
 
 .block-qr {
@@ -53,16 +58,6 @@
     margin-left: 10px;
     position: relative;
     bottom: 3px;
-}
-
-#refresh {
-    cursor: pointer;
-    margin-left: 10px;
-    position: relative;
-    bottom: 3px;
-}
-.refresh-disabled {
-    color: #bbb;
 }
 
 .incoming-label {
@@ -149,10 +144,6 @@
     margin-left: 4px;
 }
 
-.account-amounts-converted {
-    color: #81809f;
-}
-
 .representative-details {
     position: relative;
 }
@@ -168,8 +159,8 @@
         display: block;
         position: absolute;
         width: calc(100% + 30px);
-        height: 100%;
-        top: 14px;
+        top: calc(100% + 13px);
+        height: 1px;
         left: 0;
     }
 }
@@ -206,9 +197,20 @@
     margin-bottom: 4px;
 }
 
+.advanced-option + .advanced-option {
+    margin-top: 16px;
+}
+
 .advanced-option .uk-checkbox {
     margin-left: 12px;
     margin-top: -1px;
+}
+
+.more-results > a {
+    display: block;
+}
+.more-results > a > .chevron {
+    margin: 0 40px -4px 40px;
 }
 
 .form-input-destination {

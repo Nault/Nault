@@ -1,0 +1,38 @@
+.advanced-options-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.advanced-options-link .chevron {
+  margin-left: 8px;
+}
+
+.chevron {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23676686%22%20stroke-width%3D%221.1%22%20points%3D%221%204%207%2010%2013%204%22%20%2F%3E%0A%3C%2Fsvg%3E");
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.chevron-up {
+  transform: scaleY(-1);
+}
+
+.second-icon {
+  margin-right:35px;
+}
+
+.add-button {
+  cursor: pointer;
+}
+
+.add-button span {
+  vertical-align: text-bottom;
+}
+
+.multisig-result {
+  margin-top: 4px;
+}

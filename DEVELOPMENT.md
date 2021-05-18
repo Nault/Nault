@@ -78,6 +78,11 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
+## Adding a new component or service
+
+* Instead of and setting up manually, a new component can be added simply by running `ng g component components/component-name` from root folder
+* Similar, a service can be added by `ng g service services/service-name` and add it to the providers section in the app.module.ts
+
 ## Publishing New Release
 
 This will only be done by repo admins. It's dependent on github workflows so if you have forked the repo and want to test releases yourself, you must change the GITHUB_TOKEN in all workflow files to another key for example WORKFLOW. Then add this key to your repo secrets with writing rights. You also need to activate workflows because it's disabled by default when you fork.

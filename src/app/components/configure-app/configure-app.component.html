@@ -24,22 +24,35 @@
             </div>
           </div>
 
-          <!--<div class="uk-width-1-1">-->
-            <!--<div class="uk-form-horizontal">-->
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
 
-              <!--<div class="uk-margin">-->
-                <!--<label class="uk-form-label">Account Prefix <span uk-icon="icon: info;" uk-tooltip title="Change the Nano account prefix used throughout the application.  Both are valid when sending"></span></label>-->
-                <!--<div class="uk-form-controls">-->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Night Mode</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedNightModeOption" id="form-horizontal-select">
+                    <option *ngFor="let nightModeOption of nightModeOptions" [value]="nightModeOption.value">{{ nightModeOption.name }}</option>
+                  </select>
+                </div>
+              </div>
 
-                  <!--<div class="uk-inline uk-width-1-1">-->
-                    <!--<select class="uk-select" [(ngModel)]="selectedPrefix">-->
-                      <!--<option *ngFor="let prefix of prefixOptions" [value]="prefix.value">{{ prefix.name }}</option>-->
-                    <!--</select>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Identicons</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedIdenticonOption" id="form-horizontal-select">
+                    <option *ngFor="let identiconOption of identiconOptions" [value]="identiconOption.value">{{ identiconOption.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
         </div>
       </div>
@@ -151,12 +164,13 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Min Receive [NANO] <span uk-icon="icon: info;" uk-tooltip title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transaction list.  Set to blank or 0 to accept all transactions."></span></label>
+                <label class="uk-form-label">Min. Receive Amount <span uk-icon="icon: info;" uk-tooltip title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="minimumReceive" class="uk-input uk-margin-small-bottom" id="form-horizontal-text4" type="text" placeholder="0.000001">
+                        <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
+                        <input [(ngModel)]="minimumReceive" class="uk-input" style="padding-left: 52px !important;" id="form-horizontal-text4" type="text" placeholder="Leave blank to accept transactions of any amount">
                       </div>
 
                     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
 import {BehaviorSubject} from 'rxjs';
@@ -7,16 +7,21 @@ import {NotificationService} from '../../services/notification.service';
 import {UtilService, StateBlock, TxType} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NanoBlockService} from '../../services/nano-block.service';
 import {ApiService} from '../../services/api.service';
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39';
 import * as bip39Wallet from 'nanocurrency-web';
 import { QrModalService } from '../../services/qr-modal.service';
+import hermes from 'hermes-channel';
+import * as nanocurrency from 'nanocurrency';
+import { MusigService } from '../../services/musig.service';
+import { environment } from 'environments/environment';
 
 const INDEX_MAX = 4294967295;
-
+// navigation source for cancel command (excluding camera source because too complicated to fix)
+enum navSource {'remote', 'multisig'}
 @Component({
   selector: 'app-sign',
   templateUrl: './sign.component.html',
@@ -24,6 +29,7 @@ const INDEX_MAX = 4294967295;
 })
 
 export class SignComponent implements OnInit {
+  paramsString = '';
   activePanel = 'error';
   shouldSign: boolean = null; // if a block has been scanned for signing (or if it is a block to process)
   accounts = this.walletService.wallet.accounts;
@@ -46,7 +52,7 @@ export class SignComponent implements OnInit {
   txTypeMessage = '';
   confirmingTransaction = false;
   shouldGenWork = false;
-  signTypes: string[] = ['Internal Wallet or Ledger', 'Seed or Mnemonic+Index', 'Private Key'];
+  signTypes: string[] = ['Internal Wallet or Ledger', 'Seed or Mnemonic+Index', 'Private or Expanded Key', 'Multisig'];
   signTypeSelected: string = this.signTypes[0];
   signatureAccount = '';
   signatureMessage = '';
@@ -75,9 +81,38 @@ export class SignComponent implements OnInit {
   ];
   selectedThreshold = this.thresholds[0].value;
   selectedThresholdOld = this.selectedThreshold;
+  navigationSource = navSource.remote;
+
+  /**
+   MULTISIG
+   */
+  multisigLink = this.getMultisigLink(); // link to be shared to other multisig participants
+  participants = 2;
+  validParticipants = true;
+  savedParticipants = 0;
+  tabData = [];
+  tabListenerActive = false;
+  tabCount = null;
+  inputMultisigData = [];
+  multisigAccount = '';
+  outputMultisigData = '';
+  activeStep = 1;
+  inputAdd = '';
+  validInputAdd = false;
+  isInputAddDisabled = false;
+  tabMode = false;
+  tabChecked = false; // if multi-tab mode enabled
+  blockHash = '';
+  remoteTabInit = false;
+  qrModal: any = null;
+  qrCodeImageOutput = null;
+  showAddBox = false;
+  isDesktop = environment.desktop;
+  // END MULTISIG
 
   constructor(
     private router: ActivatedRoute,
+    private routerService: Router,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
@@ -86,27 +121,90 @@ export class SignComponent implements OnInit {
     public settings: AppSettingsService,
     private api: ApiService,
     private util: UtilService,
-    private qrModalService: QrModalService) { }
+    private qrModalService: QrModalService,
+    private musigService: MusigService) { }
+
+  @ViewChild('dataAddFocus') _el: ElementRef;
 
   async ngOnInit() {
+    const UIkit = window['UIkit'];
+    const qrModal = UIkit.modal('#qr-code-modal');
+    this.qrModal = qrModal;
+
     const params = this.router.snapshot.queryParams;
-    console.log(params);
     this.signTypeSelected = this.walletService.isConfigured() ? this.signTypes[0] : this.signTypes[1];
+
+    // Multisig tab listening functions
+    hermes.on('tab-ping', (data) => {
+      console.log('Tab was pinged');
+      if (this.blockHash === data[0]) {
+        // Init step for remote tab
+        this.remoteTabInit = true;
+        this.tabMode = true;
+        this.tabChecked = true;
+        this.participants = parseInt(data[2], 10);
+        this.tabListener(false); // start in passive mode
+        this.multiSign();
+      } else {
+        console.log('Non-matching block hash: This: ' + this.blockHash + ' - Remote: ' + data[0]);
+        // When having 3 or more tabs, sometime one of the tabs are pinged twice for unknown reason
+        // and results in this false positive warning. Some cached herms data in the pipeline?
+        this.notificationService.sendWarning('Tab was pinged but the block hash does not match');
+      }
+    });
+
+    // Dual tab mode for auto signing
+    hermes.on('sign-remote', (data) => {
+      console.log('Receiving data from other tab: ' + data);
+      if (!this.tabData.includes(data[1])) {
+        this.tabData.push(data[1]);
+      }
+    });
+
+    // Multi-tab mode checkbox
+    hermes.on('multi-tab', (data) => {
+      console.log('Multi-tab mode enabled');
+      this.tabChecked = data;
+    });
+
+    // Multi-tab mode participant changes
+    hermes.on('participants', (data) => {
+      console.log('Participant count changed');
+      this.participants = data;
+    });
+
+    let shouldGetFromAccount = false;
 
     if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params &&
       'n_balance' in params && 'n_link' in params) {
       this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative,
-      'balance': params.n_balance, 'link': params.n_link, signature: 'n_signature' in params ? params.n_signature : null,
-      work: 'n_work' in params ? params.n_work : null};
+      'balance': params.n_balance, 'link': params.n_link, 'signature': 'n_signature' in params ? params.n_signature : '',
+      'work': 'n_work' in params ? params.n_work : ''};
+
+      this.paramsString = 'sign?sign=' + params.sign + '&n_account=' + params.n_account + '&n_previous=' + params.n_previous +
+      '&n_representative=' + params.n_representative + '&n_balance=' + params.n_balance + '&n_link=' + params.n_link +
+      ('n_signature' in params ? ('&n_signature=' + params.n_signature) : '') + ('n_work' in params ? ('&n_work=' + params.n_work) : '');
 
       // previous block won't be included with open block (or maybe if another wallet implement this feature)
       if ('p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
         this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative,
-        'balance': params.p_balance, 'link': params.p_link, signature: 'p_signature' in params ? params.p_signature : null, work: null};
+        'balance': params.p_balance, 'link': params.p_link, 'signature': 'p_signature' in params ? params.p_signature : '', 'work': ''};
+
+        this.paramsString = this.paramsString + '&p_account=' + params.p_account + '&p_previous=' + params.p_previous +
+        '&p_representative=' + params.p_representative + '&p_balance=' + params.p_balance + '&p_link=' + params.p_link +
+        ('p_signature' in params ? ('&p_signature=' + params.p_signature) : '');
       }
 
       this.shouldSign = params.sign === '1' ? true : false;
-      this.shouldGenWork = this.currentBlock.work === null && !this.shouldSign;
+      this.shouldGenWork = this.currentBlock.work === '' && !this.shouldSign;
+
+      // check if multisig
+      if (params.participants) {
+        this.signTypeSelected = this.signTypes[3];
+        this.participants = parseInt(params.participants, 10);
+        this.participantChange(this.participants);
+        this.navigationSource = navSource.multisig;
+      }
 
       // check if both new block and previous block hashes matches (balances has not been tampered with) and have valid parameters
       if (this.previousBlock && this.verifyBlock(this.currentBlock) && this.verifyBlock(this.previousBlock)) {
@@ -139,16 +237,7 @@ export class SignComponent implements OnInit {
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance));
 
-          // get from-account info if online
-          let recipientInfo = null;
-          try {
-            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
-          } catch {}
-          if (recipientInfo && 'block_account' in recipientInfo) {
-            this.fromAccountID = recipientInfo.block_account;
-          } else {
-            this.fromAccountID = null;
-          }
+          shouldGetFromAccount = true;
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(this.previousBlock.balance);
@@ -157,6 +246,7 @@ export class SignComponent implements OnInit {
         }
 
         this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
+
         this.prepareTransaction();
       } else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
         // No previous block present (open block)
@@ -166,17 +256,7 @@ export class SignComponent implements OnInit {
           this.txTypeMessage = 'receive';
           this.rawAmount = new BigNumber(this.currentBlock.balance);
 
-          // get from-account info if online
-          let recipientInfo = null;
-          try {
-            recipientInfo = await this.api.blockInfo(this.currentBlock.link);
-          } catch {}
-
-          if (recipientInfo && 'block_account' in recipientInfo) {
-            this.fromAccountID = recipientInfo.block_account;
-          } else {
-            this.fromAccountID = null;
-          }
+          shouldGetFromAccount = true;
 
           this.toAccountID = this.currentBlock.account;
           this.toAccountBalance = new BigNumber(0);
@@ -194,7 +274,52 @@ export class SignComponent implements OnInit {
       return;
     }
 
+    // Extract block hash (used with multisig)
+    const block: StateBlock = {account: this.currentBlock.account, link: this.currentBlock.link, previous: this.currentBlock.previous,
+      representative: this.currentBlock.representative, balance: this.currentBlock.balance, signature: null, work: null};
+    this.blockHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
+
     this.addressBookService.loadAddressBook();
+
+    // do this last since it can technically get stuck or take some time if connection is bad
+    // for example when using offline computer on ubuntu it has been reported it get stuck if not
+    // set to offline mode in the settings
+    if (shouldGetFromAccount) {
+      // get from-account info if online
+      let recipientInfo = null;
+      this.fromAccountID = null;
+      try {
+        recipientInfo = await this.api.blockInfo(this.currentBlock.link);
+      } catch {}
+      if (recipientInfo && 'block_account' in recipientInfo) {
+        this.fromAccountID = recipientInfo.block_account;
+      }
+    }
+  }
+
+  setFocus() {
+    this.showAddBox = true;
+    // Auto set focus to the box (but must be rendered first!)
+    setTimeout(() => { this._el.nativeElement.focus(); }, 200);
+  }
+
+  removeSelectedData(data) {
+    this.inputMultisigData.splice(this.inputMultisigData.indexOf(data), 1);
+    if (this.savedParticipants > 0) {
+      this.savedParticipants = this.savedParticipants - 1;
+      this.isInputAddDisabled = false;
+    }
+  }
+
+  // abort and navigate back
+  cancel() {
+    switch (this.navigationSource) {
+      case navSource.remote:
+        this.routerService.navigate(['remote-signing']);
+        break;
+      case navSource.multisig:
+        this.routerService.navigate(['multisig']);
+    }
   }
 
   verifyBlock(block: StateBlock) {
@@ -235,13 +360,14 @@ export class SignComponent implements OnInit {
   signTypeChange() {
     this.signatureMessage = '';
     this.signatureMessageSuccess = '';
+    let params = this.paramsString;
 
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
         this.walletAccount = this.accounts.find(a => a.id.replace('xrb_', 'nano_') === this.signatureAccount);
         if (!this.walletAccount) {
-          return this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
+          this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
         } else {
           this.signatureMessageSuccess = 'A matching account found!';
         }
@@ -254,7 +380,14 @@ export class SignComponent implements OnInit {
       case this.signTypes[2]:
         this.privkeyChange(this.sourcePriv);
         break;
+
+      case this.signTypes[3]:
+        this.privkeyChangeMulti(this.sourcePriv);
+        params = this.paramsString + '&participants=' + this.participants;
+        this.multisigLink = this.getMultisigLink();
+        break;
     }
+    this.setURLParams(params);
   }
 
   powChange() {
@@ -304,7 +437,7 @@ export class SignComponent implements OnInit {
   }
 
   // Create signature for the block
-  async confirmTransaction() {
+  async confirmTransaction(signature = '') {
     let walletAccount = this.walletAccount;
     let isLedger = this.walletService.isLedgerWallet();
 
@@ -318,9 +451,9 @@ export class SignComponent implements OnInit {
     }
 
     // using seed or private key
-    if (((this.signTypeSelected === this.signTypes[1] && !this.validSeed) || (this.signTypeSelected === this.signTypes[2])
-      && !this.validPrivkey)) {
-        return this.notificationService.sendWarning('Could not find a matching private key to sign with.');
+    if ((this.signTypeSelected === this.signTypes[1] && !this.validSeed) || (this.signTypeSelected === this.signTypes[2]
+      && !this.validPrivkey) || (this.signTypeSelected === this.signTypes[3] && !this.validPrivkey)) {
+        return this.notificationService.sendWarning('Could not find a valid private key to sign with.');
       }
     if (this.signTypeSelected === this.signTypes[1] || this.signTypeSelected === this.signTypes[2]) {
       isLedger = false;
@@ -330,15 +463,48 @@ export class SignComponent implements OnInit {
 
     this.confirmingTransaction = true;
 
-    // sign the block
-    const block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock,
-      this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
-    console.log('Signature: ' + block.signature || 'Error');
-    console.log('Work: ' + block.work || 'Not applied');
+    // sign the block (if not multisig)
+    let block: StateBlock;
+    if (this.signTypeSelected !== this.signTypes[3]) {
+      block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock,
+        this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
+      console.log('Signature: ' + block.signature || 'Error');
+      console.log('Work: ' + block.work || 'Not applied');
 
-    if (!block.signature) {
-      this.confirmingTransaction = false;
-      return this.notificationService.sendError('The block could not be signed!', {lenth: 0});
+      if (!block.signature) {
+        this.confirmingTransaction = false;
+        return this.notificationService.sendError('The block could not be signed!', {length: 0});
+      }
+    } else {
+      // Multisig signature
+      block = this.currentBlock;
+
+      // Check if aggregated multisig account matches the account we want to sign
+      if (block.account !== this.multisigAccount) {
+        return this.notificationService.sendError('The private keys does not match the multisig account you want to sign!', {length: 0});
+      }
+      // Check the given signature format
+      if (!this.util.nano.isValidSignature(signature)) {
+        return this.notificationService.sendError('The multi-signature was invalid!', {length: 0});
+      }
+      block.signature = signature;
+      const openEquiv = this.txType === TxType.open;
+      // Start precomputing the work...
+      if (this.shouldGenWork) {
+        // For open blocks which don't have a frontier, use the public key of the account
+        const workBlock = openEquiv ? this.util.account.getAccountPublicKey(this.multisigAccount) : block.previous;
+        if (!this.workPool.workExists(workBlock)) {
+          this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
+        }
+
+        const tempWork = await this.workPool.getWork(workBlock, this.selectedThreshold);
+        if (tempWork.length === 16 ) {
+          block.work = tempWork;
+        }
+        this.notificationService.removeNotification('pow');
+        this.workPool.removeFromCache(workBlock);
+      }
+      this.resetMultisig();
     }
 
     this.qrString = null;
@@ -350,6 +516,10 @@ export class SignComponent implements OnInit {
     modal.show();
 
     this.finalSignature = block.signature;
+    // remove work param if empty
+    if (block.work === '') {
+      delete block['work'];
+    }
 
     try {
       this.clean(block);
@@ -368,11 +538,11 @@ export class SignComponent implements OnInit {
     } catch (error) {
       this.confirmingTransaction = false;
       console.log(error);
-      return this.notificationService.sendError('The block could not be signed!', {lenth: 0});
+      return this.notificationService.sendError('The block could not be signed!', {length: 0});
     }
 
     this.confirmingTransaction = false;
-    this.notificationService.sendSuccess('The block has been signed and can be sent to the network!');
+    this.notificationService.sendSuccess('The block has been signed and can be sent to the network!', {length: 0});
   }
 
   // Send signed block to the network
@@ -400,22 +570,22 @@ export class SignComponent implements OnInit {
       const accountInfo = await this.api.accountInfo(this.signatureAccount);
       if ('frontier' in accountInfo && accountInfo.frontier !== this.currentBlock.previous) {
         this.confirmingTransaction = false;
-        return this.notificationService.sendError('The block can\'t be processed because the account frontier has changed!', {lenth: 0});
+        return this.notificationService.sendError('The block can\'t be processed because the account frontier has changed!', {length: 0});
       }
       if ('balance' in accountInfo && accountInfo.balance !== this.previousBlock.balance) {
         this.confirmingTransaction = false;
-        return this.notificationService.sendError('The block can\'t be processed because the current account balance does not match the previous block!', {lenth: 0});
+        return this.notificationService.sendError('The block can\'t be processed because the current account balance does not match the previous block!', {length: 0});
       }
     }
 
-    if (!this.currentBlock.signature) {
+    if (this.currentBlock.signature === '') {
       this.confirmingTransaction = false;
-      return this.notificationService.sendError('The block can\'t be processed because the signature is missing!', {lenth: 0});
+      return this.notificationService.sendError('The block can\'t be processed because the signature is missing!', {length: 0});
     }
 
-    if (!this.currentBlock.work) {
+    if (this.currentBlock.work === '') {
       this.confirmingTransaction = false;
-      return this.notificationService.sendError('The block can\'t be processed because work is missing!', {lenth: 0});
+      return this.notificationService.sendError('The block can\'t be processed because work is missing!', {length: 0});
     }
 
     // Process block
@@ -430,7 +600,7 @@ export class SignComponent implements OnInit {
       this.notificationService.sendSuccess('Successfully processed the block!');
     } else {
       console.log(processResponse);
-      this.notificationService.sendError('There was an error while processing the block! Please see the console.', {lenth: 0});
+      this.notificationService.sendError('There was an error while processing the block! Please see the console.', {length: 0});
     }
     this.confirmingTransaction = false;
   }
@@ -516,7 +686,7 @@ export class SignComponent implements OnInit {
       // seed must be 64 or the nano wallet can't be created.
       // This is the reason 12-words can't be used because the seed would be 32 in length
       if (seed.length !== 64) {
-        this.notificationService.sendError(`Mnemonic not 24 words`);
+        this.notificationService.sendWarning(`Mnemonic not 24 words`);
         return;
       }
     }
@@ -605,10 +775,336 @@ export class SignComponent implements OnInit {
           break;
         case 'priv1':
           this.sourcePriv = data.content;
-          this.privkeyChange(data.content);
+          if (this.signTypeSelected === this.signTypes[2]) {
+            this.privkeyChange(data.content);
+          } else if (this.signTypeSelected === this.signTypes[3]) {
+            this.privkeyChangeMulti(data.content);
+          }
           break;
       }
     }, () => {}
     );
   }
+
+  async generateOutputQR() {
+    const qrCode = await QRCode.toDataURL(`${this.outputMultisigData}`, { errorCorrectionLevel: 'M', scale: 16 });
+    this.qrCodeImageOutput = qrCode;
+  }
+
+  // Replace the address bar content
+  setURLParams(params) {
+    if (window.history.pushState) {
+      try {
+        window.history.replaceState(null, null, '/' + params);
+      } catch (error) {
+        // console.log(error)
+      }
+    }
+  }
+
+  /**
+   * MULTISIG
+   */
+
+  privkeyChangeMulti(input) {
+    const privKey = this.convertPrivateKey(input);
+    if (privKey !== null) {
+      if (this.util.nano.isValidHash(privKey)) {
+        this.validPrivkey = true;
+        this.privateKey = privKey;
+        this.signatureMessage = '';
+        return;
+      } else {
+        this.signatureMessage = 'Invalid private key';
+      }
+    } else {
+      this.signatureMessage = '';
+    }
+    this.signatureMessageSuccess = '';
+    this.validPrivkey = false;
+    this.privateKey = '';
+  }
+
+  // Start signing procedure using multiple tabs
+  runMultiTabs() {
+    console.log('Starting automatic tab signing');
+    // Ping other tabs and make sure enough of them respond and with correct hash
+    this.tabCount = 1;
+    hermes.on('tab-pong', (data) => {
+      console.log('Tab ' + this.tabCount + ' responded');
+      if (this.blockHash === data[0]) {
+        this.tabCount++;
+        if (this.tabCount === this.participants) {
+          hermes.off('tab-pong'); // unsubscribe
+          // Start the process
+          console.log('Starting step 1 from local tab');
+          this.tabListener(false); // start in passive mode to wait for signing process
+          // Init step
+          this.multiSign();
+        }
+      }
+    });
+    this.tabMode = true,
+    console.log('Send ping to other tabs');
+    hermes.send('tab-ping', [this.blockHash, '', this.participants]);
+    // Set a timeout
+    setTimeout(() => {  this.checkTabs(); }, 5000);
+  }
+
+  checkTabs() {
+    if (this.tabCount && this.tabCount < this.participants) {
+      hermes.off('tab-pong'); // unsubscribe
+      return this.notificationService.sendWarning('Make sure you have enough tabs running with the same block hash');
+    }
+  }
+
+  // Checking input tab data and act when enough data is available for the current active step
+  tabListener(activate = false) {
+    this.tabListenerActive = activate ? true : this.tabListenerActive;
+    if (this.tabListenerActive) {
+      const stepData = [];
+      for (const data of this.tabData) {
+        if (data.substring(0, 1) === (this.activeStep - 1).toString()) {
+          stepData.push(data);
+        }
+      }
+      // Enough data for this step
+      if (stepData.length >= this.participants - 1) {
+        this.tabListenerActive = false;
+        // Input the data and let the automation start
+        for (const data of stepData) {
+          this.inputAdd = data; // emulate user input
+          this.inputAddChange(data);
+        }
+      }
+    }
+
+    if (this.tabMode) {
+      setTimeout(() => {  this.tabListener(); }, 200);
+    }
+  }
+
+  resetMultisig() {
+    this.participants = 2;
+    this.validParticipants = true;
+    this.savedParticipants = 0;
+    this.tabData = [];
+    this.tabListenerActive = false;
+    this.tabCount = null;
+    this.inputMultisigData = [];
+    this.multisigAccount = '';
+    this.outputMultisigData = '';
+    this.qrCodeImageOutput = null;
+    this.activeStep = 1;
+    this.inputAdd = '';
+    this.validInputAdd = false;
+    this.isInputAddDisabled = false;
+    this.tabMode = false;
+    this.tabChecked = false;
+    this.remoteTabInit = false;
+    this.privateKey = '';
+    this.sourcePriv = '';
+    this.validPrivkey = false;
+    this.confirmingTransaction = false;
+    this.showAddBox = false;
+
+    this.setURLParams(this.paramsString + '&participants=' + this.participants);
+    this.multisigLink = this.getMultisigLink();
+    this.musigService.resetMusig();
+    hermes.off('tab-pong'); // unsubscribe
+  }
+  // activating multi-tab mode
+  tabModeCheck() {
+    hermes.send('multi-tab', this.tabChecked);
+    if (this.tabChecked) {
+      hermes.send('participants', this.participants);
+      hermes.send('hash', this.blockHash);
+    }
+  }
+
+  // number of participants changes
+  participantChange(index) {
+    if (this.util.string.isNumeric(index) && index >= 2 && index < 1000) {
+      this.validParticipants = true;
+      this.participants = parseInt(index, 10);
+      this.setURLParams(this.paramsString + '&participants=' + index);
+      this.multisigLink = this.getMultisigLink();
+    } else {
+      this.validParticipants = false;
+    }
+
+    if (this.validParticipants) {
+      if (this.tabChecked) {
+        hermes.send('participants', this.participants);
+      }
+    } else {
+      this.signatureMessage = '';
+      this.signatureMessageSuccess = '';
+    }
+  }
+
+  // generate shared data to be sent to other participants
+  getMultisigLink() {
+    return 'nanosign:{"block":' + JSON.stringify(this.currentBlock) +
+    ',"previous":' + JSON.stringify(this.previousBlock) +  ',"participants":' + this.participants + '}';
+  }
+
+  // the field for input data has changed
+  inputAddChange(hashString) {
+    const hashFull = hashString.substring(2);
+    let valid = true;
+    if (hashFull.length === 64) {
+      if (!this.util.nano.isValidHash(hashFull)) {
+        valid = false;
+      }
+    } else if (hashFull.length === 128) {
+      if (!this.util.nano.isValidHash(hashFull.substring(0, 64)) || !this.util.nano.isValidHash(hashFull.substring(64, 128))) {
+        valid = false;
+      }
+    } else {
+      valid = false;
+    }
+    const step = parseInt(hashString.substring(0, 1), 10);
+    let correctStep = true;
+    if (step !== this.activeStep - 1) {
+      correctStep = false;
+    }
+
+    if (!valid || !correctStep) {
+      this.validInputAdd = false;
+      if (hashString !== '') {
+        if (!correctStep) {
+          console.log('Wrong input for this step. Expected step ' + (this.activeStep - 1));
+          this.notificationService.removeNotification('wrong-input');
+          this.notificationService.sendWarning('Wrong input for this step. Expected step ' + (this.activeStep - 1), {identifier: 'wrong-input'});
+        }
+      }
+      return;
+    }
+    this.validInputAdd = true;
+    // Automatic tab mode is running, go ahead with the next step
+    if (this.tabMode) {
+      this.addMultisigInputData();
+    }
+  }
+
+  // append input data to complete data
+  addMultisigInputData() {
+    if (!this.validInputAdd) {
+      this.notificationService.sendWarning('Data not in valid format');
+      return;
+    }
+    if (this.outputMultisigData.includes(this.inputAdd.substring(2).toUpperCase())) {
+      this.notificationService.sendWarning('Don\'t add your own output');
+      return;
+    }
+    if (this.inputMultisigData.includes(this.inputAdd.substring(2).toUpperCase())) {
+      this.notificationService.sendWarning('Data already added');
+      return;
+    }
+    if (this.savedParticipants >= this.participants) {
+      this.notificationService.sendWarning('You already have all data needed given number of participants');
+    }
+
+    this.inputMultisigData.push(this.inputAdd.toUpperCase());
+    this.savedParticipants = this.savedParticipants + 1;
+    this.inputAdd = '';
+    this.showAddBox = false;
+    this.validInputAdd = false;
+    if (this.savedParticipants === this.participants - 1) {
+      this.isInputAddDisabled = true;
+      // Automatic tab mode is running, go ahead with the next step
+      if (this.tabMode) {
+        this.tabListenerActive = false; // pause processing input data
+        this.multiSign();
+      }
+    }
+  }
+
+  // copy data to be shared
+  copyUrl() {
+    const dummy = document.createElement('input');
+    document.body.appendChild(dummy);
+    dummy.setAttribute('value', this.multisigLink);
+    dummy.select();
+    const success = document.execCommand('copy');
+    document.body.removeChild(dummy);
+
+    if (success) {
+      this.notificationService.sendSuccess('Successfully copied multisig URL to clipboard!');
+    } else {
+      this.notificationService.sendError('Failed to copy multisig URL to clipboard!');
+    }
+  }
+
+  startMultisig() {
+    if (this.validPrivkey) {
+      if (this.tabChecked) {
+        this.runMultiTabs();
+      } else {
+        this.multiSign();
+      }
+    } else {
+      this.notificationService.sendWarning('Invalid private key!');
+    }
+  }
+
+  multiSign() {
+    const result = this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData);
+    // used for validation when the final Nano block is created
+    if (result && result.multisig !== '') {
+      this.multisigAccount = result.multisig;
+    }
+
+    if (result?.stage === 0) {
+      console.log('Started multisig using block hash: ' + this.blockHash);
+      // Combine output with public key
+      const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
+        nanocurrency.derivePublicKey(this.privateKey);
+      this.activeStep = this.activeStep + 1;
+      this.outputMultisigData = output.toUpperCase();
+      this.generateOutputQR();
+      this.multisigAccount = ''; // reset for this new run
+
+      // If using multi-tabs, send back the result
+      if (this.tabMode) {
+        if (this.remoteTabInit) {
+          this.remoteTabInit = false;
+          console.log('Responding with pong');
+          this.tabListenerActive = true; // resume processing input data
+          hermes.send('tab-pong', [this.blockHash, this.outputMultisigData]);
+          hermes.send('sign-remote', [this.blockHash, this.outputMultisigData]);
+        } else {
+          console.log('Sending signing data');
+          this.tabListenerActive = true; // resume processing input data
+          hermes.send('sign-remote', [this.blockHash, this.outputMultisigData]);
+        }
+      }
+    } else if (result) {
+      // Finished
+      if (result.stage === 3) {
+        this.inputMultisigData = [];
+        this.outputMultisigData = '';
+        this.qrCodeImageOutput = null;
+        this.tabMode = false;
+        this.tabListenerActive = false;
+        this.confirmTransaction(this.util.hex.fromUint8(result.outbuf.subarray(1)));
+      } else {
+        this.outputMultisigData = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(1));
+        this.generateOutputQR();
+        this.inputMultisigData = [];
+        this.isInputAddDisabled = false;
+        this.savedParticipants = 0;
+        this.inputAdd = '';
+        this.validInputAdd = false;
+        this.activeStep = this.activeStep + 1;
+        // If using dual tabs, send back the result
+        if (this.tabMode) {
+          this.tabListenerActive = true; // resume processing input data
+          hermes.send('sign-remote', [this.blockHash, this.outputMultisigData]);
+        }
+      }
+    }
+  }
+  // END MULTISIG
 }

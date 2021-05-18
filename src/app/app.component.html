@@ -1,9 +1,9 @@
-<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()">
+<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()" style="overflow-y: hidden;">
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
     <div uk-grid class="mobile-top-bar uk-background-primary">
-      <div class="uk-width-1-2">
+      <div class="uk-width-1-2 button-column">
         <div class="nav-button" (click)="toggleNav()" style="cursor: pointer;">
           <span uk-icon="icon: menu;"></span>
           <span class="app-name">Nault</span>
@@ -90,12 +90,13 @@
                     </div>
                   </div>
                   <div class="account-balances">
-                    <ng-container *ngIf="node.status || !isConfigured()">
+                    <ng-container *ngIf="( ( node.status && (wallet.balanceInitialized === true) ) || !isConfigured() ) else balancesLoading">
                       <div class="balance-container primary">
                         <div class="currency-name">NANO</div>
                         <div class="amount-container">
                           <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 0 }}</div>
                           <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                          <div class="amount-updating" *ngIf="wallet.updatingBalance && isConfigured()"><div uk-spinner="ratio: 0.5;"></div></div>
                         </div>
                       </div>
                       <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
@@ -106,11 +107,11 @@
                         </div>
                       </div>
                     </ng-container>
-                    <ng-container *ngIf="isConfigured() && (node.status === null)">
-                      <div class="spinner-container">
-                        <div uk-spinner="ratio: 0.6;" uk-tooltip title="Attempting to connect to Nano node"></div>
+                    <ng-template #balancesLoading>
+                      <div class="spinner-container" *ngIf="(node.status !== false)">
+                        <div uk-spinner="ratio: 0.6;"></div>
                       </div>
-                    </ng-container>
+                    </ng-template>
                   </div>
                 </div>
               </div>
@@ -215,6 +216,8 @@
             <ul class="uk-nav-sub">
               <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
               <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+              <li><a routerLink="/multisig" routerLinkActive="active"><div class="label">Multi Signature</div></a></li>
+              <li><a routerLink="/keygenerator" routerLinkActive="active"><div class="label">Keypair Generator</div></a></li>
               <li><a routerLink="/converter" routerLinkActive="active"><div class="label">Unit Converter</div></a></li>
               <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">QR Generator</div></a></li>
             </ul>
@@ -270,10 +273,8 @@
 
 
       </div>
-      <div class="uk-width-expand uk-width-1-1 content-container" [class.nav-expanded]="navExpanded" (click)="closeNav()" [style.height]="windowHeight + 'px'">
-        <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="border: 0; height: 100%;">
-          <router-outlet></router-outlet>
-        </div>
+      <div class="uk-width-expand content-container uk-panel" [class.nav-expanded]="navExpanded" (click)="closeNav()">
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

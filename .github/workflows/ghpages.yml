@@ -24,21 +24,15 @@ jobs:
           sudo apt-get install build-essential git -y
           sudo apt-get install libudev-dev -y
           sudo apt-get install libusb-1.0-0-dev -y
-          sudo apt-get install gcc-4.8 g++-4.8 -y
 
       - name: Install and Build
         run: |
           npm install
           npm run wallet:build
-          
-      - name: Install SSH Client 🔑
-        uses: webfactory/ssh-agent@v0.4.1
-        with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
-          SSH: true
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist # The folder the action should deploy.
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.

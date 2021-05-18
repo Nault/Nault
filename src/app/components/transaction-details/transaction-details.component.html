@@ -2,135 +2,262 @@
   <div class="uk-width-1-1">
     <h2 class="uk-heading-divider">Transaction Details</h2>
 
-    <div class="uk-alert uk-alert-primary" *ngIf="!transaction">
-      Unable to load the transaction, double check that the hash is correct and try again!
+    <div *ngIf="!transaction">
+      <div class="uk-alert uk-alert-warning nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>Unable to find the block with specified hash</b><br>
+          Please double check that the block hash is correct<br>
+          Additionally, try selecting a different server in the app settings
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="isUnconfirmedBlock">
+      <div class="uk-alert uk-alert-danger nlt-inline-alert">
+        <div class="icon-column">
+          <div uk-icon="icon: warning; ratio: 2;"></div>
+        </div>
+        <p>
+          <b>This block has not yet been confirmed by the network</b><br>
+          The information provided below is not final until the network verifies this block
+        </p>
+      </div>
     </div>
 
     <div class="uk-width-1-1" *ngIf="transaction">
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType !== 'change'">
-        <span style="display: block; padding-top: 8px;">
-          <span *ngIf="blockType == 'send'">Send</span>
-          <span *ngIf="blockType == 'open'">Receive</span>
-          <span *ngIf="blockType == 'receive'">Receive</span>
-        </span>
-        <span style="display:block; font-size: 32px;">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
-        <span *ngIf="amountRaw.gt(0)" style="display:block; font-size: 12px;">+{{ amountRaw.toString(10) }} raw</span>
-      </div>
-      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" *ngIf="blockType == 'change'">
-        <span style="display:block; font-size: 32px;">Change Representative</span>
-      </div>
-      <br>
-      <div uk-grid>
-        <div class="uk-width-1-2@s">
-          <div class="uk-card uk-card-default">
 
-            <div class="uk-text-truncate" style="padding: 20px 20px;">
-
-              <span class="confirm-title">
-                <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="confirm-title uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</span>
-                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
-                </a>
-              </span>
-              <span class="confirm-subtitle" *ngIf="blockType != 'change'">From Account</span>
-              <span class="confirm-subtitle" *ngIf="blockType == 'change'">Account</span>
-            </div>
+      <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="margin-bottom: 20px;" *ngIf="loadingBlock === false">
+        <div class="uk-card-header" style="padding: 15px;" *ngIf="(blockType !== 'change')">
+          <div
+            style="padding-bottom: 4px;"
+            [title]="( isUnconfirmedBlock ? 'This transaction has not yet been confirmed by the network' : '' )"
+            uk-tooltip
+          >
+            <span *ngIf="(blockType === 'send')" [class]="(isUnconfirmedBlock ? 'text-half-muted' : 'uk-text-danger')">Sent</span>
+            <span *ngIf="(blockType === 'open')" [class]="(isUnconfirmedBlock ? 'text-half-muted' : 'uk-text-success')">Received</span>
+            <span *ngIf="(blockType === 'receive')" [class]="(isUnconfirmedBlock ? 'text-half-muted' : 'uk-text-success')">Received</span>
+            <span class="icon-unconfirmed text-half-muted" uk-icon="icon: clock;" *ngIf="(isUnconfirmedBlock === true)"></span>
           </div>
+          <div
+            *ngIf="transaction?.amount"
+            class="block-amount-primary"
+            [class.uk-text-danger]="(blockType === 'send')"
+            [class.uk-text-success]="( (blockType === 'open') || (blockType === 'receive') )"
+          >
+            <span class="amount-integer">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+            <span class="amount-fractional">{{ transaction?.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+            <span class="currency-name">NANO</span>
+          </div>
+          <div *ngIf="amountRaw.gt(0)" class="uk-text-small text-half-muted" style="margin: 2px 0 -2px 0;">+{{ amountRaw.toString(10) }} raw</div>
         </div>
-        <div class="uk-width-1-2@s">
-          <div class="uk-card uk-card-default">
-            <div class="uk-text-truncate" style="padding: 20px 20px;">
-              <span class="confirm-title">
-                <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset" uk-tooltip title="View Account Details">
-                  <span class="confirm-title uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</span>
-                  <span class="nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></span>
-                </a>
-              </span>
-              <span class="confirm-subtitle" *ngIf="blockType != 'change'">To Account</span>
-              <span class="confirm-subtitle" *ngIf="blockType == 'change'">New Representative</span>
-            </div>
+        <div class="uk-card-header" *ngIf="(blockType === 'change')">
+          <div
+            [title]="( isUnconfirmedBlock ? 'This change has not yet been confirmed by the network' : '' )"
+            uk-tooltip
+          >
+            <div [class]="(isUnconfirmedBlock ? 'text-half-muted' : 'text-rep-change')" style="margin-bottom: 7px;" uk-icon="icon: cog; ratio: 1.2;"></div><br>
+            <span [class]="(isUnconfirmedBlock ? 'text-half-muted' : 'text-rep-change')">Representative Change</span>
+            <span class="icon-unconfirmed text-half-muted" uk-icon="icon: clock;" *ngIf="(isUnconfirmedBlock === true)"></span>
           </div>
         </div>
       </div>
+
+      <div class="account-snippet-container" *ngIf="loadingBlock === false">
+        <div class="account-snippet uk-text-truncate">
+          <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
+            <div class="uk-card-header">
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType !== 'change')">From Account</div>
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType === 'change')">Account</div>
+              <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                  <div class="identicon-address-book-row">
+                    <app-nano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></div>
+                </a>
+                <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                  <ul class="uk-iconnav">
+                    <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="account-snippet uk-text-truncate">
+          <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
+            <div class="uk-card-header">
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType != 'change')">To Account</div>
+              <div class="snippet-caption uk-text-small text-half-muted" *ngIf="(blockType == 'change')">New Representative</div>
+              <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                  <div class="identicon-address-book-row">
+                    <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                    <div class="account-label uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</div>
+                  </div>
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></div>
+                </a>
+                <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                  <ul class="uk-iconnav">
+                    <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="uk-card uk-card-default uk-margin" *ngIf="transaction">
-      <div class="uk-card-body uk-padding-small uk-form-horizontal">
+    <div class="uk-card uk-card-default uk-margin">
+
+      <div class="uk-card-header uk-padding-small uk-form-horizontal">
 
         <div class="uk-margin">
-          <label class="uk-form-label">Block:</label>
+          <label class="uk-form-label">Block Hash:</label>
           <div class="uk-form-controls uk-text-truncate">
-            {{ hashID }}
+            <div uk-grid class="uk-flex-nowrap uk-text-truncate">
+              <div class="uk-width-auto block-hash-monospace uk-text-truncate" style="max-width: calc(100% - 35px);">{{ hashID }}</div>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="hashID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Block Hash" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="uk-margin">
+
+      </div>
+
+      <div class="uk-card-body uk-text-center" *ngIf="loadingBlock">
+        <span class="uk-margin-right" uk-spinner></span> Loading transaction details...
+      </div>
+
+      <div class="uk-card-body uk-padding-small uk-form-horizontal" *ngIf="!loadingBlock && transaction">
+        <div class="uk-margin" *ngIf="transaction?.contents?.type">
           <label class="uk-form-label">Type:</label>
-          <div class="uk-form-controls uk-text-truncate">
-            {{ transaction?.contents?.type }}
-          </div>
+          <div class="uk-form-controls uk-text-truncate">{{ transaction?.contents?.type }}</div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="transaction?.local_timestamp">
           <label class="uk-form-label">Date:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'yyyy-MM-dd HH:mm' }}</span>
+            <span *ngIf="transaction.local_timestamp">{{ transaction?.local_timestamp * 1000 | date: 'MMM d, y HH:mm:ss' }}</span>
             <span *ngIf="!transaction.local_timestamp" class="uk-text-muted">N/A</span>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.balance">
           <label class="uk-form-label">Balance:</label>
-          <div class="uk-form-controls uk-text-truncate">
-            {{ ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 0 }}{{
-              ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 1 }} NANO<br>
-            <span class="uk-text-small">{{ transaction?.contents?.balance }} raw</span>
+          <div class="uk-form-controls uk-text-truncate block-balance">
+            <div class="balance-amount-primary uk-text-truncate">
+              <span class="amount-integer">{{ ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 0 }}</span>
+              <span class="amount-fractional">{{ ( isStateBlock ? getBalanceFromDec(transaction?.contents?.balance) : getBalanceFromHex(transaction?.contents?.balance )) | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              <span class="currency-name">NANO</span>
+            </div>
+            <div class="uk-text-small block-hash-monospace"><span class="text-half-muted" style="margin-right: 4px;">=</span>{{ transaction?.contents?.balance }} raw</div>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.representative">
           <label class="uk-form-label">Representative:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.representative }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.representative" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <app-nano-account-id [accountID]="transaction?.contents?.representative"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.previous">
+        <div class="uk-margin" *ngIf="transaction?.contents?.previous && (blockType != 'open')">
           <label class="uk-form-label">Previous:</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/transaction/' + transaction?.contents?.previous" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.previous }}</a>
+            <div uk-grid class="uk-flex-nowrap uk-text-truncate">
+              <a
+                class="uk-width-auto uk-text-truncate block-hash-monospace block-hash-clickable"
+                [routerLink]="'/transaction/' + transaction?.contents?.previous"
+                style="max-width: calc(100% - 35px);"
+                title="View Block Details"
+                uk-tooltip
+              >{{ transaction?.contents?.previous }}</a>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="transaction?.contents?.previous" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Previous Block Hash" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.source">
-          <label class="uk-form-label">Source:</label>
-          <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/transaction/' + transaction?.contents?.source" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.source }}</a>
-          </div>
-        </div>
-        <div class="uk-margin" *ngIf="transaction?.contents?.link && blockType == 'receive'">
+        <div class="uk-margin" *ngIf="(transaction?.contents?.link || transaction?.contents?.source) && (blockType == 'open' || blockType == 'receive')">
           <label class="uk-form-label">Link (Source):</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/transaction/' + transaction?.contents?.link" class="uk-link-text" uk-tooltip title="View Block Details">{{ transaction?.contents?.link }}</a>
+            <div uk-grid class="uk-flex-nowrap uk-text-truncate">
+              <a
+                class="uk-width-auto uk-text-truncate block-hash-monospace block-hash-clickable"
+                [routerLink]="'/transaction/' + (transaction?.contents?.link || transaction?.contents?.source)"
+                style="max-width: calc(100% - 35px);"
+                title="View Block Details"
+                uk-tooltip
+              >{{ transaction?.contents?.link }}</a>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="(transaction?.contents?.link || transaction?.contents?.source)" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Source Block Hash" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.link_as_account && blockType == 'send'">
           <label class="uk-form-label">Link (Destination):</label>
           <div class="uk-form-controls uk-text-truncate">
-            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="uk-link-text" uk-tooltip title="View Account Details">{{ transaction?.contents?.link_as_account }}</a>
+            <a [routerLink]="'/account/' + transaction?.contents?.link_as_account" class="account-container uk-link-text uk-text-truncate" uk-tooltip title="View Account Details">
+              <span class="nano-address-clickable nano-address-monospace uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <app-nano-account-id [accountID]="transaction?.contents?.link_as_account"></app-nano-account-id>
+              </span>
+            </a>
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="blockHeight != -1">
+          <label class="uk-form-label">Height:</label>
+          <div class="uk-form-controls uk-text-truncate">{{ blockHeight | number:'':'en-US' }}</div>
+        </div>
+        <div class="uk-margin" *ngIf="transaction?.contents?.work">
           <label class="uk-form-label">Work:</label>
           <div class="uk-form-controls uk-text-truncate">
-            {{ transaction?.contents?.work }}
+            <div uk-grid class="uk-flex-nowrap uk-text-truncate">
+              <div
+                class="uk-width-auto uk-text-truncate block-hash-monospace"
+                style="max-width: calc(100% - 35px);"
+              >{{ transaction?.contents?.work }}</div>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="transaction?.contents?.work" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Work Value" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="uk-margin">
+        <div class="uk-margin" *ngIf="transaction?.contents?.signature">
           <label class="uk-form-label">Signature:</label>
-          <div class="uk-form-controls uk-text-small uk-text-truncate">
-            {{ transaction?.contents?.signature }}
+          <div class="uk-form-controls uk-text-small">
+            <div uk-grid class="uk-flex-nowrap uk-flex-middle" style="max-width: 100%;">
+              <div class="uk-width-auto block-hash-monospace block-signature">{{ transaction?.contents?.signature }}</div>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="transaction?.contents?.signature" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Signature" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
 
-    <div uk-grid>
+    <div uk-grid *ngIf="transaction">
       <div class="uk-width-1-1 uk-text-center">
         <a (click)="showBlockData = !showBlockData" class="uk-link-text">{{ showBlockData ? 'Hide' : 'Show' }} Block Data</a>
       </div>

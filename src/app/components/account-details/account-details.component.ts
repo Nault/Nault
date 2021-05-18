@@ -31,15 +31,21 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   maxPageSize = 200;
 
   repLabel: any = '';
+  repVotingWeight: BigNumber;
+  repDonationAddress: any = '';
+
   addressBookEntry: any = null;
   account: any = {};
   accountID = '';
 
   walletAccount = null;
 
+  timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
 
   loadingAccountDetails = false;
+  loadingIncomingTxList = false;
+  loadingTxList = false;
   showAdvancedOptions = false;
   showEditAddressBook = false;
   addressBookModel = '';
@@ -115,7 +121,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
-      this.remoteVisible = params.sign === 1;
+      this.remoteVisible = params.sign === '1';
+      this.showAdvancedOptions = params.sign === '1';
     }
 
     this.routerSub = this.route.events.subscribe(event => {
@@ -144,7 +151,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.representativesOverview = reps;
-      this.updateRepresentativeLabel();
+      this.updateRepresentativeInfo();
     });
   }
 
@@ -204,7 +211,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.representativeListMatch = '';
   }
 
-  updateRepresentativeLabel() {
+  updateRepresentativeInfo() {
     if (!this.account) {
       return;
     }
@@ -217,8 +224,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (representativeFromOverview != null) {
       this.repLabel = representativeFromOverview.label;
+      this.repVotingWeight = representativeFromOverview.percent;
+      this.repDonationAddress = representativeFromOverview.donationAddress;
       return;
     }
+
+    this.repVotingWeight = new BigNumber(0);
+    this.repDonationAddress = null;
 
     const knownRepresentative = this.repService.getRepresentative(this.account.representative);
 
@@ -233,14 +245,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async loadAccountDetails(refresh= false) {
     if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
-    setTimeout(() => this.statsRefreshEnabled = true, 5000);
+
+    if (this.timeoutIdAllowingRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingRefresh);
+    }
+    this.timeoutIdAllowingRefresh = setTimeout(() => this.statsRefreshEnabled = true, 5000);
 
     this.pendingBlocks = [];
 
-    if (this.accountID !== this.router.snapshot.params.account) {
+    // if (this.accountID !== this.router.snapshot.params.account) {
       this.clearAccountVars();
       this.loadingAccountDetails = true;
-    }
+    // }
 
     this.accountID = this.router.snapshot.params.account;
     this.generateReceiveQR(this.accountID);
@@ -256,19 +272,23 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.updateRepresentativeLabel();
+    this.updateRepresentativeInfo();
 
     // If there is a pending balance, or the account is not opened yet, load pending transactions
     if ((!this.account.error && this.account.pending > 0) || this.account.error) {
       // Take minimum receive into account
+      let pendingBalance = '0';
       let pending;
+
+      this.pendingBlocks = [];
+      this.loadingIncomingTxList = true;
       if (this.settings.settings.minimumReceive) {
         const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
-        pending = await this.api.pendingLimit(this.accountID, 50, minAmount.toString(10));
-        this.account.pending = '0';
+        pending = await this.api.pendingLimitSorted(this.accountID, 50, minAmount.toString(10));
       } else {
-        pending = await this.api.pending(this.accountID, 50);
+        pending = await this.api.pendingSorted(this.accountID, 50);
       }
+      this.loadingIncomingTxList = false;
 
       if (pending && pending.blocks) {
         for (const block in pending.blocks) {
@@ -278,16 +298,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             amount: pending.blocks[block].amount,
             amountRaw: new BigNumber( pending.blocks[block].amount || 0 ).mod(this.nano),
             local_timestamp: pending.blocks[block].local_timestamp,
-            addressBookName: this.addressBook.getAccountName(pending.blocks[block].source) || null,
+            addressBookName: (
+                this.addressBook.getAccountName( pending.blocks[block].source )
+              || this.getAccountLabel( pending.blocks[block].source, null )
+            ),
             hash: block,
+            loading: false,
+            received: false,
           });
 
-          // Update the actual account pending amount with this above-threshold-value
-          if (this.settings.settings.minimumReceive) {
-            this.account.pending = new BigNumber(this.account.pending).plus(pending.blocks[block].amount).toString(10);
-          }
+          pendingBalance = new BigNumber(pendingBalance).plus(pending.blocks[block].amount).toString(10);
         }
       }
+
+      this.account.pending = pendingBalance;
     }
 
     // If the account doesnt exist, set the pending balance manually
@@ -309,6 +333,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.loadingAccountDetails = false;
   }
 
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.wallet.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
+  }
+
   ngOnDestroy() {
     if (this.routerSub) {
       this.routerSub.unsubscribe();
@@ -325,10 +359,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async getAccountHistory(account, resetPage = true) {
     if (resetPage) {
+      this.accountHistory = [];
       this.pageSize = 25;
     }
+
+    this.loadingTxList = true;
+
     const history = await this.api.accountHistory(account, this.pageSize, true);
     const additionalBlocksInfo = [];
+
+    const accountConfirmationHeight = (
+        this.account.confirmation_height
+      ? parseInt(this.account.confirmation_height, 10)
+      : null
+    );
 
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
@@ -336,18 +380,39 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
           // For Open and receive blocks, we need to look up block info to get originating account
           if (h.subtype === 'open' || h.subtype === 'receive') {
             additionalBlocksInfo.push({ hash: h.hash, link: h.link });
+          } else if (h.subtype === 'change') {
+            h.link_as_account = h.representative;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           } else {
             h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
-            h.addressBookName = this.addressBook.getAccountName(h.link_as_account) || null;
+            h.addressBookName = (
+                this.addressBook.getAccountName(h.link_as_account)
+              || this.getAccountLabel(h.link_as_account, null)
+            );
           }
         } else {
-          h.addressBookName = this.addressBook.getAccountName(h.account) || null;
+          h.addressBookName = (
+              this.addressBook.getAccountName(h.account)
+            || this.getAccountLabel(h.account, null)
+          );
         }
+
+        if (
+              (accountConfirmationHeight != null)
+            && (h.height != null)
+            && ( accountConfirmationHeight < parseInt(h.height, 10) )
+          ) {
+            h.confirmed = false;
+        }
+
         return h;
       });
 
-      // Remove change blocks now that we are using the raw output
-      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change' && h.subtype !== 'change');
+      // Currently not supporting non-state rep change or state epoch blocks
+      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change' && h.subtype !== 'epoch');
 
       if (additionalBlocksInfo.length) {
         const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
@@ -356,19 +421,24 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
           const matchingBlock = additionalBlocksInfo.find(a => a.link === block);
           if (!matchingBlock) continue;
-          const accountInHistory = this.accountHistory.find(h => h.hash === matchingBlock.hash);
-          if (!accountInHistory) continue;
+          const accountHistoryBlock = this.accountHistory.find(h => h.hash === matchingBlock.hash);
+          if (!accountHistoryBlock) continue;
 
           const blockData = blocksInfo.blocks[block];
 
-          accountInHistory.link_as_account = blockData.block_account;
-          accountInHistory.addressBookName = this.addressBook.getAccountName(blockData.block_account) || null;
+          accountHistoryBlock.link_as_account = blockData.block_account;
+          accountHistoryBlock.addressBookName = (
+              this.addressBook.getAccountName(blockData.block_account)
+            || this.getAccountLabel(blockData.block_account, null)
+          );
         }
       }
 
     } else {
       this.accountHistory = [];
     }
+
+    this.loadingTxList = false;
   }
 
   async loadMore() {
@@ -516,7 +586,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
-    this.addressBookMatch = this.addressBook.getAccountName(this.toAccountID);
+    this.addressBookMatch = (
+        this.addressBook.getAccountName(this.toAccountID)
+      || this.getAccountLabel(this.toAccountID, null)
+    );
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
     this.toAccountStatus = null;
@@ -570,6 +643,33 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       case 'knano': return this.util.nano.rawToKnano(value);
       case 'mnano': return this.util.nano.rawToMnano(value);
     }
+  }
+
+  async receivePending(pendingBlock) {
+    const sourceBlock = pendingBlock.hash;
+
+    if (this.wallet.walletIsLocked()) {
+      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    }
+    pendingBlock.loading = true;
+
+    const newBlock = await this.nanoBlock.generateReceive(this.walletAccount, sourceBlock, this.wallet.isLedgerWallet());
+
+    if (newBlock) {
+      pendingBlock.received = true;
+      this.notifications.removeNotification('success-receive');
+      this.notifications.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
+      // clear the list of pending blocks. Updated again with reloadBalances()
+      this.wallet.clearPendingBlocks();
+    } else {
+      if (!this.wallet.isLedgerWallet()) {
+        this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+      }
+    }
+
+    pendingBlock.loading = false;
+
+    await this.wallet.reloadBalances();
   }
 
   async generateSend() {

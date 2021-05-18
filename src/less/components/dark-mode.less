@@ -1,5 +1,5 @@
 @dark-mode-background-1: #19191B;
-@dark-mode-background-2: #1B1B20;
+@dark-mode-background-2: #1B1B1E;
 @dark-mode-background-3: #1D1D22;
 @dark-mode-background-4: #22222A;
 @dark-mode-background-5: #25252D;
@@ -18,7 +18,7 @@
 	// General
 	color: @dark-mode-text-5;
 
-	.uk-panel-scrollable {
+	.content-container {
 		@scrollbar-color: #4E4E5A;
 
 		// Scrollbar - Gecko (Firefox)
@@ -33,6 +33,10 @@
 			background: @scrollbar-color;
 			border-color: @dark-mode-background-1;
 		}
+	}
+
+	a.uk-link-text:hover, .uk-link-text a:hover, .uk-link-toggle:hover .uk-link-text, .uk-link-toggle:focus .uk-link-text {
+		color: @dark-mode-text-3;
 	}
 
 	.uk-text-muted {
@@ -94,17 +98,15 @@
 		color: @dark-mode-text-4;
 	}
 
-	.account-label {
+	.account-label:not(.rep):not(.blue), .account-label:not(.rep):not(.blue):hover {
 		background: @dark-mode-background-6;
-	}
-
-	.account-label, .account-label:hover {
 		color: @dark-mode-text-4;
 	}
 
 	.account-container:hover .account-label {
 		border-color: @dark-mode-accent-1;
-		background: @dark-mode-accent-1;
+		background: @dark-mode-accent-1 !important;
+		color: #FFF !important;
 	}
 
 	.account-container .account-index {
@@ -312,6 +314,10 @@
 		border-color: @dark-mode-background-3;
 	}
 
+	.uk-input:disabled::placeholder, .uk-select:disabled::placeholder, .uk-textarea:disabled::placeholder {
+		color: #3E3E48 !important;
+	}
+
 	// General (UIkit Modal)
 	.uk-modal-dialog {
 		background: @dark-mode-background-4;
@@ -370,6 +376,17 @@
 		border-color: rgba(255, 255, 255, 0.1);
 	}
 
+	// General (Tooltip)
+	.uk-tooltip {
+		background: #4F4F6D;
+	}
+
+	// General (Identicons)
+	.natricon-placeholder > img {
+		opacity: 0.05;
+		filter: invert(1);
+	}
+
 	// Unlock Wallet modal
 	.password-input.uk-form-danger {
 		border-color: #F79743;
@@ -378,6 +395,15 @@
 
 	.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
 		color: #FFA556 !important;
+	}
+
+	// Transactions list
+	.transactions-list {
+		.account-column {
+			.block-hash:hover {
+				border-bottom-color: @dark-mode-text-1;
+			}
+		}
 	}
 
 	// Account details page
@@ -389,6 +415,11 @@
 	.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
 		color: @dark-mode-text-5 !important;
 		background: @dark-mode-background-4;
+	}
+
+	// Receive page
+	.qr-placeholder {
+		background: @dark-mode-background-2 !important;
 	}
 
 	// Representatives page
@@ -412,6 +443,11 @@
 	// New Wallet page
 	.mne-cont {
 		border-bottom-color: #5F5F77;
+	}
+
+	// Welcome page
+	.welcome-features-container > .feature {
+		background: @dark-mode-background-4;
 	}
 
 	// Wallet Setup page

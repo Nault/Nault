@@ -1,6 +1,6 @@
 {
   "name": "nault",
-  "version": "1.9.8",
+  "version": "1.11.1",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "The Nano Community / Andrew Steele",
@@ -59,8 +59,11 @@
     "core-js": "^3.6.5",
     "crypto-js": "^3.1.9-1",
     "electron-log": "^4.3.1",
+    "electron-settings": "^4.0.2",
     "electron-updater": "^4.3.5",
+    "hermes-channel": "0.0.6",
     "hw-app-nano": "^1.3.0",
+    "nano-base32": "^1.0.1",
     "nanocurrency": "^2.5.0",
     "nanocurrency-web": "^1.2.1",
     "ngx-clipboard": "^12.3.0",
@@ -139,7 +142,12 @@
     "protocols": {
       "name": "nano",
       "schemes": [
-        "nano"
+        "nano",
+        "nanorep",
+        "nanoseed",
+        "nanokey",
+        "nanosign",
+        "nanoprocess"
       ],
       "role": "Viewer"
     }

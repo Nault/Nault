@@ -1,3 +1,14 @@
+.label-block {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    width: unset;
+}
+
+.label-block > .label-optional {
+    margin-left: 6px;
+    font-size: 12px;
+}
+
 .nano-address-actions {
     margin-top: 2px;
 }
@@ -7,5 +18,148 @@
 }
 
 .span-icon {
-    margin-left: 5px;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.form-account {
+	max-width: 800px;
+}
+
+.form-amount {
+	max-width: 450px;
+}
+
+.icon-nano-logo {
+    margin: 13px 11px;
+    width: 32px;
+    background-color: currentcolor;
+    -webkit-mask-image: url('assets/img/nano-mark-simple.svg');
+    mask-image: url('assets/img/nano-mark-simple.svg');
+}
+
+.receive-columns {
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 640px) {
+    .receive-columns {
+        flex-direction: row-reverse;
+    }
+    .qr-column {
+        width: 0;
+        max-width: 360px;
+        margin-right: 20px;
+    }
+}
+
+.qr-code {
+    display: block;
+    border-radius: 20px;
+    max-width: 290px;
+    max-height: 290px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.qr-address {
+    max-width: 280px;
+    margin: 0 auto;
+}
+@media (max-width: 959px) {
+    .qr-code {
+        max-width: 250px;
+        max-height: 250px;
+    }
+    .qr-address {
+        max-width: 280px;
+    }
+}
+.qr-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #FFF;
+    padding: 20px;
+}
+
+.qr-confirmation {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 150%;
+    height: 150%;
+    margin: -25%;
+    background: #16A670;
+    transition: all 0.3s cubic-bezier(0.6, 0, 1, 1);
+    transform: scale(0);
+    border-radius: 50%;
+    color: #FFF;
+    padding: 30%;
+    box-sizing: border-box;
+}
+.qr-confirmation.in {
+    transform: scale(1);
+}
+.qr-confirmation.in > :first-child {
+    animation: slidedown 0.7s;
+}
+.qr-confirmation.in > :last-child {
+    animation: slideup 1.2s;
+}
+.qr-confirmation.out {
+    animation: fadeout 5s;
+}
+
+@keyframes slidedown {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideup {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    98% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    99% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 1;
+    }
 }

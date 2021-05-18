@@ -25,6 +25,7 @@ interface AppSettings {
   minimumReceive: string | null;
   walletVersion: number | null;
   lightModeEnabled: boolean;
+  identiconsStyle: string;
 }
 
 @Injectable()
@@ -48,9 +49,10 @@ export class AppSettingsService {
     serverAPI: null,
     serverWS: null,
     serverAuth: null,
-    minimumReceive: null,
+    minimumReceive: '0.000001',
     walletVersion: 1,
-    lightModeEnabled: false
+    lightModeEnabled: false,
+    identiconsStyle: 'nanoidenticons',
   };
 
   serverOptions = [
@@ -75,14 +77,6 @@ export class AppSettingsService {
       value: 'nanos',
       api: 'https://nault.nanos.cc/proxy',
       ws: 'wss://nault-ws.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'VoxPopuli',
-      value: 'voxpopuli',
-      api: 'https://vox.nanos.cc/api',
-      ws: 'wss://vox.nanos.cc/websocket',
       auth: null,
       shouldRandom: true,
     },
@@ -171,6 +165,7 @@ export class AppSettingsService {
 
       this.settings.serverAPI = randomServerOption.api;
       this.settings.serverWS = randomServerOption.ws;
+      this.settings.serverName = 'random';
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
     } else if (this.settings.serverName === 'offline') {
@@ -227,9 +222,10 @@ export class AppSettingsService {
       serverAPI: null,
       serverWS: null,
       serverAuth: null,
-      minimumReceive: null,
+      minimumReceive: '0.000001',
       walletVersion: 1,
       lightModeEnabled: false,
+      identiconsStyle: 'nanoidenticons',
     };
   }
 

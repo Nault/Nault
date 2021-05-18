@@ -52,6 +52,7 @@ export class SendComponent implements OnInit {
   toAddressBook = '';
   toAccountStatus = null;
   amountStatus = null;
+  preparingTransaction = false;
   confirmingTransaction = false;
   selAccountInit = false;
 
@@ -80,6 +81,11 @@ export class SendComponent implements OnInit {
 
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.activePanel !== 'send') {
+        // Transaction details already finalized
+        return;
+      }
+
       if (this.selAccountInit) {
         if (acc) {
           this.fromAccountID = acc.id;
@@ -196,7 +202,11 @@ export class SendComponent implements OnInit {
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
-    this.addressBookMatch = this.addressBookService.getAccountName(this.toAccountID);
+    this.addressBookMatch = (
+        this.addressBookService.getAccountName(this.toAccountID)
+      || this.getAccountLabel(this.toAccountID, null)
+    );
+
     if (!this.addressBookMatch && this.toAccountID === environment.donationAddress) {
       this.addressBookMatch = 'Nault Donations';
     }
@@ -216,6 +226,16 @@ export class SendComponent implements OnInit {
     } else {
       this.toAccountStatus = 0;
     }
+  }
+
+  getAccountLabel(accountID, defaultLabel) {
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
+
+    if (walletAccount == null) {
+      return defaultLabel;
+    }
+
+    return ('Account #' + walletAccount.index);
   }
 
   validateAmount() {
@@ -262,8 +282,13 @@ export class SendComponent implements OnInit {
       return this.notificationService.sendWarning(`Invalid NANO Amount`);
     }
 
+    this.preparingTransaction = true;
+
     const from = await this.nodeApi.accountInfo(this.fromAccountID);
     const to = await this.nodeApi.accountInfo(destinationID);
+
+    this.preparingTransaction = false;
+
     if (!from) {
       return this.notificationService.sendError(`From account not found`);
     }
@@ -292,9 +317,17 @@ export class SendComponent implements OnInit {
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
+    this.fromAddressBook = (
+        this.addressBookService.getAccountName(this.fromAccountID)
+      || this.getAccountLabel(this.fromAccountID, 'Account')
+    );
+
+    this.toAddressBook = (
+        this.addressBookService.getAccountName(destinationID)
+      || this.getAccountLabel(destinationID, null)
+    );
+
     // Start precomputing the work...
-    this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
-    this.toAddressBook = this.addressBookService.getAccountName(destinationID);
     this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
@@ -394,6 +427,11 @@ export class SendComponent implements OnInit {
       }
     }, () => {}
     );
+  }
+
+  copied() {
+    this.notificationService.removeNotification('success-copied');
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
   }
 
 }

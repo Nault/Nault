@@ -49,6 +49,7 @@ export interface FullRepresentativeOverview extends RepresentativeApiOverview {
   statusText: string;
   label: string|null;
   status: RepresentativeStatus;
+  donationAddress?: string;
 }
 
 
@@ -255,6 +256,7 @@ export class RepresentativeService {
         statusText: status,
         label: label,
         status: repStatus,
+        donationAddress: knownRepNinja?.donation?.account,
       };
 
       const fullRep = { ...representative, ...additionalData };

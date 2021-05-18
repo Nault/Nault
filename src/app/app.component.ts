@@ -9,9 +9,9 @@ import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { LedgerService } from './services';
+import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
-
+import { DeeplinkService } from './services/deeplink.service';
 
 @Component({
   selector: 'app-root',
@@ -30,9 +30,11 @@ export class AppComponent implements OnInit {
     private representative: RepresentativeService,
     private router: Router,
     private workPool: WorkPoolService,
-    private ledger: LedgerService,
     public price: PriceService,
-    private renderer: Renderer2) {
+    private desktop: DesktopService,
+    private ledger: LedgerService,
+    private renderer: Renderer2,
+    private deeplinkService: DeeplinkService) {
       router.events.subscribe(() => {
         this.navExpanded = false;
       });
@@ -54,10 +56,6 @@ export class AppComponent implements OnInit {
   isConfigured = this.walletService.isConfigured;
   donationAccount = environment.donationAddress;
 
-  @HostListener('window:resize', ['$event']) onResize (e) {
-    this.updateWindowHeight(e.target);
-  }
-
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
     if (
             ( this.selectButton.nativeElement.contains(event.target) === false )
@@ -68,7 +66,6 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.updateWindowHeight(window);
     this.settings.loadAppSettings();
 
     this.updateAppTheme();
@@ -92,7 +89,7 @@ export class AppComponent implements OnInit {
       this.wallet.selectedAccount = currentUpdatedAccount;
     }
 
-    await this.walletService.reloadBalances(true);
+    await this.walletService.reloadBalances();
 
     // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
@@ -141,15 +138,11 @@ export class AppComponent implements OnInit {
       this.walletService.lockWallet();
     });
 
-    // Listen for an xrb: protocol link, triggered by the desktop application
-    window.addEventListener('protocol-load', (e: CustomEvent) => {
-      const protocolText = e.detail;
-      const stripped = protocolText.split('').splice(4).join(''); // Remove xrb:
-      if (stripped.startsWith('xrb_')) {
-        this.router.navigate(['account', stripped]);
-      }
-      // Soon: Load seed, automatic send page?
+    // handle deeplinks
+    this.desktop.on('deeplink', (e, deeplink) => {
+      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', { length: 5000 });
     });
+    this.desktop.send('deeplink-ready');
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
@@ -170,11 +163,6 @@ export class AppComponent implements OnInit {
     } catch (err) {
       this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
-  }
-
-  updateWindowHeight(windowReference) {
-    const mobileOffset = (windowReference.innerWidth > 939) ? 0 : 50;
-    this.windowHeight = windowReference.innerHeight - mobileOffset;
   }
 
   /*
@@ -264,7 +252,7 @@ export class AppComponent implements OnInit {
       this.notifications.sendInfo(`Wallet server settings is set to offline mode. Please change server first!`);
       return;
     }
-    this.walletService.reloadBalances(true);
+    this.walletService.reloadBalances();
     this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
   }
 

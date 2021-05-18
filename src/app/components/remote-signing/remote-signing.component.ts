@@ -21,7 +21,7 @@ export class RemoteSigningComponent implements OnInit {
   constructor(
     private util: UtilService,
     private router: Router,
-    private notifcationService: NotificationService,
+    private notificationService: NotificationService,
     private remoteSignService: RemoteSignService,
     private qrModalService: QrModalService,
   ) { }
@@ -31,6 +31,10 @@ export class RemoteSigningComponent implements OnInit {
   }
 
   validateDestination() {
+    if (this.toAccountID === '') {
+      this.toAccountStatus = null;
+      return false;
+    }
     if (this.util.account.isValidAccount(this.toAccountID)) {
       this.toAccountStatus = 1;
       return true;
@@ -41,6 +45,10 @@ export class RemoteSigningComponent implements OnInit {
   }
 
   validateUnsigned(string) {
+    if (string === '') {
+      this.unsignedStatus = null;
+      return false;
+    }
     let url = null;
     if (string.startsWith('nanosign:')) {
       url = new URL(string);
@@ -53,6 +61,10 @@ export class RemoteSigningComponent implements OnInit {
   }
 
   validateSigned(string) {
+    if (string === '') {
+      this.signedStatus = null;
+      return false;
+    }
     let url = null;
     if (string.startsWith('nanoprocess:')) {
       url = new URL(string);
@@ -68,7 +80,7 @@ export class RemoteSigningComponent implements OnInit {
     if (this.validateDestination()) {
       this.router.navigate(['account', this.toAccountID], { queryParams: {sign: 1}});
     } else {
-      this.notifcationService.sendWarning('Not a valid account format!');
+      this.notificationService.sendWarning('Invalid Nano account!');
     }
   }
 
@@ -88,7 +100,7 @@ export class RemoteSigningComponent implements OnInit {
       badScheme = true;
     }
     if (badScheme) {
-      this.notifcationService.sendWarning('Not a recognized block format!', { length: 5000 });
+      this.notificationService.sendWarning('Not a recognized block format!', { length: 5000 });
     }
   }
 

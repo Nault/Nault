@@ -6,34 +6,50 @@
 	max-width: 450px;
 }
 
-.confirm-title {
-  display: block;
-  font-size: 24px;
+.block-amount-primary {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  line-height: 1;
+  margin-top: 4px;
 }
 
-.confirm-currency {
-  display: block;
-  font-size: 20px;
+.block-amount-primary > .amount-integer {
+  font-size: 32px;
+  font-weight: 700;
 }
 
-.confirm-subtitle {
-  display: block;
-  font-size: 10px;
+.block-amount-primary > .amount-fractional,
+.block-amount-primary > .currency-name {
+  font-size: 21px;
 }
 
-@media (max-width: 12450px) {
-  .br-spacer {
-    display: block;
-  }
-}
-@media (max-width: 959px) {
-  .br-spacer {
-    display: none;
-  }
+.block-amount-primary > .currency-name {
+  margin-left: 6px;
 }
 
-.uk-dropdown-spacing {
-  padding: 5px 0;
+.block-balance .balance-amount-primary .amount-amount-sign,
+.block-balance .balance-amount-primary .amount-integer,
+.block-balance .balance-amount-primary .amount-fractional,
+.block-balance .balance-amount-primary .currency-name {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.block-balance .balance-amount-primary .amount-sign {
+  font-weight: 500;
+  margin-right: 1px;
+}
+
+.block-balance .balance-amount-primary .amount-integer {
+  font-weight: 700;
+}
+
+.block-balance .balance-amount-primary .amount-fractional {
+  font-weight: 500;
+}
+
+.block-balance .balance-amount-primary .currency-name {
+  font-weight: 400;
+  margin-left: 5px;
 }
 
 .send-types-wrapper {
@@ -51,4 +67,12 @@
 }
 .send-types-tab-active {
   border-color: transparent;
+}
+
+.icon-nano-logo {
+  margin: 13px 11px;
+  width: 32px;
+  background-color: currentcolor;
+  -webkit-mask-image: url('assets/img/nano-mark-simple.svg');
+  mask-image: url('assets/img/nano-mark-simple.svg');
 }

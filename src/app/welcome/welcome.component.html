@@ -1,90 +1,144 @@
 <div uk-grid>
   <div class="uk-width-1-1 uk-animation-slide-left-small">
-    <div uk-grid class="uk-text-center" style="margin-bottom: 90px;">
+    <div uk-grid class="uk-text-center" style="margin-bottom: 70px;">
       <div class="uk-width-1-1" style="margin-top: 45px;">
-        <img [src]="( settingsService.settings.lightModeEnabled ? '/assets/img/nault-logo.svg' : '/assets/img/nault-logo-night-mode.svg' )" width="250px" style="display: block; margin: 0 auto 20px auto;" alt="Logo"/>
+        <img [src]="( settingsService.settings.lightModeEnabled ? 'assets/img/nault-logo.svg' : 'assets/img/nault-logo-night-mode.svg' )" width="250px" style="display: block; margin: 0 auto 20px auto;" alt="Logo"/>
         <span class="uk-text-lead">A secure open source wallet for <a href="https://nano.org" class="uk-link-text" target="_blank" rel="noopener noreferrer">Nano</a></span><br>
       </div>
+
       <div class="uk-width-1-1" *ngIf="!isConfigured()">
         <div uk-grid>
-          <div class="uk-width-1-1" style="margin-top: 10px;">
-            <span class="uk-text-small">To get started, choose an option below to configure your wallet</span>
-          </div>
-          <div class="uk-width-1-2@m">
-            <button routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Create A New Wallet</button>
-          </div>
-          <div class="uk-width-1-2@m">
-            <button routerLink="/configure-wallet" [queryParams]="{ import: 1}" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Import An Existing Wallet</button>
+          <div class="uk-width-1-1">
+            <a routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Configure Wallet</a>
           </div>
         </div>
       </div>
-
       <div class="uk-width-1-1" *ngIf="isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 10px;">
-            <span class="uk-text-small">Welcome back!  It looks like your wallet is already configured.</span>
+            <span>Welcome back! It looks like your wallet is already configured.</span>
           </div>
           <div class="uk-width-1-1@m">
-            <button routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">View My Accounts</button>
+            <a routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">View My Accounts</a>
           </div>
         </div>
       </div>
     </div>
 
-    <div uk-grid class="uk-margin-top">
+    <div class="welcome-features-container uk-margin-top">
 
-      <div class="uk-width-1-1@m">
-        <div class="uk-card uk-card-default uk-card-small">
-          <div class="uk-card-body">
-
-            <ul uk-accordion="">
-              <li class="uk-open">
-
-                <a class="uk-accordion-title uk-link-text" href="#">Why Use Nault?</a>
-                <div class="uk-accordion-content">
-                  <!--Nault is an open source web wallet which makes it incredibly easy to send and receive <a href="https://nano.org" target="_blank" rel="noopener noreferrer">Nano</a> from anywhere in the world.<br>-->
-
-                  <dl class="uk-description-list">
-                    <dt>Security Focused</dt>
-                    <dd>All sensitive operations happen in your browser only - your seed and private keys are never sent across your network, or stored on any server in any format. (So there is no need for server-based authentication measures such as 2FA). A full security guide is found <a href="https://docs.nault.cc/2020/08/05/security-of-nano.html">here</a>.</dd>
-                    <dt>"No Strings Attached" Wallet</dt>
-                    <dd>Because no information is ever stored on a server, there is no account to login to or email address required. Create as many wallets as you want and switch between them easily.</dd>
-                    <dt>Any Device, Anywhere</dt>
-                    <dd>Send and receive Nano from any device using the web wallet, or <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">download the desktop wallet</a> available for Windows/Mac/Linux.</dd>
-                    <dt>Helpful Features</dt>
-                    <dd>Store labels for your friends and your own accounts in the address book, track your balances in your local currency, and more!</dd>
-                  </dl>
-                </div>
-              </li>
-
-            </ul>
-          </div>
+      <div class="feature uk-card-body uk-card-default">
+        <div class="icon">
+          <svg width="160mm" height="160mm" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="m80.448 11.936-53.936 16.765s-4.4379 41.913 12.289 79.452c11.193 25.119 41.57 40.779 41.647 40.819 0.07333-0.0395 30.452-15.698 41.646-40.817 16.729-37.538 12.294-79.45 12.294-79.45l-53.935-16.768z" fill="none" stroke="#000" stroke-width="2"/>
+          </svg>
         </div>
+        <h2>Your Keys, Your Coins</h2>
+        <p>You are solely responsible for the security of your funds.</p>
+        <p>Secret keys that you use in Nault are temporarily stored on your device, encrypted by the password that you choose.</p>
+        <p>No sensitive data is ever sent across the internet.</p>
+        <p><a href="https://docs.nault.cc/2020/08/05/security-of-nano.html" target="_blank" rel="noopener noreferrer">Learn more</a></p>
       </div>
 
-      <div class="uk-width-1-1">
-
-        <hr class="uk-divider-icon">
-
-        <div class="uk-card uk-card-small uk-card-default uk-margin uk-width-1-1">
-          <div class="uk-card-body uk-text-center">
-            Nault is open source and all code is available at <a href="https://github.com/Nault/Nault" target="_blank" rel="noopener noreferrer">https://github.com/Nault/Nault</a>.<br>
-            Please submit any feedback or bug reports on our GitHub page.  Thank you for using Nault!
-          </div>
+      <div class="feature uk-card-body uk-card-default">
+        <div class="icon">
+          <svg width="160mm" height="160mm" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000">
+              <rect x="115.54" y="95.843" width="29.491" height="48.734" rx="3.5764" ry="3.663" stop-color="#000000" stroke-width="2"/>
+              <rect x="119.21" y="103.72" width="22.139" height="32.555" rx="2.1542" ry="2.1886" stop-color="#000000" stroke-width="1.5"/>
+              <g stroke-linejoin="round">
+                <path d="m122.27 100.16h16.027z" stop-color="#000000" stroke-width="1.5"/>
+                <rect x="13.801" y="75.375" width="72.965" height="53.721" rx="3.5236" ry="3.6275" stop-color="#000000" stroke-width="2"/>
+                <rect x="22.888" y="82.858" width="54.79" height="38.754" rx="1.8512" ry="1.8534" stop-color="#000000" stroke-width="1.5"/>
+                <path d="m130.27 140.01h-0.0717z" stop-color="#000000" stroke-width="2"/>
+                <path d="m18.602 102.2h-0.3z" stop-color="#000000" stroke-width="3"/>
+                <path d="m110.62 99.71h-4.1059l-0.0641-14.418 33.454-0.20205c2.579 0 4.6555-2.005 4.6555-4.4953v-57.582c0-2.4904-2.0765-4.4948-4.6555-4.4948h-87.089c-2.579 0-4.655 2.0044-4.655 4.4948v47.612m43.397 34.447h19.063" stop-color="#000000" stroke-width="2"/>
+                <path d="m53.359 70.585v-40.657c0-1.3926 1.2958-2.5136 2.9055-2.5136h80.184c1.6096 0 2.9055 1.1211 2.9055 2.5136v47.533c0 1.3926-1.2958 2.5136-2.9055 2.5136h-44.852" stop-color="#000000" stroke-width="1.5"/>
+                <path d="m96.317 23.362h-0.3z" stop-color="#000000" stroke-width="3"/>
+              </g>
+            </g>
+          </svg>
         </div>
-
-        <div class="uk-width-1-1">
-          <div class="uk-text-center uk-alert uk-alert-primary" uk-alert>
-            <a class="uk-alert-close" uk-close></a>
-            <strong>Don't have any Nano, but want to see how quick and easy it is to use?</strong><br>
-            Use the <a href="https://nano-faucet.org/" target="_blank" rel="noopener noreferrer">Nano Faucet</a> with your Nault account to get going instantly!
-          </div>
-        </div>
-
-        <div class="uk-text-center uk-text-small uk-text-truncate">
-          Donation Address: <a [routerLink]="'/send'" [queryParams]="{ to: donationAccount }" uk-tooltip title="Contribute to this wallet with a custom donation!">{{ donationAccount }}</a>
-        </div>
+        <h2>Any Device, Anywhere</h2>
+        <p>Nault is a web application that can be used on most desktop and handheld devices.</p>
+        <p>You may also use the desktop application for Windows, Linux or Mac. It is available for download <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">from the GitHub releases page</a>.</p>
+        <p>All code is open source and <a href="https://github.com/Nault/Nault" target="_blank" rel="noopener noreferrer">available on GitHub</a>.</p>
       </div>
+
+      <div class="feature uk-card-body uk-card-default">
+        <div class="icon">
+          <svg width="160mm" height="160mm" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000" stroke-width="2">
+              <g>
+                <path d="m16.735 14.651 36.256-1.82e-4v9.96h-40.121l-0.09402-6.5747c-0.02682-1.8752 1.7656-3.4012 3.9587-3.3851z" stop-color="#000000"/>
+                <path d="m52.992 29.432v10.091h-40.121v-10.091z" stop-color="#000000"/>
+                <path d="m49.033 54.436-36.256 4.26e-4v-9.961h40.215v6.5755c0 1.8754-1.7654 3.4012-3.9584 3.3851z" stop-color="#000000"/>
+                <path d="m111.53 35.973 36.256 0.0402v9.92h-40.121l-0.094-6.5752c-0.0268-1.8752 1.7656-3.4012 3.9587-3.3851z" stop-color="#000000"/>
+                <path d="m147.79 50.754v10.09h-40.121v-10.09z" stop-color="#000000"/>
+                <path d="m143.83 75.757-36.256-7.8e-5v-9.96h40.168l0.0472 6.575c0.0135 1.8753-1.7661 3.4012-3.9591 3.3851z" stop-color="#000000"/>
+                <path d="m42.9 105.79 36.256 4.2e-4v9.96h-40.121l-0.094-6.5754c-0.02681-1.8752 1.7656-3.4012 3.9587-3.3851z" stop-color="#000000"/>
+                <path d="m79.156 120.57v10.09h-40.121v-10.09z" stop-color="#000000"/>
+                <path d="m75.197 145.57-36.256 3e-5v-9.96h40.215v6.5749c0 1.8754-1.7659 3.4012-3.9589 3.3851z" stop-color="#000000"/>
+              </g>
+              <g>
+                <path d="m62.29 30.725 36.616 15.234" stroke-dasharray="2, 6"/>
+                <path d="m89.282 120.28 35.28-38.487" stroke-dasharray="2, 6.00001"/>
+                <rect x="110.61" y="105.54" width="14.798" height="14.798" rx="7.2501" ry="7.2501" stop-color="#000000"/>
+              </g>
+              <path d="m76.697 24.637 13.493-9.3469 2.7567 16.21z"/>
+            </g>
+          </svg>
+        </div>
+        <h2>Any Node, Always Available</h2>
+        <p>Even if the official <a href="https://nault.cc" target="_blank" rel="noopener noreferrer">nault.cc</a> domain would become inaccessible, you would still be able to use the <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">desktop application</a> or <a href="https://github.com/Nault/Nault#web-app" target="_blank" rel="noopener noreferrer">host the web application yourself</a>.</p>
+        <p>In Nault there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted <a href="https://docs.nano.org/running-a-node/overview/" target="_blank" rel="noopener noreferrer">Nano node</a> as the server.</p>
+      </div>
+
+      <div class="feature uk-card-body uk-card-default">
+        <div class="icon">
+          <svg width="160mm" height="160mm" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000">
+              <g>
+                <g>
+                  <path transform="matrix(1.4835 0 0 1.4781 -13.178 -69.759)" d="m62.808 53.721c-9.889-0.26727-8.957 4.4916-8.8199 13.631 0.10686 7.1237 3.7525 7.4728 3.7525 7.4728v1.6358s-14.326-0.04302-13.107 16.303c0.51501 6.9035 1.3476 11.718 8.8468 11.945 8.8199 0.26727 10.199 0.0107 10.199 0.0107m-0.87165-50.999c9.889-0.26727 8.957 4.4916 8.8199 13.631-0.10686 7.1237-3.7525 7.4728-3.7525 7.4728v1.6358s14.326-0.04302 13.107 16.303c-0.51501 6.9035-1.3476 11.718-8.8468 11.945-8.8199 0.26727-10.199 0.0107-10.199 0.0107" stroke-width="1.3506"/>
+                  <path d="m46.276 21.814c-10.482-0.28412-9.4945 4.7748-9.3492 14.49 0.11328 7.5729 3.9777 7.944 3.9777 7.944v1.739s-15.186-0.04573-13.893 17.331c0.54592 7.3387 1.4285 20.471 9.3776 20.712 9.3492 0.28412 10.811 0.0114 10.811 0.0114m-0.92395-62.228c10.482-0.28412 9.4945 4.7748 9.3492 14.49-0.11328 7.5729-3.9777 7.944-3.9777 7.944v1.739s2.3541-0.0061 3.8668 0.99653m-3.6921 36.315c-5.1826 1.1853-6.4702 0.74313-6.4702 0.74313" stroke-width="2"/>
+                  <path d="m113.78 21.816c10.482-0.28412 9.4945 4.7748 9.3492 14.49-0.11326 7.5729-3.9777 7.944-3.9777 7.944v1.739s15.186-0.04573 13.893 17.331c-0.54592 7.3387-1.4285 20.471-9.3776 20.712-9.3492 0.28412-10.811 0.01139-10.811 0.01139m0.92397-62.228c-10.482-0.28412-9.4945 4.7748-9.3492 14.49 0.11326 7.5729 3.9777 7.944 3.9777 7.944v1.739s-2.3541-0.0061-3.8668 0.99653m3.6921 36.315c5.1826 1.1853 6.4702 0.74313 6.4702 0.74313" stroke-width="2"/>
+                </g>
+                <path transform="matrix(1.2392 0 0 1.2387 -6.7442 -30.298)" d="m22.538 100.54h47.462 47.462c2.77 0 2.9737 0.90258 2.8833 3.9417-0.0903 3.0391-6.8792 2.8321-6.8792 2.8321v33.961c0 2.77-2.23 5-5 5h-76.932c-2.77 0-5-2.23-5-5v-33.961s-6.7888 0.20694-6.8792-2.8321c-0.09033-3.0391 0.11333-3.9417 2.8833-3.9417z" stop-color="#000000" stroke-width="1.6143"/>
+              </g>
+              <path d="m40.587 123.36h78.826" stroke-linejoin="round" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+        <h2>Secure the Nano Network</h2>
+        <p>Nano uses <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">ORV consensus</a>, which allows users to be in control of how much voting power representatives have on the network.</p>
+        <p>Nault will automatically check the status of your representatives and provide recommendations to ensure security and censorship resistance for all network participants.</p>
+      </div>
+
+      <div class="feature uk-card-body uk-card-default">
+        <div class="icon">
+          <svg width="160mm" height="160mm" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000">
+              <rect x="17.148" y="14.529" width="125.7" height="130.94" rx="5.6483" ry="5.647" stop-color="#000000" stroke-width="2"/>
+              <g>
+                <path transform="matrix(1.0535 0 0 1.0601 -33.258 .94343)" d="m94.538 62.675c-4.0507 0.05061-7.4515 1.9242-7.4443 6.7542 0.0085 5.7713 3.4806 7.0204 3.4806 7.0204v9.9389h3.7794m-0.874-23.713c4.0507 0.05061 7.4515 1.9242 7.4443 6.7542-8e-3 5.7713-3.4806 7.0204-3.4806 7.0204v9.9389h-3.7794" stroke-width="2"/>
+                <ellipse cx="110.43" cy="80.149" rx="15.549" ry="15.545" stop-color="#000000" stroke-width="2"/>
+                <ellipse cx="110.43" cy="80.149" rx="8.2677" ry="8.2659" stop-color="#000000" stroke-width="1.5"/>
+                <path d="m125.57 80.02h-7.2778" stroke-width="2"/>
+                <rect x="23.43" y="20.81" width="113.14" height="118.38" rx="3.3245" ry="3.3386" stop-color="#000000" stroke-width="1.5"/>
+                <path transform="matrix(1.0535 0 0 1.0601 -57.07 .94343)" d="m94.538 62.675c-4.0507 0.05061-7.4515 1.9242-7.4443 6.7542 0.0085 5.7713 3.4806 7.0204 3.4806 7.0204v9.9389h3.7794m-0.874-23.713c4.0507 0.05061 7.4515 1.9242 7.4443 6.7542-8e-3 5.7713-3.4806 7.0204-3.4806 7.0204v9.9389h-3.7794" stroke-width="2"/>
+                <path d="m125.57 80.02h-7.2778" stroke-width="1.5"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <h2>Advanced Security Features</h2>
+        <p>Nault includes several options for enhanced security:</p>
+        <p>- support for Ledger Nano S / Nano X hardware wallets</p>
+        <p>- ability to create multi-signature addresses where multiple private keys are required to access and transfer the funds</p>
+        <p>- ability to sign transactions remotely, allowing you to conduct transactions securely without ever allowing your secret keys to leave your offline device</p>
+      </div>
+
     </div>
   </div>
 </div>

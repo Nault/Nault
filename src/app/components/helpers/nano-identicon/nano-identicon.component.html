@@ -1,0 +1,9 @@
+<ng-container *ngIf="(settingIdenticonsStyle === 'nanoidenticons')">
+	<div #canvasContainer class="canvas-container"></div>
+</ng-container>
+<ng-container *ngIf="(settingIdenticonsStyle === 'natricon')">
+	<img class="natricon" [src]="('https://natricon.com/api/v1/nano?address=' + accountID)" (error)="imageLoadErrorOccurred = true" *ngIf="!imageLoadErrorOccurred">
+	<div class="natricon-placeholder" *ngIf="imageLoadErrorOccurred">
+		<img src="assets/img/natricon-placeholder.svg">
+	</div>
+</ng-container>
