@@ -20,7 +20,8 @@
             "assets": [
               "src/assets",
               "src/pow.wasm",
-              "src/404.html"
+              "src/404.html",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.less"
@@ -71,7 +72,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "desktop": {
               "budgets": [
@@ -131,7 +134,8 @@
             ],
             "assets": [
               "src/assets",
-              "src/pow.wasm"
+              "src/pow.wasm",
+              "src/manifest.webmanifest"
             ]
           }
         },

@@ -7,11 +7,13 @@ import {PriceService} from './services/price.service';
 import {NotificationService} from './services/notification.service';
 import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
+import {SwUpdate} from '@angular/service-worker';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
 import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
 import { DeeplinkService } from './services/deeplink.service';
+
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit {
     public nodeService: NodeService,
     private representative: RepresentativeService,
     private router: Router,
+    public updates: SwUpdate,
     private workPool: WorkPoolService,
     public price: PriceService,
     private desktop: DesktopService,
@@ -48,7 +51,6 @@ export class AppComponent implements OnInit {
   nanoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
-  windowHeight = 1000;
   navExpanded = false;
   showAccountsDropdown = false;
   canToggleLightMode = true;
@@ -144,6 +146,21 @@ export class AppComponent implements OnInit {
     });
     this.desktop.send('deeplink-ready');
 
+    // Notify user if service worker update is available
+    this.updates.available.subscribe((event) => {
+      console.log(`SW update available. Current: ${event.current.hash}. New: ${event.available.hash}`);
+      this.notifications.sendInfo(
+        'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
+        { length: 10000 }
+      );
+    });
+
+    // Notify user after service worker was updated
+    this.updates.activated.subscribe((event) => {
+      console.log(`SW update successful. Current: ${event.current.hash}`);
+      this.notifications.sendSuccess('Nault was updated successfully.');
+    });
+
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
       this.inactiveSeconds += 1;
@@ -178,6 +195,10 @@ export class AppComponent implements OnInit {
     this.representative.patchXrbPrefixData();
 
     this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
+  }
+
+  applySwUpdate() {
+    this.updates.activateUpdate();
   }
 
   toggleNav() {

@@ -1,0 +1,12 @@
+<div (click)="install()" [tabindex]="isIosInstallable() ? -1 : 0" class="nav-install-row half-muted" [class.interactable]="!isIosInstallable()" [class.large]="isIosInstallable()" [class.visible]="showInstallPromotion" [class.uk-hidden]="!isPromotable()">
+    <span uk-icon="icon: download; ratio: 1.2" class="icon"></span>
+    <div>
+        <div class="label">Install Nault for {{ platform }}</div>
+        <div class="description" *ngIf="isIosInstallable()">
+            1. Tap the <span uk-icon="icon: push; ratio: 0.8"></span> Share button 
+            <span *ngIf="platform === 'iOS'">below</span>
+            <span *ngIf="platform === 'iPadOS'">in the top right</span> <br/>
+            2. Select <span uk-icon="icon: plus-circle; ratio: 0.8"></span> Add to home screen
+        </div>
+    </div>
+</div>

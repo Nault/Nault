@@ -53,6 +53,7 @@ import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 import {SignComponent} from './components/sign/sign.component';
 import {RemoteSigningComponent} from './components/remote-signing/remote-signing.component';
 import {RemoteSignService} from './services/remote-sign.service';
+import { InstallWidgetComponent } from './components/install-widget/install-widget.component';
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -64,6 +65,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { DeeplinkService, NinjaService } from './services';
 import { ConverterComponent } from './components/converter/converter.component';
 import { QrGeneratorComponent } from './components/qr-generator/qr-generator.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 
@@ -102,6 +105,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
     QrModalComponent,
     ConverterComponent,
     QrGeneratorComponent,
+    InstallWidgetComponent,
     MultisigComponent,
     KeygeneratorComponent,
   ],
@@ -115,6 +119,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
     ZXingScannerModule,
     NgbModule,
     PasswordStrengthMeterModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     UtilService,

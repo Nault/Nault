@@ -1,0 +1,50 @@
+.nav-install-row {
+    width: 100%;
+    height: 65px;
+    border-bottom: 1px solid #16161b;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 20px;
+    color: white;
+    transition: all 1s ease-in-out;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    outline: none;
+    overflow: hidden;
+
+    &.half-muted {
+        color: #b6bed5;
+
+        &.interactable:hover .label {
+            border-color: #b6bed5;
+        }
+    }
+
+    &.interactable {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    &.large {
+        height: 90px;
+    }
+
+    .label {
+        border-bottom: 2px solid transparent;
+        transition: border-color .1s ease-in-out;
+    }
+    
+    .description {
+        color: #8f8fab;
+        font-size: 0.875rem;
+    }
+
+    .icon {
+        margin-right: 8px;
+    }
+
+    &:not(.visible) {
+        height: 0;
+        opacity: 0;
+    }
+}
