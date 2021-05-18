@@ -130,6 +130,7 @@ export class LedgerService {
       TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported),
       TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported),
     ]);
+    console.log('Ledger Support (u2f, hid, usb, ble)', this.supportsU2F, this.supportsWebHID, this.supportsWebUSB, this.supportsBluetooth)
     this.supportsUSB = this.supportsU2F || this.supportsWebHID || this.supportsWebUSB;
   }
 

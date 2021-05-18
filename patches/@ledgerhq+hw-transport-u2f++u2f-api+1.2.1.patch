@@ -1,5 +1,5 @@
 diff --git a/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js b/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
-index 34f71b3..4e1bb8d 100644
+index 34f71b3..87beea7 100644
 --- a/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
 +++ b/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
 @@ -14,7 +14,7 @@ const isSafari = isBrowser
@@ -11,3 +11,21 @@ index 34f71b3..4e1bb8d 100644
      && !navigator.userAgent.match(/Chrome\//);
  const isEDGE = isBrowser && /(Edge\/)|(edg\/)/i.test(navigator.userAgent);
  const isIE = isBrowser && /(MSIE 9|MSIE 10|rv:11.0)/i.test(navigator.userAgent);
+@@ -22,6 +22,9 @@ var _backend = null;
+ function getBackend() {
+     if (_backend)
+         return _backend;
++    console.log('isBrowser', isBrowser)
++    console.log('isSafari', isSafari)
++    console.log('isSupportedSafari', isSupportedSafari)
+     const supportChecker = new Promise(function (resolve, reject) {
+         function notSupported() {
+             resolve({ u2f: null });
+@@ -35,6 +38,7 @@ function getBackend() {
+             return notSupported();
+         const hasNativeSupport = (typeof window.u2f !== 'undefined') &&
+             (typeof window.u2f.sign === 'function');
++        console.log('hasNativeSupport', hasNativeSupport)
+         if (hasNativeSupport)
+             return resolve({ u2f: window.u2f });
+         if (isEDGE || isIE)
