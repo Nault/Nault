@@ -1,0 +1,13 @@
+diff --git a/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js b/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
+index 34f71b3..4e1bb8d 100644
+--- a/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
++++ b/node_modules/@ledgerhq/hw-transport-u2f/node_modules/u2f-api/dist/lib/u2f-api.js
+@@ -14,7 +14,7 @@ const isSafari = isBrowser
+     && navigator.userAgent.match(/Safari\//)
+     && !navigator.userAgent.match(/Chrome\//);
+ const isSupportedSafari = isBrowser
+-    && navigator.userAgent.match(/Safari\/(1[3456789])/)
++    && navigator.userAgent.match(/Version\/(1[3456789])/)
+     && !navigator.userAgent.match(/Chrome\//);
+ const isEDGE = isBrowser && /(Edge\/)|(edg\/)/i.test(navigator.userAgent);
+ const isIE = isBrowser && /(MSIE 9|MSIE 10|rv:11.0)/i.test(navigator.userAgent);

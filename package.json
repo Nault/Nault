@@ -25,7 +25,8 @@
     "desktop:local": "electron-builder",
     "desktop:full": "electron-builder -wml --x64",
     "desktop:publish": "electron-builder -wml --x64 -p always",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall": "npx npm-force-resolutions",
+    "postinstall": "npx patch-package"
   },
   "private": true,
   "dependencies": {
