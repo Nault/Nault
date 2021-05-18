@@ -76,6 +76,9 @@ export class AddressBookComponent implements OnInit, AfterViewInit {
       return this.notificationService.sendError(`Account and name are required`);
     }
 
+    // Trim and remove duplicate spaces
+    this.newAddressName = this.newAddressName.trim().replace(/ +/g, ' ');
+
     if ( /^Account #\d+$/g.test(this.newAddressName) === true ) {
       return this.notificationService.sendError(`This name is reserved for wallet accounts without a label`);
     }

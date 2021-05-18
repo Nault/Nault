@@ -449,8 +449,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async saveAddressBook() {
-    const addressBookName = this.addressBookModel.trim();
-    if (!addressBookName) {
+    // Trim and remove duplicate spaces
+    this.addressBookModel = this.addressBookModel.trim().replace(/ +/g, ' ');
+
+    if (!this.addressBookModel) {
       // Check for deleting an entry in the address book
       if (this.addressBookEntry) {
         this.addressBook.deleteAddress(this.accountID);
@@ -462,16 +464,27 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if ( /^Account #\d+$/g.test(this.addressBookModel) === true ) {
+      return this.notifications.sendError(`This name is reserved for wallet accounts without a label`);
+    }
+
+    // Make sure no other entries are using that name
+    const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel);
+
+    if ( (accountIdWithSameName !== null) && (accountIdWithSameName !== this.accountID) ) {
+      return this.notifications.sendError(`This name is already in use! Please use a unique name`);
+    }
+
     try {
-      await this.addressBook.saveAddress(this.accountID, addressBookName);
+      await this.addressBook.saveAddress(this.accountID, this.addressBookModel);
     } catch (err) {
-      this.notifications.sendError(err.message);
+      this.notifications.sendError(`Unable to save entry: ${err.message}`);
       return;
     }
 
-    this.notifications.sendSuccess(`Saved address book entry!`);
+    this.notifications.sendSuccess(`Address book entry saved successfully!`);
 
-    this.addressBookEntry = addressBookName;
+    this.addressBookEntry = this.addressBookModel;
     this.showEditAddressBook = false;
   }
 
