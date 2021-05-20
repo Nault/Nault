@@ -109,7 +109,7 @@
           </div>
 
           <div class="uk-width-1-1 narrow-div">
-            <button *ngIf="!sweeping" class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="sweep()">START SWEEPING</button>
+            <button *ngIf="!sweeping" class="uk-button uk-button-primary uk-width-1-1" type="button" [disabled]="!settings.settings.serverAPI" (click)="sweep()">START SWEEPING {{!settings.settings.serverAPI ? '(Nault Offline)':''}}</button>
             <button *ngIf="sweeping" class="uk-button uk-button-primary uk-disabled uk-width-1-1" type="button"><span class="uk-margin-right" uk-spinner></span> PROCESSING...</button>
           </div>
         </div>
