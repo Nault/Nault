@@ -448,7 +448,11 @@ export class ConfigureAppComponent implements OnInit {
     this.appSettings.setAppSettings(newSettings);
     this.appSettings.loadAppSettings();
 
-    this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
+    if (this.selectedServer !== 'offline') {
+      this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
+    } else {
+      this.notifications.sendSuccess(`Server settings successfully updated. Now in offline mode.`);
+    }
 
     this.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
 
