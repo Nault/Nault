@@ -123,7 +123,7 @@ export class ApiService {
     return await this.request('version', { }, true);
   }
   async confirmationQuorum(): Promise<{quorum_delta: string, online_weight_quorum_percent: number, online_weight_minimum: string,
-    online_stake_total: string, peers_stake_total: string, peers_stake_required: string }> {
+    online_stake_total: string, trended_stake_total: string, peers_stake_total: string }> {
     return await this.request('confirmation_quorum', { }, true);
   }
   async activeDifficulty(): Promise<{network_current: string, network_receive_current: string }> {
