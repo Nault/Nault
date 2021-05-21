@@ -276,7 +276,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.notifications.sendWarning(`Invalid Nano account or block hash! Please double check your input`);
+    this.notifications.sendWarning(`Invalid Nano address or block hash! Please double check your input`);
   }
 
   updateIdleTime() {
