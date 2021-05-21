@@ -4,6 +4,7 @@ import {AddressBookService} from './services/address-book.service';
 import {AppSettingsService} from './services/app-settings.service';
 import {WebsocketService} from './services/websocket.service';
 import {PriceService} from './services/price.service';
+import {UtilService} from './services/util.service';
 import {NotificationService} from './services/notification.service';
 import {WorkPoolService} from './services/work-pool.service';
 import {Router} from '@angular/router';
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
     public updates: SwUpdate,
     private workPool: WorkPoolService,
     public price: PriceService,
+    private util: UtilService,
     private desktop: DesktopService,
     private ledger: LedgerService,
     private renderer: Renderer2,
@@ -254,14 +256,27 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
-    if (searchData.startsWith('xrb_') || searchData.startsWith('nano_')) {
+    const isValidNanoAccount = (
+        ( searchData.startsWith('xrb_') || searchData.startsWith('nano_') )
+      && this.util.account.isValidAccount(searchData)
+    );
+
+    if (isValidNanoAccount === true) {
       this.router.navigate(['account', searchData]);
-    } else if (searchData.length === 64) {
-      this.router.navigate(['transaction', searchData]);
-    } else {
-      this.notifications.sendWarning(`Invalid Nano account or transaction hash!`);
+      this.searchData = '';
+      return;
     }
-    this.searchData = '';
+
+    const isValidBlockHash = this.util.nano.isValidHash(searchData);
+
+    if (isValidBlockHash === true) {
+      const blockHash = searchData.toUpperCase();
+      this.router.navigate(['transaction', blockHash]);
+      this.searchData = '';
+      return;
+    }
+
+    this.notifications.sendWarning(`Invalid Nano address or block hash! Please double check your input`);
   }
 
   updateIdleTime() {
