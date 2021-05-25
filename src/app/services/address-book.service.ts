@@ -5,6 +5,8 @@ import {BehaviorSubject} from 'rxjs';
 interface AddressBookEntry {
   account: string;
   name: string;
+  trackBalance: boolean;
+  trackTransactions: boolean;
 }
 
 
@@ -48,19 +50,25 @@ export class AddressBookService {
     return true;
   }
 
-  async saveAddress(account, name) {
+  async saveAddress(account, name, trackBalance, trackTransactions) {
     const existingName = this.addressBook.find(a => a.name.toLowerCase() === name.toLowerCase());
-    if (existingName) return;
+    if (existingName) {
+      const accountIndex = this.addressBook.findIndex(a => a.name.toLowerCase() === name.toLowerCase());
+      // return if the name exist and the tracking is unchanged
+      if (this.addressBook[accountIndex].trackBalance === trackBalance &&
+        this.addressBook[accountIndex].trackTransactions === trackTransactions) return;
+    }
 
     const existingAccount = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
     if (existingAccount) {
       existingAccount.name = name;
+      existingAccount.trackBalance = trackBalance;
+      existingAccount.trackTransactions = trackTransactions;
     } else {
-      this.addressBook.push({ account, name });
+      this.addressBook.push({ account, name, trackBalance, trackTransactions});
     }
     this.saveAddressBook();
     this.addressBook$.next(this.addressBook);
-
   }
 
   deleteAddress(account) {
@@ -68,9 +76,7 @@ export class AddressBookService {
     if (existingAccountIndex === -1) return;
 
     this.addressBook.splice(existingAccountIndex, 1);
-
     this.saveAddressBook();
-
     this.addressBook$.next(this.addressBook);
   }
 
@@ -88,7 +94,9 @@ export class AddressBookService {
     this.addressBook = addressList
       .map(address => ({
         account: address,
-        name: this.getAccountName(address)
+        name: this.getAccountName(address),
+        trackBalance: this.getBalanceTrackingById(address),
+        trackTransactions: this.getTransactionTrackingById(address)
       }))
       .filter(entry => entry.name !== null);
 
@@ -110,6 +118,18 @@ export class AddressBookService {
 
   nameExists(name: string): boolean {
     return this.addressBook.findIndex(a => a.name.toLowerCase() === name.toLowerCase()) !== -1;
+  }
+
+  getBalanceTrackingById(account: string): boolean {
+    if (!account || !account.length) return false;
+    const match = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
+    return match && match.trackBalance || false;
+  }
+
+  getTransactionTrackingById(account: string): boolean {
+    if (!account || !account.length) return false;
+    const match = this.addressBook.find(a => a.account.toLowerCase() === account.toLowerCase());
+    return match && match.trackTransactions || false;
   }
 
 }

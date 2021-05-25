@@ -81,7 +81,7 @@ export class WebsocketService {
         const newEvent = JSON.parse(event.data);
         console.log('WS', newEvent);
 
-        if (newEvent.topic === 'confirmation' && newEvent.message.block.subtype === 'send') {
+        if (newEvent.topic === 'confirmation') {
           this.newTransactions$.next(newEvent.message);
         }
       } catch (err) {
@@ -115,7 +115,8 @@ export class WebsocketService {
       action: 'subscribe',
       topic: 'confirmation',
       options: {
-        accounts: accountIDs
+        accounts: accountIDs,
+        confirmation_type: 'active_quorum'
       }
     };
 

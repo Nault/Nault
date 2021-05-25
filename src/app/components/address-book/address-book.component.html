@@ -9,14 +9,36 @@
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">Add New Contact</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">Add New Entry</button>
       </div>
     </div>
 
     <div class="uk-width-1-1 nlt-page-intro" *ngIf="activePanel === 0">
       <p>
-        You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application.
+        You can use the address book to store a label for your own accounts or for easy access to other addresses throughout the application.<br>
+        It's also possible to track the balance and/or transactions of any address, known as "watch-only".<br>
       </p>
+      <div class="account-amounts-primary uk-width-1-1">
+        <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
+          Show Total Tracked Balance
+          <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
+        </div>
+
+        <div class="advanced-options" *ngIf="showAdvancedOptions">
+          <span [title]="( totalTrackedBalanceRaw.gt(0) ? ( '+' + ( totalTrackedBalanceRaw.toString(10) ) + ' raw' ) : '' )">
+            <span class="amount-integer">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+            <span class="amount-fractional">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+            <span class="currency-name">NANO</span>
+          </span>
+          <div *ngIf="totalTrackedPending.gt(0)" class="incoming-label">
+            <div class="text-snippet">New</div>
+            <div class="text-full">+{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 0 }}{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
+          </div>
+          <div class="account-amounts-converted uk-width-1-1 text-half-muted">
+            {{ totalTrackedBalanceFiat | fiat: appSettings.settings.displayCurrency }}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="uk-animation-slide-left-small" *ngIf="activePanel === 0" uk-grid>
@@ -27,7 +49,31 @@
             <li class="uk-list-header">
               <div uk-grid>
                 <div class="uk-width-2-5">Name</div>
-                <div class="uk-width-expand">Account ID</div>
+                <div class="uk-width-expand">Address
+                  <div *ngIf="numberOfTrackedBalance > 0" style="display: flex;">
+                    RELOAD BALANCES
+                    <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
+                      <li>
+                        <div
+                          uk-spinner="ratio: 0.5;"
+                          class="icon-transactions-refresh spinner"
+                          *ngIf="(loadingBalances || walletService.wallet.updatingBalance === true) else notUpdatingTxList"
+                        ></div>
+                        <ng-template #notUpdatingTxList>
+                          <a
+                            class="icon-transactions-refresh"
+                            [class.disabled]="!statsRefreshEnabled"
+                            [class.uk-text-muted]="!statsRefreshEnabled"
+                            uk-icon="icon: refresh;"
+                            title="Reload tracked balances (for addresses not in your Nault wallet)"
+                            uk-tooltip
+                            (click)="updateTrackedBalances(true)"
+                          ></a>
+                        </ng-template>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
               </div>
             </li>
@@ -42,7 +88,7 @@
                       {{ addressBook.name }}
                     </div>
                     <ul class="uk-iconnav uk-width-auto">
-                      <li><a (click)="editEntry(addressBook)" title="Edit Account Label" uk-tooltip uk-icon="icon: pencil;" class="edit-name-icon"></a></li>
+                      <li><a (click)="editEntry(addressBook)" title="Edit Label" uk-tooltip uk-icon="icon: pencil;" class="edit-name-icon"></a></li>
                       <li><a class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></a></li>
                     </ul>
                   </div>
@@ -50,18 +96,40 @@
                 <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" title="View Account Details" uk-tooltip>
+                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" title="View on Network Explorer" uk-tooltip>
                         <app-nano-account-id [accountID]="addressBook.account"></app-nano-account-id>
                       </a>
                     </div>
                     <ul class="nano-address-actions uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Address" uk-tooltip></a></li>
                     </ul>
+                    <div class="uk-width-expand amount-container" *ngIf="addressBook.trackBalance">
+                      <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
+                        <div class="account-amounts-primary uk-width-1-1">
+                          <span [title]="( accounts[addressBook.account]?.balanceRaw.gt(0) ? ( '+' + ( accounts[addressBook.account]?.balanceRaw.toString(10) ) + ' raw' ) : '' )">
+                            <span class="amount-integer">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                            <span class="amount-fractional">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                            <span class="currency-name">NANO</span>
+                          </span>
+                          <div *ngIf="accounts[addressBook.account]?.pending.gt(0)" class="incoming-label">
+                            <div class="text-snippet">New</div>
+                            <div class="text-full">+{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
+                          </div>
+                        </div>
+                        <div class="account-amounts-converted uk-width-1-1 text-half-muted">
+                          {{ accounts[addressBook.account]?.balanceFiat | fiat: appSettings.settings.displayCurrency }}
+                        </div>
+                      </ng-container>
+                      <ng-template #balanceLoading>
+                        <div class="account-amounts-primary uk-width-1-1">
+                          <div uk-spinner="ratio: 0.5;"></div>
+                        </div>
+                      </ng-template>
+                    </div>
                   </div>
-
                 </div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">
-                  <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+                  <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Remove From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
                 </div>
               </div>
 
@@ -79,12 +147,19 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Contact' : 'Edit Contact' }}</h2>
+            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Entry' : 'Edit Entry' }}</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <label class="uk-form-label" for="new-address-name">Name</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                </div>
+              </div>
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-account">Address</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code" *ngIf="creatingNewEntry"></a>
@@ -94,9 +169,16 @@
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-name">Name</label>
+                <label class="uk-form-label" for="new-track-balance">Track Balance <span uk-icon="icon: info;" uk-tooltip title="The balance will be displayed in the address book."></span></label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                  <input class="uk-checkbox checkbox-aligned" type="checkbox" id="new-track-balance" value="1" [(ngModel)]="newTrackBalance">
+                </div>
+              </div>
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-track-transactions">Track Transactions <span uk-icon="icon: info;" uk-tooltip title="Notifications will be shown for any SEND, RECEIVE or CHANGE transactions on this address."></span></label>
+                <div class="uk-form-controls">
+                  <input class="uk-checkbox checkbox-aligned" type="checkbox" id="new-track-transactions" value="1" [(ngModel)]="newTrackTransactions">
                 </div>
               </div>
             </div>

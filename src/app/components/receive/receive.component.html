@@ -144,7 +144,7 @@
                 <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button nlt-icon-button-inline"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
               </div>
             </ng-template>
-            <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) | squeeze:'5,5' ) + ' raw' ) : '' )">
+            <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) ) + ' raw' ) : '' )">
               <span class="uk-text-small">Ready to receive</span><br>
               <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
