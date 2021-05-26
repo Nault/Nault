@@ -119,7 +119,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
     ZXingScannerModule,
     NgbModule,
     PasswordStrengthMeterModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !process.versions.hasOwnProperty('electron') }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
   ],
   providers: [
     UtilService,
