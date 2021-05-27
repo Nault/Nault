@@ -115,8 +115,7 @@ export class WebsocketService {
       action: 'subscribe',
       topic: 'confirmation',
       options: {
-        accounts: accountIDs,
-        confirmation_type: 'active_quorum'
+        accounts: accountIDs
       }
     };
 
