@@ -81,6 +81,12 @@ export class AppComponent implements OnInit {
     this.workPool.loadWorkCache();
 
     await this.walletService.loadStoredWallet();
+    // Subscribe to any transaction tracking
+    for (const entry of this.addressBook.addressBook) {
+      if (entry.trackTransactions) {
+        this.walletService.trackAddress(entry.account);
+      }
+    }
 
     // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
     if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {

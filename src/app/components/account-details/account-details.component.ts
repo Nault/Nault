@@ -509,7 +509,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.addressBook.saveAddress(this.accountID, this.addressBookModel);
+      const currentBalanceTracking = this.addressBook.getBalanceTrackingById(this.accountID);
+      const currentTransactionTracking = this.addressBook.getTransactionTrackingById(this.accountID);
+      await this.addressBook.saveAddress(this.accountID, this.addressBookModel, currentBalanceTracking, currentTransactionTracking);
     } catch (err) {
       this.notifications.sendError(`Unable to save entry: ${err.message}`);
       return;

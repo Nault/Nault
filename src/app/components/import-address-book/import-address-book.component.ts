@@ -70,10 +70,12 @@ export class ImportAddressBookComponent implements OnInit {
     let importedCount = 0;
     for (const entry of this.importData) {
       if (!entry.originalName) {
-        await this.addressBook.saveAddress(entry.account, entry.name);
+        await this.addressBook.saveAddress(entry.account, entry.name,
+          entry.trackBalance ? entry.trackBalance : false, entry.trackTransactions ? entry.trackTransactions : false);
         importedCount++;
       } else if (entry.originalName && entry.originalName !== entry.name) {
-        await this.addressBook.saveAddress(entry.account, entry.name);
+        await this.addressBook.saveAddress(entry.account, entry.name,
+          entry.trackBalance ? entry.trackBalance : false, entry.trackTransactions ? entry.trackTransactions : false);
         importedCount++;
       }
     }

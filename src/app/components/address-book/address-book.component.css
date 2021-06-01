@@ -9,3 +9,105 @@
 .uk-sortable-handle {
 	margin-top: 4px;
 }
+
+.checkbox-aligned {
+	vertical-align: bottom;
+}
+
+.amount-container {
+	flex: none;
+  margin-top: 10px;
+}
+
+.account-amounts-primary {
+	margin-bottom: 3px;
+}
+
+.account-amounts-primary .amount-integer {
+	font-weight: 700;
+}
+
+.account-amounts-primary .amount-fractional {
+	font-weight: 500;
+}
+
+.account-amounts-primary .currency-name {
+	font-weight: 400;
+	margin-left: 5px;
+}
+
+.incoming-label {
+	display: inline-block;
+	background: #4a90e2;
+	border-radius: 20px;
+	font-size: 13px;
+	padding: 2px 10px;
+	margin-left: 9px;
+	vertical-align: 1px;
+	padding-bottom: 1px;
+	text-transform: uppercase;
+	color: #FFF;
+}
+
+.incoming-label > .text-full {
+	display: none;
+}
+
+.incoming-label > .text-snippet {
+	display: inline-block;
+}
+
+.total-balance {
+	text-decoration: underline;
+}
+
+@media (min-width: 1500px) {
+	.incoming-label > .text-full {
+		display: inline-block;
+	}
+
+	.incoming-label > .text-snippet {
+		display: none;
+	}
+}
+
+.advanced-options-link {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.advanced-options-link .chevron {
+	margin-left: 8px;
+}
+
+.chevron {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23676686%22%20stroke-width%3D%221.1%22%20points%3D%221%204%207%2010%2013%204%22%20%2F%3E%0A%3C%2Fsvg%3E");
+	width: 14px;
+	height: 14px;
+	display: inline-block;
+	margin-left: 4px;
+}
+
+.chevron-up {
+	transform: scaleY(-1);
+}
+
+.advanced-options {
+	margin-top: 20px;
+}
+
+.advanced-option {
+	display: flex;
+	align-items: center;
+	margin-bottom: 4px;
+}
+
+.advanced-option + .advanced-option {
+	margin-top: 16px;
+}
+
+.advanced-option .uk-checkbox {
+	margin-left: 12px;
+	margin-top: -1px;
+}

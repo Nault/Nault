@@ -9,7 +9,7 @@
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right" *ngIf="activePanel == 0">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()">Add Representative</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()">Add New Entry</button>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
             <li class="uk-list-header">
               <div uk-grid>
                 <div class="uk-width-2-5">Name</div>
-                <div class="uk-width-expand">Account ID</div>
+                <div class="uk-width-expand">Address</div>
                 <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Actions</div>
               </div>
             </li>
@@ -85,16 +85,16 @@
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <label class="uk-form-label" for="new-address-name">Name</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newRepName" (keyup.enter)="saveNewRepresentative()" placeholder="Representative Name">
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-name">Name</label>
+                <label class="uk-form-label" for="new-address-account">Address</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newRepName" (keyup.enter)="saveNewRepresentative()" placeholder="Representative Name">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
                 </div>
               </div>
 

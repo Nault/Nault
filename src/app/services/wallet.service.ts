@@ -60,6 +60,7 @@ export interface FullWallet {
   pendingBlocks: Block[];
   pendingBlocksUpdate$: BehaviorSubject<boolean|false>;
   newWallet$: BehaviorSubject<boolean|false>;
+  refresh$: BehaviorSubject<boolean|false>;
 }
 
 export interface BaseApiAccount {
@@ -107,10 +108,12 @@ export class WalletService {
     pendingBlocks: [],
     pendingBlocksUpdate$: new BehaviorSubject(false),
     newWallet$: new BehaviorSubject(false),
+    refresh$: new BehaviorSubject(false),
   };
 
   processingPending = false;
   successfulBlocks = [];
+  trackedHashes = [];
 
   constructor(
     private util: UtilService,
@@ -127,21 +130,20 @@ export class WalletService {
       if (!transaction) return; // Not really a new transaction
       console.log('New Transaction', transaction);
       let shouldNotify = false;
-
-      // Find out if this is a send, with our account as a destination or not
-      const walletAccountIDs = this.wallet.accounts.map(a => a.id);
-      // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
-
-      if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
-      && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
-        if (this.appSettings.settings.minimumReceive) {
-          const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
-          if ((new BigNumber(transaction.amount)).gte(minAmount)) {
-            shouldNotify = true;
-          }
-        } else {
+      if (this.appSettings.settings.minimumReceive) {
+        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+        if ((new BigNumber(transaction.amount)).gte(minAmount)) {
           shouldNotify = true;
         }
+      } else {
+        shouldNotify = true;
+      }
+
+      const walletAccountIDs = this.wallet.accounts.map(a => a.id);
+
+      // If an incoming pending
+      if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
+      && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         if (shouldNotify) {
           if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
@@ -150,21 +152,72 @@ export class WalletService {
           }
         } else {
           console.log(
-            `Found new pending block that was below minimum receive amount: `,
+            `Found new incoming block that was below minimum receive amount: `,
             transaction.amount,
             this.appSettings.settings.minimumReceive
           );
         }
         await this.processStateBlock(transaction);
-      } else if (transaction.block.type === 'state') {
+
+        // If a confirmed outgoing transaction
+      } else if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
+      && walletAccountIDs.indexOf(transaction.block.account) !== -1) {
         shouldNotify = true;
         await this.processStateBlock(transaction);
+      }
+
+      // Find if the source or destination is a tracked address in the address book
+      // This is a send transaction (to tracked account or from tracked account)
+      if (walletAccountIDs.indexOf(transaction.block.link_as_account) === -1 && transaction.block.type === 'state' &&
+      (transaction.block.subtype === 'send' || transaction.block.subtype === 'receive') || transaction.block.subtype === 'change' &&
+      (this.addressBook.getTransactionTrackingById(transaction.block.link_as_account) ||
+      this.addressBook.getTransactionTrackingById(transaction.block.account))) {
+        if (shouldNotify || transaction.block.subtype === 'change') {
+          const trackedAmount = this.util.nano.rawToMnano(transaction.amount);
+          // Save hash so we can ignore duplicate messages if subscribing to both send and receive
+          if (this.trackedHashes.indexOf(transaction.hash) !== -1) return; // Already notified this block
+          this.trackedHashes.push(transaction.hash);
+          const addressLink = transaction.block.link_as_account;
+          const address = transaction.block.account;
+          const rep = transaction.block.representative;
+          const accountHrefLink = `<a href="/account/${addressLink}">${this.addressBook.getAccountName(addressLink)}</a>`;
+          const accountHref = `<a href="/account/${address}">${this.addressBook.getAccountName(address)}</a>`;
+
+          if (transaction.block.subtype === 'send') {
+            // Incoming transaction
+            if (this.addressBook.getTransactionTrackingById(addressLink)) {
+              this.notifications.sendInfo(`Tracked address ${accountHrefLink} can now receive ${trackedAmount} NANO`, { length: 10000 });
+              console.log(`Tracked incoming block to: ${address} - ${trackedAmount} Nano`);
+            }
+            // Outgoing transaction
+            if (this.addressBook.getTransactionTrackingById(address)) {
+              this.notifications.sendInfo(`Tracked address ${accountHref} sent ${trackedAmount} NANO`, { length: 10000 });
+              console.log(`Tracked send block from: ${address} - ${trackedAmount} Nano`);
+            }
+          } else if (transaction.block.subtype === 'receive' && this.addressBook.getTransactionTrackingById(address)) {
+            // Receive transaction
+            this.notifications.sendInfo(`Tracked address ${accountHref} received incoming ${trackedAmount} NANO`, { length: 10000 });
+            console.log(`Tracked receive block to: ${address} - ${trackedAmount} Nano`);
+          } else if (transaction.block.subtype === 'change' && this.addressBook.getTransactionTrackingById(address)) {
+            // Change transaction
+            this.notifications.sendInfo(`Tracked address ${accountHref} changed its representative to ${rep}`, { length: 10000 });
+            console.log(`Tracked change block of: ${address} - Rep: ${rep}`);
+          }
+        } else {
+          console.log(
+            `Found new transaction on watch-only account that was below minimum receive amount: `,
+            transaction.amount,
+            this.appSettings.settings.minimumReceive
+          );
+        }
       }
 
       // TODO: We don't really need to call to update balances, we should be able to balance on our own from here
       // I'm not sure about that because what happens if the websocket is disconnected and misses a transaction?
       // won't the balance be incorrect if relying only on the websocket? / Json
-      if (shouldNotify) {
+
+      // Only reload balance if the incoming is to an internal wallet (to avoid RPC spam)
+      if (shouldNotify && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
         await this.reloadBalances();
       }
     });
@@ -798,6 +851,7 @@ export class WalletService {
     if (this.wallet.pendingBlocks.length) {
       await this.processPendingBlocks();
     }
+    this.informBalanceRefresh();
   }
 
   async loadWalletAccount(accountIndex, accountID) {
@@ -879,6 +933,16 @@ export class WalletService {
     this.saveWalletExport();
 
     return true;
+  }
+
+  async trackAddress(address: string) {
+    this.websocket.subscribeAccounts([address]);
+    console.log('Tracking transactions on ' + address);
+  }
+
+  async untrackAddress(address: string) {
+    this.websocket.unsubscribeAccounts([address]);
+    console.log('Stopped tracking transactions on ' + address);
   }
 
   addPendingBlock(accountID, blockHash, amount, source) {
@@ -1019,5 +1083,11 @@ export class WalletService {
   informNewWallet() {
     this.wallet.newWallet$.next(true);
     this.wallet.newWallet$.next(false);
+  }
+
+  // Subscribable event when balances has been refreshed
+  informBalanceRefresh() {
+    this.wallet.refresh$.next(true);
+    this.wallet.refresh$.next(false);
   }
 }
