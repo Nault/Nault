@@ -164,10 +164,11 @@ export class WalletService {
       && walletAccountIDs.indexOf(transaction.block.account) !== -1) {
         shouldNotify = true;
         await this.processStateBlock(transaction);
+      }
 
-        // Find if the source or destination is a tracked address in the address book
-        // This is a send transaction (to tracked account or from tracked account)
-      } if (walletAccountIDs.indexOf(transaction.block.link_as_account) === -1 && transaction.block.type === 'state' &&
+      // Find if the source or destination is a tracked address in the address book
+      // This is a send transaction (to tracked account or from tracked account)
+      if (walletAccountIDs.indexOf(transaction.block.link_as_account) === -1 && transaction.block.type === 'state' &&
       (transaction.block.subtype === 'send' || transaction.block.subtype === 'receive') || transaction.block.subtype === 'change' &&
       (this.addressBook.getTransactionTrackingById(transaction.block.link_as_account) ||
       this.addressBook.getTransactionTrackingById(transaction.block.account))) {

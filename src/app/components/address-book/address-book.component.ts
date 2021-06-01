@@ -81,7 +81,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
         for (const entry of this.addressBookService.addressBook) {
           if (!entry.trackBalance || !this.accounts[entry.account]) continue;
           // If the account exist in the wallet, take the info from there to save on RPC calls
-          const walletAccount = this.walletService.wallet.accounts.find(a => a.id.toLowerCase() === entry.account.toLowerCase());
+          const walletAccount = this.walletService.wallet.accounts.find(a => a.id === entry.account);
           if (walletAccount) {
             // Subtract first so we can add back any updated amounts
             this.totalTrackedBalance = this.totalTrackedBalance.minus(this.accounts[entry.account].balance);
@@ -184,7 +184,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
         balanceFiat: 0
       };
       // If the account exist in the wallet, take the info from there to save on RPC calls
-      const walletAccount = this.walletService.wallet.accounts.find(a => a.id.toLowerCase() === entry.account.toLowerCase());
+      const walletAccount = this.walletService.wallet.accounts.find(a => a.id === entry.account);
       if (walletAccount) {
         balanceAccount.balance = walletAccount.balance;
         balanceAccount.pending = walletAccount.pending;
@@ -218,7 +218,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
             if (!pending.blocks[block].hasOwnProperty(hash)) {
               continue;
             }
-              accountPending = accountPending.plus(pending.blocks[block][hash].amount);
+            accountPending = accountPending.plus(pending.blocks[block][hash].amount);
           }
           if (targetAccount) {
             targetAccount.pending = accountPending;
@@ -297,7 +297,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
         this.newAddressName, this.newTrackBalance, this.newTrackTransactions);
       this.notificationService.sendSuccess(`Address book entry saved successfully!`);
       // If this is one of our accounts, set its name and let it propagate through the app
-      const walletAccount = this.walletService.wallet.accounts.find(a => a.id.toLowerCase() === this.newAddressAccount.toLowerCase());
+      const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.newAddressAccount);
       if (walletAccount) {
         walletAccount.addressBookName = this.newAddressName;
       }
