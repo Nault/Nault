@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
 import { RemoteSignService } from '../../services/remote-sign.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import { AddressBookService } from 'app/services/address-book.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-send',
@@ -17,6 +19,9 @@ export class RemoteSigningComponent implements OnInit {
   signedBlock = '';
   unsignedStatus: number = null;
   signedStatus: number = null;
+  addressBookResults$ = new BehaviorSubject([]);
+  showAddressBook = false;
+  addressBookMatch = '';
 
   constructor(
     private util: UtilService,
@@ -24,13 +29,17 @@ export class RemoteSigningComponent implements OnInit {
     private notificationService: NotificationService,
     private remoteSignService: RemoteSignService,
     private qrModalService: QrModalService,
+    private addressBookService: AddressBookService,
   ) { }
 
   async ngOnInit() {
-
+    this.addressBookService.loadAddressBook();
   }
 
   validateDestination() {
+    // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
+    setTimeout(() => this.showAddressBook = false, 400);
+
     if (this.toAccountID === '') {
       this.toAccountStatus = null;
       return false;
@@ -42,6 +51,25 @@ export class RemoteSigningComponent implements OnInit {
       this.toAccountStatus = 0;
       return false;
     }
+  }
+
+  searchAddressBook() {
+    this.showAddressBook = true;
+    const search = this.toAccountID || '';
+    const addressBook = this.addressBookService.addressBook;
+
+    const matches = addressBook
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      .slice(0, 5);
+
+    this.addressBookResults$.next(matches);
+  }
+
+  selectBookEntry(account) {
+    this.showAddressBook = false;
+    this.toAccountID = account;
+    this.searchAddressBook();
+    this.validateDestination();
   }
 
   validateUnsigned(string) {
