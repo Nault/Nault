@@ -154,7 +154,7 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="new-address-name">Name</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc" maxlength="64">
                 </div>
               </div>
 
@@ -215,18 +215,19 @@
           </div>
           <div class="uk-card-body">
             <p>Export all address book entries to a file or QR Code/URL.<br><br>Note: Exported address book will NOT be encrypted by your wallet password.</p>
-            <div *ngIf="addressBookShowQRExport" uk-grid>
+            <div *ngIf="addressBookShowFileExport" uk-grid>
               <div class="uk-width-1-1">
                 <hr class="uk-divider-icon">
               </div>
 
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
-                <img [src]="addressBookQRExportImg" alt="QR code" style="border-radius: 6px;">
+                <img *ngIf="addressBookShowQRExport" [src]="addressBookQRExportImg" alt="QR code" style="border-radius: 6px;">
+                <span *ngIf="!addressBookShowQRExport" class="uk-text-warning">Address book too large for a QR code.<br>If you need a QR,<br>use fewer entries or shorter aliases.<br></span>
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
-                Scan the QR code on any device to import your address book!<br>
-                <br>
-                You can also import your address book by using the URL below.
+                <span *ngIf="addressBookShowQRExport">Scan the QR code on any device to import your address book!<br><br></span>
+                <span *ngIf="addressBookShowQRExport">You can also import your address book by using the URL below or download it as a file.</span>
+                <span *ngIf="!addressBookShowQRExport">You can still import your address book by using the URL below or download it as a file.</span>
                 <br><br>
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ addressBookQRExportUrl }}"><br>
                 <div class="nlt-button-group uk-margin-small-top">
