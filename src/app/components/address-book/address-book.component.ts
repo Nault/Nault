@@ -400,7 +400,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
           return this.notificationService.sendError(`Bad import data, make sure you selected a Nault Address Book export`);
         }
 
-        const encoded = btoa(JSON.stringify(importData));
+        const encoded = btoa(this.toBinary(JSON.stringify(importData)));
         this.router.navigate(['import-address-book'], { fragment: encoded });
       } catch (err) {
         this.notificationService.sendError(`Unable to parse import data, make sure you selected the right file!`);
