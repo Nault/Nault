@@ -34,10 +34,17 @@ export class ImportAddressBookComponent implements OnInit {
     }
 
     if ('hostname' in queryData) this.hostname = queryData.hostname;
-    const decodedData = atob(importData);
+    const binary = atob(importData);
+    const originalString = this.fromBinary(binary);
 
     try {
-      const importBlob = JSON.parse(decodedData);
+      let importBlob;
+      if (originalString && originalString.includes('account')) {
+        importBlob = JSON.parse(originalString); // new binary format
+      } else {
+        importBlob = JSON.parse(binary); // old non-binary version
+      }
+
       if (!importBlob || !importBlob.length) {
         return this.importDataError(`Bad import data.  Check your link and try again.`);
       }
@@ -51,9 +58,12 @@ export class ImportAddressBookComponent implements OnInit {
           continue; // Data missing?
         }
         entry.originalName = this.addressBook.getAccountName(entry.account);
+        entry.originalTrackBalance = this.addressBook.getBalanceTrackingById(entry.account);
+        entry.originalTrackTransactions = this.addressBook.getTransactionTrackingById(entry.account);
         if (!entry.originalName) {
           this.newEntries++;
-        } else if (entry.originalName === entry.name) {
+        } else if (entry.originalName === entry.name && entry.originalTrackBalance === entry.trackBalance &&
+          entry.originalTrackTransactions === entry.trackTransactions) {
           this.existingEntries++;
         } else {
           this.conflictingEntries++;
@@ -65,15 +75,26 @@ export class ImportAddressBookComponent implements OnInit {
     }
   }
 
+  // converts back to string from binary
+  fromBinary(binary) {
+    try {
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < bytes.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return String.fromCharCode(...new Uint16Array(bytes.buffer));
+    } catch (error) {
+      return null;
+    }
+  }
+
   async confirmImport() {
     // Go through our address book and see which ones need to be saved
+    // If new entry or any of name, trackTransactions or trackBalance has changed
     let importedCount = 0;
     for (const entry of this.importData) {
-      if (!entry.originalName) {
-        await this.addressBook.saveAddress(entry.account, entry.name,
-          entry.trackBalance ? entry.trackBalance : false, entry.trackTransactions ? entry.trackTransactions : false);
-        importedCount++;
-      } else if (entry.originalName && entry.originalName !== entry.name) {
+      if (!entry.originalName || (entry.originalName && (entry.originalName !== entry.name ||
+      entry.originalTrackBalance !== entry.trackBalance || entry.originalTrackTransactions !== entry.trackTransactions))) {
         await this.addressBook.saveAddress(entry.account, entry.name,
           entry.trackBalance ? entry.trackBalance : false, entry.trackTransactions ? entry.trackTransactions : false);
         importedCount++;

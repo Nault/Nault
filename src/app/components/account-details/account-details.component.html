@@ -33,7 +33,7 @@
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="Save Changes"></a>
                     <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="Cancel Changes - To remove the label, leave the text field blank and save changes" uk-icon="icon: close"></a>
-                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Address Book Name (Leave blank to remove)" type="text" style="padding-right: 60px;">
+                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Address Book Name (Leave blank to remove)" type="text" style="padding-right: 60px;" maxlength="64">
                   </div>
                 </div>
               </div>

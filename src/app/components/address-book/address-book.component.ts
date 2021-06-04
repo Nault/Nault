@@ -36,6 +36,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
   newAddressAccount = '';
   newAddressName = '';
   addressBookShowQRExport = false;
+  addressBookShowFileExport = false;
   addressBookQRExportUrl = '';
   addressBookQRExportImg = '';
   importExport = false;
@@ -352,17 +353,27 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  // converts a Unicode string to a string in which
+  // each 16-bit unit occupies only one byte
+  toBinary(string) {
+    const codeUnits = new Uint16Array(string.length);
+    for (let i = 0; i < codeUnits.length; i++) {
+      codeUnits[i] = string.charCodeAt(i);
+    }
+    return String.fromCharCode(...new Uint8Array(codeUnits.buffer));
+  }
+
   async exportAddressBook() {
     const exportData = this.addressBookService.addressBook;
-    if (exportData.length >= 25) {
-      return this.notificationService.sendError(`Address books with more than 24 entries need to use the file export method.`);
-    }
-    const base64Data = btoa(JSON.stringify(exportData));
+    const base64Data = btoa(this.toBinary(JSON.stringify(exportData)));
     const exportUrl = `https://nault.cc/import-address-book#${base64Data}`;
-
     this.addressBookQRExportUrl = exportUrl;
-    this.addressBookQRExportImg = await QRCode.toDataURL(exportUrl);
-    this.addressBookShowQRExport = true;
+    this.addressBookShowFileExport = true;
+
+    if (base64Data.length <= 2260) {
+      this.addressBookShowQRExport = true;
+      this.addressBookQRExportImg = await QRCode.toDataURL(exportUrl);
+    }
   }
 
   exportAddressBookToFile() {
