@@ -1,5 +1,6 @@
 img.natricon {
 	transform: scale(1.5) translateY(4%);
+	max-height: 100%;
 }
 
 .natricon-placeholder > img {
