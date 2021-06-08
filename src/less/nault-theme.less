@@ -601,28 +601,49 @@ input[type=number] {
 				margin-left: 69px; // Nice
 			}
 		}
-
+		
 		.account-amounts-column .account-amounts-primary .incoming-label {
 			font-size: 10px;
 			padding: 2px 8px;
 			margin-right: 6px;
 			margin-bottom: 4px;
 		}
-
+		
 		.account-amounts-column .account-amounts-primary .amount-integer,
 		.account-amounts-column .account-amounts-primary .amount-fractional,
 		.account-amounts-column .account-amounts-primary .currency-name {
 			font-size: 13px;
 		}
-
+		
 		.account-amounts-column .account-amounts-primary .currency-name {
 			display: block;
 			margin-top: -2px;
 		}
-
+		
 		.account-amounts-converted {
 			font-size: 13px;
 			margin-top: 10px;
+		}
+
+		th, td {
+			&.account-column {
+				padding-right: 0;
+			}
+			&:not(.account-column) {
+				padding-left: 0;
+			}
+		}
+		
+		th, app-nano-account-id {
+			font-size: .9rem;
+		}
+
+		.account-label {
+			font-size: .7rem;
+		}
+		
+		.copy-container li {
+			padding-left: 0;
 		}
 	}
 }
@@ -936,6 +957,12 @@ input[type=number] {
 .send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
 	color: #555 !important;
 	background: #F4FAFF;
+}
+
+@media (max-width: 599px) {
+	.send-types-tab {
+		font-size: .8rem;
+	}
 }
 
 // Representatives page
