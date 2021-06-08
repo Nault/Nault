@@ -57,6 +57,7 @@
   padding-bottom: 15px;
 }
 .send-types-frame {
+  width: 100%;
   display: inline-block;
 }
 .send-types-tab {
