@@ -34,6 +34,14 @@ The web version can additionally be pulled from the [dockerhub repo](https://hub
 
 A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
 
+#### Mobile App
+There is no native mobile app but the web wallet contains a Progressive Web App (PWA). That allows you to run it in offline mode for remote-signing.
+
+If you visit [nault.cc](https://nault.cc) in your phone you will be given the option to install it.
+
+* Android: Click on "Install Nault for Android" in the menu
+* iOS (Safari only): 1 - Tap the share button. 2 - Select "+ Add to home screen". 3 - Open Nault from the home screen
+
 ## How To Help
 
 Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
