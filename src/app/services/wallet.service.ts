@@ -969,11 +969,6 @@ export class WalletService {
     this.wallet.pendingBlocks.splice(0, this.wallet.pendingBlocks.length);
   }
 
-  // Remove the last pending from the list
-  removeLastPending() {
-    this.wallet.pendingBlocks.shift();
-  }
-
   sortByAmount(a, b) {
     const x = new BigNumber(a.amount);
     const y = new BigNumber(b.amount);
@@ -1011,7 +1006,7 @@ export class WalletService {
 
       // remove after processing
       // list also updated with reloadBalances but not if called too fast
-      this.wallet.pendingBlocks.shift();
+      this.removePendingBlock(nextBlock.hash);
       await this.reloadBalances();
       this.wallet.pendingBlocksUpdate$.next(true);
       this.wallet.pendingBlocksUpdate$.next(false);
