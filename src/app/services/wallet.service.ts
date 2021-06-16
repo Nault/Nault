@@ -962,15 +962,16 @@ export class WalletService {
   async removePendingBlock(blockHash) {
     const index = this.wallet.pendingBlocks.findIndex(b => b.hash === blockHash);
     this.wallet.pendingBlocks.splice(index, 1);
-    this.wallet.pendingBlocksUpdate$.next(true);
-    this.wallet.pendingBlocksUpdate$.next(false);
   }
 
   // Clear the list of pending blocks
   async clearPendingBlocks() {
     this.wallet.pendingBlocks.splice(0, this.wallet.pendingBlocks.length);
-    this.wallet.pendingBlocksUpdate$.next(true);
-    this.wallet.pendingBlocksUpdate$.next(false);
+  }
+
+  // Remove the last pending from the list
+  removeLastPending() {
+    this.wallet.pendingBlocks.shift();
   }
 
   sortByAmount(a, b) {
@@ -1008,7 +1009,12 @@ export class WalletService {
       this.notifications.removeNotification('success-receive');
       this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} Nano!`, { identifier: 'success-receive' });
 
+      // remove after processing
+      // list also updated with reloadBalances but not if called too fast
+      this.wallet.pendingBlocks.shift();
       await this.reloadBalances();
+      this.wallet.pendingBlocksUpdate$.next(true);
+      this.wallet.pendingBlocksUpdate$.next(false);
     } else {
       if (this.isLedgerWallet()) {
         this.processingPending = false;
@@ -1018,9 +1024,6 @@ export class WalletService {
       return this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
     }
 
-    // shifting no longer needed because reloadBalances will make sure wallet.pendingBlocks is up to date
-    // keep it for now in case we remove reloadBalances above but I think it's good precaution /Json
-    // this.wallet.pendingBlocks.shift(); // Remove it after processing, to prevent attempting to receive duplicated messages
     this.processingPending = false;
 
     setTimeout(() => this.processPendingBlocks(), 1500);
