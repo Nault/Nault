@@ -5,7 +5,7 @@
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
           Address Book
-          <a (click)="activePanel =  activePanel === 0 ? 2 : 0;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : 'IMPORT / EXPORT' }}</a>
+          <a *ngIf="activePanel !== 1" (click)="activePanel =  activePanel === 0 ? 2 : 0; addressBookShowFileExport = false;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : 'IMPORT / EXPORT' }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
@@ -74,7 +74,7 @@
                     </ul>
                   </div>
                 </div>
-                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Options</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Actions</div>
               </div>
             </li>
           </ul>
@@ -237,7 +237,7 @@
               </div>
             </div>
           </div>
-          <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+          <div *ngIf="!addressBookShowFileExport" class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
             <button (click)="exportAddressBook()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Address Book</button>
           </div>
         </div>
