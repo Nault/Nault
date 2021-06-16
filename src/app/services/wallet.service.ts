@@ -962,11 +962,15 @@ export class WalletService {
   async removePendingBlock(blockHash) {
     const index = this.wallet.pendingBlocks.findIndex(b => b.hash === blockHash);
     this.wallet.pendingBlocks.splice(index, 1);
+    this.wallet.pendingBlocksUpdate$.next(true);
+    this.wallet.pendingBlocksUpdate$.next(false);
   }
 
   // Clear the list of pending blocks
   async clearPendingBlocks() {
     this.wallet.pendingBlocks.splice(0, this.wallet.pendingBlocks.length);
+    this.wallet.pendingBlocksUpdate$.next(true);
+    this.wallet.pendingBlocksUpdate$.next(false);
   }
 
   sortByAmount(a, b) {
