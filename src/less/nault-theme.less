@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 }
 
 * {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 	
 @media (max-width: 939px) {
@@ -127,6 +127,10 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	.spinner {
 		margin-right: 8px;
 		margin-top: -1px;
+	}
+
+	.nlt-icon {
+		margin-right: 8px;
 	}
 
 	&.nlt-icon-button-inline {
@@ -577,11 +581,120 @@ input[type=number] {
 		margin-top: 2px;
 	}
 
-	.account-amounts-column .account-amounts-primary .amount-integer,
-	.account-amounts-column .account-amounts-primary .amount-fractional,
-	.account-amounts-column .account-amounts-primary .currency-name {
-		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-		font-size: 16px;
+	.account-amounts-column, .compact-account-amounts {
+		.account-amounts-primary {
+			margin-bottom: 3px;
+
+			.amount-integer,
+			.amount-fractional,
+			.currency-name {
+				font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+				font-size: 16px;
+			}
+
+			.amount-integer {
+				font-weight: 700;
+			}
+
+			.amount-fractional {
+				font-weight: 500;
+			}
+
+			.currency-name {
+				font-weight: 400;
+				margin-left: 5px;
+			}
+		}
+
+		.incoming-label {
+			display: inline-block;
+			background: #4A90E2;
+			border-radius: 20px;
+			font-size: 13px;
+			padding: 2px 10px;
+			margin-right: 9px;
+			vertical-align: 1px;
+			padding-bottom: 1px;
+			text-transform: uppercase;
+			color: #FFF;
+		}
+	}
+
+	.account-amounts-column {
+		.incoming-label {
+			/* Displaying 'New' label when under 1500px viewport */
+			> .text-full {
+				display: none;
+			}
+
+			> .text-snippet {
+				display: inline-block;
+			}
+
+			@media (min-width: 1500px) {
+				> .text-full {
+					display: inline-block;
+				}
+
+				> .text-snippet {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.compact-account-amounts {
+		.incoming-label {
+			margin-bottom: 7px;
+
+			/* Always displaying the amount */
+			> .text-full {
+				display: inline-block;
+			}
+
+			> .text-snippet {
+				display: none;
+			}
+		}
+
+		.amounts {
+			display: block;
+		}
+	}
+
+	.account-actions-column {
+		.icon-delete-account {
+			display: inline-block;
+		}
+
+		.button-delete-account {
+			display: none;
+		}
+	}
+
+	.compact-account-actions {
+		.icon-delete-account {
+			display: none;
+		}
+
+		.button-delete-account {
+			display: block;
+		}
+	}
+
+	.compact-account-amounts, .compact-account-actions {
+		display: none;
+	}
+
+	@media (max-width: 469px) {
+		.compact-account-amounts, .compact-account-actions {
+			display: block;
+			margin-top: 20px;
+		}
+
+		.account-amounts-column, .account-actions-column {
+			display: none;
+		}
 	}
 
 	@media (max-width: 599px) {
@@ -602,27 +715,31 @@ input[type=number] {
 			}
 		}
 
-		.account-amounts-column .account-amounts-primary .incoming-label {
-			font-size: 10px;
-			padding: 2px 8px;
-			margin-right: 6px;
-			margin-bottom: 4px;
-		}
+		.account-amounts-column {
+			.account-amounts-primary {
+				.amount-integer,
+				.amount-fractional,
+				.currency-name {
+					font-size: 13px;
+				}
 
-		.account-amounts-column .account-amounts-primary .amount-integer,
-		.account-amounts-column .account-amounts-primary .amount-fractional,
-		.account-amounts-column .account-amounts-primary .currency-name {
-			font-size: 13px;
-		}
+				.currency-name {
+					display: block;
+					margin-top: -2px;
+				}
 
-		.account-amounts-column .account-amounts-primary .currency-name {
-			display: block;
-			margin-top: -2px;
-		}
+				.incoming-label {
+					font-size: 10px;
+					padding: 2px 8px;
+					margin-right: 6px;
+					margin-bottom: 4px;
+				}
+			}
 
-		.account-amounts-converted {
-			font-size: 13px;
-			margin-top: 10px;
+			.account-amounts-converted {
+				font-size: 13px;
+				margin-top: 10px;
+			}
 		}
 	}
 }

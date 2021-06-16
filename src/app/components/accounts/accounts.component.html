@@ -29,8 +29,9 @@
           <th scope="col" class="account-column uk-width-3-5@m uk-width-1-2" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
             Account
           </th>
-          <th scope="col" class="uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
+          <th scope="col" class="account-amounts-column uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
           <th scope="col" [class]="{
+            'account-actions-column': true,
             'table-header-delete-account': true,
             'uk-width-1-5@m': true,
             'uk-width-1-4': true,
@@ -41,6 +42,39 @@
         </thead>
         <tbody>
         <tr *ngFor="let account of accounts" class="uk-visible-toggle">
+          <ng-template #accountAmounts>
+            <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
+              <div class="account-amounts-primary uk-width-1-1">
+                <div *ngIf="account.pending.gt(0)" class="incoming-label">
+                  <div class="text-snippet">New</div>
+                  <div class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
+                </div>
+                <span class="amounts" [title]="( account.balanceRaw.gt(0) ? ( '+' + ( account.balanceRaw.toString(10) ) + ' raw' ) : '' )">
+                  <span class="amount-integer">{{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                  <span class="amount-fractional">{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                  <span class="currency-name">NANO</span>
+                </span>
+              </div>
+              <div class="account-amounts-converted uk-width-1-1 text-half-muted">
+                {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
+              </div>
+            </ng-container>
+            <ng-template #balanceLoading>
+              <div class="account-amounts-primary uk-width-1-1">
+                <div uk-spinner="ratio: 0.5;"></div>
+              </div>
+            </ng-template>
+          </ng-template>
+          <ng-template #accountActions>
+            <!-- Icon for regular view -->
+            <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
+            <!-- Button for compact view -->
+            <button
+              (click)="deleteAccount(account)"
+              class="button-delete-account uk-button uk-button-secondary uk-text-danger uk-text-center uk-width-auto nlt-icon-button"
+              type="button"
+            ><span class="nlt-icon" uk-icon="icon: close;" style="vertical-align: 1px;"></span>HIDE ACCOUNT</button>
+          </ng-template>
           <td class="account-column uk-visible-toggle uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
             <div uk-grid>
               <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
@@ -72,36 +106,23 @@
                 </ul>
               </div>
             </div>
+            <div class="compact-account-amounts">
+              <ng-template [ngTemplateOutlet]="accountAmounts"></ng-template>
+            </div>
+            <div class="compact-account-actions" [class.hidden-section]="( isSingleKeyWallet || !viewAdvanced )">
+              <ng-template [ngTemplateOutlet]="accountActions"></ng-template>
+            </div>
           </td>
           <td class="account-amounts-column uk-text-right">
-            <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
-              <div class="account-amounts-primary uk-width-1-1">
-                <div *ngIf="account.pending.gt(0)" class="incoming-label">
-                  <div class="text-snippet">New</div>
-                  <div class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
-                </div>
-                <span [title]="( account.balanceRaw.gt(0) ? ( '+' + ( account.balanceRaw.toString(10) ) + ' raw' ) : '' )">
-                  <span class="amount-integer">{{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                  <span class="amount-fractional">{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
-                  <span class="currency-name">NANO</span>
-                </span>
-              </div>
-              <div class="account-amounts-converted uk-width-1-1 text-half-muted">
-                {{ account.balanceFiat | fiat: settings.settings.displayCurrency }}
-              </div>
-            </ng-container>
-            <ng-template #balanceLoading>
-              <div class="account-amounts-primary uk-width-1-1">
-                <div uk-spinner="ratio: 0.5;"></div>
-              </div>
-            </ng-template>
+            <ng-template [ngTemplateOutlet]="accountAmounts"></ng-template>
           </td>
           <td [class]="{
+            'account-actions-column': true,
             'uk-text-right': true,
             'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
           }">
             <div class="uk-float-right">
-              <a (click)="deleteAccount(account)" class="icon-delete-account uk-text-danger" title="Hide Account" uk-tooltip><span uk-icon="icon: close;"></span></a>
+              <ng-template [ngTemplateOutlet]="accountActions"></ng-template>
             </div>
           </td>
         </tr>
