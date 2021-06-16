@@ -252,14 +252,14 @@ export class ReceiveComponent implements OnInit {
     }
     pendingBlock.loading = true;
 
-    const newBlock = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
+    const newHash = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
-    if (newBlock) {
-      pendingBlock.received = true;
+    if (newHash) {
       this.notificationService.removeNotification('success-receive');
       this.notificationService.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
-      // clear the list of pending blocks. Updated again with reloadBalances()
-      this.walletService.clearPendingBlocks();
+      // pending has been processed, can be removed from the list
+      // list also updated with reloadBalances but not if called too fast
+      this.walletService.removePendingBlock(pendingBlock.hash);
     } else {
       if (!this.walletService.isLedgerWallet()) {
         this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
@@ -267,8 +267,8 @@ export class ReceiveComponent implements OnInit {
     }
 
     pendingBlock.loading = false;
-
     await this.walletService.reloadBalances();
+    this.updatePendingBlocks(); // update the list
   }
 
   copied() {
