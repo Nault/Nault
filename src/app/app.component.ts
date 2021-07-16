@@ -220,7 +220,7 @@ export class AppComponent implements OnInit {
   }
 
   closeNav() {
-    if(this.navExpanded === false) {
+    if (this.navExpanded === false) {
       return;
     }
 
