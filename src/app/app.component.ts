@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
     // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
     if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
       if (this.wallet.selectedAccountId) {
-        this.router.navigate([`account/${this.wallet.selectedAccountId}`], { replaceUrl: true });
+        this.router.navigate([`account/${this.wallet.selectedAccountId}`], { queryParams: {'compact': 1}, replaceUrl: true });
       } else {
         this.router.navigate(['accounts'], { replaceUrl: true });
       }

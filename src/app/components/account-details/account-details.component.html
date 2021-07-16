@@ -8,7 +8,7 @@
       <div class="logo"></div>
       <div class="card-contents">
         <div class="account-name-container">
-          <a (click)="showFullDetailsOnSmallViewports = true" class="name">{{
+          <a [routerLink]="( '/account/' + accountID )" class="name">{{
                 addressBookEntry
               ? addressBookEntry
               : ('Account #' + walletAccount.index)

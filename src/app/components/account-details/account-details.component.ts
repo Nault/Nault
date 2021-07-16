@@ -126,9 +126,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.showAdvancedOptions = params.sign === '1';
     }
 
+    this.showFullDetailsOnSmallViewports = (params.compact !== '1');
+
     this.routerSub = this.route.events.subscribe(event => {
       if (event instanceof ChildActivationEnd) {
         this.loadAccountDetails(); // Reload the state when navigating to itself from the transactions page
+        this.showFullDetailsOnSmallViewports = (this.router.snapshot.queryParams.compact !== '1');
       }
     });
     this.priceSub = this.price.lastPrice$.subscribe(event => {

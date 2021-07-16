@@ -79,7 +79,7 @@
             <div uk-grid>
               <a
                 (click)="navigateToAccount(account); $event.stopPropagation()"
-                [routerLink]="( '/account/' + account.id )"
+                [routerLink]="( '/account/' + account.id )" [queryParams]="{ compact: '1' }"
                 [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]"
               >
                 <div class="uk-flex">

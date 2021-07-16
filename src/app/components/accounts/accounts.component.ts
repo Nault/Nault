@@ -95,7 +95,7 @@ export class AccountsComponent implements OnInit {
         this.walletService.saveWalletExport();
     }
 
-    this.router.navigate([`account/${account.id}`]);
+    this.router.navigate([`account/${account.id}`], { queryParams: {'compact': 1} });
   }
 
   copied() {

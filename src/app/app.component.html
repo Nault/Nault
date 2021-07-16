@@ -9,7 +9,7 @@
           <span class="app-name">Nault</span>
         </div>
       </div>
-      <div class="uk-width-1-2 " style="text-align: right;">
+      <div class="uk-width-1-2" style="text-align: right;">
       </div>
     </div>
 
@@ -91,11 +91,15 @@
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
-                    <a [routerLink]="(
-                        (wallet.selectedAccount !== null)
-                      ? '/account/' + wallet.selectedAccount.id
-                      : '/accounts'
-                    )" class="name">{{
+                    <a
+                      [routerLink]="(
+                          (wallet.selectedAccount !== null)
+                        ? '/account/' + wallet.selectedAccount.id
+                        : '/accounts'
+                      )"
+                      [queryParams]="{ compact: '1' }"
+                      class="name"
+                    >{{
                         (wallet.selectedAccount !== null)
                       ? (
                           wallet.selectedAccount.addressBookName
