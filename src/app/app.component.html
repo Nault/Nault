@@ -296,7 +296,7 @@
 
 
       </div>
-      <div class="uk-width-expand content-container uk-panel" [class.nav-expanded]="navExpanded" (click)="closeNav()">
+      <div class="uk-width-expand content-container uk-panel" [class.nav-expanded]="navExpanded" [class.nav-animating]="navAnimating" (click)="closeNav()">
         <router-outlet></router-outlet>
       </div>
     </div>

@@ -1,5 +1,8 @@
 <div class="uk-animation-slide-left-small" uk-grid>
-  <div class="uk-width-1-1">
+  <div
+    class="uk-width-1-1"
+    [class.add-whitespace-underneath]="walletAccount && (showFullDetailsOnSmallViewports === false)"
+  >
 
     <div class="nano-card is-card" *ngIf="walletAccount && (showFullDetailsOnSmallViewports === false)">
       <div class="logo"></div>
@@ -45,12 +48,12 @@
 
     <h2
       class="uk-heading-divider"
-      [class.hide-on-small-viewports]="!showFullDetailsOnSmallViewports"
+      [class.hide-on-small-viewports]="walletAccount && (showFullDetailsOnSmallViewports === false)"
     >{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
 
     <div
       class="uk-card uk-card-default uk-margin"
-      [class.hide-on-small-viewports]="!showFullDetailsOnSmallViewports"
+      [class.hide-on-small-viewports]="walletAccount && (showFullDetailsOnSmallViewports === false)"
     >
 
       <div class="account-details-header uk-card-header uk-visible-toggle">
@@ -610,6 +613,13 @@
         <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" class="block-qr" alt="QR code"><br />
       </div>
     </div>
+  </div>
+</div>
+
+<div class="mobile-actions-fixed" *ngIf="walletAccount && (showFullDetailsOnSmallViewports === false)">
+  <div class="actions-area">
+    <button routerLink="/receive">Receive</button>
+    <button routerLink="/send">Send</button>
   </div>
 </div>
 

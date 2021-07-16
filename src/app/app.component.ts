@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     private renderer: Renderer2,
     private deeplinkService: DeeplinkService) {
       router.events.subscribe(() => {
-        this.navExpanded = false;
+        this.closeNav();
       });
     }
 
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   navExpanded = false;
+  navAnimating = false;
   showAccountsDropdown = false;
   canToggleLightMode = true;
   searchData = '';
@@ -215,10 +216,21 @@ export class AppComponent implements OnInit {
 
   toggleNav() {
     this.navExpanded = !this.navExpanded;
+    this.onNavExpandedChange();
   }
 
   closeNav() {
+    if(this.navExpanded === false) {
+      return;
+    }
+
     this.navExpanded = false;
+    this.onNavExpandedChange();
+  }
+
+  onNavExpandedChange() {
+    this.navAnimating = true;
+    setTimeout(() => { this.navAnimating = false; }, 350);
   }
 
   toggleLightMode() {

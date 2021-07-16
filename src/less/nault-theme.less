@@ -457,6 +457,58 @@ input[type=number] {
 	.hide-on-small-viewports {
 		display: none;
 	}
+
+	.notification-container {
+		bottom: 80px !important;
+	}
+}
+
+// Mobile actions
+.mobile-actions-fixed {
+	display: flex;
+	align-items: flex-end;
+	position: fixed;
+	bottom: 0;
+	left: 11px;
+	width: calc(100% - 22px);
+	height: 100px;
+	background: linear-gradient( 0deg, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) ) 0%;
+
+	> .actions-area {
+		display: flex;
+		width: 100%;
+		height: 66px;
+		margin: 10px 0 20px 0;
+
+		> button {
+			flex: 1;
+			border: 0;
+			margin: 8px 12px;
+			background: #4E91E0;
+			border-radius: 30px;
+			color: #FFF;
+			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+			font-size: 17px;
+			font-weight: 400;
+			text-transform: uppercase;
+			cursor: pointer;
+			transition: 0.1s ease-in-out;
+
+			&:hover {
+				background: #3883DC;
+			}
+		}
+	}
+}
+
+.nav-expanded .mobile-actions-fixed, .nav-animating .mobile-actions-fixed {
+	display: none;
+}
+
+@media (min-width: 940px) {
+	.mobile-actions-fixed {
+		display: none;
+	}
 }
 
 // Unlock Wallet modal
