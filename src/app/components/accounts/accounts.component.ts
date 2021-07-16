@@ -88,7 +88,7 @@ export class AccountsComponent implements OnInit {
   navigateToAccount(account) {
     const isSmallViewport = (window.innerWidth < 940);
 
-    if(isSmallViewport === true) {
+    if (isSmallViewport === true) {
         this.walletService.wallet.selectedAccountId = account ? account.id : null;
         this.walletService.wallet.selectedAccount = account;
         this.walletService.wallet.selectedAccount$.next(account);
