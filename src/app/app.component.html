@@ -87,7 +87,7 @@
           <div uk-grid>
             <div class="uk-width-expand">
 
-              <div [class]="[ 'nav-nano-card', (wallet.selectedAccount === null) ? 'is-wallet' : 'is-card' ]">
+              <div [class]="[ 'nano-card', (wallet.selectedAccount === null) ? 'is-wallet' : 'is-card' ]">
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
@@ -158,7 +158,7 @@
                     </div>
                   </ng-template>
                 </ng-template>
-                <div class="nav-nano-card incoming-card uk-animation-slide-left">
+                <div class="nano-card incoming-card uk-animation-slide-left">
                   <div class="card-contents">
                     <div class="account-name-container">
                       <a routerLink="/receive" class="name">Incoming Balance</a>

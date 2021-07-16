@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
-.uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
+.uk-table th, .uk-form-label, .uk-form-icon, .nano-card, .nav-representative-info,
 .accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar,
 .uk-modal-dialog p {
 	font-family: @global-secondary-font-family;
@@ -453,6 +453,12 @@ input[type=number] {
 	opacity: 0.2;
 }
 
+@media (max-width: 939px) {
+	.hide-on-small-viewports {
+		display: none;
+	}
+}
+
 // Unlock Wallet modal
 .password-input.uk-form-danger {
 	border-color: #F79743;
@@ -689,7 +695,8 @@ input[type=number] {
 	@media (max-width: 469px) {
 		.compact-account-amounts, .compact-account-actions {
 			display: block;
-			margin-top: 20px;
+			margin-top: 5px;
+			margin-bottom: 15px;
 		}
 
 		.account-amounts-column, .account-actions-column {

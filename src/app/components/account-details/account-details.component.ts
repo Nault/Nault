@@ -43,6 +43,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
 
+  showFullDetailsOnSmallViewports = false;
   loadingAccountDetails = false;
   loadingIncomingTxList = false;
   loadingTxList = false;

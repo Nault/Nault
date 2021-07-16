@@ -1,9 +1,58 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
 
-    <h2 class="uk-heading-divider">{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
+    <div class="nano-card is-card" *ngIf="walletAccount && (showFullDetailsOnSmallViewports === false)">
+      <div class="logo"></div>
+      <div class="card-contents">
+        <div class="account-name-container">
+          <a (click)="showFullDetailsOnSmallViewports = true" class="name">{{
+                addressBookEntry
+              ? addressBookEntry
+              : ('Account #' + walletAccount.index)
+          }}</a>
+          <div #selectButton class="select-button closed" routerLink="/accounts">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+        </div>
+        <div class="account-balances">
+          <ng-container *ngIf="!loadingAccountDetails else cardBalancesLoading">
+            <div class="balance-container primary">
+              <div class="currency-name">NANO</div>
+              <div class="amount-container">
+                <div class="amount-integer">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 0 }}</div>
+                <div class="amount-fractional">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 1 }}</div>
+                <div class="amount-updating" *ngIf="wallet.updatingBalance && isConfigured()"><div uk-spinner="ratio: 0.5;"></div></div>
+              </div>
+            </div>
+            <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
+              <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
+              <div class="amount-container">
+                <div class="amount-integer">{{ (account.balanceFiat | fiat: settings.settings.displayCurrency) | amountsplit: 0 }}</div>
+                <div class="amount-fractional">{{ (account.balanceFiat | fiat: settings.settings.displayCurrency) | amountsplit: 1 }}</div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #cardBalancesLoading>
+            <div class="spinner-container">
+              <div uk-spinner="ratio: 0.6;"></div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
 
-    <div class="uk-card uk-card-default uk-margin">
+    <h2
+      class="uk-heading-divider"
+      [class.hide-on-small-viewports]="!showFullDetailsOnSmallViewports"
+    >{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
+
+    <div
+      class="uk-card uk-card-default uk-margin"
+      [class.hide-on-small-viewports]="!showFullDetailsOnSmallViewports"
+    >
+
       <div class="account-details-header uk-card-header uk-visible-toggle">
 
         <div uk-grid>
