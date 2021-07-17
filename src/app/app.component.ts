@@ -53,6 +53,9 @@ export class AppComponent implements OnInit {
   nanoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
+  innerWidth = 0;
+  innerHeight = 0;
+  innerHeightWithoutMobileBar = 0;
   navExpanded = false;
   navAnimating = false;
   showAccountsDropdown = false;
@@ -60,6 +63,10 @@ export class AppComponent implements OnInit {
   searchData = '';
   isConfigured = this.walletService.isConfigured;
   donationAccount = environment.donationAddress;
+
+  @HostListener('window:resize', ['$event']) onResize (e) {
+    this.onWindowResize(e.target);
+  }
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
     if (
@@ -71,6 +78,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.onWindowResize(window);
     this.settings.loadAppSettings();
 
     this.updateAppTheme();
@@ -192,6 +200,19 @@ export class AppComponent implements OnInit {
       await this.updateFiatPrices();
     } catch (err) {
       this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+    }
+  }
+
+  onWindowResize(windowObject) {
+    this.innerWidth = windowObject.innerWidth;
+    this.innerHeight = windowObject.innerHeight;
+
+    const isMobileBarVisible = (this.innerWidth < 940);
+
+    if (isMobileBarVisible === true) {
+      this.innerHeightWithoutMobileBar = this.innerHeight - 50;
+    } else {
+      this.innerHeightWithoutMobileBar = this.innerHeight;
     }
   }
 

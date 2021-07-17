@@ -207,7 +207,10 @@ input[type=number] {
 	margin-top: 0;
 	overflow: hidden;
 	margin-left: 0;
-	height: 100vh;
+
+	@media (max-width: 939px) {
+		margin-top: @mobile-top-bar-height;
+	}
 }
 
 .content-container {
@@ -216,15 +219,12 @@ input[type=number] {
 	z-index: 1;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	height: 100vh;
 
 	> *:last-child > .uk-grid > *:last-child {
 		margin-bottom: 20px;
 	}
 
 	@media (max-width: 939px) {
-		margin-top: @mobile-top-bar-height;
-		height: calc(100vh - @mobile-top-bar-height);
 		padding: 15px 15px;
 		transition: transform 0.3s ease;
 
