@@ -170,8 +170,10 @@ input[type=number] {
 
 .mobile-top-bar {
 	display: none;
-	height: @mobile-top-bar-height;
+	height: @mobile-top-bar-height - 1px;
 	color: #FFF;
+	background-color: #22222A;
+	border-bottom: 1px solid #16161B;
 
 	> .button-column {
 		padding-left: 0;
@@ -180,9 +182,11 @@ input[type=number] {
 			display: flex;
 			align-items: center;
 			margin: 9px 0 8px 14px;
+			cursor: pointer;
 
 			> .uk-icon {
 				margin-right: 10px;
+				color: #5F5F77;
 			}
 
 			> .app-name {
