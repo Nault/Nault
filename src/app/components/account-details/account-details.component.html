@@ -666,7 +666,11 @@
         <h3 class="menu-header">{{
             addressBookEntry
           ? addressBookEntry
-          : ('Account #' + walletAccount.index)
+          : (
+              walletAccount
+            ? ('Account #' + walletAccount.index)
+            : 'External address'
+          )
         }}</h3>
         <hr>
         <div
