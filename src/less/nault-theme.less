@@ -479,10 +479,11 @@ input[type=number] {
 		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 		cursor: pointer;
 		border-radius: 2px;
+		user-select: none;
 		background: rgba(0, 0, 0, 0);
 		transition: background-color 100ms ease-in-out;
 
-		&:hover {
+		&:hover, &:active {
 			background: rgba(0, 0, 0, 0.2);
 		}
 
@@ -523,7 +524,7 @@ input[type=number] {
 			cursor: pointer;
 			transition: background-color 100ms ease-in-out;
 
-			&:hover {
+			&:hover, &:active {
 				background: #3883DC;
 			}
 		}
