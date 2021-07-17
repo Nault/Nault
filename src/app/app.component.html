@@ -1,4 +1,4 @@
-<div uk-grid class="app" uk-height-viewport (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()" style="overflow-y: hidden;">
+<div uk-grid class="app" (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()" [style.height]="( innerHeight + 'px' )" style="overflow-y: hidden;">
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
@@ -80,8 +80,15 @@
     </div>
 
     <!-- Main content container-->
-    <div uk-grid class="app-grid">
-      <div class="uk-width-1-4 nav-container">
+    <div
+      uk-grid
+      class="app-grid"
+      [style.height]="( innerHeightWithoutMobileBar + 'px' )"
+    >
+      <div
+        class="uk-width-1-4 nav-container"
+        [style.height]="( innerHeightWithoutMobileBar + 'px' )"
+      >
         <div class="nav-header">
 
           <div uk-grid>
@@ -300,7 +307,13 @@
 
 
       </div>
-      <div class="uk-width-expand content-container uk-panel" [class.nav-expanded]="navExpanded" [class.nav-animating]="navAnimating" (click)="closeNav()">
+      <div
+        class="uk-width-expand content-container uk-panel"
+        [class.nav-expanded]="navExpanded"
+        [class.nav-animating]="navAnimating"
+        [style.height]="( innerHeightWithoutMobileBar + 'px' )"
+        (click)="closeNav()"
+      >
         <router-outlet></router-outlet>
       </div>
     </div>
