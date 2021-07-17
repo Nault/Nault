@@ -210,7 +210,6 @@ input[type=number] {
 	height: 100vh;
 }
 
-
 .content-container {
 	background: #FFF;
 	padding: 15px 20px;
@@ -463,6 +462,32 @@ input[type=number] {
 	}
 }
 
+// Menu modal
+.uk-modal {
+	.menu-header {
+		margin-bottom: -4px;
+	}
+
+	.menu-option {
+		padding: 8px;
+		margin: 8px -8px 0 -8px;
+		font-size: 17px;
+		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+		cursor: pointer;
+		border-radius: 2px;
+		background: rgba(0, 0, 0, 0);
+		transition: background-color 100ms ease-in-out;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.2);
+		}
+
+		> .uk-icon {
+			margin-right: 12px;
+		}
+	}
+}
+
 // Mobile actions
 .mobile-actions-fixed {
 	display: flex;
@@ -492,7 +517,7 @@ input[type=number] {
 			font-weight: 400;
 			text-transform: uppercase;
 			cursor: pointer;
-			transition: 0.1s ease-in-out;
+			transition: background-color 100ms ease-in-out;
 
 			&:hover {
 				background: #3883DC;

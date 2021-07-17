@@ -76,9 +76,7 @@
 		> .name {
 			color: #FFF;
 			margin-right: 10px;
-			text-decoration: none;
 			border-bottom: 2px solid transparent;
-			transition: border-color 100ms ease-in-out;
 			padding-top: 1px;
 			.truncated-text();
 
@@ -86,6 +84,11 @@
 			@media (min-width: 1500px) {
 				font-size: 18px;
 			}
+		}
+
+		> a.name {
+			text-decoration: none;
+			transition: border-color 100ms ease-in-out;
 
 			&:hover {
 				border-color: #FFF;

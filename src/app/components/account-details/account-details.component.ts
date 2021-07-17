@@ -42,6 +42,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
+  mobileAccountMenuModal: any = null;
 
   showFullDetailsOnSmallViewports = false;
   loadingAccountDetails = false;
@@ -142,6 +143,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const UIkit = window['UIkit'];
     const qrModal = UIkit.modal('#qr-code-modal');
     this.qrModal = qrModal;
+
+    const mobileAccountMenuModal = UIkit.modal('#mobile-account-menu-modal');
+    this.mobileAccountMenuModal = mobileAccountMenuModal;
 
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
