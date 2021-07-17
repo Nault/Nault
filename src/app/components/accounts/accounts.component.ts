@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Subject, timer} from 'rxjs';
 import {debounce} from 'rxjs/operators';
+import {Router} from '@angular/router';
 import {
   AppSettingsService,
   LedgerService,
@@ -33,6 +34,7 @@ export class AccountsComponent implements OnInit {
     public modal: ModalService,
     public settings: AppSettingsService,
     private representatives: RepresentativeService,
+    private router: Router,
     private ledger: LedgerService) { }
 
   async ngOnInit() {
@@ -81,6 +83,19 @@ export class AccountsComponent implements OnInit {
     // this.accounts = this.walletService.wallet.accounts;
     this.walletService.saveWalletExport(); // Save new sorted accounts list
     // this.notificationService.sendSuccess(`Successfully sorted accounts by index!`);
+  }
+
+  navigateToAccount(account) {
+    const isSmallViewport = (window.innerWidth < 940);
+
+    if (isSmallViewport === true) {
+        this.walletService.wallet.selectedAccountId = account ? account.id : null;
+        this.walletService.wallet.selectedAccount = account;
+        this.walletService.wallet.selectedAccount$.next(account);
+        this.walletService.saveWalletExport();
+    }
+
+    this.router.navigate([`account/${account.id}`], { queryParams: {'compact': 1} });
   }
 
   copied() {

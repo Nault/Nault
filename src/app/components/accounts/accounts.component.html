@@ -77,7 +77,11 @@
           </ng-template>
           <td class="account-column uk-visible-toggle uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
             <div uk-grid>
-              <a [routerLink]="'/account/' + account.id" [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]">
+              <a
+                (click)="navigateToAccount(account); $event.stopPropagation()"
+                [routerLink]="( '/account/' + account.id )" [queryParams]="{ compact: '1' }"
+                [class]="[ 'uk-width-auto', 'uk-text-truncate', 'account-container', !isLedgerWallet ? 'narrow' : 'wide' ]"
+              >
                 <div class="uk-flex">
                   <app-nano-identicon scale="12" [accountID]="account.id" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                   <div class="uk-width-expand">

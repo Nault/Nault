@@ -225,6 +225,12 @@
     max-width: 450px;
 }
 
+@media (max-width: 939px) {
+    .add-whitespace-underneath {
+        padding-bottom: 60px;
+    }
+}
+
 .uk-modal-body .qr-code-placeholder {
     display: flex;
     align-items: center;

@@ -42,7 +42,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
+  mobileAccountMenuModal: any = null;
 
+  showFullDetailsOnSmallViewports = false;
   loadingAccountDetails = false;
   loadingIncomingTxList = false;
   loadingTxList = false;
@@ -125,9 +127,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.showAdvancedOptions = params.sign === '1';
     }
 
+    this.showFullDetailsOnSmallViewports = (params.compact !== '1');
+
     this.routerSub = this.route.events.subscribe(event => {
       if (event instanceof ChildActivationEnd) {
         this.loadAccountDetails(); // Reload the state when navigating to itself from the transactions page
+        this.showFullDetailsOnSmallViewports = (this.router.snapshot.queryParams.compact !== '1');
       }
     });
     this.priceSub = this.price.lastPrice$.subscribe(event => {
@@ -138,6 +143,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const UIkit = window['UIkit'];
     const qrModal = UIkit.modal('#qr-code-modal');
     this.qrModal = qrModal;
+
+    const mobileAccountMenuModal = UIkit.modal('#mobile-account-menu-modal');
+    this.mobileAccountMenuModal = mobileAccountMenuModal;
 
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();

@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     private renderer: Renderer2,
     private deeplinkService: DeeplinkService) {
       router.events.subscribe(() => {
-        this.navExpanded = false;
+        this.closeNav();
       });
     }
 
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   navExpanded = false;
+  navAnimating = false;
   showAccountsDropdown = false;
   canToggleLightMode = true;
   searchData = '';
@@ -90,7 +91,11 @@ export class AppComponent implements OnInit {
 
     // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
     if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
-      this.router.navigate(['accounts']);
+      if (this.wallet.selectedAccountId) {
+        this.router.navigate([`account/${this.wallet.selectedAccountId}`], { queryParams: {'compact': 1}, replaceUrl: true });
+      } else {
+        this.router.navigate(['accounts'], { replaceUrl: true });
+      }
     }
 
     // update selected account object with the latest balance, pending, etc
@@ -118,11 +123,11 @@ export class AppComponent implements OnInit {
         urlSearch.forEach(function(value, key) {
           queryParams[key] = value;
         });
-        this.router.navigate([path], { queryParams: queryParams});
+        this.router.navigate([path], { queryParams: queryParams, replaceUrl: true });
       } else if (fragment && fragment.length) {
-        this.router.navigate([path], { fragment: fragment});
+        this.router.navigate([path], { fragment: fragment, replaceUrl: true });
       } else {
-        this.router.navigate([path]);
+        this.router.navigate([path], { replaceUrl: true });
       }
     }
 
@@ -211,10 +216,21 @@ export class AppComponent implements OnInit {
 
   toggleNav() {
     this.navExpanded = !this.navExpanded;
+    this.onNavExpandedChange();
   }
 
   closeNav() {
+    if (this.navExpanded === false) {
+      return;
+    }
+
     this.navExpanded = false;
+    this.onNavExpandedChange();
+  }
+
+  onNavExpandedChange() {
+    this.navAnimating = true;
+    setTimeout(() => { this.navAnimating = false; }, 350);
   }
 
   toggleLightMode() {

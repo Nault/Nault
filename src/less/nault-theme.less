@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
-.uk-table th, .uk-form-label, .uk-form-icon, .nav-nano-card, .nav-representative-info,
+.uk-table th, .uk-form-label, .uk-form-icon, .nano-card, .nav-representative-info,
 .accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar,
 .uk-modal-dialog p {
 	font-family: @global-secondary-font-family;
@@ -210,7 +210,6 @@ input[type=number] {
 	height: 100vh;
 }
 
-
 .content-container {
 	background: #FFF;
 	padding: 15px 20px;
@@ -219,7 +218,7 @@ input[type=number] {
 	overflow-y: scroll;
 	height: 100vh;
 
-	> *:last-child > *:last-child {
+	> *:last-child > .uk-grid > *:last-child {
 		margin-bottom: 20px;
 	}
 
@@ -451,6 +450,90 @@ input[type=number] {
 
 .natricon-placeholder > img {
 	opacity: 0.2;
+}
+
+@media (max-width: 939px) {
+	.hide-on-small-viewports {
+		display: none;
+	}
+
+	.notification-container {
+		bottom: 80px !important;
+	}
+}
+
+// Menu modal
+.uk-modal {
+	.menu-header {
+		margin-bottom: -4px;
+	}
+
+	.menu-option {
+		padding: 8px;
+		margin: 8px -8px 0 -8px;
+		font-size: 17px;
+		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+		cursor: pointer;
+		border-radius: 2px;
+		background: rgba(0, 0, 0, 0);
+		transition: background-color 100ms ease-in-out;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.2);
+		}
+
+		> .uk-icon {
+			margin-right: 12px;
+		}
+	}
+}
+
+// Mobile actions
+.mobile-actions-fixed {
+	display: flex;
+	align-items: flex-end;
+	position: fixed;
+	bottom: 0;
+	left: 11px;
+	width: calc(100% - 22px);
+	height: 100px;
+	background: linear-gradient( 0deg, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) ) 0%;
+
+	> .actions-area {
+		display: flex;
+		width: 100%;
+		height: 66px;
+		margin: 10px 0 20px 0;
+
+		> button {
+			flex: 1;
+			border: 0;
+			margin: 8px 12px;
+			background: #4E91E0;
+			border-radius: 30px;
+			color: #FFF;
+			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+			font-size: 17px;
+			font-weight: 400;
+			text-transform: uppercase;
+			cursor: pointer;
+			transition: background-color 100ms ease-in-out;
+
+			&:hover {
+				background: #3883DC;
+			}
+		}
+	}
+}
+
+.nav-expanded .mobile-actions-fixed, .nav-animating .mobile-actions-fixed {
+	display: none;
+}
+
+@media (min-width: 940px) {
+	.mobile-actions-fixed {
+		display: none;
+	}
 }
 
 // Unlock Wallet modal
@@ -689,7 +772,8 @@ input[type=number] {
 	@media (max-width: 469px) {
 		.compact-account-amounts, .compact-account-actions {
 			display: block;
-			margin-top: 20px;
+			margin-top: 5px;
+			margin-bottom: 15px;
 		}
 
 		.account-amounts-column, .account-actions-column {
