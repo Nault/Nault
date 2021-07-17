@@ -146,23 +146,6 @@ export class PowService {
     if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom') {
       if (multiplierSource > 1) { // use manual difficulty
         localMultiplier = multiplierSource;
-      } else if (multiplierSource === 0) { // use auto difficulty
-        const activeDifficulty = await this.api.activeDifficulty();
-        if (activeDifficulty?.network_current?.length === 16 && activeDifficulty?.network_receive_current?.length === 16) {
-          if (queueItem.multiplier === 1 / 64) { // receive pow
-            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_receive_current, baseThreshold);
-          } else { // send pow
-            localMultiplier = this.util.nano.multiplierFromDifficulty(activeDifficulty.network_current, baseThreshold);
-          }
-          // clamp to max and min
-          if (localMultiplier > 8) {
-            localMultiplier = 8;
-          } else if (localMultiplier < 1 / 64) {
-            localMultiplier = 1 / 64;
-          }
-        } else {
-          localMultiplier = queueItem.multiplier;
-        }
       } else { // use default requested difficulty
         localMultiplier = queueItem.multiplier;
       }
