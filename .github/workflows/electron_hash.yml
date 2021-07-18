@@ -62,7 +62,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Install APT dependencies
         if: matrix.os == 'ubuntu-latest'
