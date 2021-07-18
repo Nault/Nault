@@ -16,6 +16,13 @@ jobs:
         with:
           node-version: 14
 
+      - name: Install APT dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential git -y
+          sudo apt-get install libudev-dev -y
+          sudo apt-get install libusb-1.0-0-dev -y
+
       - name: Install and Lint
         run: |
           npm install
