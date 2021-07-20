@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 * {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-	
+
 @media (max-width: 939px) {
 	.nlt-button-group button {
 		margin-bottom: @nlt-intro-margin / 2 !important;
@@ -192,6 +192,7 @@ input[type=number] {
 			> .app-name {
 				font-size: 22px;
 				font-weight: 600;
+				margin-top: -1px;
 			}
 		}
 	}
@@ -447,6 +448,11 @@ input[type=number] {
 }
 .nano-address-middle {
 	min-width: 1.4em;
+
+	&.is-off {
+		letter-spacing: -4px;
+		margin-right: 4px;
+	}
 }
 .nano-address-suffix {
 	color: #D5AF4E;
@@ -462,19 +468,71 @@ input[type=number] {
 	}
 
 	.notification-container {
-		bottom: 80px !important;
+		top: 60px !important;
+	}
+
+	.uk-tooltip {
+		display: none !important;
+	}
+}
+
+@media (min-width: 940px) {
+	.only-on-small-viewports {
+		display: none;
 	}
 }
 
 // Menu modal
+.modal-position-bottom[style*="display: block;"] {
+	display: flex !important;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
 .uk-modal {
+	.transaction {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+
+		&:not(.identicons-enabled) {
+			@media (max-width: 443px) {
+				.nano-address-prefix .nano-prefix {
+					display: none;
+				}
+			}
+
+			@media (max-width: 413px) {
+				.nano-address-suffix {
+					display: none;
+				}
+			}
+		}
+
+		&.identicons-enabled {
+			// identicons take up extra 10px
+
+			@media (max-width: 453px) {
+				.nano-address-prefix .nano-prefix {
+					display: none;
+				}
+			}
+
+			@media (max-width: 423px) {
+				.nano-address-suffix {
+					display: none;
+				}
+			}
+		}
+	}
+
 	.menu-header {
 		margin-bottom: -4px;
+		user-select: none;
 	}
 
 	.menu-option {
-		padding: 8px;
-		margin: 8px -8px 0 -8px;
+		padding: 10px 8px;
+		margin: 10px -8px 0 -8px;
 		font-size: 17px;
 		font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 		cursor: pointer;
@@ -487,8 +545,36 @@ input[type=number] {
 			background: rgba(0, 0, 0, 0.2);
 		}
 
-		> .uk-icon {
-			margin-right: 12px;
+		> .icon {
+			margin-right: 15px;
+			position: relative;
+
+			&.icon-leave {
+				margin-right: 13px;
+				vertical-align: 1px;
+			}
+
+			&.icon-copy {
+				margin-top: -3px;
+				margin-bottom: -3px;
+				margin-left: -2px;
+				margin-right: 13px;
+			}
+
+			> .icon-inner {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+
+				&.icon-user {
+					padding-right: 1px;
+
+					circle, path {
+						stroke-width: 2;
+					}
+				}
+			}
 		}
 	}
 }
@@ -501,14 +587,16 @@ input[type=number] {
 	bottom: 0;
 	left: 11px;
 	width: calc(100% - 22px);
-	height: 100px;
-	background: linear-gradient( 0deg, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) ) 0%;
+	height: 160px;
+	background: linear-gradient( 0deg, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) ) 0%;
+	pointer-events: none;
 
 	> .actions-area {
 		display: flex;
 		width: 100%;
 		height: 66px;
-		margin: 10px 0 20px 0;
+		padding: 40px 0 20px 0;
+		pointer-events: all;
 
 		> button {
 			flex: 1;
@@ -701,6 +789,7 @@ input[type=number] {
 			font-size: 13px;
 			padding: 2px 10px;
 			margin-right: 9px;
+			margin-top: 4px;
 			vertical-align: 1px;
 			padding-bottom: 1px;
 			text-transform: uppercase;
@@ -791,16 +880,13 @@ input[type=number] {
 			margin-right: 20px;
 		}
 
-		.nano-address-clickable > .uk-flex {
-			flex-wrap: wrap;
-			width: 125px;
+		.nano-address-actions {
+			display: none !important;
+		}
 
+		.nano-address-clickable > .uk-flex {
 			.nano-address-middle {
 				width: 0;
-			}
-
-			.nano-address-suffix {
-				margin-left: 69px; // Nice
 			}
 		}
 
@@ -849,6 +935,92 @@ input[type=number] {
 		.nano-identicon {
 			flex-basis: 100%;
 		}
+	}
+}
+
+.transactions-list-header {
+	@media (max-width: 939px) {
+		justify-content: space-between;
+		padding: 0 20px;
+	}
+}
+
+// Transactions list (mobile)
+.transactions-list-mobile {
+	.date-header {
+		font-size: 14px;
+		margin: 15px 0 8px 20px;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	.rounded-area {
+		border-radius: 10px;
+		padding: 20px 14px;
+		margin-bottom: 10px;
+		user-select: none;
+		background: #eaf5ff;
+
+		&.interactable {
+			transition: background-color 100ms ease-in-out;
+			cursor: pointer;
+
+			&:hover, &:focus {
+				background: #d1e9ff;
+
+				.type-identicon-combined .type-icon-container {
+					background: #d1e9ff;
+				}
+			}
+
+			&.transaction:not(.identicons-enabled) {
+				@media (max-width: 410px) {
+					.nano-address-prefix .nano-prefix {
+						display: none;
+					}
+				}
+
+				@media (max-width: 369px) {
+					.nano-address-suffix {
+						display: none;
+					}
+				}
+			}
+
+			&.transaction.identicons-enabled {
+				// identicons take up extra 10px
+				@media (max-width: 420px) {
+					.nano-address-prefix .nano-prefix {
+						display: none;
+					}
+				}
+
+				@media (max-width: 379px) {
+					.nano-address-suffix {
+						display: none;
+					}
+				}
+			}
+		}
+
+		.type-identicon-combined {
+			.nano-identicon {
+				.canvas-container canvas {
+					border-radius: 3px;
+				}
+			}
+
+			.type-icon-container {
+				background: #eaf5ff;
+				transition: background-color 100ms ease-in-out;
+			}
+		}
+	}
+
+	.more-results {
+		text-align: center;
 	}
 }
 

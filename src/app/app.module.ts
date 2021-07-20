@@ -69,6 +69,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
+import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
     InstallWidgetComponent,
     MultisigComponent,
     KeygeneratorComponent,
+    NanoTransactionMobileComponent,
   ],
   imports: [
     BrowserModule,
