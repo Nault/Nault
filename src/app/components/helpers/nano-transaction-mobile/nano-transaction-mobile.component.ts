@@ -8,7 +8,7 @@ import { Component, Input, OnInit, OnChanges } from '@angular/core';
 export class NanoTransactionMobileComponent implements OnInit, OnChanges {
 
   @Input() transaction: any;
-  @Input() isInteractable: boolean = true;
+  @Input() isInteractable = true;
   @Input() isHidden: boolean;
   @Input() settingIdenticonsStyle: string;
 
