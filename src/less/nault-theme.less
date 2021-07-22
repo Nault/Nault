@@ -1341,6 +1341,30 @@ input[type=number] {
 	border-bottom: 1px solid #DCE9F9 !important;
 }
 
+@media (max-width: 360px) {
+	.representative-row .representative-name-column .representative-address {
+		.nano-address-prefix .nano-prefix {
+			display: none;
+		}
+
+		.nano-address-middle {
+			width: 0;
+		}
+	}
+}
+
+@media (max-width: 377px) {
+	.delegating-account .descendant-details .descendant-address {
+		.nano-address-prefix .nano-prefix {
+			display: none;
+		}
+
+		.nano-address-middle {
+			width: 0;
+		}
+	}
+}
+
 // App Settings page
 #node-stats-table tr:not(:last-child) td {
 	border-bottom: 1px solid #dce9f9;
