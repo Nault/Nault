@@ -40,7 +40,7 @@ export class SendComponent implements OnInit {
   selectedAmount = this.amounts[0];
 
   amount = null;
-  amountRaw = new BigNumber(0);
+  amountExtraRaw = new BigNumber(0);
   amountFiat: number|null = null;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
@@ -111,9 +111,24 @@ export class SendComponent implements OnInit {
   }
 
   updateQueries(params) {
-    if (params && params.amount) {
-      this.amount = params.amount;
+    if ( params && params.amount && !isNaN(params.amount) ) {
+      const amountAsRaw =
+        new BigNumber(
+          this.util.nano.mnanoToRaw(
+            new BigNumber(params.amount)
+          )
+        );
+
+      this.amountExtraRaw = amountAsRaw.mod(this.nano).floor();
+
+      this.amount =
+        this.util.nano.rawToMnano(
+          amountAsRaw.minus(this.amountExtraRaw)
+        ).toNumber();
+
+      this.syncFiatPrice();
     }
+
     if (params && params.to) {
       this.toAccountID = params.to;
       this.validateDestination();
@@ -142,7 +157,7 @@ export class SendComponent implements OnInit {
   // An update to the Nano amount, sync the fiat value
   syncFiatPrice() {
     if (!this.validateAmount()) return;
-    const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
+    const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountExtraRaw);
     if (rawAmount.lte(0)) {
       this.amountFiat = 0;
       return;
@@ -300,7 +315,7 @@ export class SendComponent implements OnInit {
     this.toAccount = to;
 
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
-    this.rawAmount = rawAmount.plus(this.amountRaw);
+    this.rawAmount = rawAmount.plus(this.amountExtraRaw);
 
     const nanoAmount = this.rawAmount.div(this.nano);
 
@@ -312,7 +327,7 @@ export class SendComponent implements OnInit {
     }
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
-    this.amountRaw = this.rawAmount.mod(this.nano);
+    this.amountExtraRaw = this.rawAmount.mod(this.nano);
 
     // Determine fiat value of the amount
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
@@ -384,7 +399,7 @@ export class SendComponent implements OnInit {
       return;
     }
 
-    this.amountRaw = walletAccount.balanceRaw;
+    this.amountExtraRaw = walletAccount.balanceRaw;
 
     const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
@@ -393,7 +408,7 @@ export class SendComponent implements OnInit {
   }
 
   resetRaw() {
-    this.amountRaw = new BigNumber(0);
+    this.amountExtraRaw = new BigNumber(0);
   }
 
   getAmountBaseValue(value) {

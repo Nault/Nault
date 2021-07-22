@@ -6,6 +6,20 @@
 	max-width: 450px;
 }
 
+.amount-raw-extra {
+  margin: 12px 5px 12px 10px;
+}
+.amount-raw-extra .uk-icon {
+  vertical-align: 1px;
+  border: 1px solid #81809f;
+  border-radius: 100%;
+  padding: 6px;
+  transition: border-color 100ms ease-in-out;
+}
+.amount-raw-extra .uk-icon:hover {
+  border-color: #f0506e;
+}
+
 .block-amount-primary {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   line-height: 1;

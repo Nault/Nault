@@ -79,8 +79,8 @@
 
                       </div>
 
-                      <div *ngIf="amountRaw.gt(0)" class="uk-width-1-1 uk-width-3-5@m uk-text-small uk-text-muted uk-margin-remove">
-                        <span uk-tooltip title="Additional raw to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}">+{{ amountRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
+                      <div *ngIf="amountExtraRaw.gt(0)" class="amount-raw-extra uk-width-1-1 uk-text-small text-half-muted">
+                        <span uk-tooltip title="Additional raw to {{ (sendDestinationType === 'own-address') ? 'transfer' : 'send' }}">+{{ amountExtraRaw.toString(10) }} raw</span> &nbsp; <a class="uk-text-danger" (click)="resetRaw()" uk-tooltip title="Remove the additional raw amount from the total amount" uk-icon="icon: close"></a>
                       </div>
 
                       <div class="uk-width-1-1" style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
@@ -123,7 +123,7 @@
               <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
               <span class="currency-name">NANO</span>
             </div>
-            <div *ngIf="amountRaw.gt(0)" class="uk-text-small text-half-muted" style="margin: 2px 0 -2px 0;">+{{ amountRaw.toString(10) }} raw</div>
+            <div *ngIf="amountExtraRaw.gt(0)" class="uk-text-small text-half-muted" style="margin: 2px 0 -2px 0;">+{{ amountExtraRaw.toString(10) }} raw</div>
             <div style="margin: 8px 0 -1px 0;" class="text-half-muted" *ngIf="settings.settings.displayCurrency">{{ amountFiat | fiat: settings.settings.displayCurrency }}</div>
             <div style="margin: 1px 0 -1px 0;" class="uk-text-muted" *ngIf="settings.settings.displayCurrency">{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</div>
           </div>
