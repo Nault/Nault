@@ -31,7 +31,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">To Address</label>
                 <div class="uk-form-controls">
                   <div class="form-input-destination uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
+                    <a class="hide-on-small-viewports uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Address to send to" autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
@@ -72,7 +72,7 @@
                     <div uk-grid>
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1">
-                          <a class="uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" style="padding-right: 7px;" uk-tooltip title="Set Maximum Amount">Max</a>
+                          <a class="max-amt-button uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" uk-tooltip title="Set Maximum Amount">Max</a>
                           <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
                           <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text" (keyup)="syncFiatPrice()" (change)="syncFiatPrice()" type="number" step="any" placeholder="Amount of {{ selectedAmount.name }}" maxlength="40">
                         </div>
@@ -99,13 +99,24 @@
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" (click)="sendTransaction()" *ngIf="!preparingTransaction">
-              {{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}
-            </button>
-            <button class="uk-button uk-button-secondary uk-disabled uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" *ngIf="preparingTransaction">
-              <span class="spinner" uk-spinner="ratio: 0.5;"></span>
-              Preparing transaction
-            </button>
+            <div class="uk-text-right@s nlt-button-group">
+              <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" (click)="sendTransaction()" *ngIf="!preparingTransaction">
+                {{ (sendDestinationType === 'own-address') ? 'Transfer Nano' : 'Send Nano' }}
+              </button>
+              <button class="uk-button uk-button-secondary uk-disabled uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button" type="button" *ngIf="preparingTransaction">
+                <span class="spinner" uk-spinner="ratio: 0.5;"></span>
+                Preparing transaction
+              </button>
+              <button
+                class="only-on-small-viewports uk-button uk-button-secondary uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button"
+                [class.uk-disabled]="preparingTransaction"
+                type="button"
+                (click)="preparingTransaction ? return : openQR('account1','account')"
+                *ngIf="(sendDestinationType !== 'own-address')"
+              >
+                Scan QR code
+              </button>
+            </div>
           </div>
         </div>
       </div>

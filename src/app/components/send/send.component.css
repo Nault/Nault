@@ -2,6 +2,11 @@
 	max-width: 800px;
 }
 
+.max-amt-button {
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
 .form-amount {
 	max-width: 450px;
 }
