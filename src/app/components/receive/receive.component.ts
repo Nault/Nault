@@ -25,12 +25,14 @@ export class ReceiveComponent implements OnInit {
   nano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
 
+  timeoutIdClearingRecentlyCopiedState: any = null;
   pendingAccountModel = '0';
   pendingBlocks = [];
   pendingBlocksForSelectedAccount = [];
   qrCodeImage = null;
   qrAccount = '';
   qrAmount: BigNumber = null;
+  recentlyCopiedAccountAddress = false;
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
@@ -208,6 +210,7 @@ export class ReceiveComponent implements OnInit {
     let qrCode = null;
     if (account.length > 1) {
       this.qrAccount = account;
+      this.qrCodeImage = null;
       qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
     }
     this.qrCodeImage = qrCode;
@@ -222,6 +225,7 @@ export class ReceiveComponent implements OnInit {
       }
     }
     if (this.qrAccount.length > 1) {
+      this.qrCodeImage = null;
       qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
       this.qrCodeImage = qrCode;
     }
@@ -274,6 +278,19 @@ export class ReceiveComponent implements OnInit {
   copied() {
     this.notificationService.removeNotification('success-copied');
     this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+  }
+
+  copiedAccountAddress() {
+    if (this.timeoutIdClearingRecentlyCopiedState != null) {
+      clearTimeout(this.timeoutIdClearingRecentlyCopiedState);
+    }
+    this.recentlyCopiedAccountAddress = true;
+    this.timeoutIdClearingRecentlyCopiedState = setTimeout(
+      () => {
+        this.recentlyCopiedAccountAddress = false;
+      },
+      2000
+    );
   }
 
   toBigNumber(value) {
