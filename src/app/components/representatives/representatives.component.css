@@ -70,14 +70,11 @@
 	cursor: pointer;
 }
 
-.representative-name-column .account-label {
-	margin-bottom: 3px;
-}
-
 .representative-label-container {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	margin-bottom: 3px;
 }
 
 .representative-label-container .representative-weight-percentage .value {
@@ -172,7 +169,7 @@
 	}
 
 	.representative-label-container .representative-weight-percentage {
-		margin-top: 2px;
+		margin-top: 7px;
 	}
 
 	.voting-weight-column .currency-name {
