@@ -15,4 +15,9 @@
 	width: 70%;
 	left: 15%;
 	z-index: 1050;
+	pointer-events: none;
+}
+
+.notification-container .uk-alert {
+	pointer-events: all;
 }

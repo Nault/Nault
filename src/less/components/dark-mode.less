@@ -402,6 +402,28 @@
 		color: #FFA556 !important;
 	}
 
+	// Transactions list (mobile)
+	.transactions-list-mobile {
+		.rounded-area {
+			background: @dark-mode-background-4;
+			color: @dark-mode-text-5;
+
+			&.interactable {
+				&:hover, &:focus {
+					background: @dark-mode-background-6;
+
+					.type-identicon-combined .type-icon-container {
+						background: @dark-mode-background-6;
+					}
+				}
+			}
+
+			.type-identicon-combined .type-icon-container {
+				background: @dark-mode-background-4;
+			}
+		}
+	}
+
 	// Transactions list
 	.transactions-list {
 		.account-column {

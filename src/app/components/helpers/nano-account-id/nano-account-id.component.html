@@ -1,3 +1,6 @@
-<span class="nano-address-prefix">{{ firstCharacters }}</span>
-<span [class]="{ 'nano-address-middle': true, 'uk-text-truncate': (middle === 'auto') }">{{ middleCharacters || '...'}}</span>
+<span class="nano-address-prefix"><span class="nano-prefix">nano_</span>{{ firstCharacters }}</span>
+<span
+	[class]="{ 'nano-address-middle': true, 'uk-text-truncate': (middle === 'auto') }"
+	[class.is-off]="( middle === 'off' )"
+>{{ middleCharacters || '...'}}</span>
 <span class="nano-address-suffix">{{ lastCharacters }}</span>

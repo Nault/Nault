@@ -1,0 +1,158 @@
+<div
+	class="rounded-area transaction"
+	[class.interactable]="isInteractable"
+	[class.identicons-enabled]="(settingIdenticonsStyle !== 'none')"
+	*ngIf="!isHidden"
+>
+	<div
+		class="column type-identicon"
+		[class.identicons-enabled]="(settingIdenticonsStyle !== 'none')"
+	>
+		<ng-container [ngSwitch]="true">
+			<div
+				class="type-identicon-combined"
+				*ngSwitchCase="(settingIdenticonsStyle !== 'none')"
+			>
+				<app-nano-identicon
+					scale="6"
+					[accountID]="(transaction.link_as_account || transaction.account)"
+					[settingIdenticonsStyle]="settingIdenticonsStyle"
+					class="nano-identicon"
+				></app-nano-identicon>
+				<ng-container [ngSwitch]="true">
+					<span
+						class="type-icon-container uk-text-muted"
+						*ngIf="isReceivableTransaction"
+					>
+						<div class="type-icon plus">
+							<div class="vertical-line"></div>
+							<div class="horizontal-line"></div>
+						</div>
+					</span>
+					<span
+						class="type-icon-container rep-change"
+						*ngSwitchCase="isRepresentativeChange"
+					>
+						<div class="type-icon cog">
+							<div class="square rotated"></div>
+						</div>
+					</span>
+					<span
+						class="type-icon-container uk-text-danger"
+						*ngIf="isSendTransaction"
+					>
+						<div class="type-icon minus">
+							<div class="horizontal-line"></div>
+						</div>
+					</span>
+					<span
+						class="type-icon-container uk-text-success"
+						*ngIf="isReceiveTransaction"
+					>
+						<div class="type-icon plus">
+							<div class="vertical-line"></div>
+							<div class="horizontal-line"></div>
+						</div>
+					</span>
+				</ng-container>
+			</div>
+			<ng-container *ngSwitchDefault>
+				<ng-container [ngSwitch]="true">
+					<span
+						class="type-icon uk-text-small uk-text-muted"
+						uk-icon="icon: plus-circle; ratio: 1.2;"
+						*ngIf="isReceivableTransaction"
+					></span>
+					<span
+						class="type-icon uk-text-small rep-change"
+						uk-icon="icon: cog; ratio: 1.2;"
+						*ngSwitchCase="isRepresentativeChange"
+					></span>
+					<span
+						class="type-icon uk-text-small uk-text-danger"
+						uk-icon="icon: minus-circle; ratio: 1.2;"
+						*ngIf="isSendTransaction"
+					></span>
+					<span
+						class="type-icon uk-text-small uk-text-success"
+						uk-icon="icon: plus-circle; ratio: 1.2;"
+						*ngIf="isReceiveTransaction"
+					></span>
+				</ng-container>
+			</ng-container>
+		</ng-container>
+	</div>
+	<div
+		class="column action-amount"
+		[class.text-half-muted]="(transaction.confirmed === false) || isReceivableTransaction"
+		[class.rep-change]="(transaction.confirmed !== false) && isRepresentativeChange"
+		[class.uk-text-danger]="(transaction.confirmed !== false) && isSendTransaction"
+		[class.uk-text-success]="(transaction.confirmed !== false) && isReceiveTransaction"
+	>
+		<ng-template #unconfirmedIcon>
+			<span
+				class="icon-unconfirmed"
+				uk-icon="icon: clock;"
+				*ngIf="(transaction.confirmed === false)"
+			></span>
+		</ng-template>
+		<ng-container [ngSwitch]="true">
+			<div
+				class="action"
+				*ngSwitchCase="isReceivableTransaction"
+			>Ready to receive</div>
+			<div
+				class="action"
+				*ngSwitchCase="isRepresentativeChange"
+			>Rep. Change<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			<div
+				class="action"
+				*ngSwitchCase="isSendTransaction"
+			>Sent<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			<div
+				class="action"
+				*ngSwitchCase="isReceiveTransaction"
+			>Received<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			<div
+				class="action"
+				*ngSwitchDefault
+			>Unknown Action<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+		</ng-container>
+		<div class="amount" *ngIf="isReceivableTransaction || isSendTransaction || isReceiveTransaction">
+			<span class="amount-integer">{{ transaction.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+			<span class="amount-fractional">{{ transaction.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+			<span class="currency-name">NANO</span>
+		</div>
+	</div>
+	<div class="column account-date uk-text-truncate">
+		<ng-container [ngSwitch]="true">
+			<div
+				class="account uk-text-truncate"
+				*ngSwitchCase="!!transaction.addressBookName"
+			>{{ transaction.addressBookName }}</div>
+			<div
+				class="account uk-text-truncate"
+				*ngSwitchDefault
+			>
+				<div class="nano-address-monospace">
+					<app-nano-account-id
+						[accountID]="(transaction.link_as_account || transaction.account)"
+						middle="off"
+					></app-nano-account-id>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container [ngSwitch]="true">
+			<div
+				class="date text-half-muted"
+				*ngSwitchCase="(transaction.confirmed === false)"
+			>unconfirmed</div>
+			<ng-container *ngSwitchDefault>
+				<div
+					class="date text-half-muted"
+					*ngIf="( transaction.local_time_string !== '' )"
+				>{{ transaction.local_time_string }}</div>
+			</ng-container>
+		</ng-container>
+	</div>
+</div>

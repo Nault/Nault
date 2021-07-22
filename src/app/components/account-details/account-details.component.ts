@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, ChildActivationEnd, Router, NavigationEnd} from '@angular/router';
+import {formatDate} from '@angular/common';
 import {AddressBookService} from '../../services/address-book.service';
 import {ApiService} from '../../services/api.service';
 import {NotificationService} from '../../services/notification.service';
@@ -43,6 +44,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   timeoutIdAllowingRefresh: any = null;
   qrModal: any = null;
   mobileAccountMenuModal: any = null;
+  mobileTransactionMenuModal: any = null;
+  mobileTransactionData: any = null;
 
   showFullDetailsOnSmallViewports = false;
   loadingAccountDetails = false;
@@ -63,6 +66,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   priceSub = null;
 
   statsRefreshEnabled = true;
+  dateStringToday = '';
+  dateStringYesterday = '';
 
   // Remote signing
   addressBookResults$ = new BehaviorSubject([]);
@@ -133,6 +138,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (event instanceof ChildActivationEnd) {
         this.loadAccountDetails(); // Reload the state when navigating to itself from the transactions page
         this.showFullDetailsOnSmallViewports = (this.router.snapshot.queryParams.compact !== '1');
+        this.mobileTransactionMenuModal.hide();
       }
     });
     this.priceSub = this.price.lastPrice$.subscribe(event => {
@@ -146,6 +152,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const mobileAccountMenuModal = UIkit.modal('#mobile-account-menu-modal');
     this.mobileAccountMenuModal = mobileAccountMenuModal;
+
+    const mobileTransactionMenuModal = UIkit.modal('#mobile-transaction-menu-modal');
+    this.mobileTransactionMenuModal = mobileTransactionMenuModal;
 
     await this.loadAccountDetails();
     this.addressBook.loadAddressBook();
@@ -313,21 +322,34 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (pending && pending.blocks) {
         for (const block in pending.blocks) {
           if (!pending.blocks.hasOwnProperty(block)) continue;
+          const transaction = pending.blocks[block];
+
           this.pendingBlocks.push({
-            account: pending.blocks[block].source,
-            amount: pending.blocks[block].amount,
-            amountRaw: new BigNumber( pending.blocks[block].amount || 0 ).mod(this.nano),
-            local_timestamp: pending.blocks[block].local_timestamp,
+            account: transaction.source,
+            amount: transaction.amount,
+            amountRaw: new BigNumber( transaction.amount || 0 ).mod(this.nano),
+            local_timestamp: transaction.local_timestamp,
+            local_date_string: (
+                transaction.local_timestamp
+              ? formatDate(transaction.local_timestamp * 1000, 'MMM d, y', 'en-US')
+              : 'N/A'
+            ),
+            local_time_string: (
+                transaction.local_timestamp
+              ? formatDate(transaction.local_timestamp * 1000, 'HH:mm:ss', 'en-US')
+              : ''
+            ),
             addressBookName: (
-                this.addressBook.getAccountName( pending.blocks[block].source )
-              || this.getAccountLabel( pending.blocks[block].source, null )
+                this.addressBook.getAccountName(transaction.source)
+              || this.getAccountLabel(transaction.source, null)
             ),
             hash: block,
             loading: false,
             received: false,
+            isReceivable: true,
           });
 
-          pendingBalance = new BigNumber(pendingBalance).plus(pending.blocks[block].amount).toString(10);
+          pendingBalance = new BigNumber(pendingBalance).plus(transaction.amount).toString(10);
         }
       }
 
@@ -373,6 +395,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.mobileAccountMenuModal.hide();
+    this.mobileTransactionMenuModal.hide();
     if (this.routerSub) {
       this.routerSub.unsubscribe();
     }
@@ -386,6 +410,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.qrCodeImage = qrCode;
   }
 
+  updateTodayYesterdayDateStrings() {
+    const unixTimeNow = Date.now();
+
+    this.dateStringToday = formatDate( unixTimeNow, 'MMM d, y', 'en-US' );
+    this.dateStringYesterday = formatDate( unixTimeNow - 86400000, 'MMM d, y', 'en-US' );
+  }
+
   async getAccountHistory(accountID, resetPage = true) {
     if (resetPage) {
       this.accountHistory = [];
@@ -393,6 +424,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.loadingTxList = true;
+    this.updateTodayYesterdayDateStrings();
 
     const history = await this.api.accountHistory(accountID, this.pageSize, true);
 
@@ -411,6 +443,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (history && history.history && Array.isArray(history.history)) {
       this.accountHistory = history.history.map(h => {
+        h.local_date_string = (
+            h.local_timestamp
+          ? formatDate(h.local_timestamp * 1000, 'MMM d, y', 'en-US')
+          : 'N/A'
+        );
+
+        h.local_time_string = (
+            h.local_timestamp
+          ? formatDate(h.local_timestamp * 1000, 'HH:mm:ss', 'en-US')
+          : ''
+        );
+
         if (h.type === 'state') {
           // For Open and receive blocks, we need to look up block info to get originating account
           if (h.subtype === 'open' || h.subtype === 'receive') {
@@ -701,6 +745,21 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  showMobileMenuForTransaction(transaction) {
+    this.notifications.removeNotification('success-copied');
+
+    this.mobileTransactionData = transaction;
+    this.mobileTransactionMenuModal.show();
+  }
+
+  onReceiveFundsPress(receivableTransaction) {
+    if (receivableTransaction.loading || receivableTransaction.received) {
+      return;
+    }
+
+    this.receivePending(receivableTransaction);
+  }
+
   async receivePending(pendingBlock) {
     const sourceBlock = pendingBlock.hash;
 
@@ -713,6 +772,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (newBlock) {
       pendingBlock.received = true;
+      this.mobileTransactionMenuModal.hide();
       this.notifications.removeNotification('success-receive');
       this.notifications.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
       // clear the list of pending blocks. Updated again with reloadBalances()

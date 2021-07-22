@@ -246,7 +246,7 @@
 
     </div>
 
-    <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
+    <div class="transactions-list-header uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
       <h3 class="uk-margin-remove-bottom">Transactions</h3>
       <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
         <li>
@@ -272,7 +272,62 @@
 
     <div class="uk-overflow-hidden">
 
-      <table class="transactions-list uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
+      <div class="transactions-list-mobile only-on-small-viewports">
+        <ng-container *ngFor="let transaction of pendingBlocks">
+          <app-nano-transaction-mobile
+            [transaction]="transaction"
+            [isHidden]="transaction.received"
+            [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+            (click)="showMobileMenuForTransaction(transaction)"
+          ></app-nano-transaction-mobile>
+        </ng-container>
+
+        <!-- Don't show if "Loading transactions..." is already shown -->
+        <div class="rounded-area" *ngIf="(loadingIncomingTxList && !loadingTxList && !loadingAccountDetails)">
+          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</div>
+        </div>
+
+        <ng-container *ngFor="let transaction of accountHistory; let transactionIdx = index;">
+          <div
+            class="date-header text-half-muted"
+            *ngIf="(
+                ( accountHistory[transactionIdx - 1] == null )
+              || (
+                  transaction.local_date_string
+                !== accountHistory[transactionIdx - 1].local_date_string
+              )
+            )"
+          >{{
+              (transaction.local_date_string === dateStringToday)
+            ? 'Today'
+            : (
+                (transaction.local_date_string === dateStringYesterday)
+              ? 'Yesterday'
+              : transaction.local_date_string
+            )
+          }}</div>
+          <app-nano-transaction-mobile
+            [transaction]="transaction"
+            [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+            (click)="showMobileMenuForTransaction(transaction)"
+          ></app-nano-transaction-mobile>
+        </ng-container>
+
+        <div class="rounded-area" *ngIf="(loadingIncomingTxList || loadingTxList || loadingAccountDetails) else notLoadingTransactionsMobile">
+          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading transactions...</div>
+        </div>
+        <ng-template #notLoadingTransactionsMobile>
+          <div class="rounded-area interactable" *ngIf="!accountHistory.length && !pendingBlocks.length">
+            <div style="text-align: center;">No transactions</div>
+          </div>
+          <div class="rounded-area interactable more-results" (click)="loadMore()" *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
+            Show More<br>
+            <div class="chevron chevron-down"></div>
+          </div>
+        </ng-template>
+      </div>
+
+      <table class="transactions-list hide-on-small-viewports uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
         <thead>
         <tr>
           <th scope="col" class="type-column"></th>
@@ -324,8 +379,8 @@
                 [class.uk-text-muted]="!pending.local_timestamp"
                 [class.date-unknown]="!pending.local_timestamp"
               >
-                <span class="date">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
-                <span class="time">{{ pending.local_timestamp ? ( pending.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
+                <span class="date">{{ pending.local_date_string }}</span>
+                <span class="time">{{ pending.local_time_string }}</span>
               </span>
             </ng-template>
           </ng-template>
@@ -381,8 +436,8 @@
               [class.uk-text-muted]="!history.local_timestamp"
               [class.date-unknown]="!history.local_timestamp"
             >
-              <span class="date">{{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'MMM d, y' ) : 'N/A' }}</span>
-              <span class="time"> {{ history.local_timestamp ? ( history.local_timestamp * 1000 | date: 'HH:mm:ss' ) : '' }}</span>
+              <span class="date">{{ history.local_date_string }}</span>
+              <span class="time"> {{ history.local_time_string }}</span>
             </span>
             <div class="label-unconfirmed" *ngIf="(history.confirmed === false)">
               <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
@@ -659,8 +714,8 @@
   </div>
 </div>
 
-<div id="mobile-account-menu-modal" uk-modal>
-  <div class="uk-modal-dialog uk-margin-auto-vertical">
+<div class="modal-position-bottom" id="mobile-account-menu-modal" uk-modal>
+  <div class="uk-modal-dialog">
     <div class="uk-modal-body">
       <div class="uk-width-1-1">
         <h3 class="menu-header">{{
@@ -678,16 +733,133 @@
           [routerLink]="( '/account/' + accountID )"
           (click)="mobileAccountMenuModal.hide()"
         >
-          <span uk-icon="icon: cog; ratio: 1.3;" style="vertical-align: 2px;"></span>
-          View account details
+          <span class="icon" uk-icon="icon: cog; ratio: 1.3;" style="vertical-align: 2px;"></span>
+          <span>View account details</span>
         </div>
         <div
           class="menu-option"
           routerLink="/accounts"
           (click)="mobileAccountMenuModal.hide()"
         >
-          <span uk-icon="icon: sign-out; ratio: 1.4;" style="vertical-align: 1px;"></span>
-          Select a different account
+          <span class="icon icon-leave" uk-icon="icon: sign-out; ratio: 1.4;"></span>
+          <span>Select a different account</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-position-bottom" id="mobile-transaction-menu-modal" uk-modal>
+  <div class="uk-modal-dialog">
+    <div class="uk-modal-body">
+      <div class="transactions-list-mobile">
+        <app-nano-transaction-mobile
+          [isInteractable]="false"
+          [transaction]="mobileTransactionData"
+          [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+          *ngIf="mobileTransactionData"
+        ></app-nano-transaction-mobile>
+      </div>
+      <div class="uk-width-1-1" *ngIf="mobileTransactionData">
+        <hr>
+        <ng-container *ngIf="mobileTransactionData.isReceivable === true">
+          <div
+            class="menu-option uk-text-success"
+            (click)="onReceiveFundsPress(mobileTransactionData)"
+            *ngIf="walletAccount"
+          >
+            <span
+              class="icon icon-download" uk-icon="icon: download; ratio: 1.5;"
+              style="vertical-align: 2px;"
+              *ngIf="!mobileTransactionData.received"
+            ></span>
+            <span *ngIf="!mobileTransactionData.received && !mobileTransactionData.loading">Receive funds</span>
+            <span *ngIf="!mobileTransactionData.received && mobileTransactionData.loading">Receiving...</span>
+            <span
+              class="icon" uk-icon="icon: check; ratio: 1.3;"
+              style="vertical-align: 2px;"
+              *ngIf="mobileTransactionData.received"
+            ></span>
+            <span *ngIf="mobileTransactionData.received">Received!</span>
+          </div>
+          <div
+            class="menu-option"
+            (click)="mobileTransactionMenuModal.hide(); generateReceive(mobileTransactionData.hash)"
+            *ngIf="remoteVisible"
+          >
+            <span class="icon" uk-icon="icon: pencil; ratio: 1.3;" style="vertical-align: 2px;"></span>
+            <span>Sign block</span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="mobileTransactionData.isReceivable !== true">
+          <div
+            class="menu-option"
+            routerLink="/send"
+            [queryParams]="{
+              to: mobileTransactionData.account,
+              amount: util.nano.rawToMnano(mobileTransactionData.amount)
+            }"
+            (click)="mobileTransactionMenuModal.hide()"
+            *ngIf="(
+                walletAccount
+              && !isNaN(mobileTransactionData.amount)
+              && (
+                  mobileTransactionData.type === 'receive'
+                || mobileTransactionData.subtype === 'receive'
+                || mobileTransactionData.type === 'open'
+              )
+            )"
+          >
+            <span class="icon" uk-icon="icon: reply; ratio: 1.3;" style="vertical-align: 2px;"></span>
+            <span>Send funds back</span>
+          </div>
+          <div
+            class="menu-option"
+            ngxClipboard
+            [cbContent]="mobileTransactionData.hash"
+            (cbOnSuccess)="mobileTransactionMenuModal.hide(); copied()"
+          >
+            <span class="icon icon-copy" uk-icon="icon: copy; ratio: 1.5;" style="vertical-align: 2px;">
+              <span class="icon-inner">#</span>
+            </span>
+            <span>Copy transaction ID</span>
+          </div>
+          <div
+            class="menu-option"
+            ngxClipboard
+            [cbContent]="(mobileTransactionData.link_as_account || mobileTransactionData.account)"
+            (cbOnSuccess)="mobileTransactionMenuModal.hide(); copied()"
+          >
+            <span class="icon icon-copy" uk-icon="icon: copy; ratio: 1.5;" style="vertical-align: 2px;">
+              <span class="icon-inner icon-user" uk-icon="icon: user; ratio: 0.6;"></span>
+            </span>
+            <ng-container *ngIf="isNaN(mobileTransactionData.amount)">
+              <span>Copy representative's address</span>
+            </ng-container>
+            <ng-container *ngIf="!isNaN(mobileTransactionData.amount)">
+              <ng-container *ngIf="(
+                  mobileTransactionData.type === 'receive'
+                || mobileTransactionData.subtype === 'receive'
+                || mobileTransactionData.type === 'open'
+              )">
+                <span>Copy sender's address</span>
+              </ng-container>
+              <ng-container *ngIf="(
+                  mobileTransactionData.type === 'send'
+                || mobileTransactionData.subtype === 'send'
+              )">
+                <span>Copy recipient's address</span>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+        <div
+          class="menu-option"
+          [routerLink]="( '/transaction/' + mobileTransactionData.hash )"
+          (click)="mobileTransactionMenuModal.hide()"
+        >
+          <span class="icon" uk-icon="icon: search; ratio: 1.3;" style="vertical-align: 2px;"></span>
+          <span>View transaction details</span>
         </div>
       </div>
     </div>
