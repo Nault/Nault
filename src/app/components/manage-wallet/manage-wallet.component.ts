@@ -12,6 +12,7 @@ import * as bip from 'bip39';
 export class ManageWalletComponent implements OnInit {
 
   wallet = this.walletService.wallet;
+  accounts = this.walletService.wallet.accounts;
 
   newPassword = '';
   confirmPassword = '';
@@ -20,12 +21,33 @@ export class ManageWalletComponent implements OnInit {
   QRExportUrl = '';
   QRExportImg = '';
 
+  selAccountInit = false;
+  invalidFilter = false;
+  csvAccount = this.accounts.length > 0 ? this.accounts[0].id : '0';
+  csvCount = '500';
+  csvOffset = '';
+  csvFilter = '';
+  csvReversed = false;
+
   constructor(
     public walletService: WalletService,
     public notifications: NotificationService) { }
 
   async ngOnInit() {
     this.wallet = this.walletService.wallet;
+
+    // Update selected account if changed in the sidebar
+    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+      if (this.selAccountInit) {
+        this.csvAccount = acc ? acc.id : (this.accounts.length > 0 ? this.accounts[0].id : '0');
+      }
+      this.selAccountInit = true;
+    });
+
+    // Set the account selected in the sidebar as default
+    if (this.walletService.wallet.selectedAccount !== null) {
+      this.csvAccount = this.walletService.wallet.selectedAccount.id;
+    }
   }
 
   async changePassword() {
