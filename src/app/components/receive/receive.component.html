@@ -35,27 +35,43 @@
             </div>
           </div>
 
-          <div class="uk-flex-1 uk-margin qr-column">
+          <div class="uk-flex-1 qr-column">
             <div *ngIf="qrCodeImage; else placeholder">
               <div class="qr-code">
+                <img class="uk-position-absolute" [src]="qrCodeImage" alt="QR code">
                 <div class="qr-confirmation" [class]="qrSuccessClass">
                   <div uk-icon="icon: check; ratio: 5"></div>
                   <span class="uk-text-large uk-text-center">Nano Received</span>
                 </div>
-                <img [src]="qrCodeImage" alt="QR code">
-              </div>
-              <br>
-              <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address">
-                <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
-                <a class="span-icon" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
+                <div style="padding-top: 100%"></div>
               </div>
             </div>
             <ng-template #placeholder>
               <div class="qr-code qr-placeholder">
-                <div class="uk-position-absolute text-half-muted">Select an account<br/>to view QR code</div>
+                <div class="uk-position-absolute text-half-muted" *ngIf="(pendingAccountModel === '0')">Select an account<br/>to view QR code</div>
+                <div class="uk-position-absolute text-half-muted" *ngIf="(pendingAccountModel !== '0')"><div uk-spinner="ratio: 3;"></div></div>
                 <div style="padding-top: 100%"></div>
               </div>
             </ng-template>
+            <div *ngIf="(pendingAccountModel !== '0')">
+              <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address">
+                <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
+                <a class="span-icon hide-on-small-viewports" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
+              </div>
+              <div class="only-on-small-viewports uk-text-center">
+                <button
+                  class="copy-address-button uk-width-1-1 uk-width-4-5@s uk-button uk-button-primary uk-text-center"
+                  [class.nlt-button-success]="recentlyCopiedAccountAddress"
+                  [class.uk-disabled]="recentlyCopiedAccountAddress"
+                  type="button"
+                  ngxClipboard
+                  [cbContent]="pendingAccountModel"
+                  (cbOnSuccess)="copiedAccountAddress()"
+                >
+                  {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
+                </button>
+              </div>
+            </div>
           </div>
                   
         </div>

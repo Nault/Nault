@@ -42,6 +42,9 @@
     display: flex;
     flex-direction: column;
 }
+.qr-column {
+    margin-top: 15px;
+}
 @media (min-width: 640px) {
     .receive-columns {
         flex-direction: row-reverse;
@@ -50,6 +53,7 @@
         width: 0;
         max-width: 360px;
         margin-right: 20px;
+        margin-top: 0;
     }
 }
 
@@ -65,7 +69,10 @@
 }
 .qr-address {
     max-width: 280px;
-    margin: 0 auto;
+    margin: 25px auto 0 auto;
+}
+.copy-address-button {
+    margin-top: 25px;
 }
 @media (max-width: 959px) {
     .qr-code {
@@ -112,7 +119,7 @@
     animation: slideup 1.2s;
 }
 .qr-confirmation.out {
-    animation: fadeout 5s;
+    animation: fadeout 1s;
 }
 
 @keyframes slidedown {
