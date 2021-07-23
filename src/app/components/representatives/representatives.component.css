@@ -70,8 +70,20 @@
 	cursor: pointer;
 }
 
-.representative-name-column .account-label {
+.representative-label-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	margin-bottom: 3px;
+}
+
+.representative-label-container .representative-weight-percentage .value {
+	margin-right: 15px;
+	margin-top: -1px;
+}
+
+.representative-label-container .account-label {
+	margin-right: 10px;
 }
 
 .voting-weight-column {
@@ -116,6 +128,62 @@
 
 .delegating-account > .descendant-details > .descendant-address {
 	font-size: 0.8em;
+}
+
+.voting-weight-column .amount-integer,
+.voting-weight-column .amount-fractional,
+.voting-weight-column .currency-name {
+	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}
+
+.representative-row .voting-weight-column .amount-integer,
+.representative-row .voting-weight-column .amount-fractional,
+.representative-row .voting-weight-column .currency-name {
+	font-size: 16px;
+}
+
+.delegating-account-row .voting-weight-column .amount-integer,
+.delegating-account-row .voting-weight-column .amount-fractional,
+.delegating-account-row .voting-weight-column .currency-name {
+	font-size: 14px;
+}
+
+.voting-weight-column .amount-integer {
+	font-weight: 700;
+}
+
+.voting-weight-column .amount-fractional {
+	font-weight: 500;
+}
+
+.voting-weight-column .currency-name {
+	font-weight: 400;
+	margin-left: 5px;
+}
+
+@media (max-width: 469px) {
+	.representative-label-container {
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+	}
+
+	.representative-label-container .representative-weight-percentage {
+		margin-top: 7px;
+	}
+
+	.voting-weight-column .currency-name {
+		display: block;
+		margin-top: -2px;
+	}
+
+	.representative-row .voting-weight-column .currency-name {
+		font-size: 13px;
+	}
+
+	.delegating-account-row .voting-weight-column .currency-name {
+		font-size: 13px;
+	}
 }
 
 .delegating-account-row > .voting-weight-column {

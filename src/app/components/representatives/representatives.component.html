@@ -19,7 +19,7 @@
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
-                <th scope="col" class="representative-health-column-header">Status</th>
+                <th scope="col" class="representative-health-column-header hide-on-small-viewports">Status</th>
                 <th scope="col" class="uk-width-expand">Representative</th>
                 <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">Voting Weight</th>
               </tr>
@@ -27,47 +27,59 @@
             <tbody>
               <ng-container *ngIf="!loadingRepresentatives">
               <ng-container *ngFor="let rep of representativeOverview">
+                <ng-template #representativeHealth>
+                  <ng-container [ngSwitch]="true">
+                    <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
+                      <div class="health-icon"></div>
+                      <div class="label">Good</div>
+                    </div>
+                    <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'ok')">
+                      <div class="health-icon"></div>
+                      <div class="label">Good</div>
+                    </div>
+                    <div class="representative-health-status health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
+                      <div class="health-icon"></div>
+                      <div class="label">Acceptable</div>
+                    </div>
+                    <div class="representative-health-status health-red" *ngSwitchCase="(rep.statusText == 'alert')">
+                      <div class="health-icon"></div>
+                      <div class="label">Bad</div>
+                    </div>
+                    <div class="representative-health-status health-unknown" *ngSwitchDefault>
+                      <div class="health-icon"></div>
+                      <div class="label">Unknown</div>
+                    </div>
+                  </ng-container>
+                </ng-template>
                 <tr class="representative-row">
-                  <td class="representative-health-column uk-visible-toggle uk-text-truncate">
-                    <ng-container [ngSwitch]="true">
-                      <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
-                        <div class="health-icon"></div>
-                        <div class="label">Good</div>
-                      </div>
-                      <div class="representative-health-status health-green" *ngSwitchCase="(rep.statusText == 'ok')">
-                        <div class="health-icon"></div>
-                        <div class="label">Good</div>
-                      </div>
-                      <div class="representative-health-status health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
-                        <div class="health-icon"></div>
-                        <div class="label">Acceptable</div>
-                      </div>
-                      <div class="representative-health-status health-red" *ngSwitchCase="(rep.statusText == 'alert')">
-                        <div class="health-icon"></div>
-                        <div class="label">Bad</div>
-                      </div>
-                      <div class="representative-health-status health-unknown" *ngSwitchDefault>
-                        <div class="health-icon"></div>
-                        <div class="label">Unknown</div>
-                      </div>
-                    </ng-container>
+                  <td class="representative-health-column uk-visible-toggle uk-text-truncate hide-on-small-viewports">
+                    <ng-template [ngTemplateOutlet]="representativeHealth"></ng-template>
                   </td>
                   <td class="representative-name-column uk-text-truncate rep-container" (click)="addSelectedAccounts(rep.accounts)">
                     <div class="representative-label-container">
                       <div class="account-label rep">{{ rep.label ? rep.label : 'Unknown Rep' }}</div>
-                      <div class="uk-width-auto uk-flex-inline uk-flex-middle" style="padding-left: 10px;">
-                        <div class="uk-text-small text-half-muted" style="margin-right: 15px" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
+                      <div class="representative-weight-percentage uk-width-auto uk-flex-inline uk-flex-middle">
+                        <div class="value uk-text-small text-half-muted" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
                       </div>
                     </div>
-                    <div class="uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="rep.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                    <div class="representative-address uk-text-small uk-text-truncate">
+                      <app-nano-account-id [accountID]="rep.id" middle="auto" class="nano-address-monospace"></app-nano-account-id>
+                    </div>
+                    <div class="representative-health-compact only-on-small-viewports uk-margin-small-top">
+                      <ng-template [ngTemplateOutlet]="representativeHealth"></ng-template>
+                    </div>
                   </td>
                   <td class="voting-weight-column uk-width-1-4">
                     <div class="uk-text-small text-half-muted">Total</div>
-                    {{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 0 }}{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 1 }} NANO
+                    <div class="amounts">
+                      <span class="amount-integer">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                      <span class="amount-fractional">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                      <span class="currency-name">NANO</span>
+                    </div>
                   </td>
                 </tr>
                 <tr class="delegating-account-row" *ngFor="let delegatingAccount of rep.accounts">
-                  <td class="representative-health-column"></td>
+                  <td class="representative-health-column hide-on-small-viewports"></td>
                   <td class="delegating-account-details-column uk-text-truncate account-container" (click)="addSelectedAccounts([ delegatingAccount ])">
                     <div class="delegating-account">
                       <div class="descendant-icon"></div>
@@ -76,13 +88,17 @@
                           <div class="account-label">{{ getAccountLabel(delegatingAccount) }}</div>
                         </div>
                         <div class="descendant-address uk-text-truncate">
-                          <app-nano-account-id [accountID]="delegatingAccount.id" middle="on" class="nano-address-monospace"></app-nano-account-id>
+                          <app-nano-account-id [accountID]="delegatingAccount.id" middle="auto" class="nano-address-monospace"></app-nano-account-id>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="voting-weight-column uk-width-1-4 uk-text-small">
-                    {{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO
+                  <td class="voting-weight-column uk-width-1-4">
+                    <div class="amounts">
+                      <span class="amount-integer">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                      <span class="amount-fractional">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                      <span class="currency-name">NANO</span>
+                    </div>
                   </td>
                 </tr>
               </ng-container>
@@ -129,7 +145,7 @@
                           <div *ngIf="(account.id === 'All Current Accounts')">{{ account.id }}</div>
                           <ng-container *ngIf="(account.id !== 'All Current Accounts')">
                             <div class="uk-margin-small-right account-label blue">{{ getAccountLabel(account) }}</div>
-                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account.id" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
+                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account.id" middle="auto" class="nano-address-monospace"></app-nano-account-id></div>
                           </ng-container>
                         </div>
                         <div class="action-remove uk-width-1-6 uk-text-center">
