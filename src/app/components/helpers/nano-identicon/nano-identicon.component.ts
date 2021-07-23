@@ -38,9 +38,15 @@ export class NanoIdenticonComponent implements OnChanges, AfterViewInit {
 
     this.renderedIdenticon = this.accountID;
 
+    const scale =
+      Math.max(
+        Math.ceil(this.scale * window.devicePixelRatio),
+        this.scale
+      );
+
     const canvas = createIcon({
       seed: this.accountID,
-      scale: this.scale,
+      scale,
     });
 
     const canvasContainerNative = this.canvasContainer.nativeElement;
