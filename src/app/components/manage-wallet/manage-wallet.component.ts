@@ -224,11 +224,15 @@ export class ManageWalletComponent implements OnInit {
 
     // contruct the export data
     const csvData = [];
-    if (history && history.history.length > 0) {
+    if (history && history.history && history.history.length > 0) {
       history.history.forEach(a => {
         csvData.push({'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
         'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')});
       });
+    }
+
+    if (csvData.length === 0) {
+      return this.notifications.sendWarning(`No transaction history found or bad server response!`);
     }
 
     // download file
