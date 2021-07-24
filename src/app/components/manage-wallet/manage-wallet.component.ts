@@ -207,7 +207,6 @@ export class ManageWalletComponent implements OnInit {
   async exportToCsv() {
     if (this.invalidCsvCount) {
       if (this.beyondCsvLimit) {
-        this.beyondCsvLimit = false;
         return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Nault server`);
       } else {
         return this.notifications.sendWarning(`Invalid limit`);
