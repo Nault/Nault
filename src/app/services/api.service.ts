@@ -99,8 +99,13 @@ export class ApiService {
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
     return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] }, false);
   }
-  async accountHistory(account, count = 25, raw = false): Promise<{history: any }> {
-    return await this.request('account_history', { account, count, raw }, false);
+  async accountHistory(account, count = 25, raw = false, offset = 0, reverse = false): Promise<{history: any }> {
+    // use unlimited count if 0
+    if (count === 0) {
+      return await this.request('account_history', { account, raw, offset, reverse}, false);
+    } else {
+      return await this.request('account_history', { account, count, raw, offset, reverse}, false);
+    }
   }
   async accountInfo(account): Promise<any> {
     return await this.request('account_info', { account, pending: true, representative: true, weight: true }, false);
