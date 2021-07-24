@@ -189,7 +189,9 @@ export class ManageWalletComponent implements OnInit {
         this.beyondCsvLimit = true;
       } else {
         this.invalidCsvCount = false;
-      } } else {
+        this.beyondCsvLimit = false;
+      }
+    } else {
       this.invalidCsvCount = true;
     }
   }
