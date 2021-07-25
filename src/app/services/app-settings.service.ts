@@ -150,6 +150,23 @@ export class AppSettingsService {
     }
     this.settings = Object.assign(this.settings, settings);
 
+    if (this.settings.language === null) {
+      const browserCultureLang = getBrowserCultureLang();
+      const browserLang = getBrowserLang();
+
+      if (this.translate.getAvailableLangs().some(lang => lang['id'] === browserCultureLang)) {
+        this.settings.language = browserCultureLang;
+      } else if (this.translate.getAvailableLangs().some(lang => lang['id'] === browserCultureLang)) {
+        this.settings.language = browserLang;
+      } else {
+        this.settings.language = this.translate.getDefaultLang();
+      }
+
+      console.log('No language configured, setting to: ' + this.settings.language);
+      console.log('Browser culture language: ' + browserCultureLang);
+      console.log('Browser language: ' + browserLang);
+    }
+
     this.loadServerSettings();
 
     return this.settings;
