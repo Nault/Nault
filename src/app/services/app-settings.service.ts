@@ -7,7 +7,7 @@ export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
 export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
-  language: string,
+  language: string;
   displayDenomination: string;
   // displayPrefix: string | null;
   walletStore: string;
