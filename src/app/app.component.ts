@@ -14,6 +14,7 @@ import {NodeService} from './services/node.service';
 import { DesktopService, LedgerService } from './services';
 import { environment } from 'environments/environment';
 import { DeeplinkService } from './services/deeplink.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class AppComponent implements OnInit {
     private desktop: DesktopService,
     private ledger: LedgerService,
     private renderer: Renderer2,
-    private deeplinkService: DeeplinkService) {
+    private deeplinkService: DeeplinkService,
+    private translate: TranslocoService) {
       router.events.subscribe(() => {
         this.closeNav();
       });
@@ -85,6 +87,9 @@ export class AppComponent implements OnInit {
 
     // New for v19: Patch saved xrb_ prefixes to nano_
     await this.patchXrbToNanoPrefixData();
+
+    // set translation language
+    this.translate.setActiveLang(this.settings.settings.language);
 
     this.addressBook.loadAddressBook();
     this.workPool.loadWorkCache();
