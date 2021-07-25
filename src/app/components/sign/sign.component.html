@@ -22,13 +22,6 @@
               <div style="margin: 8px 0 -1px 0;" class="text-half-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ amountFiat | fiat: settings.settings.displayCurrency }}</div>
               <div style="margin: 1px 0 -1px 0;" class="uk-text-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</div>
             </div>
-            <div *ngIf="txType == txTypes.change">
-              <div class="block-amount-primary uk-text-danger">
-                <a [routerLink]="'/account/' + currentBlock.representative" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
-                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="currentBlock.representative"></app-nano-account-id></div>
-                </a>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -36,7 +29,8 @@
           <div class="account-snippet uk-text-truncate">
             <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
               <div class="uk-card-header">
-                <div class="snippet-caption uk-text-small text-half-muted">From Account</div>
+                <div *ngIf="txType === txTypes.change" class="snippet-caption uk-text-small text-half-muted">Account</div>
+                <div *ngIf="txType !== txTypes.change" class="snippet-caption uk-text-small text-half-muted">From Account</div>
                 <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
                     <div class="identicon-address-book-row">
@@ -52,7 +46,7 @@
                   </div>
                 </div>
               </div>
-              <div class="uk-card-body">
+              <div *ngIf="txType !== txTypes.change" class="uk-card-body">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>
@@ -83,8 +77,9 @@
           <div class="account-snippet uk-text-truncate">
             <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
               <div class="uk-card-header">
-                <div class="snippet-caption uk-text-small text-half-muted">To Account</div>
-                <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                <div *ngIf="txType === txTypes.change" class="snippet-caption uk-text-small text-half-muted">New Representative</div>
+                <div *ngIf="txType !== txTypes.change" class="snippet-caption uk-text-small text-half-muted">To Account</div>
+                <div *ngIf="txType !== txTypes.change" class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
                     <div class="identicon-address-book-row">
                       <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
@@ -98,8 +93,22 @@
                     </ul>
                   </div>
                 </div>
+                <div *ngIf="txType === txTypes.change" class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                  <a [routerLink]="'/account/' + currentBlock.representative" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                    <div class="identicon-address-book-row">
+                      <app-nano-identicon scale="12" [accountID]="currentBlock.representative" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                      <div class="account-label uk-text-truncate" *ngIf="repAddressBook">{{ repAddressBook }}</div>
+                    </div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="currentBlock.representative"></app-nano-account-id></div>
+                  </a>
+                  <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                    <ul class="uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="currentBlock.representative" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <div class="uk-card-body">
+              <div *ngIf="txType !== txTypes.change" class="uk-card-body">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>

@@ -46,6 +46,7 @@ export class SignComponent implements OnInit {
   toAccountID = '';
   toAccountBalance: BigNumber = null;
   toAddressBook = '';
+  repAddressBook = '';
   toAccountStatus = null;
   currentBlock: StateBlock = null;
   previousBlock: StateBlock = null;
@@ -227,7 +228,7 @@ export class SignComponent implements OnInit {
             this.previousBlock.representative !== this.currentBlock.representative && this.currentBlock.link === this.nullBlock) {
           // it's a change block
           this.txType = TxType.change;
-          this.txTypeMessage = 'change representative to';
+          this.txTypeMessage = 'change the representative';
           this.rawAmount = new BigNumber(0);
           this.fromAccountID = this.currentBlock.account;
           this.toAccountID = this.currentBlock.account;
@@ -426,6 +427,7 @@ export class SignComponent implements OnInit {
 
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
     this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
+    this.repAddressBook = this.addressBookService.getAccountName(this.currentBlock.representative);
 
     this.activePanel = 'confirm';
     // Start precopmuting the work...
