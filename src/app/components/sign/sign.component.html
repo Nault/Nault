@@ -57,7 +57,7 @@
                       <span class="balance-amount-primary">
                         <span class="amount-integer">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 0) : 'N/A' }}</span>
                         <span class="amount-fractional">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 1) : '' }}</span>
-                        <span class="currency-name">NANO</span>
+                        <span class="currency-name">{{ fromAccountBalance ? 'NANO' : '' }}</span>
                       </span>
                     </span>
                   </div>
@@ -117,9 +117,9 @@
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>
                     <span class="block-balance">
                       <span class="balance-amount-primary">
-                        <span class="amount-integer">{{ (toAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                        <span class="amount-fractional">{{ (toAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 1 }}</span>
-                        <span class="currency-name">NANO</span>
+                        <span class="amount-integer">{{ toAccountBalance ? (toAccountBalance | rai: 'mnano,true' | amountsplit: 0) : 'N/A' }}</span>
+                        <span class="amount-fractional">{{ toAccountBalance ? (toAccountBalance | rai: 'mnano,true' | amountsplit: 1) : '' }}</span>
+                        <span class="currency-name">{{ toAccountBalance ? 'NANO' : '' }}</span>
                       </span>
                     </span>
                   </div>
