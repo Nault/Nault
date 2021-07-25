@@ -8,13 +8,16 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="margin-bottom: 20px;">
           <div class="uk-card-body" style="padding: 15px;">
-            <div *ngIf="!qrCodeImageBlock && shouldSign" class="uk-text-danger">You are about to sign a block to {{txTypeMessage}}</div>
-            <div *ngIf="qrCodeImageBlock && shouldSign" class="uk-text-danger">You have signed a block to {{txTypeMessage}}</div>
-            <div *ngIf="!blockProcessed && !shouldSign" class="uk-text-danger">You are about to {{txTypeMessage}}</div>
-            <div *ngIf="blockProcessed && !shouldSign" class="uk-text-danger">You have processed a block to {{txTypeMessage}}</div>
+            <div [class.uk-text-danger]="txType == txTypes.send" [class.uk-text-success]="txType == txTypes.receive" [class.text-rep-change]="txType == txTypes.change">
+              <div *ngIf="txType == txTypes.change" style="margin-bottom: 7px;" uk-icon="icon: cog; ratio: 1.2;"></div><br>
+              <div *ngIf="!qrCodeImageBlock && shouldSign">You are about to sign a block to {{txTypeMessage}}</div>
+              <div *ngIf="qrCodeImageBlock && shouldSign">You have signed a block to {{txTypeMessage}}</div>
+              <div *ngIf="!blockProcessed && !shouldSign">You are about to {{txTypeMessage}}</div>
+              <div *ngIf="blockProcessed && !shouldSign">You have processed a block to {{txTypeMessage}}</div>
+            </div>
 
             <div *ngIf="txType != txTypes.change">
-              <div class="block-amount-primary uk-text-danger">
+              <div class="block-amount-primary" [class.uk-text-danger]="txType == txTypes.send" [class.uk-text-success]="txType == txTypes.receive">
                 <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
                 <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
                 <span class="currency-name">NANO</span>
@@ -52,8 +55,8 @@
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>
                     <span class="block-balance">
                       <span class="balance-amount-primary">
-                        <span class="amount-integer">{{ (fromAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                        <span class="amount-fractional">{{ (fromAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="amount-integer">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 0) : 'N/A' }}</span>
+                        <span class="amount-fractional">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 1) : '' }}</span>
                         <span class="currency-name">NANO</span>
                       </span>
                     </span>
