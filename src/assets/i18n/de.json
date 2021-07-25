@@ -1,1 +1,5 @@
-{}
+{
+  "configure-app": {
+    "language": "Sprache"
+  }
+}

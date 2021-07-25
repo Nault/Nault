@@ -14,11 +14,11 @@
 
               <div class="uk-margin">
                 <label class="uk-form-label" for="languageselector">
-                  Language
+                  {{ 'configure-app.language' | transloco }}
                 </label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedLanguage" id="languageselector">
-                    <option *ngFor="let language of languages" [value]="language.value">{{ language.name }}</option>
+                    <option *ngFor="let language of languages" [value]="language.id">{{ language.label }}</option>
                   </select>
                 </div>
               </div>

@@ -14,6 +14,7 @@ import {BehaviorSubject} from 'rxjs';
 import {RepresentativeService} from '../../services/representative.service';
 import {NinjaService} from '../../services/ninja.service';
 import {QrModalService} from '../../services/qr-modal.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-configure-app',
@@ -38,8 +39,12 @@ export class ConfigureAppComponent implements OnInit {
     private price: PriceService,
     private ninja: NinjaService,
     private renderer: Renderer2,
-    private qrModalService: QrModalService) { }
+    private qrModalService: QrModalService,
+    private translate: TranslocoService) { }
   wallet = this.walletService.wallet;
+
+  languages = this.translate.getAvailableLangs() as [{id: string, label: string}];
+  selectedLanguage = this.languages[0].id;
 
   denominations = [
     { name: 'NANO', value: 'mnano' },
@@ -247,6 +252,9 @@ export class ConfigureAppComponent implements OnInit {
   loadFromSettings() {
     const settings = this.appSettings.settings;
 
+    const matchingLanguage = this.languages.find(language => language.id === settings.language);
+    this.selectedLanguage = matchingLanguage.id || this.languages[0].id;
+
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
@@ -312,6 +320,9 @@ export class ConfigureAppComponent implements OnInit {
       this.appSettings.setAppSetting('displayCurrency', newCurrency);
       this.walletService.reloadFiatBalances();
     }
+
+    this.appSettings.setAppSetting('language', this.selectedLanguage);
+    this.translate.setActiveLang(this.selectedLanguage);
 
     // if (updatePrefixes) {
     //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
