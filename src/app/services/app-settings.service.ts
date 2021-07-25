@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as url from 'url';
+import { TranslocoService, getBrowserCultureLang, getBrowserLang } from '@ngneat/transloco';
 
 export type WalletStore = 'localStorage'|'none';
 export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
 export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
+  language: string,
   displayDenomination: string;
   // displayPrefix: string | null;
   walletStore: string;
@@ -33,6 +35,7 @@ export class AppSettingsService {
   storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
+    language: 'en',
     displayDenomination: 'mnano',
     // displayPrefix: 'xrb',
     walletStore: 'localStorage',
@@ -140,7 +143,9 @@ export class AppSettingsService {
     'node.somenano.com'
   ]);
 
-  constructor() { }
+  constructor(
+    private translate: TranslocoService
+  ) { }
 
   loadAppSettings() {
     let settings: AppSettings = this.settings;
@@ -223,6 +228,7 @@ export class AppSettingsService {
   clearAppSettings() {
     localStorage.removeItem(this.storeKey);
     this.settings = {
+      language: 'en',
       displayDenomination: 'mnano',
       // displayPrefix: 'xrb',
       walletStore: 'localStorage',
