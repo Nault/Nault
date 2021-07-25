@@ -6,84 +6,125 @@
     <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
       <div class="uk-width-1-1">
-        <div class="uk-card uk-card-default uk-width-1-1 uk-text-center">
-          <span *ngIf="!qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You are about to sign a block to {{txTypeMessage}}</span>
-          <span *ngIf="qrCodeImageBlock && shouldSign" style="display: block; padding-top: 8px;">You have signed a block to {{txTypeMessage}}</span>
-          <span *ngIf="!blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You are about to {{txTypeMessage}}</span>
-          <span *ngIf="blockProcessed && !shouldSign" style="display: block; padding-top: 8px;">You have processed a block to {{txTypeMessage}}</span>
-          <span *ngIf="txType != txTypes.change" style="display:block; font-size: 32px;">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }} NANO</span>
-          <span *ngIf="txType == txTypes.change" style="display:block; font-size: 20px;">{{ currentBlock.representative }}</span>
-        </div>
-        <br>
-        <div uk-grid>
-          <div class="uk-width-1-2@m">
-            <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-left" style="padding: 20px 20px; line-height: 22px;">
-                <span class="confirm-title uk-text-truncate">
-                  <div *ngIf="fromAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ fromAddressBook }}</span>
-                    <span class="confirm-subtitle">From Account</span>
-                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
-                  </div>
-                  <div *ngIf="!fromAddressBook">
-                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></span>
-                    <span class="confirm-subtitle">From Account</span>
-                    <br class="br-spacer" />
-                  </div>
-                </span>
-                <ul class="uk-iconnav">
-                  <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                </ul>
+        <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="margin-bottom: 20px;">
+          <div class="uk-card-body" style="padding: 15px;">
+            <div *ngIf="!qrCodeImageBlock && shouldSign" class="uk-text-danger">You are about to sign a block to {{txTypeMessage}}</div>
+            <div *ngIf="qrCodeImageBlock && shouldSign" class="uk-text-danger">You have signed a block to {{txTypeMessage}}</div>
+            <div *ngIf="!blockProcessed && !shouldSign" class="uk-text-danger">You are about to {{txTypeMessage}}</div>
+            <div *ngIf="blockProcessed && !shouldSign" class="uk-text-danger">You have processed a block to {{txTypeMessage}}</div>
+
+            <div *ngIf="txType != txTypes.change">
+              <div class="block-amount-primary uk-text-danger">
+                <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                <span class="currency-name">NANO</span>
               </div>
-              <div class="uk-card-body" style="padding: 20px 20px;">
+              <div style="margin: 8px 0 -1px 0;" class="text-half-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ amountFiat | fiat: settings.settings.displayCurrency }}</div>
+              <div style="margin: 1px 0 -1px 0;" class="uk-text-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO</div>
+            </div>
+            <div *ngIf="txType == txTypes.change">
+              <div class="block-amount-primary uk-text-danger">
+                <span class="currency-name">{{ currentBlock.representative }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="account-snippet-container" style="margin-bottom: 20px;">
+          <div class="account-snippet uk-text-truncate">
+            <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
+              <div class="uk-card-header">
+                <div class="snippet-caption uk-text-small text-half-muted">From Account</div>
+                <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                  <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                    <div class="identicon-address-book-row">
+                      <app-nano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                      <div class="account-label uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</div>
+                    </div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></div>
+                  </a>
+                  <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                    <ul class="uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="fromAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="uk-card-body">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano'): 'N/A'}}</span>
-                    <span class="confirm-subtitle">Balance when block was created</span>
+                    <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>
+                    <span class="block-balance">
+                      <span class="balance-amount-primary">
+                        <span class="amount-integer">{{ (fromAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-fractional">{{ (fromAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="currency-name">NANO</span>
+                      </span>
+                    </span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency uk-text-danger">-{{ rawAmount | rai: 'mnano' }}</span>
+                    <div class="uk-text-small text-half-muted" style="height: 25px;"></div>
+                    <span class="block-balance">
+                      <span class="balance-amount-primary uk-text-danger">
+                        <span class="amount-sign">-</span>
+                        <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="currency-name">NANO</span>
+                      </span>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="uk-width-1-2@m">
-            <div class="uk-card uk-card-default">
-              <div class="uk-card-header uk-text-right" style="padding: 20px 20px; line-height: 22px;">
-
-                <span class="confirm-title uk-text-truncate">
-                  <div *ngIf="toAddressBook">
-                    <span class="confirm-title uk-text-truncate">{{ toAddressBook }}</span>
-                    <span class="confirm-subtitle">To Account</span>
-                    <span class="nano-address-monospace uk-text-small uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
+          <div class="account-snippet uk-text-truncate">
+            <div class="uk-card uk-card-default uk-text-truncate" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
+              <div class="uk-card-header">
+                <div class="snippet-caption uk-text-small text-half-muted">To Account</div>
+                <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
+                  <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                    <div class="identicon-address-book-row">
+                      <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                      <div class="account-label uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</div>
+                    </div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></div>
+                  </a>
+                  <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                    <ul class="uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
                   </div>
-                  <div *ngIf="!toAddressBook">
-                    <span class="nano-address-monospace confirm-title uk-text-truncate"><app-nano-account-id [accountID]="toAccountID" class="uk-flex-right"></app-nano-account-id></span>
-                    <span class="confirm-subtitle">To Account</span>
-                    <br class="br-spacer" />
-                  </div>
-                </span>
-                <ul class="uk-iconnav">
-                <li><a ngxClipboard [cbContent]="toAccountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                </ul>
+                </div>
               </div>
-              <div class="uk-card-body" style="padding: 20px 20px;">
+              <div class="uk-card-body">
                 <div uk-grid>
                   <div class="uk-width-1-2 uk-text-muted">
-                    <span class="confirm-currency">{{ toAccountBalance ? (toAccountBalance | rai: 'mnano'): 'N/A' }}</span>
-                    <span class="confirm-subtitle">Balance when block was created</span>
+                    <div class="uk-text-small text-half-muted" style="height: 25px;">Balance when block was created</div>
+                    <span class="block-balance">
+                      <span class="balance-amount-primary">
+                        <span class="amount-integer">{{ (toAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-fractional">{{ (toAccountBalance || 'N/A') | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="currency-name">NANO</span>
+                      </span>
+                    </span>
                   </div>
                   <div class="uk-width-1-2 uk-text-right">
-                    <span class="confirm-currency uk-text-success">+{{ rawAmount | rai: 'mnano' }}</span>
+                    <div class="uk-text-small text-half-muted" style="height: 25px;"></div>
+                    <span class="block-balance">
+                      <span class="balance-amount-primary uk-text-success">
+                        <span class="amount-sign">+</span>
+                        <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="currency-name">NANO</span>
+                      </span>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <br>
 
         <div *ngIf="shouldSign" class="uk-card uk-card-default uk-width-1-1" style="padding: 20px 20px;">
           <span><strong>Signing Method </strong></span><span uk-icon="icon: info;" uk-tooltip title="The block is signed with a private key. If using the build-in wallet, it first needs to be created using any of the available methods."></span><br>

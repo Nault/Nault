@@ -10,6 +10,7 @@ import {AppSettingsService} from '../../services/app-settings.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NanoBlockService} from '../../services/nano-block.service';
 import {ApiService} from '../../services/api.service';
+import {PriceService} from '../../services/price.service';
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39';
 import * as bip39Wallet from 'nanocurrency-web';
@@ -38,6 +39,7 @@ export class SignComponent implements OnInit {
   addressBookMatch = '';
   amount = null;
   rawAmount: BigNumber = new BigNumber(0);
+  amountFiat: number|null = null;
   fromAccountID: any = '';
   fromAccountBalance: BigNumber = null;
   fromAddressBook = '';
@@ -122,7 +124,8 @@ export class SignComponent implements OnInit {
     private api: ApiService,
     private util: UtilService,
     private qrModalService: QrModalService,
-    private musigService: MusigService) { }
+    private musigService: MusigService,
+    public price: PriceService) { }
 
   @ViewChild('dataAddFocus') _el: ElementRef;
 
@@ -416,6 +419,11 @@ export class SignComponent implements OnInit {
   }
 
   async prepareTransaction() {
+    // Determine fiat value of the amount (if not offline mode)
+    if (this.settings.settings.serverAPI) {
+      this.amountFiat = this.util.nano.rawToMnano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
+    }
+    
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
     this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
 
