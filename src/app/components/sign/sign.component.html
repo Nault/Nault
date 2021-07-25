@@ -24,7 +24,9 @@
             </div>
             <div *ngIf="txType == txTypes.change">
               <div class="block-amount-primary uk-text-danger">
-                <span class="currency-name">{{ currentBlock.representative }}</span>
+                <a [routerLink]="'/account/' + currentBlock.representative" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
+                  <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="currentBlock.representative"></app-nano-account-id></div>
+                </a>
               </div>
             </div>
           </div>
