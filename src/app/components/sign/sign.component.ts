@@ -423,7 +423,7 @@ export class SignComponent implements OnInit {
     if (this.settings.settings.serverAPI) {
       this.amountFiat = this.util.nano.rawToMnano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
     }
-    
+
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
     this.toAddressBook = this.addressBookService.getAccountName(this.toAccountID);
 
