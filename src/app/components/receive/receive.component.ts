@@ -12,6 +12,7 @@ import {PriceService} from '../../services/price.service';
 import {WebsocketService} from '../../services/websocket.service';
 import * as QRCode from 'qrcode';
 import BigNumber from 'bignumber.js';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-receive',
@@ -53,7 +54,8 @@ export class ReceiveComponent implements OnInit {
     private nanoBlock: NanoBlockService,
     public price: PriceService,
     private websocket: WebsocketService,
-    private util: UtilService) { }
+    private util: UtilService,
+    private translocoService: TranslocoService) { }
 
   async ngOnInit() {
     // Update selected account if changed in the sidebar
@@ -133,7 +135,7 @@ export class ReceiveComponent implements OnInit {
       return defaultLabel;
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   async getPending() {

@@ -1,87 +1,86 @@
 <div class="nav-representative-info" *ngIf="(displayedRepresentatives.length > 0) else noRepresentatives">
   <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
-    <h2>Representative{{
+    <h2>{{
         (repIdx !== 0)
       ? (
-          ' for '
-        + (
+          'change-rep-widget.representative-for-account' | transloco: { account: (
             rep.accounts[0].addressBookName
           ? ( '"' + rep.accounts[0].addressBookName + '"' )
           : ( rep.accounts[0].id.slice(0, 10) + '...' )
-        )
+        )}
       )
-      : ''
+      : ('general.representative' | transloco)
     }}</h2>
     <div class="representative-name-row">
-      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || 'Unknown Rep' }}</a>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || ('general.unknown' | transloco) }}</a>
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
       <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'trusted')">
         <div class="health-icon"></div>
-        <div class="label">Good Representative</div>
+        <div class="label">{{ 'change-rep-widget.good-representative' | transloco }}</div>
       </div>
       <div class="representative-health-row health-green" *ngSwitchCase="(rep.statusText == 'ok')">
         <div class="health-icon"></div>
-        <div class="label">Good Representative</div>
+        <div class="label">{{ 'change-rep-widget.good-representative' | transloco }}</div>
       </div>
       <div class="representative-health-row health-yellow" *ngSwitchCase="(rep.statusText == 'warn')">
         <div class="health-icon"></div>
-        <div class="label">Acceptable Representative</div>
+        <div class="label">{{ 'change-rep-widget.acceptable-representative' | transloco }}</div>
       </div>
       <div class="representative-health-row health-red" *ngSwitchCase="(rep.statusText == 'alert')">
         <div class="health-icon"></div>
-        <div class="label">Bad Representative</div>
+        <div class="label">{{ 'change-rep-widget.bad-representative' | transloco }}</div>
       </div>
       <div class="representative-health-row health-unknown" *ngSwitchDefault>
         <div class="health-icon"></div>
-        <div class="label">Unknown Status</div>
+        <div class="label">{{ 'change-rep-widget.unknown-status' | transloco }}</div>
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
-      <p class="primary"><b>{{ rep.label || 'Unknown Rep' }}</b> represents you in the Nano consensus protocol by voting on your behalf.</p>
-      <p>You can change representative at any time by clicking on its name above.</p>
+      <p class="primary">{{ 'change-rep-widget.rep-represents-you' | transloco: { name: (rep.label || ('general.unknown' | transloco)) } }}</p>
+      <p>{{ 'change-rep-widget.you-can-change-representative-at-any-time' | transloco }}</p>
       <div class="header-row">
         <div class="separator"></div>
-        <h2>Health</h2>
+        <h2>{{ 'change-rep-widget.health' | transloco }}</h2>
         <div class="separator"></div>
       </div>
       <p class="uk-text-danger" *ngIf="rep.status.markedToAvoid">
-        <span uk-icon="icon: warning;"></span>This representative is <b>marked as "avoid"</b> in the list of known reps.
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-marked-as-avoid' | transloco }}
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.closing">
-        <span uk-icon="icon: warning;"></span>This representative has announced plans to <b>permanently shutdown</b>.
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-announced-plans-to-permanently-shutdown' | transloco }}
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>very high voting weight</b> (over 3%).
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-very-high-voting-weight' | transloco: { percent: 5 } }}
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
-        <span uk-icon="icon: warning;"></span>This representative has a <b>high voting weight</b> (over 2%).
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-high-voting-weight' | transloco: { percent: 3 } }}
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.uptime > 0">
-        <span uk-icon="icon: warning;"></span>This representative is <b>often offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-often-offline' | transloco: { percent: rep.status.uptime.toFixed(1) } }}
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.lowUptime && rep.status.uptime > 0">
-        <span uk-icon="icon: warning;"></span>This representative is <b>sometimes offline</b> ({{ rep.status.uptime.toFixed(1) }}% uptime).
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-sometimes-offline' | transloco: { percent: rep.status.uptime.toFixed(1) } }}
       </p>
       <p class="uk-text-danger" *ngIf="!rep.status.online && rep.status.uptime === 0">
-        <span uk-icon="icon: warning;"></span>This representative has been <b>offline for the past {{ rep.status.daysSinceLastVoted }} days</b>.
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-been-offline-for-the-past-days' | transloco: { days: rep.status.daysSinceLastVoted } }}
       </p>
       <ng-container [ngSwitch]="true">
         <p *ngSwitchCase="(rep.statusText == 'trusted')">
-          You have marked this representative as trusted, meaning its status will remain "Good" even in case of severe issues with uptime or weight distribution.
+          {{ 'change-rep-widget.you-have-marked-this-representative-as-trusted' | transloco }}
         </p>
         <p class="uk-text-success" *ngSwitchCase="(rep.statusText == 'ok')">
-          <span uk-icon="icon: check;"></span>We found no issues with uptime or weight distribution of your current representative.
+          <span uk-icon="icon: check;"></span>{{ 'change-rep-widget.we-found-no-issues-with-uptime-or-weight' | transloco }}
         </p>
         <p *ngSwitchCase="(rep.statusText == 'warn')">
-          Switching to a different representative could improve security and decentralization of the Nano network.
+          {{ 'change-rep-widget.switching-to-a-different-representative-could-improve' | transloco }}
         </p>
         <p *ngSwitchCase="(rep.statusText == 'alert')">
-          It is <b>highly advised</b> to switch to a different representative, in order to improve security and decentralization of the Nano network.
+          {{ 'change-rep-widget.it-is-highly-advised-to-switch-to-a-different-representative' | transloco }}
         </p>
         <p *ngSwitchDefault>
-          <span uk-icon="icon: question;"></span>We could not determine status of this representative.
+          <span uk-icon="icon: question;"></span>{{ 'change-rep-widget.we-could-not-determine-status-of-this-representative' | transloco }}
         </p>
       </ng-container>
     </div>
@@ -90,26 +89,26 @@
 <ng-template #noRepresentatives>
   <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
     <div class="representative">
-      <h2>Representative</h2>
+      <h2>{{ 'general.representative' | transloco }}</h2>
       <div class="representative-name-row">
-        <div class="name no-interact">Loading...</div>
+        <div class="name no-interact">{{ 'general.loading' | transloco }}</div>
       </div>
       <div class="representative-health-row health-unknown health-loading">
         <div uk-spinner="ratio: 0.5;"></div>
-        <div class="label">Checking Status...</div>
+        <div class="label">{{ 'change-rep-widget.checking-status' | transloco }}</div>
       </div>
     </div>
   </div>
   <ng-template #selectedAccountHasNoRep>
     <div class="nav-representative-info">
       <div class="representative">
-        <h2>Representative</h2>
+        <h2>{{ 'general.representative' | transloco }}</h2>
         <div class="representative-name-row">
-          <div class="name no-interact">None</div>
+          <div class="name no-interact">{{ 'change-rep-widget.representative-none' | transloco }}</div>
         </div>
         <div class="representative-health-row health-unknown">
           <div class="health-icon"></div>
-          <div class="label">Receive a transaction to configure</div>
+          <div class="label">{{ 'change-rep-widget.receive-a-transaction-to-configure' | transloco }}</div>
         </div>
       </div>
     </div>
@@ -121,6 +120,6 @@
     <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
   </div>
   <div class="status-labels">
-    <div class="label primary uk-text-warning">Representative Change Required</div>
+    <div class="label primary uk-text-warning">{{ 'change-rep-widget.representative-change-required' | transloco }}</div>
   </div>
 </div>

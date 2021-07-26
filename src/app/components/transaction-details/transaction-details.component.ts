@@ -6,6 +6,7 @@ import {NotificationService} from '../../services/notification.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-transaction-details',
@@ -41,7 +42,8 @@ export class TransactionDetailsComponent implements OnInit {
     private addressBook: AddressBookService,
     private api: ApiService,
     private notifications: NotificationService,
-    public settings: AppSettingsService
+    public settings: AppSettingsService,
+    private translocoService: TranslocoService
   ) { }
 
   async ngOnInit() {
@@ -171,7 +173,7 @@ export class TransactionDetailsComponent implements OnInit {
       return defaultLabel;
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   getBalanceFromHex(balance) {

@@ -11,7 +11,7 @@
           <div class="name">{{
               addressBookEntry
             ? addressBookEntry
-            : ('Account #' + walletAccount.index)
+            : (('general.account' | transloco) + '#' + walletAccount.index)
           }}</div>
           <div #selectButton class="select-button closed" (click)="mobileAccountMenuModal.show()">
             <div class="circle"></div>
@@ -69,7 +69,7 @@
               class="account-type-label"
               [class.editing-name]="showEditAddressBook"
             >
-              {{ 'Account #' + walletAccount.index }}
+              {{ ('general.account' | transloco) + '#' + walletAccount.index }}
             </div>
             <div
               *ngIf="!walletAccount"
@@ -97,7 +97,7 @@
                     ? addressBookEntry
                     : (
                         walletAccount
-                      ? ('Account #' + walletAccount.index)
+                      ? (('general.account' | transloco) + '#' + walletAccount.index)
                       : 'No label set'
                     )
                   }}</h3>
@@ -693,7 +693,7 @@
           ? addressBookEntry
           : (
               walletAccount
-            ? ('Account #' + walletAccount.index)
+            ? (('general.account' | transloco) + '#' + walletAccount.index)
             : 'External address'
           )
         }}</div>
@@ -723,7 +723,7 @@
           ? addressBookEntry
           : (
               walletAccount
-            ? ('Account #' + walletAccount.index)
+            ? (('general.account' | transloco) + '#' + walletAccount.index)
             : 'External address'
           )
         }}</h3>
