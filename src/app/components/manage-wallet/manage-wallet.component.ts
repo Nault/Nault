@@ -25,6 +25,7 @@ export class ManageWalletComponent implements OnInit {
   QRExportUrl = '';
   QRExportImg = '';
 
+  csvExportStarted = false;
   transactionHistoryLimit = 500; // if the backend server limit changes, change this too
   selAccountInit = false;
   invalidCsvCount = false;
@@ -33,8 +34,13 @@ export class ManageWalletComponent implements OnInit {
   csvCount = this.transactionHistoryLimit.toString();
   csvOffset = '';
   beyondCsvLimit = false;
-  csvReversed = false;
   exportingCsv = false;
+  orderOptions = [
+    { name: 'Newest Transactions First', value: false },
+    { name: 'Oldest Transactions First', value: true },
+  ];
+  selectedOrder = this.orderOptions[0].value;
+  exportEnabled = true;
 
   constructor(
     public walletService: WalletService,
@@ -188,8 +194,13 @@ export class ManageWalletComponent implements OnInit {
         this.invalidCsvCount = true;
         this.beyondCsvLimit = true;
       } else {
-        this.invalidCsvCount = false;
-        this.beyondCsvLimit = false;
+        if (parseInt(count, 10) < 0) {
+          this.invalidCsvCount = true;
+          this.beyondCsvLimit = false;
+        } else {
+          this.invalidCsvCount = false;
+          this.beyondCsvLimit = false;
+        }
       }
     } else {
       this.invalidCsvCount = true;
@@ -198,13 +209,26 @@ export class ManageWalletComponent implements OnInit {
 
   csvOffsetChange(offset) {
     if (this.util.string.isNumeric(offset) && offset % 1 === 0 || offset === '') {
-      this.invalidCsvOffset = false;
+      if (parseInt(offset, 10) < 0) {
+        this.invalidCsvOffset = true;
+      } else {
+        this.invalidCsvOffset = false;
+      }
     } else {
       this.invalidCsvOffset = true;
     }
   }
 
+  csvInit() {
+    this.csvExportStarted = true;
+  }
+
   async exportToCsv() {
+    // disable export for a period to reduce RPC calls
+    if (!this.exportEnabled) return;
+    this.exportEnabled = false;
+    setTimeout(() => this.exportEnabled = true, 3000);
+
     if (this.invalidCsvCount) {
       if (this.beyondCsvLimit) {
         return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Nault server`);
@@ -219,7 +243,7 @@ export class ManageWalletComponent implements OnInit {
     this.exportingCsv = true;
     const transactionCount = this.csvCount === '' ? 0 : parseInt(this.csvCount, 10);
     const transactionOffset = this.csvOffset === '' ? 0 : parseInt(this.csvOffset, 10);
-    const history = await this.api.accountHistory(this.csvAccount, transactionCount, false, transactionOffset, this.csvReversed);
+    const history = await this.api.accountHistory(this.csvAccount, transactionCount, false, transactionOffset, this.selectedOrder);
     this.exportingCsv = false; // reset it here in case the file download fails (don't want spinning button forever)
 
     // contruct the export data
@@ -236,7 +260,7 @@ export class ManageWalletComponent implements OnInit {
     }
 
     // download file
-    const fileName = `${this.csvAccount}_offset=${this.csvOffset === '' ? 0 : this.csvOffset}${this.csvReversed ? '_reversed' : ''}.csv`;
+    const fileName = `${this.csvAccount}_offset=${this.csvOffset === '' ? 0 : this.csvOffset}${this.selectedOrder === true ? '_oldestFirst' : '_newestFirst'}.csv`;
     this.triggerFileDownload(fileName, csvData, 'csv');
     this.notifications.sendSuccess(`Transaction history downloaded!`);
   }
