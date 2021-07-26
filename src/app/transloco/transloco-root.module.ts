@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import {
   TRANSLOCO_LOADER,
-  Translation,
   TranslocoLoader,
   TRANSLOCO_CONFIG,
   translocoConfig,
@@ -12,10 +10,10 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoHttpLoader implements TranslocoLoader {
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   getTranslation(lang: string) {
-    return this.http.get<Translation>(`./assets/i18n/${lang}.json`);
+    return import(/* webpackChunkName: "translation" */ `../../assets/i18n/${lang}.json`).then(res => res.default);
   }
 }
 
