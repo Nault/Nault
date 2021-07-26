@@ -22,7 +22,7 @@
 				<ng-container [ngSwitch]="true">
 					<span
 						class="type-icon-container uk-text-muted"
-						*ngIf="isReceivableTransaction"
+						*ngSwitchCase="isReceivableTransaction"
 					>
 						<div class="type-icon plus">
 							<div class="vertical-line"></div>
@@ -39,7 +39,7 @@
 					</span>
 					<span
 						class="type-icon-container uk-text-danger"
-						*ngIf="isSendTransaction"
+						*ngSwitchCase="isSendTransaction"
 					>
 						<div class="type-icon minus">
 							<div class="horizontal-line"></div>
@@ -47,7 +47,7 @@
 					</span>
 					<span
 						class="type-icon-container uk-text-success"
-						*ngIf="isReceiveTransaction"
+						*ngSwitchCase="isReceiveTransaction"
 					>
 						<div class="type-icon plus">
 							<div class="vertical-line"></div>
@@ -61,7 +61,7 @@
 					<span
 						class="type-icon uk-text-small uk-text-muted"
 						uk-icon="icon: plus-circle; ratio: 1.2;"
-						*ngIf="isReceivableTransaction"
+						*ngSwitchCase="isReceivableTransaction"
 					></span>
 					<span
 						class="type-icon uk-text-small rep-change"
@@ -71,12 +71,12 @@
 					<span
 						class="type-icon uk-text-small uk-text-danger"
 						uk-icon="icon: minus-circle; ratio: 1.2;"
-						*ngIf="isSendTransaction"
+						*ngSwitchCase="isSendTransaction"
 					></span>
 					<span
 						class="type-icon uk-text-small uk-text-success"
 						uk-icon="icon: plus-circle; ratio: 1.2;"
-						*ngIf="isReceiveTransaction"
+						*ngSwitchCase="isReceiveTransaction"
 					></span>
 				</ng-container>
 			</ng-container>
