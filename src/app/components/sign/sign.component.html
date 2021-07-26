@@ -9,7 +9,7 @@
         <div class="uk-card uk-card-default uk-width-1-1 uk-text-center" style="margin-bottom: 20px;">
           <div class="uk-card-body" style="padding: 15px;">
             <div [class.uk-text-danger]="txType == txTypes.send" [class.uk-text-success]="txType == txTypes.receive" [class.text-rep-change]="txType == txTypes.change">
-              <div *ngIf="txType == txTypes.change" style="margin-bottom: 7px;" uk-icon="icon: cog; ratio: 1.2;"></div><br>
+              <div *ngIf="txType == txTypes.change" style="margin-bottom: 7px;" uk-icon="icon: cog; ratio: 1.2;"><br></div>
               <div *ngIf="!qrCodeImageBlock && shouldSign">You are about to sign a block to {{txTypeMessage}}</div>
               <div *ngIf="qrCodeImageBlock && shouldSign">You have signed a block to {{txTypeMessage}}</div>
               <div *ngIf="!blockProcessed && !shouldSign">You are about to {{txTypeMessage}}</div>
