@@ -331,6 +331,21 @@ export class ConfigureAppComponent implements OnInit {
 
   async updateWalletSettings() {
     const newStorage = this.selectedStorage;
+    const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
+
+    // ask for user confirmation before clearing the wallet cache
+    if (resaveWallet && newStorage === this.storageOptions[1].value) {
+      const UIkit = window['UIkit'];
+      try {
+        await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to <b>disable storage of all wallet data, which means there will be no wallet configured next time you use Nault</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
+      } catch (err) {
+        // pressing cancel, reset storage setting and interrupt
+        this.selectedStorage = this.storageOptions[0].value;
+        this.notifications.sendInfo(`Switched back to "Browser Local Storage" for the wallet data. Use the button again if you want to save other settings.`, {length: 10000});
+        return;
+      }
+    }
+
     let newPoW = this.selectedPoWOption;
     const newMultiplier = this.selectedMultiplierOption;
     const pendingOption = this.selectedPendingOption;
@@ -338,8 +353,6 @@ export class ConfigureAppComponent implements OnInit {
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
       minReceive = this.minimumReceive;
     }
-
-    const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
