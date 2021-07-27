@@ -127,7 +127,7 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="account">Account <span uk-icon="icon: info;" uk-tooltip title="Select a local account to export transaction history for."></span></label>
+                <label class="uk-form-label" for="account">Account</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" id="account" [(ngModel)]="csvAccount">
                     <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
@@ -140,7 +140,7 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="tx-count">Limit <span uk-icon="icon: info;" uk-tooltip title="Maximum number of transactions to export. Blank or 0 equals unlimited but only effective if using a custom server."></span></label>
+                <label class="uk-form-label" for="tx-count">Transaction Limit <span uk-icon="icon: info;" uk-tooltip title="Maximum number of transactions to export. Blank or 0 equals unlimited but only effective if using a custom server."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <input [(ngModel)]="csvCount" class="uk-input uk-margin-small-bottom {{invalidCsvCount ? 'uk-form-danger':''}}" id="tx-count" type="text" (ngModelChange)="csvCountChange(csvCount)" placeholder="" autocomplete="off">
@@ -153,7 +153,7 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="tx-order">Order <span uk-icon="icon: info;" uk-tooltip title="The order to export transactions. Newest transaction means highest block height."></span></label>
+                <label class="uk-form-label" for="tx-order">Transaction Order</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <select class="uk-select" [(ngModel)]="selectedOrder" id="tx-order">
