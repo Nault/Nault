@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
+    <div class="transactions-list-header uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
       <h3 class="uk-margin-remove-bottom">Incoming Transactions</h3>
       <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
         <li>
@@ -96,7 +96,45 @@
 
     <div uk-grid>
       <div class="uk-width-1-1">
-        <table class="transactions-list uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
+        <div class="transactions-list-mobile only-on-small-viewports">
+          <div
+            class="date-header text-half-muted"
+            *ngIf="(pendingAccountModel !== '0')"
+          >{{ selectedAccountAddressBookName }}</div>
+          <ng-container *ngFor="let transaction of pendingBlocksForSelectedAccount; let transactionIdx = index;">
+            <div
+              class="date-header text-half-muted"
+              *ngIf="(
+                    (pendingAccountModel === '0')
+                && (
+                    ( pendingBlocksForSelectedAccount[transactionIdx - 1] == null )
+                  || (
+                      transaction.destinationAddressBookName
+                    !== pendingBlocksForSelectedAccount[transactionIdx - 1].destinationAddressBookName
+                  )
+                )
+              )"
+            >{{ transaction.destinationAddressBookName }}</div>
+            <app-nano-transaction-mobile
+              [transaction]="transaction"
+              [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+              (click)="showMobileMenuForTransaction(transaction)"
+            ></app-nano-transaction-mobile>
+          </ng-container>
+
+          <div class="rounded-area" *ngIf="!loadingIncomingTxList && !pendingBlocksForSelectedAccount.length">
+            <div style="text-align: center;">{{
+                (pendingAccountModel === '0')
+              ? 'No new incoming transactions'
+              : 'No new incoming transactions for selected account'
+            }}</div>
+          </div>
+          <div class="rounded-area" *ngIf="loadingIncomingTxList">
+            <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</div>
+          </div>
+        </div>
+
+        <table class="transactions-list hide-on-small-viewports uk-table uk-table-striped uk-table-small" style="margin-top: 0;">
           <thead>
           <tr>
             <th scope="col" class="type-column"></th>
@@ -113,19 +151,19 @@
             <td class="account-column uk-visible-toggle uk-text-truncate">
               <div uk-grid class="uk-flex-nowrap">
                 <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                  <a [routerLink]="'/account/' + pending.source" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                  <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
                     <div class="identicon-name-row uk-text-truncate">
-                      <app-nano-identicon scale="6" [accountID]="pending.source" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                      <div class="account-label uk-text-truncate" *ngIf="pending.sourceAddressBookName">{{ pending.sourceAddressBookName }}</div>
+                      <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                      <div class="account-label uk-text-truncate" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</div>
                     </div>
                     <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                      <app-nano-account-id [accountID]="pending.source" middle="auto"></app-nano-account-id>
+                      <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
                     </div>
                   </a>
                 </div>
                 <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                   <ul class="uk-iconnav">
-                    <li><a ngxClipboard [cbContent]="pending.source" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   </ul>
                 </div>
               </div>
@@ -136,19 +174,19 @@
                 </div>
                 <div uk-grid class="uk-flex-nowrap">
                   <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                    <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                    <a [routerLink]="'/account/' + pending.destination" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
                       <div class="identicon-name-row uk-text-truncate">
-                        <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
-                        <div class="account-label uk-text-truncate" *ngIf="pending.accountAddressBookName">{{ pending.accountAddressBookName }}</div>
+                        <app-nano-identicon scale="6" [accountID]="pending.destination" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                        <div class="account-label uk-text-truncate" *ngIf="pending.destinationAddressBookName">{{ pending.destinationAddressBookName }}</div>
                       </div>
                       <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                        <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
+                        <app-nano-account-id [accountID]="pending.destination" middle="auto"></app-nano-account-id>
                       </div>
                     </a>
                   </div>
                   <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                     <ul class="uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                      <li><a ngxClipboard [cbContent]="pending.destination" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>
                 </div>
@@ -156,7 +194,7 @@
             </td>
             <ng-template #transactionActions>
               <div class="button-container">
-                <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
+                <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receiveReceivableBlock(pending)">RECEIVE</button>
                 <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button nlt-icon-button-inline"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
               </div>
             </ng-template>
@@ -196,6 +234,50 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="modal-position-bottom" id="mobile-transaction-menu-modal" uk-modal>
+  <div class="uk-modal-dialog">
+    <div class="uk-modal-body">
+      <div class="transactions-list-mobile">
+        <app-nano-transaction-mobile
+          [isInteractable]="false"
+          [transaction]="mobileTransactionData"
+          [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+          *ngIf="mobileTransactionData"
+        ></app-nano-transaction-mobile>
+      </div>
+      <div class="uk-width-1-1" *ngIf="mobileTransactionData">
+        <hr>
+        <div
+          class="menu-option uk-text-success"
+          (click)="onReceiveFundsPress(mobileTransactionData)"
+        >
+          <span
+            class="icon icon-download" uk-icon="icon: download; ratio: 1.5;"
+            style="vertical-align: 2px;"
+            *ngIf="!mobileTransactionData.received"
+          ></span>
+          <span *ngIf="!mobileTransactionData.received && !mobileTransactionData.loading">Receive funds</span>
+          <span *ngIf="!mobileTransactionData.received && mobileTransactionData.loading">Receiving...</span>
+          <span
+            class="icon" uk-icon="icon: check; ratio: 1.3;"
+            style="vertical-align: 2px;"
+            *ngIf="mobileTransactionData.received"
+          ></span>
+          <span *ngIf="mobileTransactionData.received">Received!</span>
+        </div>
+        <div
+          class="menu-option"
+          [routerLink]="( '/transaction/' + mobileTransactionData.hash )"
+          (click)="mobileTransactionMenuModal.hide()"
+        >
+          <span class="icon" uk-icon="icon: search; ratio: 1.3;" style="vertical-align: 2px;"></span>
+          <span>View transaction details</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
