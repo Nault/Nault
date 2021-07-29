@@ -366,7 +366,7 @@
           <ng-template #transactionActionsOrDate>
             <ng-container *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
               <div class="button-container" *ngIf="walletAccount">
-                <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receivePending(pending)">RECEIVE</button>
+                <button *ngIf="!pending.loading" class="uk-button uk-button-primary uk-text-center uk-width-auto" type="button" (click)="receiveReceivableBlock(pending)">RECEIVE</button>
                 <button *ngIf="pending.loading" class="uk-button uk-button-secondary uk-disabled uk-button-small nlt-icon-button nlt-icon-button-inline"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Receiving</button>
               </div>
               <div class="button-container" *ngIf="remoteVisible">

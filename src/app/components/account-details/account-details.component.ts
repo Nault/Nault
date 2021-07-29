@@ -757,21 +757,22 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.receivePending(receivableTransaction);
+    this.receiveReceivableBlock(receivableTransaction);
   }
 
-  async receivePending(pendingBlock) {
-    const sourceBlock = pendingBlock.hash;
+  async receiveReceivableBlock(receivableBlock) {
+    const sourceBlock = receivableBlock.hash;
 
     if (this.wallet.walletIsLocked()) {
       return this.notifications.sendWarning(`Wallet must be unlocked`);
     }
-    pendingBlock.loading = true;
+    receivableBlock.loading = true;
 
-    const newBlock = await this.nanoBlock.generateReceive(this.walletAccount, sourceBlock, this.wallet.isLedgerWallet());
+    const createdReceiveBlockHash =
+      await this.nanoBlock.generateReceive(this.walletAccount, sourceBlock, this.wallet.isLedgerWallet());
 
-    if (newBlock) {
-      pendingBlock.received = true;
+    if (createdReceiveBlockHash) {
+      receivableBlock.received = true;
       this.mobileTransactionMenuModal.hide();
       this.notifications.removeNotification('success-receive');
       this.notifications.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
@@ -783,7 +784,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    pendingBlock.loading = false;
+    receivableBlock.loading = false;
 
     await this.wallet.reloadBalances();
   }

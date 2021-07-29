@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {ChildActivationEnd, Router} from '@angular/router';
 import {WalletService, WalletAccount} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {AddressBookService} from '../../services/address-book.service';
@@ -21,11 +22,15 @@ import BigNumber from 'bignumber.js';
 
 
 
-export class ReceiveComponent implements OnInit {
+export class ReceiveComponent implements OnInit, OnDestroy {
   nano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
 
   timeoutIdClearingRecentlyCopiedState: any = null;
+  mobileTransactionMenuModal: any = null;
+  mobileTransactionData: any = null;
+
+  selectedAccountAddressBookName = '';
   pendingAccountModel = '0';
   pendingBlocks = [];
   pendingBlocksForSelectedAccount = [];
@@ -42,7 +47,10 @@ export class ReceiveComponent implements OnInit {
   validFiat = true;
   qrSuccessClass = '';
 
+  routerSub = null;
+
   constructor(
+    private route: Router,
     private walletService: WalletService,
     private notificationService: NotificationService,
     private addressBook: AddressBookService,
@@ -56,12 +64,21 @@ export class ReceiveComponent implements OnInit {
     private util: UtilService) { }
 
   async ngOnInit() {
+    const UIkit = window['UIkit'];
+    const mobileTransactionMenuModal = UIkit.modal('#mobile-transaction-menu-modal');
+    this.mobileTransactionMenuModal = mobileTransactionMenuModal;
+
+    this.routerSub = this.route.events.subscribe(event => {
+      if (event instanceof ChildActivationEnd) {
+        this.mobileTransactionMenuModal.hide();
+      }
+    });
+
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
       if (this.selAccountInit) {
         this.pendingAccountModel = acc ? acc.id : '0';
-        this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
-        this.changeQRAccount(this.pendingAccountModel);
+        this.onSelectedAccountChange(this.pendingAccountModel);
       }
       this.selAccountInit = true;
     });
@@ -75,8 +92,7 @@ export class ReceiveComponent implements OnInit {
     // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
-      this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
-      this.changeQRAccount(this.pendingAccountModel);
+      this.onSelectedAccountChange(this.pendingAccountModel);
     }
 
     // Listen as new transactions come in. Ignore the latest transaction that is already present on page load.
@@ -92,24 +108,42 @@ export class ReceiveComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.mobileTransactionMenuModal.hide();
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
+  }
+
   async updatePendingBlocks() {
-    this.pendingBlocks = this.walletService.wallet.pendingBlocks.map(
-      (pendingBlock) =>
-        Object.assign(
-          {},
-          pendingBlock,
-          {
-            sourceAddressBookName: (
-                this.addressBook.getAccountName(pendingBlock.source)
-              || this.getAccountLabel(pendingBlock.source, null)
-            ),
-            accountAddressBookName: (
-                this.addressBook.getAccountName(pendingBlock.account)
-              || this.getAccountLabel(pendingBlock.account, 'Account')
-            ),
-          }
+    this.pendingBlocks =
+      this.walletService.wallet.pendingBlocks
+        .map(
+          (pendingBlock) =>
+            Object.assign(
+              {},
+              pendingBlock,
+              {
+                account: pendingBlock.source,
+                destination: pendingBlock.account,
+                source: null,
+                addressBookName: (
+                    this.addressBook.getAccountName(pendingBlock.source)
+                  || this.getAccountLabel(pendingBlock.source, null)
+                ),
+                destinationAddressBookName: (
+                    this.addressBook.getAccountName(pendingBlock.account)
+                  || this.getAccountLabel(pendingBlock.account, 'Account')
+                ),
+                isReceivable: true,
+                local_time_string: '',
+              }
+            )
         )
-    );
+        .sort(
+          (a, b) =>
+            a.destinationAddressBookName.localeCompare(b.destinationAddressBookName)
+        );
 
     this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel);
   }
@@ -123,7 +157,14 @@ export class ReceiveComponent implements OnInit {
 
     // Blocks for selected account
     this.pendingBlocksForSelectedAccount =
-      this.pendingBlocks.filter(block => (block.account === selectedAccountID));
+      this.pendingBlocks.filter(block => (block.destination === selectedAccountID));
+  }
+
+  showMobileMenuForTransaction(transaction) {
+    this.notificationService.removeNotification('success-copied');
+
+    this.mobileTransactionData = transaction;
+    this.mobileTransactionMenuModal.show();
   }
 
   getAccountLabel(accountID, defaultLabel) {
@@ -199,9 +240,14 @@ export class ReceiveComponent implements OnInit {
     return this.validFiat;
   }
 
-  onSelectedAccountChange(account) {
-    this.changeQRAccount(account);
-    this.filterPendingBlocksForDestinationAccount(account);
+  onSelectedAccountChange(accountID) {
+    this.selectedAccountAddressBookName = (
+        this.addressBook.getAccountName(accountID)
+      || this.getAccountLabel(accountID, 'Account')
+    );
+
+    this.changeQRAccount(accountID);
+    this.filterPendingBlocksForDestinationAccount(accountID);
   }
 
   async changeQRAccount(account) {
@@ -243,34 +289,45 @@ export class ReceiveComponent implements OnInit {
     this.changeQRAmount();
   }
 
-  async receivePending(pendingBlock) {
-    const sourceBlock = pendingBlock.hash;
+  onReceiveFundsPress(receivableTransaction) {
+    if (receivableTransaction.loading || receivableTransaction.received) {
+      return;
+    }
 
-    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === pendingBlock.account);
+    this.receiveReceivableBlock(receivableTransaction);
+  }
+
+  async receiveReceivableBlock(receivableBlock) {
+    const sourceBlock = receivableBlock.hash;
+
+    const walletAccount = this.walletService.wallet.accounts.find(a => a.id === receivableBlock.destination);
     if (!walletAccount) {
-      throw new Error(`unable to find receiving account in wallet`);
+      throw new Error(`Unable to find receiving account in wallet`);
     }
 
     if (this.walletService.walletIsLocked()) {
       return this.notificationService.sendWarning(`Wallet must be unlocked`);
     }
-    pendingBlock.loading = true;
+    receivableBlock.loading = true;
 
-    const newHash = await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
+    const createdReceiveBlockHash =
+      await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
-    if (newHash) {
+    if (createdReceiveBlockHash) {
+      receivableBlock.received = true;
+      this.mobileTransactionMenuModal.hide();
       this.notificationService.removeNotification('success-receive');
       this.notificationService.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
       // pending has been processed, can be removed from the list
       // list also updated with reloadBalances but not if called too fast
-      this.walletService.removePendingBlock(pendingBlock.hash);
+      this.walletService.removePendingBlock(receivableBlock.hash);
     } else {
       if (!this.walletService.isLedgerWallet()) {
         this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
       }
     }
 
-    pendingBlock.loading = false;
+    receivableBlock.loading = false;
     await this.walletService.reloadBalances();
     this.updatePendingBlocks(); // update the list
   }
