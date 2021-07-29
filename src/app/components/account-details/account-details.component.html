@@ -412,7 +412,7 @@
           <td class="account-column uk-text-middle uk-visible-toggle uk-text-truncate">
             <div uk-grid class="uk-flex-nowrap">
               <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                <a [routerLink]="'/account/' + (history.link_as_account || history.account)" class="account-container uk-text-truncate" [title]="'general.view-details' | transloco" uk-tooltip>
                   <div class="identicon-name-row uk-text-truncate">
                     <app-nano-identicon scale="6" [accountID]="history.link_as_account || history.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                     <div class="account-label uk-text-truncate" *ngIf="history.addressBookName">{{ history.addressBookName }}</div>
@@ -424,11 +424,11 @@
               </div>
               <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom" style="margin-bottom: 11px !important; flex-shrink: 0;">
                 <ul class="uk-iconnav">
-                  <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  <li><a ngxClipboard [cbContent]="history.link_as_account || history.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" [title]="'general.copy' | transloco" uk-tooltip></a></li>
                 </ul>
               </div>
             </div>
-            <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ history.hash }}</a>
+            <a [routerLink]="'/transaction/' + history.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" [title]="'general.view-details' | transloco" uk-tooltip>{{ history.hash }}</a>
           </td>
           <ng-template #transactionActionsOrDate>
             <span
@@ -440,7 +440,7 @@
               <span class="time"> {{ history.local_time_string }}</span>
             </span>
             <div class="label-unconfirmed" *ngIf="(history.confirmed === false)">
-              <div class="uk-text-small uk-text-muted">Awaiting confirmation</div>
+              <div class="uk-text-small uk-text-muted">{{ 'account-details.awaiting-confirmation' | transloco }}</div>
             </div>
           </ng-template>
           <td [ngClass]="{
@@ -454,10 +454,10 @@
               <span
                 class="uk-text-small"
                 [class.text-half-muted]="(history.confirmed === false)"
-                [title]="( (history.confirmed === false) ? 'This change has not yet been confirmed by the network' : '' )"
+                [title]="( (history.confirmed === false) ? ('account-details.this-change-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                 uk-tooltip
               >
-                Rep. Change
+                {{ 'general.actions.rep-change' | transloco }}
                 <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
               </span>
             </span>
@@ -465,20 +465,20 @@
               <ng-container *ngIf="(history.type == 'receive' || history.subtype == 'receive' || history.type == 'open')">
                 <span class="uk-text-small"
                 [class.text-half-muted]="(history.confirmed === false)"
-                [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                [title]="( (history.confirmed === false) ? ('account-details.this-transaction-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                 uk-tooltip
               >
-                  Received
+                  {{ 'general.actions.received' | transloco }}
                   <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
                 </span><br>
               </ng-container>
               <ng-container *ngIf="(history.type == 'send' || history.subtype == 'send')">
                 <span class="uk-text-small"
                   [class.text-half-muted]="(history.confirmed === false)"
-                  [title]="( (history.confirmed === false) ? 'This transaction has not yet been confirmed by the network' : '' )"
+                  [title]="( (history.confirmed === false) ? ('account-details.this-transaction-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                   uk-tooltip
                 >
-                  Sent
+                  {{ 'general.actions.sent' | transloco }}
                   <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
                 </span><br>
               </ng-container>
@@ -496,16 +496,16 @@
         </tr>
 
         <tr *ngIf="(loadingIncomingTxList || loadingTxList || loadingAccountDetails) else notLoadingTransactions">
-          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading transactions...</td>
+          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> {{ 'account-details.loading-transactions' | transloco }}</td>
         </tr>
         <ng-template #notLoadingTransactions>
           <tr *ngIf="!accountHistory.length && !pendingBlocks.length">
-            <td colspan="4" style="text-align: center;">No transactions</td>
+            <td colspan="4" style="text-align: center;">{{ 'account-details.no-transactions' | transloco }}</td>
           </tr>
           <tr *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
             <td colspan="4" class="more-results">
               <a (click)="loadMore()" class="uk-link-text">
-                Show More<br>
+                {{ 'general.show-more' | transloco }}<br>
                 <div class="chevron chevron-down"></div>
               </a>
             </td>
@@ -673,8 +673,8 @@
 
 <div class="mobile-actions-fixed" *ngIf="walletAccount && (showFullDetailsOnSmallViewports === false)">
   <div class="actions-area">
-    <button routerLink="/receive">Receive</button>
-    <button routerLink="/send">Send</button>
+    <button routerLink="/receive">{{ 'general.receive' | transloco }}</button>
+    <button routerLink="/send">{{ 'general.send' | transloco }}</button>
   </div>
 </div>
 
@@ -683,7 +683,7 @@
     <button class="uk-modal-close-default" type="button" uk-close></button>
     <div class="uk-modal-body">
       <div class="uk-width-1-1 uk-text-center">
-        <img *ngIf="qrCodeImage else qrCodeGenerating" [src]="qrCodeImage" class="qr-code" title="Deposit Address">
+        <img *ngIf="qrCodeImage else qrCodeGenerating" [src]="qrCodeImage" class="qr-code">
         <ng-template #qrCodeGenerating>
           <div class="qr-code-placeholder uk-align-center"><div uk-spinner="ratio: 2;"></div></div>
         </ng-template>
@@ -693,8 +693,8 @@
           ? addressBookEntry
           : (
               walletAccount
-            ? (('general.account' | transloco) + '#' + walletAccount.index)
-            : 'External address'
+            ? (('general.account' | transloco) + ' #' + walletAccount.index)
+            : ( 'account-details.external-address' | transloco )
           )
         }}</div>
         <div class="uk-width-1-1">
@@ -704,7 +704,7 @@
             </span>
             <span class="nano-address-actions uk-width-auto" style="vertical-align: 1px;">
               <ul class="uk-iconnav">
-                <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" [title]="'general.copy' | transloco" uk-tooltip></a></li>
               </ul>
             </span>
           </div>
@@ -724,7 +724,7 @@
           : (
               walletAccount
             ? (('general.account' | transloco) + '#' + walletAccount.index)
-            : 'External address'
+            : ( 'account-details.external-address' | transloco )
           )
         }}</h3>
         <hr>
@@ -811,7 +811,7 @@
             )"
           >
             <span class="icon" uk-icon="icon: reply; ratio: 1.3;" style="vertical-align: 2px;"></span>
-            <span>Send funds back</span>
+            <span>{{ 'account-details.send-funds-back' | transloco }}</span>
           </div>
           <div
             class="menu-option"
@@ -822,7 +822,7 @@
             <span class="icon icon-copy" uk-icon="icon: copy; ratio: 1.5;" style="vertical-align: 2px;">
               <span class="icon-inner">#</span>
             </span>
-            <span>Copy transaction ID</span>
+            <span>{{ 'account-details.copy-transaction-id' | transloco }}</span>
           </div>
           <div
             class="menu-option"
@@ -834,7 +834,7 @@
               <span class="icon-inner icon-user" uk-icon="icon: user; ratio: 0.6;"></span>
             </span>
             <ng-container *ngIf="isNaN(mobileTransactionData.amount)">
-              <span>Copy representative's address</span>
+              <span>{{ 'account-details.copy-representatives-address' | transloco }}</span>
             </ng-container>
             <ng-container *ngIf="!isNaN(mobileTransactionData.amount)">
               <ng-container *ngIf="(
@@ -842,13 +842,13 @@
                 || mobileTransactionData.subtype === 'receive'
                 || mobileTransactionData.type === 'open'
               )">
-                <span>Copy sender's address</span>
+                <span>{{ 'account-details.copy-senders-address' | transloco }}</span>
               </ng-container>
               <ng-container *ngIf="(
                   mobileTransactionData.type === 'send'
                 || mobileTransactionData.subtype === 'send'
               )">
-                <span>Copy recipient's address</span>
+                <span>{{ 'account-details.copy-recipients-address' | transloco }}</span>
               </ng-container>
             </ng-container>
           </div>
@@ -859,7 +859,7 @@
           (click)="mobileTransactionMenuModal.hide()"
         >
           <span class="icon" uk-icon="icon: search; ratio: 1.3;" style="vertical-align: 2px;"></span>
-          <span>View transaction details</span>
+          <span>{{ 'account-details.view-transaction-details' | transloco }}</span>
         </div>
       </div>
     </div>
