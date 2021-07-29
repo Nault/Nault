@@ -8,6 +8,23 @@
       </div>
       <div class="uk-card-body">
         <div uk-grid>
+          
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="languageselector">
+                  {{ 'configure-app.language' | transloco }}
+                </label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedLanguage" id="languageselector">
+                    <option *ngFor="let language of languages" [value]="language.id">{{ language.label }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">

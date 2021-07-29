@@ -13,6 +13,7 @@ import {PriceService} from '../../services/price.service';
 import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
+import { TranslocoService } from '@ngneat/transloco';
 
 const nacl = window['nacl'];
 
@@ -67,7 +68,8 @@ export class SendComponent implements OnInit {
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private util: UtilService,
-    private qrModalService: QrModalService, ) { }
+    private qrModalService: QrModalService,
+    private translocoService: TranslocoService) { }
 
   async ngOnInit() {
     const params = this.router.snapshot.queryParams;
@@ -250,7 +252,7 @@ export class SendComponent implements OnInit {
       return defaultLabel;
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   validateAmount() {

@@ -16,6 +16,7 @@ import {BehaviorSubject} from 'rxjs';
 import * as nanocurrency from 'nanocurrency';
 import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-account-details',
@@ -116,7 +117,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     public settings: AppSettingsService,
     private nanoBlock: NanoBlockService,
     private qrModalService: QrModalService,
-    private ninja: NinjaService) {
+    private ninja: NinjaService,
+    private translocoService: TranslocoService) {
       // to detect when the account changes if the view is already active
       route.events.subscribe((val) => {
         if (val instanceof NavigationEnd) {
@@ -391,7 +393,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return defaultLabel;
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   ngOnDestroy() {

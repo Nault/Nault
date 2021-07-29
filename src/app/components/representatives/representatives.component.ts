@@ -15,6 +15,7 @@ import {
   WalletService,
   NinjaService
 } from '../../services';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-representatives',
@@ -61,7 +62,8 @@ export class RepresentativesComponent implements OnInit {
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,
     private ninja: NinjaService,
-    private qrModalService: QrModalService) { }
+    private qrModalService: QrModalService,
+    private translocoService: TranslocoService) { }
 
   async ngOnInit() {
     this.representativeService.loadRepresentativeList();
@@ -131,10 +133,10 @@ export class RepresentativesComponent implements OnInit {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === account.id);
 
     if (walletAccount == null) {
-      return 'Account';
+      return this.translocoService.translate('general.account');
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   addSelectedAccounts(accounts) {

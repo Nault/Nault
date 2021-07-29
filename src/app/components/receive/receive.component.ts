@@ -13,6 +13,7 @@ import {PriceService} from '../../services/price.service';
 import {WebsocketService} from '../../services/websocket.service';
 import * as QRCode from 'qrcode';
 import BigNumber from 'bignumber.js';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-receive',
@@ -61,7 +62,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     private nanoBlock: NanoBlockService,
     public price: PriceService,
     private websocket: WebsocketService,
-    private util: UtilService) { }
+    private util: UtilService,
+    private translocoService: TranslocoService) { }
 
   async ngOnInit() {
     const UIkit = window['UIkit'];
@@ -174,7 +176,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       return defaultLabel;
     }
 
-    return ('Account #' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
   }
 
   async getPending() {

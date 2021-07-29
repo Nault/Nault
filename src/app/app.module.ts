@@ -70,6 +70,7 @@ import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
+import { TranslocoRootModule } from './transloco/transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { NanoTransactionMobileComponent } from './components/helpers/nano-transa
     NgbModule,
     PasswordStrengthMeterModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
+    TranslocoRootModule,
   ],
   providers: [
     UtilService,
