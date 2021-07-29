@@ -49,7 +49,7 @@
     <h2
       class="uk-heading-divider"
       [class.hide-on-small-viewports]="walletAccount && (showFullDetailsOnSmallViewports === false)"
-    >{{ walletAccount ? 'Account Details' : 'Network Explorer' }}</h2>
+    >{{ walletAccount ? ('account-details.account-details' | transloco) : ('account-details.network-explorer' | transloco) }}</h2>
 
     <div
       class="uk-card uk-card-default uk-margin"
@@ -69,23 +69,23 @@
               class="account-type-label"
               [class.editing-name]="showEditAddressBook"
             >
-              {{ ('general.account' | transloco) + '#' + walletAccount.index }}
+              {{ ('general.account' | transloco) + ' #' + walletAccount.index }}
             </div>
             <div
               *ngIf="!walletAccount"
               class="account-type-label"
               [class.editing-name]="showEditAddressBook"
             >
-              External address
+              {{ 'account-details.external-address' | transloco }}
             </div>
 
             <div uk-grid>
               <div class="uk-width-1-1" *ngIf="showEditAddressBook">
                 <div class="uk-margin">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip title="Save Changes"></a>
-                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip title="Cancel Changes - To remove the label, leave the text field blank and save changes" uk-icon="icon: close"></a>
-                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" placeholder="Address Book Name (Leave blank to remove)" type="text" style="padding-right: 60px;" maxlength="64">
+                    <a class="uk-form-icon uk-form-icon-flip uk-text-success" (click)="saveAddressBook()" uk-icon="icon: check" uk-tooltip [title]="'general.save' | transloco"></a>
+                    <a class="uk-form-icon uk-form-icon-flip uk-text-danger" style="margin-right: 26px;" (click)="showEditAddressBook = false" uk-tooltip [title]="'general.cancel' | transloco" uk-icon="icon: close"></a>
+                    <input class="uk-input" (keyup.enter)="saveAddressBook()" [(ngModel)]="addressBookModel" [placeholder]="'account-details.address-book-name-leave-blank-to-remove' | transloco" type="text" style="padding-right: 60px;" maxlength="64">
                   </div>
                 </div>
               </div>
@@ -97,12 +97,12 @@
                     ? addressBookEntry
                     : (
                         walletAccount
-                      ? (('general.account' | transloco) + '#' + walletAccount.index)
-                      : 'No label set'
+                      ? (('general.account' | transloco) + ' #' + walletAccount.index)
+                      : ('account-details.no-label-set' | transloco)
                     )
                   }}</h3>
                     <div class="uk-width-auto" style="padding-left: 10px; margin-top: 3px;">
-                      <a style="display: contents;"><span uk-icon="icon: pencil;" title="Edit Account Label" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" title="Edit Account Label"></span></a>
+                      <a style="display: contents;"><span uk-icon="icon: pencil;" uk-tooltip (click)="showEditAddressBook = !showEditAddressBook" [title]="'general.edit' | transloco"></span></a>
                     </div>
                   </div>
                 </div>
@@ -114,8 +114,8 @@
                   </div>
                   <div class="nano-address-actions uk-width-auto" style="margin-top: 0;">
                     <ul class="uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
-                      <li><a (click)="qrModal.show()" title="Show QR Code" uk-tooltip class="icon-qr-code"></a></li>
+                      <li><a ngxClipboard [cbContent]="accountID" (cbOnSuccess)="copied()" uk-icon="icon: copy" [title]="'general.copy' | transloco" uk-tooltip></a></li>
+                      <li><a (click)="qrModal.show()" [title]="'general.show-qr-code' | transloco" uk-tooltip class="icon-qr-code"></a></li>
                     </ul>
                   </div>
                 </div>
@@ -132,17 +132,17 @@
 
           <div class="representative-details uk-width-1-1@s uk-width-1-2@l">
 
-            <div class="details-header">Representative</div>
+            <div class="details-header">{{ 'general.representative' | transloco }}</div>
 
             <div *ngIf="!loadingAccountDetails else repLoading">
               <div class="uk-width-auto uk-text-truncate" *ngIf="(account && account.representative) else noRepresentative">
                 <div class="representative-label-container">
-                  <div class="account-label rep">{{ repLabel ? repLabel : 'Unknown Rep' }}</div>
+                  <div class="account-label rep">{{ repLabel ? repLabel : ('general.unknown' | transloco) }}</div>
                   <div class="uk-width-auto uk-flex-inline uk-flex-middle" style="padding-left: 10px;" *ngIf="account && account.representative">
                     <div class="uk-text-small text-half-muted" style="margin-right: 15px" *ngIf="!repVotingWeight.isZero()">{{ repVotingWeight.toFixed(2) }}%</div>
                     <ul class="uk-iconnav">
                       <li *ngIf="repDonationAddress">
-                        <a class="rep-donation-icon" uk-icon="icon: heart;" title="Donate To Representative" uk-tooltip routerLink="/send" [queryParams]="{ to: repDonationAddress }"></a>
+                        <a class="rep-donation-icon" uk-icon="icon: heart;" [title]="'account-details.donate-to-representative' | transloco" uk-tooltip routerLink="/send" [queryParams]="{ to: repDonationAddress }"></a>
                       </li>
                       <li *ngIf="walletAccount">
                         <a uk-icon="icon: pencil;" title="Change Representative" uk-tooltip routerLink="/representatives" [queryParams]="{ hideOverview: true, showRecommended: true, accounts: accountID }"></a>
@@ -155,7 +155,7 @@
                 </div>
               </div>
               <ng-template #noRepresentative>
-                <div class="uk-text-muted" style="margin-top: 8px;">None</div>
+                <div class="uk-text-muted" style="margin-top: 8px;">{{ 'change-rep-widget.representative-none' | transloco }}</div>
               </ng-template>
             </div>
             <ng-template #repLoading>
@@ -167,7 +167,7 @@
           </div>
 
           <div class="balance-details uk-width-1-1@s uk-width-1-2@l">
-            <div class="details-header">Balance</div>
+            <div class="details-header">{{ 'general.balance' | transloco }}</div>
             <ng-container *ngIf="!loadingAccountDetails else balanceLoading">
               <div>
                 <div class="account-amounts-primary">
@@ -184,7 +184,7 @@
                     class="incoming-label"
                     [title]="( (account && account.pendingRaw && account.pendingRaw.gt(0) ) ? ( '+' + ( account.pendingRaw.toString(10) ) + ' raw' ) : '' )"
                   >
-                    <div class="text-snippet">New</div>
+                    <div class="text-snippet">{{ 'general.new' | transloco }}</div>
                     <div class="text-full">
                       <div class="amount-sign">+</div>
                       <div class="amount-integer">{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}</div>
@@ -211,16 +211,16 @@
       <div class="uk-card-header uk-form-horizontal" *ngIf="settings.settings.serverAPI">
 
         <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
-          Advanced options
+          {{ 'account-details.advanced-options' | transloco }}
           <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
         </div>
 
         <div class="advanced-options" *ngIf="showAdvancedOptions">
           <div class="advanced-option" *ngIf="(account.confirmation_height != null) && (account.block_count != null) && (account.block_count > 0)">
             <div>
-              <div>Confirmed Blocks:</div>
+              <div>{{ 'account-details.confirmed-blocks' | transloco }}:</div>
               <div>
-                {{ account.confirmation_height | number:'':'en-US' }} / {{ account.block_count | number:'':'en-US' }}
+                {{ account.confirmation_height | translocoDecimal  }} / {{ account.block_count | translocoDecimal }}
               </div>
               <div class="uk-text-small text-half-muted">
                 {{ ( (account.confirmation_height / account.block_count) * 100 ) | number:'1.0-2' }}%
@@ -228,7 +228,7 @@
             </div>
           </div>
           <div class="advanced-option">
-            <div>Enable Remote Signing / Multisig</div>
+            <div>{{ 'account-details.enable-remote-signing-multisig' | transloco }}</div>
             <input class="uk-checkbox" type="checkbox" name="remoteVisible" value="1" [(ngModel)]="remoteVisible">
           </div>
         </div>
@@ -237,7 +237,7 @@
 
       <div class="uk-card-header uk-form-horizontal" *ngIf="remoteVisible">
 
-        <div class="details-header">Block Signing</div>
+        <div class="details-header">{{ 'account-details.block-signing' | transloco }}</div>
 
         <p>Create a new SEND or CHANGE block below. For any incoming transaction in the list: Use SIGN BLOCK.</p>
         <button class="uk-button uk-button-primary" (click)="showRemoteModal()">CREATE NEW BLOCK</button>
@@ -247,7 +247,7 @@
     </div>
 
     <div class="transactions-list-header uk-width-1-1 uk-flex uk-flex-center uk-flex-middle uk-margin-small-bottom">
-      <h3 class="uk-margin-remove-bottom">Transactions</h3>
+      <h3 class="uk-margin-remove-bottom">{{ 'account-details.transactions' | transloco }}</h3>
       <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
         <li>
           <div
@@ -261,7 +261,7 @@
               [class.disabled]="!statsRefreshEnabled"
               [class.uk-text-muted]="!statsRefreshEnabled"
               uk-icon="icon: refresh;"
-              title="Reload transaction history from the network"
+              [title]="'general.reload' | transloco"
               uk-tooltip
               (click)="loadAccountDetails(true)"
             ></a>
@@ -284,7 +284,7 @@
 
         <!-- Don't show if "Loading transactions..." is already shown -->
         <div class="rounded-area" *ngIf="(loadingIncomingTxList && !loadingTxList && !loadingAccountDetails)">
-          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</div>
+          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> {{ 'account-details.loading-incoming-transactions' | transloco }}</div>
         </div>
 
         <ng-container *ngFor="let transaction of accountHistory; let transactionIdx = index;">
@@ -314,14 +314,14 @@
         </ng-container>
 
         <div class="rounded-area" *ngIf="(loadingIncomingTxList || loadingTxList || loadingAccountDetails) else notLoadingTransactionsMobile">
-          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading transactions...</div>
+          <div style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> {{ 'account-details.loading-transactions' | transloco }}</div>
         </div>
         <ng-template #notLoadingTransactionsMobile>
           <div class="rounded-area interactable" *ngIf="!accountHistory.length && !pendingBlocks.length">
-            <div style="text-align: center;">No transactions</div>
+            <div style="text-align: center;">{{ 'account-details.no-transactions' | transloco }}</div>
           </div>
           <div class="rounded-area interactable more-results" (click)="loadMore()" *ngIf="accountHistory.length + 1 >= pageSize && pageSize <= maxPageSize">
-            Show More<br>
+            {{ 'general.show-more' | transloco }}<br>
             <div class="chevron chevron-down"></div>
           </div>
         </ng-template>
@@ -331,9 +331,9 @@
         <thead>
         <tr>
           <th scope="col" class="type-column"></th>
-          <th scope="col" class="account-column">Account / Block</th>
-          <th scope="col" class="amount-column">Amount</th>
-          <th scope="col" class="date-column">Date</th>
+          <th scope="col" class="account-column">{{ 'general.account' | transloco }} / {{ 'general.block' | transloco }}</th>
+          <th scope="col" class="amount-column">{{ 'general.amount' | transloco }}</th>
+          <th scope="col" class="date-column">{{ 'general.date' | transloco }}</th>
         </tr>
         </thead>
         <tbody>
@@ -345,7 +345,7 @@
           <td class="account-column uk-visible-toggle uk-text-truncate">
             <div uk-grid class="uk-flex-nowrap">
               <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
-                <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
+                <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" [title]="'general.view-details' | transloco" uk-tooltip>
                   <div class="identicon-name-row uk-text-truncate">
                     <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                     <div class="account-label uk-text-truncate" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</div>
@@ -357,11 +357,11 @@
               </div>
               <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                 <ul class="uk-iconnav">
-                  <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                  <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" [title]="'general.copy' | transloco" uk-tooltip></a></li>
                 </ul>
               </div>
             </div>
-            <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" title="View Block Details" uk-tooltip>{{ pending.hash }}</a>
+            <a [routerLink]="'/transaction/' + pending.hash" class="uk-link-text uk-text-small uk-text-muted uk-text-truncate block-hash block-hash-monospace" [title]="'general.view-details' | transloco" uk-tooltip>{{ pending.hash }}</a>
           </td>
           <ng-template #transactionActionsOrDate>
             <ng-container *ngIf="(walletAccount || remoteVisible) else noActionsAvailable">
@@ -385,7 +385,7 @@
             </ng-template>
           </ng-template>
           <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) ) + ' raw' ) : '' )">
-            <span class="uk-text-small">Ready to receive</span><br>
+            <span class="uk-text-small">{{ 'account-details.ready-to-receive' | transloco }}</span><br>
             <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
             <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
             <span class="currency-name">NANO</span>
@@ -400,7 +400,7 @@
 
         <!-- Don't show if "Loading transactions..." is already shown -->
         <tr *ngIf="(loadingIncomingTxList && !loadingTxList && !loadingAccountDetails)">
-          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Loading incoming transactions...</td>
+          <td colspan="4" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> {{ 'account-details.loading-incoming-transactions' | transloco }}</td>
         </tr>
 
         <tr *ngFor="let history of accountHistory">

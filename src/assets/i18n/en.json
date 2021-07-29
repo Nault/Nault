@@ -1,4 +1,21 @@
 {
+  "account-details": {
+    "account-details": "Account Details",
+    "address-book-name-leave-blank-to-remove": "Address Book Name (Leave blank to remove)",
+    "advanced-options": "Advanced options",
+    "block-signing": "Block Signing",
+    "confirmed-blocks": "Confirmed Blocks",
+    "donate-to-representative": "Donate To Representative",
+    "enable-remote-signing-multisig": "Enable Remote Signing / Multisig",
+    "external-address": "External address",
+    "loading-incoming-transactions": "Loading incoming transactions...",
+    "loading-transactions": "Loading transactions...",
+    "network-explorer": "Network Explorer",
+    "no-label-set": "No label set",
+    "no-transactions": "No transactions",
+    "ready-to-receive": "Ready to receive",
+    "transactions": "Transactions"
+  },
   "change-rep-widget": {
     "acceptable-representative": "Acceptable Representative",
     "bad-representative": "Bad Representative",
@@ -32,15 +49,27 @@
     "account": "Account",
     "accounts": "Accounts",
     "address-book": "Address Book",
+    "amount": "Amount",
     "app-settings": "App Settings",
+    "balance": "Balance",
+    "block": "Block",
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "date": "Date",
+    "edit": "Edit",
     "loading": "Loading...",
     "new": "New",
     "receive": "Receive",
+    "reload": "Reload",
     "representative": "Representative",
     "representatives": "Representatives",
+    "save": "Save",
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
     "settings": "Settings",
-    "unknown": "Unknown"
+    "show-more": "Show More",
+    "show-qr-code": "Show QR Code",
+    "unknown": "Unknown",
+    "view-details": "View Details"
   }
 }
