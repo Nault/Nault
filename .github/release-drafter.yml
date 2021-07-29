@@ -12,6 +12,9 @@ categories:
       - 'dependencies'
       - 'documentation'
       - 'maintenance'
+  - title: '🌍 Translations'
+    labels:
+      - 'translations'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
