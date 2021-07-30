@@ -104,17 +104,6 @@ export class RepresentativeService {
         ) {
           needsChange.push(rep);
       }
-
-      // Also check hardcoded NF reps
-      const nf = this.nfReps.find(bad => bad.id === rep.id);
-      if (nf) {
-        rep.status.markedAsNF = true;
-        rep.status.changeRequired = true;
-        rep.status.warn = true;
-        rep.statusText = 'alert';
-        rep.label = nf.name;
-        needsChange.push(rep);
-      }
     }
 
     this.changeableReps = needsChange;
@@ -180,6 +169,15 @@ export class RepresentativeService {
         repStatus.highWeight = true;
       }
 
+      // Check hardcoded NF reps (override below if trusted)
+      const nf = this.nfReps.find(bad => bad.id === representative.account);
+      if (nf) {
+        repStatus.markedAsNF = true;
+        repStatus.changeRequired = true;
+        repStatus.warn = true;
+        status = 'alert';
+      }
+
       if (knownRep) {
         // in the list of known representatives
         status = status === 'none' ? 'ok' : status;
@@ -188,6 +186,9 @@ export class RepresentativeService {
         if (knownRep.trusted) {
           status = 'trusted'; // marked as trusted
           repStatus.trusted = true;
+          repStatus.markedAsNF = false;
+          repStatus.changeRequired = false;
+          repStatus.warn = false;
         }
         if (knownRep.warn) {
           status = 'alert'; // marked to avoid
