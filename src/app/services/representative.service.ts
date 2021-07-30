@@ -169,7 +169,7 @@ export class RepresentativeService {
         repStatus.highWeight = true;
       }
 
-      // Check hardcoded NF reps (override below if trusted)
+      // Check hardcoded NF reps (override below if trusted but leave markedAsNF intact)
       const nf = this.nfReps.find(bad => bad.id === representative.account);
       if (nf) {
         repStatus.markedAsNF = true;
@@ -186,7 +186,6 @@ export class RepresentativeService {
         if (knownRep.trusted) {
           status = 'trusted'; // marked as trusted
           repStatus.trusted = true;
-          repStatus.markedAsNF = false;
           repStatus.changeRequired = false;
           repStatus.warn = false;
         }
