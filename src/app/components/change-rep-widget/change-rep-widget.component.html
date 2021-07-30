@@ -48,6 +48,9 @@
       <p class="uk-text-danger" *ngIf="rep.status.markedToAvoid">
         <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-marked-as-avoid' | transloco }}
       </p>
+      <p class="uk-text-danger" *ngIf="rep.status.markedAsNF">
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-marked-as-nf' | transloco }}
+      </p>
       <p class="uk-text-danger" *ngIf="rep.status.closing">
         <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-announced-plans-to-permanently-shutdown' | transloco }}
       </p>
