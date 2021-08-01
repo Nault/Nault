@@ -393,7 +393,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return defaultLabel;
     }
 
-    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + ' #' + walletAccount.index);
   }
 
   ngOnDestroy() {
