@@ -11,7 +11,7 @@
           <div class="name">{{
               addressBookEntry
             ? addressBookEntry
-            : (('general.account' | transloco) + '#' + walletAccount.index)
+            : (('general.account' | transloco) + ' #' + walletAccount.index)
           }}</div>
           <div #selectButton class="select-button closed" (click)="mobileAccountMenuModal.show()">
             <div class="circle"></div>
