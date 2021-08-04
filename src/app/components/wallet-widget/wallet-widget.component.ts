@@ -49,6 +49,11 @@ export class WalletWidgetComponent implements OnInit {
     });
   }
 
+  showModal() {
+    this.unlockPassword = '';
+    this.modal.show();
+  }
+
   async lockWallet() {
     if (this.wallet.type === 'ledger') {
       return; // No need to lock a ledger wallet, no password saved

@@ -38,7 +38,7 @@
 </div>
 
 <ng-container *ngIf="walletService.isConfigured() && !walletService.isLedgerWallet()">
-  <div class="nav-status-row half-muted interactable" (click)="modal.show()" *ngIf="walletService.isLocked()">
+  <div class="nav-status-row half-muted interactable" (click)="showModal()" *ngIf="walletService.isLocked()">
     <div class="status-icon">
       <span uk-icon="icon: lock; ratio: 1.2;" class="uk-text-top"></span>
     </div>
