@@ -1,4 +1,29 @@
 {
+  "account-details": {
+    "account-details": "Account Details",
+    "address-book-name-leave-blank-to-remove": "Address Book Name (Leave blank to remove)",
+    "advanced-options": "Advanced options",
+    "awaiting-confirmation": "Awaiting confirmation",
+    "block-signing": "Block Signing",
+    "confirmed-blocks": "Confirmed Blocks",
+    "copy-recipients-address": "Copy recipient's address",
+    "copy-representatives-address": "Copy representative's address",
+    "copy-senders-address": "Copy sender's address",
+    "copy-transaction-id": "Copy transaction ID",
+    "donate-to-representative": "Donate To Representative",
+    "enable-remote-signing-multisig": "Enable Remote Signing / Multisig",
+    "external-address": "External address",
+    "loading-incoming-transactions": "Loading incoming transactions...",
+    "loading-transactions": "Loading transactions...",
+    "network-explorer": "Network Explorer",
+    "no-label-set": "No label set",
+    "no-transactions": "No transactions",
+    "send-funds-back": "Send funds back",
+    "this-change-has-not-yet-been-confirmed-by-the-network": "This change has not yet been confirmed by the network",
+    "this-transaction-has-not-yet-been-confirmed-by-the-network": "This transaction has not yet been confirmed by the network",
+    "transactions": "Transactions",
+    "view-transaction-details": "View transaction details"
+  },
   "change-rep-widget": {
     "acceptable-representative": "Acceptable Representative",
     "bad-representative": "Bad Representative",
@@ -32,16 +57,35 @@
   "general": {
     "account": "Account",
     "accounts": "Accounts",
+    "actions": {
+      "ready-to-receive": "Ready to receive",
+      "received": "Received",
+      "rep-change": "Rep. Change",
+      "sent": "Sent",
+      "unknown-action": "Unknown Action"
+    },
     "address-book": "Address Book",
+    "amount": "Amount",
     "app-settings": "App Settings",
+    "balance": "Balance",
+    "block": "Block",
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "date": "Date",
+    "edit": "Edit",
     "loading": "Loading...",
     "new": "New",
     "receive": "Receive",
+    "reload": "Reload",
     "representative": "Representative",
     "representatives": "Representatives",
+    "save": "Save",
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
     "settings": "Settings",
-    "unknown": "Unknown"
+    "show-more": "Show More",
+    "show-qr-code": "Show QR Code",
+    "unknown": "Unknown",
+    "view-details": "View Details"
   }
 }
