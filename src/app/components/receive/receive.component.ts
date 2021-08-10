@@ -176,7 +176,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       return defaultLabel;
     }
 
-    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + ' #' + walletAccount.index);
   }
 
   async getPending() {

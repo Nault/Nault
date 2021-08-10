@@ -173,7 +173,7 @@ export class TransactionDetailsComponent implements OnInit {
       return defaultLabel;
     }
 
-    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + ' #' + walletAccount.index);
   }
 
   getBalanceFromHex(balance) {

@@ -136,7 +136,7 @@ export class RepresentativesComponent implements OnInit {
       return this.translocoService.translate('general.account');
     }
 
-    return (this.translocoService.translate('general.account') + '#' + walletAccount.index);
+    return (this.translocoService.translate('general.account') + ' #' + walletAccount.index);
   }
 
   addSelectedAccounts(accounts) {
