@@ -7,7 +7,7 @@
       <div class="uk-card-body">
         <div uk-grid>
           <div class="uk-width-1-1">
-            <textarea [(ngModel)]="input" rows="5" class="uk-input uk-margin-small-bottom" placeholder="Text to be converted into QR" (keyup)="generateQR()" maxlength="2000"></textarea>
+            <textarea [(ngModel)]="input" rows="5" class="uk-input uk-margin-small-bottom" placeholder="Text to be converted into QR" (input)="generateQR()" maxlength="2000"></textarea>
           </div>
           <div class="block-qr" [ngStyle]="{'width': width+'px'}">
             <img *ngIf="qrCodeImageBlock" [src]="qrCodeImageBlock" alt="QR code">

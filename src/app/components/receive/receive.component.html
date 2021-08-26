@@ -23,12 +23,12 @@
               <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
                   <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
-                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (keyup)="nanoAmountChange()" (change)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of NANO" maxlength="40">
+                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of NANO" maxlength="40">
                 </div>
                 <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                   <div class="uk-width-1-1 uk-inline">
                     <a class="uk-form-icon uk-link-reset uk-link-muted fiat-currency-ticker" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / NANO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
-                    <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" (keyup)="fiatAmountChange()" (change)="fiatAmountChange()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" step="any" placeholder="Amount of {{ settings.settings.displayCurrency }}">
+                    <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" (input)="fiatAmountChange()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" step="any" placeholder="Amount of {{ settings.settings.displayCurrency }}">
                   </div>
                 </div>
               </div>

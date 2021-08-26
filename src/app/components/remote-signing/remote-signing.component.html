@@ -20,7 +20,7 @@
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (blur)="validateDestination()" (keyup)="searchAddressBook()" (focus)="searchAddressBook()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
+                    <input (blur)="validateDestination()" (input)="searchAddressBook()" (focus)="searchAddressBook()" (keyup.enter)="start()" [(ngModel)]="toAccountID" class="uk-input" [ngClass]="{ 'uk-form-success': toAccountStatus === 1, 'uk-form-danger': toAccountStatus === 0 }" type="text" placeholder="nano_1abc..." autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
@@ -49,7 +49,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">Unsigned block from step 1</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input (keyup)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
+                    <input (input)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">Signed block from step 2</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input (keyup)="validateSigned(signedBlock)" (keyup.enter)="navigateBlock(signedBlock)" [(ngModel)]="signedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': signedStatus === 1, 'uk-form-danger': signedStatus === 0 }" type="text" placeholder="nanoprocess:{abc..}" autocomplete="off">
+                    <input (input)="validateSigned(signedBlock)" (keyup.enter)="navigateBlock(signedBlock)" [(ngModel)]="signedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': signedStatus === 1, 'uk-form-danger': signedStatus === 0 }" type="text" placeholder="nanoprocess:{abc..}" autocomplete="off">
                   </div>
                 </div>
               </div>

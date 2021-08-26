@@ -158,10 +158,13 @@ export class SendComponent implements OnInit {
 
   // An update to the Nano amount, sync the fiat value
   syncFiatPrice() {
-    if (!this.validateAmount()) return;
+    if (!this.validateAmount() || Number(this.amount) === 0) {
+      this.amountFiat = null;
+      return;
+    }
     const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountExtraRaw);
     if (rawAmount.lte(0)) {
-      this.amountFiat = 0;
+      this.amountFiat = null;
       return;
     }
 
