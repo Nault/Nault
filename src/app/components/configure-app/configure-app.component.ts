@@ -367,7 +367,7 @@ export class ConfigureAppComponent implements OnInit {
       minReceive = this.minimumReceive;
     }
 
-    let hideBalances = this.hideBalances;
+    const hideBalances = this.hideBalances;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
