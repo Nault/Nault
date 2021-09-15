@@ -41,8 +41,7 @@
           </ng-template>
         </div>
       </div>
-      <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)">
-        <!-- active/inactive total balance -->
+      <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)"> <!-- active/inactive total balance -->
         <div class="name-column">
           <div class="name">Total Balance</div>
           <div class="address"> </div>
@@ -114,7 +113,10 @@
                           (wallet.selectedAccount !== null)
                         ? '/account/' + wallet.selectedAccount.id
                         : '/accounts'
-                      )" [queryParams]="{ compact: '1' }" class="name">{{
+                      )"
+                      [queryParams]="{ compact: '1' }"
+                      class="name"
+                    >{{
                         (wallet.selectedAccount !== null)
                       ? (
                           wallet.selectedAccount.addressBookName
@@ -237,12 +239,8 @@
         </div>
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
-          <li><a routerLink="/accounts" routerLinkActive="active">
-              <div class="label">{{ 'general.accounts' | transloco }}</div>
-            </a></li>
-          <li><a routerLink="/send" routerLinkActive="active">
-              <div class="label">{{ 'general.send' | transloco }}</div>
-            </a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">{{ 'general.accounts' | transloco }}</div></a></li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'general.send' | transloco }}</div></a></li>
           <li>
             <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
@@ -257,50 +255,26 @@
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active">
-              <div class="label">{{ 'general.address-book' | transloco }}</div>
-            </a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active">
-              <div class="label">{{ 'general.scan-qr-code' | transloco }}</div>
-            </a></li>
+          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">{{ 'general.address-book' | transloco }}</div></a></li>
+          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">{{ 'general.scan-qr-code' | transloco }}</div></a></li>
           <li class="uk-parent">
             <a href="#">{{ 'general.settings' | transloco }}</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active">
-                  <div class="label">{{ 'general.representatives' | transloco }}</div>
-                </a></li>
-              <li><a routerLink="/configure-app" routerLinkActive="active">
-                  <div class="label">{{ 'general.app-settings' | transloco }}</div>
-                </a></li>
-              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active">
-                  <div class="label">Manage Wallet</div>
-                </a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active">
-                  <div class="label">Configure New Wallet</div>
-                </a></li>
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'general.representatives' | transloco }}</div></a></li>
+              <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'general.app-settings' | transloco }}</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
             </ul>
           </li>
           <li class="uk-parent">
             <a href="#">Advanced Tools</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active">
-                  <div class="label">Wallet Sweeper</div>
-                </a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active">
-                  <div class="label">Remote Signing</div>
-                </a></li>
-              <li><a routerLink="/multisig" routerLinkActive="active">
-                  <div class="label">Multi Signature</div>
-                </a></li>
-              <li><a routerLink="/keygenerator" routerLinkActive="active">
-                  <div class="label">Keypair Generator</div>
-                </a></li>
-              <li><a routerLink="/converter" routerLinkActive="active">
-                  <div class="label">Unit Converter</div>
-                </a></li>
-              <li><a routerLink="/qr-generator" routerLinkActive="active">
-                  <div class="label">QR Generator</div>
-                </a></li>
+              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
+              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+              <li><a routerLink="/multisig" routerLinkActive="active"><div class="label">Multi Signature</div></a></li>
+              <li><a routerLink="/keygenerator" routerLinkActive="active"><div class="label">Keypair Generator</div></a></li>
+              <li><a routerLink="/converter" routerLinkActive="active"><div class="label">Unit Converter</div></a></li>
+              <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">QR Generator</div></a></li>
             </ul>
           </li>
         </ul>
@@ -327,11 +301,7 @@
             <div class="icons-row">
               <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt; ratio: 1.2;" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener noreferrer"></a>
               <a href="https://discord.nanocenter.org" uk-tooltip title="Join our community on Discord" class="footer-link discord-icon" target="_blank" rel="noopener noreferrer">
-                <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240">
-                  <path class="st0" d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z" />
-                  <path class="st0"
-                    d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z" />
-                </svg>
+                <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240"><path class="st0" d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z" /><path class="st0" d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm 38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z" /></svg>
               </a>
             </div>
             <div class="section-caption">Community</div>
@@ -342,11 +312,8 @@
                 <div class="dark-mode-switch">
                   <svg width="16" height="16" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
                     <g fill="#EEE" stroke="#EEE" stroke-linejoin="round" stroke-width="2">
-                      <path d="m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z"
-                        stop-color="#000000" />
-                      <path transform="matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)"
-                        d="m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z"
-                        stop-color="#000000" />
+                      <path d="m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z"  stop-color="#000000" />
+                      <path transform="matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)" d="m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z" stop-color="#000000" />
                     </g>
                   </svg>
                 </div>
