@@ -8,7 +8,7 @@
       </div>
       <div class="uk-card-body">
         <div uk-grid>
-          
+
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
@@ -30,7 +30,8 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
+                <label class="uk-form-label" for="form-horizontal-select">FIAT Currency <span uk-icon="icon: info;" uk-tooltip
+                    title="Change the currency pair used when showing fiat values in the application.  Select None to hide fiat pairs."></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedCurrency" id="form-horizontal-select">
                     <option *ngFor="let currency of currencies" [value]="currency.value">{{ currency.name }}</option>
@@ -139,15 +140,16 @@
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
                 <label class="uk-form-label">Work Server <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using nault.cc. Try the desktop app."></span></label>
-                  <div class="uk-form-controls">
-                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
-                      <span class="uk-text-meta">
-                        This has to be a valid <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">Nano Work Server</a> endpoint or an API compliant with it.
-                      </span>
-                  </div>
+                <div class="uk-form-controls">
+                  <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
+                  <span class="uk-text-meta">
+                    This has to be a valid <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">Nano Work Server</a> endpoint or an API compliant with it.
+                  </span>
+                </div>
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
-                <label class="uk-form-label">PoW Multiplier <span uk-icon="icon: info;" uk-tooltip title="Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."></span></label>
+                <label class="uk-form-label">PoW Multiplier <span uk-icon="icon: info;" uk-tooltip
+                    title="Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties."></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -164,7 +166,8 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Receive Method <span uk-icon="icon: info;" uk-tooltip title="If automatically receiving incoming transactions with the largest amount first or chronological from recorded time. Manual will allow you to pick your own transactions from the receive screen."></span></label>
+                <label class="uk-form-label">Receive Method <span uk-icon="icon: info;" uk-tooltip
+                    title="If automatically receiving incoming transactions with the largest amount first or chronological from recorded time. Manual will allow you to pick your own transactions from the receive screen."></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1">
@@ -181,13 +184,36 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Min. Receive Amount <span uk-icon="icon: info;" uk-tooltip title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions."></span></label>
+                <label class="uk-form-label">Min. Receive Amount <span uk-icon="icon: info;" uk-tooltip
+                    title="Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
                         <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
                         <input [(ngModel)]="minimumReceive" class="uk-input" style="padding-left: 52px !important;" id="form-horizontal-text4" type="text" placeholder="Leave blank to accept transactions of any amount">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">Hide Balances <span uk-icon="icon: info;" uk-tooltip
+                    title="Hide balances when viewing wallet and account details."></span></label>
+                <div class="uk-form-controls">
+                  <div uk-grid>
+                    <div class="uk-width-1-1">
+                      <div class="uk-inline uk-width-1-1">
+                        <label class="uk-form-icon uk-link-reset uk-link-muted" for="form-horizontal-checkbox1"></label>
+                        <input [(ngModel)]="hideBalances" class="uk-checkbox" style="padding-left: 52px !important;" id="form-horizontal-checkbox1" type="checkbox">
                       </div>
 
                     </div>
@@ -206,8 +232,9 @@
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
-                    <input (blur)="validateRepresentative()" (input)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="Leave blank to use a recommended one" #repInput>
-                    
+                    <input (blur)="validateRepresentative()" (input)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input"
+                      [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="Leave blank to use a recommended one" #repInput>
+
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
                         <li class="uk-nav-header">Representative List Results</li>
@@ -329,7 +356,8 @@
           <div class="uk-width-1-1" *ngIf="showStatValues() || showServerConfigs()">
             <div class="uk-form-horizontal">
               <div>
-                <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip title="Can be used for troubleshooting. Click refresh to update."></span></label>
+                <label class="uk-form-label uk-text-right">Node Stats <span class="{{statsRefreshEnabled ? '':'node-stats-disabled'}}" id="node-stats" uk-icon="icon: refresh;" (click)="updateNodeStats(true)" uk-tooltip
+                    title="Can be used for troubleshooting. Click refresh to update."></span></label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <span class="uk-text-meta">
@@ -433,7 +461,7 @@
         </div>
       </div>
       <!--<div class="uk-card-footer uk-text-right">-->
-        <!--<button (click)="updateWalletSettings()" class="uk-button uk-button-secondary">Update Wallet Settings</button>-->
+      <!--<button (click)="updateWalletSettings()" class="uk-button uk-button-secondary">Update Wallet Settings</button>-->
       <!--</div>-->
     </div>
 

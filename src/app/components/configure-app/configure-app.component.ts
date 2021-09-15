@@ -169,6 +169,7 @@ export class ConfigureAppComponent implements OnInit {
   serverWS = null;
   serverAuth = null;
   minimumReceive = null;
+  hideBalances = false;
 
   nodeBlockCount = null;
   nodeUnchecked = null;
@@ -290,6 +291,7 @@ export class ConfigureAppComponent implements OnInit {
     this.serverAuth = settings.serverAuth;
 
     this.minimumReceive = settings.minimumReceive;
+    this.hideBalances = settings.hideBalances;
     this.defaultRepresentative = settings.defaultRepresentative;
     if (this.defaultRepresentative) {
       this.validateRepresentative();
@@ -365,6 +367,8 @@ export class ConfigureAppComponent implements OnInit {
       minReceive = this.minimumReceive;
     }
 
+    let hideBalances = this.hideBalances;
+
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
     || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
@@ -425,6 +429,7 @@ export class ConfigureAppComponent implements OnInit {
       customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
+      hideBalances: hideBalances,
       defaultRepresentative: this.defaultRepresentative || null,
     };
 
