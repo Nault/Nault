@@ -25,7 +25,7 @@ interface AppSettings {
   serverWS: string | null;
   serverAuth: string | null;
   minimumReceive: string | null;
-  hideBalances: boolean | null;
+  hideBalances: boolean;
   walletVersion: number | null;
   lightModeEnabled: boolean;
   identiconsStyle: string;

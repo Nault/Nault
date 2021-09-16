@@ -148,6 +148,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
+  hideBalancesOptions = [
+    { name: 'Disabled', value: 'disabled' },
+    { name: 'Enabled', value: 'enabled' },
+  ];
+  selectedHideBalancesOption = this.hideBalancesOptions[0].value;
+
   // prefixOptions = [
   //   { name: 'xrb_', value: 'xrb' },
   //   { name: 'nano_', value: 'nano' },
@@ -169,7 +175,6 @@ export class ConfigureAppComponent implements OnInit {
   serverWS = null;
   serverAuth = null;
   minimumReceive = null;
-  hideBalances = false;
 
   nodeBlockCount = null;
   nodeUnchecked = null;
@@ -283,6 +288,10 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
+    const hideBalancesOptionString = (settings.hideBalances === true) ? 'enabled' : 'disabled';
+    const matchingHideBalancesOption = this.hideBalancesOptions.find(d => d.value === hideBalancesOptionString);
+    this.selectedHideBalancesOption = matchingHideBalancesOption.value || this.hideBalancesOptions[0].value;
+
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
@@ -291,7 +300,6 @@ export class ConfigureAppComponent implements OnInit {
     this.serverAuth = settings.serverAuth;
 
     this.minimumReceive = settings.minimumReceive;
-    this.hideBalances = settings.hideBalances;
     this.defaultRepresentative = settings.defaultRepresentative;
     if (this.defaultRepresentative) {
       this.validateRepresentative();
@@ -325,6 +333,12 @@ export class ConfigureAppComponent implements OnInit {
 
     this.appSettings.setAppSetting('language', this.selectedLanguage);
     this.translate.setActiveLang(this.selectedLanguage);
+
+    if (this.selectedHideBalancesOption === 'disabled') {
+      this.appSettings.setAppSetting('hideBalances', false);
+    } else {
+      this.appSettings.setAppSetting('hideBalances', true);
+    }
 
     // if (updatePrefixes) {
     //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
@@ -366,8 +380,6 @@ export class ConfigureAppComponent implements OnInit {
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
       minReceive = this.minimumReceive;
     }
-
-    const hideBalances = this.hideBalances;
 
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
@@ -429,7 +441,6 @@ export class ConfigureAppComponent implements OnInit {
       customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
       minimumReceive: minReceive,
-      hideBalances: hideBalances,
       defaultRepresentative: this.defaultRepresentative || null,
     };
 

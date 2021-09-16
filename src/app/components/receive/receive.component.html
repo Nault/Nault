@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    
+
     <h2 class="uk-heading-divider">Receive Nano</h2>
 
     <div class="uk-card uk-card-default uk-margin">
@@ -13,11 +13,11 @@
               <div class="form-account">
                 <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="onSelectedAccountChange(pendingAccountModel)">
                   <option [value]="0">All Accounts</option>
-                  <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                  <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ settings.settings.hideBalances ? '*' : account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ settings.settings.hideBalances ? '.******' : account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
                 </select>
               </div>
             </div>
-  
+
             <div class="uk-margin">
               <label for="form-horizontal-amount" class="uk-form-label label-block">Requested Amount <span class="uk-text-muted label-optional">optional</span></label>
               <div class="form-amount">
@@ -73,7 +73,7 @@
               </div>
             </div>
           </div>
-                  
+
         </div>
       </div>
     </div>
@@ -200,8 +200,8 @@
             </ng-template>
             <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) ) + ' raw' ) : '' )">
               <span class="uk-text-small">Ready to receive</span><br>
-              <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
-              <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              <span class="amount-integer">{{ settings.settings.hideBalances ? '*' : pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+              <span class="amount-fractional">{{ settings.settings.hideBalances ? '.******' : pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
               <span class="currency-name">NANO</span>
               <div class="compact-actions-date">
                 <ng-template [ngTemplateOutlet]="transactionActions"></ng-template>
@@ -280,4 +280,3 @@
     </div>
   </div>
 </div>
-

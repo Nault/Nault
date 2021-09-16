@@ -72,6 +72,23 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select1">
+                  Hide Balances <span uk-icon="icon: info;" uk-tooltip title="Hide balances when viewing wallet and account details."></span>
+                </label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedHideBalancesOption" id="form-horizontal-select1">
+                    <option *ngFor="let hideBalancesOption of hideBalancesOptions" [value]="hideBalancesOption.value">{{ hideBalancesOption.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
@@ -192,28 +209,6 @@
                       <div class="uk-inline uk-width-1-1">
                         <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
                         <input [(ngModel)]="minimumReceive" class="uk-input" style="padding-left: 52px !important;" id="form-horizontal-text4" type="text" placeholder="Leave blank to accept transactions of any amount">
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
-                <label class="uk-form-label">Hide Balances <span uk-icon="icon: info;" uk-tooltip
-                    title="Hide balances when viewing wallet and account details."></span></label>
-                <div class="uk-form-controls">
-                  <div uk-grid>
-                    <div class="uk-width-1-1">
-                      <div class="uk-inline uk-width-1-1">
-                        <label class="uk-form-icon uk-link-reset uk-link-muted" for="form-horizontal-checkbox1"></label>
-                        <input [(ngModel)]="hideBalances" class="uk-checkbox" style="padding-left: 52px !important;" id="form-horizontal-checkbox1" type="checkbox">
                       </div>
 
                     </div>
