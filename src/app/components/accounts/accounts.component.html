@@ -25,12 +25,12 @@
     <div class="uk-card uk-overflow-hidden">
       <table class="accounts-list uk-table uk-table-striped uk-table-small">
         <thead>
-          <tr>
-            <th scope="col" class="account-column uk-width-3-5@m uk-width-1-2" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
-              Account
-            </th>
-            <th scope="col" class="account-amounts-column uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
-            <th scope="col" [class]="{
+        <tr>
+          <th scope="col" class="account-column uk-width-3-5@m uk-width-1-2" [class.identicons-enabled]="(settings.settings.identiconsStyle !== 'none')">
+            Account
+          </th>
+          <th scope="col" class="account-amounts-column uk-width-1-5@m uk-width-1-4 uk-text-right">Balance</th>
+          <th scope="col" [class]="{
             'account-actions-column': true,
             'table-header-delete-account': true,
             'uk-width-1-5@m': true,
@@ -38,7 +38,7 @@
             'uk-text-right': true,
             'hidden-column': ( isSingleKeyWallet || !viewAdvanced )
           }"></th>
-          </tr>
+        </tr>
         </thead>
         <tbody>
           <tr *ngFor="let account of accounts" class="uk-visible-toggle">
