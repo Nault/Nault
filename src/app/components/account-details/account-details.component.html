@@ -287,7 +287,7 @@
             [transaction]="transaction"
             [isHidden]="transaction.received"
             [settingIdenticonsStyle]="settings.settings.identiconsStyle"
-            [hideBalances]="settings.settings.hideBalances"
+            [settingHideBalances]="settings.settings.hideBalances"
             (click)="showMobileMenuForTransaction(transaction)"
           ></app-nano-transaction-mobile>
         </ng-container>
@@ -319,7 +319,7 @@
           <app-nano-transaction-mobile
             [transaction]="transaction"
             [settingIdenticonsStyle]="settings.settings.identiconsStyle"
-            [hideBalances]="settings.settings.hideBalances"
+            [settingHideBalances]="settings.settings.hideBalances"
             (click)="showMobileMenuForTransaction(transaction)"
           ></app-nano-transaction-mobile>
         </ng-container>
@@ -638,7 +638,7 @@
             <div class="form-input-destination uk-inline uk-width-1-1">
               <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
               <input (blur)="validateRepresentative()" (input)="searchRepresentatives()" (focus)="searchRepresentatives()" (keyup.enter)="generateChange()" [(ngModel)]="representativeModel" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="nano_abc...123" #repInput>
-              
+
               <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                 <ul class="uk-nav uk-nav-default">
                   <li class="uk-nav-header">Representative List Results</li>
@@ -768,7 +768,7 @@
           [isInteractable]="false"
           [transaction]="mobileTransactionData"
           [settingIdenticonsStyle]="settings.settings.identiconsStyle"
-          [hideBalances]="settings.settings.hideBalances"
+          [settingHideBalances]="settings.settings.hideBalances"
           *ngIf="mobileTransactionData"
         ></app-nano-transaction-mobile>
       </div>

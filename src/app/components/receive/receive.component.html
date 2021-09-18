@@ -118,6 +118,7 @@
             <app-nano-transaction-mobile
               [transaction]="transaction"
               [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+              [settingHideBalances]="false"
               (click)="showMobileMenuForTransaction(transaction)"
             ></app-nano-transaction-mobile>
           </ng-container>
@@ -245,6 +246,7 @@
           [isInteractable]="false"
           [transaction]="mobileTransactionData"
           [settingIdenticonsStyle]="settings.settings.identiconsStyle"
+          [settingHideBalances]="false"
           *ngIf="mobileTransactionData"
         ></app-nano-transaction-mobile>
       </div>
@@ -280,4 +282,3 @@
     </div>
   </div>
 </div>
-
