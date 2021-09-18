@@ -120,8 +120,8 @@
 		</ng-container>
 		<!-- hideBalances check -->
 		<div class="amount" *ngIf="isReceivableTransaction || isSendTransaction || isReceiveTransaction">
-			<span class="amount-integer">{{ hideBalances ? '*' : transaction.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
-			<span class="amount-fractional">{{ hideBalances ? '.***' : transaction.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+			<span class="amount-integer">{{ (settingHideBalances && !isReceivableTransaction) ? '*' : transaction.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
+			<span class="amount-fractional">{{ (settingHideBalances && !isReceivableTransaction) ? '.***' : transaction.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
 			<span class="currency-name">NANO</span>
 		</div>
 		<!-- end hideBalances check -->
