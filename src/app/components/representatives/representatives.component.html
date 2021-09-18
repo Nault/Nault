@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    
+
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">Representatives</h2>
@@ -72,8 +72,8 @@
                   <td class="voting-weight-column uk-width-1-4">
                     <div class="uk-text-small text-half-muted">Total</div>
                     <div class="amounts">
-                      <span class="amount-integer">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                      <span class="amount-fractional">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                      <span class="amount-integer">{{ settings.settings.hideBalances ? '*' : rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                      <span class="amount-fractional">{{ settings.settings.hideBalances ? '.***' : rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 1 }}</span>
                       <span class="currency-name">NANO</span>
                     </div>
                   </td>
@@ -95,8 +95,8 @@
                   </td>
                   <td class="voting-weight-column uk-width-1-4">
                     <div class="amounts">
-                      <span class="amount-integer">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                      <span class="amount-fractional">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                      <span class="amount-integer">{{ settings.settings.hideBalances ? '*' : delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                      <span class="amount-fractional">{{ settings.settings.hideBalances ? '.***' : delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
                       <span class="currency-name">NANO</span>
                     </div>
                   </td>
