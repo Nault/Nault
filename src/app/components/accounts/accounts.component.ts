@@ -48,6 +48,9 @@ export class AccountsComponent implements OnInit {
     if (this.walletService.isLocked()) {
       return this.notificationService.sendError(`Wallet is locked.`);
     }
+    if ((this.isLedgerWallet) && (this.ledger.ledger.status !== LedgerStatus.READY)) {
+      return this.notificationService.sendWarning(`Ledger is disconnected. Please ensure it is unlocked and the Nano app is running. Then click on Reconnect.`);
+    }
     if (!this.walletService.isConfigured()) return this.notificationService.sendError(`Wallet is not configured`);
     if (this.walletService.wallet.accounts.length >= 20) return this.notificationService.sendWarning(`You can only track up to 20 accounts at a time.`);
     // Advanced view, manual account index?
