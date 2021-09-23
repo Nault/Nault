@@ -8,7 +8,7 @@
       </div>
       <div class="uk-card-body">
         <div uk-grid>
-          
+
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
 
@@ -64,6 +64,23 @@
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedIdenticonOption" id="form-horizontal-select">
                     <option *ngFor="let identiconOption of identiconOptions" [value]="identiconOption.value">{{ identiconOption.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select1">
+                  {{ 'configure-app.hide-balances' | transloco }} <span uk-icon="icon: info;" uk-tooltip title="Hide balances when viewing wallet and account details. This does not affect ready to receive amounts on the receive page."></span>
+                </label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" [(ngModel)]="selectedHideBalancesOption" id="form-horizontal-select1">
+                    <option *ngFor="let hideBalancesOption of hideBalancesOptions" [value]="hideBalancesOption.value">{{ hideBalancesOption.name }}</option>
                   </select>
                 </div>
               </div>
@@ -207,7 +224,7 @@
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
                     <input (blur)="validateRepresentative()" (input)="searchRepresentatives()" (focus)="searchRepresentatives()" [(ngModel)]="defaultRepresentative" class="uk-input" [ngClass]="{ 'uk-form-success': repStatus === 2, 'uk-form-danger': repStatus === 0 }" id="form-horizontal-text3" type="text" placeholder="Leave blank to use a recommended one" #repInput>
-                    
+
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
                         <li class="uk-nav-header">Representative List Results</li>

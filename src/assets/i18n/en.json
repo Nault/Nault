@@ -52,7 +52,8 @@
     "you-have-marked-this-representative-as-trusted": "You have marked this representative as trusted, meaning its status will remain \"Good\" even in case of severe issues with uptime or weight distribution."
   },
   "configure-app": {
-    "language": "Language"
+    "language": "Language",
+    "hide-balances": "Hide Balances"
   },
   "general": {
     "account": "Account",
