@@ -3,23 +3,23 @@
     <div uk-grid class="uk-text-center" style="margin-bottom: 70px;">
       <div class="uk-width-1-1" style="margin-top: 45px;">
         <img [src]="( settingsService.settings.lightModeEnabled ? 'assets/img/nault-logo.svg' : 'assets/img/nault-logo-night-mode.svg' )" width="250px" style="display: block; margin: 0 auto 20px auto;" alt="Logo"/>
-        <span class="uk-text-lead">A secure open source wallet for <a href="https://nano.org" class="uk-link-text" target="_blank" rel="noopener noreferrer">Nano</a></span><br>
+        <span class="uk-text-lead">{{ 'welcome.a-secure-open-source-wallet-for-nano' | transloco }}</span><br>
       </div>
 
       <div class="uk-width-1-1" *ngIf="!isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1">
-            <a routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Configure Wallet</a>
+            <a routerLink="/configure-wallet" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">{{ 'welcome.configure-wallet' | transloco }}</a>
           </div>
         </div>
       </div>
       <div class="uk-width-1-1" *ngIf="isConfigured()">
         <div uk-grid>
           <div class="uk-width-1-1" style="margin-top: 10px;">
-            <span>Welcome back! It looks like your wallet is already configured.</span>
+            <span>{{ 'welcome.welcome-back-it-looks-like-your-wallet-is-already-configured' | transloco }}</span>
           </div>
           <div class="uk-width-1-1@m">
-            <a routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">View My Accounts</a>
+            <a routerLink="/accounts" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">{{ 'welcome.view-my-accounts' | transloco }}</a>
           </div>
         </div>
       </div>
@@ -33,11 +33,11 @@
             <path d="m80.448 11.936-53.936 16.765s-4.4379 41.913 12.289 79.452c11.193 25.119 41.57 40.779 41.647 40.819 0.07333-0.0395 30.452-15.698 41.646-40.817 16.729-37.538 12.294-79.45 12.294-79.45l-53.935-16.768z" fill="none" stroke="#000" stroke-width="2"/>
           </svg>
         </div>
-        <h2>Your Keys, Your Coins</h2>
-        <p>You are solely responsible for the security of your funds.</p>
-        <p>Secret keys that you use in Nault are temporarily stored on your device, encrypted by the password that you choose.</p>
-        <p>No sensitive data is ever sent across the internet.</p>
-        <p><a href="https://docs.nault.cc/2020/08/05/security-of-nano.html" target="_blank" rel="noopener noreferrer">Learn more</a></p>
+        <h2>{{ 'welcome.your-keys-your-coins.title' | transloco }}</h2>
+        <p>{{ 'welcome.your-keys-your-coins.1' | transloco }}</p>
+        <p>{{ 'welcome.your-keys-your-coins.2' | transloco }}</p>
+        <p>{{ 'welcome.your-keys-your-coins.3' | transloco }}</p>
+        <p><a href="https://docs.nault.cc/2020/08/05/security-of-nano.html" target="_blank" rel="noopener noreferrer">{{ 'welcome.learn-more' | transloco }}</a></p>
       </div>
 
       <div class="feature uk-card-body uk-card-default">
@@ -59,10 +59,11 @@
             </g>
           </svg>
         </div>
-        <h2>Any Device, Anywhere</h2>
-        <p>Nault is a web application that can be used on most desktop and handheld devices.</p>
-        <p>You may also use the desktop application for Windows, Linux or Mac. It is available for download <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">from the GitHub releases page</a>.</p>
-        <p>All code is open source and <a href="https://github.com/Nault/Nault" target="_blank" rel="noopener noreferrer">available on GitHub</a>.</p>
+        <h2>{{ 'welcome.any-device-anywhere.title' | transloco }}</h2>
+        <p>{{ 'welcome.any-device-anywhere.1' | transloco }}</p>
+        <p>{{ 'welcome.any-device-anywhere.2' | transloco }}</p>
+        <p>{{ 'welcome.any-device-anywhere.3' | transloco }}</p>
+        <p><a href="https://github.com/Nault/Nault" target="_blank" rel="noopener noreferrer">{{ 'welcome.learn-more' | transloco }}</a></p>
       </div>
 
       <div class="feature uk-card-body uk-card-default">
@@ -89,9 +90,9 @@
             </g>
           </svg>
         </div>
-        <h2>Any Node, Always Available</h2>
-        <p>Even if the official <a href="https://nault.cc" target="_blank" rel="noopener noreferrer">nault.cc</a> domain would become inaccessible, you would still be able to use the <a href="https://github.com/Nault/Nault/releases" target="_blank" rel="noopener noreferrer">desktop application</a> or <a href="https://github.com/Nault/Nault#web-app" target="_blank" rel="noopener noreferrer">host the web application yourself</a>.</p>
-        <p>In Nault there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted <a href="https://docs.nano.org/running-a-node/overview/" target="_blank" rel="noopener noreferrer">Nano node</a> as the server.</p>
+        <h2>{{ 'welcome.any-node-always-available.title' | transloco }}</h2>
+        <p>{{ 'welcome.any-node-always-available.1' | transloco }}</p>
+        <p>{{ 'welcome.any-node-always-available.2' | transloco }}</p>
       </div>
 
       <div class="feature uk-card-body uk-card-default">
@@ -110,9 +111,10 @@
             </g>
           </svg>
         </div>
-        <h2>Secure the Nano Network</h2>
-        <p>Nano uses <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">ORV consensus</a>, which allows users to be in control of how much voting power representatives have on the network.</p>
-        <p>Nault will automatically check the status of your representatives and provide recommendations to ensure security and censorship resistance for all network participants.</p>
+        <h2>{{ 'welcome.secure-the-nano-network.title' | transloco }}</h2>
+        <p>{{ 'welcome.secure-the-nano-network.1' | transloco }}</p>
+        <p>{{ 'welcome.secure-the-nano-network.2' | transloco }}</p>
+        <p><a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">{{ 'welcome.learn-more' | transloco }}</a></p>
       </div>
 
       <div class="feature uk-card-body uk-card-default">
@@ -132,11 +134,13 @@
             </g>
           </svg>
         </div>
-        <h2>Advanced Security Features</h2>
-        <p>Nault includes several options for enhanced security:</p>
-        <p>- support for Ledger Nano S / Nano X hardware wallets</p>
-        <p>- ability to create multi-signature addresses where multiple private keys are required to access and transfer the funds</p>
-        <p>- ability to sign transactions remotely, allowing you to conduct transactions securely without ever allowing your secret keys to leave your offline device</p>
+        <h2>{{ 'welcome.advanced-security-features.title' | transloco }}</h2>
+        <p>{{ 'welcome.advanced-security-features.nault-includes' | transloco }}</p>
+        <ul>
+          <li>{{ 'welcome.advanced-security-features.1' | transloco }}</li>
+          <li>{{ 'welcome.advanced-security-features.2' | transloco }}</li>
+          <li>{{ 'welcome.advanced-security-features.3' | transloco }}</li>
+        </ul>
       </div>
 
     </div>
