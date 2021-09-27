@@ -62,13 +62,17 @@ export class AccountsComponent implements OnInit {
       if (index < 0) return this.notificationService.sendWarning(this.translocoService.translate('accounts.invalid-account-index-must-be-positive-number'));
       const existingAccount = this.walletService.wallet.accounts.find(a => a.index === index);
       if (existingAccount) {
-        return this.notificationService.sendWarning(this.translocoService.translate('accounts.the-account-at-this-index-is-already-loaded'));
+        return this.notificationService.sendWarning(
+          this.translocoService.translate('accounts.the-account-at-this-index-is-already-loaded')
+        );
       }
       accountIndex = index;
     }
     try {
       const newAccount = await this.walletService.addWalletAccount(accountIndex);
-      this.notificationService.sendSuccess(this.translocoService.translate('accounts.successfully-created-new-account', { account: newAccount.id }));
+      this.notificationService.sendSuccess(
+        this.translocoService.translate('accounts.successfully-created-new-account', { account: newAccount.id })
+      );
       this.newAccountIndex = null;
       this.accountsChanged$.next(newAccount.id);
     } catch (err) {
@@ -114,7 +118,9 @@ export class AccountsComponent implements OnInit {
     }
     try {
       await this.walletService.removeWalletAccount(account.id);
-      this.notificationService.sendSuccess(this.translocoService.translate('accounts.successfully-removed-account', { account: account.id }));
+      this.notificationService.sendSuccess(
+        this.translocoService.translate('accounts.successfully-removed-account', { account: account.id })
+      );
       this.accountsChanged$.next(account.id);
     } catch (err) {
       this.notificationService.sendError(this.translocoService.translate('accounts.unable-to-delete-account', { error: err.message }));
