@@ -40,10 +40,10 @@ export class ConfigureAppComponent implements OnInit {
     private ninja: NinjaService,
     private renderer: Renderer2,
     private qrModalService: QrModalService,
-    private translate: TranslocoService) { }
+    private translocoService: TranslocoService) { }
   wallet = this.walletService.wallet;
 
-  languages = this.translate.getAvailableLangs() as [{id: string, label: string}];
+  languages = this.translocoService.getAvailableLangs() as [{id: string, label: string}];
   selectedLanguage = this.languages[0].id;
 
   denominations = [
@@ -54,13 +54,13 @@ export class ConfigureAppComponent implements OnInit {
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
-    { name: 'Browser Local Storage', value: 'localStorage' },
-    { name: 'None', value: 'none' },
+    { name: this.translocoService.translate('configure-app.storage-options.browser-local-storage'), value: 'localStorage' },
+    { name: this.translocoService.translate('configure-app.storage-options.none'), value: 'none' },
   ];
   selectedStorage = this.storageOptions[0].value;
 
   currencies = [
-    { name: 'None', value: '' },
+    { name: this.translocoService.translate('configure-app.currencies.none'), value: '' },
     { name: 'USD - US Dollar', value: 'USD' },
     { name: 'BTC - Bitcoin', value: 'BTC' },
     { name: 'AUD - Australian Dollar', value: 'AUD' },
@@ -98,40 +98,40 @@ export class ConfigureAppComponent implements OnInit {
   selectedCurrency = this.currencies[0].value;
 
   nightModeOptions = [
-    { name: 'Enabled', value: 'enabled' },
-    { name: 'Disabled', value: 'disabled' },
+    { name: this.translocoService.translate('configure-app.night-mode-options.enabled'), value: 'enabled' },
+    { name: this.translocoService.translate('configure-app.night-mode-options.disabled'), value: 'disabled' },
   ];
   selectedNightModeOption = this.nightModeOptions[0].value;
 
   identiconOptions = [
-    { name: 'None', value: 'none' },
-    { name: 'Nanoidenticons (by keerifox)', value: 'nanoidenticons' },
-    { name: 'Natricon (by Appditto)', value: 'natricon' },
+    { name: this.translocoService.translate('configure-app.identicon-options.none'), value: 'none' },
+    { name: this.translocoService.translate('configure-app.identicon-options.nanoidenticons-by-keerifox'), value: 'nanoidenticons' },
+    { name: this.translocoService.translate('configure-app.identicon-options.natricon-by-appditto'), value: 'natricon' },
   ];
   selectedIdenticonOption = this.identiconOptions[0].value;
 
   inactivityOptions = [
-    { name: 'Never', value: 0 },
-    { name: '1 Minute', value: 1 },
-    { name: '5 Minutes', value: 5 },
-    { name: '15 Minutes', value: 15 },
-    { name: '30 Minutes', value: 30 },
-    { name: '1 Hour', value: 60 },
-    { name: '6 Hours', value: 360 },
+    { name: this.translocoService.translate('configure-app.identicon-options.never'), value: 0 },
+    { name: this.translocoService.translate('configure-app.identicon-options.1-minute'), value: 1 },
+    { name: this.translocoService.translate('configure-app.identicon-options.x-minutes', { minutes: 5 }), value: 5 },
+    { name:  this.translocoService.translate('configure-app.identicon-options.x-minutes', { minutes: 15 }), value: 15 },
+    { name:  this.translocoService.translate('configure-app.identicon-options.x-minutes', { minutes: 30 }), value: 30 },
+    { name: this.translocoService.translate('configure-app.identicon-options.1-hour'), value: 60 },
+    { name: this.translocoService.translate('configure-app.identicon-options.x-hours', { hours: 6 }), value: 360 },
   ];
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
   powOptions = [
-    { name: 'Best Option Available', value: 'best' },
-    { name: 'Client-side - GPU/WebGL', value: 'clientWebGL' },
-    { name: 'Client-side - CPU (Slowest)', value: 'clientCPU' },
-    { name: 'External - Selected Server', value: 'server' },
-    { name: 'External - Custom Server', value: 'custom' },
+    { name: this.translocoService.translate('configure-app.pow-options.best-option-available'), value: 'best' },
+    { name: this.translocoService.translate('configure-app.pow-options.client-side-gpu-webgl'), value: 'clientWebGL' },
+    { name: this.translocoService.translate('configure-app.pow-options.client-side-cpu-slowest'), value: 'clientCPU' },
+    { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
+    { name: this.translocoService.translate('configure-app.pow-options.external-custom-server'), value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
   multiplierOptions = [
-    { name: 'Default (1x or 1/64x)', value: 1 },
+    { name: this.translocoService.translate('configure-app.multiplier-options.default-1x-or-1-64x'), value: 1 },
     { name: '2x', value: 2 },
     { name: '4x', value: 4 },
     { name: '8x', value: 8 },
@@ -142,9 +142,9 @@ export class ConfigureAppComponent implements OnInit {
   selectedMultiplierOption: number = this.multiplierOptions[0].value;
 
   pendingOptions = [
-    { name: 'Automatic - Largest Amount First', value: 'amount' },
-    { name: 'Automatic - Oldest Transaction First', value: 'date' },
-    { name: 'Manual', value: 'manual' },
+    { name: this.translocoService.translate('configure-app.pending-options.automatic-largest-amount-first'), value: 'amount' },
+    { name: this.translocoService.translate('configure-app.pending-options.automatic-oldest-transaction-first'), value: 'date' },
+    { name: this.translocoService.translate('configure-app.pending-options.manual'), value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
@@ -312,7 +312,7 @@ export class ConfigureAppComponent implements OnInit {
     const newCurrency = this.selectedCurrency;
     // const updatePrefixes = this.appSettings.settings.displayPrefix !== this.selectedPrefix;
     const reloadFiat = this.appSettings.settings.displayCurrency !== newCurrency;
-    this.notifications.sendSuccess(`App display settings successfully updated!`);
+    this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-display-settings-successfully-updated'));
 
     if (reloadFiat) {
       // Reload prices with our currency, then call to reload fiat balances.
@@ -322,7 +322,7 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     this.appSettings.setAppSetting('language', this.selectedLanguage);
-    this.translate.setActiveLang(this.selectedLanguage);
+    this.translocoService.setActiveLang(this.selectedLanguage);
 
     // if (updatePrefixes) {
     //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);
@@ -352,7 +352,7 @@ export class ConfigureAppComponent implements OnInit {
       } catch (err) {
         // pressing cancel, reset storage setting and interrupt
         this.selectedStorage = this.storageOptions[0].value;
-        this.notifications.sendInfo(`Switched back to "Browser Local Storage" for the wallet data. Use the button again if you want to save other settings.`, {length: 10000});
+        this.notifications.sendInfo(this.translocoService.translate('configure-app.switched-back-to-browser-local-storage-for-the-wallet-data'), {length: 10000});
         return;
       }
     }
@@ -372,17 +372,17 @@ export class ConfigureAppComponent implements OnInit {
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
       const valid = this.util.account.isValidAccount(this.defaultRepresentative);
       if (!valid) {
-        return this.notifications.sendWarning(`Default representative is not a valid account`);
+        return this.notifications.sendWarning(this.translocoService.translate('configure-app.default-representative-is-not-a-valid-account'));
       }
     }
 
     if (this.appSettings.settings.powSource !== newPoW) {
       if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
-        this.notifications.sendWarning(`WebGL support not available, set PoW to Best`);
+        this.notifications.sendWarning(this.translocoService.translate('configure-app.webgl-support-not-available-set-pow-to-best'));
         newPoW = 'best';
       }
       if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
-        this.notifications.sendWarning(`CPU Worker support not available, set PoW to Best`);
+        this.notifications.sendWarning(this.translocoService.translate('configure-app.cpu-worker-support-not-available-set-pow-to-best'));
         newPoW = 'best';
       }
       // reset multiplier when not using it to avoid user mistake
@@ -429,7 +429,7 @@ export class ConfigureAppComponent implements OnInit {
     };
 
     this.appSettings.setAppSettings(newSettings);
-    this.notifications.sendSuccess(`App wallet settings successfully updated!`);
+    this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
 
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
@@ -452,7 +452,7 @@ export class ConfigureAppComponent implements OnInit {
       if (this.serverAPI.startsWith('https://') || this.serverAPI.startsWith('http://')) {
         newSettings.serverAPI = this.serverAPI;
       } else {
-        return this.notifications.sendWarning(`Custom API Server has an invalid address.`);
+        return this.notifications.sendWarning(this.translocoService.translate('configure-app.custom-api-server-has-an-invalid-address'));
       }
     }
 
@@ -460,7 +460,7 @@ export class ConfigureAppComponent implements OnInit {
       if (this.serverWS.startsWith('wss://') || this.serverWS.startsWith('ws://')) {
         newSettings.serverWS = this.serverWS;
       } else {
-        return this.notifications.sendWarning(`Custom Update Server has an invalid address.`);
+        return this.notifications.sendWarning(this.translocoService.translate('configure-app.custom-update-server-has-an-invalid-address'));
       }
     }
 
@@ -471,11 +471,7 @@ export class ConfigureAppComponent implements OnInit {
     this.appSettings.setAppSettings(newSettings);
     this.appSettings.loadAppSettings();
 
-    if (this.selectedServer !== 'offline') {
-      this.notifications.sendSuccess(`Server settings successfully updated, reconnecting to backend`);
-    } else {
-      this.notifications.sendSuccess(`Server settings successfully updated. Now in offline mode.`);
-    }
+    this.notifications.sendSuccess(this.translocoService.translate('configure-app.server-settings-successfully-updated'));
 
     this.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
 
@@ -541,7 +537,7 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? 'Yes' : 'No';
+      this.shouldRandom = custom.shouldRandom ? this.translocoService.translate('general.yes') : this.translocoService.translate('general.no');
     }
 
     // reset server stats until updated
@@ -575,9 +571,9 @@ export class ConfigureAppComponent implements OnInit {
   async clearWorkCache() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p style="text-align: center;">You are about to delete all locally cached Proof of Work values<br><br><b>Are you sure?</b></p>');
+      await UIkit.modal.confirm('<p style="text-align: center;">' + this.translocoService.translate('configure-app.you-are-about-to-delete-all-locally-cached-proof-of-work') + '<br><br><b>Are you sure?</b></p>');
       this.workPool.clearCache();
-      this.notifications.sendSuccess(`Successfully cleared the work cache!`);
+      this.notifications.sendSuccess(this.translocoService.translate('configure-app.successfully-cleared-the-work-cache'));
       return true;
     } catch (err) { return false; }
   }
@@ -589,14 +585,14 @@ export class ConfigureAppComponent implements OnInit {
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
-      this.notifications.sendSuccess(`Successfully deleted all wallet data!`);
+      this.notifications.sendSuccess(this.translocoService.translate('configure-app.successfully-deleted-all-wallet-data'));
     } catch (err) {}
   }
 
   async clearAllData() {
     const UIkit = window['UIkit'];
     try {
-      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to delete all data stored in Nault, <b>which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>');
+      await UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">' + this.translocoService.translate('configure-app.clear-all-data.1') + '</span><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>');
       this.walletService.resetWallet();
       this.walletService.removeWalletData();
 
@@ -608,7 +604,7 @@ export class ConfigureAppComponent implements OnInit {
 
       this.loadFromSettings();
 
-      this.notifications.sendSuccess(`Successfully deleted locally stored data and reset the settings!`);
+      this.notifications.sendSuccess(this.translocoService.translate('configure-app.clear-all-data.successfully-deleted-locally-stored-data-and-reset-the'));
 
       // Get a new random API server or Nault will get stuck in offline mode
       this.updateServerSettings();

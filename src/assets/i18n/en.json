@@ -115,7 +115,127 @@
     }
   },
   "configure-app": {
-    "language": "Language"
+    "advanced-options": "Advanced Options",
+    "api-server": "API Server",
+    "app-display-settings-successfully-updated": "App display settings successfully updated!",
+    "app-wallet-settings-successfully-updated": "App wallet settings successfully updated!",
+    "authorization": "Authorization",
+    "change-if-your-wallet-should-be-locked-automatically-after": "Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time",
+    "change-the-currency-pair-used-when-showing-fiat-values": "Change the currency pair used when showing fiat values in the application. Select None to hide fiat pairs.",
+    "change-where-your-wallet-is-stored-if-you-select-none-your": "Change where your wallet is stored. If you select none, your wallet is reset every time you reload.",
+    "change-which-server-is-used-to-communicate-with-the-nano": "Change which server is used to communicate with the Nano network",
+    "clear-all-data": {
+      "1": "You are about to delete all data stored in Nault, which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default.",
+      "2": "Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet.",
+      "successfully-deleted-locally-stored-data-and-reset-the": "Successfully deleted locally stored data and reset the settings!"
+    },
+    "clear-work-cache": "Clear Work Cache",
+    "click-to-refresh": "Click to refresh",
+    "component": {
+      "wallet-storage": "Wallet Storage"
+    },
+    "configure-nault": "Configure Nault",
+    "cpu-worker-support-not-available-set-pow-to-best": "CPU Worker support not available, set PoW to Best",
+    "currencies": {
+      "none": "None"
+    },
+    "custom-api-server-has-an-invalid-address": "Custom API Server has an invalid address.",
+    "custom-update-server-has-an-invalid-address": "Custom Update Server has an invalid address.",
+    "default-representative": "Default Representative",
+    "default-representative-is-not-a-valid-account": "Default representative is not a valid account",
+    "delete-all-data": "Delete ALL Data",
+    "delete-wallet-data": "Delete Wallet Data",
+    "display-settings": "Display Settings",
+    "fiat-currency": "FIAT Currency",
+    "for-example-using-basic-auth": "For example using basic auth: Basic xyz",
+    "identicon-options": {
+      "1-hour": "1 Hour",
+      "1-minute": "1 Minute",
+      "nanoidenticons-by-keerifox": "Nanoidenticons (by keerifox)",
+      "natricon-by-appditto": "Natricon (by Appditto)",
+      "never": "Never",
+      "none": "None",
+      "x-hours": "{{ hours }} Hours",
+      "x-minutes": "{{ minutes }} Minutes"
+    },
+    "identicons": "Identicons",
+    "if-automatically-receiving-incoming-transactions-with-the": "If automatically receiving incoming transactions with the largest amount first or chronological from recorded time. Manual will allow you to pick your own transactions from the receive screen.",
+    "language": "Language",
+    "leave-blank-to-accept-transactions-of-any-amount": "Leave blank to accept transactions of any amount",
+    "leave-blank-to-use-a-recommended-one": "Leave blank to use a recommended one",
+    "lock-after-inactivity": "Lock After Inactivity",
+    "min-receive-amount": "Min. Receive Amount",
+    "minimum-nano-amount-to-receive-transactions-below-this": "Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions.",
+    "multiplier-options": {
+      "default-1x-or-1-64x": "Default (1x or 1/64x)"
+    },
+    "night-mode": "Night Mode",
+    "night-mode-options": {
+      "disabled": "Disabled",
+      "enabled": "Enabled"
+    },
+    "node-stats": "Node Stats",
+    "note-since-this-server-only-notifies-about-new-transactions": "Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.",
+    "optional-increased-work-for-transaction-priority-during": "Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties.",
+    "pending-options": {
+      "automatic-largest-amount-first": "Automatic - Largest Amount First",
+      "automatic-oldest-transaction-first": "Automatic - Oldest Transaction First",
+      "manual": "Manual"
+    },
+    "pow-multiplier": "PoW Multiplier",
+    "pow-options": {
+      "best-option-available": "Best Option Available",
+      "client-side-cpu-slowest": "Client-side - CPU (Slowest)",
+      "client-side-gpu-webgl": "Client-side - GPU/WebGL",
+      "external-custom-server": "External - Custom Server",
+      "external-selected-server": "External - Selected Server"
+    },
+    "pow-source": "PoW Source",
+    "random-server": "Random Server",
+    "receive-method": "Receive Method",
+    "save-settings-to-update": "Save settings to update",
+    "server-configuration": "Server Configuration",
+    "server-settings": "Server Settings",
+    "server-settings-successfully-updated": "Server settings successfully updated!",
+    "storage-options": {
+      "browser-local-storage": "Browser Local Storage",
+      "none": "None"
+    },
+    "successfully-cleared-the-work-cache": "Successfully cleared the work cache!",
+    "successfully-deleted-all-wallet-data": "Successfully deleted all wallet data!",
+    "successfully-updated": "Successfully updated!",
+    "switched-back-to-browser-local-storage-for-the-wallet-data": "Switched back to \"Browser Local Storage\" for the wallet data. Use the button again if you want to save other settings.",
+    "this-has-to-be-a-valid-authorization-header": "This has to be a valid Authorization header.",
+    "this-has-to-be-a-valid-rpc": {
+      "1": "This has to be a valid",
+      "2-link-rpc": "Nano RPC endpoint",
+      "3": "or an API compliant with it."
+    },
+    "this-has-to-be-a-valid-websocket": {
+      "1": "This has to be a valid",
+      "2-link-websocket": "Nano Node Websocket",
+      "3": "or a WebSocket API compliant with it."
+    },
+    "this-has-to-be-a-valid-work": {
+      "1": "This has to be a valid",
+      "2-link-work": "Nano Work Server",
+      "3": "endpoint or an API compliant with it."
+    },
+    "this-representative-will-be-used-for-any-new-account": "This representative will be used for any new account",
+    "this-server-is-used-for-rpc-communication-with-the-nano-node": "This server is used for RPC communication with the Nano Node",
+    "this-server-is-used-to-notify-the-wallet-in-real-time-when": "This server is used to notify the wallet in real time when new transactions arrive",
+    "this-will-delete-all-data-related-to-your-wallet-your-seed-a": "This will delete all data related to your wallet (Your seed and accounts)",
+    "this-will-delete-all-locally-cached-proof-of-work-values": "This will delete all locally cached Proof of Work values",
+    "this-will-delete-all-stored-data-and-reset-app-settings-incl": "This will delete ALL stored data and reset app settings, including your wallet, address book and more",
+    "update-display-settings": "Update Display Settings",
+    "update-server-settings": "Update Server Settings",
+    "update-wallet-settings": "Update Wallet Settings",
+    "use-if-the-api-requires-authentication": "Use if the API requires authentication",
+    "wallet-settings": "Wallet Settings",
+    "webgl-support-not-available-set-pow-to-best": "WebGL support not available, set PoW to Best",
+    "websocket-server": "WebSocket Server",
+    "work-server": "Work Server",
+    "you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values."
   },
   "general": {
     "account": "Account",
@@ -130,14 +250,21 @@
     "address-book": "Address Book",
     "amount": "Amount",
     "app-settings": "App Settings",
+    "avoid": "Avoid",
     "balance": "Balance",
     "block": "Block",
+    "block-count": "Block Count",
     "cancel": "Cancel",
     "copy": "Copy",
     "date": "Date",
     "edit": "Edit",
     "loading": "Loading...",
+    "network": "Network",
     "new": "New",
+    "no": "No",
+    "node-version": "Node Version",
+    "peers-stake-required": "Peers Stake Required",
+    "peers-stake-total": "Peers Stake Total",
     "receive": "Receive",
     "reload": "Reload",
     "representative": "Representative",
@@ -145,12 +272,22 @@
     "save": "Save",
     "scan-qr-code": "Scan QR Code",
     "send": "Send",
+    "server": "Server",
     "settings": "Settings",
     "show-more": "Show More",
     "show-qr-code": "Show QR Code",
     "successfully-copied-to-clipboard": "Successfully copied to clipboard!",
+    "uncemented-blocks": "Uncemented Blocks",
     "unknown": "Unknown",
-    "view-details": "View Details"
+    "view-details": "View Details",
+    "yes": "Yes"
+  },
+  "representative-search": {
+    "representative-list-results": "Representative List Results"
+  },
+  "reset-wallet": {
+    "before-continuing-make-sure-you-have-saved-the-nano-seed": "Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet.",
+    "you-will-not-be-able-to-recover-the-funds-without-a-backup": "YOU WILL NOT BE ABLE TO RECOVER THE FUNDS without a backup of your currently configured wallet."
   },
   "welcome": {
     "a-secure-open-source-wallet-for-nano": "A secure open source wallet for Nano",
