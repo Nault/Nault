@@ -551,7 +551,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if ( /^Account #\d+$/g.test(this.addressBookModel) === true ) {
+    let regexp = new RegExp('^' + this.translocoService.translate('general.account') + ' #\\d+$', 'g');
+    if ( regexp.test(this.addressBookModel) === true ) {
       return this.notifications.sendError(`This name is reserved for wallet accounts without a label`);
     }
 
