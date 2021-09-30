@@ -131,14 +131,14 @@
           </td>
         </tr>
         <tr *ngIf="!accounts.length">
-          <td colspan="4" style="text-align: center;">{{ 'accounts.you-dont-have-any-accounts-yet-click-the-button-above-to-cre' | transloco }}</td>
+          <td colspan="4" style="text-align: center;">{{ 'accounts.you-dont-have-any-accounts-yet.1' | transloco }} <a (click)="createAccount()">{{ 'accounts.you-dont-have-any-accounts-yet.2' | transloco }}</a> {{ 'accounts.you-dont-have-any-accounts-yet.3' | transloco }}</td>
         </tr>
         </tbody>
       </table>
       <table class="uk-table uk-table-striped uk-table-small" *ngIf="!isSingleKeyWallet">
         <thead>
           <tr class="uk-alert uk-alert-primary missing-accounts-hint">
-            <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> {{ 'accounts.missing-accounts-add-a-new-account-to-import-a-previously' | transloco }}</td>
+            <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> {{ 'accounts.missing-accounts.1' | transloco }} <a class="hint-action" (click)="createAccount()">{{ 'accounts.missing-accounts.2' | transloco }}</a> {{ 'accounts.missing-accounts.3' | transloco }}</td>
           </tr>
         </thead>
       </table>
