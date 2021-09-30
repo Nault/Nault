@@ -276,7 +276,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     // Trim and remove duplicate spaces
     this.newAddressName = this.newAddressName.trim().replace(/ +/g, ' ');
 
-    const regexp = new RegExp('^(Account)|(' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
+    const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
     if ( regexp.test(this.newAddressName) === true ) {
       return this.notificationService.sendError(`This name is reserved for wallet accounts without a label`);
     }
