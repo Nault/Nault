@@ -128,8 +128,6 @@
       "nault-includes": "Nault includes several options for enhanced security:",
       "title": "Advanced Security Features"
     },
-    "all-code-is-open-source": {
-    },
     "any-device-anywhere": {
       "1": "Nault is a web application that can be used on most desktop and handheld devices.",
       "2": {
@@ -174,8 +172,6 @@
     },
     "view-my-accounts": "View My Accounts",
     "welcome-back-it-looks-like-your-wallet-is-already-configured": "Welcome back! It looks like your wallet is already configured.",
-    "you-may-also-use-the-desktop-application": {
-    },
     "your-keys-your-coins": {
       "1": "You are solely responsible for the security of your funds.",
       "2": "Secret keys that you use in Nault are temporarily stored on your device, encrypted by the password that you choose.",
