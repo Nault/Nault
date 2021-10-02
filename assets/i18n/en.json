@@ -24,6 +24,36 @@
     "transactions": "Transactions",
     "view-transaction-details": "View transaction details"
   },
+  "accounts": {
+    "account-address-confirmed-on-ledger": "Account address confirmed on Ledger",
+    "account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "Account address denied - if it is wrong do not use the wallet!",
+    "add-new-account": "Add New Account",
+    "advanced-mode": "Advanced Mode",
+    "confirm-address-on-ledger": "Confirm Address On Ledger",
+    "confirming-account-address-on-ledger-device": "Confirming account address on Ledger device...",
+    "hide-account": "Hide Account",
+    "invalid-account-index-must-be-positive-number": "Invalid account index - must be positive number",
+    "ledger-device-must-be-ready": "Ledger device must be ready",
+    "missing-accounts": {
+      "1": "Missing accounts?",
+      "2-link": "Add new account",
+      "3": "to import a previously used address."
+    },
+    "simple-mode": "Simple Mode",
+    "successfully-created-new-account": "Successfully created new account {{ account }}",
+    "successfully-removed-account": "Successfully removed account {{ account }}",
+    "the-account-at-this-index-is-already-loaded": "The account at this index is already loaded",
+    "unable-to-add-new-account": "Unable to add new account: {{ error }}",
+    "unable-to-delete-account": "Unable to delete account: {{ error }}",
+    "wallet-is-locked": "Wallet is locked",
+    "wallet-is-not-configured": "Wallet is not configured",
+    "you-can-only-track-up-to-x-accounts-at-a-time": "You can only track up to {{ accounts }} accounts at a time.",
+    "you-dont-have-any-accounts-yet": {
+      "1": "You don't have any accounts yet,",
+      "2-link": "click here to create one",
+      "3": "."
+    }
+  },
   "change-rep-widget": {
     "acceptable-representative": "Acceptable Representative",
     "bad-representative": "Bad Representative",
@@ -85,6 +115,7 @@
     "settings": "Settings",
     "show-more": "Show More",
     "show-qr-code": "Show QR Code",
+    "successfully-copied-to-clipboard": "Successfully copied to clipboard!",
     "unknown": "Unknown",
     "view-details": "View Details"
   }
