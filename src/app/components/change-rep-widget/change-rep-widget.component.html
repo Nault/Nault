@@ -12,7 +12,7 @@
       : ('general.representative' | transloco)
     }}</h2>
     <div class="representative-name-row">
-      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || ('general.unknown' | transloco) }}</a>
+      <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || ('change-rep-widget.unknown-rep' | transloco) }}</a>
       <div class="weight-total" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
     </div>
     <ng-container [ngSwitch]="true">
