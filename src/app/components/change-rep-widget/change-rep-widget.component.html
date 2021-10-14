@@ -38,7 +38,7 @@
       </div>
     </ng-container>
     <div [class]="[ 'representative-help-tooltip', showRepHelp==rep.id ? 'visible' : 'hidden' ]">
-      <p class="primary">{{ 'change-rep-widget.rep-represents-you' | transloco: { name: (rep.label || ('general.unknown' | transloco)) } }}</p>
+      <p class="primary">{{ 'change-rep-widget.rep-represents-you' | transloco: { name: (rep.label || ('change-rep-widget.unknown-rep' | transloco)) } }}</p>
       <p>{{ 'change-rep-widget.you-can-change-representative-at-any-time' | transloco }}</p>
       <div class="header-row">
         <div class="separator"></div>
