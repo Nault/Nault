@@ -54,7 +54,7 @@ export class AccountsComponent implements OnInit {
       return this.notificationService.sendWarning(this.translocoService.translate('accounts.ledger-device-must-be-ready'));
     }
     if (!this.walletService.isConfigured()) return this.notificationService.sendError(this.translocoService.translate('accounts.wallet-is-not-configured'));
-    if (this.walletService.wallet.accounts.length >= 20) return this.notificationService.sendWarning(this.translocoService.translate('accounts.you-can-only-track-up-to-x-accounts-at-a-time', { account: 20 }));
+    if (this.walletService.wallet.accounts.length >= 20) return this.notificationService.sendWarning(this.translocoService.translate('accounts.you-can-only-track-up-to-x-accounts-at-a-time', { accounts: 20 }));
     // Advanced view, manual account index?
     let accountIndex = null;
     if (this.viewAdvanced && this.newAccountIndex != null) {
