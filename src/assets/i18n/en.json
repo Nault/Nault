@@ -75,6 +75,7 @@
     "this-representative-is-marked-as-nf": "This representative was created by the Nano Foundation and should be avoided to increase decentralization.",
     "this-representative-is-often-offline": "This representative is often offline ({{ percent }}% uptime)",
     "this-representative-is-sometimes-offline": "This representative is sometimes offline ({{ percent }}% uptime).",
+    "unknown-rep": "Unknown Rep",
     "unknown-status": "Unknown Status",
     "we-could-not-determine-status-of-this-representative": "We could not determine status of this representative.",
     "we-found-no-issues-with-uptime-or-weight": "We found no issues with uptime or weight distribution of your current representative.",
