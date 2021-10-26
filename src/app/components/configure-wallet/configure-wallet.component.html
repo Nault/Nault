@@ -413,73 +413,83 @@
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.backup">
   <div class="uk-card-header">
-    <h3 class="uk-card-title">Save Wallet Backup</h3>
+    <h3 class="uk-card-title">{{ 'configure-wallet.new-wallet.recovery-phrases-for-new-wallet' | transloco }}</h3>
   </div>
   <div class="uk-card-body">
-    <p>
-      Below is the seed and mnemonic backup. You can use whichever you prefer in any compatible wallet.
-    </p>
+    <p>{{ 'configure-wallet.new-wallet.please-take-some-time-to-write-down-recovery-phrases' | transloco }}</p>
     <div>
       <div class="uk-alert uk-alert-danger nlt-inline-alert">
         <div class="icon-column">
           <div uk-icon="icon: warning; ratio: 2;"></div>
         </div>
         <p>
-          Make sure to write down your seed and/or mnemonic or save it somewhere safe, and <strong>never share it with anyone!</strong><br>
-      It is the master key to all of your accounts, and the only way to recover your funds in an emergency.<br>
+          {{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.1' | transloco }}<strong>{{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.2-strong' | transloco }}</strong>{{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.3' | transloco }}<br>
+          {{ 'configure-wallet.new-wallet.recovery-phrases-alert.2' | transloco }}
         </p>
       </div>
     </div>
     <br>
 
     <div uk-grid>
-      <div class="uk-width-1-4">Nano Seed</div>
-      <div class="uk-width-3-4 uk-text-truncate">
+      <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-seed' | transloco }}</div>
+      <div class="uk-width-3-4@m uk-text-truncate">
         <div class="uk-margin-small-bottom">{{ newWalletSeed }}</div>
-        <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="newWalletSeed" (cbOnSuccess)="copied()" uk-tooltip>Copy seed to clipboard</a>
+        <button
+          class="uk-button uk-button-secondary uk-text-center nlt-icon-button"
+          type="button"
+          ngxClipboard
+          [cbContent]="newWalletSeed"
+          (cbOnSuccess)="copiedNewWalletSeed()"
+        >
+          <span class="nlt-icon" uk-icon="icon: copy;"></span>
+          {{ 'configure-wallet.new-wallet.copy-secret-recovery-seed' | transloco }}
+        </button>
       </div>
     </div>
 
     <hr class="uk-divider-icon">
 
     <div uk-grid>
-      <div class="uk-width-1-4@m">
-        Nano Mnemonic<br>
-      </div>
+      <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-mnemonic' | transloco }}</div>
       <div class="uk-width-3-4@m">
         <pre class="mne-box"><span *ngFor="let line of newWalletMnemonicLines; let l = index" class="mne-cont"><span *ngFor="let word of line; let i = index" class="mne-word"><span class="mne-num">{{ (l * 4) + i + 1 }}</span> {{ word }}</span></span></pre>
-        <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="newWalletMnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
+        <button
+          class="uk-button uk-button-secondary uk-text-center nlt-icon-button"
+          type="button"
+          ngxClipboard
+          [cbContent]="newWalletMnemonic"
+          (cbOnSuccess)="copiedNewWalletMnemonic()"
+        >
+          <span class="nlt-icon" uk-icon="icon: copy;"></span>
+          {{ 'configure-wallet.new-wallet.copy-secret-recovery-mnemonic' | transloco }}
+        </button>
       </div>
     </div>
     <hr/>
     <div class="uk-width-1-1">
-      <label style="cursor: pointer;"><input type="checkbox" class="uk-checkbox" [(ngModel)]="hasConfirmedBackup"> &nbsp; I have securely stored the seed and/or mnemonic</label>
+      <label style="cursor: pointer;"><input type="checkbox" class="uk-checkbox" [(ngModel)]="hasConfirmedBackup"> &nbsp; {{ 'configure-wallet.new-wallet.i-have-securely-stored-recovery-phrases' | transloco }}</label>
     </div>
   </div>
   <div class="uk-card-footer uk-text-right nlt-button-group">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" id="create-wallet" [disabled]="!hasConfirmedBackup" (click)="confirmNewSeed()">CREATE WALLET</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" id="create-wallet" [disabled]="!hasConfirmedBackup" (click)="confirmNewSeed()">{{ 'configure-wallet.new-wallet.create-wallet' | transloco }}</button>
   </div>
 </div>
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.password">
   <div class="uk-card-header">
-    <h3 class="uk-card-title">Set Wallet Password</h3>
+    <h3 class="uk-card-title">{{ 'configure-wallet.set-wallet-password.set-wallet-password' | transloco }}</h3>
   </div>
   <div class="uk-card-body">
-    <p>
-      Your password is used to encrypt the sensitive parts of
-      your wallet when it is locked, which disables sending, receiving, creating accounts, and other operations.
-    </p>
-
-    <p>
-      For the safety of your funds, use a secure password (the bar should be green).
-    </p>
+    <p>{{ 'configure-wallet.set-wallet-password.choose-a-wallet-password-that-will-be-used-to-unlock-this-application' | transloco }}</p>
+    <p>{{ 'configure-wallet.set-wallet-password.while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted' | transloco }}</p>
+    <p>{{ 'configure-wallet.set-wallet-password.for-the-safety-of-your-funds-use-a-secure-password' | transloco }}</p>
+    <br>
     <div uk-grid>
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
         <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
-        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">Password must be at least 6 characters long</span>
-        <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">Passwords do not match!</span>
+        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 6 } }}</span>
+        <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">{{ 'configure-wallet.set-wallet-password.errors.passwords-do-not-match' | transloco }}</span>
       </div>
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" (keyup.enter)="saveWalletPassword()" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
