@@ -6,6 +6,7 @@ import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
 import { wallet } from 'nanocurrency-web';
+import { TranslocoService } from '@ngneat/transloco';
 
 enum panels {
   'landing',
@@ -77,7 +78,8 @@ export class ConfigureWalletComponent implements OnInit {
     private route: Router,
     private qrModalService: QrModalService,
     private ledgerService: LedgerService,
-    private util: UtilService) {
+    private util: UtilService,
+    private translocoService: TranslocoService) {
     if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = panels.import;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
@@ -362,9 +364,20 @@ export class ConfigureWalletComponent implements OnInit {
     }
   }
 
-  copied() {
+  copiedNewWalletSeed() {
     this.notifications.removeNotification('success-copied');
-    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' });
+    this.notifications.sendSuccess(
+      this.translocoService.translate('configure-wallet.new-wallet.successfully-copied-secret-recovery-seed'),
+      { identifier: 'success-copied' }
+    );
+  }
+
+  copiedNewWalletMnemonic() {
+    this.notifications.removeNotification('success-copied');
+    this.notifications.sendSuccess(
+      this.translocoService.translate('configure-wallet.new-wallet.successfully-copied-secret-recovery-mnemonic'),
+      { identifier: 'success-copied' }
+    );
   }
 
   importFromFile(files) {

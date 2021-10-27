@@ -82,6 +82,38 @@
     "you-can-change-representative-at-any-time": "You can change representative at any time by clicking on its name above.",
     "you-have-marked-this-representative-as-trusted": "You have marked this representative as trusted, meaning its status will remain \"Good\" even in case of severe issues with uptime or weight distribution."
   },
+  "configure-wallet": {
+    "set-wallet-password": {
+      "set-wallet-password": "Set Wallet Password",
+      "choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Choose a wallet password that will be used to unlock this application.",
+      "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "While the application is locked, the secret recovery phrase will be encrypted, which prevents sending/receiving funds and managing accounts.",
+      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password (the bar should be green).",
+      "errors": {
+        "password-must-be-at-least-x-characters-long": "Password must be at least {{ minCharacters }} characters long",
+        "passwords-do-not-match": "Passwords do not match!"
+      }
+    },
+    "new-wallet": {
+      "recovery-phrases-for-new-wallet": "Recovery Phrases for New Wallet",
+      "please-take-some-time-to-write-down-recovery-phrases": "Please take some time to backup the secret recovery seed and/or mnemonic, to be able to access this wallet in the future.",
+      "recovery-phrases-alert": {
+        "1": {
+          "1": "Make sure to write down your seed and/or mnemonic or save it somewhere safe, and ",
+          "2-strong": "never share it with anyone",
+          "3": "!"
+        },
+        "2": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency."
+      },
+      "secret-recovery-seed": "Secret Recovery Seed",
+      "secret-recovery-mnemonic": "Secret Recovery Mnemonic",
+      "copy-secret-recovery-seed": "Copy Secret Recovery Seed",
+      "copy-secret-recovery-mnemonic": "Copy Secret Recovery Mnemonic",
+      "successfully-copied-secret-recovery-seed": "Successfully copied Secret Recovery Seed to clipboard!",
+      "successfully-copied-secret-recovery-mnemonic": "Successfully copied Secret Recovery Mnemonic to clipboard!",
+      "i-have-securely-stored-recovery-phrases": "I have securely stored the secret recovery seed and/or mnemonic",
+      "create-wallet": "Create Wallet"
+    }
+  },
   "configure-app": {
     "language": "Language"
   },
