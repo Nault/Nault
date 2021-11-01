@@ -13,7 +13,7 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
-const nano_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
+const nano_schemes = ['woof', 'woofrep', 'woofseed', 'woofkey', 'woofsign', 'woofprocess'];
 
 /**
  * By default, the logger writes logs to the following locations:

@@ -330,7 +330,7 @@ function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
     throw new Error(`Invalid Nano Account`);
   }
-  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
+  const account_crop = account.substring(5, 65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
   if (!isValid) throw new Error(`Invalid NANO account`);
 
@@ -344,12 +344,8 @@ function getAccountPublicKey(account) {
   return uint4ToHex(key_uint4);
 }
 
-function setPrefix(account, prefix = 'xrb') {
-  if (prefix === 'nano') {
-    return account.replace('xrb_', 'nano_');
-  } else {
-    return account.replace('nano_', 'xrb_');
-  }
+function setPrefix(account, prefix = '') {
+  return account;
 }
 
 /**

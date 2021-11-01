@@ -37,7 +37,6 @@ export class AppSettingsService {
   settings: AppSettings = {
     language: null,
     displayDenomination: 'mnano',
-    // displayPrefix: 'xrb',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     defaultRepresentative: null,
@@ -68,68 +67,12 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
+      name: 'Peering node',
+      value: 'peer',
+      api: 'http://peering.charterino.ru:7046',
+      ws: 'ws://peering.charterino.ru:7048',
       auth: null,
       shouldRandom: true,
-    },
-    {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://nault.nanos.cc/proxy',
-      ws: 'wss://nault-ws.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'PowerNode',
-      value: 'powernode',
-      api: 'https://proxy.powernode.cc/proxy',
-      ws: 'wss://ws.powernode.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Rainstorm City',
-      value: 'rainstorm',
-      api: 'https://rainstorm.city/api',
-      ws: 'wss://rainstorm.city/websocket',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'Custom',
-      value: 'custom',
-      api: null,
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'Offline Mode',
-      value: 'offline',
-      api: null,
-      ws: null,
-      auth: null,
-      shouldRandom: false,
     }
   ];
 
@@ -139,8 +82,7 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'proxy.nanos.cc/proxy',
-    'node.somenano.com'
+    '213.239.194.182'
   ]);
 
   constructor(
@@ -230,7 +172,6 @@ export class AppSettingsService {
     this.settings = {
       language: 'en',
       displayDenomination: 'mnano',
-      // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       defaultRepresentative: null,

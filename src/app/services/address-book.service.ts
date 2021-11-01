@@ -32,24 +32,6 @@ export class AddressBookService {
     return this.addressBook;
   }
 
-  patchXrbPrefixData() {
-    const addressBookStore = localStorage.getItem(this.storeKey);
-    if (!addressBookStore) return;
-
-    const addressBook = JSON.parse(addressBookStore);
-
-    const newAddressBook = addressBook.map(entry => {
-      if (entry.account.indexOf('xrb_') !== -1) {
-        entry.account = entry.account.replace('xrb_', 'nano_');
-      }
-      return entry;
-    });
-
-    localStorage.setItem(this.storeKey, JSON.stringify(newAddressBook));
-
-    return true;
-  }
-
   async saveAddress(account, name, trackBalance, trackTransactions) {
     const existingName = this.addressBook.find(a => a.name.toLowerCase() === name.toLowerCase());
     if (existingName) {

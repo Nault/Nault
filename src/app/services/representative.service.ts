@@ -368,24 +368,6 @@ export class RepresentativeService {
     return list;
   }
 
-  patchXrbPrefixData() {
-    const representativeStore = localStorage.getItem(this.storeKey);
-    if (!representativeStore) return;
-
-    const list = JSON.parse(representativeStore);
-
-    const newRepList = list.map(entry => {
-      if (entry.id.indexOf('xrb_') !== -1) {
-        entry.id = entry.id.replace('xrb_', 'nano_');
-      }
-      return entry;
-    });
-
-    localStorage.setItem(this.storeKey, JSON.stringify(newRepList));
-
-    return true;
-  }
-
   getRepresentative(id): StoredRepresentative | undefined {
     return this.representatives.find(rep => rep.id === id);
   }

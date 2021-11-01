@@ -55,12 +55,12 @@ export class MultisigComponent implements OnInit {
       this.notificationService.sendWarning('Invalid Nano address!', {identifier: 'account-invalid'});
       return;
     }
-    if (this.storedAccounts.includes(this.accountAdd.replace('xrb_', 'nano_').toLocaleLowerCase())) {
+    if (this.storedAccounts.includes(this.accountAdd.toLocaleLowerCase())) {
       this.notificationService.removeNotification('account-added');
       this.notificationService.sendWarning('Account already added!', {identifier: 'account-added'});
       return;
     }
-    this.storedAccounts.push(this.accountAdd.replace('xrb_', 'nano_').toLocaleLowerCase());
+    this.storedAccounts.push(this.accountAdd.toLocaleLowerCase());
     this.accountAdd = '';
     this.accountAddStatus = null;
     this.showAddBox = false;

@@ -272,29 +272,6 @@ export class WalletService {
   }
 
 
-  async patchOldSavedData() {
-    // Look for saved accounts using an xrb_ prefix
-    const walletData = localStorage.getItem(this.storeKey);
-    if (!walletData) return;
-
-    const walletJson = JSON.parse(walletData);
-
-    if (walletJson.accounts) {
-      const newAccounts = walletJson.accounts.map(account => {
-        if (account.id.indexOf('xrb_') !== -1) {
-          account.id = account.id.replace('xrb_', 'nano_');
-        }
-        return account;
-      });
-
-      walletJson.accounts = newAccounts;
-    }
-
-    localStorage.setItem(this.storeKey, JSON.stringify(walletJson));
-
-    return;
-  }
-
   async loadStoredWallet() {
     this.resetWallet();
 
@@ -480,7 +457,7 @@ export class WalletService {
 
         } else if (this.wallet.type === 'ledger') {
           const account: any = await this.ledgerService.getLedgerAccount(index);
-          accountAddress = account.address.replace('xrb_', 'nano_');
+          accountAddress = account.address;
           accountPublicKey = account.publicKey.toUpperCase();
 
         } else {
@@ -558,7 +535,7 @@ export class WalletService {
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
     const accountID = account.address;
-    const nanoAccountID = accountID.replace('xrb_', 'nano_');
+    const nanoAccountID = accountID;
     const addressBookName = this.addressBook.getAccountName(nanoAccountID);
 
     const newAccount: WalletAccount = {
@@ -705,7 +682,7 @@ export class WalletService {
     this.wallet.updatingBalance = true;
     const fiatPrice = this.price.price.lastPrice;
 
-    const accountIDs = this.wallet.accounts.map(a => a.id);
+    const accountIDs = this.wallet.accounts.map(a => a.id.replace('nano_', 'woof_'));
     const accounts = await this.api.accountsBalances(accountIDs);
     const frontiers = await this.api.accountsFrontiers(accountIDs);
     // const allFrontiers = [];

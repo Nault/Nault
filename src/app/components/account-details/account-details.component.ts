@@ -185,7 +185,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // add random recommended reps to the list
       for (const representative of verifiedReps) {
         const temprep = {
-          id: representative.account,
+          id: representative.account.replace('nano_', 'woof_'),
           name: representative.alias
         };
 
@@ -252,7 +252,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.repVotingWeight = new BigNumber(0);
     this.repDonationAddress = null;
 
-    const knownRepresentative = this.repService.getRepresentative(this.account.representative);
+    const knownRepresentative = this.repService.getRepresentative(this.account.representative.replace('nano_', 'woof_'));
 
     if (knownRepresentative != null) {
       this.repLabel = knownRepresentative.name;
@@ -276,7 +276,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.clearAccountVars();
     this.loadingAccountDetails = true;
 
-    const accountID = this.router.snapshot.params.account;
+    const accountID = this.router.snapshot.params.account.replace('nano_', 'woof_');
+    console.log(accountID);
     this.accountID = accountID;
     this.generateReceiveQR(accountID);
 
@@ -285,7 +286,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.walletAccount = this.wallet.getWalletAccount(accountID);
 
     this.account = await this.api.accountInfo(accountID);
-
+    console.log(this.account);
     if (accountID !== this.accountID) {
       // Navigated to a different account while account info was loading
       return;
@@ -686,7 +687,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     setTimeout(() => this.showAddressBook = false, 400);
 
     // Remove spaces from the account id
-    this.toAccountID = this.toAccountID.replace(/ /g, '');
+    this.toAccountID = this.toAccountID.replace(/ /g, '').replace('nano_', 'woof_');
 
     this.addressBookMatch = (
         this.addressBook.getAccountName(this.toAccountID)
@@ -829,7 +830,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative();
     const representative = from.representative || defaultRepresentative;
     const blockData = {
-      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
+      account: this.accountID.toLowerCase(),
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
@@ -850,7 +851,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
-      account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
+      account: jsonBlock.account.toLowerCase(),
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -887,7 +888,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const newBalanceDecimal = newBalance.toString(10);
 
     const blockData = {
-      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
+      account: this.accountID.toLowerCase(),
       previous: previousBlock,
       representative: representative,
       balance: newBalanceDecimal,
@@ -911,7 +912,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
       const jsonBlock = JSON.parse(previousBlockInfo.contents);
       blockDataPrevious = {
-        account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
+        account: jsonBlock.account.toLowerCase(),
         previous: jsonBlock.previous,
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
@@ -952,7 +953,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const balance = new BigNumber(account.balance);
     const balanceDecimal = balance.toString(10);
     const blockData = {
-      account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
+      account: this.accountID.toLowerCase().replace('nano_', 'woof_a'),
       previous: account.frontier,
       representative: this.representativeModel,
       balance: balanceDecimal,
@@ -960,10 +961,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.blockHash = nanocurrency.hashBlock({
-      account: blockData.account,
+      account: blockData.account.replace('nano_', 'woof_'),
       link: blockData.link,
       previous: blockData.previous,
-      representative: blockData.representative,
+      representative: blockData.representative.replace('nano_', 'woof_'),
       balance: blockData.balance
     });
 
@@ -975,9 +976,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
-      account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
+      account: jsonBlock.account.toLowerCase().replace('nano_', 'woof_'),
       previous: jsonBlock.previous,
-      representative: jsonBlock.representative,
+      representative: jsonBlock.representative.replace('nano_', 'woof_'),
       balance: jsonBlock.balance,
       link: jsonBlock.link,
       signature: jsonBlock.signature,

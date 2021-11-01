@@ -148,12 +148,6 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
-  // prefixOptions = [
-  //   { name: 'xrb_', value: 'xrb' },
-  //   { name: 'nano_', value: 'nano' },
-  // ];
-  // selectedPrefix = this.prefixOptions[0].value;
-
   serverOptions = [];
   selectedServer = null;
 
