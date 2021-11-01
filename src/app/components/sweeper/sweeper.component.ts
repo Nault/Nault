@@ -265,7 +265,7 @@ export class SweeperComponent implements OnInit {
         const blockInfo = await this.api.blockInfo(data.hash);
         let nanoAmountSent = null;
         if (blockInfo.amount) {
-          nanoAmountSent = this.util.nano.rawToMnano(blockInfo.amount);
+          nanoAmountSent = this.util.nano.rawToNano(blockInfo.amount);
           this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
         }
         this.notificationService.sendInfo('Account ' + address + ' was swept and ' +
@@ -350,7 +350,7 @@ export class SweeperComponent implements OnInit {
     // check for pending first
     let data = null;
     if (this.appSettings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive).toString(10);
+      const minAmount = this.util.nano.nanoToRaw(this.appSettings.settings.minimumReceive).toString(10);
       if (this.appSettings.settings.pendingOption === 'amount') {
         data = await this.api.pendingLimitSorted(address, this.maxIncoming, minAmount);
       } else {
@@ -372,7 +372,7 @@ export class SweeperComponent implements OnInit {
       Object.keys(data.blocks).forEach(function(key) {
         raw = this.util.big.add(raw, data.blocks[key].amount);
       }.bind(this));
-      const nanoAmount = this.util.nano.rawToMnano(raw);
+      const nanoAmount = this.util.nano.rawToNano(raw);
       const pending = {count: Object.keys(data.blocks).length, raw: raw, NANO: nanoAmount, blocks: data.blocks};
       const row = 'Found ' + pending.count + ' pending containing total ' + pending.NANO + ' NANO';
       this.appendLog(row);

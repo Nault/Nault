@@ -168,7 +168,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     // Fetch pending of all tracked accounts
     let pending;
     if (this.appSettings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+      const minAmount = this.util.nano.nanoToRaw(this.appSettings.settings.minimumReceive);
       pending = await this.api.accountsPendingLimitSorted(accountIDs, minAmount.toString(10));
     } else {
       pending = await this.api.accountsPendingSorted(accountIDs);
@@ -194,7 +194,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       // Add balances from RPC data
       } else {
         balanceAccount.balance = new BigNumber(apiAccounts.balances[entry.account].balance);
-        balanceAccount.balanceFiat = this.util.nano.rawToMnano(balanceAccount.balance).times(this.fiatPrice).toNumber();
+        balanceAccount.balanceFiat = this.util.nano.rawToNano(balanceAccount.balance).times(this.fiatPrice).toNumber();
         balanceAccount.balanceRaw = new BigNumber(balanceAccount.balance).mod(this.nano);
       }
       this.totalTrackedBalance = this.totalTrackedBalance.plus(balanceAccount.balance);

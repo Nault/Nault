@@ -45,7 +45,7 @@ export class DeeplinkService {
         const amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
           to: url.pathname,
-          amount: amount ? this.util.nano.rawToMnano(amount) : null
+          amount: amount ? this.util.nano.rawToNano(amount) : null
         }});
 
       } else if (url.protocol === 'nanorep:' && this.util.account.isValidAccount(url.pathname)) {

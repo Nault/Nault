@@ -75,9 +75,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   showAddressBook = false;
   addressBookMatch = '';
   amounts = [
-    { name: 'NANO', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano', shortName: 'knano', value: 'knano' },
-    { name: 'nano', shortName: 'nano', value: 'nano' },
+    { name: 'NANO', shortName: 'NANO', value: 'nano' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -98,7 +96,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   blockHash = null;
   blockHashReceive = null;
   remoteVisible = false;
-  blockTypes: string[] = ['Send Nano', 'Change Representative'];
+  blockTypes: string[] = ['Send Woof', 'Change Representative'];
   blockTypeSelected: string = this.blockTypes[0];
   representativeList = [];
   representativesOverview = [];
@@ -144,8 +142,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.priceSub = this.price.lastPrice$.subscribe(event => {
-      this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
-      this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
+      this.account.balanceFiat = this.util.nano.rawToNano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+      this.account.pendingFiat = this.util.nano.rawToNano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     });
 
     const UIkit = window['UIkit'];
@@ -309,7 +307,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.loadingIncomingTxList = true;
 
       if (this.settings.settings.minimumReceive) {
-        const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive);
+        const minAmount = this.util.nano.nanoToRaw(this.settings.settings.minimumReceive);
         pending = await this.api.pendingLimitSorted(accountID, 50, minAmount.toString(10));
       } else {
         pending = await this.api.pendingSorted(accountID, 50);
@@ -374,8 +372,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     // Set fiat values?
     this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.nano);
     this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.nano);
-    this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
-    this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
+    this.account.balanceFiat = this.util.nano.rawToNano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
+    this.account.pendingFiat = this.util.nano.rawToNano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
 
     await this.getAccountHistory(accountID);
 
@@ -641,7 +639,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount)
+    const fiatAmount = this.util.nano.rawToNano(rawAmount)
     .times(this.price.price.lastPrice)
     .times(precision)
     .floor().div(precision).toNumber();
@@ -656,7 +654,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.util.string.isNumeric(this.amountFiat)) return;
-    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
+    const rawAmount = this.util.nano.nanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
     const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
@@ -734,8 +732,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     switch (this.selectedAmount.value) {
       default:
       case 'nano': return this.util.nano.nanoToRaw(value);
-      case 'knano': return this.util.nano.knanoToRaw(value);
-      case 'mnano': return this.util.nano.mnanoToRaw(value);
     }
   }
 
@@ -743,8 +739,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     switch (this.selectedAmount.value) {
       default:
       case 'nano': return this.util.nano.rawToNano(value);
-      case 'knano': return this.util.nano.rawToKnano(value);
-      case 'mnano': return this.util.nano.rawToMnano(value);
     }
   }
 
@@ -822,7 +816,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.amountRaw = this.rawAmount.mod(this.nano);
 
     // Determine fiat value of the amount
-    this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
+    this.amountFiat = this.util.nano.rawToNano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     const remaining = new BigNumber(from.balance).minus(this.rawAmount);
     const remainingDecimal = remaining.toString(10);

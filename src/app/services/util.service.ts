@@ -66,11 +66,7 @@ export class UtilService {
     isValidAmount: isValidAmount,
   };
   nano = {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
     nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
     rawToNano: rawToNano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,
@@ -293,7 +289,7 @@ function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
-function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
+function getPublicAccountID(accountPublicKeyBytes, prefix = 'woof') {
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
@@ -303,7 +299,7 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
 }
 
 function isValidAccount(account: string): boolean {
-  return nanocurrency.checkAddress(account);
+  return nanocurrency.checkAddress(account.replace('woof_', 'nano_'));
 }
 
 // Check if a string is a numeric and larger than 0 but less than Nano supply
@@ -311,7 +307,7 @@ function isValidNanoAmount(val: string) {
   // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
-    if (val !== '' && mnanoToRaw(val).gte(1) && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+    if (val !== '' && nanoToRaw(val).gte(1) && nanocurrency.checkAmount(nanoToRaw(val).toString(10))) {
       return true;
     } else {
       return false;
@@ -351,23 +347,9 @@ function setPrefix(account, prefix = '') {
 /**
  * Conversion functions
  */
-const mnano = 1000000000000000000000000000000;
-const knano = 1000000000000000000000000000;
-const nano  = 1000000000000000000000000;
-function mnanoToRaw(value) {
-  return new BigNumber(value).times(mnano);
-}
-function knanoToRaw(value) {
-  return new BigNumber(value).times(knano);
-}
+const nano = 100000000000000000000000000;
 function nanoToRaw(value) {
   return new BigNumber(value).times(nano);
-}
-function rawToMnano(value) {
-  return new BigNumber(value).div(mnano);
-}
-function rawToKnano(value) {
-  return new BigNumber(value).div(knano);
 }
 function rawToNano(value) {
   return new BigNumber(value).div(nano);
@@ -528,11 +510,7 @@ const util = {
     isValidAmount: isValidNanoAmount,
   },
   nano: {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
     nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
     rawToNano: rawToNano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,

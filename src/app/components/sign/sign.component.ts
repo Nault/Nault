@@ -249,7 +249,7 @@ export class SignComponent implements OnInit {
           return this.notificationService.sendError(`Meaningless block. The balance and representative are unchanged!`, {length: 0});
         }
 
-        this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
+        this.amount = this.util.nano.rawToNano(this.rawAmount).toString(10);
 
         this.prepareTransaction();
       } else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
@@ -268,7 +268,7 @@ export class SignComponent implements OnInit {
           return this.notificationService.sendError(`Only OPEN block is currently supported when previous block is missing`, {length: 0});
         }
 
-        this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
+        this.amount = this.util.nano.rawToNano(this.rawAmount).toString(10);
         this.prepareTransaction();
       } else {
         return;
@@ -422,7 +422,7 @@ export class SignComponent implements OnInit {
   async prepareTransaction() {
     // Determine fiat value of the amount (if not offline mode)
     if (this.settings.settings.serverAPI) {
-      this.amountFiat = this.util.nano.rawToMnano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
+      this.amountFiat = this.util.nano.rawToNano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
     }
 
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);

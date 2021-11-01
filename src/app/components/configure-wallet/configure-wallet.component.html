@@ -255,19 +255,19 @@
       <div class="uk-width-1-1">
         <h3>Import Seed</h3>
         <p>
-          Enter your Nano secret seed below.
+          Enter your WOOF secret seed below.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importSeedModel" placeholder="64 hex character Nano Seed">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importSeedModel" placeholder="64 hex character WOOF Seed">
         </div>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'mnemonic'" class="uk-margin-top">
       <div class="uk-width-1-1">
-        <h3>Import Nano Mnemonic</h3>
+        <h3>Import WOOF Mnemonic</h3>
         <p>
-          Enter your Nano mnemonic phrase below.<br>If it came from a Ledger device or certain multi-currency wallets, use <a (click)="selectedImportOption = 'bip39-mnemonic';">BIP39 Mnemonic</a> import type instead.
+          Enter your WOOF mnemonic phrase below.<br>If it came from a Ledger device or certain multi-currency wallets, use <a (click)="selectedImportOption = 'bip39-mnemonic';">BIP39 Mnemonic</a> import type instead.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
@@ -314,7 +314,7 @@
       <div class="uk-width-1-1">
         <h3>Use Ledger Hardware Wallet</h3>
         <p>
-          Make sure you have the Nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
+          Make sure you have the WOOF app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
           <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
           <br>
         </p>
@@ -338,7 +338,7 @@
               </div>
               <p>
                 <b>Ledger Device Not Connected</b><br>
-                Connect your Ledger device and make sure you have the Nano app installed and running, then press the button below.<br>
+                Connect your Ledger device and make sure you have the WOOF app installed and running, then press the button below.<br>
                 <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
               </p>
             </div>
@@ -372,11 +372,11 @@
       <div class="uk-width-1-1">
         <h3>Import Private Key</h3>
         <p>
-          Enter your Nano private key below.
+          Enter your WOOF private key below.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('priv1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importPrivateKeyModel" placeholder="64 hex character Nano Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importPrivateKeyModel" placeholder="64 hex character WOOF Private Key">
         </div>
       </div>
     </div>
@@ -388,7 +388,7 @@
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('expanded1','hash')" uk-tooltip title="Scan from QR code"></a>
-          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importExpandedKeyModel" placeholder="64 or 128 hex character Nano Expanded Private Key">
+          <input type="text" class="uk-input" (keyup.enter)="setPasswordInit()" [(ngModel)]="importExpandedKeyModel" placeholder="64 or 128 hex character WOOF Expanded Private Key">
         </div>
       </div>
     </div>
@@ -507,7 +507,7 @@
   </div>
   <div class="uk-card-body">
     <p>
-      Your wallet has been created and you are ready to send and receive Nano!<br>
+      Your wallet has been created and you are ready to send and receive WOOF!<br>
       It will lock after a certain amount of inactivity which can be changed in the <a routerLink="/configure-app" routerLinkActive="active">app settings</a>.
     </p>
   </div>

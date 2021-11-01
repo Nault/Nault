@@ -64,17 +64,6 @@ export class NinjaService {
 
   // false - does not exist, null - any other error
   async getAccount(account: string): Promise<any> {
-    return await this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
-      .then(res => {
-        return res;
-      })
-      .catch(err => {
-        if (err.status === 404) {
-          return false;
-        }
-
-        return null;
-      });
+    return false;
   }
-
 }

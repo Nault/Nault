@@ -143,12 +143,12 @@
     "protocols": {
       "name": "nano",
       "schemes": [
-        "nano",
-        "nanorep",
-        "nanoseed",
-        "nanokey",
-        "nanosign",
-        "nanoprocess"
+        "woof",
+        "woofrep",
+        "woofseed",
+        "woofkey",
+        "woofsign",
+        "woofprocess"
       ],
       "role": "Viewer"
     }
