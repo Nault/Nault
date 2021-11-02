@@ -109,7 +109,7 @@
                           <span [title]="( accounts[addressBook.account]?.balanceRaw.gt(0) ? ( '+' + ( accounts[addressBook.account]?.balanceRaw.toString(10) ) + ' raw' ) : '' )">
                             <span class="amount-integer">{{ accounts[addressBook.account]?.balance | rai: 'nano,true' | amountsplit: 0 }}</span>
                             <span class="amount-fractional">{{ accounts[addressBook.account]?.balance | rai: 'nano,true' | amountsplit: 1 }}</span>
-                            <span class="currency-name">NANO</span>
+                            <span class="currency-name">PAW</span>
                           </span>
                           <div *ngIf="accounts[addressBook.account]?.pending.gt(0)" class="incoming-label">
                             <div class="text-snippet">New</div>

@@ -47,7 +47,7 @@ export class ConfigureAppComponent implements OnInit {
   selectedLanguage = this.languages[0].id;
 
   denominations = [
-    { name: 'NANO', value: 'nano' },
+    { name: 'PAW', value: 'nano' },
   ];
   selectedDenomination = this.denominations[0].value;
 

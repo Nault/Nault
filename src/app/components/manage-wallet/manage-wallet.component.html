@@ -130,7 +130,7 @@
                 <label class="uk-form-label" for="account">Account</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" id="account" [(ngModel)]="csvAccount">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'nano,true' | amountsplit: 0 }}{{ account.balance | rai: 'nano,true' | amountsplit: 1 }} NANO)</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'nano,true' | amountsplit: 0 }}{{ account.balance | rai: 'nano,true' | amountsplit: 1 }} PAW)</option>
                   </select>
                 </div>
               </div>

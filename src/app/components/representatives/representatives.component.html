@@ -74,7 +74,7 @@
                     <div class="amounts">
                       <span class="amount-integer">{{ rep.delegatedWeight | rai: 'nano,true' | amountsplit: 0 }}</span>
                       <span class="amount-fractional">{{ rep.delegatedWeight | rai: 'nano,true' | amountsplit: 1 }}</span>
-                      <span class="currency-name">NANO</span>
+                      <span class="currency-name">PAW</span>
                     </div>
                   </td>
                 </tr>
@@ -97,7 +97,7 @@
                     <div class="amounts">
                       <span class="amount-integer">{{ delegatingAccount.balance | rai: 'nano,true' | amountsplit: 0 }}</span>
                       <span class="amount-fractional">{{ delegatingAccount.balance | rai: 'nano,true' | amountsplit: 1 }}</span>
-                      <span class="currency-name">NANO</span>
+                      <span class="currency-name">PAW</span>
                     </div>
                   </td>
                 </tr>
@@ -136,7 +136,7 @@
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
                     <option [value]="null">Select Accounts to Change</option>
                     <option [value]="'all'">All Current Accounts</option>
-                    <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'nano,true' | amountsplit: 0 }}{{ account.balance | rai: 'nano,true' | amountsplit: 1 }} NANO)</option>
+                    <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'nano,true' | amountsplit: 0 }}{{ account.balance | rai: 'nano,true' | amountsplit: 1 }} PAW)</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of selectedAccounts">
