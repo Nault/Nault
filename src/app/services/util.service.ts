@@ -348,7 +348,7 @@ function setPrefix(account, prefix = '') {
 /**
  * Conversion functions
  */
-const nano = 100000000000000000000000000;
+const nano = 1000000000000000000000000000;
 function nanoToRaw(value) {
   return new BigNumber(value).times(nano);
 }

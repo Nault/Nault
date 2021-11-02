@@ -24,7 +24,7 @@
         <div class="balance-column">
           <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
             <div class="balance primary">
-              {{ wallet.selectedAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ wallet.selectedAccount.balance | rai: 'mnano,true' | amountsplit: 1 }} PAW
+              {{ wallet.selectedAccount.balance | rai: 'nano,true' | amountsplit: 0 }}{{ wallet.selectedAccount.balance | rai: 'nano,true' | amountsplit: 1 }} PAW
             </div>
             <div class="balance converted">{{ wallet.selectedAccount.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
           </ng-container>
@@ -42,7 +42,7 @@
         </div>
         <div class="balance-column">
           <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
-            <div class="balance primary">{{ wallet.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ wallet.balance | rai: 'mnano,true' | amountsplit: 1 }} PAW</div>
+            <div class="balance primary">{{ wallet.balance | rai: 'nano,true' | amountsplit: 0 }}{{ wallet.balance | rai: 'nano,true' | amountsplit: 1 }} PAW</div>
             <div class="balance converted">{{ wallet.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
           </ng-container>
           <ng-template #balanceLoading>
@@ -63,9 +63,9 @@
               <div class="balance primary">
                 <span class="incoming-label" *ngIf="account.pending.gt(0)">
                   <span class="text-snippet">{{ 'general.new' | transloco }}</span>
-                  <span class="text-full">+{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }} PAW</span>
+                  <span class="text-full">+{{ account.pending | rai: 'nano,true' | amountsplit: 0 }}{{ account.pending | rai: 'nano,true' | amountsplit: 1 }} PAW</span>
                 </span>
-                {{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} PAW
+                {{ account.balance | rai: 'nano,true' | amountsplit: 0 }}{{ account.balance | rai: 'nano,true' | amountsplit: 1 }} PAW
               </div>
               <div class="balance converted">{{ account.balanceFiat | fiat: settings.settings.displayCurrency }}</div>
             </ng-container>
@@ -126,8 +126,8 @@
                       <div class="balance-container primary">
                         <div class="currency-name">PAW</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'nano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'nano,true' | amountsplit: 1 }}</div>
                           <div class="amount-updating" *ngIf="wallet.updatingBalance && isConfigured()"><div uk-spinner="ratio: 0.5;"></div></div>
                         </div>
                       </div>
@@ -178,8 +178,8 @@
                       <div class="balance-container primary">
                         <div class="currency-name">NANO</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 0 }}</div>
-                          <div class="amount-fractional">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 1 }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'nano,true' | amountsplit: 0 }}</div>
+                          <div class="amount-fractional">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'nano,true' | amountsplit: 1 }}</div>
                         </div>
                       </div>
                       <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">

@@ -35,7 +35,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
       this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString();
     });
 
-    this.unitChange('mnano');
+    this.unitChange('nano');
   }
 
   ngOnDestroy() {
@@ -46,7 +46,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
 
   unitChange(unit) {
     switch (unit) {
-      case 'mnano':
+      case 'nano':
         if (this.util.account.isValidNanoAmount(this.Mnano)) {
           this.raw = nanocurrency.convert(this.Mnano, {from: nanocurrency.Unit.knano, to: nanocurrency.Unit.raw});
           this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString(10);

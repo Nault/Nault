@@ -9,13 +9,13 @@
           <div class="uk-width-1-1 narrow-div">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="mnano">NANO <span uk-icon="icon: info;" uk-tooltip title="The main unit used in Nano wallets and exchanges. Also known as Mnano."></span></label>
+                <label class="uk-form-label" for="nano">NANO <span uk-icon="icon: info;" uk-tooltip title="The main unit used in Nano wallets and exchanges. Also known as Mnano."></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
                         <a class="uk-form-icon uk-form-icon-flip" ngxClipboard [cbContent]="Mnano" (cbOnSuccess)="notifications.sendSuccess('Value Copied!')" uk-icon="icon: copy" title="Copy Value" uk-tooltip></a>
-                        <input [(ngModel)]="Mnano" class="uk-input uk-margin-small-bottom" [ngClass]="{ 'uk-form-danger': invalidMnano }" id="mnano" type="text" (ngModelChange)="unitChange('mnano')" placeholder="" autocomplete="off">
+                        <input [(ngModel)]="Mnano" class="uk-input uk-margin-small-bottom" [ngClass]="{ 'uk-form-danger': invalidMnano }" id="nano" type="text" (ngModelChange)="unitChange('nano')" placeholder="" autocomplete="off">
                       </div>
                     </div>
                   </div>

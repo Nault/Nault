@@ -24,7 +24,7 @@ import { TranslocoService } from '@ngneat/transloco';
 
 
 export class ReceiveComponent implements OnInit, OnDestroy {
-  nano = 1000000000000000000000000;
+  nano = 10000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
 
   timeoutIdClearingRecentlyCopiedState: any = null;

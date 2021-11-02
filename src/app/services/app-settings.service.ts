@@ -36,7 +36,7 @@ export class AppSettingsService {
 
   settings: AppSettings = {
     language: null,
-    displayDenomination: 'mnano',
+    displayDenomination: 'nano',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     defaultRepresentative: null,
@@ -82,7 +82,7 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    '213.239.194.182'
+    'peering.charterino.ru'
   ]);
 
   constructor(
@@ -171,7 +171,7 @@ export class AppSettingsService {
     localStorage.removeItem(this.storeKey);
     this.settings = {
       language: 'en',
-      displayDenomination: 'mnano',
+      displayDenomination: 'nano',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       defaultRepresentative: null,

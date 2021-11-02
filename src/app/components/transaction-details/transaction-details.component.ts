@@ -14,7 +14,7 @@ import { TranslocoService } from '@ngneat/transloco';
   styleUrls: ['./transaction-details.component.css']
 })
 export class TransactionDetailsComponent implements OnInit {
-  nano = 1000000000000000000000000;
+  nano = 10000000000000000000000000;
 
   routerSub = null;
   transaction: any = {};
