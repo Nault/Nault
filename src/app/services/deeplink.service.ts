@@ -17,7 +17,7 @@ export class DeeplinkService {
   ) { }
 
   navigate(deeplink: string): boolean {
-    const nano_scheme = /^(woof|woofrep|woofseed|woofkey|woofsign|woofprocess|https):.+$/g;
+    const nano_scheme = /^(paw|pawrep|pawseed|pawkey|pawsign|pawprocess|https):.+$/g;
 
     if (this.util.account.isValidAccount(deeplink)) {
       // Got address, routing to send...

@@ -22,7 +22,7 @@
         <div class="account-balances">
           <ng-container *ngIf="!loadingAccountDetails else cardBalancesLoading">
             <div class="balance-container primary">
-              <div class="currency-name">WOOF</div>
+              <div class="currency-name">PAW</div>
               <div class="amount-container">
                 <div class="amount-integer">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 0 }}</div>
                 <div class="amount-fractional">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 1 }}</div>
@@ -177,7 +177,7 @@
                   >
                     <span class="amount-integer">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 0 }}</span>
                     <span class="amount-fractional">{{ !account ? 0 : (account.balance || 0 | rai: 'mnano,true') | amountsplit: 1 }}</span>
-                    <span class="amount-currency-name">WOOF</span>
+                    <span class="amount-currency-name">PAW</span>
                   </div>
                   <div
                     *ngIf="account && account.pending && (account.pending > 0)"
@@ -189,7 +189,7 @@
                       <div class="amount-sign">+</div>
                       <div class="amount-integer">{{ account.pending | rai: 'mnano,true' | amountsplit: 0 }}</div>
                       <div class="amount-fractional">{{ account.pending | rai: 'mnano,true' | amountsplit: 1 }}</div>
-                      <div class="amount-currency-name">WOOF</div>
+                      <div class="amount-currency-name">PAW</div>
                     </div>
                   </div>
                 </div>
@@ -388,7 +388,7 @@
             <span class="uk-text-small">{{ 'general.actions.ready-to-receive' | transloco }}</span><br>
             <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
             <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
-            <span class="currency-name">WOOF</span>
+            <span class="currency-name">PAW</span>
             <div class="compact-actions-date">
               <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
             </div>
@@ -484,7 +484,7 @@
               </ng-container>
               <span class="amount-integer">{{ history.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ history.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
-              <span class="currency-name">WOOF</span>
+              <span class="currency-name">PAW</span>
               <div class="compact-actions-date text-half-muted">
                 <ng-template [ngTemplateOutlet]="transactionActionsOrDate"></ng-template>
               </div>

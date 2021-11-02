@@ -286,7 +286,7 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
     const isValidNanoAccount = (
-        searchData.startsWith('woof_')
+        searchData.startsWith('paw_')
       && this.util.account.isValidAccount(searchData)
     );
 

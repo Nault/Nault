@@ -656,7 +656,7 @@ export class WalletService {
 
   reloadFiatBalances() {
     //const fiatPrice = this.price.price.lastPrice;
-    // As WOOF isnt listed anywhere yet, the price is 0.
+    // As PAW isnt listed anywhere yet, the price is 0.
     const fiatPrice = 0;
 
     this.wallet.accounts.forEach(account => {
@@ -685,7 +685,7 @@ export class WalletService {
     this.wallet.updatingBalance = true;
     const fiatPrice = this.price.price.lastPrice;
 
-    const accountIDs = this.wallet.accounts.map(a => a.id.replace('nano_', 'woof_'));
+    const accountIDs = this.wallet.accounts.map(a => a.id.replace('nano_', 'paw_'));
     console.log(accountIDs);
     const accounts = await this.api.accountsBalances(accountIDs);
     console.log(accounts);
