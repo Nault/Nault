@@ -349,8 +349,8 @@ function getApplicationMenu() {
           click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
         },
         {
-          label: 'Discord (#nault)',
-          click () { loadExternal('https://discord.nanocenter.org/'); }
+          label: 'Discord',
+          click () { loadExternal('https://discord.gg/fu4J6yhWxe'); }
         },
         {type: 'separator'},
         {
