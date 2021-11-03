@@ -8,7 +8,7 @@ import {UtilService} from './util.service';
 import {BehaviorSubject} from 'rxjs';
 
 const mod = window['Module'];
-export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update
+export const baseThreshold = 'fffff80000000000'; // threshold since v21 epoch update
 const hardwareConcurrency = window.navigator.hardwareConcurrency || 2;
 const workerCount = Math.max(hardwareConcurrency - 1, 1);
 let workerList = [];
