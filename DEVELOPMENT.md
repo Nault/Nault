@@ -1,8 +1,8 @@
-# Nault Development
+# PawVault Development
 
 ## Application Structure
 
-- [Nault](https://github.com/Nault/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
+- [PawVault](https://github.com/Paw-crypto/PawVault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
 - Communication with the network is done via Nano RPC and Websocket protocols, private or public on any nano network.
 
 ## Development Prerequisites
@@ -12,8 +12,8 @@
 ## Development Guide
 #### Clone repository and install dependencies
 ```bash
-git clone https://github.com/Nault/Nault
-cd Nault
+git clone https://github.com/Paw-crypto/PawVault
+cd PawVault
 npm install
 ```
 

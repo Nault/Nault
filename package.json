@@ -112,7 +112,7 @@
   "build": {
     "appId": "cc.nault",
     "buildVersion": "1.0.0",
-    "productName": "Nault",
+    "productName": "PawVault",
     "copyright": "Copyright © 2020 The Nano Community / Andrew Steele",
     "directories": {
       "output": "desktop-app/build",

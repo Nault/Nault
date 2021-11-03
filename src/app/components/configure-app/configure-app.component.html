@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
-    <h2 class="uk-heading-divider">Configure Nault</h2>
+    <h2 class="uk-heading-divider">Configure PawVault</h2>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
@@ -138,11 +138,11 @@
                 </div>
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
-                <label class="uk-form-label">Work Server <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using nault.cc. Try the desktop app."></span></label>
+                <label class="uk-form-label">Work Server <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using wallet.paw.digital. Try the desktop app."></span></label>
                   <div class="uk-form-controls">
                       <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
                       <span class="uk-text-meta">
-                        This has to be a valid <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">Nano Work Server</a> endpoint or an API compliant with it.
+                        This has to be a valid <a href="https://docs.wallet.paw.digital/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">Nano Work Server</a> endpoint or an API compliant with it.
                       </span>
                   </div>
               </div>

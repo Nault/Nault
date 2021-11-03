@@ -62,7 +62,7 @@ export class ConfigureWalletComponent implements OnInit {
     { name: 'Nano Seed', value: 'seed' },
     { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
     { name: 'BIP39 Mnemonic Phrase', value: 'bip39-mnemonic' },
-    { name: 'Nault Wallet File', value: 'file' },
+    { name: 'PawVault Wallet File', value: 'file' },
     { name: 'Ledger Nano S / Nano X', value: 'ledger' },
     { name: 'Private Key', value: 'privateKey' },
     { name: 'Expanded Private Key', value: 'expandedKey' },
@@ -168,7 +168,7 @@ export class ConfigureWalletComponent implements OnInit {
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
       this.ledgerService.resetLedger();
-      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the PAW app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
+      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the PAW app is running on the Ledger. If the error persists: Check the <a href="https://docs.wallet.paw.digital/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {
@@ -201,7 +201,7 @@ export class ConfigureWalletComponent implements OnInit {
     let msg;
     try {
       if (this.walletService.isLedgerWallet()) {
-        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from PawVault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
       } else {
         msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you have saved the PAW seed and/or mnemonic of your current wallet</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of your currently configured wallet.</span></p><br>';
       }

@@ -50,7 +50,7 @@
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Export Nault Wallet</h3>
+        <h3 class="uk-card-title">Export PawVault Wallet</h3>
       </div>
       <ng-container *ngIf="wallet.locked else walletUnlocked">
         <div class="uk-card-body">
@@ -62,7 +62,7 @@
           <div class="uk-card-body">
             Use this export tool to simplify wallet transfer to other devices.
             <br>
-            Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!
+            Your data will be encrypted with your wallet's password, and then can be imported into PawVault on any device!
             <br><br>
             Note: The export does not contain your address book.<br>
             <div *ngIf="showQRExport" uk-grid>
@@ -85,7 +85,7 @@
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
-                Scan the QR code on any device to import your Nault wallet!<br>
+                Scan the QR code on any device to import your PawVault wallet!<br>
                 <br>
                 You can also import your wallet by using the URL below.
                 <br><br>
@@ -121,7 +121,7 @@
       <div *ngIf="csvExportStarted" class="uk-card-body">
         <p>
           Due to limitations in backend servers, you can only request {{transactionHistoryLimit}} transactions per export.<br>
-          However, you can use an offset of X to continue exporting from (X + 1). Another way is connecting Nault to a <a routerLink="/configure-app" routerLinkActive="active">custom server</a> for unlimited history.<br>
+          However, you can use an offset of X to continue exporting from (X + 1). Another way is connecting PawVault to a <a routerLink="/configure-app" routerLinkActive="active">custom server</a> for unlimited history.<br>
         </p>
         <div uk-grid>
           <div class="uk-width-1-1 narrow-div">
