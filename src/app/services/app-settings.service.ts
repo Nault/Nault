@@ -70,7 +70,7 @@ export class AppSettingsService {
       name: 'Peering node',
       value: 'peer',
       api: 'https://rpc.paw.digital',
-      ws: 'ws://ws.paw.digital',
+      ws: 'wss://ws.paw.digital',
       auth: null,
       shouldRandom: true,
     }
