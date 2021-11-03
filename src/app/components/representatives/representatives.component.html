@@ -187,64 +187,7 @@
                     <span class="account-label rep">{{ representativeListMatch }}</span>
                   </div>
                 </div>
-
-                <div class="uk-form-controls">
-                  <div class="uk-inline uk-width-1-1 uk-margin-top">
-                    <button class="uk-button uk-button-default uk-button-small" *ngIf="showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: minus; ratio: 0.8" style="margin-right: 5px;"></span> Hide Recommended Representatives</button>
-                    <button class="uk-button uk-button-primary uk-button-small" *ngIf="!showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: plus; ratio: 0.8" style="margin-right: 5px;"></span> View Recommended Representatives</button>
-                  </div>
-                </div>
               </div>
-
-              <div *ngIf="showRecommendedReps">
-                <hr>
-
-                <div class="uk-margin">
-                  <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
-                  <!--<h4>Or, Select a recommended representative</h4>-->
-                  <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
-                    <li class="uk-list-header">
-                      <div uk-grid>
-                        <div class="uk-width-expand">Representative</div>
-                        <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
-                        <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
-                      </div>
-                    </li>
-                  </ul>
-                  <ul class="uk-list uk-list-striped" style="margin-top: 0;">
-                    <li *ngIf="recommendedRepsLoading" class="uk-text-center">
-                      <span uk-icon="load"></span> Loading reps...
-                    </li>
-                    <li *ngIf="recommendedRepsLoading === null" class="uk-text-center">
-                      <span uk-icon="load"></span> Unable to load representatives from My Nano Ninja
-                    </li>
-                    <li *ngFor="let rep of recommendedRepsPaginated">
-                      <div uk-grid >
-                        <div class="uk-width-expand" (click)="selectRecommendedRep(rep)" style="cursor: pointer;">
-                          <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-right: 4px;">{{ rep.score }}</span> <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
-
-                        </div>
-                        <div class="uk-width-1-2">
-                          <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a>
-
-                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
-                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
-
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified representatives on MyNanoNinja">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
-                  <ul class="uk-pagination uk-flex-center uk-flex-middle">
-                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous class="uk-icon-button"></span></a></li>
-                    <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
-                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next class="uk-icon-button"></span></a></li>
-                  </ul>
-                </div>
-
-              </div>
-
-
             </div>
           </div>
           <div class="uk-card-footer">
