@@ -69,8 +69,8 @@ export class AppSettingsService {
     {
       name: 'Peering node',
       value: 'peer',
-      api: 'http://peering.charterino.ru:7046',
-      ws: 'ws://peering.charterino.ru:7048',
+      api: 'https://rpc.paw.digital',
+      ws: 'ws://ws.paw.digital',
       auth: null,
       shouldRandom: true,
     }
