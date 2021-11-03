@@ -82,7 +82,7 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'peering.charterino.ru'
+    'peering.paw.digital'
   ]);
 
   constructor(
