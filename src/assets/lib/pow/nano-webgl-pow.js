@@ -13,7 +13,7 @@
 // @param threshold         String   Optional difficulty threshold (default=0xFFFFFFF8 since v21)
 
 (function(){
-const defaultThreshold = '0xFFFFFFF8'
+const defaultThreshold = '0xFFFF'
 
 function array_hex(arr, index, length) {
   let out='';

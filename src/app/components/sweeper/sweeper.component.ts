@@ -301,7 +301,7 @@ export class SweeperComponent implements OnInit {
         // input hash is the opening address public key
         workInputHash = this.pubKey;
       }
-      const work = await this.workPool.getWork(workInputHash, 1 / 64); // receive threshold
+      const work = await this.workPool.getWork(workInputHash, 1); // receive threshold
       // create the block with the work found
       const block = nanocurrency.createBlock(this.privKey, {balance: this.adjustedBalance, representative: this.representative,
       work: work, link: key, previous: this.previous});

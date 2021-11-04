@@ -566,7 +566,7 @@ export class SignComponent implements OnInit {
       }
 
       if (this.txType === TxType.receive || this.txType === TxType.open) {
-        this.currentBlock.work = await this.workPool.getWork(workBlock, 1 / 64);
+        this.currentBlock.work = await this.workPool.getWork(workBlock, 1);
       } else {
         this.currentBlock.work = await this.workPool.getWork(workBlock, 1);
       }

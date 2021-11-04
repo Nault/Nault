@@ -294,7 +294,7 @@ export class NanoBlockService {
     }
 
     console.log('Get work for receive block');
-    blockData.work = await this.workPool.getWork(workBlock, 1 / 64); // low PoW threshold since receive block
+    blockData.work = await this.workPool.getWork(workBlock, 1); // low PoW threshold since receive block
     this.notifications.removeNotification('pow');
     const processResponse = await this.api.process(blockData, openEquiv ? TxType.open : TxType.receive);
     if (processResponse && processResponse.hash) {
