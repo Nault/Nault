@@ -1,6 +1,6 @@
 {
   "name": "nault",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "license": "MIT",
   "description": "Wallet for interacting with Nano",
   "author": "The Nano Community / Andrew Steele",
@@ -72,6 +72,7 @@
     "qrcode": "^1.4.4",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
+    "safe-buffer": "^5.2.1",
     "tslib": "^2.0.0",
     "tweetnacl": "^1.0.0",
     "zone.js": "~0.10.3"
