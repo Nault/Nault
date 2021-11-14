@@ -25,6 +25,7 @@ interface AppSettings {
   serverWS: string | null;
   serverAuth: string | null;
   minimumReceive: string | null;
+  hideBalances: boolean;
   walletVersion: number | null;
   lightModeEnabled: boolean;
   identiconsStyle: string;
@@ -53,6 +54,7 @@ export class AppSettingsService {
     serverWS: null,
     serverAuth: null,
     minimumReceive: '0.000001',
+    hideBalances: false,
     walletVersion: 1,
     lightModeEnabled: false,
     identiconsStyle: 'nanoidenticons',
@@ -246,6 +248,7 @@ export class AppSettingsService {
       serverWS: null,
       serverAuth: null,
       minimumReceive: '0.000001',
+      hideBalances: false,
       walletVersion: 1,
       lightModeEnabled: false,
       identiconsStyle: 'nanoidenticons',

@@ -22,7 +22,7 @@
                 <label class="uk-form-label" for="form-horizontal-select">From Account</label>
                 <div class="uk-form-controls">
                   <select class="form-select-source uk-select" [(ngModel)]="fromAccountID" (change)="resetRaw()" id="form-horizontal-select">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ settings.settings.hideBalances ? '*' : account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ settings.settings.hideBalances ? '.***' : account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
                   </select>
                 </div>
               </div>
@@ -59,7 +59,7 @@
                   <select required class="form-select-destination uk-select" [(ngModel)]="toOwnAccountID" id="form-horizontal-select">
                     <option value="" disabled selected hidden>Account to transfer to</option>
                     <ng-container *ngFor="let account of accounts">
-                      <option [value]="account.id" *ngIf="account.id !== fromAccountID">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                      <option [value]="account.id" *ngIf="account.id !== fromAccountID">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ settings.settings.hideBalances ? '*' : account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ settings.settings.hideBalances ? '.***' : account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
                     </ng-container>
                   </select>
                 </div>
@@ -166,8 +166,8 @@
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Current Balance</div>
                     <span class="block-balance">
                       <span class="balance-amount-primary">
-                        <span class="amount-integer">{{ (fromAccount.balance || 0) | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                        <span class="amount-fractional">{{ (fromAccount.balance || 0) | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                        <span class="amount-integer">{{ settings.settings.hideBalances ? '*' : (fromAccount.balance || 0) | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-fractional">{{ settings.settings.hideBalances ? '.******' : (fromAccount.balance || 0) | rai: 'mnano,true' | amountsplit: 1 }}</span>
                         <span class="currency-name">NANO</span>
                       </span>
                     </span>

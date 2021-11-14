@@ -115,7 +115,8 @@
     }
   },
   "configure-app": {
-    "language": "Language"
+    "language": "Language",
+    "hide-balances": "Hide Balances"
   },
   "general": {
     "account": "Account",

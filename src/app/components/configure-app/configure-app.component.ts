@@ -148,6 +148,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
+  hideBalancesOptions = [
+    { name: 'Disabled', value: 'disabled' },
+    { name: 'Enabled', value: 'enabled' },
+  ];
+  selectedHideBalancesOption = this.hideBalancesOptions[0].value;
+
   // prefixOptions = [
   //   { name: 'xrb_', value: 'xrb' },
   //   { name: 'nano_', value: 'nano' },
@@ -282,6 +288,10 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
+    const hideBalancesOptionString = (settings.hideBalances === true) ? 'enabled' : 'disabled';
+    const matchingHideBalancesOption = this.hideBalancesOptions.find(d => d.value === hideBalancesOptionString);
+    this.selectedHideBalancesOption = matchingHideBalancesOption.value || this.hideBalancesOptions[0].value;
+
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
@@ -323,6 +333,12 @@ export class ConfigureAppComponent implements OnInit {
 
     this.appSettings.setAppSetting('language', this.selectedLanguage);
     this.translate.setActiveLang(this.selectedLanguage);
+
+    if (this.selectedHideBalancesOption === 'disabled') {
+      this.appSettings.setAppSetting('hideBalances', false);
+    } else {
+      this.appSettings.setAppSetting('hideBalances', true);
+    }
 
     // if (updatePrefixes) {
     //   this.appSettings.setAppSetting('displayPrefix', this.selectedPrefix);

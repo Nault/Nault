@@ -1,6 +1,6 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1" id="address-book-sortable">
-    
+
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
@@ -26,16 +26,16 @@
 
         <div class="advanced-options" *ngIf="showAdvancedOptions">
           <span [title]="( totalTrackedBalanceRaw.gt(0) ? ( '+' + ( totalTrackedBalanceRaw.toString(10) ) + ' raw' ) : '' )">
-            <span class="amount-integer">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 0 }}</span>
-            <span class="amount-fractional">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+            <span class="amount-integer">{{ appSettings.settings.hideBalances ? '*' : (totalTrackedBalance | rai: 'mnano,true' | amountsplit: 0) }}</span>
+            <span class="amount-fractional">{{ appSettings.settings.hideBalances ? '.***' : (totalTrackedBalance | rai: 'mnano,true' | amountsplit: 1) }}</span>
             <span class="currency-name">NANO</span>
           </span>
           <div *ngIf="totalTrackedPending.gt(0)" class="incoming-label">
             <div class="text-snippet">New</div>
-            <div class="text-full">+{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 0 }}{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
+            <div class="text-full">+{{ appSettings.settings.hideBalances ? '*' : (totalTrackedPending | rai: 'mnano,true' | amountsplit: 0) }}{{ appSettings.settings.hideBalances ? '.***' : (totalTrackedPending | rai: 'mnano,true' | amountsplit: 1) }} NANO</div>
           </div>
           <div class="account-amounts-converted uk-width-1-1 text-half-muted">
-            {{ totalTrackedBalanceFiat | fiat: appSettings.settings.displayCurrency }}
+            {{ appSettings.settings.hideBalances ? '*.**' : (totalTrackedBalanceFiat | fiat: appSettings.settings.displayCurrency) }}
           </div>
         </div>
       </div>
@@ -107,17 +107,17 @@
                       <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
                         <div class="account-amounts-primary uk-width-1-1">
                           <span [title]="( accounts[addressBook.account]?.balanceRaw.gt(0) ? ( '+' + ( accounts[addressBook.account]?.balanceRaw.toString(10) ) + ' raw' ) : '' )">
-                            <span class="amount-integer">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
-                            <span class="amount-fractional">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                            <span class="amount-integer">{{ appSettings.settings.hideBalances ? '*' : (accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 0) }}</span>
+                            <span class="amount-fractional">{{ appSettings.settings.hideBalances ? '.***' : (accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 1) }}</span>
                             <span class="currency-name">NANO</span>
                           </span>
                           <div *ngIf="accounts[addressBook.account]?.pending.gt(0)" class="incoming-label">
                             <div class="text-snippet">New</div>
-                            <div class="text-full">+{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 1 }} NANO</div>
+                            <div class="text-full">+{{ appSettings.settings.hideBalances ? '*' : (accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 0) }}{{ appSettings.settings.hideBalances ? '.***' : (accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 1) }} NANO</div>
                           </div>
                         </div>
                         <div class="account-amounts-converted uk-width-1-1 text-half-muted">
-                          {{ accounts[addressBook.account]?.balanceFiat | fiat: appSettings.settings.displayCurrency }}
+                          {{ appSettings.settings.hideBalances ? '*.**' : (accounts[addressBook.account]?.balanceFiat | fiat: appSettings.settings.displayCurrency) }}
                         </div>
                       </ng-container>
                       <ng-template #balanceLoading>
