@@ -82,43 +82,12 @@
     "you-can-change-representative-at-any-time": "You can change representative at any time by clicking on its name above.",
     "you-have-marked-this-representative-as-trusted": "You have marked this representative as trusted, meaning its status will remain \"Good\" even in case of severe issues with uptime or weight distribution."
   },
-  "configure-wallet": {
-    "set-wallet-password": {
-      "set-wallet-password": "Set Wallet Password",
-      "choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Choose a wallet password that will be used to unlock this application.",
-      "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "While the application is locked, the secret recovery phrase will be encrypted, which prevents sending/receiving funds and managing accounts.",
-      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password (the bar should be green).",
-      "errors": {
-        "password-must-be-at-least-x-characters-long": "Password must be at least {{ minCharacters }} characters long",
-        "passwords-do-not-match": "Passwords do not match!"
-      }
-    },
-    "new-wallet": {
-      "recovery-phrases-for-new-wallet": "Recovery Phrases for New Wallet",
-      "please-take-some-time-to-write-down-recovery-phrases": "Please take some time to backup the secret recovery seed and/or mnemonic, to be able to access this wallet in the future.",
-      "recovery-phrases-alert": {
-        "1": {
-          "1": "Make sure to write down your seed and/or mnemonic or save it somewhere safe, and ",
-          "2-strong": "never share it with anyone",
-          "3": "!"
-        },
-        "2": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency."
-      },
-      "secret-recovery-seed": "Secret Recovery Seed",
-      "secret-recovery-mnemonic": "Secret Recovery Mnemonic",
-      "copy-secret-recovery-seed": "Copy Secret Recovery Seed",
-      "copy-secret-recovery-mnemonic": "Copy Secret Recovery Mnemonic",
-      "successfully-copied-secret-recovery-seed": "Successfully copied Secret Recovery Seed to clipboard!",
-      "successfully-copied-secret-recovery-mnemonic": "Successfully copied Secret Recovery Mnemonic to clipboard!",
-      "i-have-securely-stored-recovery-phrases": "I have securely stored the secret recovery seed and/or mnemonic",
-      "create-wallet": "Create Wallet"
-    }
-  },
   "configure-app": {
     "advanced-options": "Advanced Options",
     "api-server": "API Server",
     "app-display-settings-successfully-updated": "App display settings successfully updated!",
     "app-wallet-settings-successfully-updated": "App wallet settings successfully updated!",
+    "are-you-sure": "Are you sure?",
     "authorization": "Authorization",
     "change-if-your-wallet-should-be-locked-automatically-after": "Change if your wallet should be locked automatically after you have not interacted with it for a certain period of time",
     "change-the-currency-pair-used-when-showing-fiat-values": "Change the currency pair used when showing fiat values in the application. Select None to hide fiat pairs.",
@@ -235,7 +204,41 @@
     "webgl-support-not-available-set-pow-to-best": "WebGL support not available, set PoW to Best",
     "websocket-server": "WebSocket Server",
     "work-server": "Work Server",
-    "you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values."
+    "you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values.",
+    "you-are-about-to-delete-all-locally-stored-data-about-your": "You are about to delete all locally stored data about your currently configured wallet.",
+    "you-are-about-to-disable-storage-of-all-wallet-data-which": "You are about to disable storage of all wallet data, which means there will be no wallet configured next time you use Nault."
+  },
+  "configure-wallet": {
+    "new-wallet": {
+      "copy-secret-recovery-mnemonic": "Copy Secret Recovery Mnemonic",
+      "copy-secret-recovery-seed": "Copy Secret Recovery Seed",
+      "create-wallet": "Create Wallet",
+      "i-have-securely-stored-recovery-phrases": "I have securely stored the secret recovery seed and/or mnemonic",
+      "please-take-some-time-to-write-down-recovery-phrases": "Please take some time to backup the secret recovery seed and/or mnemonic, to be able to access this wallet in the future.",
+      "recovery-phrases-alert": {
+        "1": {
+          "1": "Make sure to write down your seed and/or mnemonic or save it somewhere safe, and ",
+          "2-strong": "never share it with anyone",
+          "3": "!"
+        },
+        "2": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency."
+      },
+      "recovery-phrases-for-new-wallet": "Recovery Phrases for New Wallet",
+      "secret-recovery-mnemonic": "Secret Recovery Mnemonic",
+      "secret-recovery-seed": "Secret Recovery Seed",
+      "successfully-copied-secret-recovery-mnemonic": "Successfully copied Secret Recovery Mnemonic to clipboard!",
+      "successfully-copied-secret-recovery-seed": "Successfully copied Secret Recovery Seed to clipboard!"
+    },
+    "set-wallet-password": {
+      "choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Choose a wallet password that will be used to unlock this application.",
+      "errors": {
+        "password-must-be-at-least-x-characters-long": "Password must be at least {{ minCharacters }} characters long",
+        "passwords-do-not-match": "Passwords do not match!"
+      },
+      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password (the bar should be green).",
+      "set-wallet-password": "Set Wallet Password",
+      "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "While the application is locked, the secret recovery phrase will be encrypted, which prevents sending/receiving funds and managing accounts."
+    }
   },
   "general": {
     "account": "Account",
