@@ -201,7 +201,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">Default Representative <span uk-icon="icon: info;" uk-tooltip title="This representative will be used when creating the initial open block on a new account"></span></label>
+                <label class="uk-form-label">Default Tribe <span uk-icon="icon: info;" uk-tooltip title="This tribe will be used when creating the initial open block on a new account"></span></label>
 
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
@@ -210,7 +210,7 @@
                     
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">Representative List Results</li>
+                        <li class="uk-nav-header">Tribe List Results</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">

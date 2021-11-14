@@ -104,7 +104,7 @@ export class ConfigureAppComponent implements OnInit {
   identiconOptions = [
     { name: 'None', value: 'none' },
     { name: 'Nanoidenticons (by keerifox)', value: 'nanoidenticons' },
-    { name: 'Natricon (by Appditto)', value: 'natricon' },
+    { name: 'Pawnimals', value: 'natricon' },
   ];
   selectedIdenticonOption = this.identiconOptions[0].value;
 
