@@ -34,6 +34,7 @@ import { TransactionDetailsComponent } from './components/transaction-details/tr
 import {PriceService} from './services/price.service';
 import { FiatPipe } from './pipes/fiat.pipe';
 import { AmountSplitPipe } from './pipes/amount-split.pipe';
+import { HideBalancePipe } from './pipes/hidebalance.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
 import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
 import { NanoIdenticonComponent } from './components/helpers/nano-identicon/nano-identicon.component';
@@ -91,6 +92,7 @@ import { TranslocoRootModule } from './transloco/transloco-root.module';
     TransactionDetailsComponent,
     FiatPipe,
     AmountSplitPipe,
+    HideBalancePipe,
     ImportWalletComponent,
     NanoAccountIdComponent,
     NanoIdenticonComponent,
