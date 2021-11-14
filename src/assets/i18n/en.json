@@ -188,7 +188,7 @@
     "this-has-to-be-a-valid-work": {
       "1": "This has to be a valid",
       "2-link-work": "Nano Work Server",
-      "3": "endpoint or an API compliant with it."
+      "3": "endpoint or an API compliant with it. If your server on localhost does not work, try the desktop app instead."
     },
     "this-representative-will-be-used-for-any-new-account": "This representative will be used for any new account",
     "this-server-is-used-for-rpc-communication-with-the-nano-node": "This server is used for RPC communication with the Nano Node",

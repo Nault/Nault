@@ -138,7 +138,7 @@
                 </div>
               </div>
               <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
-                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }} <span uk-icon="icon: info;" uk-tooltip title="Path to custom work server application. Localhost such as 127.0.0.1:1234 may not work if using nault.cc. Try the desktop app."></span></label>
+                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }}</label>
                   <div class="uk-form-controls">
                       <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
                       <span class="uk-text-meta">
