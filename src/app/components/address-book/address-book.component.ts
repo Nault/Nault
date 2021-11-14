@@ -11,6 +11,7 @@ import {BigNumber} from 'bignumber.js';
 import {ApiService} from '../../services/api.service';
 import {PriceService} from '../../services/price.service';
 import {AppSettingsService} from '../../services/app-settings.service';
+import {TranslocoService} from '@ngneat/transloco';
 
 export interface BalanceAccount {
   balance: BigNumber;
@@ -65,7 +66,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private api: ApiService,
     private price: PriceService,
-    public appSettings: AppSettingsService) { }
+    public appSettings: AppSettingsService,
+    private translocoService: TranslocoService) { }
 
   async ngOnInit() {
     this.addressBookService.loadAddressBook();
@@ -274,7 +276,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     // Trim and remove duplicate spaces
     this.newAddressName = this.newAddressName.trim().replace(/ +/g, ' ');
 
-    if ( /^Account #\d+$/g.test(this.newAddressName) === true ) {
+    const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
+    if ( regexp.test(this.newAddressName) === true ) {
       return this.notificationService.sendError(`This name is reserved for wallet accounts without a label`);
     }
 
