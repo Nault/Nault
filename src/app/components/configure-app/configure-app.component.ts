@@ -372,7 +372,9 @@ export class ConfigureAppComponent implements OnInit {
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
       const valid = this.util.account.isValidAccount(this.defaultRepresentative);
       if (!valid) {
-        return this.notifications.sendWarning(this.translocoService.translate('configure-app.default-representative-is-not-a-valid-account'));
+        return this.notifications.sendWarning(
+          this.translocoService.translate('configure-app.default-representative-is-not-a-valid-account')
+        );
       }
     }
 
