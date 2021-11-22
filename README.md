@@ -1,8 +1,8 @@
-# PawVault
+# Biome
 
 [![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.gg/ZS9AQAK2e9)
 
-PawVault is a community driven fork of PawVault for the Paw blockchain. Original PawVault: [GitHub](https://github.com/Paw-crypto/PawVault) 💙
+Biome is a community driven fork of Nault for the Paw blockchain. Original Nault: [GitHub](https://github.com/Nault/Nault) 💙
 
 It's a fully client-side signing wallet for sending and receiving [Paw](https://github.com/Paw-crypto/paw-node/).
 
@@ -10,8 +10,8 @@ It's a fully client-side signing wallet for sending and receiving [Paw](https://
 
 Special thanks to the following!
 
-- [PawVault](https://github.com/Paw-crypto/PawVault) - The original PawVault implementation
-- [NanoVault](https://github.com/cronoh/nanovault) - Nano Vault
+- [NanoVault](https://github.com/cronoh/nanovault) - The original one
+- [Nault](https://github.com/Nault/Nault) - The second fork of NanoVault
 - [numtel/nano-webgl-pow](https://github.com/numtel/nano-webgl-pow) - WebGL PoW Implementation
 - [jaimehgb/RaiBlocksWebAssemblyPoW](https://github.com/jaimehgb/RaiBlocksWebAssemblyPoW) - CPU PoW Implementation
 - [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
