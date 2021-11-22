@@ -1,7 +1,7 @@
 # Biome
 
-[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.gg/DjXn6bb3aE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PAW_digital?style=social)](https://twitter.com/intent/follow?screen_name=PAW_digital)
+[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.gg/DjXn6bb3aE)
 
 Biome is a community driven fork of Nault for the Paw blockchain. Original Nault: [GitHub](https://github.com/Nault/Nault) 💙
 
