@@ -9,7 +9,7 @@
 
 Biome is a community driven fork of Nault for the Paw blockchain. Original Nault: [GitHub](https://github.com/Nault/Nault) 💙
 
-It's a fully client-side signing wallet for sending and receiving [Paw](https://github.com/Paw-crypto/paw-node/).
+It's a fully client-side signing wallet for sending and receiving [PAW](https://github.com/Paw-crypto/paw-node/).
 
 ## Acknowledgements
 
