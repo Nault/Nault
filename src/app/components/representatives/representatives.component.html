@@ -3,10 +3,10 @@
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
-        <h2 class="uk-heading-divider uk-text-truncate">Representatives</h2>
+        <h2 class="uk-heading-divider uk-text-truncate">Tribes</h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Reps</a>
+        <a routerLink="/manage-representatives" class="uk-button uk-button-secondary uk-align-right uk-width-auto@s">Manage Known Tribes</a>
       </div>
     </div>
 
@@ -14,14 +14,14 @@
       <div class="uk-width-1-1">
 
         <div class="uk-card uk-overflow-auto" *ngIf="!hideOverview">
-          <p>Representatives participate in the <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">Nano consensus protocol</a> on your behalf. You can change them at any time.</p>
+          <p>Tribes participate in the <a href="https://docs.nano.org/protocol-design/orv-consensus/" target="_blank" rel="noopener noreferrer">Paw consensus protocol</a> on your behalf. You can change them at any time.</p>
 
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
                 <th scope="col" class="representative-health-column-header hide-on-small-viewports">Status</th>
-                <th scope="col" class="uk-width-expand">Representative</th>
-                <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">Voting Weight</th>
+                <th scope="col" class="uk-width-expand">Tribes</th>
+                <th scope="col" class="voting-weight-column-header uk-width-1-4 uk-text-right">Union Power</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +112,7 @@
                 </td>
               </tr>
               <tr *ngIf="loadingRepresentatives">
-                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your representatives...</td>
+                <td colspan="3" style="text-align: center;"><span class="uk-margin-right" uk-spinner></span> Fetching information about your tribes...</td>
               </tr>
             </tbody>
           </table>
@@ -125,7 +125,7 @@
         <div class="uk-card uk-card-default">
           <div class="uk-card-body" style="padding-bottom: 0;">
 
-            <p class="uk-text-lead uk-text-center">Change your representatives</p>
+            <p class="uk-text-lead uk-text-center">Change your tribe</p>
 
 
             <div class="change-representative-form uk-form-horizontal">
@@ -159,7 +159,7 @@
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-text2">New Representative</label>
+                <label class="uk-form-label" for="form-horizontal-text2">New Tribe</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
                     <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('rep1','account')" uk-tooltip title="Scan from QR code"></a>
@@ -167,7 +167,7 @@
 
                     <div *ngIf="(representativeResults$ | async).length" [hidden]="!showRepresentatives" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">Representative List Results</li>
+                        <li class="uk-nav-header">Tribe List Results</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let rep of representativeResults$ | async">
                           <a (click)="selectRepresentative(rep.id)">
@@ -187,12 +187,67 @@
                     <span class="account-label rep">{{ representativeListMatch }}</span>
                   </div>
                 </div>
+				
+
+                <div class="uk-form-controls">
+                  <div class="uk-inline uk-width-1-1 uk-margin-top">
+                    <button class="uk-button uk-button-default uk-button-small" *ngIf="showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: minus; ratio: 0.8" style="margin-right: 5px;"></span> Hide Recommended Representatives</button>
+                    <button class="uk-button uk-button-primary uk-button-small" *ngIf="!showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: plus; ratio: 0.8" style="margin-right: 5px;"></span> View Recommended Representatives</button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="showRecommendedReps">
+                <hr>
+
+                <div class="uk-margin">
+                  <p class="uk-text-lead uk-text-center">Select a tribe recommended by <a href="https://tribes.paw.digital" target="_blank" rel="noopener noreferrer" class="uk-link-text">Tribes paw.digital</a></p>
+                  <!--<h4>Or, Select a recommended representative</h4>-->
+                  <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
+                    <li class="uk-list-header">
+                      <div uk-grid>
+                        <div class="uk-width-expand">Tribe</div>
+                        <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
+                        <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="uk-list uk-list-striped" style="margin-top: 0;">
+                    <li *ngIf="recommendedRepsLoading" class="uk-text-center">
+                      <span uk-icon="load"></span> Loading reps...
+                    </li>
+                    <li *ngIf="recommendedRepsLoading === null" class="uk-text-center">
+                      <span uk-icon="load"></span> Unable to load tribes from tribes.paw.digital
+                    </li>
+                    <li *ngFor="let rep of recommendedRepsPaginated">
+                      <div uk-grid >
+                        <div class="uk-width-expand" (click)="selectRecommendedRep(rep)" style="cursor: pointer;">
+                          <span class="uk-badge" uk-tooltip title="Tribes Paw Digital Score" style="margin-right: 4px;">{{ rep.score }}</span> <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
+
+                        </div>
+                        <div class="uk-width-1-2">
+                          <a [href]="'https://tribes.paw.digital/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on Tribes.PAW.digital" class="uk-link-muted"><span uk-icon="search"></span></a>
+
+                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
+                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
+
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <a href="https://tribes.paw.digital" target="_blank" rel="noopener noreferrer" class="view-all-reps-link uk-link-muted" uk-tooltip title="View all verified tribes on Tribes.PAW.digital">View All <span uk-icon="icon: push; ratio: 0.9;"></span></a>
+                  <ul class="uk-pagination uk-flex-center uk-flex-middle">
+                    <li><a (click)="previousReps()" uk-tooltip title="Previous Page"><span uk-pagination-previous class="uk-icon-button"></span></a></li>
+                    <li>Showing {{ (currentRepPage * repsPerPage)+ 1 }} - {{ (currentRepPage * repsPerPage)+ repsPerPage }} of {{ recommendedReps.length }} reps</li>
+                    <li><a (click)="nextReps()" uk-tooltip title="Next Page"><span uk-pagination-next class="uk-icon-button"></span></a></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
           <div class="uk-card-footer">
-            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="changeRepresentatives()" *ngIf="!changingRepresentatives">Update Representatives</button>
-            <button class="uk-button uk-button-secondary uk-width-1-1 uk-disabled nlt-icon-button" type="button" *ngIf="changingRepresentatives"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Updating Representatives</button>
+            <button class="uk-button uk-button-primary uk-width-1-1" type="button" (click)="changeRepresentatives()" *ngIf="!changingRepresentatives">Update Tribes</button>
+            <button class="uk-button uk-button-secondary uk-width-1-1 uk-disabled nlt-icon-button" type="button" *ngIf="changingRepresentatives"><span class="spinner" uk-spinner="ratio: 0.5;"></span> Updating Tribes</button>
           </div>
       </div>
     </div>

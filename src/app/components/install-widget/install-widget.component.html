@@ -1,7 +1,7 @@
 <div (click)="install()" [tabindex]="isIosInstallable() ? -1 : 0" class="nav-install-row half-muted" [class.interactable]="!isIosInstallable()" [class.large]="isIosInstallable()" [class.visible]="showInstallPromotion" [class.uk-hidden]="!isPromotable()">
     <span uk-icon="icon: download; ratio: 1.2" class="icon"></span>
     <div>
-        <div class="label">Install PawVault for {{ platform }}</div>
+        <div class="label">Install Biome for {{ platform }}</div>
         <div class="description" *ngIf="isIosInstallable()">
             1. Tap the <span uk-icon="icon: push; ratio: 0.8"></span> Share button 
             <span *ngIf="platform === 'iOS'">below</span>

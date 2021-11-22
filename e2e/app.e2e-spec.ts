@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('PawVault App', () => {
+describe('Biome App', () => {
   let page: AppPage;
 
   beforeEach(() => {

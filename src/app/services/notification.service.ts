@@ -40,7 +40,7 @@ export class NotificationService {
     this.sendWarning(
       `<b>Notice:</b> You may experience issues using a Ledger device with Google Chrome. ` +
       `If you do please use Brave/Opera browser or ` +
-      `<a href="https://github.com/Paw-crypto/PawVault/releases" target="_blank" rel="noopener noreferrer">PawVault Desktop</a>.`,
+      `<a href="https://github.com/paw-digital/Biome/releases" target="_blank" rel="noopener noreferrer">Biome Desktop</a>.`,
       { length: 0, identifier: 'chrome-ledger' }
       );
   }

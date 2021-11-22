@@ -52,7 +52,7 @@ export class InstallWidgetComponent implements OnInit {
     this.installEvent.prompt();
     this.installEvent.userChoice.then((result) => {
       if (result.outcome === 'accepted') {
-        this.notifications.sendSuccess('PawVault was successfully installed to the device.');
+        this.notifications.sendSuccess('Biome was successfully installed to the device.');
         this.dismiss();
       }
     });

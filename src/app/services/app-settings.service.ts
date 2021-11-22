@@ -51,7 +51,7 @@ export class AppSettingsService {
     serverAPI: null,
     serverWS: null,
     serverAuth: null,
-    minimumReceive: '0.000001',
+    minimumReceive: '0.001',
     walletVersion: 1,
     lightModeEnabled: false,
     identiconsStyle: 'natricon',

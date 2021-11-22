@@ -134,9 +134,9 @@ export class RepresentativeService {
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
       const knownRepNinja = await this.ninja.getAccount(representative.account);
-
       const nanoWeight = this.util.nano.rawToNano(representative.weight || 0);
       const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
+console.log(representative);console.log('x--');console.log(nanoWeight);console.log('x2--');console.log(this.onlineStakeTotal);console.log('x3--');
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
@@ -160,11 +160,11 @@ export class RepresentativeService {
       let status = 'none';
       let label;
 
-      if (percent.gte(3)) {
+      if (percent.gte(70)) {
         status = 'alert'; // Has extremely high voting weight
         repStatus.veryHighWeight = true;
         repStatus.changeRequired = true;
-      } else if (percent.gte(2)) {
+      } else if (percent.gte(60)) {
         status = 'warn'; // Has high voting weight
         repStatus.highWeight = true;
       }

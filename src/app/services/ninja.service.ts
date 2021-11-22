@@ -7,7 +7,7 @@ import { UtilService } from './util.service';
 export class NinjaService {
 
   // URL to Ninja API
-  ninjaUrl = 'https://mynano.ninja/api/';
+  ninjaUrl = 'https://tribes.paw.digital/api/';
 
   // null - loading, false - offline, true - online
   status = null;

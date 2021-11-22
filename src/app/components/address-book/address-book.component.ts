@@ -377,7 +377,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   exportAddressBookToFile() {
-    const fileName = `PawVault-AddressBook.json`;
+    const fileName = `Biome-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
     this.triggerFileDownload(fileName, exportData);
@@ -397,7 +397,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || !importData[0].account) {
-          return this.notificationService.sendError(`Bad import data, make sure you selected a PawVault Address Book export`);
+          return this.notificationService.sendError(`Bad import data, make sure you selected a Biome Address Book export`);
         }
 
         const encoded = btoa(this.toBinary(JSON.stringify(importData)));

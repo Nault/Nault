@@ -4,8 +4,8 @@
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
-          Representatives Book
-          <a [routerLink]="'/representatives'" style="font-size: 12px; margin-left: 25px;">BACK TO REPRESENTATIVES OVERVIEW</a>
+          Tribes Book
+          <a [routerLink]="'/representatives'" style="font-size: 12px; margin-left: 25px;">BACK TO TRIBES OVERVIEW</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right" *ngIf="activePanel == 0">
@@ -15,7 +15,7 @@
 
     <div class="uk-width-1-1 nlt-page-intro" *ngIf="activePanel == 0">
       <p>
-        You can use this page as a notebook for representatives. Here you can set custom display names to be shown throughout the application, mark representatives as trusted (please note that this will suppress warnings), or mark representatives that should be avoided.
+        You can use this page as a notebook for tribes. Here you can set custom display names to be shown throughout the application, mark tribes as trusted (please note that this will suppress warnings), or mark tribes that should be avoided.
       </p>
     </div>
 
@@ -68,7 +68,7 @@
 
             </li>
             <li *ngIf="!(representatives$ | async).length" class="uk-text-center">
-              You do not have any representatives saved yet, <a (click)="addEntry()">click here to add new entry</a>.
+              You do not have any tribes saved yet, <a (click)="addEntry()">click here to add new entry</a>.
             </li>
           </ul>
 
@@ -87,26 +87,26 @@
               <div class="uk-margin">
                 <label class="uk-form-label" for="new-address-name">Name</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newRepName" (keyup.enter)="saveNewRepresentative()" placeholder="Representative Name">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newRepName" (keyup.enter)="saveNewRepresentative()" placeholder="Tribe Name">
                 </div>
               </div>
 
               <div class="uk-margin">
                 <label class="uk-form-label" for="new-address-account">Address</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newRepAccount" [disabled]="!creatingNewEntry" placeholder="paw_abc123">
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label">Representative Flags</label>
+                <label class="uk-form-label">Tribes Flags</label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
-                      <label style="cursor: pointer;" uk-tooltip title="Suppress all warnings about this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepTrusted"> &nbsp; Trusted Representative</label>
+                      <label style="cursor: pointer;" uk-tooltip title="Suppress all warnings about this tribe"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepTrusted"> &nbsp; Trusted Tribe</label>
                     </div>
                     <div class="uk-width-1-1 uk-margin-small-top">
-                      <label style="cursor: pointer;" uk-tooltip title="Warn when using this representative"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepWarn"> &nbsp; Avoid Representative</label>
+                      <label style="cursor: pointer;" uk-tooltip title="Warn when using this tribe"><input type="checkbox" class="uk-checkbox" [(ngModel)]="newRepWarn"> &nbsp; Avoid Tribe</label>
                     </div>
                   </div>
 

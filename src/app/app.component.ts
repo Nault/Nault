@@ -116,7 +116,7 @@ export class AppComponent implements OnInit {
 
     await this.walletService.reloadBalances();
 
-    // Workaround fix for github pages when PawVault is refreshed (or externally linked) and there is a subpath for example to the send screen.
+    // Workaround fix for github pages when Biome is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
     const path = localStorage.getItem('path');
 
@@ -181,7 +181,7 @@ export class AppComponent implements OnInit {
     // Notify user after service worker was updated
     this.updates.activated.subscribe((event) => {
       console.log(`SW update successful. Current: ${event.current.hash}`);
-      this.notifications.sendSuccess('PawVault was updated successfully.');
+      this.notifications.sendSuccess('Biome was updated successfully.');
     });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
@@ -201,7 +201,7 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(`There was an issue retrieving latest Nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+      this.notifications.sendWarning(`There was an issue retrieving latest Paw price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
   }
 
@@ -305,7 +305,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.notifications.sendWarning(`Invalid Nano address or block hash! Please double check your input`);
+    this.notifications.sendWarning(`Invalid Paw address or block hash! Please double check your input`);
   }
 
   updateIdleTime() {
@@ -318,7 +318,7 @@ export class AppComponent implements OnInit {
       return;
     }
     this.walletService.reloadBalances();
-    this.notifications.sendInfo(`Attempting to reconnect to Nano node`);
+    this.notifications.sendInfo(`Attempting to reconnect to Paw node`);
   }
 
   async updateFiatPrices() {

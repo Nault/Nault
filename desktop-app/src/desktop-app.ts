@@ -108,7 +108,7 @@ class AppUpdater {
         type: 'info',
         buttons: ['Update', 'Ask Later'],
         title: 'New Version',
-        message: 'An update for PawVault is available!',
+        message: 'An update for Biome is available!',
         detail: 'Do you want to download and install it?'
       }
 
@@ -139,13 +139,13 @@ class AppUpdater {
       if (!showUpdateErrors) {
         return;
       }
-      mainWindow.setTitle(`PawVault - ${autoUpdater.currentVersion}`); // reset title
+      mainWindow.setTitle(`Biome - ${autoUpdater.currentVersion}`); // reset title
       showUpdateErrors = false; // disable errors
       const dialogOpts = {
         type: 'error',
         buttons: ['OK'],
         title: 'Update Error',
-        message: 'Something went wrong while downloading PawVault.',
+        message: 'Something went wrong while downloading Biome.',
         detail: `You will be notified again on next start.\nMore details in the log at: ${logLocation}`
       }
 
@@ -208,7 +208,7 @@ function createWindow () {
   });
 
   mainWindow.webContents.on('did-finish-load', function () {
-    mainWindow.setTitle(`PawVault - ${autoUpdater.currentVersion}`);
+    mainWindow.setTitle(`Biome - ${autoUpdater.currentVersion}`);
   });
 
   const menuTemplate = getApplicationMenu();
@@ -226,7 +226,7 @@ function sendStatusToWindow(progressObj) {
   // sending message to ipcRenderer can be done as well but not sure where and how to display it
   // using the title bar instead
   // mainWindow.webContents.send('downloading', Math.round(progressObj.percent));
-  mainWindow.setTitle(`PawVault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
+  mainWindow.setTitle(`Biome - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
 // run only one app
@@ -249,7 +249,7 @@ if (!appLock) {
     checkForUpdates();
   });
 
-  // Refocus the window if the user attempts to open PawVault while it is already open
+  // Refocus the window if the user attempts to open Biome while it is already open
   app.on('second-instance', (event, argv, workingDirectory) => {
     if (mainWindow) {
 
@@ -341,8 +341,8 @@ function getApplicationMenu() {
       role: 'help',
       submenu: [
         {
-          label: 'PawVault Help Docs',
-          click () { loadExternal('https://docs.wallet.paw.digital/'); }
+          label: 'Biome Help Docs',
+          click () { loadExternal('https://docs.paw.digital/'); }
         },
         {
           label: 'Reddit (r/nanocurrency)',
@@ -355,15 +355,15 @@ function getApplicationMenu() {
         {type: 'separator'},
         {
           label: 'View GitHub',
-          click () { loadExternal('https://github.com/Paw-crypto/PawVault'); }
+          click () { loadExternal('https://github.com/paw-digital/Biome'); }
         },
         {
           label: 'Submit a bug report',
-          click () { loadExternal('https://github.com/Paw-crypto/PawVault/issues/new'); }
+          click () { loadExternal('https://github.com/paw-digital/Biome/issues/new'); }
         },
         {
           label: 'Release notes',
-          click () { loadExternal('https://github.com/Paw-crypto/PawVault/releases'); }
+          click () { loadExternal('https://github.com/paw-digital/Biome/releases'); }
         },
         {type: 'separator'},
         {
@@ -378,7 +378,7 @@ function getApplicationMenu() {
 
   if (process.platform === 'darwin') {
     template.unshift({
-      label: 'PawVault',
+      label: 'Biome',
       submenu: [
         {role: 'about'},
         {type: 'separator'},
