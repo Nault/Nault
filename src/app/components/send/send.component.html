@@ -73,7 +73,7 @@
                       <div class="uk-width-1-1">
                         <div class="uk-inline uk-width-1-1">
                           <a class="max-amt-button uk-form-icon uk-form-icon-flip form-icon-btn" (click)="setMaxAmount()" uk-tooltip title="Set Maximum Amount">Max</a>
-                          <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
+                          <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
                           <input [(ngModel)]="amount" [ngClass]="{ 'uk-form-danger': amountStatus === 0 }" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text" (input)="syncFiatPrice()" type="number" step="any" placeholder="Amount of {{ selectedAmount.name }}" maxlength="40">
                         </div>
 

@@ -22,7 +22,7 @@
               <label for="form-horizontal-amount" class="uk-form-label label-block">Requested Amount <span class="uk-text-muted label-optional">optional</span></label>
               <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
-                  <label class="uk-form-icon uk-link-reset uk-link-muted icon-nano-logo" for="form-horizontal-amount"></label>
+                  <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
                   <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
                 </div>
                 <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
