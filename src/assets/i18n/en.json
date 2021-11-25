@@ -133,7 +133,7 @@
     "leave-blank-to-use-a-recommended-one": "Leave blank to use a recommended one",
     "lock-after-inactivity": "Lock After Inactivity",
     "min-receive-amount": "Min. Receive Amount",
-    "minimum-nano-amount-to-receive-transactions-below-this": "Minimum NANO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions.",
+    "minimum-nano-amount-to-receive-transactions-below-this": "Minimum XNO amount to receive. Transactions below this amount will be ignored by the wallet both for receiving and in the transactions list.  Set to blank or 0 to accept all transactions.",
     "multiplier-options": {
       "default-1x-or-1-64x": "Default (1x or 1/64x)"
     },
