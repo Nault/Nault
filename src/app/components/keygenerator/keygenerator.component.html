@@ -8,7 +8,7 @@
           You will need to manually store the recovery options for each generated address that you want to retain access to.</p>
         <div>
           <ul>
-            <li>The account can receive incoming funds at any time and live transactions can happen in any wallet that supports import of a Nano seed, mnemonic or private key.</li>
+            <li>The account can receive incoming funds at any time and live transactions can happen in any wallet that supports import of nano secret recovery seed/mnemonic or private key.</li>
             <li>For additional security the keys can be generated and stored offline to be utilized in methods such as <a routerLink="/remote-signing" class="name">Remote Signing</a> and <a routerLink="/multisig" class="name">Multisig</a></li>
           </ul>
         </div>
@@ -23,12 +23,12 @@
       
       <div class="uk-card-body">
         <div uk-grid>
-          <div class="uk-width-1-4">Nano Seed <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a mnemonic. It's NOT bip39/44."></span></div>
-          <div class="uk-width-3-4 uk-text-truncate">
+          <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-seed' | transloco }} <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a secret recovery mnemonic. It's NOT bip39/44."></span></div>
+          <div class="uk-width-3-4@m">
             <div *ngIf="seed == ''" class="uk-margin-small-bottom">...</div>
             <div *ngIf="seed !== ''">
-              <div class="uk-margin-small-bottom">{{ seed }}</div>
-              <a title="Copy seed To Clipboard" ngxClipboard [cbContent]="seed" (cbOnSuccess)="copied()" uk-tooltip>Copy seed to clipboard</a>
+              <div class="uk-margin-small-bottom word-wrap-anywhere">{{ seed }}</div>
+              <a [title]="( 'configure-wallet.new-wallet.copy-secret-recovery-seed' | transloco )" ngxClipboard [cbContent]="seed" (cbOnSuccess)="copied()" uk-tooltip>{{ 'configure-wallet.new-wallet.copy-secret-recovery-seed' | transloco }}</a>
             </div>
           </div>
         </div>
@@ -36,13 +36,13 @@
     
         <div uk-grid>
           <div class="uk-width-1-4@m">
-            Nano Mnemonic <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a Nano seed. It's NOT bip39/44."></span>
+            {{ 'configure-wallet.new-wallet.secret-recovery-mnemonic' | transloco }} <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a secret recovery seed. It's NOT bip39/44."></span>
           </div>
           <div class="uk-width-3-4@m">
             <div *ngIf="mnemonic == ''" class="uk-margin-small-bottom">...</div>
             <div *ngIf="mnemonic !== ''">
               <pre class="mne-box"><span *ngFor="let line of newWalletMnemonicLines; let l = index" class="mne-cont"><span *ngFor="let word of line; let i = index" class="mne-word"><span class="mne-num">{{ (l * 4) + i + 1 }}</span> {{ word }}</span></span></pre>
-              <a title="Copy mnemonic To Clipboard" ngxClipboard [cbContent]="mnemonic" (cbOnSuccess)="copied()" uk-tooltip>Copy mnemonic to clipboard</a>
+              <a [title]="('configure-wallet.new-wallet.copy-secret-recovery-mnemonic' | transloco)" ngxClipboard [cbContent]="mnemonic" (cbOnSuccess)="copied()" uk-tooltip>{{ 'configure-wallet.new-wallet.copy-secret-recovery-mnemonic' | transloco }}</a>
             </div>
           </div>
         </div>
@@ -52,11 +52,11 @@
           <div class="uk-width-1-4@m">
             Private Key - Index 0
           </div>
-          <div class="uk-width-3-4@m uk-text-truncate">
+          <div class="uk-width-3-4@m">
             <div *ngIf="privateKey == ''" class="uk-margin-small-bottom">...</div>
             <div *ngIf="privateKey !== ''">
-              <div class="uk-margin-small-bottom">{{ privateKey }}</div>
-              <a title="Copy Private Key To Clipboard" ngxClipboard [cbContent]="privateKey" (cbOnSuccess)="copied()" uk-tooltip>Copy private key to clipboard</a>
+              <div class="uk-margin-small-bottom word-wrap-anywhere">{{ privateKey }}</div>
+              <a title="Copy Private Key" ngxClipboard [cbContent]="privateKey" (cbOnSuccess)="copied()" uk-tooltip>Copy Private Key</a>
             </div>
           </div>
         </div>
@@ -68,8 +68,8 @@
               <div uk-icon="icon: warning; ratio: 2;"></div>
             </div>
             <p>
-              You will NOT be able to access any funds on the address below, without a seed, mnemonic or a private key written above.<br>
-              Make sure to securely store any of the seed, mnemonic or private key, save it somewhere safe and <strong>never share it with anyone!</strong>
+              You will NOT be able to access any funds on the address below, without a secret recovery seed/mnemonic or a private key written above.<br>
+              Make sure to securely store any of the secret recovery seed, mnemonic or private key, save it somewhere safe and <strong>never share it with anyone!</strong>
             </p>
           </div>
         </div>
@@ -82,8 +82,8 @@
           <div class="uk-width-3-4@m uk-text-truncate">
             <div *ngIf="account == ''" class="uk-margin-small-bottom">...</div>
             <div *ngIf="account !== ''">
-              <div class="uk-margin-small-bottom"><app-nano-account-id [accountID]="account" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
-              <a title="Copy address To Clipboard" ngxClipboard [cbContent]="account" (cbOnSuccess)="copied()" uk-tooltip>Copy address to clipboard</a>
+              <div class="uk-margin-small-bottom"><app-nano-account-id [accountID]="account" middle="auto" class="nano-address-monospace"></app-nano-account-id></div>
+              <a title="Copy Address" ngxClipboard [cbContent]="account" (cbOnSuccess)="copied()" uk-tooltip>Copy Address</a>
             </div>
           </div>
         </div>
