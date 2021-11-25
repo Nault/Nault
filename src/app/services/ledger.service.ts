@@ -345,7 +345,7 @@ export class LedgerService {
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
         this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to detect Nano Ledger application (Timeout)` });
         if (!hideNotifications) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the Nano application is open`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the nano application is open`);
         }
         resolved = true;
         return resolve(false);
@@ -367,7 +367,7 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the Nano App on your Ledger if the error persists`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
         }
         resolved = true;
         return resolve(false);
@@ -388,7 +388,7 @@ export class LedgerService {
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
           this.ledger.status = LedgerStatus.LOCKED;
           if (!hideNotifications) {
-            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
+            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the nano application`);
           }
         }
       }

@@ -168,11 +168,11 @@ export class ConfigureWalletComponent implements OnInit {
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
       this.ledgerService.resetLedger();
-      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the Nano app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
+      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the nano app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {
-      return this.notifications.sendWarning(`Unlock your Ledger device and open the Nano app to continue`);
+      return this.notifications.sendWarning(`Unlock your Ledger device and open the nano app to continue`);
     }
 
     if (this.ledger.status === LedgerStatus.READY) {
@@ -209,7 +209,7 @@ export class ConfigureWalletComponent implements OnInit {
       return true;
     } catch (err) {
       if (!this.walletService.isLedgerWallet()) {
-        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your Nano seed and/or mnemonic`);
+        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your wallet's secret recovery seed and/or mnemonic`);
       }
       return false;
     }
@@ -352,7 +352,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.walletService.saveWalletExport();
     this.walletService.informNewWallet();
 
-    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the seed/mnemonic!`);
+    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the secret recovery seed/mnemonic!`);
   }
 
   setPanel(panel) {

@@ -52,7 +52,7 @@ export class MultisigComponent implements OnInit {
   addAccount() {
     if (this.accountAddStatus !== 1) {
       this.notificationService.removeNotification('account-invalid');
-      this.notificationService.sendWarning('Invalid Nano address!', {identifier: 'account-invalid'});
+      this.notificationService.sendWarning('Invalid nano address!', {identifier: 'account-invalid'});
       return;
     }
     if (this.storedAccounts.includes(this.accountAdd.replace('xrb_', 'nano_').toLocaleLowerCase())) {
@@ -133,7 +133,7 @@ export class MultisigComponent implements OnInit {
     if (this.validateMultisig()) {
       this.router.navigate(['account', this.multisigAccount], { queryParams: {sign: 1}});
     } else {
-      this.notificationService.sendWarning('Invalid Nano account!');
+      this.notificationService.sendWarning('Invalid nano account!');
     }
   }
 
