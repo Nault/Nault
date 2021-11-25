@@ -95,7 +95,6 @@
     "change-which-server-is-used-to-communicate-with-the-nano": "Change which server is used to communicate with the Nano network",
     "clear-all-data": {
       "1": "You are about to delete all data stored in Nault, which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default.",
-      "2": "Before continuing, make sure you have saved the Nano seed and/or mnemonic of your current wallet.",
       "successfully-deleted-locally-stored-data-and-reset-the": "Successfully deleted locally stored data and reset the settings!"
     },
     "clear-work-cache": "Clear Work Cache",
