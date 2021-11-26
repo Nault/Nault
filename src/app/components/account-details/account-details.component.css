@@ -139,12 +139,12 @@
     font-weight: 700;
 }
 
-.account-amounts-primary-confirmed > .amount-fractional,
-.account-amounts-primary-confirmed > .amount-currency-symbol {
-    font-size: 18px;
+.account-amounts-primary-confirmed > .amount-fractional {
+    font-size: 16px;
 }
 
 .account-amounts-primary-confirmed > .amount-currency-symbol {
+    font-size: 18px;
     margin-right: 3px;
 }
 
