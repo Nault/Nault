@@ -1002,7 +1002,7 @@ export class WalletService {
 
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
       this.notifications.removeNotification('success-receive');
-      this.notifications.sendSuccess(`Successfully received Ӿ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)}!`, { identifier: 'success-receive' });
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} XNO!`, { identifier: 'success-receive' });
 
       // remove after processing
       // list also updated with reloadBalances but not if called too fast
