@@ -31,19 +31,19 @@
       </div>
       <div class="uk-card-body">
         <p *ngIf="wallet.locked && wallet.type === 'seed'">
-          <span uk-icon="icon: lock;"></span> Unlock wallet to access the seed/mnemonic.
+          <span uk-icon="icon: lock;"></span> Unlock wallet to access the secret recovery seed/mnemonic.
         </p>
         <p *ngIf="wallet.locked && (wallet.type === 'privateKey' || wallet.type === 'expandedKey')">
           <span uk-icon="icon: lock;"></span> Unlock wallet to access the private key.
         </p>
         <p *ngIf="!wallet.locked && wallet.type === 'seed'">
-          To backup your wallet mnemonic phrase, <a title="Copy Mnemonic To Clipboard" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.
+          To backup your wallet's secret recovery mnemonic, <a [title]="('configure-wallet.new-wallet.copy-secret-recovery-mnemonic' | transloco)" ngxClipboard [cbContent]="seedMnemonic()" (cbOnSuccess)="notifications.sendSuccess('Wallet mnemonic copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.
         </p>
         <p *ngIf="!wallet.locked && wallet.type === 'seed'">
-          To backup your wallet seed, <a title="Copy Seed To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          To backup your wallet's secret recovery seed, <a [title]="( 'configure-wallet.new-wallet.copy-secret-recovery-seed' | transloco )" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Wallet seed copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
         </p>
         <p *ngIf="!wallet.locked && (wallet.type === 'privateKey' || wallet.type === 'expandedKey')">
-          To backup your private key, <a title="Copy Private Key To Clipboard" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Private Key copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
+          To backup your wallet account's private key, <a title="Copy Private Key" ngxClipboard [cbContent]="wallet.seed" (cbOnSuccess)="notifications.sendSuccess('Private Key copied to clipboard!')" uk-tooltip>click here</a> to copy it to your clipboard.<br>
         </p>
       </div>
     </div>
@@ -75,7 +75,7 @@
                   <p>
                     <b>If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.</b>
                     <br><br>
-                    For backup purposes, <b>always store the seed and/or mnemonic</b> from the "Backup Wallet" section above.
+                    For backup purposes, <b>always store the secret recovery seed and/or mnemonic</b> from the "Backup Wallet" section above.
                   </p>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                 <label class="uk-form-label" for="account">Account</label>
                 <div class="uk-form-controls">
                   <select class="uk-select" id="account" [(ngModel)]="csvAccount">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} XNO)</option>
                   </select>
                 </div>
               </div>

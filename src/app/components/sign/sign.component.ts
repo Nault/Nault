@@ -1061,7 +1061,7 @@ export class SignComponent implements OnInit {
 
   multiSign() {
     const result = this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData);
-    // used for validation when the final Nano block is created
+    // used for validation when the final nano block is created
     if (result && result.multisig !== '') {
       this.multisigAccount = result.multisig;
     }

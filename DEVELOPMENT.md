@@ -3,7 +3,7 @@
 ## Application Structure
 
 - [Nault](https://github.com/Nault/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
-- Communication with the network is done via Nano RPC and Websocket protocols, private or public on any nano network.
+- Communication with the network is done via nano RPC and Websocket protocols, private or public on any nano network.
 
 ## Development Prerequisites
 - [NodeJS](https://nodejs.org) v14.x + NPM v6.x

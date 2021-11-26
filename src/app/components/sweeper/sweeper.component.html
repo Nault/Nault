@@ -14,7 +14,7 @@
         Even a mnemonic from a Ledger hardware wallet or other multicurrency wallets using BIP39/44 can be recovered using this tool.
       </p>
       <p>
-        <strong>Please use with caution if you are using an external destination. Make sure you have access to the seed on the receiving side!</strong>
+        <strong>Please use with caution if you are using an external destination. Make sure you have access to the secret recovery seed on the receiving side!</strong>
       </p>
     </div>
 
@@ -29,7 +29,7 @@
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, BIP39 seed, private key or 12,15,18,21,24-word mnemonic" autocomplete="off">
+                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Secret recovery seed, BIP39 seed, private key or 12,15,18,21,24-word secret recovery mnemonic" autocomplete="off">
                       </div>
                     </div>
                   </div>
@@ -44,7 +44,7 @@
                 <label class="uk-form-label" for="destination-account">Local Destination <span uk-icon="icon: info;" uk-tooltip title="Local accounts that can be used as destination for the swept funds. Make sure you are able to unlock your Nault wallet."></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" id="destination-account" [(ngModel)]="myAccountModel" (change)="setDestination(myAccountModel)">
-                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
+                    <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} XNO)</option>
                     <option [value]="0">Custom Destination</option>
                   </select>
                 </div>

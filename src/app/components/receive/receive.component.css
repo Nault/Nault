@@ -30,14 +30,6 @@
 	max-width: 450px;
 }
 
-.icon-nano-logo {
-    margin: 13px 11px;
-    width: 32px;
-    background-color: currentcolor;
-    -webkit-mask-image: url('assets/img/nano-mark-simple.svg');
-    mask-image: url('assets/img/nano-mark-simple.svg');
-}
-
 .receive-columns {
     display: flex;
     flex-direction: column;

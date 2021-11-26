@@ -1,3 +1,7 @@
+.word-wrap-anywhere {
+  word-wrap: anywhere;
+}
+
 pre.mnemonic {
   white-space: pre-wrap;
 }

@@ -75,7 +75,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   showAddressBook = false;
   addressBookMatch = '';
   amounts = [
-    { name: 'NANO', shortName: 'NANO', value: 'mnano' },
+    { name: 'XNO', shortName: 'XNO', value: 'mnano' },
     { name: 'knano', shortName: 'knano', value: 'knano' },
     { name: 'nano', shortName: 'nano', value: 'nano' },
   ];
@@ -778,7 +778,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       receivableBlock.received = true;
       this.mobileTransactionMenuModal.hide();
       this.notifications.removeNotification('success-receive');
-      this.notifications.sendSuccess(`Successfully received Nano!`, { identifier: 'success-receive' });
+      this.notifications.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' });
       // clear the list of pending blocks. Updated again with reloadBalances()
       this.wallet.clearPendingBlocks();
     } else {
@@ -796,7 +796,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
     if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
-    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid NANO Amount`);
+    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid XNO Amount`);
 
     this.qrCodeImageBlock = null;
 
@@ -816,7 +816,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const nanoAmount = this.rawAmount.div(this.nano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough NANO`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
     this.amountRaw = this.rawAmount.mod(this.nano);

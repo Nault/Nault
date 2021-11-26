@@ -272,8 +272,8 @@ export class SweeperComponent implements OnInit {
           this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
         }
         this.notificationService.sendInfo('Account ' + address + ' was swept and ' +
-        (nanoAmountSent ? (nanoAmountSent.toString(10) + ' Nano') : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
-        this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(' + nanoAmountSent.toString(10) + ' Nano)') : '') + ': ' + data.hash);
+        (nanoAmountSent ? ( 'Ӿ' + nanoAmountSent.toString(10) ) : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
+        this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(Ӿ' + nanoAmountSent.toString(10) + ')') : '') + ': ' + data.hash);
         console.log(this.adjustedBalance + ' raw transferred to ' + this.destinationAccount);
       } else {
         this.notificationService.sendWarning(`Failed processing block.`);
@@ -379,8 +379,8 @@ export class SweeperComponent implements OnInit {
         raw = this.util.big.add(raw, data.blocks[key].amount);
       }.bind(this));
       const nanoAmount = this.util.nano.rawToMnano(raw);
-      const pending = {count: Object.keys(data.blocks).length, raw: raw, NANO: nanoAmount, blocks: data.blocks};
-      const row = 'Found ' + pending.count + ' pending containing total ' + pending.NANO + ' NANO';
+      const pending = {count: Object.keys(data.blocks).length, raw: raw, XNO: nanoAmount, blocks: data.blocks};
+      const row = 'Found ' + pending.count + ' pending containing total ' + pending.XNO + ' XNO';
       this.appendLog(row);
 
       // create receive blocks for all pending
@@ -469,8 +469,8 @@ export class SweeperComponent implements OnInit {
       } else {
         // all private keys have been processed
         this.appendLog('Finished processing all accounts');
-        this.appendLog(this.totalSwept + ' Nano transferred');
-        this.notificationService.sendInfo('Finished processing all accounts. ' + this.totalSwept + ' Nano transferred', {length: 0});
+        this.appendLog('Ӿ' + this.totalSwept + ' transferred');
+        this.notificationService.sendInfo('Finished processing all accounts. Ӿ' + this.totalSwept + ' transferred', {length: 0});
         this.sweeping = false;
       }
     }.bind(this));
@@ -567,7 +567,7 @@ export class SweeperComponent implements OnInit {
     // let user confirm account
     const UIkit = window['UIkit'];
     try {
-      const msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to empty the source wallet, which will <b>transfer all funds from it to the destination address</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you (or someone) have saved the Nano seed and/or mnemonic of the specified destination address</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of the specified destination address.</span></p><br>';
+      const msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to empty the source wallet, which will <b>transfer all funds from it to the destination address</b>.</span><br><br><b style="font-size: 18px;">Before continuing, make sure you (or someone) have saved the secret recovery seed and/or mnemonic of the specified destination address</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>without a backup of the specified destination address.</span></p><br>';
       await UIkit.modal.confirm(msg);
       this.sweepContinue();
     } catch (err) {
