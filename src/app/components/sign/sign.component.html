@@ -169,7 +169,7 @@
                   <div class="uk-form-controls">
                     <div class="uk-inline uk-width-1-1" style="height: 40px;">
                       <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','generic')" uk-tooltip title="Scan from QR code"></a>
-                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Secret recovery seed, BIP39 seed, private key or 24-word secret recovery mnemonic" autocomplete="off">
+                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Secret recovery seed, BIP39 seed or 24-word secret recovery mnemonic" autocomplete="off">
                     </div>
                   </div>
                 </div>
