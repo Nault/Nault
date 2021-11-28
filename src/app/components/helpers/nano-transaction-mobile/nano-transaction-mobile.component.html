@@ -100,23 +100,23 @@
 			<div
 				class="action"
 				*ngSwitchCase="isReceivableTransaction"
-			>{{ 'general.actions.ready-to-receive' | transloco }}</div>
+			>{{ 'general.blockactions.ready-to-receive' | transloco }}</div>
 			<div
 				class="action"
 				*ngSwitchCase="isRepresentativeChange"
-			>{{ 'general.actions.rep-change' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			>{{ 'general.blockactions.rep-change' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 			<div
 				class="action"
 				*ngSwitchCase="isSendTransaction"
-			>{{ 'general.actions.sent' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			>{{ 'general.blockactions.sent' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 			<div
 				class="action"
 				*ngSwitchCase="isReceiveTransaction"
-			>{{ 'general.actions.received' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			>{{ 'general.blockactions.received' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 			<div
 				class="action"
 				*ngSwitchDefault
-			>{{ 'general.actions.unknown-action' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
+			>{{ 'general.blockactions.unknown-action' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 		</ng-container>
 		<div class="amount" *ngIf="isReceivableTransaction || isSendTransaction || isReceiveTransaction">
 			<span class="amount-integer">{{ transaction.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>

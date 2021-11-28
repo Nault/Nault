@@ -385,7 +385,7 @@
             </ng-template>
           </ng-template>
           <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) ) + ' raw' ) : '' )">
-            <span class="uk-text-small">{{ 'general.actions.ready-to-receive' | transloco }}</span><br>
+            <span class="uk-text-small">{{ 'general.blockactions.ready-to-receive' | transloco }}</span><br>
             <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
             <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
             <span class="currency-name">XNO</span>
@@ -457,7 +457,7 @@
                 [title]="( (history.confirmed === false) ? ('account-details.this-change-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                 uk-tooltip
               >
-                {{ 'general.actions.rep-change' | transloco }}
+                {{ 'general.blockactions.rep-change' | transloco }}
                 <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
               </span>
             </span>
@@ -468,7 +468,7 @@
                 [title]="( (history.confirmed === false) ? ('account-details.this-transaction-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                 uk-tooltip
               >
-                  {{ 'general.actions.received' | transloco }}
+                  {{ 'general.blockactions.received' | transloco }}
                   <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
                 </span><br>
               </ng-container>
@@ -478,7 +478,7 @@
                   [title]="( (history.confirmed === false) ? ('account-details.this-transaction-has-not-yet-been-confirmed-by-the-network' | transloco) : '' )"
                   uk-tooltip
                 >
-                  {{ 'general.actions.sent' | transloco }}
+                  {{ 'general.blockactions.sent' | transloco }}
                   <span class="icon-unconfirmed" uk-icon="icon: clock;" *ngIf="(history.confirmed === false)"></span>
                 </span><br>
               </ng-container>

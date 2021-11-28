@@ -1,26 +1,26 @@
-<div class="uk-animation-slide-left-small" uk-grid>
+<div class="uk-animation-slide-left-small" uk-grid *transloco="let t">
   <div class="uk-width-1-1" id="address-book-sortable">
     
     <div class="uk-margin-bottom" uk-grid>
       <div class="uk-width-expand@s uk-width-1-1">
         <h2 class="uk-heading-divider uk-text-truncate">
-          Address Book
-          <a *ngIf="activePanel !== 1" (click)="activePanel =  activePanel === 0 ? 2 : 0; addressBookShowFileExport = false;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? 'BACK TO ADDRESS BOOK' : 'IMPORT / EXPORT' }}</a>
+          {{ 'general.address-book' | transloco }}
+          <a *ngIf="activePanel !== 1" (click)="activePanel =  activePanel === 0 ? 2 : 0; addressBookShowFileExport = false;" style="font-size: 12px; margin-left: 25px;">{{ activePanel === 2 ? ('address-book.back-to-address-book' | transloco | uppercase) : ('address-book.import-export' | transloco | uppercase) }}</a>
         </h2>
       </div>
       <div class="uk-width-auto@s uk-width-1-1 uk-text-right">
-        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">Add New Entry</button>
+        <button class="uk-button uk-button-secondary uk-align-right uk-width-auto@s" (click)="addEntry()" *ngIf="activePanel === 0">{{ 'address-book.add-new-entry' | transloco }}</button>
       </div>
     </div>
 
     <div class="uk-width-1-1 nlt-page-intro" *ngIf="activePanel === 0">
       <p>
-        You can use the address book to store a label for your own accounts or for easy access to other addresses throughout the application.<br>
-        It's also possible to track the balance and/or transactions of any address, known as "watch-only".<br>
+        {{ 'address-book.you-can-use-the-address-book-to-store.1' | transloco }}<br>
+        {{ 'address-book.you-can-use-the-address-book-to-store.2' | transloco }}
       </p>
       <div class="account-amounts-primary uk-width-1-1">
         <div class="details-header advanced-options-link" (click)="showAdvancedOptions = !showAdvancedOptions">
-          Show Total Tracked Balance
+          {{ 'address-book.show-total-tracked-balance' | transloco }}
           <div [class]="['chevron', ( showAdvancedOptions ? 'chevron-up' : 'chevron-down' )]"></div>
         </div>
 
@@ -31,7 +31,7 @@
             <span class="currency-name">XNO</span>
           </span>
           <div *ngIf="totalTrackedPending.gt(0)" class="incoming-label">
-            <div class="text-snippet">New</div>
+            <div class="text-snippet">{{ 'general.new' | transloco }}</div>
             <div class="text-full">+{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 0 }}{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 1 }} XNO</div>
           </div>
           <div class="account-amounts-converted uk-width-1-1 text-half-muted">
@@ -48,10 +48,10 @@
           <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
             <li class="uk-list-header">
               <div uk-grid>
-                <div class="uk-width-2-5">Name</div>
-                <div class="uk-width-expand">Address
+                <div class="uk-width-2-5">{{ 'general.name' | transloco }}</div>
+                <div class="uk-width-expand">{{ 'general.address' | transloco }}
                   <div *ngIf="numberOfTrackedBalance > 0" style="display: flex;">
-                    RELOAD BALANCES
+                    {{ 'address-book.reload-balances' | transloco | uppercase }}
                     <ul class="uk-width-auto uk-iconnav uk-margin-remove-left" style="margin-top: -1px;">
                       <li>
                         <div
@@ -74,7 +74,7 @@
                     </ul>
                   </div>
                 </div>
-                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">Actions</div>
+                <div class="uk-width-1-6 uk-text-center" style="padding-left: 0;">{{ 'general.actions' | transloco }}</div>
               </div>
             </li>
           </ul>
@@ -96,12 +96,12 @@
                 <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" title="View on Network Explorer" uk-tooltip>
+                      <a [routerLink]="'/account/' + addressBook.account" class="nano-address-clickable nano-address-monospace uk-display-block" [title]="t('general.view-on-network-explorer')" uk-tooltip>
                         <app-nano-account-id [accountID]="addressBook.account"></app-nano-account-id>
                       </a>
                     </div>
                     <ul class="nano-address-actions uk-iconnav">
-                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Address" uk-tooltip></a></li>
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" [title]="t('general.copy-to-clipboard')" uk-tooltip></a></li>
                     </ul>
                     <div class="uk-width-expand amount-container" *ngIf="addressBook.trackBalance">
                       <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
@@ -135,7 +135,7 @@
 
             </li>
             <li *ngIf="!(addressBook$ | async).length" class="uk-text-center">
-              You do not have any address book entries saved yet, <a (click)="addEntry()">click here to create one</a>.
+              {{ 'address-book.you-do-not-have-any-address-book-entries-saved-yet.1' | transloco }} <a (click)="addEntry()">{{ 'address-book.you-do-not-have-any-address-book-entries-saved-yet.2' | transloco }}</a>{{ 'address-book.you-do-not-have-any-address-book-entries-saved-yet.3' | transloco }}
             </li>
           </ul>
 
@@ -147,36 +147,36 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h2 class="uk-card-title">{{ creatingNewEntry ? 'Add New Entry' : 'Edit Entry' }}</h2>
+            <h2 class="uk-card-title">{{ creatingNewEntry ? ( 'address-book.add-new-entry' | transloco ) : ( 'address-book.edit-entry' | transloco ) }}</h2>
           </div>
           <div class="uk-card-body">
             <div class="uk-form-horizontal">
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-name">Name</label>
+                <label class="uk-form-label" for="new-address-name">{{ 'general.name' | transloco }}</label>
                 <div class="uk-form-controls">
-                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" placeholder="Exchange Deposit Address, Main Trading Account, etc" maxlength="64">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" (keyup.enter)="saveNewAddress()" [placeholder]="t('address-book.exchange-deposit-address-main-trading-account-etc')" maxlength="64">
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-address-account">Address</label>
+                <label class="uk-form-label" for="new-address-account">{{ 'general.address' | transloco }}</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code" *ngIf="creatingNewEntry"></a>
+                    <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip [title]="t('general.scan-qr-code')" *ngIf="creatingNewEntry"></a>
                     <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newAddressAccount" [disabled]="!creatingNewEntry" placeholder="nano_abc123">
                   </div>
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-track-balance">Track Balance <span uk-icon="icon: info;" uk-tooltip title="The balance will be displayed in the address book."></span></label>
+                <label class="uk-form-label" for="new-track-balance">{{ 'address-book.track-balance' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('address-book.the-balance-will-be-displayed-in-the-address-book')"></span></label>
                 <div class="uk-form-controls">
                   <input class="uk-checkbox checkbox-aligned" type="checkbox" id="new-track-balance" value="1" [(ngModel)]="newTrackBalance">
                 </div>
               </div>
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="new-track-transactions">Track Transactions <span uk-icon="icon: info;" uk-tooltip title="A notification will be shown whenever the address has a new incoming transaction, sends or receives funds, or changes its representative."></span></label>
+                <label class="uk-form-label" for="new-track-transactions">{{ 'address-book.track-transactions' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('address-book.a-notification-will-be-shown-whenever-the-address-has-a-new')"></span></label>
                 <div class="uk-form-controls">
                   <input class="uk-checkbox checkbox-aligned" type="checkbox" id="new-track-transactions" value="1" [(ngModel)]="newTrackTransactions">
                 </div>
@@ -184,8 +184,8 @@
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s nlt-button-group">
-            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">Cancel</button>
-            <button class="uk-button uk-button-primary" (click)="saveNewAddress()">Save</button>
+            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">{{ 'general.cancel' | transloco }}</button>
+            <button class="uk-button uk-button-primary" (click)="saveNewAddress()">{{ 'general.save' | transloco }}</button>
           </div>
         </div>
       </div>
@@ -195,15 +195,15 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h3 class="uk-card-title">Address Book Import</h3>
+            <h3 class="uk-card-title">{{ 'address-book.address-book-import' | transloco }}</h3>
           </div>
           <div class="uk-card-body">
-            <p>Import address book entries from a file.</p>
+            <p>{{ 'address-book.import-address-book-entries-from-a-file' | transloco }}</p>
           </div>
           <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
             <div class="js-upload uk-text-left uk-width-auto@s uk-width-1-1" style="display: inline-block;" uk-form-custom>
               <input type="file" id="import-from-file" (change)="importFromFile($event.target.files)" multiple>
-              <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">Import Address Book</button>
+              <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" type="button" tabindex="-1">{{ 'address-book.import-address-book' | transloco }}</button>
             </div>
           </div>
         </div>
@@ -211,10 +211,11 @@
       <div class="uk-width-1-1">
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <h3 class="uk-card-title">Address Book Export</h3>
+            <h3 class="uk-card-title">{{ 'address-book.address-book-export' | transloco }}</h3>
           </div>
           <div class="uk-card-body">
-            <p>Export all address book entries to a file or QR Code/URL.<br><br>Note: Exported address book will NOT be encrypted by your wallet password.</p>
+            <p>{{ 'address-book.export-all-address-book-entries-to-a-file-or-qr-code-url' | transloco }}</p>
+            <p>{{ 'address-book.note-exported-address-book-will-not-be-encrypted-by-your-wal' | transloco }}</p>
             <div *ngIf="addressBookShowFileExport" uk-grid>
               <div class="uk-width-1-1">
                 <hr class="uk-divider-icon">
@@ -222,23 +223,23 @@
 
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
                 <img *ngIf="addressBookShowQRExport" [src]="addressBookQRExportImg" alt="QR code" style="border-radius: 6px;">
-                <span *ngIf="!addressBookShowQRExport" class="uk-text-warning">Address book too large for a QR code.<br>If you need a QR,<br>use fewer entries or shorter aliases.<br></span>
+                <span *ngIf="!addressBookShowQRExport" class="uk-text-warning">{{ 'address-book.address-book-too-large-for-a-qr-code' | transloco }}<br>{{ 'address-book.if-you-need-a-qr-use-fewer-entries-or-shorter-aliases' | transloco }}</span>
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
-                <span *ngIf="addressBookShowQRExport">Scan the QR code on any device to import your address book!<br><br></span>
-                <span *ngIf="addressBookShowQRExport">You can also import your address book by using the URL below or download it as a file.</span>
-                <span *ngIf="!addressBookShowQRExport">You can still import your address book by using the URL below or download it as a file.</span>
+                <span *ngIf="addressBookShowQRExport">{{ 'address-book.scan-the-qr-code-on-any-device-to-import-your-address-book' | transloco }}<br><br></span>
+                <span *ngIf="addressBookShowQRExport">{{ 'address-book.you-can-also-import-your-address-book-by-using-the-url-below' | transloco }}</span>
+                <span *ngIf="!addressBookShowQRExport">{{ 'address-book.you-can-still-import-your-address-book-by-using-the-url' | transloco }}</span>
                 <br><br>
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ addressBookQRExportUrl }}"><br>
                 <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
-                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary">Export As File</button>
+                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">{{ 'general.copy-to-clipboard' | transloco }}</button>
+                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary">{{ 'address-book.export-as-file' | transloco }}</button>
                 </div>
               </div>
             </div>
           </div>
           <div *ngIf="!addressBookShowFileExport" class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-            <button (click)="exportAddressBook()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Address Book</button>
+            <button (click)="exportAddressBook()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'address-book.export-address-book' | transloco }}</button>
           </div>
         </div>
       </div>
