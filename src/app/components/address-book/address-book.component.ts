@@ -291,7 +291,11 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Make sure the address is valid
     const valid = this.util.account.isValidAccount(this.newAddressAccount);
-    if (!valid) return this.notificationService.sendWarning(this.translocoService.translate('address-book.account-id-is-not-a-valid-account'));
+    if (!valid) {
+      return this.notificationService.sendWarning(
+        this.translocoService.translate('address-book.account-id-is-not-a-valid-account')
+      );
+    }
 
     // Store old setting
     const wasTransactionTracked = this.addressBookService.getTransactionTrackingById(this.newAddressAccount);
