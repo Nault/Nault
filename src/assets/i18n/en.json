@@ -99,7 +99,7 @@
     },
     "you-do-not-have-any-address-book-entries-saved-yet": {
       "1": "You do not have any address book entries saved yet,",
-      "2": "click here to create one",
+      "2-link": "click here to create one",
       "3": "."
     }
   },
