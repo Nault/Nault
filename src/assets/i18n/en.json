@@ -54,6 +54,55 @@
       "3": "."
     }
   },
+  "address-book": {
+    "a-notification-will-be-shown-whenever-the-address-has-a-new": "A notification will be shown whenever the address has a new incoming transaction, sends or receives funds, or changes its representative.",
+    "account-address-copied-to-clipboard": "Account address copied to clipboard!",
+    "account-and-name-are-required": "Account and name are required",
+    "account-id-is-not-a-valid-account": "Account ID is not a valid account",
+    "add-new-entry": "Add New Entry",
+    "address-book-entry-saved-successfully": "Address book entry saved successfully!",
+    "address-book-export": "Address Book Export",
+    "address-book-export-downloaded": "Address book export downloaded!",
+    "address-book-import": "Address Book Import",
+    "address-book-too-large-for-a-qr-code": "Address book too large for a QR code.",
+    "back-to-address-book": "Back to address book",
+    "bad-import-data-make-sure-you-selected-a-nault-address-book": "Bad import data, make sure you selected a Nault Address Book export",
+    "edit-entry": "Edit Entry",
+    "exchange-deposit-address-main-trading-account-etc": "Exchange Deposit Address, Main Trading Account, etc.",
+    "export-address-book": "Export Address Book",
+    "export-all-address-book-entries-to-a-file-or-qr-code-url": "Export all address book entries to a file or QR Code/URL.",
+    "export-as-file": "Export As File",
+    "if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "If you need a QR, use fewer entries or shorter aliases.",
+    "import-address-book": "Import Address Book",
+    "import-address-book-entries-from-a-file": "Import address book entries from a file.",
+    "import-export": "Import / Export",
+    "note-exported-address-book-will-not-be-encrypted-by-your-wal": "Note: Exported address book will NOT be encrypted by your wallet password.",
+    "reload-balances": "Reload balances",
+    "scan-the-qr-code-on-any-device-to-import-your-address-book": "Scan the QR code on any device to import your address book!",
+    "show-total-tracked-balance": "Show Total Tracked Balance",
+    "successfully-deleted-address-book-entry": "Successfully deleted address book entry",
+    "the-balance-will-be-displayed-in-the-address-book": "The balance will be displayed in the address book.",
+    "this-name-is-already-in-use-please-use-a-unique-name": "This name is already in use! Please use a unique name",
+    "this-name-is-reserved-for-wallet-accounts-without-a-label": "This name is reserved for wallet accounts without a label",
+    "track-balance": "Track Balance",
+    "track-transactions": "Track Transactions",
+    "unable-to-delete-entry": "Unable to delete entry: {{ message }}",
+    "unable-to-parse-import-data-make-sure-you-selected-the-right": "Unable to parse import data, make sure you selected the right file!",
+    "unable-to-save-entry": "Unable to save entry: {{ message }}",
+    "updated-address-book-order": "Updated address book order!",
+    "you-can-also-import-your-address-book-by-using-the-url-below": "You can also import your address book by using the URL below or download it as a file.",
+    "you-can-only-track-the-balance-of-maximum-20-addresses": "You can only track the balance of maximum 20 addresses",
+    "you-can-still-import-your-address-book-by-using-the-url": "You can still import your address book by using the URL below or download it as a file.",
+    "you-can-use-the-address-book-to-store": {
+      "1": "You can use the address book to store a label for your own accounts or for easy access to other addresses throughout the application.",
+      "2": "It's also possible to track the balance and/or transactions of any address, known as \"watch-only\"."
+    },
+    "you-do-not-have-any-address-book-entries-saved-yet": {
+      "1": "You do not have any address book entries saved yet,",
+      "2-link": "click here to create one",
+      "3": "."
+    }
+  },
   "change-rep-widget": {
     "acceptable-representative": "Acceptable Representative",
     "bad-representative": "Bad Representative",
@@ -242,13 +291,8 @@
   "general": {
     "account": "Account",
     "accounts": "Accounts",
-    "actions": {
-      "ready-to-receive": "Ready to receive",
-      "received": "Received",
-      "rep-change": "Rep. Change",
-      "sent": "Sent",
-      "unknown-action": "Unknown Action"
-    },
+    "actions": "Actions",
+    "address": "Address",
     "address-book": "Address Book",
     "amount": "Amount",
     "app-settings": "App Settings",
@@ -256,11 +300,20 @@
     "balance": "Balance",
     "block": "Block",
     "block-count": "Block Count",
+    "blockactions": {
+      "ready-to-receive": "Ready to receive",
+      "received": "Received",
+      "rep-change": "Rep. Change",
+      "sent": "Sent",
+      "unknown-action": "Unknown Action"
+    },
     "cancel": "Cancel",
     "copy": "Copy",
+    "copy-to-clipboard": "Copy To Clipboard",
     "date": "Date",
     "edit": "Edit",
     "loading": "Loading...",
+    "name": "Name",
     "network": "Network",
     "new": "New",
     "no": "No",
@@ -282,6 +335,7 @@
     "uncemented-blocks": "Uncemented Blocks",
     "unknown": "Unknown",
     "view-details": "View Details",
+    "view-on-network-explorer": "View on Network Explorer",
     "yes": "Yes"
   },
   "representative-search": {
