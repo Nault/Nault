@@ -543,7 +543,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // Check for deleting an entry in the address book
       if (this.addressBookEntry) {
         this.addressBook.deleteAddress(this.accountID);
-        this.notifications.sendSuccess(`Successfully removed address book entry!`);
+        this.notifications.sendSuccess(this.translocoService.translate('address-book.successfully-deleted-address-book-entry'));
         this.addressBookEntry = null;
       }
 
@@ -553,14 +553,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
     if ( regexp.test(this.addressBookModel) === true ) {
-      return this.notifications.sendError(`This name is reserved for wallet accounts without a label`);
+      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
     // Make sure no other entries are using that name
     const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel);
 
     if ( (accountIdWithSameName !== null) && (accountIdWithSameName !== this.accountID) ) {
-      return this.notifications.sendError(`This name is already in use! Please use a unique name`);
+      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'));
     }
 
     try {
@@ -568,11 +568,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       const currentTransactionTracking = this.addressBook.getTransactionTrackingById(this.accountID);
       await this.addressBook.saveAddress(this.accountID, this.addressBookModel, currentBalanceTracking, currentTransactionTracking);
     } catch (err) {
-      this.notifications.sendError(`Unable to save entry: ${err.message}`);
+      this.notifications.sendError(this.translocoService.translate('address-book.unable-to-save-entry', { message: err.message }));
       return;
     }
 
-    this.notifications.sendSuccess(`Address book entry saved successfully!`);
+    this.notifications.sendSuccess(this.translocoService.translate('address-book.address-book-entry-saved-successfully'));
 
     this.addressBookEntry = this.addressBookModel;
     this.showEditAddressBook = false;
@@ -624,7 +624,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   copied() {
     this.notifications.removeNotification('success-copied');
-    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+    this.notifications.sendSuccess(this.translocoService.translate('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' });
   }
 
   // Remote signing methods
@@ -767,7 +767,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const sourceBlock = receivableBlock.hash;
 
     if (this.wallet.walletIsLocked()) {
-      return this.notifications.sendWarning(`Wallet must be unlocked`);
+      return this.notifications.sendWarning(this.translocoService.translate('general.wallet-must-be-unlocked'));
     }
     receivableBlock.loading = true;
 

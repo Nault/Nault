@@ -318,6 +318,7 @@
     "new": "New",
     "no": "No",
     "node-version": "Node Version",
+    "optional": "optional",
     "peers-stake-required": "Peers Stake Required",
     "peers-stake-total": "Peers Stake Total",
     "receive": "Receive",
@@ -336,7 +337,27 @@
     "unknown": "Unknown",
     "view-details": "View Details",
     "view-on-network-explorer": "View on Network Explorer",
+    "wallet-must-be-unlocked": "Wallet must be unlocked",
     "yes": "Yes"
+  },
+  "receive": {
+    "all-accounts": "All Accounts",
+    "amount-of-x": "Amount of {{ currency }}",
+    "copied": "Copied!",
+    "copy-address": "Copy address",
+    "incoming-transactions": "Incoming Transactions",
+    "minimum-receive-is-set-to": {
+      "1": "Minimum Receive is set to",
+      "2": ", transactions below this amount will be hidden."
+    },
+    "nano-received": "Nano Received",
+    "receive-nano": "Receive Nano",
+    "received": "Received!",
+    "receiving": "Receiving...",
+    "requested-amount": "Requested Amount",
+    "select-an-account-to-view-qr-code": "Select an account to view QR code",
+    "successfully-received-nano": "Successfully received nano!",
+    "there-was-a-problem-receiving-the-transaction-try-manually": "There was a problem receiving the transaction, try manually!"
   },
   "representative-search": {
     "representative-list-results": "Representative List Results"
