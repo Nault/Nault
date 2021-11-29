@@ -336,6 +336,7 @@
     "unknown": "Unknown",
     "view-details": "View Details",
     "view-on-network-explorer": "View on Network Explorer",
+    "wallet-must-be-unlocked": "Wallet must be unlocked",
     "yes": "Yes"
   },
   "representative-search": {
