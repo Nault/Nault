@@ -136,7 +136,6 @@ export class RepresentativeService {
       const knownRepNinja = await this.ninja.getAccount(representative.account);
       const nanoWeight = this.util.nano.rawToNano(representative.weight || 0);
       const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
-console.log(representative);console.log('x--');console.log(nanoWeight);console.log('x2--');console.log(this.onlineStakeTotal);console.log('x3--');
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
@@ -199,7 +198,7 @@ console.log(representative);console.log('x--');console.log(nanoWeight);console.l
         status = status === 'none' ? 'ok' : status;
         label = knownRepNinja.alias;
       }
-
+	  
       const uptimeIntervalDays = 7;
 
       if (knownRepNinja && !repStatus.trusted) {

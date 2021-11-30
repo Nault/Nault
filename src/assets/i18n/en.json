@@ -62,7 +62,7 @@
     "health": "Health",
     "it-is-highly-advised-to-switch-to-a-different-representative": "It is highly advised to switch to a different tribe, in order to improve security and decentralization of the Paw network.",
     "receive-a-transaction-to-configure": "Receive a transaction to configure",
-    "rep-represents-you": "{{ name }} represents you in the Nano consensus protocol by voting on your behalf.",
+    "rep-represents-you": "{{ name }} represents you in the PAW consensus protocol by voting on your behalf.",
     "representative-change-required": "Tribe Change Required",
     "representative-for-account": "Tribe for {{ account }}",
     "representative-none": "None",
@@ -153,7 +153,7 @@
     "view-details": "View Details"
   },
   "welcome": {
-    "a-secure-open-source-wallet-for-nano": "A secure open source wallet for Nano",
+    "a-secure-open-source-wallet-for-nano": "A secure open source wallet for PAW",
     "advanced-security-features": {
       "1": "Support for Ledger Nano S / Nano X hardware wallets",
       "2": "Ability to create multi-signature addresses where multiple private keys are required to access and transfer the funds",
@@ -187,7 +187,7 @@
       },
       "2": {
         "1": "In Biome there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted",
-        "2-link-nano-node": "Nano node",
+        "2-link-nano-node": "PAW node",
         "3": "as the server."
       },
       "title": "Any Node, Always Available"
@@ -201,7 +201,7 @@
         "3": ", which allows users to be in control of how much voting power tribes have on the network."
       },
       "2": "Biome will automatically check the status of your tribes and provide recommendations to ensure security and censorship resistance for all network participants.",
-      "title": "Secure the Nano Network"
+      "title": "Secure the PAW Network"
     },
     "view-my-accounts": "View My Accounts",
     "welcome-back-it-looks-like-your-wallet-is-already-configured": "Welcome back! It looks like your wallet is already configured.",

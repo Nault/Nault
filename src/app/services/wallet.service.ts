@@ -22,6 +22,7 @@ export interface WalletAccount {
   keyPair: any;
   index: number;
   balance: BigNumber;
+  balanceFormatted: string;
   pending: BigNumber;
   balanceRaw: BigNumber;
   pendingRaw: BigNumber;
@@ -43,6 +44,7 @@ export interface FullWallet {
   seedBytes: any;
   seed: string|null;
   balance: BigNumber;
+  balanceFormatted: string;
   pending: BigNumber;
   balanceRaw: BigNumber;
   pendingRaw: BigNumber;
@@ -91,6 +93,7 @@ export class WalletService {
     seedBytes: null,
     seed: '',
     balance: new BigNumber(0),
+    balanceFormatted: '0',
     pending: new BigNumber(0),
     balanceRaw: new BigNumber(0),
     pendingRaw: new BigNumber(0),
@@ -545,6 +548,7 @@ export class WalletService {
       secret: null,
       keyPair: null,
       balance: new BigNumber(0),
+      balanceFormatted: '0',
       pending: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
@@ -568,6 +572,7 @@ export class WalletService {
       secret: accountBytes,
       keyPair: accountKeyPair,
       balance: new BigNumber(0),
+      balanceFormatted: '0',
       pending: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
@@ -607,6 +612,7 @@ export class WalletService {
     this.wallet.seedBytes = null;
     this.wallet.accounts = [];
     this.wallet.balance = new BigNumber(0);
+    this.wallet.balanceFormatted = '0';
     this.wallet.pending = new BigNumber(0);
     this.wallet.balanceRaw = new BigNumber(0);
     this.wallet.pendingRaw = new BigNumber(0);
@@ -670,6 +676,7 @@ export class WalletService {
 
   resetBalances() {
     this.wallet.balance = new BigNumber(0);
+    this.wallet.balanceFormatted = new BigNumber(0).toFormat();
     this.wallet.pending = new BigNumber(0);
     this.wallet.balanceRaw = new BigNumber(0);
     this.wallet.pendingRaw = new BigNumber(0);
@@ -717,6 +724,7 @@ export class WalletService {
       if (!walletAccount) continue;
 
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
+	  walletAccount.balanceFormatted = new BigNumber(accounts.balances[accountID].balance).toFormat();
       const accountBalancePendingInclUnconfirmed = new BigNumber(accounts.balances[accountID].pending);
 
       walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
@@ -816,6 +824,7 @@ export class WalletService {
     hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)); // use high pow here since we don't know what tx type will be next
 
     this.wallet.balance = walletBalance;
+	this.wallet.balanceFormatted = walletBalance.toFormat();
     this.wallet.pending = walletPendingAboveThresholdConfirmed;
 
     this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.nano);
@@ -846,6 +855,7 @@ export class WalletService {
       secret: null,
       keyPair: null,
       balance: new BigNumber(0),
+      balanceFormatted: new BigNumber(0).toFormat(),
       pending: new BigNumber(0),
       balanceRaw: new BigNumber(0),
       pendingRaw: new BigNumber(0),
