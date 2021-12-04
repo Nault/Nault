@@ -147,17 +147,17 @@ export class MusigService {
       try {
         const bytes = base32.decode(address);
         if (bytes.length !== 37) {
-          throw new Error('Wrong nano address length');
+          throw new Error('Wrong paw address length');
         }
         const pubkey = bytes.subarray(0, 32);
         const checksum_ = this.util.account.getAccountChecksum(pubkey);
         if (!this.util.array.equalArrays(bytes.subarray(32), checksum_)) {
-          throw new Error('Invalid nano address checksum');
+          throw new Error('Invalid paw address checksum');
         }
         pubkeys.push(pubkey);
       } catch (err_) {
           console.error(err_.toString());
-          throw new Error('Invalid nano address (bad character?)');
+          throw new Error('Invalid paw address (bad character?)');
       }
     }
     const pubkeyPtrs = this.wasm.musig_malloc(pubkeys.length * 4);

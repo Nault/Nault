@@ -1,7 +1,7 @@
 <div uk-grid>
   <div class="uk-width-1-1">
-    <h2 *ngIf="shouldSign">Sign Nano Block</h2>
-    <h2 *ngIf="!shouldSign">Process Nano Block</h2>
+    <h2 *ngIf="shouldSign">Sign Paw Block</h2>
+    <h2 *ngIf="!shouldSign">Process Paw Block</h2>
 
     <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
@@ -169,7 +169,7 @@
                   <div class="uk-form-controls">
                     <div class="uk-inline uk-width-1-1" style="height: 40px;">
                       <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('seed1','generic')" uk-tooltip title="Scan from QR code"></a>
-                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Nano seed, BIP39 seed or 24-word mnemonic" autocomplete="off">
+                      <input [(ngModel)]="sourceSecret" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceSecret)" placeholder="Paw seed, BIP39 seed or 24-word mnemonic" autocomplete="off">
                     </div>
                   </div>
                 </div>

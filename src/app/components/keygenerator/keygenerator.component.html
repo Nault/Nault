@@ -8,7 +8,7 @@
           You will need to manually store the recovery options for each generated address that you want to retain access to.</p>
         <div>
           <ul>
-            <li>The account can receive incoming funds at any time and live transactions can happen in any wallet that supports import of a Nano seed, mnemonic or private key.</li>
+            <li>The account can receive incoming funds at any time and live transactions can happen in any wallet that supports import of a Paw seed, mnemonic or private key.</li>
             <li>For additional security the keys can be generated and stored offline to be utilized in methods such as <a routerLink="/remote-signing" class="name">Remote Signing</a> and <a routerLink="/multisig" class="name">Multisig</a></li>
           </ul>
         </div>
@@ -23,7 +23,7 @@
       
       <div class="uk-card-body">
         <div uk-grid>
-          <div class="uk-width-1-4">Nano Seed <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a mnemonic. It's NOT bip39/44."></span></div>
+          <div class="uk-width-1-4">Paw Seed <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a mnemonic. It's NOT bip39/44."></span></div>
           <div class="uk-width-3-4 uk-text-truncate">
             <div *ngIf="seed == ''" class="uk-margin-small-bottom">...</div>
             <div *ngIf="seed !== ''">
@@ -36,7 +36,7 @@
     
         <div uk-grid>
           <div class="uk-width-1-4@m">
-            Nano Mnemonic <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a Nano seed. It's NOT bip39/44."></span>
+            Paw Mnemonic <span uk-icon="icon: info;" uk-tooltip title="Can be used to derive many private keys with different indexes or converted to a Paw seed. It's NOT bip39/44."></span>
           </div>
           <div class="uk-width-3-4@m">
             <div *ngIf="mnemonic == ''" class="uk-margin-small-bottom">...</div>

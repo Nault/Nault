@@ -59,8 +59,8 @@ export class ConfigureWalletComponent implements OnInit {
 
   selectedImportOption = 'seed';
   importOptions = [
-    { name: 'Nano Seed', value: 'seed' },
-    { name: 'Nano Mnemonic Phrase', value: 'mnemonic' },
+    { name: 'Paw Seed', value: 'seed' },
+    { name: 'Paw Mnemonic Phrase', value: 'mnemonic' },
     { name: 'BIP39 Mnemonic Phrase', value: 'bip39-mnemonic' },
     { name: 'PawVault Wallet File', value: 'file' },
     { name: 'Ledger Nano S / Nano X', value: 'ledger' },
