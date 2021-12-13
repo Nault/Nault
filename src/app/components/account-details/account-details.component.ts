@@ -394,19 +394,19 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeoutIdQueuedAutoRefresh);
     }
 
-    if (this.autoRefreshReasonBlockUpdate !== null) {
-      const isUpdateStillRelevant =
-        this.isReceivableBlockUpdateRelevant(this.autoRefreshReasonBlockUpdate);
-
-      if (isUpdateStillRelevant === false) {
-        this.enableRefreshesEventually();
-        return;
-      }
-    }
-
     this.timeoutIdQueuedAutoRefresh =
       setTimeout(
         () => {
+          if (this.autoRefreshReasonBlockUpdate !== null) {
+            const isUpdateStillRelevant =
+              this.isReceivableBlockUpdateRelevant(this.autoRefreshReasonBlockUpdate);
+
+            if (isUpdateStillRelevant === false) {
+              this.enableRefreshesEventually();
+              return;
+            }
+          }
+
           this.loadAccountDetails();
         },
         delayMS
