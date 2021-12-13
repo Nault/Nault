@@ -85,7 +85,11 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       this.selAccountInit = true;
     });
 
-    this.walletService.wallet.pendingBlocksUpdate$.subscribe(async acc => {
+    this.walletService.wallet.pendingBlocksUpdate$.subscribe(async receivableBlockUpdate => {
+      if (receivableBlockUpdate === null) {
+        return;
+      }
+
       this.updatePendingBlocks();
     });
 
