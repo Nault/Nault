@@ -42,7 +42,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   walletAccount = null;
 
-  timeoutIdAllowingRefresh: any = null;
+  timeoutIdAllowingManualRefresh: any = null;
+  timeoutIdAllowingInstantAutoRefresh: any = null;
+  timeoutIdQueuedAutoRefresh: any = null;
   qrModal: any = null;
   mobileAccountMenuModal: any = null;
   mobileTransactionMenuModal: any = null;
@@ -66,7 +68,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   routerSub = null;
   priceSub = null;
 
-  statsRefreshEnabled = true;
+  initialLoadDone = false;
+  manualRefreshAllowed = true;
+  instantAutoRefreshAllowed = true;
+  shouldQueueAutoRefresh = false;
+  autoRefreshReasonBlockUpdate = null;
   dateStringToday = '';
   dateStringYesterday = '';
 
@@ -148,6 +154,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
     });
 
+    this.wallet.wallet.pendingBlocksUpdate$.subscribe(async receivableBlockUpdate => {
+      this.onReceivableBlockUpdate(receivableBlockUpdate);
+    });
+
     const UIkit = window['UIkit'];
     const qrModal = UIkit.modal('#qr-code-modal');
     this.qrModal = qrModal;
@@ -159,6 +169,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.mobileTransactionMenuModal = mobileTransactionMenuModal;
 
     await this.loadAccountDetails();
+    this.initialLoadDone = true;
     this.addressBook.loadAddressBook();
 
     this.populateRepresentativeList();
@@ -262,14 +273,180 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.repLabel = null;
   }
 
-  async loadAccountDetails(refresh= false) {
-    if (refresh && !this.statsRefreshEnabled) return;
-    this.statsRefreshEnabled = false;
+  onRefreshButtonClick() {
+    if (!this.manualRefreshAllowed) return;
 
-    if (this.timeoutIdAllowingRefresh != null) {
-      clearTimeout(this.timeoutIdAllowingRefresh);
+    this.loadAccountDetails();
+  }
+
+  isReceivableBlockUpdateRelevant(receivableBlockUpdate) {
+    let isRelevant = true;
+
+    if (receivableBlockUpdate.account !== this.accountID) {
+      isRelevant = false;
+      return isRelevant;
     }
-    this.timeoutIdAllowingRefresh = setTimeout(() => this.statsRefreshEnabled = true, 5000);
+
+    const sourceHashToFind = receivableBlockUpdate.sourceHash;
+
+    const alreadyInReceivableBlocks =
+      this.pendingBlocks.some(
+        (knownReceivableBlock) =>
+          (knownReceivableBlock.hash === sourceHashToFind)
+      );
+
+    if (receivableBlockUpdate.hasBeenReceived === true) {
+      const destinationHashToFind = receivableBlockUpdate.destinationHash;
+
+      const alreadyInAccountHistory =
+        this.accountHistory.some(
+          (knownAccountHistoryBlock) =>
+            (knownAccountHistoryBlock.hash === destinationHashToFind)
+        );
+
+      if (
+            (alreadyInAccountHistory === true)
+          && (alreadyInReceivableBlocks === false)
+        ) {
+          isRelevant = false;
+          return isRelevant;
+      }
+    } else {
+      if (alreadyInReceivableBlocks === true) {
+        isRelevant = false;
+        return isRelevant;
+      }
+    }
+
+    return isRelevant;
+  }
+
+  onReceivableBlockUpdate(receivableBlockUpdate) {
+    if (receivableBlockUpdate === null) {
+      return;
+    }
+
+    const isRelevantUpdate =
+      this.isReceivableBlockUpdateRelevant(receivableBlockUpdate);
+
+    if (isRelevantUpdate === false) {
+      return;
+    }
+
+    this.loadAccountDetailsThrottled({ receivableBlockUpdate });
+  }
+
+  loadAccountDetailsThrottled(params) {
+    this.autoRefreshReasonBlockUpdate = (
+        (params.receivableBlockUpdate != null)
+      ? params.receivableBlockUpdate
+      : null
+    );
+
+    if (this.initialLoadDone === false) {
+      return;
+    }
+
+    if (this.instantAutoRefreshAllowed === true) {
+      this.loadAccountDetails();
+      return;
+    }
+
+    if (this.loadingAccountDetails === true) {
+      // Queue refresh once the loading is done
+      this.shouldQueueAutoRefresh = true;
+    } else {
+      // Queue refresh now
+      this.loadAccountDetailsDelayed(3000);
+    }
+  }
+
+  enableManualRefreshDelayed(delayMS) {
+    if (this.timeoutIdAllowingManualRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingManualRefresh);
+    }
+
+    this.timeoutIdAllowingManualRefresh =
+      setTimeout(
+        () => {
+          this.manualRefreshAllowed = true;
+        },
+        delayMS
+      );
+  }
+
+  enableInstantAutoRefreshDelayed(delayMS) {
+    if (this.timeoutIdAllowingInstantAutoRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingInstantAutoRefresh);
+    }
+
+    this.timeoutIdAllowingInstantAutoRefresh =
+      setTimeout(
+        () => {
+          this.instantAutoRefreshAllowed = true;
+        },
+        delayMS
+      );
+  }
+
+  loadAccountDetailsDelayed(delayMS) {
+    if (this.timeoutIdQueuedAutoRefresh != null) {
+      clearTimeout(this.timeoutIdQueuedAutoRefresh);
+    }
+
+    this.timeoutIdQueuedAutoRefresh =
+      setTimeout(
+        () => {
+          if (this.autoRefreshReasonBlockUpdate !== null) {
+            const isUpdateStillRelevant =
+              this.isReceivableBlockUpdateRelevant(this.autoRefreshReasonBlockUpdate);
+
+            if (isUpdateStillRelevant === false) {
+              this.enableRefreshesEventually();
+              return;
+            }
+          }
+
+          this.loadAccountDetails();
+        },
+        delayMS
+      );
+  }
+
+  onAccountDetailsLoadStart() {
+    this.instantAutoRefreshAllowed = false;
+    this.manualRefreshAllowed = false;
+
+    if (this.timeoutIdAllowingManualRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingManualRefresh);
+    }
+
+    if (this.timeoutIdAllowingInstantAutoRefresh != null) {
+      clearTimeout(this.timeoutIdAllowingInstantAutoRefresh);
+    }
+
+    if (this.timeoutIdQueuedAutoRefresh != null) {
+      clearTimeout(this.timeoutIdQueuedAutoRefresh);
+    }
+  }
+
+  enableRefreshesEventually() {
+    this.enableInstantAutoRefreshDelayed(3000);
+    this.enableManualRefreshDelayed(5000);
+  }
+
+  onAccountDetailsLoadDone() {
+    if (this.shouldQueueAutoRefresh === true) {
+      this.shouldQueueAutoRefresh = false;
+      this.loadAccountDetailsDelayed(3000);
+      return;
+    }
+
+    this.enableRefreshesEventually();
+  }
+
+  async loadAccountDetails() {
+    this.onAccountDetailsLoadStart();
 
     this.pendingBlocks = [];
 
@@ -288,11 +465,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (accountID !== this.accountID) {
       // Navigated to a different account while account info was loading
+      this.onAccountDetailsLoadDone();
       return;
     }
 
     if (!this.account) {
       this.loadingAccountDetails = false;
+      this.onAccountDetailsLoadDone();
       return;
     }
 
@@ -316,6 +495,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
       if (accountID !== this.accountID) {
         // Navigated to a different account while incoming tx were loading
+        this.onAccountDetailsLoadDone();
         return;
       }
 
@@ -380,10 +560,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     if (accountID !== this.accountID) {
       // Navigated to a different account while account history was loading
+      this.onAccountDetailsLoadDone();
       return;
     }
 
     this.loadingAccountDetails = false;
+    this.onAccountDetailsLoadDone();
   }
 
   getAccountLabel(accountID, defaultLabel) {
@@ -458,9 +640,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         );
 
         if (h.type === 'state') {
-          // For Open and receive blocks, we need to look up block info to get originating account
           if (h.subtype === 'open' || h.subtype === 'receive') {
+            // Look up block info to get sender account
             additionalBlocksInfo.push({ hash: h.hash, link: h.link });
+
+            // Remove a receivable block if this is a receive for it
+            const sourceHashToFind = h.link;
+
+            this.pendingBlocks =
+              this.pendingBlocks.filter(
+                (knownReceivableBlock) =>
+                  (knownReceivableBlock.hash !== sourceHashToFind)
+              );
           } else if (h.subtype === 'change') {
             h.link_as_account = h.representative;
             h.addressBookName = (
@@ -790,6 +981,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     receivableBlock.loading = false;
 
     await this.wallet.reloadBalances();
+
+    this.loadAccountDetailsThrottled({});
   }
 
   async generateSend() {

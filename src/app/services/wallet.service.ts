@@ -38,6 +38,13 @@ export interface Block {
   source: string;
 }
 
+export interface ReceivableBlockUpdate {
+  account: string;
+  sourceHash: string;
+  destinationHash: string|null;
+  hasBeenReceived: boolean;
+}
+
 export interface FullWallet {
   type: WalletType;
   seedBytes: any;
@@ -58,7 +65,7 @@ export interface FullWallet {
   locked: boolean;
   password: string;
   pendingBlocks: Block[];
-  pendingBlocksUpdate$: BehaviorSubject<boolean|false>;
+  pendingBlocksUpdate$: BehaviorSubject<ReceivableBlockUpdate|null>;
   newWallet$: BehaviorSubject<boolean|false>;
   refresh$: BehaviorSubject<boolean|false>;
 }
@@ -106,7 +113,7 @@ export class WalletService {
     locked: false,
     password: '',
     pendingBlocks: [],
-    pendingBlocksUpdate$: new BehaviorSubject(false),
+    pendingBlocksUpdate$: new BehaviorSubject(null),
     newWallet$: new BehaviorSubject(false),
     refresh$: new BehaviorSubject(false),
   };
@@ -953,8 +960,13 @@ export class WalletService {
     if (existingHash) return false; // Already added
 
     this.wallet.pendingBlocks.push({ account: accountID, hash: blockHash, amount: amount, source: source });
-    this.wallet.pendingBlocksUpdate$.next(true);
-    this.wallet.pendingBlocksUpdate$.next(false);
+    this.wallet.pendingBlocksUpdate$.next({
+      account: accountID,
+      sourceHash: blockHash,
+      destinationHash: null,
+      hasBeenReceived: false,
+    });
+    this.wallet.pendingBlocksUpdate$.next(null);
     return true;
   }
 
@@ -1008,8 +1020,13 @@ export class WalletService {
       // list also updated with reloadBalances but not if called too fast
       this.removePendingBlock(nextBlock.hash);
       await this.reloadBalances();
-      this.wallet.pendingBlocksUpdate$.next(true);
-      this.wallet.pendingBlocksUpdate$.next(false);
+      this.wallet.pendingBlocksUpdate$.next({
+        account: nextBlock.account,
+        sourceHash: nextBlock.hash,
+        destinationHash: newHash,
+        hasBeenReceived: true,
+      });
+      this.wallet.pendingBlocksUpdate$.next(null);
     } else {
       if (this.isLedgerWallet()) {
         this.processingPending = false;

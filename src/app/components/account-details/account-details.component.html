@@ -258,12 +258,12 @@
           <ng-template #notUpdatingTxList>
             <a
               class="icon-transactions-refresh"
-              [class.disabled]="!statsRefreshEnabled"
-              [class.uk-text-muted]="!statsRefreshEnabled"
+              [class.disabled]="!manualRefreshAllowed"
+              [class.uk-text-muted]="!manualRefreshAllowed"
               uk-icon="icon: refresh;"
               [title]="'general.reload' | transloco"
               uk-tooltip
-              (click)="loadAccountDetails(true)"
+              (click)="onRefreshButtonClick()"
             ></a>
           </ng-template>
         </li>
