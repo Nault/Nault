@@ -1152,6 +1152,6 @@ export class WalletService {
             }
           });
       }
-     );
+    );
   }
 }
