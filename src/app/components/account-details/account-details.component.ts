@@ -957,9 +957,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   async receiveReceivableBlock(receivableBlock) {
     const sourceBlock = receivableBlock.hash;
 
-    if (this.wallet.walletIsLocked()) {
-      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.wallet.isLocked()) {
+      const wasUnlocked = await this.wallet.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
+
     receivableBlock.loading = true;
 
     const createdReceiveBlockHash =

@@ -489,19 +489,19 @@ input[type=number] {
 	.uk-tooltip {
 		display: none !important;
 	}
+
+	// Menu modal
+	.modal-position-bottom[style*="display: block;"] {
+		display: flex !important;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
 }
 
 @media (min-width: 940px) {
 	.only-on-small-viewports {
 		display: none;
 	}
-}
-
-// Menu modal
-.modal-position-bottom[style*="display: block;"] {
-	display: flex !important;
-	flex-direction: column;
-	justify-content: flex-end;
 }
 
 .uk-modal {

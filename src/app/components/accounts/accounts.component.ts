@@ -48,8 +48,13 @@ export class AccountsComponent implements OnInit {
 
   async createAccount() {
     if (this.walletService.isLocked()) {
-      return this.notificationService.sendError(this.translocoService.translate('accounts.wallet-is-locked'));
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
+
     if ((this.isLedgerWallet) && (this.ledger.ledger.status !== LedgerStatus.READY)) {
       return this.notificationService.sendWarning(this.translocoService.translate('accounts.ledger-device-must-be-ready'));
     }
@@ -113,9 +118,14 @@ export class AccountsComponent implements OnInit {
   }
 
   async deleteAccount(account) {
-    if (this.walletService.walletIsLocked()) {
-      return this.notificationService.sendWarning(this.translocoService.translate('accounts.wallet-is-locked'));
+    if (this.walletService.isLocked()) {
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
+
     try {
       await this.walletService.removeWalletAccount(account.id);
       this.notificationService.sendSuccess(

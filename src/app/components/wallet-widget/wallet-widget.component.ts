@@ -34,11 +34,15 @@ export class WalletWidgetComponent implements OnInit {
   ngOnInit() {
     const UIkit = (window as any).UIkit;
     const modal = UIkit.modal(document.getElementById('unlock-wallet-modal'));
+    UIkit.util.on('#unlock-wallet-modal', 'hidden', () => {
+      this.onModalHidden();
+    });
     this.modal = modal;
 
     this.ledgerService.ledgerStatus$.subscribe((ledgerStatus: any) => {
       this.ledgerStatus = ledgerStatus.status;
     });
+
     // Detect if a PoW is taking too long and alert
     this.powService.powAlert$.subscribe(async shouldAlert => {
       if (shouldAlert) {
@@ -47,11 +51,22 @@ export class WalletWidgetComponent implements OnInit {
         this.powAlert = false;
       }
     });
+
+    this.walletService.wallet.unlockModalRequested$.subscribe(async wasRequested => {
+      if (wasRequested === true) {
+        this.showModal();
+      }
+    });
   }
 
   showModal() {
     this.unlockPassword = '';
     this.modal.show();
+  }
+
+  onModalHidden() {
+    this.unlockPassword = '';
+    this.walletService.wallet.unlockModalRequested$.next(false);
   }
 
   async lockWallet() {
