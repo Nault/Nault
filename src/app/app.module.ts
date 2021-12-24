@@ -57,7 +57,6 @@ import { InstallWidgetComponent } from './components/install-widget/install-widg
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 import {MusigService} from './services/musig.service';
 
 // QR code module
@@ -121,7 +120,6 @@ import { TranslocoRootModule } from './transloco/transloco-root.module';
     ClipboardModule,
     ZXingScannerModule,
     NgbModule,
-    PasswordStrengthMeterModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
     TranslocoRootModule,
   ],
