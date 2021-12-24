@@ -9,7 +9,7 @@ import { MusigService } from '../../services/musig.service';
 @Component({
   selector: 'app-multisig',
   templateUrl: './multisig.component.html',
-  styleUrls: ['./multisig.component.less']
+  styleUrls: ['./multisig.component.css']
 })
 export class MultisigComponent implements OnInit {
   accountAdd = '';
