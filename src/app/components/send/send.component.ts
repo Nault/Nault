@@ -358,8 +358,12 @@ export class SendComponent implements OnInit {
     if (!walletAccount) {
       throw new Error(`Unable to find sending account in wallet`);
     }
-    if (this.walletService.walletIsLocked()) {
-      return this.notificationService.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.isLocked()) {
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
 
     this.confirmingTransaction = true;

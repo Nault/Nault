@@ -73,8 +73,12 @@ export class ManageWalletComponent implements OnInit {
     if (this.newPassword.length < 1) {
       return this.notifications.sendError(`Password cannot be empty`);
     }
-    if (this.walletService.walletIsLocked()) {
-      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.isLocked()) {
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
 
     this.walletService.wallet.password = this.newPassword;
@@ -88,8 +92,12 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async exportWallet() {
-    if (this.walletService.walletIsLocked()) {
-      return this.notifications.sendWarning(`Wallet must be unlocked`);
+    if (this.walletService.isLocked()) {
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
 
     const exportUrl = this.walletService.generateExportUrl();
@@ -174,9 +182,13 @@ export class ManageWalletComponent implements OnInit {
     }
   }
 
-  exportToFile() {
-    if (this.walletService.walletIsLocked()) {
-      return this.notifications.sendWarning(`Wallet must be unlocked`);
+  async exportToFile() {
+    if (this.walletService.isLocked()) {
+      const wasUnlocked = await this.walletService.requestWalletUnlock();
+
+      if (wasUnlocked === false) {
+        return;
+      }
     }
 
     const fileName = `Nault-Wallet.json`;
