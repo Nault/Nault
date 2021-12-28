@@ -313,7 +313,7 @@
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <h3>Use Ledger Hardware Wallet</h3>
-        <p>
+        <p *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED">
           Make sure you have the nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
           <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
           <br>
