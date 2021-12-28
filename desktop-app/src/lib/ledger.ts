@@ -1,5 +1,6 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
+import Transport from '@ledgerhq/hw-transport';
 import * as LedgerLogs from '@ledgerhq/logs';
 import Nano from 'hw-app-nano';
 
@@ -20,6 +21,12 @@ const LedgerStatus = {
   READY: 'ready',
 };
 
+export interface LedgerData {
+  status: string;
+  nano: any|null;
+  transport: Transport|null;
+}
+
 
 /**
  * This class is close to a clone of the LedgerService for web, but it
@@ -37,7 +44,7 @@ export class LedgerService {
   ledgerStatus$ = new rx.Subject();
   ledgerMessage$ = new rx.Subject();
 
-  ledger = {
+  ledger: LedgerData = {
     status: LedgerStatus.NOT_CONNECTED,
     nano: null,
     transport: null,
