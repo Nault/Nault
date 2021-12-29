@@ -1,5 +1,5 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import TransportNodeBle from '@ledgerhq/hw-transport-web-ble';
+import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import Transport from '@ledgerhq/hw-transport';
 import * as LedgerLogs from '@ledgerhq/logs';
 import Nano from 'hw-app-nano';
@@ -36,7 +36,7 @@ export class LedgerService {
   walletPrefix = `44'/165'/`;
   waitTimeout = 300000;
   normalTimeout = 5000;
-  pollInterval = 45000;
+  pollInterval = 10000;
 
   pollingLedger = false;
   queryingLedger = false;
@@ -67,15 +67,14 @@ export class LedgerService {
 
       let found = false;
       const sub = transport.listen({
-        next: (e) => {
+        next: async(e) => {
           found = true;
           if (sub) sub.unsubscribe();
-          transport.open(e.descriptor, 3000).then(trans => {
-            this.ledger.transport = trans;
-            this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-            this.ledger.nano = new Nano(this.ledger.transport);
-            resolve(this.ledger.transport);
-          }, reject);
+
+          this.ledger.transport = await transport.open(e.descriptor, 3000);
+          this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+          this.ledger.nano = new Nano(this.ledger.transport);
+          resolve(this.ledger.transport);
         },
         error: (e) => reject(e),
         complete: () => {

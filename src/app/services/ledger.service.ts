@@ -4,9 +4,10 @@ import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
+import TransportNodeBLE from '@ledgerhq/hw-transport-node-ble';
 import Transport from '@ledgerhq/hw-transport';
 import * as LedgerLogs from '@ledgerhq/logs';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
 import { environment } from '../../environments/environment';
@@ -49,7 +50,7 @@ export class LedgerService {
 
   waitTimeout = 300000;
   normalTimeout = 5000;
-  pollInterval = 15000;
+  pollInterval = 5000;
 
   pollingLedger = false;
 
@@ -118,7 +119,10 @@ export class LedgerService {
       }
     });
     this.supportsUSB = true;
-    this.supportsBluetooth = true;
+    (TransportNodeBLE.availability as Observable<boolean>).subscribe(available => {
+      console.log('availability changed', available)
+      this.supportsBluetooth = available;
+    })
   }
 
   /**
@@ -334,9 +338,9 @@ export class LedgerService {
         return resolve(false);
       }
 
-      if (this.ledger.status === LedgerStatus.READY) {
-        return resolve(true); // Already ready?
-      }
+      // if (this.ledger.status === LedgerStatus.READY) {
+      //   return resolve(true); // Already ready?
+      // }
       let resolved = false;
 
       // Set up a timeout when things are not ready
