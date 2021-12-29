@@ -63,15 +63,37 @@ export class LedgerService {
   // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      (bluetooth ? TransportNodeBle : TransportNodeHid).create(undefined, undefined).then(trans => {
+      const transport: typeof Transport = bluetooth ? TransportNodeBle : TransportNodeHid;
 
-        // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
-        this.ledger.transport = trans;
-        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.nano = new Nano(this.ledger.transport);
+      let found = false;
+      const sub = transport.listen({
+        next: (e) => {
+          found = true;
+          if (sub) sub.unsubscribe();
+          transport.open(e.descriptor, 3000).then(trans => {
+            this.ledger.transport = trans;
+            this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+            this.ledger.nano = new Nano(this.ledger.transport);
+            resolve(this.ledger.transport);
+          }, reject);
+        },
+        error: (e) => reject(e),
+        complete: () => {
+          if (!found) {
+            reject('No device found');
+          }
+        }
+      })
 
-        resolve(this.ledger.transport);
-      }).catch(reject);
+      // transport.create(undefined, undefined).then(trans => {
+
+      //   // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
+      //   this.ledger.transport = trans;
+      //   this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
+      //   this.ledger.nano = new Nano(this.ledger.transport);
+
+      //   resolve(this.ledger.transport);
+      // }).catch(reject);
     });
   }
 

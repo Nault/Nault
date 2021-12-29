@@ -377,7 +377,7 @@ export class LedgerService {
       // Attempt to load account 0 - which confirms the app is unlocked and ready
       try {
         const accountDetails = await this.getLedgerAccount(0);
-        console.log('accountDetails', accountDetails)
+        console.log('accountDetails', accountDetails);
         this.ledger.status = LedgerStatus.READY;
         this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano Ledger application connected` });
 
@@ -497,7 +497,7 @@ export class LedgerService {
 
     try {
       const accountDetails = await this.getLedgerAccount(0);
-      console.log('Polling - accountDetails', accountDetails)
+      console.log('Polling - accountDetails', accountDetails);
       this.ledger.status = LedgerStatus.READY;
     } catch (err) {
       // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)
