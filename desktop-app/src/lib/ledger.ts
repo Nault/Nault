@@ -1,5 +1,5 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
+import TransportNodeBle from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
 import * as LedgerLogs from '@ledgerhq/logs';
 import Nano from 'hw-app-nano';
