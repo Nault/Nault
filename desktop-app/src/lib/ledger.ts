@@ -63,7 +63,7 @@ export class LedgerService {
   // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
+      (bluetooth ? TransportNodeBle : TransportNodeHid).create(undefined, undefined).then(trans => {
 
         // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
