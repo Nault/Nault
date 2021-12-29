@@ -116,13 +116,11 @@ export class LedgerService {
         case 'sign-block':
           this.desktopMessage$.next(message);
           break;
+        case 'bluetooth-ready':
+          this.supportsBluetooth = message.data
       }
     });
     this.supportsUSB = true;
-    (TransportNodeBLE.availability as Observable<boolean>).subscribe(available => {
-      console.log('availability changed', available)
-      this.supportsBluetooth = available;
-    })
   }
 
   /**

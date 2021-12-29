@@ -7,6 +7,7 @@ import Nano from 'hw-app-nano';
 import * as rx from 'rxjs';
 
 import { ipcMain } from 'electron';
+import { Observable } from 'rxjs';
 
 const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,
@@ -51,6 +52,10 @@ export class LedgerService {
   };
 
   constructor() {
+    (TransportNodeBle.availability as Observable<boolean>).subscribe(available => {
+      console.log('availability changed', available);
+      this.ledgerMessage$.next({ event: 'bluetooth-ready', data: available });
+    })
   }
 
   // Reset connection to the ledger device, update the status
