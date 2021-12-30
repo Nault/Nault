@@ -119,7 +119,7 @@
 			>{{ 'general.actions.unknown-action' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 		</ng-container>
 		<div class="amount" *ngIf="isReceivableTransaction || isSendTransaction || isReceiveTransaction">
-			<span class="amount-integer">{{ transaction.amount | rai: 'nano,true' | amountsplit: 0 }}</span>
+			<span class="amount-integer">{{ transaction.amount | rai: 'nano,true' | amountsplit: 0 | number }}</span>
 			<span class="amount-fractional">{{ transaction.amount | rai: 'nano,true' | amountsplit: 1 }}</span>
 			<span class="currency-name">PAW</span>
 		</div>

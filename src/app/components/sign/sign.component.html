@@ -18,7 +18,7 @@
 
             <div *ngIf="txType != txTypes.change">
               <div class="block-amount-primary" [class.uk-text-danger]="txType == txTypes.send" [class.uk-text-success]="txType == txTypes.receive">
-                <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 }}</span>
+                <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 | number }}</span>
                 <span class="amount-fractional">{{ rawAmount | rai: 'nano,true' | amountsplit: 1 }}</span>
                 <span class="currency-name">PAW</span>
               </div>
@@ -66,7 +66,7 @@
                     <span class="block-balance">
                       <span class="balance-amount-primary uk-text-danger">
                         <span class="amount-sign">-</span>
-                        <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 | number }}</span>
                         <span class="amount-fractional">{{ rawAmount | rai: 'nano,true' | amountsplit: 1 }}</span>
                         <span class="currency-name">PAW</span>
                       </span>
@@ -128,7 +128,7 @@
                     <span class="block-balance">
                       <span class="balance-amount-primary uk-text-success">
                         <span class="amount-sign">+</span>
-                        <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 }}</span>
+                        <span class="amount-integer">{{ rawAmount | rai: 'nano,true' | amountsplit: 0 | number }}</span>
                         <span class="amount-fractional">{{ rawAmount | rai: 'nano,true' | amountsplit: 1 }}</span>
                         <span class="currency-name">PAW</span>
                       </span>
