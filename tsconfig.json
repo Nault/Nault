@@ -8,13 +8,13 @@
     "declaration": false,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2015",
+    "target": "es2017",
     "typeRoots": [
       "node_modules/@types",
       "./src/typings"
     ],
     "lib": [
-      "es2017",
+      "es2020",
       "dom"
     ],
     "module": "es2020",
