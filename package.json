@@ -48,7 +48,7 @@
     "@ledgerhq/hw-transport-webusb": "^5.39.0",
     "@ledgerhq/logs": "^5.39.0",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
-    "@ngneat/transloco": "^2.22.0",
+    "@ngneat/transloco": "^3.1.1",
     "@types/crypto-js": "^3.1.38",
     "@zxing/browser": "0.0.10",
     "@zxing/library": "^0.18.6",
