@@ -4,7 +4,6 @@ import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
-import TransportNodeBLE from '@ledgerhq/hw-transport-node-ble';
 import Transport from '@ledgerhq/hw-transport';
 import * as LedgerLogs from '@ledgerhq/logs';
 import {Observable, Subject} from 'rxjs';
@@ -116,11 +115,10 @@ export class LedgerService {
         case 'sign-block':
           this.desktopMessage$.next(message);
           break;
-        case 'bluetooth-ready':
-          this.supportsBluetooth = message.data
       }
     });
     this.supportsUSB = true;
+    this.supportsBluetooth = true;
   }
 
   /**
@@ -301,6 +299,9 @@ export class LedgerService {
         const sub = this.ledgerStatus$.subscribe(newStatus => {
           if (newStatus.status === LedgerStatus.READY) {
             resolve(true);
+          } else if (newStatus.statusText.includes('No compatible USB Bluetooth 4.0 device found') || newStatus.statusText.includes('Could not start scanning')) {
+            this.supportsBluetooth = false;
+            reject(newStatus.statusText);
           } else {
             reject(new Error(newStatus.statusText || `Unable to load desktop Ledger device`));
           }
@@ -360,6 +361,7 @@ export class LedgerService {
         resolved = true;
 
         if (!ledgerConfig) return resolve(false);
+        console.log('ledgerConfig', ledgerConfig)
         if (ledgerConfig && ledgerConfig.version) {
           this.ledger.status = LedgerStatus.LOCKED;
           this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano app detected, but ledger is locked` });
@@ -379,7 +381,6 @@ export class LedgerService {
       // Attempt to load account 0 - which confirms the app is unlocked and ready
       try {
         const accountDetails = await this.getLedgerAccount(0);
-        console.log('accountDetails', accountDetails);
         this.ledger.status = LedgerStatus.READY;
         this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano Ledger application connected` });
 
@@ -499,7 +500,6 @@ export class LedgerService {
 
     try {
       const accountDetails = await this.getLedgerAccount(0);
-      console.log('Polling - accountDetails', accountDetails);
       this.ledger.status = LedgerStatus.READY;
     } catch (err) {
       // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)

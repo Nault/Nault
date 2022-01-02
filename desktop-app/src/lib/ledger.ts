@@ -52,10 +52,6 @@ export class LedgerService {
   };
 
   constructor() {
-    (TransportNodeBle.availability as Observable<boolean>).subscribe(available => {
-      console.log('availability changed', available);
-      this.ledgerMessage$.next({ event: 'bluetooth-ready', data: available });
-    })
   }
 
   // Reset connection to the ledger device, update the status
@@ -84,7 +80,7 @@ export class LedgerService {
         error: (e) => reject(e),
         complete: () => {
           if (!found) {
-            reject('No device found');
+            reject(new Error('No device found'));
           }
         }
       })
@@ -121,10 +117,10 @@ export class LedgerService {
     }
 
     let resolved = false;
-    if (this.ledger.status === LedgerStatus.READY) {
-      this.ledgerStatus$.next({ status: this.ledger.status, statusText: 'Ledger device already ready' });
-      return true; // Already ready?
-    }
+    // if (this.ledger.status === LedgerStatus.READY) {
+    //   this.ledgerStatus$.next({ status: this.ledger.status, statusText: 'Ledger device already ready' });
+    //   return true; // Already ready?
+    // }
 
     setTimeout(() => {
       if (resolved || this.ledger.status === LedgerStatus.READY) return;
