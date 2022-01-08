@@ -50,6 +50,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngneat/transloco": "^3.1.1",
     "@types/crypto-js": "^3.1.38",
+    "@types/w3c-web-hid": "^1.0.2",
     "@zxing/browser": "0.0.10",
     "@zxing/library": "^0.18.6",
     "@zxing/ngx-scanner": "^3.3.0",
