@@ -75,6 +75,7 @@ jobs:
       - name: Install and Build Desktop App
         run: |
           npm install
+          npm run build
           npm run desktop:build
 
       - name: Temporarily fix electron-builder
