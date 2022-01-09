@@ -93,7 +93,7 @@
     "@types/qrcode": "^0.8.1",
     "codelyzer": "^6.0.0",
     "electron": "^9.4.0",
-    "electron-builder": "^22.7.0",
+    "electron-builder": "^22.14.5",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.9",
