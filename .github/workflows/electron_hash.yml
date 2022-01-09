@@ -78,20 +78,6 @@ jobs:
           npm install
           npm run desktop:build
 
-      - name: Temporarily fix electron-builder
-        # https://github.com/electron-userland/electron-builder/issues/4176
-        if: matrix.os != 'macos-latest'
-        run: |
-          sed -i 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
-        shell: bash
-
-      - name: Temporarily fix electron-builder (MacOS)
-        # https://github.com/electron-userland/electron-builder/issues/4176
-        if: matrix.os == 'macos-latest'
-        run: |
-          sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
-        shell: bash
-
       - name: Build Electron app
         run: |
           npm run desktop:local
