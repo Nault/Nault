@@ -76,7 +76,7 @@ jobs:
         run: |
           npm install
           npm run desktop:build
-          
+
       - name: Temporarily fix electron-builder
         # https://github.com/electron-userland/electron-builder/issues/4176
         if: matrix.os != 'macos-latest'
@@ -90,7 +90,7 @@ jobs:
         run: |
           sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
         shell: bash
-        
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
@@ -100,7 +100,7 @@ jobs:
 
           # is already built
           skip_build: true
-          
+
           release: false
           args: "-p never" # Do not publish, done in the next step instead
 
@@ -211,7 +211,7 @@ jobs:
           asset_path: desktop-app/build/latest.yml
           asset_name: latest.yml
           asset_content_type: application/octet-stream
-      
+
       # Artifacts are always uploaded. Both untagged pushes and PRs
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
