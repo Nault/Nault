@@ -72,7 +72,7 @@ export class LedgerService {
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
   DynamicTransport = TransportU2F;
 
-  ledgerStatus$: Subject<any> = new Subject();
+  ledgerStatus$: Subject<{ status: string, statusText: string }> = new Subject();
   desktopMessage$ = new Subject();
 
   constructor(private api: ApiService,
@@ -138,14 +138,8 @@ export class LedgerService {
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    const isWindows = window.navigator.platform.includes('Win');
-
-    if (isWindows && this.supportsWebHID) {
-      // Prefer WebHID on Windows due to stability issues with WebUSB
-      this.transportMode = 'HID';
-      this.DynamicTransport = TransportHID;
-    } else if (this.supportsWebUSB) {
-      // Else prefer WebUSB
+    if (this.supportsWebUSB) {
+      // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
     } else if (this.supportsWebHID) {
@@ -327,6 +321,9 @@ export class LedgerService {
             console.log(`Error loading ${this.transportMode} transport `, err);
             this.ledger.status = LedgerStatus.NOT_CONNECTED;
             this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+            if (!hideNotifications) {
+              this.notifications.sendWarning(`Ledger transport failed. Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
+            }
           }
           this.resetLedger();
           resolve(false);
@@ -361,13 +358,10 @@ export class LedgerService {
         resolved = true;
 
         if (!ledgerConfig) return resolve(false);
-        console.log('ledgerConfig', ledgerConfig)
-        if (ledgerConfig && ledgerConfig.version) {
-          this.ledger.status = LedgerStatus.LOCKED;
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano app detected, but ledger is locked` });
-        }
       } catch (err) {
         console.log(`App config error: `, err);
+        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Nano App configuration: ${err.message || err}` });
         if (err.statusText === 'HALTED') {
           this.resetLedger();
         }
@@ -504,8 +498,12 @@ export class LedgerService {
     } catch (err) {
       // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)
       if (err.name !== 'TransportRaceCondition') {
-        console.log('Check ledger status failed ', err);
-        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        console.log('Check ledger status failed ', JSON.stringify(err));
+        if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+          this.ledger.status = LedgerStatus.LOCKED;
+        } else {
+          this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        }
         this.pollingLedger = false;
         this.resetLedger();
       }
