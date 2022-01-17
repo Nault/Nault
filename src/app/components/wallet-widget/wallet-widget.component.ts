@@ -16,7 +16,7 @@ export class WalletWidgetComponent implements OnInit {
   ledgerStatus = {
     status: 'not-connected',
     statusText: '',
-  }
+  };
   powAlert = false;
 
   unlockPassword = '';

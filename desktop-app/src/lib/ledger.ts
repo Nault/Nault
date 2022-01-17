@@ -117,10 +117,6 @@ export class LedgerService {
     }
 
     let resolved = false;
-    // if (this.ledger.status === LedgerStatus.READY) {
-    //   this.ledgerStatus$.next({ status: this.ledger.status, statusText: 'Ledger device already ready' });
-    //   return true; // Already ready?
-    // }
 
     setTimeout(() => {
       if (resolved || this.ledger.status === LedgerStatus.READY) return;
@@ -146,6 +142,7 @@ export class LedgerService {
     } catch (err) {
       console.log(err);
       if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+        this.setLedgerStatus(LedgerStatus.LOCKED, `Ledger device locked`);
       }
     }
 
@@ -237,6 +234,11 @@ export class LedgerService {
       await this.getLedgerAccount(0, false);
       this.setLedgerStatus(LedgerStatus.READY);
     } catch (err) {
+      if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+        this.setLedgerStatus(LedgerStatus.LOCKED, `Ledger device locked`);
+        return;
+        // Stop polling when ledger is locked...? or keep going?
+      }
       this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Ledger Disconnected: ${err.message || err }`);
       this.pollingLedger = false;
     }
