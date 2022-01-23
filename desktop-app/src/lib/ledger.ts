@@ -64,7 +64,7 @@ export class LedgerService {
   // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      const transport: typeof Transport = bluetooth ? TransportNodeBle : TransportNodeHid;
+      const transport = bluetooth ? TransportNodeBle : TransportNodeHid;
 
       let found = false;
       const sub = transport.listen({
@@ -72,7 +72,7 @@ export class LedgerService {
           found = true;
           if (sub) sub.unsubscribe();
 
-          this.ledger.transport = await transport.open(e.descriptor, 3000);
+          this.ledger.transport = await transport.open(e.descriptor);
           this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
           this.ledger.nano = new Nano(this.ledger.transport);
           resolve(this.ledger.transport);
@@ -84,16 +84,6 @@ export class LedgerService {
           }
         }
       })
-
-      // transport.create(undefined, undefined).then(trans => {
-
-      //   // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
-      //   this.ledger.transport = trans;
-      //   this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-      //   this.ledger.nano = new Nano(this.ledger.transport);
-
-      //   resolve(this.ledger.transport);
-      // }).catch(reject);
     });
   }
 
@@ -236,10 +226,9 @@ export class LedgerService {
     } catch (err) {
       if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
         this.setLedgerStatus(LedgerStatus.LOCKED, `Ledger device locked`);
-        return;
-        // Stop polling when ledger is locked...? or keep going?
+      } else {
+        this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Ledger Disconnected: ${err.message || err }`);
       }
-      this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Ledger Disconnected: ${err.message || err }`);
       this.pollingLedger = false;
     }
   }
