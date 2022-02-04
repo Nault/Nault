@@ -5,8 +5,7 @@ import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
-import * as LedgerLogs from '@ledgerhq/logs';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
 import { environment } from '../../environments/environment';
@@ -47,8 +46,7 @@ const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000
 export class LedgerService {
   walletPrefix = `44'/165'/`;
 
-  waitTimeout = 300000;
-  normalTimeout = 5000;
+  waitTimeout = 30000;
   pollInterval = 5000;
 
   pollingLedger = false;
@@ -70,7 +68,7 @@ export class LedgerService {
   supportsUSB = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
-  DynamicTransport = TransportU2F;
+  DynamicTransport = TransportU2F as typeof Transport;
 
   ledgerStatus$: Subject<{ status: string, statusText: string }> = new Subject();
   desktopMessage$ = new Subject();
@@ -262,11 +260,10 @@ export class LedgerService {
 
   async loadTransport() {
     return new Promise((resolve, reject) => {
-      this.DynamicTransport.create().then(trans => {
+      this.DynamicTransport.create(3000, this.waitTimeout).then(trans => {
 
         // LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
         this.ledger.transport = trans;
-        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
 
         resolve(this.ledger.transport);
@@ -334,9 +331,6 @@ export class LedgerService {
         return resolve(false);
       }
 
-      // if (this.ledger.status === LedgerStatus.READY) {
-      //   return resolve(true); // Already ready?
-      // }
       let resolved = false;
 
       // Set up a timeout when things are not ready
@@ -453,7 +447,6 @@ export class LedgerService {
     if (this.isDesktop) {
       return this.signBlockDesktop(accountIndex, blockData);
     } else {
-      this.ledger.transport.setExchangeTimeout(this.waitTimeout);
       return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
     }
   }
@@ -463,7 +456,6 @@ export class LedgerService {
   }
 
   async getLedgerAccountWeb(accountIndex: number, showOnScreen = false) {
-    this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
     try {
       return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
     } catch (err) {

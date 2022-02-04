@@ -1,13 +1,11 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import Transport from '@ledgerhq/hw-transport';
-import * as LedgerLogs from '@ledgerhq/logs';
 import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
 
 import { ipcMain } from 'electron';
-import { Observable } from 'rxjs';
 
 const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,
@@ -35,8 +33,7 @@ export interface LedgerData {
  */
 export class LedgerService {
   walletPrefix = `44'/165'/`;
-  waitTimeout = 300000;
-  normalTimeout = 5000;
+  waitTimeout = 30000;
   pollInterval = 10000;
 
   pollingLedger = false;
@@ -65,25 +62,32 @@ export class LedgerService {
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
       const transport = bluetooth ? TransportNodeBle : TransportNodeHid;
-
       let found = false;
       const sub = transport.listen({
         next: async(e) => {
           found = true;
           if (sub) sub.unsubscribe();
-
+          clearTimeout(timeoutId);
           this.ledger.transport = await transport.open(e.descriptor);
-          this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
           this.ledger.nano = new Nano(this.ledger.transport);
           resolve(this.ledger.transport);
         },
-        error: (e) => reject(e),
+        error: (e) => {
+          clearTimeout(timeoutId);
+          reject(e);
+        },
         complete: () => {
+          clearTimeout(timeoutId);
           if (!found) {
-            reject(new Error('No device found'));
+            reject(new Error(transport.ErrorMessage_NoDeviceFound));
           }
         }
       })
+
+      const timeoutId = setTimeout(() => {
+        sub.unsubscribe();
+        reject(new Error(transport.ErrorMessage_ListenTimeout));
+      }, this.waitTimeout);
     });
   }
 
@@ -141,8 +145,6 @@ export class LedgerService {
 
   async getLedgerAccount(accountIndex, showOnScreen = false) {
     try {
-      this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
-
       this.queryingLedger = true;
       const account = await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
       this.queryingLedger = false;
