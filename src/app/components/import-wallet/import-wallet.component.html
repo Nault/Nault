@@ -12,10 +12,16 @@
     </div>
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="activePanel == 'import'">
-      <div *ngIf="walletService.isConfigured()" class="uk-alert uk-alert-danger">
-        <b>You already have a local Nault wallet configured</b><br>
-        Before going any further, be 100% certain you have backed up the secret recovery phrase for your current wallet!<br>
-        Without it, <b>any funds you have will become completely unrecoverable!</b>
+      <div *ngIf="walletService.isConfigured()">
+        <div *ngIf="!walletService.isLedgerWallet()" class="uk-alert uk-alert-danger">
+          <b>You already have a local Nault wallet configured</b><br>
+          Before going any further, be 100% certain you have backed up the secret recovery phrase for your current wallet!<br>
+          Without it, <b>any funds you have will become completely unrecoverable!</b>
+        </div>
+        <div *ngIf="walletService.isLedgerWallet()" class="uk-alert uk-alert-info">
+          <b>You are about to import a new wallet, which will disconnect your Ledger device from Nault</b><br>
+          If you need to use the Ledger wallet later, simply import your device again.
+        </div>
       </div>
       <div class="uk-card-header">
         <h3 class="uk-card-title">Confirm Wallet Import</h3>

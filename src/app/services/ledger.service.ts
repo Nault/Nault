@@ -320,7 +320,7 @@ export class LedgerService {
             this.ledger.status = LedgerStatus.NOT_CONNECTED;
             this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
             if (!hideNotifications) {
-              this.notifications.sendWarning(`Ledger transport failed. Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
+              this.notifications.sendWarning(`Ledger connection failed. Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
             }
           }
           this.resetLedger();
