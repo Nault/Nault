@@ -34,7 +34,7 @@ export interface LedgerData {
 export class LedgerService {
   walletPrefix = `44'/165'/`;
   waitTimeout = 30000;
-  pollInterval = 10000;
+  pollInterval = 5000;
 
   pollingLedger = false;
   queryingLedger = false;

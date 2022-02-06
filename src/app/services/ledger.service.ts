@@ -48,6 +48,7 @@ export class LedgerService {
 
   waitTimeout = 30000;
   pollInterval = 5000;
+  u2fPollInterval = 30000;
 
   pollingLedger = false;
 
@@ -445,7 +446,7 @@ export class LedgerService {
       await this.loadLedger(); // Make sure ledger is ready
     }
     if (this.isDesktop) {
-      return this.signBlockDesktop(accountIndex, blockData);
+      return await this.signBlockDesktop(accountIndex, blockData);
     } else {
       return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
     }
@@ -474,9 +475,10 @@ export class LedgerService {
   pollLedgerStatus() {
     if (!this.pollingLedger) return;
     setTimeout(async () => {
+      if (!this.pollingLedger) return;
       await this.checkLedgerStatus();
       this.pollLedgerStatus();
-    }, this.pollInterval);
+    }, this.transportMode === 'U2F' ? this.u2fPollInterval : this.pollInterval);
   }
 
   async checkLedgerStatus() {
