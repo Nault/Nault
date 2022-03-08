@@ -191,6 +191,29 @@
             </div>
           </div>
         </div>
+        <div class="uk-margin" *ngIf="successorHash">
+          <label class="uk-form-label">Successor:</label>
+          <div class="uk-form-controls uk-text-truncate">
+            <div uk-grid class="uk-flex-nowrap uk-text-truncate">
+              <a
+                class="uk-width-auto uk-text-truncate block-hash-monospace block-hash-clickable"
+                [routerLink]="'/transaction/' + successorHash"
+                style="max-width: calc(100% - 35px);"
+                title="View Block Details"
+                uk-tooltip
+              >{{ successorHash }}</a>
+              <div class="uk-width-auto block-hash-actions">
+                <ul class="uk-iconnav">
+                  <li><a ngxClipboard [cbContent]="successorHash" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Successor Block Hash" uk-tooltip></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="uk-margin" *ngIf="blockHeight != -1">
+          <label class="uk-form-label">Height:</label>
+          <div class="uk-form-controls uk-text-truncate">{{ blockHeight | number:'':'en-US' }}</div>
+        </div>
         <div class="uk-margin" *ngIf="(transaction?.contents?.link || transaction?.contents?.source) && (blockType == 'open' || blockType == 'receive')">
           <label class="uk-form-label">Link (Source):</label>
           <div class="uk-form-controls uk-text-truncate">
@@ -219,10 +242,6 @@
               </span>
             </a>
           </div>
-        </div>
-        <div class="uk-margin" *ngIf="blockHeight != -1">
-          <label class="uk-form-label">Height:</label>
-          <div class="uk-form-controls uk-text-truncate">{{ blockHeight | number:'':'en-US' }}</div>
         </div>
         <div class="uk-margin" *ngIf="transaction?.contents?.work">
           <label class="uk-form-label">Work:</label>

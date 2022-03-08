@@ -34,6 +34,7 @@ export class TransactionDetailsComponent implements OnInit {
   showBlockData = false;
 
   amountRaw = new BigNumber(0);
+  successorHash = '';
 
   constructor(
     private walletService: WalletService,
@@ -69,6 +70,7 @@ export class TransactionDetailsComponent implements OnInit {
     let legacyFromAccount = '';
     this.blockType = '';
     this.amountRaw = new BigNumber(0);
+    this.successorHash = '';
     const hash = this.route.snapshot.params.transaction;
     this.hashID = hash;
 
@@ -90,9 +92,11 @@ export class TransactionDetailsComponent implements OnInit {
     this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
     this.blockHeight = hashData.height;
 
+    const HASH_ONLY_ZEROES = '0000000000000000000000000000000000000000000000000000000000000000';
+
     const blockType = hashData.contents.type;
     if (blockType === 'state') {
-      const isOpen = hashData.contents.previous === '0000000000000000000000000000000000000000000000000000000000000000';
+      const isOpen = (hashData.contents.previous === HASH_ONLY_ZEROES);
 
       if (isOpen) {
         this.blockType = 'open';
@@ -124,6 +128,13 @@ export class TransactionDetailsComponent implements OnInit {
 
     if (hashData.amount) {
       this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
+    }
+
+    if (
+          (hashData.successor != null)
+        && (hashData.successor !== HASH_ONLY_ZEROES)
+      ) {
+        this.successorHash = hashData.successor;
     }
 
     this.transaction = hashData;
