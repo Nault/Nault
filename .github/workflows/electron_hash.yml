@@ -7,7 +7,7 @@ on:
 jobs:
   # Release draft and share app version via package.json
   pre_build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       output1: ${{ steps.release_drafter.outputs.upload_url }}
       output2: ${{ steps.package-version.outputs.current-version }}
@@ -65,7 +65,7 @@ jobs:
           node-version: 14
 
       - name: Install APT dependencies
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install build-essential git -y
@@ -79,14 +79,14 @@ jobs:
           
       - name: Temporarily fix electron-builder
         # https://github.com/electron-userland/electron-builder/issues/4176
-        if: matrix.os != 'macos-latest'
+        if: matrix.os != 'macos-11'
         run: |
           sed -i 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
         shell: bash
 
       - name: Temporarily fix electron-builder (MacOS)
         # https://github.com/electron-userland/electron-builder/issues/4176
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
         run: |
           sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
         shell: bash
@@ -116,27 +116,27 @@ jobs:
         shell: bash
 
       - name: Rename file paths in .yml (Linux)
-        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'ubuntu-20.04' && startsWith(github.ref, 'refs/tags/')
         run: |
           sed -i '/.AppImage/ s//-Linux.AppImage/g' desktop-app/build/latest-linux.yml | bash
         shell: bash
 
       # Special sed command for mac
       - name: Rename file paths in .yml (Mac)
-        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'macos-11' && startsWith(github.ref, 'refs/tags/')
         run: |
           sed -i '' '/.dmg/ s//-Mac.dmg/g' desktop-app/build/latest-mac.yml
         shell: bash
 
       - name: Rename file paths in .yml (Windows)
-        if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'windows-2019' && startsWith(github.ref, 'refs/tags/')
         run: |
           sed -i '/.exe/ s//-Windows.exe/g' desktop-app/build/latest.yml | bash
         shell: bash
 
       # Upload binaries separately for better control which release draft they go into
       - name: Upload Binaries Linux
-        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'ubuntu-20.04' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Binaries Mac
-        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'macos-11' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -158,7 +158,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Binaries Windows
-        if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'windows-2019' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -180,7 +180,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload yml Linux
-        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'ubuntu-20.04' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -191,7 +191,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload yml Mac
-        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'macos-11' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -202,7 +202,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload yml Windows
-        if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.os == 'windows-2019' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
