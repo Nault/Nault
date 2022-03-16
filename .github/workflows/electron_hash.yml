@@ -38,17 +38,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             artifact_name: checksums
             asset_name: checksums
             app_ext: AppImage
             app_os: linux
-          - os: macos-latest
+          - os: macos-11
             artifact_name: checksums
             asset_name: checksums
             app_ext: dmg
             app_os: mac
-          - os: windows-latest
+          - os: windows-2019
             artifact_name: checksums
             asset_name: checksums
             app_ext: exe
