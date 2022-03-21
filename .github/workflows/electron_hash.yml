@@ -74,7 +74,7 @@ jobs:
 
       - name: Install and Build Desktop App
         run: |
-          npm install -g node-gyp
+          npm install -g node-gyp @angular/cli
           npm install
           npm run desktop:build
 
