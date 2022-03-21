@@ -184,8 +184,8 @@
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s nlt-button-group">
-            <button class="uk-button uk-button-danger" (click)="cancelNewAddress()">{{ 'general.cancel' | transloco }}</button>
-            <button class="uk-button uk-button-primary" (click)="saveNewAddress()">{{ 'general.save' | transloco }}</button>
+            <button class="uk-button uk-button-danger uk-width-1-1@s uk-width-auto@m" (click)="cancelNewAddress()">{{ 'general.cancel' | transloco }}</button>
+            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m" (click)="saveNewAddress()">{{ 'general.save' | transloco }}</button>
           </div>
         </div>
       </div>
@@ -231,9 +231,9 @@
                 <span *ngIf="!addressBookShowQRExport">{{ 'address-book.you-can-still-import-your-address-book-by-using-the-url' | transloco }}</span>
                 <br><br>
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ addressBookQRExportUrl }}"><br>
-                <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">{{ 'general.copy-to-clipboard' | transloco }}</button>
-                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary">{{ 'address-book.export-as-file' | transloco }}</button>
+                <div class="nlt-button-group">
+                  <button ngxClipboard [cbContent]="addressBookQRExportUrl" (cbOnSuccess)="notificationService.sendSuccess('Address book export copied to clipboard!')" class="uk-button uk-button-secondary uk-width-1-1@s uk-width-auto@m uk-margin-small-top" style="margin-left: 0;">{{ 'general.copy-to-clipboard' | transloco }}</button>
+                  <button (click)="exportAddressBookToFile()" class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-margin-small-top">{{ 'address-book.export-as-file' | transloco }}</button>
                 </div>
               </div>
             </div>

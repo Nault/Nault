@@ -12,6 +12,7 @@ import {NotificationService} from './notification.service';
 import {AppSettingsService} from './app-settings.service';
 import {PriceService} from './price.service';
 import {LedgerService} from './ledger.service';
+import { NoPaddingZerosPipe } from 'app/pipes/no-padding-zeros.pipe';
 
 export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey';
 
@@ -136,6 +137,7 @@ export class WalletService {
     private websocket: WebsocketService,
     private nanoBlock: NanoBlockService,
     private ledgerService: LedgerService,
+    private noZerosPipe: NoPaddingZerosPipe,
     private notifications: NotificationService) {
     this.websocket.newTransactions$.subscribe(async (transaction) => {
       if (!transaction) return; // Not really a new transaction
@@ -1018,7 +1020,7 @@ export class WalletService {
 
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
       this.notifications.removeNotification('success-receive');
-      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} XNO!`, { identifier: 'success-receive' });
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : this.noZerosPipe.transform(receiveAmount.toFixed(6)) } XNO!`, { identifier: 'success-receive' });
 
       // remove after processing
       // list also updated with reloadBalances but not if called too fast
