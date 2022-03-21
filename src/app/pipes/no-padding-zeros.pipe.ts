@@ -9,8 +9,9 @@ export class NoPaddingZerosPipe implements PipeTransform {
     const frac = input.split('.')[1].replace(/0+$/g, '');
 
     // 1.000000 XNO >> 1 XNO
-    if (!frac)
+    if (!frac) {
       return sig;
+    }
 
     // 0.002200 >> 0.0022 XNO
     return `${sig}.${frac}`;
