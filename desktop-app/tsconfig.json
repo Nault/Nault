@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
+    "module": "commonjs",
     "baseUrl": ".",
     "typeRoots": [
       "../node_modules/@types"
