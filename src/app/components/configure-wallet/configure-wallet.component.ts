@@ -17,6 +17,18 @@ enum panels {
   'final',
 }
 
+const CREATE_MODE = {
+  NEW_WALLET: 'new-wallet',
+  LEDGER: 'use-ledger',
+  SEED: 'import-seed',
+  SELECT_MNEMONIC: 'import-mnemonic',
+  NANO_MNEMONIC: 'import-nano-mnemonic',
+  BIP39_MNEMONIC: 'import-bip39-mnemonic',
+  FILE: 'import-file',
+  PK: 'import-private-key',
+  EXTENDED_PK: 'import-expanded-private-key'
+};
+
 const INDEX_MAX = 4294967295; // seed index
 
 @Component({
@@ -26,6 +38,7 @@ const INDEX_MAX = 4294967295; // seed index
 })
 export class ConfigureWalletComponent implements OnInit {
   panels = panels;
+  CREATE_MODE = CREATE_MODE;
   activePanel = panels.landing;
   wallet = this.walletService.wallet;
   isConfigured = this.walletService.isConfigured;
@@ -106,6 +119,20 @@ export class ConfigureWalletComponent implements OnInit {
 
     // array of mnemonic words
     this.exampleMnemonicWords = bip39.entropyToMnemonic(exampleSeedFull).split(' ');
+
+    this.router.paramMap.subscribe(params => { 
+      switch(params.get('mode')) {
+        case CREATE_MODE.NEW_WALLET: this.setPasswordInit(); break;
+        case CREATE_MODE.LEDGER: this.setPanel(this.panels.import); this.selectedImportOption = 'ledger'; break;
+        case CREATE_MODE.SEED: this.setPanel(this.panels.import); this.selectedImportOption = 'seed'; break;
+        case CREATE_MODE.SELECT_MNEMONIC: this.setPanel(this.panels.mnemonicTypeSelection); break;
+        case CREATE_MODE.NANO_MNEMONIC: this.setPanel(this.panels.import); this.selectedImportOption = 'mnemonic'; break;
+        case CREATE_MODE.BIP39_MNEMONIC: this.setPanel(this.panels.import); this.selectedImportOption = 'bip39-mnemonic'; break;
+        case CREATE_MODE.FILE: this.setPanel(this.panels.import); this.selectedImportOption = 'file'; break;
+        case CREATE_MODE.PK: this.setPanel(this.panels.import); this.selectedImportOption = 'privateKey'; break;
+        case CREATE_MODE.EXTENDED_PK: this.setPanel(this.panels.import); this.selectedImportOption = 'expandedKey'; break;
+      }
+    });
   }
 
   async importExistingWallet() {

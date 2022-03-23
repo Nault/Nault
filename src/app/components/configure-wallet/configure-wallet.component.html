@@ -17,7 +17,7 @@
   <div class="uk-card-body">
     <div class="landing-container uk-grid-divider" uk-grid>
       <div class="uk-width-auto@l uk-width-1-1@m">
-        <button class="wallet-option" (click)="setPasswordInit()">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.NEW_WALLET]" >
           <div class="icon">
             <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <path d="m132.03 98.355v26.667c0 1.662-1.338 3-3 3h-112.4c-1.662 0-3-1.338-3-3v-78.19c0-1.662 1.338-3 3-3h112.4c1.662 0 3 1.338 3 3v26.132" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
@@ -41,7 +41,7 @@
         </button>
       </div>
       <div class="uk-width-expand">
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.LEDGER]">
           <div class="icon">
             <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <g>
@@ -56,14 +56,14 @@
           <h2>Use<br>Ledger</h2>
           <p>Nano S / Nano X</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.SEED]">
           <div class="icon">
             <div class="seed">{{ exampleSeed }}</div>
           </div>
           <h2>Import<br>Seed</h2>
           <p>64 hex<br>characters</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.SELECT_MNEMONIC]">
           <div class="icon">
             <div class="mnemonic">
               <div class="mnemonic-row">
@@ -94,7 +94,7 @@
           <h2>More<br>Options</h2>
           <p>Import from file<br>or a private key</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.FILE]" *ngIf="showMoreImportOptions">
           <div class="icon">
             <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
@@ -103,14 +103,14 @@
           <h2>Import<br>File</h2>
           <p>exported<br>Nault wallet</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.PK]" *ngIf="showMoreImportOptions">
           <div class="icon">
             <div class="seed">{{ examplePrivateKey }}</div>
           </div>
           <h2>Import<br>Private Key</h2>
           <p>64 hex<br>characters</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'expandedKey';" *ngIf="showMoreImportOptions">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.EXTENDED_PK]" *ngIf="showMoreImportOptions">
           <div class="icon">
             <div class="seed">{{ exampleExpandedPrivateKey }}</div>
           </div>
@@ -123,19 +123,10 @@
 </div>
 
 <div
-  class="import-panel-navigation"
-  *ngIf="( (activePanel === panels.import) || (activePanel === panels.mnemonicTypeSelection) )"
-  (click)="
-      (
-          (activePanel === panels.import)
-        && (
-             (selectedImportOption === 'mnemonic')
-          || (selectedImportOption === 'bip39-mnemonic')
-        )
-      )
-    ? setPanel(panels.mnemonicTypeSelection)
-    : setPanel(panels.landing)
-  ">
+    class="import-panel-navigation"
+    *ngIf="( (activePanel === panels.import) || (activePanel === panels.mnemonicTypeSelection) )"
+    [routerLink]="activePanel === panels.import && (selectedImportOption === 'mnemonic' || selectedImportOption === 'bip39-mnemonic') ? ['/configure-wallet', CREATE_MODE.SELECT_MNEMONIC] : ['/configure-wallet']"
+  >
   <span uk-icon="icon: arrow-left; ratio: 1.5;"></span>
   <span class="label">Back</span>
 </div>
@@ -144,7 +135,7 @@
   <div class="uk-card-body">
     <div class="landing-container uk-grid-divider" uk-grid>
       <div>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'mnemonic';">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.NANO_MNEMONIC]">
           <div class="icon">
             <div class="mnemonic">
               <div class="mnemonic-row">
@@ -170,7 +161,7 @@
         </button>
       </div>
       <div>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'bip39-mnemonic';">
+        <button class="wallet-option" [routerLink]="['/configure-wallet', CREATE_MODE.BIP39_MNEMONIC]">
           <div class="icon">
             <div class="mnemonic">
               <div class="mnemonic-row">
@@ -222,7 +213,7 @@
     </div>
     <p style="max-width: 580px;">
       <b>Note:</b> A secret recovery seed provides access to 4,294,967,295 accounts.<br>
-      To import a single-account private key instead, <a class="inline-link" (click)="selectedImportOption = 'privateKey';">click here</a>
+      To import a single-account private key instead, <a class="inline-link" [routerLink]="['/configure-wallet', CREATE_MODE.PK]">click here</a>
     </p>
   </div>
 </div>
@@ -236,7 +227,7 @@
     </div>
     <p style="max-width: 580px;">
       <b>Note:</b> A private key provides access to exactly one account.<br>
-      To import a multi-account secret recovery seed instead, <a class="inline-link" (click)="selectedImportOption = 'seed';">click here</a>
+      To import a multi-account secret recovery seed instead, <a class="inline-link" [routerLink]="['/configure-wallet', CREATE_MODE.SEED]">click here</a>
     </p>
   </div>
 </div>
@@ -267,7 +258,7 @@
       <div class="uk-width-1-1">
         <h3>Import Secret Recovery Mnemonic</h3>
         <p>
-          Enter your secret recovery mnemonic below.<br>If it came from a Ledger device or certain multi-currency wallets, use <a (click)="selectedImportOption = 'bip39-mnemonic';">BIP39 Mnemonic</a> import type instead.
+          Enter your secret recovery mnemonic below.<br>If it came from a Ledger device or certain multi-currency wallets, use <a [routerLink]="['/configure-wallet', CREATE_MODE.BIP39_MNEMONIC]">BIP39 Mnemonic</a> import type instead.
         </p>
         <div class="uk-inline uk-width-1-1">
           <a class="uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('mnemo1','mnemonic')" uk-tooltip title="Scan from QR code"></a>
@@ -279,7 +270,7 @@
       <div class="uk-width-1-1">
         <h3>Import Secret Recovery BIP39 Mnemonic</h3>
         <p>
-          Enter your secret recovery BIP39 mnemonic below. It is typically generated by Ledger devices and certain multi-currency wallets.<br>If it was generated in Nault, use <a (click)="selectedImportOption = 'mnemonic';">Nano Mnemonic</a> import type instead.
+          Enter your secret recovery BIP39 mnemonic below. It is typically generated by Ledger devices and certain multi-currency wallets.<br>If it was generated in Nault, use <a [routerLink]="['/configure-wallet', CREATE_MODE.NANO_MNEMONIC]">Nano Mnemonic</a> import type instead.
         </p>
         <div class="uk-form-horizontal">
           <div class="uk-margin">
