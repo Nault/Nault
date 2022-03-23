@@ -120,8 +120,8 @@ export class ConfigureWalletComponent implements OnInit {
     // array of mnemonic words
     this.exampleMnemonicWords = bip39.entropyToMnemonic(exampleSeedFull).split(' ');
 
-    this.router.paramMap.subscribe(params => { 
-      switch(params.get('mode')) {
+    this.router.paramMap.subscribe(params => {
+      switch (params.get('mode')) {
         case CREATE_MODE.NEW_WALLET: this.setPasswordInit(); break;
         case CREATE_MODE.LEDGER: this.setPanel(this.panels.import); this.selectedImportOption = 'ledger'; break;
         case CREATE_MODE.SEED: this.setPanel(this.panels.import); this.selectedImportOption = 'seed'; break;
