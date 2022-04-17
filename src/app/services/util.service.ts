@@ -100,7 +100,7 @@ function hexToUint4(hexValue) {
   return uint4;
 }
 function hexToUint8(hexValue) {
-  // tslint:disable-next-line:no-bitwise
+  // eslint-disable-next-line no-bitwise
   const length = (hexValue.length / 2) | 0;
   const uint8 = new Uint8Array(length);
   for (let i = 0; i < length; i++) uint8[i] = parseInt(hexValue.substr(i * 2, 2), 16);
@@ -124,7 +124,7 @@ function uint4ToUint8(uintValue) {
   return uint8;
 }
 
-// tslint:disable:no-bitwise
+/* eslint-disable no-bitwise */
 function uint4ToUint5(uintValue) {
   const length = uintValue.length / 5 * 4;
   const uint5 = new Uint8Array(length);
@@ -140,7 +140,7 @@ function uint4ToUint5(uintValue) {
   }
   return uint5;
 }
-// tslint:enable:no-bitwise
+/* eslint-enable no-bitwise */
 
 function uint4ToHex(uint4) {
   let hex = '';
@@ -158,7 +158,7 @@ function uint5ToString(uint5) {
   return string;
 }
 
-// tslint:disable:no-bitwise
+/* eslint-disable no-bitwise */
 function uint5ToUint4(uint5) {
   const length = uint5.length / 4 * 5;
   const uint4 = new Uint8Array(length);
@@ -172,7 +172,7 @@ function uint5ToUint4(uint5) {
   }
   return uint4;
 }
-// tslint:enable:no-bitwise
+/* eslint-enable no-bitwise */
 
 
 /** Uint8 Functions **/
@@ -191,7 +191,7 @@ function uint8ToHex(uintValue) {
   return(hex);
 }
 
-// tslint:disable:no-bitwise
+/* eslint-disable no-bitwise */
 function uint8ToUint4(uintValue) {
   const uint4 = new Uint8Array(uintValue.length * 2);
   for (let i = 0; i < uintValue.length; i++) {
@@ -201,12 +201,12 @@ function uint8ToUint4(uintValue) {
 
   return uint4;
 }
-// tslint:enable:no-bitwise
+/* eslint-enable no-bitwise */
 
 
 /** Dec Functions **/
 function decToHex(decValue, bytes = null) {
-  // tslint:disable-next-line:prefer-const
+  // eslint-disable-next-line prefer-const
   let dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s;
   while (dec.length) {
     s = 1 * dec.shift();

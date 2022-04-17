@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ManageRepresentativesComponent } from './manage-representatives.component';
 
@@ -6,7 +6,7 @@ describe('ManageRepresentativesComponent', () => {
   let component: ManageRepresentativesComponent;
   let fixture: ComponentFixture<ManageRepresentativesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ManageRepresentativesComponent ]
     })

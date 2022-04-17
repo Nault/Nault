@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { QrGeneratorComponent } from './qr-generator.component';
 
@@ -6,7 +6,7 @@ describe('QrGeneratorComponent', () => {
   let component: QrGeneratorComponent;
   let fixture: ComponentFixture<QrGeneratorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QrGeneratorComponent ]
     })

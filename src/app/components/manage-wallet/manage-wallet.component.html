@@ -11,7 +11,7 @@
         <div uk-grid>
           <div class="uk-width-1-2@s">
             <input class="uk-input" [(ngModel)]="newPassword" placeholder="New Password" type="password">
-            <password-strength-meter *ngIf="newPassword.length > 0" [password]="newPassword" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter>
+            <!-- <password-strength-meter *ngIf="newPassword.length > 0" [password]="newPassword" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter> -->
             <span class="password-helper" *ngIf="newPassword.length > 0 && newPassword.length < 6">Password must be at least 6 characters long</span>
             <span class="password-helper" *ngIf="confirmPassword.length >= 6 && newPassword !== confirmPassword">Passwords do not match!</span>
           </div>
