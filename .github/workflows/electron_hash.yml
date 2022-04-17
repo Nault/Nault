@@ -72,6 +72,11 @@ jobs:
           sudo apt-get install libudev-dev -y
           sudo apt-get install libusb-1.0-0-dev -y
 
+      - name: Install Windows dependencies
+        if: matrix.os == 'windows-2022'
+        run: |
+          npm install --global --production windows-build-tools
+
       - name: Install and Build Desktop App
         run: |
           npm install -g node-gyp @angular/cli
