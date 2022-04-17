@@ -453,11 +453,11 @@ export class RepresentativeService {
   }
 
   // Default representatives list
-  // tslint:disable-next-line:member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   defaultRepresentatives = [];
 
   // Bad representatives hardcoded to be avoided. Not visible in the user rep list
-  // tslint:disable-next-line:member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   nfReps = [
     {
       id: 'nano_3arg3asgtigae3xckabaaewkx3bzsh7nwz7jkmjos79ihyaxwphhm6qgjps4',

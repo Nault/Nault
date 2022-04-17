@@ -27,26 +27,26 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-               "qrcode",
-               "bip39",
-               "@zxing/library",
-               "bignumber.js",
-               "nanocurrency",
-               "hw-app-nano",
-               "crypto-js",
-               "blakejs",
-               "nanocurrency-web",
-               "bignumber.js",
-               "u2f-api",
-               "create-hash",
-               "randombytes",
-               "pbkdf2",
-               "zxcvbn",
-               "url",
-               "punycode",
-               "querystring",
-               "hw-transport-webusb",
-               "hw-transport-web-ble"
+              "qrcode",
+              "bip39",
+              "@zxing/library",
+              "bignumber.js",
+              "nanocurrency",
+              "hw-app-nano",
+              "crypto-js",
+              "blakejs",
+              "nanocurrency-web",
+              "bignumber.js",
+              "u2f-api",
+              "create-hash",
+              "randombytes",
+              "pbkdf2",
+              "zxcvbn",
+              "url",
+              "punycode",
+              "querystring",
+              "hw-transport-webusb",
+              "hw-transport-web-ble"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -140,6 +140,15 @@
               "src/manifest.webmanifest"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -167,5 +176,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
