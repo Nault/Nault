@@ -29,7 +29,7 @@
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="Nano seed, BIP39 seed, private key or 12,15,18,21,24-word mnemonic" autocomplete="off">
+                        <input [(ngModel)]="sourceWallet" class="uk-input uk-margin-small-bottom {{validSeed ? '':'uk-form-danger'}}" id="source-wallet" type="text" (ngModelChange)="seedChange(sourceWallet)" placeholder="PAW seed, BIP39 seed, private key or 12,15,18,21,24-word mnemonic" autocomplete="off">
                       </div>
                     </div>
                   </div>
@@ -60,7 +60,7 @@
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom {{validDestination ? '':'uk-form-danger'}}" id="custom-destination" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="nano_abc..123">
+                        <input [(ngModel)]="destinationAccount" class="uk-input uk-margin-small-bottom {{validDestination ? '':'uk-form-danger'}}" id="custom-destination" type="text" (ngModelChange)="destinationChange(destinationAccount)" placeholder="paw_abc..123">
                       </div>
                     </div>
                   </div>

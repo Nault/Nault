@@ -661,9 +661,9 @@ export class WalletService {
   }
 
   reloadFiatBalances() {
-    //const fiatPrice = this.price.price.lastPrice;
+    const fiatPrice = this.price.price.lastPrice;
     // As PAW isnt listed anywhere yet, the price is 0.
-    const fiatPrice = 0;
+    //const fiatPrice = 0;
 
     this.wallet.accounts.forEach(account => {
       account.balanceFiat = this.util.nano.rawToNano(account.balance).times(fiatPrice).toNumber();

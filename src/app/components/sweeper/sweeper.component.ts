@@ -7,8 +7,8 @@ import {UtilService, TxType} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {NanoBlockService} from '../../services/nano-block.service';
-import * as nanocurrency from 'nanocurrency';
-import { wallet } from 'nanocurrency-web';
+import * as nanocurrency from 'pawcurrency';
+import { wallet } from 'pawcurrency-web';
 import * as bip39 from 'bip39';
 import {Router} from '@angular/router';
 
@@ -269,8 +269,8 @@ export class SweeperComponent implements OnInit {
           this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
         }
         this.notificationService.sendInfo('Account ' + address + ' was swept and ' +
-        (nanoAmountSent ? (nanoAmountSent.toString(10) + ' Nano') : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
-        this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(' + nanoAmountSent.toString(10) + ' Nano)') : '') + ': ' + data.hash);
+        (nanoAmountSent ? (nanoAmountSent.toString(10) + ' PAW') : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
+        this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(' + nanoAmountSent.toString(10) + ' PAW)') : '') + ': ' + data.hash);
         console.log(this.adjustedBalance + ' raw transferred to ' + this.destinationAccount);
       } else {
         this.notificationService.sendWarning(`Failed processing block.`);

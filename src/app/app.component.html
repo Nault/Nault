@@ -134,7 +134,7 @@
                       <div class="balance-container converted" *ngIf="settings.settings.displayCurrency">
                         <div class="currency-name"><span class="estimate-symbol">~</span>{{ settings.settings.displayCurrency }}</div>
                         <div class="amount-container">
-                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balanceFiat : wallet.balanceFiat) | fiat: settings.settings.displayCurrency | amountsplit: 0 | number }}</div>
+                          <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balanceFiat : wallet.balanceFiat) | fiat: settings.settings.displayCurrency | amountsplit: 0 }}</div>
                           <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balanceFiat : wallet.balanceFiat) | fiat: settings.settings.displayCurrency | amountsplit: 1 }}</div>
                         </div>
                       </div>
