@@ -63,6 +63,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+          cache: 'npm'
 
       - name: Install APT dependencies
         if: matrix.os == 'ubuntu-20.04'
@@ -74,7 +75,7 @@ jobs:
 
       - name: Install and Build Desktop App
         run: |
-          npm install -g node-gyp @angular/cli
+          npm install -g @angular/cli
           npm install
           npm run desktop:build
 
