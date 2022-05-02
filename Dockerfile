@@ -1,5 +1,5 @@
 # build the angular app
-FROM node:14 AS build
+FROM node:16 AS build
 WORKDIR /usr/src/app
 RUN apt-get update && apt-get install -y \
   libudev-dev \

@@ -855,7 +855,7 @@ export class WalletService {
     this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
     this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPendingAboveThresholdConfirmed).times(fiatPrice).toNumber();
 
-    // tslint:disable-next-line
+    // eslint-disable-next-line
     this.wallet.hasPending = walletPendingAboveThresholdConfirmed.gt(0);
 
     this.wallet.updatingBalance = false;

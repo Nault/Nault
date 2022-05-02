@@ -52,7 +52,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     // On the desktop apps, use hashes so it works properly using only index.html
-    RouterModule.forRoot(routes, { useHash: environment.desktop }),
+    RouterModule.forRoot(routes, { useHash: environment.desktop, relativeLinkResolution: 'legacy' }),
   ],
   declarations: [],
   exports: [RouterModule]

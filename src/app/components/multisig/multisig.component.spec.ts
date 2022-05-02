@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MultisigComponent } from './multisig.component';
 
@@ -6,7 +6,7 @@ describe('MultisigComponent', () => {
   let component: MultisigComponent;
   let fixture: ComponentFixture<MultisigComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MultisigComponent ]
     })
