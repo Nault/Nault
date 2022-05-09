@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1652122007031,
+  "timestamp": 1652122659575,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/cpupow.721bd97e514b837d.worker.js",
         "/index.html",
-        "/main.1f40deffff8b6c0c.js",
+        "/main.bba9ea4bd8a46812.js",
         "/manifest.webmanifest",
         "/polyfills.66b973b6a12fed62.js",
         "/runtime.9bdf6bb1954ae7a9.js",
@@ -263,8 +263,8 @@
     "/assets/logo_source/nault-logo.eps": "a2147e36015ef5497c846a0b74dfb2a4828fd2cd",
     "/assets/logo_source/nault-logo.svg": "d9682092a80a1e825c646a1e7cebd8e4e9aead49",
     "/cpupow.721bd97e514b837d.worker.js": "c5c8887678fa80251603d775ec0bbd47a3b971b6",
-    "/index.html": "9805b105cb6b9953d8b90d262af9f59228975dbe",
-    "/main.1f40deffff8b6c0c.js": "b262aa31c5a545e62ec7b4a85d3383bdc8271ccc",
+    "/index.html": "20a822ed23d1172efea519cae7d55375d7d81483",
+    "/main.bba9ea4bd8a46812.js": "02ac23c057969da510a243fc88eb403155e4d794",
     "/manifest.webmanifest": "fb9ce0116a92808e43c4203fa61fdcb255708437",
     "/montserrat-v15-latin-300.169464b41fd5a6ed.woff2": "cf6855b4b8fd9b7fc4d7adecd97080a70ad75c23",
     "/montserrat-v15-latin-300.1fb23400394501d6.eot": "79ffc50c09de54d30478eb89c6984bbcb41ba5f9",
