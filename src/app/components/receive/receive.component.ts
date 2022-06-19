@@ -29,6 +29,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   timeoutIdClearingRecentlyCopiedState: any = null;
   mobileTransactionMenuModal: any = null;
+  merchantModeModal: any = null;
   mobileTransactionData: any = null;
 
   selectedAccountAddressBookName = '';
@@ -47,6 +48,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   validNano = true;
   validFiat = true;
   qrSuccessClass = '';
+  inMerchantMode = false;
+  inMerchantModeQR = false;
 
   routerSub = null;
 
@@ -67,12 +70,17 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const UIkit = window['UIkit'];
+
     const mobileTransactionMenuModal = UIkit.modal('#mobile-transaction-menu-modal');
     this.mobileTransactionMenuModal = mobileTransactionMenuModal;
+
+    const merchantModeModal = UIkit.modal('#merchant-mode-modal');
+    this.merchantModeModal = merchantModeModal;
 
     this.routerSub = this.route.events.subscribe(event => {
       if (event instanceof ChildActivationEnd) {
         this.mobileTransactionMenuModal.hide();
+        this.merchantModeModal.hide();
       }
     });
 
@@ -116,6 +124,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.mobileTransactionMenuModal.hide();
+    this.merchantModeModal.hide();
     if (this.routerSub) {
       this.routerSub.unsubscribe();
     }
@@ -362,6 +371,38 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   toBigNumber(value) {
     return new BigNumber(value);
+  }
+
+  unsetSelectedAccount() {
+    this.pendingAccountModel = '0';
+    this.onSelectedAccountChange(this.pendingAccountModel);
+  }
+
+  merchantModeEnable() {
+    this.unsetSelectedAccount();
+    this.resetAmount();
+
+    this.inMerchantMode = true;
+    this.inMerchantModeQR = false;
+    this.merchantModeModal.show();
+  }
+
+  merchantModeDisable() {
+    this.inMerchantMode = false;
+    this.inMerchantModeQR = false;
+    this.merchantModeModal.hide();
+  }
+
+  merchantModeShowQR() {
+    if(this.validNano === false || Number(this.amountNano) === 0) {
+      this.resetAmount();
+    }
+
+    this.inMerchantModeQR = true;
+  }
+
+  merchantModeHideQR() {
+    this.inMerchantModeQR = false;
   }
 
 }
