@@ -191,10 +191,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 25px;
 }
 @media (max-width: 699px) {
     .merchant-mode-header {
         flex-direction: column;
+        padding-left: 0;
     }
 }
 
