@@ -519,9 +519,9 @@
         </div>
         <img style="width: 50%; margin-top: -40px;" src="data:image/svg+xml,%3Csvg width='200mm' height='200mm' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m157.05 40.584c-2.5562-2e-6 -5.1127 0.97964-7.0714 2.9383l-65.687 65.687-34.266-34.266c-3.9174-3.9174-10.225-3.9174-14.142 1e-6l-12.915 12.915c-3.9174 3.9174-3.9174 10.225-1e-6 14.142l39.526 39.526c0.4262 0.72955 0.95143 1.4181 1.5782 2.0448l12.915 12.915c3.9174 3.9174 10.225 3.9174 14.142 0l85.906-85.907c3.9174-3.9174 3.9174-10.224 0-14.142l-12.915-12.915c-1.9587-1.9587-4.5147-2.9383-7.0709-2.9383z' fill='none' stop-color='%23000000' stroke='%2332d296' stroke-linejoin='round' stroke-width='2' style='paint-order:stroke fill markers'/%3E%3C/svg%3E" />
         <p class="uk-flex uk-flex-center uk-flex-middle text-half-muted uk-margin-remove-bottom">
-          Copy Payment Information
-          <a
-            class="span-icon"
+          <button
+            class="uk-button uk-button-secondary uk-text-center nlt-icon-button"
+            type="button"
             ngxClipboard
             [cbContent]="(
                   'Amount Requested: '
@@ -538,9 +538,10 @@
                 + '\n- '
                 + merchantModeTransactionHashes.join('\n- ')
             )"
-            uk-icon="icon: copy"
-            title="Copy Payment Information"
-          ></a>
+          >
+            <span class="nlt-icon" uk-icon="icon: copy;"></span>
+            Copy Payment Information
+          </button>
         </p>
         <ul class="uk-width-1-1">
           <li
