@@ -48,8 +48,14 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   validNano = true;
   validFiat = true;
   qrSuccessClass = '';
+
   inMerchantMode = false;
   inMerchantModeQR = false;
+  merchantModeRawRequestedTotal: BigNumber = null;
+  merchantModeRawRequestedQR: BigNumber = null;
+  merchantModeRawReceived: BigNumber = null;
+  merchantModeSeenBlockHashes = {};
+  merchantModePrompts = [];
 
   routerSub = null;
 
@@ -118,6 +124,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           this.showQrConfirmation();
           setTimeout(() => this.resetAmount(), 500);
         }
+        if ( (this.inMerchantModeQR === true) && (transaction.block.link_as_account === this.qrAccount) ) {
+          this.onMerchantModeReceiveTransaction(transaction);
+        }
       }
     });
   }
@@ -173,6 +182,14 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     // Blocks for selected account
     this.pendingBlocksForSelectedAccount =
       this.pendingBlocks.filter(block => (block.destination === selectedAccountID));
+
+    if (this.inMerchantModeQR === true) {
+      this.pendingBlocksForSelectedAccount.forEach(
+        (pendingBlock) => {
+          this.onMerchantModeReceiveTransaction(pendingBlock);
+        }
+      )
+    }
   }
 
   showMobileMenuForTransaction(transaction) {
@@ -378,6 +395,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.onSelectedAccountChange(this.pendingAccountModel);
   }
 
+  getRawAmountWithoutTinyRaws(rawAmountWithTinyRaws) {
+    const tinyRaws =
+      rawAmountWithTinyRaws.mod(this.nano);
+
+    return rawAmountWithTinyRaws.minus(tinyRaws);
+  }
+
   merchantModeEnable() {
     this.unsetSelectedAccount();
     this.resetAmount();
@@ -394,15 +418,88 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   merchantModeShowQR() {
-    if(this.validNano === false || Number(this.amountNano) === 0) {
+    const isRequestingAnyAmount = (this.validNano === false || Number(this.amountNano) === 0);
+
+    if(isRequestingAnyAmount === true) {
       this.resetAmount();
     }
+
+    this.merchantModeRawRequestedTotal =
+        (isRequestingAnyAmount === true)
+      ? new BigNumber(0)
+      : this.util.nano.mnanoToRaw(this.amountNano);
+
+    this.merchantModeRawRequestedQR =
+        (isRequestingAnyAmount === true)
+      ? new BigNumber(0)
+      : this.util.nano.mnanoToRaw(this.amountNano);
+
+    this.merchantModeRawReceived = new BigNumber(0);
+
+    this.merchantModeSeenBlockHashes =
+      this.pendingBlocksForSelectedAccount.reduce(
+        (seenHashes, receivableBlock) => {
+          seenHashes[receivableBlock.hash] = true
+          return seenHashes
+      },
+      {}
+    )
 
     this.inMerchantModeQR = true;
   }
 
   merchantModeHideQR() {
     this.inMerchantModeQR = false;
+  }
+
+  onMerchantModeReceiveTransaction(transaction) {
+    if( this.merchantModeSeenBlockHashes[transaction.hash] != null ) {
+      return;
+    }
+
+    this.merchantModeSeenBlockHashes[transaction.hash] = true;
+
+    const receivedAmountWithTinyRaws = new BigNumber(transaction.amount);
+
+    const receivedAmount =
+      this.getRawAmountWithoutTinyRaws(receivedAmountWithTinyRaws);
+
+    const requestedAmount =
+      this.getRawAmountWithoutTinyRaws(this.merchantModeRawRequestedQR);
+
+    if( receivedAmount.eq(requestedAmount) ) {
+      this.merchantModeMarkTransactionComplete();
+    } else {
+      const transactionPrompt = {
+        moreThanRequested: receivedAmount.gt(requestedAmount),
+        lessThanRequested: receivedAmount.lt(requestedAmount),
+        amountRaw: receivedAmountWithTinyRaws,
+        amountHiddenRaw: receivedAmountWithTinyRaws.mod(this.nano),
+      }
+
+      this.merchantModePrompts.push(transactionPrompt);
+    }
+  }
+
+  merchantModeSubtractAmountRaw(subtractedRawWithTinyRaws, promptIdx) {
+    const subtractedRaw =
+      this.getRawAmountWithoutTinyRaws(subtractedRawWithTinyRaws);
+
+    const newAmountRaw =
+      this.merchantModeRawRequestedQR.minus(subtractedRaw);
+
+    this.merchantModeRawRequestedQR = newAmountRaw;
+    this.changeQRAmount(newAmountRaw.toFixed());
+
+    this.merchantModePrompts.splice(promptIdx, 1);
+  }
+
+  merchantModeDiscardPrompt(promptIdx) {
+    this.merchantModePrompts.splice(promptIdx, 1);
+  }
+
+  merchantModeMarkTransactionComplete() {
+    // TBD
   }
 
 }
