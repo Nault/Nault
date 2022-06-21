@@ -322,7 +322,7 @@
     </div>
     <div class="merchant-centered-container uk-flex-1 uk-width-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-text-center">
       <ng-container *ngIf="(inMerchantModeQR === false) && (pendingAccountModel === '0')">
-        <div class="uk-width-1-1 uk-card uk-card-default uk-margin-large-top uk-margin-bottom">
+        <div class="uk-width-1-1 uk-card uk-card-default uk-margin-bottom">
           <div class="uk-card-body">
             <p class="uk-text-large">Select the <span class="uk-text-primary">destination account</span></p>
             <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="onSelectedAccountChange(pendingAccountModel)">
@@ -449,7 +449,7 @@
             </div>
             <button
               *ngIf="prompt.moreThanRequested"
-              class="uk-width-1-1 uk-button uk-button-primary uk-text-center nlt-icon-button uk-margin-bottom"
+              class="uk-width-1-1 uk-button uk-button-primary uk-text-center nlt-icon-button uk-margin-bottom nlt-button-green"
               type="button"
               (click)="merchantModeMarkTransactionComplete()"
             >
@@ -462,11 +462,11 @@
               type="button"
               (click)="merchantModeSubtractAmountRaw(prompt.amountRaw, promptIdx)"
             >
-              <span class="nlt-icon" uk-icon="icon: check;" style="margin-top: -2px;"></span>
+              <span class="nlt-icon" uk-icon="icon: pencil;" style="margin-top: -2px;"></span>
               Subtract From Amount
             </button>
             <button
-              class="uk-width-1-1 uk-button uk-button-danger uk-text-center nlt-icon-button"
+              class="uk-width-1-1 uk-button uk-button-secondary uk-text-danger uk-text-center nlt-icon-button"
               type="button"
               (click)="merchantModeDiscardPrompt(promptIdx)"
             >
