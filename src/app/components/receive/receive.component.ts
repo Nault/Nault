@@ -51,11 +51,15 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   inMerchantMode = false;
   inMerchantModeQR = false;
+  inMerchantModePaymentComplete = false;
   merchantModeRawRequestedTotal: BigNumber = null;
+  merchantModeRawReceivedTotal: BigNumber = null;
+  merchantModeRawReceivedTotalHiddenRaw: BigNumber = null;
   merchantModeRawRequestedQR: BigNumber = null;
   merchantModeRawReceived: BigNumber = null;
   merchantModeSeenBlockHashes = {};
   merchantModePrompts = [];
+  merchantModeTransactionHashes = [];
 
   routerSub = null;
 
@@ -402,18 +406,25 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     return rawAmountWithTinyRaws.minus(tinyRaws);
   }
 
-  merchantModeEnable() {
+  merchantModeResetState() {
     this.unsetSelectedAccount();
     this.resetAmount();
 
-    this.inMerchantMode = true;
     this.inMerchantModeQR = false;
+    this.inMerchantModePaymentComplete = false;
+  }
+
+  merchantModeEnable() {
+    this.merchantModeResetState();
+
+    this.inMerchantMode = true;
     this.merchantModeModal.show();
   }
 
   merchantModeDisable() {
     this.inMerchantMode = false;
     this.inMerchantModeQR = false;
+    this.inMerchantModePaymentComplete = false;
     this.merchantModeModal.hide();
   }
 
@@ -443,7 +454,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           return seenHashes
       },
       {}
-    )
+    );
+
+    this.merchantModeTransactionHashes = [];
 
     this.inMerchantModeQR = true;
   }
@@ -468,20 +481,25 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       this.getRawAmountWithoutTinyRaws(this.merchantModeRawRequestedQR);
 
     if( receivedAmount.eq(requestedAmount) ) {
-      this.merchantModeMarkTransactionComplete();
+      this.merchantModeTransactionHashes.push(transaction.hash);
+
+      this.merchantModeMarkCompleteWithAmount(this.merchantModeRawRequestedTotal);
     } else {
       const transactionPrompt = {
         moreThanRequested: receivedAmount.gt(requestedAmount),
         lessThanRequested: receivedAmount.lt(requestedAmount),
         amountRaw: receivedAmountWithTinyRaws,
         amountHiddenRaw: receivedAmountWithTinyRaws.mod(this.nano),
+        transactionHash: transaction.hash,
       }
 
       this.merchantModePrompts.push(transactionPrompt);
     }
   }
 
-  merchantModeSubtractAmountRaw(subtractedRawWithTinyRaws, promptIdx) {
+  merchantModeSubtractAmountFromPrompt(prompt, promptIdx) {
+    const subtractedRawWithTinyRaws = prompt.amountRaw;
+
     const subtractedRaw =
       this.getRawAmountWithoutTinyRaws(subtractedRawWithTinyRaws);
 
@@ -491,15 +509,27 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.merchantModeRawRequestedQR = newAmountRaw;
     this.changeQRAmount(newAmountRaw.toFixed());
 
+    this.merchantModeTransactionHashes.push(prompt.transactionHash);
+
     this.merchantModePrompts.splice(promptIdx, 1);
+  }
+
+  merchantModeMarkCompleteFromPrompt(prompt) {
+    this.merchantModeTransactionHashes.push(prompt.transactionHash);
+
+    this.merchantModeMarkCompleteWithAmount(prompt.amountRaw);
   }
 
   merchantModeDiscardPrompt(promptIdx) {
     this.merchantModePrompts.splice(promptIdx, 1);
   }
 
-  merchantModeMarkTransactionComplete() {
-    // TBD
+  merchantModeMarkCompleteWithAmount(amountRaw) {
+    this.merchantModeRawReceivedTotal = amountRaw;
+    this.merchantModeRawReceivedTotalHiddenRaw = amountRaw.mod(this.nano);
+
+    this.inMerchantModePaymentComplete = true;
+    this.inMerchantModeQR = false;
   }
 
 }
