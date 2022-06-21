@@ -52,11 +52,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   inMerchantMode = false;
   inMerchantModeQR = false;
   inMerchantModePaymentComplete = false;
+  merchantModeRawRequestedQR: BigNumber = null;
   merchantModeRawRequestedTotal: BigNumber = null;
   merchantModeRawReceivedTotal: BigNumber = null;
   merchantModeRawReceivedTotalHiddenRaw: BigNumber = null;
-  merchantModeRawRequestedQR: BigNumber = null;
-  merchantModeRawReceived: BigNumber = null;
   merchantModeSeenBlockHashes = {};
   merchantModePrompts = [];
   merchantModeTransactionHashes = [];
@@ -444,8 +443,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
         (isRequestingAnyAmount === true)
       ? new BigNumber(0)
       : this.util.nano.mnanoToRaw(this.amountNano);
-
-    this.merchantModeRawReceived = new BigNumber(0);
 
     this.merchantModeSeenBlockHashes =
       this.pendingBlocksForSelectedAccount.reduce(
