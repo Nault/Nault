@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InstallWidgetComponent } from './install-widget.component';
 
@@ -6,7 +6,7 @@ describe('InstallWidgetComponent', () => {
   let component: InstallWidgetComponent;
   let fixture: ComponentFixture<InstallWidgetComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ InstallWidgetComponent ]
     })

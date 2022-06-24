@@ -6,7 +6,7 @@
 - Communication with the network is done via nano RPC and Websocket protocols, private or public on any nano network.
 
 ## Development Prerequisites
-- [NodeJS](https://nodejs.org) v14.x + NPM v6.x
+- [NodeJS](https://nodejs.org) v16.x + NPM v8.x
 - Angular CLI: `npm install -g @angular/cli`
 
 ## Development Guide

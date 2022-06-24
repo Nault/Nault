@@ -155,31 +155,27 @@ export class ManageWalletComponent implements OnInit {
     // Check for iOS, which is weird with saving files
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 
-    if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(blob, fileName);
-    } else {
-      const elem = window.document.createElement('a');
-      const objUrl = window.URL.createObjectURL(blob);
-      if (iOS) {
-        switch (type) {
-          case 'json':
-            elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
-            break;
-          case 'csv':
-            elem.href = `data:attachment/file,${csvFile}`;
-            break;
-        }
-      } else {
-        elem.href = objUrl;
+    const elem = window.document.createElement('a');
+    const objUrl = window.URL.createObjectURL(blob);
+    if (iOS) {
+      switch (type) {
+        case 'json':
+          elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
+          break;
+        case 'csv':
+          elem.href = `data:attachment/file,${csvFile}`;
+          break;
       }
-      elem.download = fileName;
-      document.body.appendChild(elem);
-      elem.click();
-      setTimeout(function() {
-        document.body.removeChild(elem);
-        window.URL.revokeObjectURL(objUrl);
-      }, 200);
+    } else {
+      elem.href = objUrl;
     }
+    elem.download = fileName;
+    document.body.appendChild(elem);
+    elem.click();
+    setTimeout(function() {
+      document.body.removeChild(elem);
+      window.URL.revokeObjectURL(objUrl);
+    }, 200);
   }
 
   async exportToFile() {

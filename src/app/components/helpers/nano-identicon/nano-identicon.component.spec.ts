@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NanoIdenticonComponent } from './nano-identicon.component';
 
@@ -6,7 +6,7 @@ describe('NanoIdenticonComponent', () => {
   let component: NanoIdenticonComponent;
   let fixture: ComponentFixture<NanoIdenticonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NanoIdenticonComponent ]
     })
