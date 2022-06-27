@@ -29,6 +29,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   timeoutIdClearingRecentlyCopiedState: any = null;
   mobileTransactionMenuModal: any = null;
+  merchantModeModal: any = null;
   mobileTransactionData: any = null;
 
   selectedAccountAddressBookName = '';
@@ -47,6 +48,17 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   validNano = true;
   validFiat = true;
   qrSuccessClass = '';
+
+  inMerchantMode = false;
+  inMerchantModeQR = false;
+  inMerchantModePaymentComplete = false;
+  merchantModeRawRequestedQR: BigNumber = null;
+  merchantModeRawRequestedTotal: BigNumber = null;
+  merchantModeRawReceivedTotal: BigNumber = null;
+  merchantModeRawReceivedTotalHiddenRaw: BigNumber = null;
+  merchantModeSeenBlockHashes = {};
+  merchantModePrompts = [];
+  merchantModeTransactionHashes = [];
 
   routerSub = null;
 
@@ -67,12 +79,17 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const UIkit = window['UIkit'];
+
     const mobileTransactionMenuModal = UIkit.modal('#mobile-transaction-menu-modal');
     this.mobileTransactionMenuModal = mobileTransactionMenuModal;
+
+    const merchantModeModal = UIkit.modal('#merchant-mode-modal');
+    this.merchantModeModal = merchantModeModal;
 
     this.routerSub = this.route.events.subscribe(event => {
       if (event instanceof ChildActivationEnd) {
         this.mobileTransactionMenuModal.hide();
+        this.merchantModeModal.hide();
       }
     });
 
@@ -110,12 +127,16 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           this.showQrConfirmation();
           setTimeout(() => this.resetAmount(), 500);
         }
+        if ( (this.inMerchantModeQR === true) && (transaction.block.link_as_account === this.qrAccount) ) {
+          this.onMerchantModeReceiveTransaction(transaction);
+        }
       }
     });
   }
 
   ngOnDestroy() {
     this.mobileTransactionMenuModal.hide();
+    this.merchantModeModal.hide();
     if (this.routerSub) {
       this.routerSub.unsubscribe();
     }
@@ -164,6 +185,14 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     // Blocks for selected account
     this.pendingBlocksForSelectedAccount =
       this.pendingBlocks.filter(block => (block.destination === selectedAccountID));
+
+    if (this.inMerchantModeQR === true) {
+      this.pendingBlocksForSelectedAccount.forEach(
+        (pendingBlock) => {
+          this.onMerchantModeReceiveTransaction(pendingBlock);
+        }
+      )
+    }
   }
 
   showMobileMenuForTransaction(transaction) {
@@ -362,6 +391,142 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   toBigNumber(value) {
     return new BigNumber(value);
+  }
+
+  unsetSelectedAccount() {
+    this.pendingAccountModel = '0';
+    this.onSelectedAccountChange(this.pendingAccountModel);
+  }
+
+  getRawAmountWithoutTinyRaws(rawAmountWithTinyRaws) {
+    const tinyRaws =
+      rawAmountWithTinyRaws.mod(this.nano);
+
+    return rawAmountWithTinyRaws.minus(tinyRaws);
+  }
+
+  merchantModeResetState() {
+    this.unsetSelectedAccount();
+    this.resetAmount();
+
+    this.inMerchantModeQR = false;
+    this.inMerchantModePaymentComplete = false;
+  }
+
+  merchantModeEnable() {
+    this.merchantModeResetState();
+
+    this.inMerchantMode = true;
+    this.merchantModeModal.show();
+  }
+
+  merchantModeDisable() {
+    this.inMerchantMode = false;
+    this.inMerchantModeQR = false;
+    this.inMerchantModePaymentComplete = false;
+    this.merchantModeModal.hide();
+  }
+
+  merchantModeShowQR() {
+    const isRequestingAnyAmount = (this.validNano === false || Number(this.amountNano) === 0);
+
+    if(isRequestingAnyAmount === true) {
+      this.resetAmount();
+    }
+
+    this.merchantModeRawRequestedTotal =
+        (isRequestingAnyAmount === true)
+      ? new BigNumber(0)
+      : this.util.nano.mnanoToRaw(this.amountNano);
+
+    this.merchantModeRawRequestedQR =
+        (isRequestingAnyAmount === true)
+      ? new BigNumber(0)
+      : this.util.nano.mnanoToRaw(this.amountNano);
+
+    this.merchantModeSeenBlockHashes =
+      this.pendingBlocksForSelectedAccount.reduce(
+        (seenHashes, receivableBlock) => {
+          seenHashes[receivableBlock.hash] = true
+          return seenHashes
+      },
+      {}
+    );
+
+    this.merchantModeTransactionHashes = [];
+
+    this.inMerchantModeQR = true;
+  }
+
+  merchantModeHideQR() {
+    this.inMerchantModeQR = false;
+  }
+
+  onMerchantModeReceiveTransaction(transaction) {
+    if( this.merchantModeSeenBlockHashes[transaction.hash] != null ) {
+      return;
+    }
+
+    this.merchantModeSeenBlockHashes[transaction.hash] = true;
+
+    const receivedAmountWithTinyRaws = new BigNumber(transaction.amount);
+
+    const receivedAmount =
+      this.getRawAmountWithoutTinyRaws(receivedAmountWithTinyRaws);
+
+    const requestedAmount =
+      this.getRawAmountWithoutTinyRaws(this.merchantModeRawRequestedQR);
+
+    if( receivedAmount.eq(requestedAmount) ) {
+      this.merchantModeTransactionHashes.push(transaction.hash);
+
+      this.merchantModeMarkCompleteWithAmount(this.merchantModeRawRequestedTotal);
+    } else {
+      const transactionPrompt = {
+        moreThanRequested: receivedAmount.gt(requestedAmount),
+        lessThanRequested: receivedAmount.lt(requestedAmount),
+        amountRaw: receivedAmountWithTinyRaws,
+        amountHiddenRaw: receivedAmountWithTinyRaws.mod(this.nano),
+        transactionHash: transaction.hash,
+      }
+
+      this.merchantModePrompts.push(transactionPrompt);
+    }
+  }
+
+  merchantModeSubtractAmountFromPrompt(prompt, promptIdx) {
+    const subtractedRawWithTinyRaws = prompt.amountRaw;
+
+    const subtractedRaw =
+      this.getRawAmountWithoutTinyRaws(subtractedRawWithTinyRaws);
+
+    const newAmountRaw =
+      this.merchantModeRawRequestedQR.minus(subtractedRaw);
+
+    this.merchantModeRawRequestedQR = newAmountRaw;
+    this.changeQRAmount(newAmountRaw.toFixed());
+
+    this.merchantModeTransactionHashes.push(prompt.transactionHash);
+
+    this.merchantModePrompts.splice(promptIdx, 1);
+  }
+
+  merchantModeMarkCompleteFromPrompt(prompt) {
+    this.merchantModeTransactionHashes.push(prompt.transactionHash);
+
+    this.merchantModeMarkCompleteWithAmount(prompt.amountRaw);
+  }
+
+  merchantModeDiscardPrompt(promptIdx) {
+    this.merchantModePrompts.splice(promptIdx, 1);
+  }
+
+  merchantModeMarkCompleteWithAmount(amountRaw) {
+    this.merchantModeRawReceivedTotal = amountRaw;
+    this.merchantModeRawReceivedTotalHiddenRaw = amountRaw.mod(this.nano);
+
+    this.inMerchantModePaymentComplete = true;
+    this.inMerchantModeQR = false;
   }
 
 }

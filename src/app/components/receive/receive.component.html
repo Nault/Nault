@@ -1,7 +1,24 @@
 <div class="uk-animation-slide-left-small" uk-grid>
   <div class="uk-width-1-1">
+
+    <ng-template #switchToMerchantModeButton>
+      <button
+        class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary uk-text-center nlt-icon-button nlt-button-green"
+        type="button"
+        (click)="merchantModeEnable()"
+      >
+        <span class="nlt-icon" uk-icon="icon: cart;"></span>
+        <span class="merchant-mode-text-full">Switch to Merchant Mode</span>
+        <span class="merchant-mode-text-short">Merchant Mode</span>
+      </button>
+    </ng-template>
     
-    <h2 class="uk-heading-divider">Receive Nano</h2>
+    <div class="uk-margin-bottom uk-flex uk-flex-between">
+      <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive Nano</h2>
+      <div class="uk-flex-none uk-visible@s uk-flex uk-flex-top uk-margin-medium-left">
+        <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
+      </div>
+    </div>
 
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-body">
@@ -53,14 +70,15 @@
                 <div style="padding-top: 100%"></div>
               </div>
             </ng-template>
-            <div *ngIf="(pendingAccountModel !== '0')">
-              <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address">
+            <div>
+              <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address" *ngIf="(pendingAccountModel !== '0')">
                 <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
                 <a class="span-icon hide-on-small-viewports" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
-              <div class="only-on-small-viewports uk-text-center">
+              <div class="uk-margin-medium-top only-on-small-viewports nlt-button-group uk-flex uk-flex-column uk-flex-middle">
                 <button
-                  class="copy-address-button uk-width-1-1 uk-width-4-5@s uk-button uk-button-primary uk-text-center"
+                  *ngIf="(pendingAccountModel !== '0')"
+                  class="uk-width-1-1 uk-width-4-5@s uk-button uk-button-primary uk-text-center nlt-icon-button"
                   [class.nlt-button-success]="recentlyCopiedAccountAddress"
                   [class.uk-disabled]="recentlyCopiedAccountAddress"
                   type="button"
@@ -68,8 +86,12 @@
                   [cbContent]="pendingAccountModel"
                   (cbOnSuccess)="copiedAccountAddress()"
                 >
+                  <span class="nlt-icon" uk-icon="icon: copy;"></span>
                   {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
                 </button>
+                <div class="uk-hidden@s uk-width-1-1 uk-flex">
+                  <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
+                </div>
               </div>
             </div>
           </div>
@@ -281,3 +303,264 @@
   </div>
 </div>
 
+<div class="merchant-mode-overlay" id="merchant-mode-modal" uk-modal>
+  <div class="merchant-mode-contents uk-flex uk-flex-column uk-flex-middle">
+    <div
+      class="uk-width-1-1 merchant-mode-header"
+      [class.uk-margin-medium-bottom]="inMerchantModeQR === false"
+      [class.uk-margin-bottom]="inMerchantModeQR === true"
+    >
+      <div class="merchant-mode-logo"></div>
+      <div
+        class="merchant-mode-exit uk-flex uk-flex-middle"
+        [class.uk-visible@s]="(inMerchantModeQR === true)"
+        (click)="inMerchantModeQR ? merchantModeHideQR() : merchantModeDisable()"
+      >
+        <span uk-icon="icon: close; ratio: 1.4;" class="uk-margin-small-right" style="margin-top: 2px;"></span>
+        <span class="label">{{ inMerchantModeQR ? 'Cancel Payment' : 'Exit Merchant Mode' }}</span>
+      </div>
+    </div>
+    <div class="merchant-centered-container uk-flex-1 uk-width-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-text-center">
+      <ng-container *ngIf="(inMerchantModePaymentComplete === false) && (inMerchantModeQR === false) && (pendingAccountModel === '0')">
+        <div class="uk-width-1-1 uk-card uk-card-default uk-margin-bottom">
+          <div class="uk-card-body">
+            <p class="uk-text-large">Select the <span class="uk-text-primary">destination account</span></p>
+            <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="onSelectedAccountChange(pendingAccountModel)">
+              <option [value]="0">–</option>
+              <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(inMerchantModePaymentComplete === false) && (inMerchantModeQR === false) && (pendingAccountModel !== '0')">
+        <div class="identicon-name-row uk-text-truncate">
+          <app-nano-identicon scale="6" [accountID]="pendingAccountModel" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+          <div class="account-label uk-text-truncate">{{ selectedAccountAddressBookName }}</div>
+        </div>
+        <app-nano-account-id [accountID]="pendingAccountModel" middle="off" class="nano-address-monospace uk-width-auto"></app-nano-account-id>
+        <button
+          class="uk-width-auto uk-button uk-button-secondary uk-text-center nlt-icon-button uk-margin-small-top"
+          type="button"
+          (click)="unsetSelectedAccount()"
+        >
+          <span class="nlt-icon" uk-icon="icon: pencil;"></span>
+          Change account
+        </button>
+
+        <div
+          class="uk-width-1-1 uk-card uk-card-default uk-margin-bottom"
+          style="margin-top: 60px;"
+        >
+          <div class="uk-card-body">
+            <p class="uk-text-large">Enter the <span class="uk-text-primary">requested amount</span></p>
+            <div class="form-amount">
+              <div class="uk-width-1-1 uk-inline">
+                <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
+                <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
+              </div>
+              <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
+                <p class="text-half-muted" style="margin: 0 0 14px 0;">or</p>
+                <div class="uk-width-1-1 uk-inline">
+                  <a class="uk-form-icon uk-link-reset uk-link-muted fiat-currency-ticker" uk-tooltip title="Last Price: {{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / XNO">{{ settings.settings.displayCurrency | currencySymbol }}</a>
+                  <input [(ngModel)]="amountFiat" [ngClass]="{ 'uk-form-danger': !validFiat }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" (input)="fiatAmountChange()" style="padding-left: 52px !important;" class="uk-input" id="form-horizontal-text-fiat" type="number" step="any" placeholder="Amount of {{ settings.settings.displayCurrency }}">
+                </div>
+              </div>
+            </div>
+            <button
+              class="uk-width-1-1 uk-button uk-button-primary uk-text-center nlt-icon-button uk-margin-medium-top"
+              type="button"
+              (click)="merchantModeShowQR()"
+            >
+              <span class="merchant-mode-icon-qr-code"></span>
+              Create QR code
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(inMerchantModeQR === true)">
+        <p class="uk-text-large uk-margin-remove-bottom">Send</p>
+        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountNano === '')">
+          <span class="merchant-mode-currency-name">XNO</span>
+        </p>
+        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountNano !== '')">
+          <span
+            class="merchant-mode-amount-integer"
+          >{{ merchantModeRawRequestedQR | rai: 'mnano,true' | amountsplit: 0 }}</span>
+          <span
+            class="merchant-mode-amount-fractional"
+          >{{ merchantModeRawRequestedQR | rai: 'mnano,true' | amountsplit: 1 }}</span>
+          <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
+        </p>
+        <p class="text-half-muted" style="margin: -16px 0 10px 0;">to</p>
+        <app-nano-account-id
+          [accountID]="pendingAccountModel" middle="break"
+          class="nano-address-monospace uk-width-auto"
+          style="display: inline-block; max-width: 325px;"
+        ></app-nano-account-id>
+        <div
+          class="uk-width-1-1 uk-flex uk-flex-center uk-margin-top"
+          style="margin-bottom: 40px;"
+        >
+          <img class="merchant-mode-qr-code" [src]="qrCodeImage" alt="QR code" *ngIf="qrCodeImage">
+          <div class="merchant-mode-qr-code" *ngIf="!qrCodeImage"><div uk-spinner="ratio: 2;"></div></div>
+        </div>
+        <div
+          class="uk-width-1-1 uk-card uk-card-default uk-margin-bottom"
+          *ngFor="let prompt of merchantModePrompts; let promptIdx = index"
+        >
+          <div class="uk-card-body">
+            <p
+              *ngIf="(amountNano === '')"
+              class="uk-text-large text-half-muted uk-margin-remove-bottom"
+            >
+              Received
+            </p>
+            <p
+              *ngIf="(amountNano !== '') && prompt.moreThanRequested"
+              class="uk-text-large text-half-muted uk-margin-remove-bottom"
+            >
+              Received <span class="uk-text-success">more</span> than requested
+            </p>
+            <p
+              *ngIf="(amountNano !== '') && prompt.lessThanRequested"
+              class="uk-text-large text-half-muted uk-margin-remove-bottom"
+            >
+              Received <span class="uk-text-warning">less</span> than requested
+            </p>
+            <p
+              class="uk-text-large uk-margin-remove-top"
+              [class.uk-text-success]="prompt.moreThanRequested"
+              [class.uk-text-warning]="prompt.lessThanRequested"
+            >
+              <span
+                class="merchant-mode-amount-integer"
+              >{{ prompt.amountRaw | rai: 'mnano,true' | amountsplit: 0 }}</span>
+              <span
+                class="merchant-mode-amount-fractional"
+              >{{ prompt.amountRaw | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
+            </p>
+            <div
+              *ngIf="prompt.amountHiddenRaw.gt(0)"
+              class="uk-text-small text-half-muted block-hash-monospace"
+              style="margin: -22px 0 28px 0;"
+            >
+              +{{ prompt.amountHiddenRaw.toString(10) }} raw
+            </div>
+            <button
+              *ngIf="prompt.moreThanRequested"
+              class="uk-width-1-1 uk-button uk-button-primary uk-text-center nlt-icon-button uk-margin-bottom nlt-button-green"
+              type="button"
+              (click)="merchantModeMarkCompleteFromPrompt(prompt)"
+            >
+              <span class="nlt-icon" uk-icon="icon: check;" style="margin-top: -2px;"></span>
+              Mark Payment Complete
+            </button>
+            <button
+              *ngIf="prompt.lessThanRequested"
+              class="uk-width-1-1 uk-button uk-button-primary uk-text-center nlt-icon-button uk-margin-bottom"
+              type="button"
+              (click)="merchantModeSubtractAmountFromPrompt(prompt, promptIdx)"
+            >
+              <span class="nlt-icon" uk-icon="icon: pencil;" style="margin-top: -2px;"></span>
+              Subtract From Amount
+            </button>
+            <button
+              class="uk-width-1-1 uk-button uk-button-secondary uk-text-danger uk-text-center nlt-icon-button"
+              type="button"
+              (click)="merchantModeDiscardPrompt(promptIdx)"
+            >
+              <span class="nlt-icon" uk-icon="icon: close;" style="margin-top: -2px;"></span>
+              Discard As Unrelated
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="merchantModePrompts.length === 0">
+          <p class="uk-text-large uk-margin-top text-half-muted">Awaiting payment...</p>
+          <button
+            class="uk-width-auto uk-button uk-text-center nlt-icon-button"
+            [class.uk-button-primary]="!loadingIncomingTxList"
+            [class.uk-button-secondary]="loadingIncomingTxList"
+            [class.uk-disabled]="loadingIncomingTxList"
+            type="button"
+            (click)="!loadingIncomingTxList && getPending()"
+          >
+            <span class="nlt-icon" uk-icon="icon: refresh;" style="margin-top: -2px;" *ngIf="!loadingIncomingTxList"></span>
+            <span class="spinner" uk-spinner="ratio: 0.5;" *ngIf="loadingIncomingTxList"></span>
+            {{ loadingIncomingTxList ? 'Checking Payment...' : 'Check Payment' }}
+          </button>
+        </ng-container>
+        <div
+          class="merchant-mode-exit uk-flex uk-flex-middle uk-hidden@s"
+          style="margin-top: 70px;"
+          (click)="merchantModeHideQR"
+        >
+          <span uk-icon="icon: close; ratio: 1.4;" class="uk-margin-small-right" style="margin-top: 2px;"></span>
+          <span class="label">Cancel Payment</span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(inMerchantModePaymentComplete === true)">
+        <p class="uk-text-large uk-margin-remove-bottom uk-text-success">Received</p>
+        <p class="uk-text-large uk-text-success uk-margin-remove-top">
+          <span
+            class="merchant-mode-amount-integer"
+          >{{ merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 0 }}</span>
+          <span
+            class="merchant-mode-amount-fractional"
+          >{{ merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 1 }}</span>
+          <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
+        </p>
+        <div
+          *ngIf="merchantModeRawReceivedTotalHiddenRaw.gt(0)"
+          class="uk-text-small text-half-muted block-hash-monospace"
+          style="margin: -22px 0 28px 0;"
+        >
+          +{{ merchantModeRawReceivedTotalHiddenRaw.toString(10) }} raw
+        </div>
+        <img style="width: 50%; margin-top: -40px;" src="data:image/svg+xml,%3Csvg width='200mm' height='200mm' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m157.05 40.584c-2.5562-2e-6 -5.1127 0.97964-7.0714 2.9383l-65.687 65.687-34.266-34.266c-3.9174-3.9174-10.225-3.9174-14.142 1e-6l-12.915 12.915c-3.9174 3.9174-3.9174 10.225-1e-6 14.142l39.526 39.526c0.4262 0.72955 0.95143 1.4181 1.5782 2.0448l12.915 12.915c3.9174 3.9174 10.225 3.9174 14.142 0l85.906-85.907c3.9174-3.9174 3.9174-10.224 0-14.142l-12.915-12.915c-1.9587-1.9587-4.5147-2.9383-7.0709-2.9383z' fill='none' stop-color='%23000000' stroke='%2332d296' stroke-linejoin='round' stroke-width='2' style='paint-order:stroke fill markers'/%3E%3C/svg%3E" />
+        <p class="uk-flex uk-flex-center uk-flex-middle text-half-muted uk-margin-remove-bottom">
+          <button
+            class="uk-button uk-button-secondary uk-text-center nlt-icon-button"
+            type="button"
+            ngxClipboard
+            [cbContent]="(
+                  'Amount Requested: '
+                + ( merchantModeRawRequestedTotal | rai: 'mnano,true' | amountsplit: 0 )
+                + ( merchantModeRawRequestedTotal | rai: 'mnano,true' | amountsplit: 1 )
+                + ' XNO'
+                + '\n\n'
+                + 'Amount Paid: '
+                + ( merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 0 )
+                + ( merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 1 )
+                + ' XNO'
+                + '\n\n'
+                + 'Transaction ID\'s:'
+                + '\n- '
+                + merchantModeTransactionHashes.join('\n- ')
+            )"
+          >
+            <span class="nlt-icon" uk-icon="icon: copy;"></span>
+            Copy Payment Information
+          </button>
+        </p>
+        <ul class="uk-width-1-1">
+          <li
+            *ngFor="let hash of merchantModeTransactionHashes"
+            class="uk-text-left text-half-muted block-hash-monospace"
+            style="word-wrap: anywhere;"
+          >
+            {{ hash }}
+          </li>
+        </ul>
+        <div
+          class="merchant-mode-exit uk-flex uk-flex-middle"
+          style="margin-top: 70px;"
+          (click)="merchantModeResetState()"
+        >
+          <span uk-icon="icon: plus-circle; ratio: 1.4;" class="uk-margin-small-right" style="margin-top: 2px;"></span>
+          <span class="label">New Payment</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -28,7 +28,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 
 @media (max-width: 939px) {
 	.nlt-button-group button {
-		margin-bottom: @nlt-intro-margin / 2 !important;
+		margin-bottom: 20px !important;
 	}
 
 	h2:not(.uk-card-title):not(.uk-modal-title) {
@@ -1336,6 +1336,30 @@ input[type=number] {
 	}
 }
 
+// Receive page
+.merchant-centered-container {
+    .identicon-name-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 28px;
+		padding-bottom: 8px;
+
+		.nano-identicon {
+			display: inline-block;
+			width: 27px;
+			height: 27px;
+			margin-right: 12px;
+			margin-left: 1px;
+			flex-shrink: 0;
+
+			.canvas-container canvas {
+				border-radius: 3px;
+			}
+		}
+	}
+}
+
 // Representatives page
 .delegating-account-row {
 	border-top: none !important;
@@ -1525,6 +1549,14 @@ input[type=number] {
 
 .nlt-button-success {
 	background-color: #16A670 !important;
+}
+
+.nlt-button-green {
+	background-color: #16A670 !important;
+
+	&:hover {
+		background-color: #069660 !important;
+	}
 }
 
 .nlt-page-intro {
