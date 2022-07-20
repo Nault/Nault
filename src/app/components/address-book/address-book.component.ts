@@ -403,7 +403,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
-        if (!importData.length || !importData[0].account) {
+        if (!importData.length || (!importData[0].account && !importData[0].address)) {
           return this.notificationService.sendError(this.translocoService.translate('address-book.bad-import-data-make-sure-you-selected-a-nault-address-book'));
         }
 
