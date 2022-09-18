@@ -10,7 +10,7 @@ export class ApiService {
   storeKey = `nanovault-active-difficulty`;
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
-  private async request(action, data, skipError, url = ''): Promise<any> {
+  private async request(action, data, skipError, url = '', validateResponse?): Promise<any> {
     data.action = action;
     const apiUrl = url === '' ? this.appSettings.settings.serverAPI : url;
     if (!apiUrl) {
@@ -38,18 +38,41 @@ export class ApiService {
     }
     return await this.http.post(apiUrl, data, options).toPromise()
       .then(res => {
+        if ( typeof validateResponse === 'function' ) {
+          const { err } = validateResponse(res);
+          const isValidResponse = (err == null);
+
+          if (isValidResponse === false) {
+            throw {
+              isValidationFailure: true,
+              status: 500,
+              reason: err,
+              res,
+            };
+          };
+        };
+
         this.node.setOnline();
         return res;
       })
       .catch(async err => {
         if (skipError) return;
-        console.log('Node responded with error', err.status);
+
+        if ( err.isValidationFailure === true ) {
+          console.log(
+            'Node response failed validation.',
+            err.reason,
+            err.res
+          );
+        } else {
+          console.log('Node responded with error', err.status);
+        }
 
         if (this.appSettings.settings.serverName === 'random') {
           // choose a new backend and do the request again
           this.appSettings.loadServerSettings();
           await this.sleep(1000); // delay if all servers are down
-          return this.request(action, data, skipError);
+          return this.request(action, data, skipError, '', validateResponse);
         } else {
           // hard exit
           if (err.status === 429) {
@@ -101,7 +124,37 @@ export class ApiService {
     return await this.request('block_count', { include_cemented: 'true'}, false);
   }
   async workGenerate(hash, difficulty, workServer = ''): Promise<{ work: string }> {
-    return await this.request('work_generate', { hash, difficulty }, workServer !== '', workServer);
+    const validateResponse = (res) => {
+      if(res.work == null) {
+        return {
+          err: `Missing field "work".`,
+        };
+      };
+
+      if(typeof res.work !== 'string') {
+        return {
+          err: `Invalid type of field "work", expected "string", got "${ typeof res.work }".`,
+        };
+      };
+
+      if(res.work.length !== 16) {
+        return {
+          err: `Invalid length of field "work", expected 16, got ${ res.work.length }.`,
+        };
+      };
+
+      if( /^[0-9A-F]+$/i.test(res.work) === false ) {
+        return {
+          err: `Invalid contents of field "work", expected hex characters.`,
+        };
+      };
+
+      return {
+        err: null,
+      };
+    };
+
+    return await this.request('work_generate', { hash, difficulty }, workServer !== '', workServer, validateResponse);
   }
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
     return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] }, false);
