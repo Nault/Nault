@@ -186,6 +186,10 @@
 		border-bottom-color: @dark-mode-background-1;
 	}
 
+	.uk-table-striped > tr:nth-of-type(2n):last-child, .uk-table-striped tbody tr:nth-of-type(2n):last-child {
+    border-bottom: 1px solid @dark-mode-background-2;
+	}
+
 	// General (List)
 	.uk-list {
 		background: @dark-mode-background-2;
@@ -447,6 +451,16 @@
 	// Receive page
 	.qr-placeholder {
 		background: @dark-mode-background-2 !important;
+	}
+
+	.merchant-mode-overlay {
+		background: @dark-mode-background-1 !important;
+
+		.merchant-mode-logo {
+			background: url('../../assets/img/nault-logo-night-mode.svg');
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
 	}
 
 	// Representatives page

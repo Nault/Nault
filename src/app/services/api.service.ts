@@ -22,14 +22,21 @@ export class ApiService {
         this.node.setLoading();
       }
     }
-    let header;
+    let options: any = {
+      responseType: 'json',
+    };
     if (this.appSettings.settings.serverAuth != null && this.appSettings.settings.serverAuth !== '') {
-      header = {
-        headers: new HttpHeaders()
-          .set('Authorization',  this.appSettings.settings.serverAuth)
-      };
+      options =
+        Object.assign(
+          {},
+          options,
+          {
+            headers: new HttpHeaders()
+              .set('Authorization', this.appSettings.settings.serverAuth)
+          }
+        );
     }
-    return await this.http.post(apiUrl, data, header).toPromise()
+    return await this.http.post(apiUrl, data, options).toPromise()
       .then(res => {
         this.node.setOnline();
         return res;

@@ -423,24 +423,20 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     // Check for iOS, which is weird with saving files
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 
-    if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(blob, fileName);
+    const elem = window.document.createElement('a');
+    const objUrl = window.URL.createObjectURL(blob);
+    if (iOS) {
+      elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
     } else {
-      const elem = window.document.createElement('a');
-      const objUrl = window.URL.createObjectURL(blob);
-      if (iOS) {
-        elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
-      } else {
-        elem.href = objUrl;
-      }
-      elem.download = fileName;
-      document.body.appendChild(elem);
-      elem.click();
-      setTimeout(function() {
-        document.body.removeChild(elem);
-        window.URL.revokeObjectURL(objUrl);
-      }, 200);
+      elem.href = objUrl;
     }
+    elem.download = fileName;
+    document.body.appendChild(elem);
+    elem.click();
+    setTimeout(function() {
+      document.body.removeChild(elem);
+      window.URL.revokeObjectURL(objUrl);
+    }, 200);
   }
 
 }
