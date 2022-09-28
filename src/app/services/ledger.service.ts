@@ -69,7 +69,7 @@ export class LedgerService {
   supportsUSB = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
-  DynamicTransport: typeof TransportUSB | typeof TransportHID | typeof TransportU2F = TransportU2F;
+  DynamicTransport: typeof TransportUSB | typeof TransportHID | typeof TransportBLE = TransportU2F;
 
   ledgerStatus$: Subject<{ status: string, statusText: string }> = new Subject();
   desktopMessage$ = new Subject();
