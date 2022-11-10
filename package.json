@@ -97,7 +97,7 @@
     "@types/qrcode": "^0.8.1",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
-    "electron": "^9.4.0",
+    "electron": "^18.3.7",
     "electron-builder": "^22.14.5",
     "eslint": "^8.12.0",
     "jasmine-core": "~3.6.0",
