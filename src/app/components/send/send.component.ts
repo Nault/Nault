@@ -14,6 +14,7 @@ import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
+import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
 
@@ -58,7 +59,7 @@ export class SendComponent implements OnInit {
   selAccountInit = false;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
@@ -72,7 +73,7 @@ export class SendComponent implements OnInit {
     private translocoService: TranslocoService) { }
 
   async ngOnInit() {
-    const params = this.router.snapshot.queryParams;
+    const params = this.route.snapshot.queryParams;
 
     this.updateQueries(params);
 
@@ -99,7 +100,7 @@ export class SendComponent implements OnInit {
     });
 
     // Update the account if query params changes. For example donation button while active on this page
-    this.router.queryParams.subscribe(queries => {
+    this.route.queryParams.subscribe(queries => {
       this.updateQueries(queries);
     });
 
@@ -190,6 +191,44 @@ export class SendComponent implements OnInit {
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
     this.amount = nanoAmount.toNumber();
+  }
+
+  onDestinationAddressInput() {
+    this.searchAddressBook();
+
+    const destinationAddress = this.toAccountID || '';
+
+    const nanoURIScheme = /^nano:.+$/g;
+    const isNanoURI = nanoURIScheme.test(destinationAddress);
+
+    if (isNanoURI === true) {
+      const url = new URL(destinationAddress);
+
+      if (this.util.account.isValidAccount(url.pathname)) {
+        const amountAsRaw = url.searchParams.get('amount');
+
+        const amountAsXNO = (
+            amountAsRaw
+          ? nanocurrency.convert(
+              amountAsRaw, {
+                from: nanocurrency.Unit.raw,
+                to: nanocurrency.Unit.NANO
+              }
+            ).toString()
+          : null
+        );
+
+        setTimeout(
+          () => {
+            this.updateQueries({
+              to: url.pathname,
+              amount: amountAsXNO,
+            });
+          },
+          10
+        );
+      }
+    }
   }
 
   searchAddressBook() {
