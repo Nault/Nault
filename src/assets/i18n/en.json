@@ -283,7 +283,7 @@
         "password-must-be-at-least-x-characters-long": "Password must be at least {{ minCharacters }} characters long",
         "passwords-do-not-match": "Passwords do not match!"
       },
-      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password (the bar should be green).",
+      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password.",
       "set-wallet-password": "Set Wallet Password",
       "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "While the application is locked, the secret recovery phrase will be encrypted, which prevents sending/receiving funds and managing accounts."
     }
