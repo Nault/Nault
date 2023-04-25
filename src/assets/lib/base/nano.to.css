@@ -16,6 +16,7 @@
 	max-width: 230px !important;
 }
 
+.account-details-header .nano-identicon,
 .accounts-list .nano-identicon {
 	display: none !important;
 }
