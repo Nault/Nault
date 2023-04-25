@@ -1,5 +1,5 @@
-.is-wallet.nano-card .logo {
-	display: none !important;
+.nano-card > .logo {
+   filter: none !important;
 }
 
 .nano-card.is-wallet::after {
