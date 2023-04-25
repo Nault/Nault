@@ -57,3 +57,9 @@
 .light-mode .nav-container {
 	filter: invert(1);
 }
+
+.nano-address-monospace {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
