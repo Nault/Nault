@@ -72,10 +72,7 @@ export class SendComponent implements OnInit {
     private translocoService: TranslocoService) { }
 
   async ngOnInit() {
-
     const params = this.router.snapshot.queryParams;
-
-    this.loadKnown();
 
     this.updateQueries(params);
 
@@ -113,13 +110,6 @@ export class SendComponent implements OnInit {
       // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
       this.findFirstAccount();
     }
-  }
-
-  loadKnown() {
-    console.log("shiii", this)
-    // this.http.get('https://nano.to/known.json').toPromise().then((e) => {
-    //   console.log(e)
-    // })
   }
 
   updateQueries(params) {
@@ -203,14 +193,14 @@ export class SendComponent implements OnInit {
   }
 
   searchAddressBook() {
-    // this.known = 
-    console.log("yoo")
     this.showAddressBook = true;
     const search = this.toAccountID || '';
     const addressBook = this.addressBookService.addressBook;
+
     const matches = addressBook
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
       .slice(0, 5);
+
     this.addressBookResults$.next(matches);
   }
 
