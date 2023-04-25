@@ -3,12 +3,12 @@
 
     <ng-template #switchToMerchantModeButton>
       <button
-        class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary uk-text-center nlt-icon-button nlt-button-green"
+        class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary uk-text-center nlt-icon-button nlt-button-blue"
         type="button"
         (click)="merchantModeEnable()"
       >
         <span class="nlt-icon" uk-icon="icon: cart;"></span>
-        <span class="merchant-mode-text-full">Switch to Merchant Mode</span>
+        <span class="merchant-mode-text-full">Merchant Mode</span>
         <span class="merchant-mode-text-short">Merchant Mode</span>
       </button>
     </ng-template>
@@ -224,7 +224,7 @@
               <span class="uk-text-small">Ready to receive</span><br>
               <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
-              <span class="currency-name">XNO</span>
+              <span class="currency-name">NANO</span>
               <div class="compact-actions-date">
                 <ng-template [ngTemplateOutlet]="transactionActions"></ng-template>
               </div>
@@ -248,7 +248,7 @@
         <table class="uk-table uk-table-striped uk-table-small" *ngIf="settings.settings.minimumReceive">
           <thead>
             <tr class="uk-alert uk-alert-primary missing-accounts-hint">
-              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Minimum Receive is set to <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 0 }}{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template>, transactions below this amount will be hidden.</td>
+              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Below <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 0 }}{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template> will be hidden.</td>
             </tr>
           </thead>
         </table>

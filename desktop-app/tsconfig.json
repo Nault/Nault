@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "docs",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

@@ -1,0 +1,50 @@
+.is-wallet.nano-card .logo {
+	display: none !important;
+}
+
+.nano-card.is-wallet::after {
+	border: 1px dashed #ffffff45 !important;
+}
+
+.is-wallet.nano-card {
+	background-image: url(/assets/img/carbon-fiber.png) !important;
+	background-size: cover !important;
+	margin: 25px 15px 15px 15px;
+}
+
+.qr-code.qr-placeholder {
+	max-width: 230px !important;
+}
+
+.accounts-list .nano-identicon {
+	display: none !important;
+}
+
+.nav-container {
+	background-color: #111111 !important;
+	max-width: 320px;
+}
+
+.dark-mode .content-container {
+    background: #121213 !important;
+}
+
+.nav-container .nav-representative-info > .representative > .representative-health-row.health-unknown {
+    color: #FFF !important;
+    zoom: 0.8;
+    opacity: 1;
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+}
+
+.nav-search input {
+	color: #FFF !important;
+}
+
+.nav-container .nav-representative-info > .representative > .representative-health-row.health-unknown > .health-icon {
+    background-color: #4b90e1 !important;
+}
+
+.nano-address-suffix {
+    color: #3379ca !important;
+}
