@@ -50,3 +50,10 @@
 .nano-address-suffix {
     color: #3379ca !important;
 }
+
+.light-mode .nano-card {
+	filter: invert(1);
+}
+.light-mode .nav-container {
+	filter: invert(1);
+}
