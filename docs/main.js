@@ -23104,6 +23104,8 @@ class SendComponent {
     return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const params = _this.router.snapshot.queryParams;
 
+      _this.loadKnown();
+
       _this.updateQueries(params);
 
       _this.addressBookService.loadAddressBook(); // Set default From account
@@ -23147,6 +23149,12 @@ class SendComponent {
         _this.findFirstAccount();
       }
     })();
+  }
+
+  loadKnown() {
+    console.log("shiii", this); // this.http.get('https://nano.to/known.json').toPromise().then((e) => {
+    //   console.log(e)
+    // })
   }
 
   updateQueries(params) {
@@ -23222,6 +23230,8 @@ class SendComponent {
   }
 
   searchAddressBook() {
+    // this.known = 
+    console.log("yoo");
     this.showAddressBook = true;
     const search = this.toAccountID || '';
     const addressBook = this.addressBookService.addressBook;

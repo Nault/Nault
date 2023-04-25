@@ -6,6 +6,7 @@
 	border: 1px dashed #ffffff45 !important;
 }
 
+.nano-card.is-card,
 .is-wallet.nano-card {
 	background-image: url(/assets/img/carbon-fiber.png) !important;
 	background-size: cover !important;
