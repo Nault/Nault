@@ -346,7 +346,7 @@
     "you-will-not-be-able-to-recover-the-funds-without-a-backup": "YOU WILL NOT BE ABLE TO RECOVER THE FUNDS without a backup of your currently configured wallet."
   },
   "welcome": {
-    "a-secure-open-source-wallet-for-nano": "A secure open source wallet for nano",
+    "a-secure-open-source-wallet-for-nano": "Secure Nano Wallet",
     "advanced-security-features": {
       "1": "Support for Ledger Nano S / Nano X hardware wallets",
       "2": "Ability to create multi-signature addresses where multiple private keys are required to access and transfer the funds",
@@ -385,7 +385,7 @@
       },
       "title": "Any Node, Always Available"
     },
-    "configure-wallet": "Configure Wallet",
+    "configure-wallet": "New Wallet",
     "learn-more": "Learn more",
     "secure-the-nano-network": {
       "1": {
