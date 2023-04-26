@@ -24,7 +24,7 @@
 
 .nav-container {
 	background-color: #111111 !important;
-	max-width: 320px;
+	max-width: 300px;
 }
 
 .dark-mode .content-container {
@@ -86,4 +86,17 @@
 
 .uk-alert-danger {
     background: #4b90e2 !important;
+}
+
+
+@media (max-width: 768px) {
+	.uk-grid > .uk-grid-margin, * + .uk-grid-margin {
+		margin-top: 10px !important;
+	}
+	.send-types-tab {
+		width: 100% !important;
+	}
+	.landing-container > div > .wallet-option {
+	    zoom: 0.8;
+	}
 }
