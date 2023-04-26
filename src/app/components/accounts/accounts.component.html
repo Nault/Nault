@@ -8,7 +8,7 @@
           <a (click)="viewAdvanced = !viewAdvanced" class="uk-text-truncate" style="font-size: 12px;margin-left: 25px;opacity: 0.3;color: #FFF;">{{ viewAdvanced ? ('accounts.simple-mode' | transloco | uppercase) : ('accounts.advanced-mode' | transloco | uppercase) }}</a>
         </h2>
       </div>
-      <div class="uk-width-auto@m uk-width-1-1 uk-text-right">
+      <div class="">
         <div class="uk-grid-small uk-child-width-expand" uk-grid>
           <div>
             <input type="number" class="uk-input uk-form-width-small uk-width-1-1@m" [(ngModel)]="newAccountIndex" placeholder="Account #" *ngIf="viewAdvanced">
