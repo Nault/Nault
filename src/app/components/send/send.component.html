@@ -5,7 +5,7 @@
     <!-- Send Panel -->
     <div uk-grid *ngIf="activePanel == 'send'" class="uk-animation-slide-left-small">
       <div class="send-types-wrapper uk-width-1-1 uk-text-center">
-        <div class="send-types-frame">
+        <div class="send-types-frame" style="display:flex;margin:auto;width:fit-content;">
           <button [class]="['send-types-tab', 'uk-text-truncate', (sendDestinationType === 'external-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'external-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('external-address')">Send to address</button>
           <button [class]="['send-types-tab', 'uk-text-truncate', (sendDestinationType === 'own-address') ? 'send-types-tab-active' : 'send-types-tab-inactive', 'uk-button', (sendDestinationType === 'own-address') ? 'uk-button-primary' : 'uk-button-secondary']" type="button" (click)="setSendDestinationType('own-address')">Transfer between own accounts</button>
         </div>
@@ -32,7 +32,10 @@
                 <div class="uk-form-controls">
                   <div class="form-input-destination uk-inline uk-width-1-1">
                     <a class="hide-on-small-viewports uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
+                    
                     <input (blur)="validateDestination()" (input)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Address to send to" autocomplete="off">
+
+                    <small _ngcontent-nix-c119="" style=" opacity: 0.3; ">Next Update: Nano.to Username support.</small>
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">

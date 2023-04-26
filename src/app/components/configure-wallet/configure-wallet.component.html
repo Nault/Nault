@@ -1,4 +1,4 @@
-<h2 class="uk-heading-divider">Configure Wallet</h2>
+<h2 class="uk-heading-divider">New Wallet</h2>
 
 <div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-small-bottom">
   <div class="uk-alert uk-alert-danger nlt-inline-alert">
@@ -412,11 +412,8 @@
 
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.backup">
-  <div class="uk-card-header">
-    <h3 class="uk-card-title">{{ 'configure-wallet.new-wallet.recovery-phrases-for-new-wallet' | transloco }}</h3>
-  </div>
+
   <div class="uk-card-body">
-    <p>{{ 'configure-wallet.new-wallet.please-take-some-time-to-write-down-recovery-phrases' | transloco }}</p>
     <div>
       <div class="uk-alert uk-alert-danger nlt-inline-alert">
         <div class="icon-column">
@@ -428,7 +425,6 @@
         </p>
       </div>
     </div>
-    <br>
 
     <div uk-grid>
       <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-seed' | transloco }}</div>

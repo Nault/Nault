@@ -63,3 +63,27 @@
     font-size: 15px;
     letter-spacing: 0.5px;
 }
+
+.landing-container > div > .wallet-option {
+    border-color: #4A90E2;
+    min-width: 280px;
+    zoom: 0.9;
+}
+
+.landing-container > div {
+	margin-top: 25px !important;
+	padding-top: 0 !important;
+}
+
+.welcome-features-container > .feature > p {
+/*	zoom: 0.8;*/
+	font-size: 18px !important;
+}
+
+.welcome-features-container > .feature > .icon > svg {
+/*	max-width: 140px !important;*/
+}
+
+.uk-alert-danger {
+    background: #4b90e2 !important;
+}
