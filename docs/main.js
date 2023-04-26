@@ -20337,13 +20337,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function RemoteSigningComponent_div_28_li_5_Template(rf, ctx) {
+function RemoteSigningComponent_div_20_li_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "li");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "a", 24);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_div_28_li_5_Template_a_click_1_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "a", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_div_20_li_5_Template_a_click_1_listener() {
       const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r4);
       const book_r2 = restoredCtx.$implicit;
       const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2);
@@ -20361,15 +20361,15 @@ function RemoteSigningComponent_div_28_li_5_Template(rf, ctx) {
   }
 }
 
-function RemoteSigningComponent_div_28_Template(rf, ctx) {
+function RemoteSigningComponent_div_20_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "ul", 20);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](2, "li", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "ul", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](2, "li", 20);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](3, "Address Book Results");
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](4, "li", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](5, RemoteSigningComponent_div_28_li_5_Template, 3, 1, "li", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](4, "li", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](5, RemoteSigningComponent_div_20_li_5_Template, 3, 1, "li", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpipe"](6, "async");
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
@@ -20545,9 +20545,9 @@ RemoteSigningComponent.ɵfac = function RemoteSigningComponent_Factory(t) {
 RemoteSigningComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineComponent"]({
   type: RemoteSigningComponent,
   selectors: [["app-send"]],
-  decls: 78,
+  decls: 70,
   vars: 18,
-  consts: [["uk-grid", ""], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-card", "uk-card-default"], [1, "uk-card-header", "uk-form-horizontal"], ["href", "https://docs.nault.cc/2020/08/05/security-of-nano.html#transact-using-a-remote-signing-procedure", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-form-horizontal"], [1, "uk-margin"], ["for", "form-horizontal-text2", 1, "uk-form-label"], [1, "uk-form-controls"], [1, "uk-inline", "uk-width-1-1"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["type", "text", "placeholder", "nano_1abc...", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "blur", "input", "focus", "keyup.enter", "ngModelChange"], ["class", "nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute", "style", "z-index: 15000", 3, "hidden", 4, "ngIf"], [1, "uk-button", "uk-button-primary", "uk-width-1-4@l", "uk-width-1-1", 3, "click"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["type", "text", "placeholder", "nanosign:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], ["type", "text", "placeholder", "nanoprocess:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], [1, "nlt-dropdown", "uk-animation-slide-down-small", "uk-width-1-1", "uk-card", "uk-card-default", "uk-card-body", "uk-position-absolute", 2, "z-index", "15000", 3, "hidden"], [1, "uk-nav", "uk-nav-default"], [1, "uk-nav-header"], [1, "uk-nav-divider"], [4, "ngFor", "ngForOf"], [3, "click"]],
+  consts: [["uk-grid", ""], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-card", "uk-card-default"], [1, "uk-card-header", "uk-form-horizontal"], [1, "uk-form-horizontal"], [1, "uk-margin"], ["for", "form-horizontal-text2", 1, "uk-form-label"], [1, "uk-form-controls"], [1, "uk-inline", "uk-width-1-1"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["type", "text", "placeholder", "nano_1abc...", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "blur", "input", "focus", "keyup.enter", "ngModelChange"], ["class", "nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute", "style", "z-index: 15000", 3, "hidden", 4, "ngIf"], [1, "uk-button", "uk-button-primary", "uk-width-1-4@l", "uk-width-1-1", 3, "click"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["type", "text", "placeholder", "nanosign:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], ["type", "text", "placeholder", "nanoprocess:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], [1, "nlt-dropdown", "uk-animation-slide-down-small", "uk-width-1-1", "uk-card", "uk-card-default", "uk-card-body", "uk-position-absolute", 2, "z-index", "15000", 3, "hidden"], [1, "uk-nav", "uk-nav-default"], [1, "uk-nav-header"], [1, "uk-nav-divider"], [4, "ngFor", "ngForOf"], [3, "click"]],
   template: function RemoteSigningComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 0);
@@ -20559,96 +20559,85 @@ RemoteSigningComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "div", 1);
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](6, "div", 3);
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](8, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](9, "strong");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](10, "An extremely secure way of transacting on the nano network without exposing your private keys to the Internet, ensuring only non-sensitive data is transferred between devices.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](8, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](9, "STEP 1 - Create Block (Online Device)");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](11, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](12, " A full security and user guide is found ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](13, "a", 5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](14, "here");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](10, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](11, "Create a SEND, RECEIVE or CHANGE block from a \"watch-only\" account. No wallet import needed.");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](15, ". ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](12, "div", 5);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](13, "div", 6);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](14, "label", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](15, "Account to create a block for");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](16, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](17, "STEP 1 - Create Block (Online Device)");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](18, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](19, "Create a SEND, RECEIVE or CHANGE block from a \"watch-only\" account. No wallet import needed.");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](20, "div", 6);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](21, "div", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](22, "label", 8);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](23, "Account to create a block for");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](24, "div", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](25, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](26, "a", 11);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_a_click_26_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](16, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](17, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](18, "a", 10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_a_click_18_listener() {
         return ctx.openQR("account1", "account");
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](27, "input", 12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("blur", function RemoteSigningComponent_Template_input_blur_27_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](19, "input", 11);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("blur", function RemoteSigningComponent_Template_input_blur_19_listener() {
         return ctx.validateDestination();
-      })("input", function RemoteSigningComponent_Template_input_input_27_listener() {
+      })("input", function RemoteSigningComponent_Template_input_input_19_listener() {
         return ctx.searchAddressBook();
-      })("focus", function RemoteSigningComponent_Template_input_focus_27_listener() {
+      })("focus", function RemoteSigningComponent_Template_input_focus_19_listener() {
         return ctx.searchAddressBook();
-      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_27_listener() {
+      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_19_listener() {
         return ctx.start();
-      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_27_listener($event) {
+      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_19_listener($event) {
         return ctx.toAccountID = $event;
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](28, RemoteSigningComponent_div_28_Template, 7, 4, "div", 13);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpipe"](29, "async");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](20, RemoteSigningComponent_div_20_Template, 7, 4, "div", 12);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpipe"](21, "async");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](30, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](31, "button", 14);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_31_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](22, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](23, "button", 13);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_23_listener() {
         return ctx.start();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](32, "CREATE");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](24, "CREATE");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](33, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](34, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](35, "STEP 2 - Sign Block (Offline Device)");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](25, "div", 4);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](26, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](27, "STEP 2 - Sign Block (Offline Device)");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](36, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](28, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](29, "a", 14);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](30, "Scan the unsigned QR code");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](31, " from Step 1 ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](32, "strong");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](33, "OR");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](34, " paste the block below. Sign it using a key owning the account from step 1.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](35, "br");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](36, " Nault can optionally be set in Offline Mode from the ");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](37, "a", 15);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](38, "Scan the unsigned QR code");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](38, "Server Configuration");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](39, " from Step 1 ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](40, "strong");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](41, "OR");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](39, " to avoid network notifications.");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](42, " paste the block below. Sign it using a key owning the account from step 1.");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](43, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](44, " Nault can optionally be set in Offline Mode from the ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](45, "a", 16);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](46, "Server Configuration");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](40, "div", 5);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](41, "div", 6);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](42, "label", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](43, "Unsigned block from step 1");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](47, " to avoid network notifications.");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](48, "div", 6);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](49, "div", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](50, "label", 8);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](51, "Unsigned block from step 1");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](52, "div", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](53, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](54, "input", 17);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("input", function RemoteSigningComponent_Template_input_input_54_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](44, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](45, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](46, "input", 16);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("input", function RemoteSigningComponent_Template_input_input_46_listener() {
         return ctx.validateUnsigned(ctx.unsignedBlock);
-      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_54_listener() {
+      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_46_listener() {
         return ctx.navigateBlock(ctx.unsignedBlock);
-      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_54_listener($event) {
+      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_46_listener($event) {
         return ctx.unsignedBlock = $event;
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
@@ -20656,42 +20645,42 @@ RemoteSigningComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](55, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](56, "button", 14);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_56_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](47, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](48, "button", 13);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_48_listener() {
         return ctx.navigateBlock(ctx.unsignedBlock);
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](57, "SIGN");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](49, "SIGN");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](58, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](59, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](60, "STEP 3 - Process Block (Online Device)");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](50, "div", 4);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](51, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](52, "STEP 3 - Process Block (Online Device)");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](61, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](62, "a", 15);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](63, "Scan the signed QR code");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](53, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](54, "a", 14);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](55, "Scan the signed QR code");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](64, " from Step 2 ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](65, "strong");
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](66, "OR");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](56, " from Step 2 ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](57, "strong");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](58, "OR");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](67, " paste the block below. Confirm and send it to the live network!");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](59, " paste the block below. Confirm and send it to the live network!");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](68, "div", 6);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](69, "div", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](70, "label", 8);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](71, "Signed block from step 2");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](60, "div", 5);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](61, "div", 6);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](62, "label", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](63, "Signed block from step 2");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](72, "div", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](73, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](74, "input", 18);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("input", function RemoteSigningComponent_Template_input_input_74_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](64, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](65, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](66, "input", 17);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("input", function RemoteSigningComponent_Template_input_input_66_listener() {
         return ctx.validateSigned(ctx.signedBlock);
-      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_74_listener() {
+      })("keyup.enter", function RemoteSigningComponent_Template_input_keyup_enter_66_listener() {
         return ctx.navigateBlock(ctx.signedBlock);
-      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_74_listener($event) {
+      })("ngModelChange", function RemoteSigningComponent_Template_input_ngModelChange_66_listener($event) {
         return ctx.signedBlock = $event;
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
@@ -20699,12 +20688,12 @@ RemoteSigningComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](75, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](76, "button", 14);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_76_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](67, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](68, "button", 13);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function RemoteSigningComponent_Template_button_click_68_listener() {
         return ctx.navigateBlock(ctx.signedBlock);
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](77, "PROCESS");
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](69, "PROCESS");
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
@@ -20716,10 +20705,10 @@ RemoteSigningComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
     }
 
     if (rf & 2) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](27);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](19);
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngModel", ctx.toAccountID)("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpureFunction2"](9, _c0, ctx.toAccountStatus === 1, ctx.toAccountStatus === 0));
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpipeBind1"](29, 7, ctx.addressBookResults$).length);
+      _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpipeBind1"](21, 7, ctx.addressBookResults$).length);
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](26);
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngModel", ctx.unsignedBlock)("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpureFunction2"](12, _c0, ctx.unsignedStatus === 1, ctx.unsignedStatus === 0));
       _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](20);
@@ -22261,7 +22250,7 @@ function SendComponent_div_4_div_17_Template(rf, ctx) {
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵelementStart"](7, "small", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtext"](8, "Next Update: Nano.to Username support.");
+    _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtext"](8, "Coming Soon: Nano.to Username support.");
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtemplate"](9, SendComponent_div_4_div_17_div_9_Template, 7, 4, "div", 37);
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵpipe"](10, "async");
