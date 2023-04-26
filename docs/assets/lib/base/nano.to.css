@@ -51,8 +51,8 @@
     color: #3379ca !important;
 }
 
-.light-mode .nano-card {
-	filter: invert(1);
+.light-mode .nano-card .logo {
+	filter: invert(1) !important;
 }
 .light-mode .nav-container {
 	filter: invert(1);
@@ -86,6 +86,8 @@
 
 .uk-alert-danger {
     background: #4b90e2 !important;
+    padding: 26px !important;
+    color: #FFF !important;
 }
 
 
