@@ -22976,7 +22976,6 @@ class SendComponent {
     var _this = this;
 
     return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.known = yield _this.http.get('https://api.nano.to/known').toPromise();
       const params = _this.router.snapshot.queryParams;
 
       _this.updateQueries(params);
@@ -23021,6 +23020,8 @@ class SendComponent {
         // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
         _this.findFirstAccount();
       }
+
+      _this.known = yield _this.http.get('https://nano.to/known.json').toPromise();
     })();
   }
 
