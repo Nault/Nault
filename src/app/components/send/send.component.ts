@@ -212,7 +212,7 @@ export class SendComponent implements OnInit {
     
     addressBook
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5)
-      .map(a => matches.push({ name: a.name + ' (Local Account)' }));
+      .map(a => matches.push({ name: a.name + ' (Local Account)', account: a.account }));
 
     this.known
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5)
