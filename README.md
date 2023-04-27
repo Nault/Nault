@@ -12,6 +12,16 @@
 
 ![line](https://github.com/fwd/n2/raw/master/.github/line.png)
 
+## Changes
+
+- ✅ Redesigned UI/UX
+- ✅ Add Nano.to Usernames to send page.
+- 🟨 Add Nano.to Usernames to transaction lists.
+- 🟨 Introduce eCommerce into Nault.pro
+- 🟨 Professional Security Audit
+
+![line](https://github.com/fwd/n2/raw/master/.github/line.png)
+
 ### License 
 
 **MIT**
