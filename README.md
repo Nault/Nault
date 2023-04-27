@@ -19,7 +19,7 @@
 - 🟨 Add Nano.to Usernames to transactions.
 - 🟨 Introduce eCommerce into Nault.Pro
 - 🟨 Professional Security Audit
-- 🟨 Nault.Pro Code Freeze
+- 🟨 Nault.Pro Code Freeze & Formal Release
 
 ![line](https://github.com/fwd/n2/raw/master/.github/line.png)
 
