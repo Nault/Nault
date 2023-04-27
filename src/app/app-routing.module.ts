@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {ConfigureWalletComponent} from './components/configure-wallet/configure-wallet.component';
 import {AccountsComponent} from './components/accounts/accounts.component';
+import {MarketplaceComponent} from './components/marketplace/marketplace.component';
 import {SendComponent} from './components/send/send.component';
 import {AddressBookComponent} from './components/address-book/address-book.component';
 import {ReceiveComponent} from './components/receive/receive.component';
@@ -26,6 +27,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
+  { path: 'marketplace', component: MarketplaceComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:account', component: AccountDetailsComponent },
   { path: 'address-book', component: AddressBookComponent },
