@@ -14,6 +14,7 @@ import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
+import { HttpClient } from '@angular/common/http';
 
 const nacl = window['nacl'];
 
@@ -40,6 +41,7 @@ export class SendComponent implements OnInit {
   ];
   selectedAmount = this.amounts[0];
 
+  known = null;
   amount = null;
   amountExtraRaw = new BigNumber(0);
   amountFiat: number|null = null;
@@ -58,6 +60,7 @@ export class SendComponent implements OnInit {
   selAccountInit = false;
 
   constructor(
+    private http: HttpClient,
     private router: ActivatedRoute,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
@@ -72,6 +75,7 @@ export class SendComponent implements OnInit {
     private translocoService: TranslocoService) { }
 
   async ngOnInit() {
+
     const params = this.router.snapshot.queryParams;
 
     this.updateQueries(params);
@@ -110,6 +114,9 @@ export class SendComponent implements OnInit {
       // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
       this.findFirstAccount();
     }
+
+    this.known = await this.http.get('https://nano.to/known.json').toPromise()
+
   }
 
   updateQueries(params) {
@@ -192,16 +199,27 @@ export class SendComponent implements OnInit {
     this.amount = nanoAmount.toNumber();
   }
 
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   searchAddressBook() {
     this.showAddressBook = true;
     const search = this.toAccountID || '';
     const addressBook = this.addressBookService.addressBook;
 
-    const matches = addressBook
-      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-      .slice(0, 5);
+    let matches = [];
+    
+    addressBook
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5)
+      .map(a => matches.push({ name: a.name + ' (Local Account)' }));
+
+    this.known
+      .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5)
+      .map(a => matches.push({ name: (a.github ? this.capitalizeFirstLetter(a.name) + ' (Verified)' : this.capitalizeFirstLetter(a.name)), account: a.address }));
 
     this.addressBookResults$.next(matches);
+
   }
 
   selectBookEntry(account) {
