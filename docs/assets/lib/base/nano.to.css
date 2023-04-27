@@ -314,7 +314,9 @@ width: 100%;
 
 .account-snippet .account-container .account-label {
     padding: 5px 12px !important;
+    margin-top: 3px;
     margin-bottom: 5px;
+    margin-left: -1px;
 }
 
 .account-snippet .account-container .identicon-address-book-row {
@@ -323,4 +325,27 @@ width: 100%;
 
 .nano-address-monospace {
     margin-top: 0 !important;
+}
+
+.account-snippet .account-container {
+    align-items: flex-start;
+}
+
+.uk-width-auto .snippet-address-actions {
+    position: absolute;
+}
+
+.uk-width-auto .snippet-address-actions {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    zoom: 0.85;
+}
+
+.account-snippet .snippet-caption {
+    margin-bottom: 5px !important;
+}
+
+.account-snippet .account-container {
+    align-items: flex-start !important;
 }
