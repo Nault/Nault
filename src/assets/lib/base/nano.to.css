@@ -23,7 +23,7 @@
 }
 
 .nav-container {
-	background-color: #191818 !important;
+	background-color: #121213 !important;
 	max-width: 300px;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .nano-address-suffix {
-    color: #23c7ff !important;
+    color: #00a0d7 !important;
 }
 
 .light-mode .nano-card .logo {
@@ -62,10 +62,11 @@
     font-family: 'Roboto Mono', monospace;
     font-size: 15px;
     letter-spacing: 0.5px;
+    margin-top: 0 !important;
 }
 
 .landing-container > div > .wallet-option {
-    border-color: #23c7ff;
+    border-color: #00a0d7;
     min-width: 280px;
     zoom: 0.9;
 }
@@ -296,4 +297,30 @@ width: 100%;
 
 .account-details-header .nano-to-name {
     font-size: 22px;
+}
+
+.wallet-notification {
+    width: fit-content !important;
+    margin: 0 auto;
+    left: 0;
+    right: 0;  
+}
+
+.identicon-address-book-row .nano-identicon,
+.account-label.blue.uk-margin-small-top {
+    display: none !important;
+}
+
+
+.account-snippet .account-container .account-label {
+    padding: 5px 12px !important;
+    margin-bottom: 5px;
+}
+
+.account-snippet .account-container .identicon-address-book-row {
+    min-height: 0 !important;
+}
+
+.nano-address-monospace {
+    margin-top: 0 !important;
 }
