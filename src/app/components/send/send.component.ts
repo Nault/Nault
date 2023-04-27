@@ -77,7 +77,9 @@ export class SendComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.known = await this.http.get('https://nano.to/known.json').toPromise()
+    // immutable
+    // https://raw.githubusercontent.com/fwd/nano-to/2023/known.json
+    this.known = await this.http.get('https://api.nano.to/known').toPromise()
 
     const params = this.router.snapshot.queryParams;
 
@@ -199,6 +201,10 @@ export class SendComponent implements OnInit {
     this.amount = nanoAmount.toNumber();
   }
 
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   searchAddressBook() {
 
     this.showAddressBook = true;
@@ -211,7 +217,7 @@ export class SendComponent implements OnInit {
     
     this.known
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-      .slice(0, 5).map(a => matches.push({ name: (a.github ? a.name + ' (Verified)' : a.name), account: a.address }))
+      .slice(0, 5).map(a => matches.push({ name: (a.github ? this.capitalizeFirstLetter(a.name) + ' (Verified)' : this.capitalizeFirstLetter(a.name)), account: a.address }))
 
     addressBook.filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5).map(a => matches.push({ name: a.name + ' (Local Account)' }))
 
