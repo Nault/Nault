@@ -22976,8 +22976,6 @@ class SendComponent {
     var _this = this;
 
     return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      // immutable
-      // https://raw.githubusercontent.com/fwd/nano-to/2023/known.json
       _this.known = yield _this.http.get('https://api.nano.to/known').toPromise();
       const params = _this.router.snapshot.queryParams;
 
@@ -23107,12 +23105,13 @@ class SendComponent {
     const search = this.toAccountID || '';
     const addressBook = this.addressBookService.addressBook;
     let matches = [];
+    addressBook.filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5).map(a => matches.push({
+      name: a.name + ' (Local Account)',
+      account: a.account
+    }));
     this.known.filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5).map(a => matches.push({
       name: a.github ? this.capitalizeFirstLetter(a.name) + ' (Verified)' : this.capitalizeFirstLetter(a.name),
       account: a.address
-    }));
-    addressBook.filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5).map(a => matches.push({
-      name: a.name + ' (Local Account)'
     }));
     this.addressBookResults$.next(matches);
   }
