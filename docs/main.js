@@ -11,31 +11,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppRoutingModule": () => (/* binding */ AppRoutingModule)
 /* harmony export */ });
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/router */ 52816);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./welcome/welcome.component */ 83537);
 /* harmony import */ var _components_configure_wallet_configure_wallet_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/configure-wallet/configure-wallet.component */ 61452);
 /* harmony import */ var _components_accounts_accounts_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/accounts/accounts.component */ 39033);
-/* harmony import */ var _components_send_send_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/send/send.component */ 98860);
-/* harmony import */ var _components_address_book_address_book_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/address-book/address-book.component */ 53085);
-/* harmony import */ var _components_receive_receive_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/receive/receive.component */ 8150);
-/* harmony import */ var _components_manage_wallet_manage_wallet_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/manage-wallet/manage-wallet.component */ 78824);
-/* harmony import */ var _components_configure_app_configure_app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/configure-app/configure-app.component */ 65557);
-/* harmony import */ var _components_account_details_account_details_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/account-details/account-details.component */ 71803);
-/* harmony import */ var _components_transaction_details_transaction_details_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/transaction-details/transaction-details.component */ 76500);
-/* harmony import */ var _components_import_wallet_import_wallet_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/import-wallet/import-wallet.component */ 31626);
-/* harmony import */ var _components_import_address_book_import_address_book_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/import-address-book/import-address-book.component */ 92928);
-/* harmony import */ var _components_representatives_representatives_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/representatives/representatives.component */ 53832);
-/* harmony import */ var _components_sweeper_sweeper_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/sweeper/sweeper.component */ 79866);
-/* harmony import */ var _components_qr_scan_qr_scan_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/qr-scan/qr-scan.component */ 64949);
-/* harmony import */ var _components_sign_sign_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/sign/sign.component */ 26085);
-/* harmony import */ var _components_remote_signing_remote_signing_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/remote-signing/remote-signing.component */ 15059);
-/* harmony import */ var _components_converter_converter_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/converter/converter.component */ 161);
-/* harmony import */ var _components_qr_generator_qr_generator_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/qr-generator/qr-generator.component */ 45713);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../environments/environment */ 92340);
-/* harmony import */ var _components_manage_representatives_manage_representatives_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/manage-representatives/manage-representatives.component */ 47718);
-/* harmony import */ var _components_multisig_multisig_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/multisig/multisig.component */ 19222);
-/* harmony import */ var _components_keygenerator_keygenerator_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/keygenerator/keygenerator.component */ 5735);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/core */ 3184);
+/* harmony import */ var _components_marketplace_marketplace_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/marketplace/marketplace.component */ 81257);
+/* harmony import */ var _components_send_send_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/send/send.component */ 98860);
+/* harmony import */ var _components_address_book_address_book_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/address-book/address-book.component */ 53085);
+/* harmony import */ var _components_receive_receive_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/receive/receive.component */ 8150);
+/* harmony import */ var _components_manage_wallet_manage_wallet_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/manage-wallet/manage-wallet.component */ 78824);
+/* harmony import */ var _components_configure_app_configure_app_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/configure-app/configure-app.component */ 65557);
+/* harmony import */ var _components_account_details_account_details_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/account-details/account-details.component */ 71803);
+/* harmony import */ var _components_transaction_details_transaction_details_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/transaction-details/transaction-details.component */ 76500);
+/* harmony import */ var _components_import_wallet_import_wallet_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/import-wallet/import-wallet.component */ 31626);
+/* harmony import */ var _components_import_address_book_import_address_book_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/import-address-book/import-address-book.component */ 92928);
+/* harmony import */ var _components_representatives_representatives_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/representatives/representatives.component */ 53832);
+/* harmony import */ var _components_sweeper_sweeper_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/sweeper/sweeper.component */ 79866);
+/* harmony import */ var _components_qr_scan_qr_scan_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/qr-scan/qr-scan.component */ 64949);
+/* harmony import */ var _components_sign_sign_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/sign/sign.component */ 26085);
+/* harmony import */ var _components_remote_signing_remote_signing_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/remote-signing/remote-signing.component */ 15059);
+/* harmony import */ var _components_converter_converter_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/converter/converter.component */ 161);
+/* harmony import */ var _components_qr_generator_qr_generator_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/qr-generator/qr-generator.component */ 45713);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../environments/environment */ 92340);
+/* harmony import */ var _components_manage_representatives_manage_representatives_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/manage-representatives/manage-representatives.component */ 47718);
+/* harmony import */ var _components_multisig_multisig_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/multisig/multisig.component */ 19222);
+/* harmony import */ var _components_keygenerator_keygenerator_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/keygenerator/keygenerator.component */ 5735);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/core */ 3184);
+
 
 
 
@@ -64,37 +66,38 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [
     { path: '', component: _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_0__.WelcomeComponent },
+    { path: 'marketplace', component: _components_marketplace_marketplace_component__WEBPACK_IMPORTED_MODULE_3__.MarketplaceComponent },
     { path: 'accounts', component: _components_accounts_accounts_component__WEBPACK_IMPORTED_MODULE_2__.AccountsComponent },
-    { path: 'account/:account', component: _components_account_details_account_details_component__WEBPACK_IMPORTED_MODULE_8__.AccountDetailsComponent },
-    { path: 'address-book', component: _components_address_book_address_book_component__WEBPACK_IMPORTED_MODULE_4__.AddressBookComponent },
+    { path: 'account/:account', component: _components_account_details_account_details_component__WEBPACK_IMPORTED_MODULE_9__.AccountDetailsComponent },
+    { path: 'address-book', component: _components_address_book_address_book_component__WEBPACK_IMPORTED_MODULE_5__.AddressBookComponent },
     { path: 'configure-wallet', component: _components_configure_wallet_configure_wallet_component__WEBPACK_IMPORTED_MODULE_1__.ConfigureWalletComponent },
-    { path: 'configure-app', component: _components_configure_app_configure_app_component__WEBPACK_IMPORTED_MODULE_7__.ConfigureAppComponent },
-    { path: 'import-address-book', component: _components_import_address_book_import_address_book_component__WEBPACK_IMPORTED_MODULE_11__.ImportAddressBookComponent },
-    { path: 'import-wallet', component: _components_import_wallet_import_wallet_component__WEBPACK_IMPORTED_MODULE_10__.ImportWalletComponent },
-    { path: 'manage-wallet', component: _components_manage_wallet_manage_wallet_component__WEBPACK_IMPORTED_MODULE_6__.ManageWalletComponent },
-    { path: 'qr-scan', component: _components_qr_scan_qr_scan_component__WEBPACK_IMPORTED_MODULE_14__.QrScanComponent },
-    { path: 'send', component: _components_send_send_component__WEBPACK_IMPORTED_MODULE_3__.SendComponent },
-    { path: 'receive', component: _components_receive_receive_component__WEBPACK_IMPORTED_MODULE_5__.ReceiveComponent },
-    { path: 'representatives', component: _components_representatives_representatives_component__WEBPACK_IMPORTED_MODULE_12__.RepresentativesComponent },
-    { path: 'manage-representatives', component: _components_manage_representatives_manage_representatives_component__WEBPACK_IMPORTED_MODULE_20__.ManageRepresentativesComponent },
-    { path: 'transaction/:transaction', component: _components_transaction_details_transaction_details_component__WEBPACK_IMPORTED_MODULE_9__.TransactionDetailsComponent },
-    { path: 'sweeper', component: _components_sweeper_sweeper_component__WEBPACK_IMPORTED_MODULE_13__.SweeperComponent },
-    { path: 'sign', component: _components_sign_sign_component__WEBPACK_IMPORTED_MODULE_15__.SignComponent },
-    { path: 'remote-signing', component: _components_remote_signing_remote_signing_component__WEBPACK_IMPORTED_MODULE_16__.RemoteSigningComponent },
-    { path: 'multisig', component: _components_multisig_multisig_component__WEBPACK_IMPORTED_MODULE_21__.MultisigComponent },
-    { path: 'keygenerator', component: _components_keygenerator_keygenerator_component__WEBPACK_IMPORTED_MODULE_22__.KeygeneratorComponent },
-    { path: 'converter', component: _components_converter_converter_component__WEBPACK_IMPORTED_MODULE_17__.ConverterComponent },
-    { path: 'qr-generator', component: _components_qr_generator_qr_generator_component__WEBPACK_IMPORTED_MODULE_18__.QrGeneratorComponent },
+    { path: 'configure-app', component: _components_configure_app_configure_app_component__WEBPACK_IMPORTED_MODULE_8__.ConfigureAppComponent },
+    { path: 'import-address-book', component: _components_import_address_book_import_address_book_component__WEBPACK_IMPORTED_MODULE_12__.ImportAddressBookComponent },
+    { path: 'import-wallet', component: _components_import_wallet_import_wallet_component__WEBPACK_IMPORTED_MODULE_11__.ImportWalletComponent },
+    { path: 'manage-wallet', component: _components_manage_wallet_manage_wallet_component__WEBPACK_IMPORTED_MODULE_7__.ManageWalletComponent },
+    { path: 'qr-scan', component: _components_qr_scan_qr_scan_component__WEBPACK_IMPORTED_MODULE_15__.QrScanComponent },
+    { path: 'send', component: _components_send_send_component__WEBPACK_IMPORTED_MODULE_4__.SendComponent },
+    { path: 'receive', component: _components_receive_receive_component__WEBPACK_IMPORTED_MODULE_6__.ReceiveComponent },
+    { path: 'representatives', component: _components_representatives_representatives_component__WEBPACK_IMPORTED_MODULE_13__.RepresentativesComponent },
+    { path: 'manage-representatives', component: _components_manage_representatives_manage_representatives_component__WEBPACK_IMPORTED_MODULE_21__.ManageRepresentativesComponent },
+    { path: 'transaction/:transaction', component: _components_transaction_details_transaction_details_component__WEBPACK_IMPORTED_MODULE_10__.TransactionDetailsComponent },
+    { path: 'sweeper', component: _components_sweeper_sweeper_component__WEBPACK_IMPORTED_MODULE_14__.SweeperComponent },
+    { path: 'sign', component: _components_sign_sign_component__WEBPACK_IMPORTED_MODULE_16__.SignComponent },
+    { path: 'remote-signing', component: _components_remote_signing_remote_signing_component__WEBPACK_IMPORTED_MODULE_17__.RemoteSigningComponent },
+    { path: 'multisig', component: _components_multisig_multisig_component__WEBPACK_IMPORTED_MODULE_22__.MultisigComponent },
+    { path: 'keygenerator', component: _components_keygenerator_keygenerator_component__WEBPACK_IMPORTED_MODULE_23__.KeygeneratorComponent },
+    { path: 'converter', component: _components_converter_converter_component__WEBPACK_IMPORTED_MODULE_18__.ConverterComponent },
+    { path: 'qr-generator', component: _components_qr_generator_qr_generator_component__WEBPACK_IMPORTED_MODULE_19__.QrGeneratorComponent },
 ];
 class AppRoutingModule {
 }
 AppRoutingModule.ɵfac = function AppRoutingModule_Factory(t) { return new (t || AppRoutingModule)(); };
-AppRoutingModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_23__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
-AppRoutingModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_23__["ɵɵdefineInjector"]({ imports: [[
+AppRoutingModule.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_24__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
+AppRoutingModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_24__["ɵɵdefineInjector"]({ imports: [[
             // On the desktop apps, use hashes so it works properly using only index.html
-            _angular_router__WEBPACK_IMPORTED_MODULE_24__.RouterModule.forRoot(routes, { useHash: _environments_environment__WEBPACK_IMPORTED_MODULE_19__.environment.desktop, relativeLinkResolution: 'legacy' }),
-        ], _angular_router__WEBPACK_IMPORTED_MODULE_24__.RouterModule] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_23__["ɵɵsetNgModuleScope"](AppRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_24__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_24__.RouterModule] }); })();
+            _angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule.forRoot(routes, { useHash: _environments_environment__WEBPACK_IMPORTED_MODULE_20__.environment.desktop, relativeLinkResolution: 'legacy' }),
+        ], _angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_24__["ɵɵsetNgModuleScope"](AppRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule] }); })();
 
 
 /***/ }),
@@ -110,7 +113,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppComponent": () => (/* binding */ AppComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! environments/environment */ 92340);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_wallet_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/wallet.service */ 84853);
@@ -170,14 +173,14 @@ const _c1 = ["accountsDropdown"];
 function AppComponent_div_15_ng_container_8_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 87);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 89);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](3, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](5, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](6, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 88);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 90);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](8);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](9, "fiat");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -195,21 +198,21 @@ function AppComponent_div_15_ng_container_8_Template(rf, ctx) {
 
 function AppComponent_div_15_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 89);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 91);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 92);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 }
 
 function AppComponent_div_15_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 85);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 87);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 12);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 13);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "transloco");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 86);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 88);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -236,14 +239,14 @@ function AppComponent_div_15_Template(rf, ctx) {
 function AppComponent_ng_container_22_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 87);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 89);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](3, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](5, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](6, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 88);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 90);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](8);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](9, "fiat");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -261,20 +264,20 @@ function AppComponent_ng_container_22_Template(rf, ctx) {
 
 function AppComponent_ng_template_23_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 89);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 91);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 92);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 }
 
 function AppComponent_ng_container_25_div_1_ng_container_8_span_2_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "span", 94);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "span", 95);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "span", 96);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "span", 97);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](3, "transloco");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "span", 96);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "span", 98);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](6, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](7, "rai");
@@ -296,15 +299,15 @@ function AppComponent_ng_container_25_div_1_ng_container_8_span_2_Template(rf, c
 function AppComponent_ng_container_25_div_1_ng_container_8_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](2, AppComponent_ng_container_25_div_1_ng_container_8_span_2_Template, 10, 17, "span", 93);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 89);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](2, AppComponent_ng_container_25_div_1_ng_container_8_span_2_Template, 10, 17, "span", 95);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](5, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](6, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](7, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](8, "div", 88);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](8, "div", 90);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](9);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](10, "fiat");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -325,8 +328,8 @@ function AppComponent_ng_container_25_div_1_ng_container_8_Template(rf, ctx) {
 
 function AppComponent_ng_container_25_div_1_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 89);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 91);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 92);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 }
@@ -335,7 +338,7 @@ function AppComponent_ng_container_25_div_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r28 = _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 92);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 94);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_ng_container_25_div_1_Template_div_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵrestoreView"](_r28);
       const account_r18 = _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵnextContext"]().$implicit;
@@ -347,7 +350,7 @@ function AppComponent_ng_container_25_div_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "transloco");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 86);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 88);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -375,7 +378,7 @@ function AppComponent_ng_container_25_div_1_Template(rf, ctx) {
 function AppComponent_ng_container_25_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_25_div_1_Template, 11, 6, "div", 91);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_25_div_1_Template, 11, 6, "div", 93);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerEnd"]();
   }
 
@@ -389,28 +392,28 @@ function AppComponent_ng_container_25_Template(rf, ctx) {
 
 function AppComponent_ng_container_44_div_11_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 105);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 92);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 }
 
 function AppComponent_ng_container_44_div_12_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 104);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 105);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "span", 106);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 106);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 107);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "span", 108);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "~");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 98);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](6, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](6, "div", 101);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](7);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](8, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](9, "fiat");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 102);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](11);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](12, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](13, "fiat");
@@ -433,22 +436,22 @@ function AppComponent_ng_container_44_div_12_Template(rf, ctx) {
 function AppComponent_ng_container_44_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 97);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 98);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 101);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](5, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](6, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "div", 102);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](8);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](9, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](10, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](11, AppComponent_ng_container_44_div_11_Template, 2, 0, "div", 101);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](11, AppComponent_ng_container_44_div_11_Template, 2, 0, "div", 103);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](12, AppComponent_ng_container_44_div_12_Template, 14, 15, "div", 102);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](12, AppComponent_ng_container_44_div_12_Template, 14, 15, "div", 104);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerEnd"]();
   }
 
@@ -467,15 +470,15 @@ function AppComponent_ng_container_44_Template(rf, ctx) {
 
 function AppComponent_ng_template_45_div_0_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 108);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 109);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 110);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 111);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 }
 
 function AppComponent_ng_template_45_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](0, AppComponent_ng_template_45_div_0_Template, 2, 0, "div", 107);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](0, AppComponent_ng_template_45_div_0_Template, 2, 0, "div", 109);
   }
 
   if (rf & 2) {
@@ -486,10 +489,10 @@ function AppComponent_ng_template_45_Template(rf, ctx) {
 
 function AppComponent_ng_container_47_ng_container_1_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 115);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 117);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 118);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](3, "span", 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](3, "span", 92);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](4, "Processing Transactions...");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -499,7 +502,7 @@ function AppComponent_ng_container_47_ng_container_1_div_1_Template(rf, ctx) {
 function AppComponent_ng_container_47_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_container_1_div_1_Template, 5, 0, "div", 114);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_container_1_div_1_Template, 5, 0, "div", 116);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerEnd"]();
   }
 
@@ -512,8 +515,8 @@ function AppComponent_ng_container_47_ng_container_1_Template(rf, ctx) {
 
 function AppComponent_ng_container_47_ng_template_2_ng_container_0_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 119);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 121);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 118);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "Unlock Wallet to Receive");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -524,7 +527,7 @@ function AppComponent_ng_container_47_ng_template_2_ng_container_0_div_1_Templat
 function AppComponent_ng_container_47_ng_template_2_ng_container_0_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_template_2_ng_container_0_div_1_Template, 4, 0, "div", 118);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_template_2_ng_container_0_div_1_Template, 4, 0, "div", 120);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerEnd"]();
   }
 
@@ -537,8 +540,8 @@ function AppComponent_ng_container_47_ng_template_2_ng_container_0_Template(rf, 
 
 function AppComponent_ng_container_47_ng_template_2_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 120);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 122);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](1, "div", 118);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "Set to Receive Manually");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -549,7 +552,7 @@ function AppComponent_ng_container_47_ng_template_2_ng_template_1_Template(rf, c
 function AppComponent_ng_container_47_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](0, AppComponent_ng_container_47_ng_template_2_ng_container_0_Template, 2, 1, "ng-container", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_template_2_ng_template_1_Template, 4, 0, "ng-template", null, 117, _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplateRefExtractor"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_template_2_ng_template_1_Template, 4, 0, "ng-template", null, 119, _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplateRefExtractor"]);
   }
 
   if (rf & 2) {
@@ -562,20 +565,20 @@ function AppComponent_ng_container_47_ng_template_2_Template(rf, ctx) {
 
 function AppComponent_ng_container_47_div_20_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 104);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 105);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "span", 106);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 106);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 107);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "span", 108);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "~");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 98);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](6, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](6, "div", 101);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](7);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](8, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](9, "fiat");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 102);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](11);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](12, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](13, "fiat");
@@ -599,34 +602,34 @@ function AppComponent_ng_container_47_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerStart"](0);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](1, AppComponent_ng_container_47_ng_container_1_Template, 2, 1, "ng-container", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](2, AppComponent_ng_container_47_ng_template_2_Template, 3, 2, "ng-template", null, 110, _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplateRefExtractor"]);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "div", 111);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](2, AppComponent_ng_container_47_ng_template_2_Template, 3, 2, "ng-template", null, 112, _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplateRefExtractor"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "div", 113);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](5, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](6, "div", 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "a", 112);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "a", 114);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](8, "Incoming Balance");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](9, "div", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 97);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](11, "div", 98);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](12, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](10, "div", 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](11, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](12, "div", 101);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](13);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](14, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](15, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](16, "div", 100);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](16, "div", 102);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](17);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](18, "amountsplit");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](19, "rai");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](20, AppComponent_ng_container_47_div_20_Template, 14, 15, "div", 102);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](20, AppComponent_ng_container_47_div_20_Template, 14, 15, "div", 104);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](21, "div", 113);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](21, "div", 115);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementContainerEnd"]();
   }
 
@@ -649,11 +652,11 @@ function AppComponent_div_48_div_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r45 = _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 125);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 126);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 128);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2, "Unable to connect to the server");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 129);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "a", 11);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_div_48_div_3_Template_a_click_4_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵrestoreView"](_r45);
@@ -663,7 +666,7 @@ function AppComponent_div_48_div_3_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](5, "Refresh");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](6, " or ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "a", 128);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](7, "a", 130);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](8, "select a different server");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -673,12 +676,12 @@ function AppComponent_div_48_div_3_Template(rf, ctx) {
 
 function AppComponent_div_48_div_4_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 125);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 126);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 128);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2, "Wallet is in offline mode");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 127);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "a", 128);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](3, "div", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](4, "a", 130);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](5, "Select a server");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](6, " to interact with the network");
@@ -689,12 +692,12 @@ function AppComponent_div_48_div_4_Template(rf, ctx) {
 
 function AppComponent_div_48_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 121);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 122);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](2, "span", 123);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 123);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 124);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](2, "span", 125);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](3, AppComponent_div_48_div_3_Template, 9, 0, "div", 124);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](4, AppComponent_div_48_div_4_Template, 7, 0, "div", 124);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](3, AppComponent_div_48_div_3_Template, 9, 0, "div", 126);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](4, AppComponent_div_48_div_4_Template, 7, 0, "div", 126);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
   }
 
@@ -715,7 +718,7 @@ function AppComponent_app_change_rep_widget_49_Template(rf, ctx) {
 
 function AppComponent_span_70_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "span", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "span", 131);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](3, "transloco");
@@ -732,7 +735,7 @@ function AppComponent_span_70_Template(rf, ctx) {
 function AppComponent_li_86_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "li");
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "a", 130);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "a", 132);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "Manage Wallet");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -829,7 +832,7 @@ class AppComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.onWindowResize(window);
 
       _this.settings.loadAppSettings();
@@ -1013,7 +1016,7 @@ class AppComponent {
   patchXrbToNanoPrefixData() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // If wallet is version 2, data has already been patched.  Otherwise, patch all data
       if (_this2.settings.settings.walletVersion >= 2) return;
       yield _this2.walletService.patchOldSavedData(); // Change saved xrb_ addresses to nano_
@@ -1134,7 +1137,7 @@ class AppComponent {
   updateFiatPrices() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const displayCurrency = _this3.settings.getAppSetting(`displayCurrency`) || 'USD';
       yield _this3.price.getPrice(displayCurrency);
 
@@ -1175,9 +1178,9 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       }, false, _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵresolveDocument"]);
     }
   },
-  decls: 169,
+  decls: 177,
   vars: 77,
-  consts: [["uk-grid", "", 1, "app", 2, "overflow-y", "hidden", 3, "mousemove", "keypress"], [1, "uk-width-1-1", 2, "position", "relative", "overflow-y", "hidden"], ["uk-grid", "", 1, "mobile-top-bar", "uk-background-primary"], [1, "uk-width-1-2", "button-column"], [1, "nav-button", 3, "click"], ["uk-icon", "icon: menu;"], [1, "app-name"], [1, "uk-width-1-2", 2, "text-align", "right"], ["accountsDropdown", ""], [1, "header"], ["class", "account active", 4, "ngIf"], [3, "click"], [1, "name-column"], [1, "name"], [1, "address"], [1, "balance-column"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [4, "ngFor", "ngForOf"], ["uk-grid", "", 1, "app-grid"], [1, "uk-width-1-4", "nav-container"], [1, "nav-header"], ["uk-grid", ""], [1, "uk-width-expand"], [1, "logo"], [1, "card-contents"], [1, "account-name-container"], [1, "name", 3, "routerLink", "queryParams"], ["selectButton", ""], [1, "circle"], [1, "account-balances"], ["balancesLoading", ""], [4, "ngIf"], ["class", "nav-status-row", 4, "ngIf"], ["uk-nav", "", 1, "uk-nav", "uk-nav-default", "uk-nav-parent-icon", "left-nav"], ["routerLink", "/accounts", "routerLinkActive", "active"], [1, "label"], ["routerLink", "/send", "routerLinkActive", "active"], ["routerLink", "/receive", "routerLinkActive", "active"], [1, "uk-width-3-4"], [1, "uk-width-1-4", "uk-text-center", "label-new"], ["class", "uk-badge uk-text-top uk-align-center", 4, "ngIf"], [1, "uk-parent"], ["href", "#"], [1, "uk-nav-sub"], ["routerLink", "/representatives", "routerLinkActive", "active", 3, "queryParams"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["routerLink", "/configure-wallet", "routerLinkActive", "active"], ["routerLink", "/address-book", "routerLinkActive", "active"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/sweeper", "routerLinkActive", "active"], ["routerLink", "/remote-signing", "routerLinkActive", "active"], ["routerLink", "/multisig", "routerLinkActive", "active"], ["routerLink", "/keygenerator", "routerLinkActive", "active"], ["routerLink", "/converter", "routerLinkActive", "active"], ["routerLink", "/qr-generator", "routerLinkActive", "active"], [1, "nav-search"], [1, "uk-search", "uk-search-default", "uk-width-1-1"], ["href", "javascript:void(0)", "uk-search-icon", "", 1, "uk-search-icon-flip", 3, "click"], ["id", "search-input", "type", "search", "placeholder", "Search for an account or block hash", "name", "searchData", 1, "uk-search-input", "uk-width-1-1", 3, "ngModel", "ngModelChange", "keyup.enter"], ["uk-grid", "", 1, "footer", "footer-actions", "uk-margin-remove-top", "uk-flex-middle"], [1, "uk-width-1-3", "uk-text-center"], ["routerLink", "/send", "routerLinkActive", "active", 1, "support-nault", 3, "queryParams"], [1, "button"], [1, "footer-link", "donation-icon"], ["uk-icon", "icon: heart; ratio: 1.2;"], [1, "section-caption"], [1, "uk-width-1-3", "uk-text-center", "community-column"], [1, "icons-row"], ["href", "https://github.com/fwd/Nault-Pro", "uk-icon", "icon: github-alt; ratio: 1.2;", "uk-tooltip", "", "title", "View our GitHub", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link"], ["href", "https://chat.nano.org", "uk-tooltip", "", "title", "Join our community on Discord", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link", "discord-icon"], ["width", "28", "height", "28", "xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 245 240"], ["d", "M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z", 1, "st0"], ["d", "M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z", 1, "st0"], [1, "uk-width-1-3", "uk-text-center", "dark-mode-column"], [1, "dark-mode-area"], [1, "dark-mode-switch"], ["width", "16", "height", "16", "version", "1.1", "viewBox", "0 0 160 160", "xmlns", "http://www.w3.org/2000/svg"], ["fill", "#EEE", "stroke", "#EEE", "stroke-linejoin", "round", "stroke-width", "2"], ["d", "m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z", "stop-color", "#000000"], ["transform", "matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)", "d", "m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z", "stop-color", "#000000"], ["uk-grid", "", 1, "footer", "footer-attribution", "uk-margin-remove-top"], [1, "attribution", "uk-width-1-1", "uk-text-center"], ["href", "https://github.com/Nault/Nault", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-width-expand", "content-container", "uk-panel", 3, "click"], [1, "account", "active"], [1, "address", "nano-address-monospace"], [1, "balance", "primary"], [1, "balance", "converted"], [1, "balance", "loading"], ["uk-spinner", "ratio: 0.5;"], ["class", "account inactive", 3, "click", 4, "ngIf"], [1, "account", "inactive", 3, "click"], ["class", "incoming-label", 4, "ngIf"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], [1, "balance-container", "primary"], [1, "amount-container"], [1, "amount-integer"], [1, "amount-fractional"], ["class", "amount-updating", 4, "ngIf"], ["class", "balance-container converted", 4, "ngIf"], [1, "amount-updating"], [1, "balance-container", "converted"], [1, "currency-name"], [1, "estimate-symbol"], ["class", "spinner-container", 4, "ngIf"], [1, "spinner-container"], ["uk-spinner", "ratio: 0.6;"], ["notProcessingPending", ""], [1, "nano-card", "incoming-card", "uk-animation-slide-left"], ["routerLink", "/receive", 1, "name"], [1, "nav-separator-top"], ["class", "nav-action-receive", 4, "ngIf"], [1, "nav-action-receive"], ["uk-icon", "icon: chevron-up; ratio: 1.2;", 1, "icon"], ["manuallyReceivingPending", ""], ["class", "nav-action-receive user-action-required uk-animation-slide-left", 4, "ngIf"], [1, "nav-action-receive", "user-action-required", "uk-animation-slide-left"], [1, "nav-action-receive", "uk-animation-slide-left"], [1, "nav-status-row"], [1, "status-icon"], ["uk-icon", "icon: warning; ratio: 1.2;", 1, "uk-text-danger"], ["class", "status-labels", 4, "ngIf"], [1, "status-labels"], [1, "label", "primary", "uk-text-danger"], [1, "label", "secondary"], ["routerLink", "/configure-app"], [1, "uk-badge", "uk-text-top", "uk-align-center"], ["routerLink", "/manage-wallet", "routerLinkActive", "active"]],
+  consts: [["uk-grid", "", 1, "app", 2, "overflow-y", "hidden", 3, "mousemove", "keypress"], [1, "uk-width-1-1", 2, "position", "relative", "overflow-y", "hidden"], ["uk-grid", "", 1, "mobile-top-bar", "uk-background-primary"], [1, "uk-width-1-2", "button-column"], [1, "nav-button", 3, "click"], ["uk-icon", "icon: menu;"], [1, "app-name"], [1, "uk-width-1-2", 2, "text-align", "right"], ["accountsDropdown", ""], [1, "header"], ["class", "account active", 4, "ngIf"], [3, "click"], [1, "name-column"], [1, "name"], [1, "address"], [1, "balance-column"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [4, "ngFor", "ngForOf"], ["uk-grid", "", 1, "app-grid"], [1, "uk-width-1-4", "nav-container"], [1, "nav-header"], ["uk-grid", ""], [1, "uk-width-expand"], [1, "logo"], [1, "card-contents"], [1, "account-name-container"], [1, "name", 3, "routerLink", "queryParams"], ["selectButton", ""], [1, "circle"], [1, "account-balances"], ["balancesLoading", ""], [4, "ngIf"], ["class", "nav-status-row", 4, "ngIf"], ["uk-nav", "", 1, "uk-nav", "uk-nav-default", "uk-nav-parent-icon", "left-nav"], ["routerLink", "/accounts", "routerLinkActive", "active"], [1, "label"], ["routerLink", "/send", "routerLinkActive", "active"], ["routerLink", "/receive", "routerLinkActive", "active"], [1, "uk-width-3-4"], [1, "uk-width-1-4", "uk-text-center", "label-new"], ["class", "uk-badge uk-text-top uk-align-center", 4, "ngIf"], [1, "uk-parent"], ["href", "#"], [1, "uk-nav-sub"], ["routerLink", "/representatives", "routerLinkActive", "active", 3, "queryParams"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["routerLink", "/configure-wallet", "routerLinkActive", "active"], ["routerLink", "/marketplace", "routerLinkActive", "active"], ["onclick", "alert('Coming Soon.')", 2, "opacity", "0.5"], ["routerLink", "/address-book", "routerLinkActive", "active"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/sweeper", "routerLinkActive", "active"], ["routerLink", "/remote-signing", "routerLinkActive", "active"], ["routerLink", "/multisig", "routerLinkActive", "active"], ["routerLink", "/keygenerator", "routerLinkActive", "active"], ["routerLink", "/converter", "routerLinkActive", "active"], ["routerLink", "/qr-generator", "routerLinkActive", "active"], [1, "nav-search"], [1, "uk-search", "uk-search-default", "uk-width-1-1"], ["href", "javascript:void(0)", "uk-search-icon", "", 1, "uk-search-icon-flip", 3, "click"], ["id", "search-input", "type", "search", "placeholder", "Search for an account or block hash", "name", "searchData", 1, "uk-search-input", "uk-width-1-1", 3, "ngModel", "ngModelChange", "keyup.enter"], ["uk-grid", "", 1, "footer", "footer-actions", "uk-margin-remove-top", "uk-flex-middle"], [1, "uk-width-1-3", "uk-text-center"], ["routerLink", "/send", "routerLinkActive", "active", 1, "support-nault", 3, "queryParams"], [1, "button"], [1, "footer-link", "donation-icon"], ["uk-icon", "icon: heart; ratio: 1.2;"], [1, "section-caption"], [1, "uk-width-1-3", "uk-text-center", "community-column"], [1, "icons-row"], ["href", "https://github.com/fwd/Nault-Pro", "uk-icon", "icon: github-alt; ratio: 1.2;", "uk-tooltip", "", "title", "View our GitHub", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link"], ["href", "https://chat.nano.org", "uk-tooltip", "", "title", "Join our community on Discord", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link", "discord-icon"], ["width", "28", "height", "28", "xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 245 240"], ["d", "M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z", 1, "st0"], ["d", "M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z", 1, "st0"], [1, "uk-width-1-3", "uk-text-center", "dark-mode-column"], [1, "dark-mode-area"], [1, "dark-mode-switch"], ["width", "16", "height", "16", "version", "1.1", "viewBox", "0 0 160 160", "xmlns", "http://www.w3.org/2000/svg"], ["fill", "#EEE", "stroke", "#EEE", "stroke-linejoin", "round", "stroke-width", "2"], ["d", "m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z", "stop-color", "#000000"], ["transform", "matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)", "d", "m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z", "stop-color", "#000000"], ["uk-grid", "", 1, "footer", "footer-attribution", "uk-margin-remove-top"], [1, "attribution", "uk-width-1-1", "uk-text-center"], ["href", "https://github.com/Nault/Nault", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-width-expand", "content-container", "uk-panel", 3, "click"], [1, "account", "active"], [1, "address", "nano-address-monospace"], [1, "balance", "primary"], [1, "balance", "converted"], [1, "balance", "loading"], ["uk-spinner", "ratio: 0.5;"], ["class", "account inactive", 3, "click", 4, "ngIf"], [1, "account", "inactive", 3, "click"], ["class", "incoming-label", 4, "ngIf"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], [1, "balance-container", "primary"], [1, "amount-container"], [1, "amount-integer"], [1, "amount-fractional"], ["class", "amount-updating", 4, "ngIf"], ["class", "balance-container converted", 4, "ngIf"], [1, "amount-updating"], [1, "balance-container", "converted"], [1, "currency-name"], [1, "estimate-symbol"], ["class", "spinner-container", 4, "ngIf"], [1, "spinner-container"], ["uk-spinner", "ratio: 0.6;"], ["notProcessingPending", ""], [1, "nano-card", "incoming-card", "uk-animation-slide-left"], ["routerLink", "/receive", 1, "name"], [1, "nav-separator-top"], ["class", "nav-action-receive", 4, "ngIf"], [1, "nav-action-receive"], ["uk-icon", "icon: chevron-up; ratio: 1.2;", 1, "icon"], ["manuallyReceivingPending", ""], ["class", "nav-action-receive user-action-required uk-animation-slide-left", 4, "ngIf"], [1, "nav-action-receive", "user-action-required", "uk-animation-slide-left"], [1, "nav-action-receive", "uk-animation-slide-left"], [1, "nav-status-row"], [1, "status-icon"], ["uk-icon", "icon: warning; ratio: 1.2;", 1, "uk-text-danger"], ["class", "status-labels", 4, "ngIf"], [1, "status-labels"], [1, "label", "primary", "uk-text-danger"], [1, "label", "secondary"], ["routerLink", "/configure-app"], [1, "uk-badge", "uk-text-top", "uk-align-center"], ["routerLink", "/manage-wallet", "routerLinkActive", "active"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 0);
@@ -1333,152 +1336,166 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](95, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](96, "a", 48);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](97, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](98);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](99, "transloco");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](98, "Nano Marketplace");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](100, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](101, "a", 49);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](102, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](103);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](104, "transloco");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](99, "li", 49);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](100, "a", 48);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](101, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](102, "SimpleSwap");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](105, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](106, "a", 50);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](107, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](108, "Wallet Sweeper");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](103, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](104, "a", 50);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](105, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](106);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](107, "transloco");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](109, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](110, "a", 51);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](111, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](112, "Remote Signing");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](108, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](109, "a", 51);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](110, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](111);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](112, "transloco");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](113, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](114, "a", 52);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](115, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](116, "Multi Signature");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](116, "Wallet Sweeper");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](117, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](118, "a", 53);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](119, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](120, "Keypair Generator");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](120, "Remote Signing");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](121, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](122, "a", 54);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](123, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](124, "Unit Converter");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](124, "Multi Signature");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](125, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](126, "a", 55);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](127, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](128, "QR Generator");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](128, "Keypair Generator");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](129, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](130, "a", 56);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](131, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](132, "Unit Converter");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](133, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](134, "a", 57);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](135, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](136, "QR Generator");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](129, "app-install-widget");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](130, "div", 56);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](131, "form", 57);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](132, "a", 58);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_a_click_132_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](137, "app-install-widget");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](138, "div", 58);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](139, "form", 59);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](140, "a", 60);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_a_click_140_listener() {
         return ctx.performSearch();
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](133, "input", 59);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("ngModelChange", function AppComponent_Template_input_ngModelChange_133_listener($event) {
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](141, "input", 61);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("ngModelChange", function AppComponent_Template_input_ngModelChange_141_listener($event) {
         return ctx.searchData = $event;
-      })("keyup.enter", function AppComponent_Template_input_keyup_enter_133_listener() {
+      })("keyup.enter", function AppComponent_Template_input_keyup_enter_141_listener() {
         return ctx.performSearch();
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](134, "div", 60);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](135, "div", 61);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](136, "a", 62);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](137, "div", 63);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](138, "a", 64);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](139, "span", 65);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](142, "div", 62);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](143, "div", 63);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](144, "a", 64);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](145, "div", 65);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](146, "a", 66);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](147, "span", 67);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](140, "div", 66);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](141, "Donate");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](148, "div", 68);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](149, "Donate");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](142, "div", 67);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](143, "div", 68);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](144, "a", 69);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](145, "a", 70);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](150, "div", 69);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](151, "div", 70);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](152, "a", 71);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](153, "a", 72);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵnamespaceSVG"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](146, "svg", 71);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](147, "path", 72);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](148, "path", 73);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](154, "svg", 73);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](155, "path", 74);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](156, "path", 75);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵnamespaceHTML"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](149, "div", 66);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](150, "Community");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](157, "div", 68);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](158, "Community");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](151, "div", 74);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](152, "div", 11);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_div_click_152_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](159, "div", 76);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](160, "div", 11);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_div_click_160_listener() {
         return ctx.toggleLightMode();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](153, "div", 75);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](154, "div", 76);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](161, "div", 77);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](162, "div", 78);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵnamespaceSVG"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](155, "svg", 77);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](156, "g", 78);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](157, "path", 79);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](158, "path", 80);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](163, "svg", 79);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](164, "g", 80);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](165, "path", 81);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](166, "path", 82);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵnamespaceHTML"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](159, "div", 66);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](160, "Night Mode");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](167, "div", 68);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](168, "Night Mode");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](161, "div", 81);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](162, "div", 82);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](163, " Based on ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](164, "a", 83);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](165, "Nault");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](169, "div", 83);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](170, "div", 84);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](171, " Based on ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](172, "a", 85);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](173, "Nault");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](166, "div", 84);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_div_click_166_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](174, "div", 86);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵlistener"]("click", function AppComponent_Template_div_click_174_listener() {
         return ctx.closeNav();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](167, "router-outlet");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](175, "router-outlet");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](168, "app-notifications");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelement"](176, "app-notifications");
     }
 
     if (rf & 2) {
@@ -1533,10 +1550,10 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](85, 58, "general.app-settings"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](2);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵproperty"]("ngIf", ctx.isConfigured());
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](99, 60, "general.address-book"));
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](107, 60, "general.address-book"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](104, 62, "general.scan-qr-code"));
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](112, 62, "general.scan-qr-code"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](30);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵproperty"]("ngModel", ctx.searchData);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](3);
@@ -1806,7 +1823,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AccountDetailsComponent": () => (/* binding */ AccountDetailsComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/common */ 36362);
 /* harmony import */ var qrcode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! qrcode */ 35646);
@@ -4398,7 +4415,7 @@ class AccountDetailsComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const params = _this.router.snapshot.queryParams;
 
       if ('sign' in params) {
@@ -4423,7 +4440,7 @@ class AccountDetailsComponent {
       });
 
       _this.wallet.wallet.pendingBlocksUpdate$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (receivableBlockUpdate) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (receivableBlockUpdate) {
           _this.onReceivableBlockUpdate(receivableBlockUpdate);
         });
 
@@ -4447,7 +4464,7 @@ class AccountDetailsComponent {
       _this.populateRepresentativeList();
 
       _this.repService.walletReps$.subscribe( /*#__PURE__*/function () {
-        var _ref2 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
+        var _ref2 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
           if (reps[0] === null) {
             // initial state from new BehaviorSubject([null])
             return;
@@ -4468,7 +4485,7 @@ class AccountDetailsComponent {
   populateRepresentativeList() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // add trusted/regular local reps to the list
       const localReps = _this2.repService.getSortedRepresentatives();
 
@@ -4697,7 +4714,7 @@ class AccountDetailsComponent {
   loadAccountDetails() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this3.onAccountDetailsLoadStart();
 
       _this3.pendingBlocks = [];
@@ -4839,7 +4856,7 @@ class AccountDetailsComponent {
   generateReceiveQR(accountID) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const qrCode = yield qrcode__WEBPACK_IMPORTED_MODULE_1__.toDataURL(`${accountID}`, {
         errorCorrectionLevel: 'M',
         scale: 16
@@ -4857,7 +4874,7 @@ class AccountDetailsComponent {
   getAccountHistory(accountID, resetPage = true) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (resetPage) {
         _this5.accountHistory = [];
         _this5.pageSize = 25;
@@ -4944,7 +4961,7 @@ class AccountDetailsComponent {
   loadMore() {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this6.pageSize <= _this6.maxPageSize) {
         _this6.pageSize += 25;
         yield _this6.getAccountHistory(_this6.accountID, false);
@@ -4955,7 +4972,7 @@ class AccountDetailsComponent {
   saveAddressBook() {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Trim and remove duplicate spaces
       _this7.addressBookModel = _this7.addressBookModel.trim().replace(/ +/g, ' ');
 
@@ -5024,7 +5041,7 @@ class AccountDetailsComponent {
   validateRepresentative() {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       setTimeout(() => _this8.showRepresentatives = false, 400);
       _this8.representativeModel = _this8.representativeModel.replace(/ /g, '');
 
@@ -5104,7 +5121,7 @@ class AccountDetailsComponent {
   validateDestination() {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
       setTimeout(() => _this9.showAddressBook = false, 400); // Remove spaces from the account id
 
@@ -5194,7 +5211,7 @@ class AccountDetailsComponent {
   receiveReceivableBlock(receivableBlock) {
     var _this10 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const sourceBlock = receivableBlock.hash;
 
       if (_this10.wallet.isLocked()) {
@@ -5239,7 +5256,7 @@ class AccountDetailsComponent {
   generateSend() {
     var _this11 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const isValid = _this11.util.account.isValidAccount(_this11.toAccountID);
 
       if (!isValid) return _this11.notifications.sendWarning(`To account address is not valid`);
@@ -5313,7 +5330,7 @@ class AccountDetailsComponent {
   generateReceive(pendingHash) {
     var _this12 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this12.qrCodeImageBlockReceive = null;
       _this12.qrString = null;
       _this12.blockHashReceive = null;
@@ -5391,7 +5408,7 @@ class AccountDetailsComponent {
   generateChange() {
     var _this13 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this13.util.account.isValidAccount(_this13.representativeModel)) return _this13.notifications.sendError(`Not a valid representative account`);
       _this13.qrCodeImageBlock = null;
       _this13.blockHash = null;
@@ -5887,7 +5904,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AccountsComponent": () => (/* binding */ AccountsComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 92218);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs */ 45398);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/operators */ 12972);
@@ -6357,7 +6374,7 @@ class AccountsComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.reloadRepWarning$.subscribe(a => {
         _this.representatives.detectChangeableReps();
       });
@@ -6369,7 +6386,7 @@ class AccountsComponent {
   createAccount() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this2.walletService.isLocked()) {
         const wasUnlocked = yield _this2.walletService.requestWalletUnlock();
 
@@ -6460,7 +6477,7 @@ class AccountsComponent {
   deleteAccount(account) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this3.walletService.isLocked()) {
         const wasUnlocked = yield _this3.walletService.requestWalletUnlock();
 
@@ -6488,7 +6505,7 @@ class AccountsComponent {
   showLedgerAddress(account) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this4.ledger.ledger.status !== _services__WEBPACK_IMPORTED_MODULE_1__.LedgerStatus.READY) {
         return _this4.notificationService.sendWarning(_this4.translocoService.translate('accounts.ledger-device-must-be-ready'));
       }
@@ -6629,7 +6646,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AddressBookComponent": () => (/* binding */ AddressBookComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var qrcode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! qrcode */ 35646);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_2__);
@@ -7642,7 +7659,7 @@ class AddressBookComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.addressBookService.loadAddressBook(); // Keep price up to date with the service
 
 
@@ -7713,7 +7730,7 @@ class AddressBookComponent {
   updateTrackedBalances(refresh = false) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (refresh && !_this2.statsRefreshEnabled) return;
       _this2.statsRefreshEnabled = false;
 
@@ -7849,7 +7866,7 @@ class AddressBookComponent {
   saveNewAddress() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this3.newAddressAccount || !_this3.newAddressName) {
         return _this3.notificationService.sendError(_this3.translocoService.translate('address-book.account-and-name-are-required'));
       }
@@ -7929,7 +7946,7 @@ class AddressBookComponent {
   deleteAddress(account) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
         _this4.addressBookService.deleteAddress(account);
 
@@ -7973,7 +7990,7 @@ class AddressBookComponent {
   exportAddressBook() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const exportData = _this5.addressBookService.addressBook;
       const base64Data = btoa(_this5.toBinary(JSON.stringify(exportData)));
       const exportUrl = `https://nault.cc/import-address-book#${base64Data}`;
@@ -8083,7 +8100,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ChangeRepWidgetComponent": () => (/* binding */ ChangeRepWidgetComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_wallet_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/wallet.service */ 84853);
 /* harmony import */ var _services_nano_block_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/nano-block.service */ 79653);
@@ -8713,9 +8730,9 @@ class ChangeRepWidgetComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.repService.walletReps$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
           if (reps[0] === null) {
             // initial state from new BehaviorSubject([null])
             return;
@@ -8735,7 +8752,7 @@ class ChangeRepWidgetComponent {
       }());
 
       _this.walletService.wallet.selectedAccount$.subscribe( /*#__PURE__*/function () {
-        var _ref2 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
+        var _ref2 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
           _this.selectedAccount = acc;
 
           _this.updateDisplayedRepresentatives();
@@ -8755,7 +8772,7 @@ class ChangeRepWidgetComponent {
 
 
       _this.blockService.newOpenBlock$.subscribe( /*#__PURE__*/function () {
-        var _ref3 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (shouldReload) {
+        var _ref3 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (shouldReload) {
           if (shouldReload) {
             yield _this.repService.getRepresentativesOverview(); // calls walletReps$.next
           }
@@ -8767,7 +8784,7 @@ class ChangeRepWidgetComponent {
       }());
 
       _this.repService.changeableReps$.subscribe( /*#__PURE__*/function () {
-        var _ref4 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
+        var _ref4 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (reps) {
           // Includes both acceptable and bad reps
           // When user clicks 'Rep Change Required' action, acceptable reps will also be included
           _this.changeableRepresentatives = reps; // However 'Rep Change Required' action will only appear when there is at least one bad rep
@@ -8793,7 +8810,7 @@ class ChangeRepWidgetComponent {
   resetRepresentatives() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       console.log('Reloading representatives..');
       _this2.initialLoadComplete = false;
       _this2.selectedAccount = null;
@@ -8812,7 +8829,7 @@ class ChangeRepWidgetComponent {
   updateChangeableRepresentatives() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       yield _this3.repService.detectChangeableReps(_this3.representatives);
     })();
   }
@@ -8936,7 +8953,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ConfigureAppComponent": () => (/* binding */ ConfigureAppComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_wallet_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/wallet.service */ 84853);
@@ -10602,7 +10619,7 @@ class ConfigureAppComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.loadFromSettings();
 
       _this.updateNodeStats();
@@ -10614,7 +10631,7 @@ class ConfigureAppComponent {
   populateRepresentativeList() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // add trusted/regular local reps to the list
       const localReps = _this2.repService.getSortedRepresentatives();
 
@@ -10641,7 +10658,7 @@ class ConfigureAppComponent {
   updateNodeStats(refresh = false) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this3.serverAPIUpdated || _this3.serverAPIUpdated !== _this3.appSettings.settings.serverAPI && _this3.selectedServer === 'random') return; // refresh is not enabled
 
       if (refresh && !_this3.statsRefreshEnabled) return; // Offline mode selected
@@ -10718,7 +10735,7 @@ class ConfigureAppComponent {
   updateDisplaySettings() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this4.selectedNightModeOption === 'disabled') {
         _this4.renderer.addClass(document.body, 'light-mode');
 
@@ -10772,7 +10789,7 @@ class ConfigureAppComponent {
   updateWalletSettings() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const newStorage = _this5.selectedStorage;
       const resaveWallet = _this5.appSettings.settings.walletStore !== newStorage; // ask for user confirmation before clearing the wallet cache
 
@@ -10886,7 +10903,7 @@ class ConfigureAppComponent {
   updateServerSettings() {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const newSettings = {
         serverName: _this6.selectedServer,
         serverAPI: null,
@@ -10955,7 +10972,7 @@ class ConfigureAppComponent {
   validateRepresentative() {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       setTimeout(() => _this7.showRepresentatives = false, 400);
       if (_this7.defaultRepresentative) _this7.defaultRepresentative = _this7.defaultRepresentative.replace(/ /g, '');
 
@@ -11021,7 +11038,7 @@ class ConfigureAppComponent {
   clearWorkCache() {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
 
       try {
@@ -11041,7 +11058,7 @@ class ConfigureAppComponent {
   clearWalletData() {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
 
       try {
@@ -11059,7 +11076,7 @@ class ConfigureAppComponent {
   clearAllData() {
     var _this10 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
 
       try {
@@ -11137,7 +11154,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ConfigureWalletComponent": () => (/* binding */ ConfigureWalletComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var bip39__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bip39 */ 24947);
 /* harmony import */ var _services_ledger_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/ledger.service */ 80903);
 /* harmony import */ var nanocurrency_web__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! nanocurrency-web */ 10879);
@@ -12744,7 +12761,7 @@ class ConfigureWalletComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const exampleSeedBytes = _this.util.account.generateSeedBytes();
 
       const exampleSeedFull = _this.util.hex.fromUint8(exampleSeedBytes);
@@ -12770,7 +12787,7 @@ class ConfigureWalletComponent {
   importExistingWallet() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.notifications.sendInfo(`Starting to scan the first 20 accounts and importing them if they have been used...`, {
         length: 7000
       });
@@ -12795,7 +12812,7 @@ class ConfigureWalletComponent {
   importSingleKeyWallet() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this3.walletService.createWalletFromSingleKey(_this3.keyString, _this3.isExpanded);
 
       _this3.storePassword();
@@ -12814,7 +12831,7 @@ class ConfigureWalletComponent {
   connectLedgerByBluetooth() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.ledgerService.enableBluetoothMode(true);
 
       yield _this4.importLedgerWallet();
@@ -12824,7 +12841,7 @@ class ConfigureWalletComponent {
   connectLedgerByUsb() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this5.ledgerService.enableBluetoothMode(false);
 
       yield _this5.importLedgerWallet();
@@ -12834,7 +12851,7 @@ class ConfigureWalletComponent {
   importLedgerWallet(refreshOnly = false) {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // If a wallet exists already, make sure they know they are overwriting it
       if (!refreshOnly && _this6.isConfigured()) {
         const confirmed = yield _this6.confirmWalletOverwrite();
@@ -12896,7 +12913,7 @@ class ConfigureWalletComponent {
   confirmWalletOverwrite() {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this7.isConfigured()) return true;
       const UIkit = window['UIkit'];
       let msg;
@@ -12923,7 +12940,7 @@ class ConfigureWalletComponent {
   setPasswordInit() {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // if importing from existing, the format check must be done prior the password page
       if (!_this8.isNewWallet) {
         if (_this8.selectedImportOption === 'mnemonic' || _this8.selectedImportOption === 'seed') {
@@ -13000,7 +13017,7 @@ class ConfigureWalletComponent {
   createNewWallet() {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const seedBytes = _this9.util.account.generateSeedBytes();
 
       _this9.newWalletSeed = _this9.util.hex.fromUint8(seedBytes);
@@ -13983,7 +14000,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImportAddressBookComponent": () => (/* binding */ ImportAddressBookComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var _services_notification_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/notification.service */ 12013);
@@ -14253,7 +14270,7 @@ class ImportAddressBookComponent {
   confirmImport() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Go through our address book and see which ones need to be saved
       // If new entry or any of name, trackTransactions or trackBalance has changed
       let importedCount = 0;
@@ -14325,7 +14342,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImportWalletComponent": () => (/* binding */ ImportWalletComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! crypto-js */ 36240);
 /* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(crypto_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 3184);
@@ -14500,7 +14517,7 @@ class ImportWalletComponent {
   decryptWallet() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Attempt to decrypt the seed value using the password
       try {
         yield new Promise(resolve => setTimeout(resolve, 500)); // brute force delay
@@ -15104,7 +15121,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ManageRepresentativesComponent": () => (/* binding */ ManageRepresentativesComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ 86942);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/api.service */ 5830);
@@ -15460,7 +15477,7 @@ class ManageRepresentativesComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.repService.loadRepresentativeList();
 
       _this.onlineReps = yield _this.getOnlineRepresentatives();
@@ -15494,7 +15511,7 @@ class ManageRepresentativesComponent {
   saveNewRepresentative() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this2.newRepAccount || !_this2.newRepName) {
         return _this2.notificationService.sendError(`Account and name are required`);
       }
@@ -15543,7 +15560,7 @@ class ManageRepresentativesComponent {
   getOnlineRepresentatives() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const representatives = [];
 
       try {
@@ -15567,7 +15584,7 @@ class ManageRepresentativesComponent {
   deleteRepresentative(accountID) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
         _this4.repService.deleteRepresentative(accountID);
 
@@ -15643,7 +15660,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ManageWalletComponent": () => (/* binding */ ManageWalletComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var qrcode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! qrcode */ 35646);
 /* harmony import */ var bip39__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bip39 */ 24947);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common */ 36362);
@@ -16323,11 +16340,11 @@ class ManageWalletComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.wallet = _this.walletService.wallet; // Update selected account if changed in the sidebar
 
       _this.walletService.wallet.selectedAccount$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
           if (_this.selAccountInit) {
             _this.csvAccount = acc ? acc.id : _this.accounts.length > 0 ? _this.accounts[0].id : '0';
           }
@@ -16350,7 +16367,7 @@ class ManageWalletComponent {
   changePassword() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this2.newPassword !== _this2.confirmPassword) {
         return _this2.notifications.sendError(`Passwords do not match`);
       }
@@ -16383,7 +16400,7 @@ class ManageWalletComponent {
   exportWallet() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this3.walletService.isLocked()) {
         const wasUnlocked = yield _this3.walletService.requestWalletUnlock();
 
@@ -16494,7 +16511,7 @@ class ManageWalletComponent {
   exportToFile() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this4.walletService.isLocked()) {
         const wasUnlocked = yield _this4.walletService.requestWalletUnlock();
 
@@ -16552,7 +16569,7 @@ class ManageWalletComponent {
   exportToCsv() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // disable export for a period to reduce RPC calls
       if (!_this5.exportEnabled) return;
       _this5.exportEnabled = false;
@@ -16671,6 +16688,150 @@ ManageWalletComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODUL
 
 /***/ }),
 
+/***/ 81257:
+/*!*****************************************************************!*\
+  !*** ./src/app/components/marketplace/marketplace.component.ts ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MarketplaceComponent": () => (/* binding */ MarketplaceComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 3184);
+
+ // import { TranslocoService } from '@ngneat/transloco';
+
+class MarketplaceComponent {
+  // accounts = this.walletService.wallet.accounts;
+  // isLedgerWallet = this.walletService.isLedgerWallet();
+  // isSingleKeyWallet = this.walletService.isSingleKeyWallet();
+  // viewAdvanced = false;
+  // newAccountIndex = null;
+  // // When we change the accounts, redetect changable reps (Debounce by 5 seconds)
+  // accountsChanged$ = new Subject();
+  // reloadRepWarning$ = this.accountsChanged$.pipe(debounce(() => timer(5000)));
+  constructor() {}
+
+  ngOnInit() {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const images = 56;
+
+      function template(index) {
+        return `
+    <div class="market-star">
+        <i class='bx bx-star'></i>
+    </div>
+    <div class="market-image">
+        <img class="img" src="https://raw.githubusercontent.com/luisDanielRoviraContreras/img/master/files/${index}.png" alt="">
+        <img class="bg" src="https://raw.githubusercontent.com/luisDanielRoviraContreras/img/master/files/${index}.png alt="">
+    </div>
+
+    <div class="market-text">
+        <h3>
+            Training shoes
+        </h3>
+        <p>
+            The Nike SuperRep Go shoes combine comfortable foam cushioning,
+        </p>
+    </div>
+
+    <div class="market-price">
+        129.99$
+    </div>
+
+    <div class="market-btn">
+        <Button onclick="handleAdd(event)" class="add">
+            Buy Now
+        </Button>
+
+        <div class="market-input-btns">
+            <Button onclick="plusLess(event, 'less')" class="less">
+                <i class='bx bx-minus' ></i>
+            </Button>
+            <input value="1" type="text">
+            <Button onclick="plusLess(event, 'plus')" class="plus">
+                <i class='bx bx-plus'></i>
+            </Button>
+        </div>
+    </div>
+    `;
+      }
+
+      for (let index = 1; index < 20; index++) {
+        const element = document.createElement('div');
+        element.classList.add('card');
+        element.innerHTML = template(index);
+        document.querySelector('.market-cards-1').appendChild(element);
+      }
+
+      for (let index = 21; index < 40; index++) {
+        const element = document.createElement('div');
+        element.classList.add('card');
+        element.innerHTML = template(index);
+        document.querySelector('.market-cards-2').appendChild(element);
+      }
+
+      for (let index = 41; index < 56; index++) {
+        const element = document.createElement('div');
+        element.classList.add('card');
+        element.innerHTML = template(index);
+        document.querySelector('.market-cards-3').appendChild(element);
+      }
+
+      function handleAdd(event) {
+        const card = event.target.closest('.card');
+        card.classList.add('add-active');
+        console.log(card);
+      }
+
+      function plusLess(event, type) {
+        const card = event.target.closest('.card');
+        const input = card.querySelector('input');
+        let oldVal = Number(input.value);
+
+        if (type == 'less') {
+          if (oldVal == 1) {
+            card.classList.remove('add-active');
+            return;
+          }
+
+          input.value = oldVal -= 1;
+        } else {
+          input.value = oldVal += 1;
+        }
+      }
+    })();
+  }
+
+}
+
+MarketplaceComponent.ɵfac = function MarketplaceComponent_Factory(t) {
+  return new (t || MarketplaceComponent)();
+};
+
+MarketplaceComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
+  type: MarketplaceComponent,
+  selectors: [["app-marketplace"]],
+  decls: 4,
+  vars: 0,
+  consts: [[2, "margin", "10px 0"], [1, "market-cards-1", "market-cards"], [1, "market-cards-2", "market-cards"], [1, "market-cards-3", "market-cards"]],
+  template: function MarketplaceComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "div", 1);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](2, "div", 2);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](3, "div", 3);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+    }
+  },
+  styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtYXJrZXRwbGFjZS5jb21wb25lbnQuY3NzIn0= */"]
+});
+
+/***/ }),
+
 /***/ 19222:
 /*!***********************************************************!*\
   !*** ./src/app/components/multisig/multisig.component.ts ***!
@@ -16682,7 +16843,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "MultisigComponent": () => (/* binding */ MultisigComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_util_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/util.service */ 67241);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 52816);
@@ -16936,7 +17097,7 @@ class MultisigComponent {
   }
 
   ngOnInit() {
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {})();
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {})();
   }
 
   copied() {
@@ -17481,7 +17642,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "QrGeneratorComponent": () => (/* binding */ QrGeneratorComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var qrcode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! qrcode */ 35646);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ 90587);
@@ -17521,7 +17682,7 @@ class QrGeneratorComponent {
   generateQR() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this.input === '') {
         _this.qrCodeImageBlock = null;
         return;
@@ -18049,7 +18210,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ReceiveComponent": () => (/* binding */ ReceiveComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var qrcode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! qrcode */ 35646);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bignumber.js */ 95039);
@@ -19506,7 +19667,7 @@ class ReceiveComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
       const mobileTransactionMenuModal = UIkit.modal('#mobile-transaction-menu-modal');
       _this.mobileTransactionMenuModal = mobileTransactionMenuModal;
@@ -19521,7 +19682,7 @@ class ReceiveComponent {
       }); // Update selected account if changed in the sidebar
 
       _this.walletService.wallet.selectedAccount$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
           if (_this.selAccountInit) {
             _this.pendingAccountModel = acc ? acc.id : '0';
 
@@ -19537,7 +19698,7 @@ class ReceiveComponent {
       }());
 
       _this.walletService.wallet.pendingBlocksUpdate$.subscribe( /*#__PURE__*/function () {
-        var _ref2 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (receivableBlockUpdate) {
+        var _ref2 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (receivableBlockUpdate) {
           if (receivableBlockUpdate === null) {
             return;
           }
@@ -19562,7 +19723,7 @@ class ReceiveComponent {
       const latest = _this.websocket.newTransactions$.getValue();
 
       _this.websocket.newTransactions$.subscribe( /*#__PURE__*/function () {
-        var _ref3 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (transaction) {
+        var _ref3 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (transaction) {
           if (transaction && latest !== transaction) {
             const rawAmount = new (bignumber_js__WEBPACK_IMPORTED_MODULE_2___default())(transaction.amount);
 
@@ -19597,7 +19758,7 @@ class ReceiveComponent {
   updatePendingBlocks() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.pendingBlocks = _this2.walletService.wallet.pendingBlocks.map(pendingBlock => Object.assign({}, pendingBlock, {
         account: pendingBlock.source,
         destination: pendingBlock.account,
@@ -19648,7 +19809,7 @@ class ReceiveComponent {
   getPending() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // clear the list of pending blocks. Updated again with reloadBalances()
       _this3.pendingBlocks = [];
       _this3.pendingBlocksForSelectedAccount = [];
@@ -19661,7 +19822,7 @@ class ReceiveComponent {
   nanoAmountChange() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this4.validateNanoAmount() || Number(_this4.amountNano) === 0) {
         _this4.amountFiat = '';
 
@@ -19688,7 +19849,7 @@ class ReceiveComponent {
   fiatAmountChange() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this5.validateFiatAmount() || Number(_this5.amountFiat) === 0) {
         _this5.amountNano = '';
 
@@ -19742,7 +19903,7 @@ class ReceiveComponent {
   changeQRAccount(account) {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this6.walletAccount = _this6.walletService.wallet.accounts.find(a => a.id === account) || null;
       _this6.qrAccount = '';
       let qrCode = null;
@@ -19762,7 +19923,7 @@ class ReceiveComponent {
   changeQRAmount(raw) {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this7.qrAmount = null;
       let qrCode = null;
 
@@ -19809,7 +19970,7 @@ class ReceiveComponent {
   receiveReceivableBlock(receivableBlock) {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const sourceBlock = receivableBlock.hash;
 
       const walletAccount = _this8.walletService.wallet.accounts.find(a => a.id === receivableBlock.destination);
@@ -20231,7 +20392,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RemoteSigningComponent": () => (/* binding */ RemoteSigningComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_util_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/util.service */ 67241);
@@ -20329,7 +20490,7 @@ class RemoteSigningComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.addressBookService.loadAddressBook();
     })();
   }
@@ -20650,7 +20811,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RepresentativesComponent": () => (/* binding */ RepresentativesComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs */ 84505);
@@ -21564,7 +21725,7 @@ class RepresentativesComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.representativeService.loadRepresentativeList(); // Listen for query parameters that set defaults
 
 
@@ -21604,7 +21765,7 @@ class RepresentativesComponent {
   populateRepresentativeList() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // add trusted/regular local reps to the list
       const localReps = _this2.representativeService.getSortedRepresentatives();
 
@@ -21715,7 +21876,7 @@ class RepresentativesComponent {
   validateRepresentative() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       setTimeout(() => _this3.showRepresentatives = false, 400);
       _this3.toRepresentativeID = _this3.toRepresentativeID.replace(/ /g, '');
 
@@ -21741,7 +21902,7 @@ class RepresentativesComponent {
   loadRecommendedReps() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.recommendedRepsLoading = true;
 
       try {
@@ -21798,7 +21959,7 @@ class RepresentativesComponent {
   changeRepresentatives() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const accounts = _this5.selectedAccounts;
       const newRep = _this5.toRepresentativeID;
 
@@ -21983,7 +22144,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SendComponent": () => (/* binding */ SendComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! rxjs */ 84505);
@@ -22975,7 +23136,7 @@ class SendComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const params = _this.router.snapshot.queryParams;
 
       _this.updateQueries(params);
@@ -22986,7 +23147,7 @@ class SendComponent {
       _this.fromAccountID = _this.accounts.length ? _this.accounts[0].id : ''; // Update selected account if changed in the sidebar
 
       _this.walletService.wallet.selectedAccount$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
           if (_this.activePanel !== 'send') {
             // Transaction details already finalized
             return;
@@ -23043,7 +23204,7 @@ class SendComponent {
   findFirstAccount() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Load balances before we try to find the right account
       if (_this2.walletService.wallet.balance.isZero()) {
         yield _this2.walletService.reloadBalances();
@@ -23131,7 +23292,7 @@ class SendComponent {
   validateDestination() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
       setTimeout(() => _this3.showAddressBook = false, 400); // Remove spaces from the account id
 
@@ -23207,7 +23368,7 @@ class SendComponent {
   sendTransaction() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const destinationID = _this4.getDestinationID();
 
       const isValid = _this4.util.account.isValidAccount(destinationID);
@@ -23268,7 +23429,7 @@ class SendComponent {
   confirmTransaction() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const walletAccount = _this5.walletService.wallet.accounts.find(a => a.id === _this5.fromAccountID);
 
       if (!walletAccount) {
@@ -23441,7 +23602,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SignComponent": () => (/* binding */ SignComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! rxjs */ 84505);
@@ -25188,7 +25349,7 @@ class SignComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
       const qrModal = UIkit.modal('#qr-code-modal');
       _this.qrModal = qrModal;
@@ -25509,7 +25670,7 @@ class SignComponent {
   prepareTransaction() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Determine fiat value of the amount (if not offline mode)
       if (_this2.settings.settings.serverAPI) {
         _this2.amountFiat = _this2.util.nano.rawToMnano(_this2.rawAmount).times(_this2.price.price.lastPrice).toNumber();
@@ -25540,7 +25701,7 @@ class SignComponent {
   confirmTransaction(signature = '') {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let walletAccount = _this3.walletAccount;
 
       let isLedger = _this3.walletService.isLedgerWallet(); // using internal wallet
@@ -25684,7 +25845,7 @@ class SignComponent {
   confirmBlock() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.confirmingTransaction = true;
       const workBlock = _this4.txType === _services_util_service__WEBPACK_IMPORTED_MODULE_2__.TxType.open ? _this4.util.account.getAccountPublicKey(_this4.toAccountID) : _this4.currentBlock.previous;
 
@@ -25968,7 +26129,7 @@ class SignComponent {
   generateOutputQR() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const qrCode = yield qrcode__WEBPACK_IMPORTED_MODULE_3__.toDataURL(`${_this5.outputMultisigData}`, {
         errorCorrectionLevel: 'M',
         scale: 16
@@ -26431,7 +26592,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SweeperComponent": () => (/* binding */ SweeperComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _services_util_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/util.service */ 67241);
 /* harmony import */ var nanocurrency__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! nanocurrency */ 60517);
 /* harmony import */ var nanocurrency_web__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! nanocurrency-web */ 10879);
@@ -26624,10 +26785,10 @@ class SweeperComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Update selected account if changed in the sidebar
       _this.walletService.wallet.selectedAccount$.subscribe( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (acc) {
           if (_this.selAccountInit) {
             _this.myAccountModel = acc ? acc.id : _this.accounts.length > 0 ? _this.accounts[0].id : '0';
           }
@@ -26827,7 +26988,7 @@ class SweeperComponent {
   processSend(privKey, previous, sendCallback) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const pubKey = nanocurrency__WEBPACK_IMPORTED_MODULE_2__.derivePublicKey(privKey);
       const address = nanocurrency__WEBPACK_IMPORTED_MODULE_2__.deriveAddress(pubKey, {
         useNanoPrefix: true
@@ -26887,7 +27048,7 @@ class SweeperComponent {
   processPending(blocks, keys, keyCount) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const key = keys[keyCount];
       _this3.blocks = blocks;
       _this3.keys = keys;
@@ -26966,7 +27127,7 @@ class SweeperComponent {
   createPendingBlocks(privKey, address, balance, previous, subType, callback, accountCallback) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.privKey = privKey;
       _this4.previous = previous;
       _this4.subType = subType;
@@ -27035,7 +27196,7 @@ class SweeperComponent {
   processAccount(privKey, accountCallback) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (privKey.length !== 64) {
         accountCallback();
         return;
@@ -27096,7 +27257,7 @@ class SweeperComponent {
   processIndexRecursive(privKeys, keyCount) {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // delay each process to not hit backend rate limiters
       yield _this6.sleep(300);
       const privKey = privKeys[keyCount][0];
@@ -27125,7 +27286,7 @@ class SweeperComponent {
   sweepContinue() {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this7.sweeping = true;
       _this7.totalSwept = '0';
 
@@ -27201,7 +27362,7 @@ class SweeperComponent {
   sweep() {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this8.validSeed) {
         _this8.notificationService.sendError(`No valid source wallet provided!`);
 
@@ -27475,7 +27636,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TransactionDetailsComponent": () => (/* binding */ TransactionDetailsComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_1__);
@@ -28445,7 +28606,7 @@ class TransactionDetailsComponent {
   ngOnInit() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.routerSub = _this.router.events.subscribe(event => {
         if (event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_12__.ChildActivationEnd) {
           _this.loadTransaction(); // Reload the state when navigating to itself from the transactions page
@@ -28459,7 +28620,7 @@ class TransactionDetailsComponent {
   loadTransaction() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.toAccountID = '';
       _this2.fromAccountID = '';
       _this2.toAddressBook = '';
@@ -28689,7 +28850,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "WalletWidgetComponent": () => (/* binding */ WalletWidgetComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _services_ledger_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/ledger.service */ 80903);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _services_wallet_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/wallet.service */ 84853);
@@ -28959,7 +29120,7 @@ class WalletWidgetComponent {
     }); // Detect if a PoW is taking too long and alert
 
     this.powService.powAlert$.subscribe( /*#__PURE__*/function () {
-      var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (shouldAlert) {
+      var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (shouldAlert) {
         if (shouldAlert) {
           _this.powAlert = true;
         } else {
@@ -28972,7 +29133,7 @@ class WalletWidgetComponent {
       };
     }());
     this.walletService.wallet.unlockModalRequested$.subscribe( /*#__PURE__*/function () {
-      var _ref2 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (wasRequested) {
+      var _ref2 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (wasRequested) {
         if (wasRequested === true) {
           _this.showModal();
         }
@@ -28997,7 +29158,7 @@ class WalletWidgetComponent {
   lockWallet() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this2.wallet.type === 'ledger') {
         return; // No need to lock a ledger wallet, no password saved
       }
@@ -29019,7 +29180,7 @@ class WalletWidgetComponent {
   reloadLedger() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this3.notificationService.sendInfo(`Checking Ledger Status...`, {
         identifier: 'ledger-status',
         length: 0
@@ -29057,7 +29218,7 @@ class WalletWidgetComponent {
   unlockWallet() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this4.mayAttemptUnlock === false) {
         return;
       }
@@ -29465,7 +29626,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AddressBookService": () => (/* binding */ AddressBookService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 3184);
 
@@ -29509,7 +29670,7 @@ class AddressBookService {
   saveAddress(account, name, trackBalance, trackTransactions) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const existingName = _this.addressBook.find(a => a.name.toLowerCase() === name.toLowerCase());
 
       if (existingName) {
@@ -29621,7 +29782,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ApiService": () => (/* binding */ ApiService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 28784);
 /* harmony import */ var _util_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.service */ 67241);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 3184);
@@ -29645,7 +29806,7 @@ class ApiService {
   request(action, data, skipError, url = '', validateResponse) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       data.action = action;
       const apiUrl = url === '' ? _this.appSettings.settings.serverAPI : url;
 
@@ -29697,7 +29858,7 @@ class ApiService {
 
         return res;
       }).catch( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (err) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (err) {
           if (skipError) return;
 
           if (err.isValidationFailure === true) {
@@ -29735,7 +29896,7 @@ class ApiService {
   accountsBalances(accounts) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this2.request('accounts_balances', {
         accounts
       }, false);
@@ -29745,7 +29906,7 @@ class ApiService {
   accountsFrontiers(accounts) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this3.request('accounts_frontiers', {
         accounts
       }, false);
@@ -29755,7 +29916,7 @@ class ApiService {
   accountsPending(accounts, count = 50) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this4.request('accounts_pending', {
         accounts,
         count,
@@ -29768,7 +29929,7 @@ class ApiService {
   accountsPendingLimit(accounts, threshold, count = 50) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this5.request('accounts_pending', {
         accounts,
         count,
@@ -29782,7 +29943,7 @@ class ApiService {
   accountsPendingSorted(accounts, count = 50) {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this6.request('accounts_pending', {
         accounts,
         count,
@@ -29796,7 +29957,7 @@ class ApiService {
   accountsPendingLimitSorted(accounts, threshold, count = 50) {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this7.request('accounts_pending', {
         accounts,
         count,
@@ -29811,7 +29972,7 @@ class ApiService {
   delegatorsCount(account) {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this8.request('delegators_count', {
         account
       }, false);
@@ -29821,7 +29982,7 @@ class ApiService {
   representativesOnline() {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this9.request('representatives_online', {}, false);
     })();
   }
@@ -29829,7 +29990,7 @@ class ApiService {
   blocksInfo(blocks) {
     var _this10 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this10.request('blocks_info', {
         hashes: blocks,
         pending: true,
@@ -29841,7 +30002,7 @@ class ApiService {
   blockInfo(hash) {
     var _this11 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this11.request('block_info', {
         hash: hash
       }, false);
@@ -29851,7 +30012,7 @@ class ApiService {
   blockCount() {
     var _this12 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this12.request('block_count', {
         include_cemented: 'true'
       }, false);
@@ -29861,7 +30022,7 @@ class ApiService {
   workGenerate(hash, difficulty, workServer = '') {
     var _this13 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const validateResponse = res => {
         if (res.work == null) {
           return {
@@ -29909,7 +30070,7 @@ class ApiService {
   process(block, subtype) {
     var _this14 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this14.request('process', {
         block: JSON.stringify(block),
         watch_work: 'false',
@@ -29921,7 +30082,7 @@ class ApiService {
   accountHistory(account, count = 25, raw = false, offset = 0, reverse = false) {
     var _this15 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // use unlimited count if 0
       if (count === 0) {
         return yield _this15.request('account_history', {
@@ -29945,7 +30106,7 @@ class ApiService {
   accountInfo(account) {
     var _this16 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this16.request('account_info', {
         account,
         pending: true,
@@ -29958,7 +30119,7 @@ class ApiService {
   pending(account, count) {
     var _this17 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this17.request('pending', {
         account,
         count,
@@ -29971,7 +30132,7 @@ class ApiService {
   pendingLimit(account, count, threshold) {
     var _this18 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this18.request('pending', {
         account,
         count,
@@ -29985,7 +30146,7 @@ class ApiService {
   pendingSorted(account, count) {
     var _this19 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this19.request('pending', {
         account,
         count,
@@ -29999,7 +30160,7 @@ class ApiService {
   pendingLimitSorted(account, count, threshold) {
     var _this20 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this20.request('pending', {
         account,
         count,
@@ -30014,7 +30175,7 @@ class ApiService {
   version() {
     var _this21 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this21.request('version', {}, true);
     })();
   }
@@ -30022,7 +30183,7 @@ class ApiService {
   confirmationQuorum() {
     var _this22 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this22.request('confirmation_quorum', {}, true);
     })();
   }
@@ -30545,7 +30706,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "LedgerStatus": () => (/* binding */ LedgerStatus),
 /* harmony export */   "STATUS_CODES": () => (/* binding */ STATUS_CODES)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var hw_app_nano__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! hw-app-nano */ 12966);
 /* harmony import */ var _ledgerhq_hw_transport_u2f__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ledgerhq/hw-transport-u2f */ 74012);
 /* harmony import */ var _ledgerhq_hw_transport_webusb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ledgerhq/hw-transport-webusb */ 49912);
@@ -30665,7 +30826,7 @@ class LedgerService {
   checkBrowserSupport() {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       yield Promise.all([_ledgerhq_hw_transport_u2f__WEBPACK_IMPORTED_MODULE_2__["default"].isSupported().then(supported => _this.supportsU2F = supported), _ledgerhq_hw_transport_webhid__WEBPACK_IMPORTED_MODULE_4__["default"].isSupported().then(supported => _this.supportsWebHID = supported), _ledgerhq_hw_transport_webusb__WEBPACK_IMPORTED_MODULE_3__["default"].isSupported().then(supported => _this.supportsWebUSB = supported), _ledgerhq_hw_transport_web_ble__WEBPACK_IMPORTED_MODULE_5__["default"].isSupported().then(supported => _this.supportsBluetooth = supported)]);
       _this.supportsUSB = _this.supportsU2F || _this.supportsWebHID || _this.supportsWebUSB;
     })();
@@ -30721,7 +30882,7 @@ class LedgerService {
   getDesktopResponse(eventType, filterFn) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return new Promise((resolve, reject) => {
         const sub = _this2.desktopMessage$.subscribe(response => {
           // Listen to all desktop messages until one passes our filters
@@ -30753,7 +30914,7 @@ class LedgerService {
   getLedgerAccountDesktop(accountIndex, showOnScreen) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this3.queryingDesktopLedger) {
         throw new Error(`Already querying desktop device, please wait`);
       }
@@ -30782,7 +30943,7 @@ class LedgerService {
   updateCacheDesktop(accountIndex, cacheData, signature) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this4.queryingDesktopLedger) {
         throw new Error(`Already querying desktop device, please wait`);
       }
@@ -30812,7 +30973,7 @@ class LedgerService {
   signBlockDesktop(accountIndex, blockData) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this5.queryingDesktopLedger) {
         throw new Error(`Already querying desktop device, please wait`);
       }
@@ -30841,7 +31002,7 @@ class LedgerService {
   loadTransport() {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return new Promise((resolve, reject) => {
         _this6.DynamicTransport.create().then(trans => {
           // LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
@@ -30866,9 +31027,9 @@ class LedgerService {
   loadLedger(hideNotifications = false) {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return new Promise( /*#__PURE__*/function () {
-        var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
           // Desktop is handled completely differently.  Send a message for status instead of setting anything up
           if (_this7.isDesktop) {
             if (!_this7.desktop.send('ledger', {
@@ -31029,7 +31190,7 @@ class LedgerService {
   updateCache(accountIndex, blockHash) {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this8.ledger.status !== LedgerStatus.READY) {
         yield _this8.loadLedger(); // Make sure ledger is ready
       }
@@ -31056,7 +31217,7 @@ class LedgerService {
   updateCacheOffline(accountIndex, blockData) {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this9.ledger.status !== LedgerStatus.READY) {
         yield _this9.loadLedger(); // Make sure ledger is ready
       }
@@ -31079,7 +31240,7 @@ class LedgerService {
   signBlock(accountIndex, blockData) {
     var _this10 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this10.ledger.status !== LedgerStatus.READY) {
         yield _this10.loadLedger(); // Make sure ledger is ready
       }
@@ -31101,7 +31262,7 @@ class LedgerService {
   getLedgerAccountWeb(accountIndex, showOnScreen = false) {
     var _this11 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this11.ledger.transport.setExchangeTimeout(showOnScreen ? _this11.waitTimeout : _this11.normalTimeout);
 
       try {
@@ -31115,7 +31276,7 @@ class LedgerService {
   getLedgerAccount(accountIndex, showOnScreen = false) {
     var _this12 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this12.isDesktop) {
         return yield _this12.getLedgerAccountDesktop(accountIndex, showOnScreen);
       } else {
@@ -31128,7 +31289,7 @@ class LedgerService {
     var _this13 = this;
 
     if (!this.pollingLedger) return;
-    setTimeout( /*#__PURE__*/(0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    setTimeout( /*#__PURE__*/(0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       yield _this13.checkLedgerStatus();
 
       _this13.pollLedgerStatus();
@@ -31138,7 +31299,7 @@ class LedgerService {
   checkLedgerStatus() {
     var _this14 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this14.ledger.status !== LedgerStatus.READY) {
         return;
       }
@@ -31530,7 +31691,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "NanoBlockService": () => (/* binding */ NanoBlockService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _util_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.service */ 67241);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_2__);
@@ -31570,7 +31731,7 @@ class NanoBlockService {
   generateChange(walletAccount, representativeAccount, ledger = false) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const toAcct = yield _this.api.accountInfo(walletAccount.id);
       if (!toAcct) throw new Error(`Account must have an open block first`);
       const balance = new (bignumber_js__WEBPACK_IMPORTED_MODULE_2___default())(toAcct.balance);
@@ -31734,7 +31895,7 @@ class NanoBlockService {
   generateSend(walletAccount, toAccountID, rawAmount, ledger = false) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const fromAccount = yield _this2.api.accountInfo(walletAccount.id);
       if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`);
       const remaining = new (bignumber_js__WEBPACK_IMPORTED_MODULE_2___default())(fromAccount.balance).minus(rawAmount);
@@ -31810,7 +31971,7 @@ class NanoBlockService {
   generateReceive(walletAccount, sourceBlock, ledger = false) {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const toAcct = yield _this3.api.accountInfo(walletAccount.id);
       let workBlock = null;
       const openEquiv = !toAcct || !toAcct.frontier;
@@ -31914,7 +32075,7 @@ class NanoBlockService {
   signOfflineBlock(walletAccount, block, prevBlock, type, genWork, multiplier, ledger = false) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // special treatment if open block
       const openEquiv = type === _util_service__WEBPACK_IMPORTED_MODULE_1__.TxType.open;
       console.log('Signing block of subtype: ' + _util_service__WEBPACK_IMPORTED_MODULE_1__.TxType[type]);
@@ -32001,7 +32162,7 @@ class NanoBlockService {
   validateAccount(accountInfo) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!accountInfo) return;
 
       if (!accountInfo.frontier || accountInfo.frontier === _this5.zeroHash) {
@@ -32092,7 +32253,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "NinjaService": () => (/* binding */ NinjaService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 28784);
 /* harmony import */ var _notification_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./notification.service */ 12013);
@@ -32116,7 +32277,7 @@ class NinjaService {
   request(action) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this.http.get(_this.ninjaUrl + action).toPromise().then(res => {
         return res;
       }).catch(err => {
@@ -32151,7 +32312,7 @@ class NinjaService {
   recommended() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this2.request('accounts/verified');
     })();
   }
@@ -32159,7 +32320,7 @@ class NinjaService {
   recommendedRandomized() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const replist = yield _this3.recommended();
       return _this3.randomizeByScore(replist);
     })();
@@ -32168,7 +32329,7 @@ class NinjaService {
   getSuggestedRep() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const replist = yield _this4.recommendedRandomized();
       return replist[0];
     })();
@@ -32178,7 +32339,7 @@ class NinjaService {
   getAccount(account) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const REQUEST_TIMEOUT_MS = 10000;
 
       const successPromise = _this5.http.get(_this5.ninjaUrl + 'accounts/' + account).toPromise().then(res => {
@@ -32324,7 +32485,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "baseThreshold": () => (/* binding */ baseThreshold),
 /* harmony export */   "workState": () => (/* binding */ workState)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var worker_loader_assets_lib_cpupow_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! worker-loader!./../../assets/lib/cpupow.js */ 42142);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 3184);
@@ -32397,7 +32558,7 @@ class PowService {
   getPow(hash, multiplier) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const existingPoW = _this.PoWPool.find(p => p.hash === hash);
 
       if (existingPoW) {
@@ -32483,7 +32644,7 @@ class PowService {
   processNextQueueItem() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this2.PoWPool.length) return; // Nothing in the queue?
 
       _this2.processingQueueItem = true;
@@ -32596,7 +32757,7 @@ class PowService {
   getHashServer(hash, multiplier, workServer = '') {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const newThreshold = _this3.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
 
       const serverString = workServer === '' ? 'external' : 'custom';
@@ -32633,7 +32794,7 @@ class PowService {
   getHashCPUWorker(hash, multiplier) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.checkPowProcessLength(); // start alert timer
       // console.log('Generating work using CPU for', hash);
 
@@ -32745,7 +32906,7 @@ class PowService {
   checkPowProcessLength() {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this5.shouldAbortGpuPow = false;
       _this5.currentProcessTime = Date.now();
 
@@ -32827,7 +32988,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "PriceService": () => (/* binding */ PriceService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ 28784);
@@ -32851,7 +33012,7 @@ class PriceService {
   getPrice(currency = 'USD') {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!currency) return; // No currency defined, do not refetch
 
       const response = yield _this.http.get(`${_this.apiUrl}`).toPromise();
@@ -33099,7 +33260,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RepresentativeService": () => (/* binding */ RepresentativeService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var _wallet_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wallet.service */ 84853);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bignumber.js */ 95039);
@@ -33173,7 +33334,7 @@ class RepresentativeService {
   detectChangeableReps(cachedReps) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const representatives = cachedReps ? cachedReps : yield _this.getRepresentativesOverview(); // Now based on some of their properties, we filter them out
 
       const needsChange = [];
@@ -33205,7 +33366,7 @@ class RepresentativeService {
   getRepresentativesOverview() {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       var _a; // First get the details of all representatives for accounts in our wallet
 
 
@@ -33416,7 +33577,7 @@ class RepresentativeService {
   getOnlineRepresentatives() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const representatives = [];
       const reps = yield _this3.api.representativesOnline();
       if (!reps) return representatives;
@@ -33440,7 +33601,7 @@ class RepresentativeService {
   getRepresentativesDetails(representatives) {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const repInfos = yield Promise.all(representatives.map(rep => _this4.api.accountInfo(rep.id).then(res => {
         res.account = rep.id;
         res.delegatedWeight = rep.weight;
@@ -34092,7 +34253,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "WalletService": () => (/* binding */ WalletService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs */ 84505);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bignumber.js */ 95039);
 /* harmony import */ var bignumber_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bignumber_js__WEBPACK_IMPORTED_MODULE_1__);
@@ -34173,7 +34334,7 @@ class WalletService {
     this.successfulBlocks = [];
     this.trackedHashes = [];
     this.websocket.newTransactions$.subscribe( /*#__PURE__*/function () {
-      var _ref = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (transaction) {
+      var _ref = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (transaction) {
         if (!transaction) return; // Not really a new transaction
 
         console.log('New Transaction', transaction);
@@ -34291,7 +34452,7 @@ class WalletService {
   processStateBlock(transaction) {
     var _this2 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // If we have a minimum receive,  once we know the account... add the amount to wallet pending? set pending to true
       if (transaction.block.subtype === 'send' && transaction.block.link_as_account) {
         // This is an incoming send block, we want to perform a receive
@@ -34342,7 +34503,7 @@ class WalletService {
   patchOldSavedData() {
     var _this3 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // Look for saved accounts using an xrb_ prefix
       const walletData = localStorage.getItem(_this3.storeKey);
       if (!walletData) return;
@@ -34367,7 +34528,7 @@ class WalletService {
   loadStoredWallet() {
     var _this4 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this4.resetWallet();
 
       const walletData = localStorage.getItem(_this4.storeKey);
@@ -34400,7 +34561,7 @@ class WalletService {
   loadImportedWallet(seed, password, accountsIndex, indexes, walletType) {
     var _this5 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this5.resetWallet();
 
       _this5.wallet.seed = seed;
@@ -34417,7 +34578,7 @@ class WalletService {
         } else if (indexes) {
           // New method (the promise ensures all wallets have been added before moving on)
           yield Promise.all(indexes.map( /*#__PURE__*/function () {
-            var _ref2 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (i) {
+            var _ref2 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (i) {
               yield _this5.addWalletAccount(i, false);
             });
 
@@ -34526,7 +34687,7 @@ class WalletService {
   createWalletFromSeed(seed) {
     var _this6 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this6.resetWallet();
 
       _this6.wallet.seed = seed;
@@ -34538,7 +34699,7 @@ class WalletService {
   scanAccounts() {
     var _this7 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const usedIndices = [];
       const NAULT_ACCOUNTS_LIMIT = 20;
       const ACCOUNTS_PER_API_REQUEST = 10;
@@ -34616,7 +34777,7 @@ class WalletService {
   createLedgerWallet() {
     var _this8 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // this.resetWallet(); Now done earlier to ensure user not sending to wrong account
       _this8.wallet.type = 'ledger';
       yield _this8.scanAccounts();
@@ -34627,7 +34788,7 @@ class WalletService {
   createWalletFromSingleKey(key, expanded) {
     var _this9 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this9.resetWallet();
 
       _this9.wallet.type = expanded ? 'expandedKey' : 'privateKey';
@@ -34645,7 +34806,7 @@ class WalletService {
   createLedgerAccount(index) {
     var _this10 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const account = yield _this10.ledgerService.getLedgerAccount(index);
       const accountID = account.address;
       const nanoAccountID = accountID.replace('xrb_', 'nano_');
@@ -34695,7 +34856,7 @@ class WalletService {
   createSeedAccount(index) {
     var _this11 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const accountBytes = _this11.util.account.generateAccountSecretKeyBytes(_this11.wallet.seedBytes, index);
 
       const accountKeyPair = _this11.util.account.generateAccountKeyPair(accountBytes);
@@ -34802,7 +34963,7 @@ class WalletService {
   reloadBalances() {
     var _this12 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // to block two reloads to happen at the same time (websocket)
       if (_this12.wallet.updatingBalance) return;
       _this12.wallet.updatingBalance = true;
@@ -34952,7 +35113,7 @@ class WalletService {
   loadWalletAccount(accountIndex, accountID) {
     var _this13 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const index = accountIndex;
 
       const addressBookName = _this13.addressBook.getAccountName(accountID);
@@ -34984,7 +35145,7 @@ class WalletService {
   addWalletAccount(accountIndex = null, reloadBalances = true) {
     var _this14 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       // if (!this.wallet.seedBytes) return;
       let index = accountIndex;
 
@@ -35025,7 +35186,7 @@ class WalletService {
   removeWalletAccount(accountID) {
     var _this15 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const walletAccount = _this15.getWalletAccount(accountID);
 
       if (!walletAccount) throw new Error(`Account is not in wallet`);
@@ -35050,7 +35211,7 @@ class WalletService {
   trackAddress(address) {
     var _this16 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this16.websocket.subscribeAccounts([address]);
 
       console.log('Tracking transactions on ' + address);
@@ -35060,7 +35221,7 @@ class WalletService {
   untrackAddress(address) {
     var _this17 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this17.websocket.unsubscribeAccounts([address]);
 
       console.log('Stopped tracking transactions on ' + address);
@@ -35093,7 +35254,7 @@ class WalletService {
   removePendingBlock(blockHash) {
     var _this18 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const index = _this18.wallet.pendingBlocks.findIndex(b => b.hash === blockHash);
 
       _this18.wallet.pendingBlocks.splice(index, 1);
@@ -35104,7 +35265,7 @@ class WalletService {
   clearPendingBlocks() {
     var _this19 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this19.wallet.pendingBlocks.splice(0, _this19.wallet.pendingBlocks.length);
     })();
   }
@@ -35118,7 +35279,7 @@ class WalletService {
   processPendingBlocks() {
     var _this20 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (_this20.processingPending || _this20.wallet.locked || !_this20.wallet.pendingBlocks.length || _this20.appSettings.settings.pendingOption === 'manual') return; // Sort pending by amount
 
       if (_this20.appSettings.settings.pendingOption === 'amount') {
@@ -35233,7 +35394,7 @@ class WalletService {
   getAccountsDetails() {
     var _this21 = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield Promise.all(_this21.wallet.accounts.map(account => _this21.api.accountInfo(account.id).then(res => {
         try {
           res.id = account.id;
@@ -35276,7 +35437,7 @@ class WalletService {
       };
 
       subscriptionForUnlock = this.wallet.locked$.subscribe( /*#__PURE__*/function () {
-        var _ref3 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (isLocked) {
+        var _ref3 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (isLocked) {
           if (isLocked === false) {
             removeSubscriptions();
             const wasUnlocked = true;
@@ -35289,7 +35450,7 @@ class WalletService {
         };
       }());
       subscriptionForCancel = this.wallet.unlockModalRequested$.subscribe( /*#__PURE__*/function () {
-        var _ref4 = (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (wasRequested) {
+        var _ref4 = (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (wasRequested) {
           if (wasRequested === false) {
             removeSubscriptions();
             const wasUnlocked = false;
@@ -35481,7 +35642,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "WorkPoolService": () => (/* binding */ WorkPoolService)
 /* harmony export */ });
-/* harmony import */ var _Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _pow_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pow.service */ 72772);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _notification_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notification.service */ 12013);
@@ -35539,7 +35700,7 @@ class WorkPoolService {
   getWork(hash, multiplier = 1) {
     var _this = this;
 
-    return (0,_Users_esteban_Desktop_Nault_Pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.pow.shouldContinueQueue = true; // new pow should never be blocked
       // additional pow for the same hash will have to wait
 
