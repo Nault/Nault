@@ -1,5 +1,6 @@
 <h2 class="uk-heading-divider">New Wallet</h2>
 
+<!-- 
 <div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-small-bottom">
   <div class="uk-alert uk-alert-danger nlt-inline-alert">
     <div class="icon-column">
@@ -12,7 +13,8 @@
     </p>
   </div>
 </div>
-
+ -->
+ 
 <div class="uk-card uk-card-default wallet-setup-card" *ngIf="activePanel === panels.landing">
   <div class="uk-card-body">
     <div class="landing-container uk-grid-divider" uk-grid>
@@ -414,12 +416,6 @@
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.backup">
 
   <div class="uk-card-body">
-    <div>
-      <div class="uk-alert uk-alert-danger nlt-inline-alert">
-        <p>You are solely responsible for the safety of your funds.</p>
-      </div>
-    </div>
-
     <div uk-grid>
       <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-seed' | transloco }}</div>
       <div class="uk-width-3-4@m">
@@ -471,8 +467,6 @@
   </div>
   <div class="uk-card-body">
     <p>{{ 'configure-wallet.set-wallet-password.choose-a-wallet-password-that-will-be-used-to-unlock-this-application' | transloco }}</p>
-    <p>{{ 'configure-wallet.set-wallet-password.while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted' | transloco }}</p>
-    <p>{{ 'configure-wallet.set-wallet-password.for-the-safety-of-your-funds-use-a-secure-password' | transloco }}</p>
     <br>
     <div uk-grid>
       <div class="uk-width-1-2@m">
@@ -493,12 +487,11 @@
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.final">
   <div class="uk-card-header">
-    <h3 class="uk-card-title">Wallet Created!</h3>
+    <h3 class="uk-card-title">Wallet Created</h3>
   </div>
   <div class="uk-card-body">
     <p>
-      Your wallet has been created and you are ready to send and receive nano!<br>
-      It will lock after a certain amount of inactivity which can be changed in the <a routerLink="/configure-app" routerLinkActive="active">app settings</a>.
+      Your wallet has been created and ready to use.<br>
     </p>
   </div>
   <div class="uk-card-footer uk-text-right">
@@ -506,9 +499,9 @@
   </div>
 </div>
 
-<div *ngIf="activePanel === panels.final && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
+<!-- <div *ngIf="activePanel === panels.final && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><strong>ProTip:</strong> If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.</p>
 </div>
 <div *ngIf="activePanel === panels.final && walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><strong>ProTip:</strong> Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.</p>
-</div>
+</div> -->

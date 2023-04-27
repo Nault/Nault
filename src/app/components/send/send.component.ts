@@ -15,6 +15,8 @@ import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
 
+import { HttpClient } from '@angular/common/http';
+
 const nacl = window['nacl'];
 
 @Component({
@@ -40,6 +42,7 @@ export class SendComponent implements OnInit {
   ];
   selectedAmount = this.amounts[0];
 
+  known = null;
   amount = null;
   amountExtraRaw = new BigNumber(0);
   amountFiat: number|null = null;
@@ -58,6 +61,7 @@ export class SendComponent implements OnInit {
   selAccountInit = false;
 
   constructor(
+    private http: HttpClient,
     private router: ActivatedRoute,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
@@ -72,6 +76,9 @@ export class SendComponent implements OnInit {
     private translocoService: TranslocoService) { }
 
   async ngOnInit() {
+
+    this.known = await this.http.get('https://nano.to/known.json').toPromise()
+
     const params = this.router.snapshot.queryParams;
 
     this.updateQueries(params);
@@ -193,15 +200,23 @@ export class SendComponent implements OnInit {
   }
 
   searchAddressBook() {
+
     this.showAddressBook = true;
+    
     const search = this.toAccountID || '';
+    
     const addressBook = this.addressBookService.addressBook;
 
-    const matches = addressBook
+    let matches = []
+    
+    this.known
       .filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-      .slice(0, 5);
+      .slice(0, 5).map(a => matches.push({ name: (a.github ? a.name + ' (Verified)' : a.name), account: a.address }))
+
+    addressBook.filter(a => a.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).slice(0, 5).map(a => matches.push({ name: a.name + ' (Local Account)' }))
 
     this.addressBookResults$.next(matches);
+
   }
 
   selectBookEntry(account) {

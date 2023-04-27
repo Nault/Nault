@@ -33,11 +33,11 @@
                   <div class="form-input-destination uk-inline uk-width-1-1">
                     <a class="hide-on-small-viewports uk-form-icon uk-form-icon-flip" uk-icon="icon: camera" (click)="openQR('account1','account')" uk-tooltip title="Scan from QR code"></a>
                     
-                    <input (blur)="validateDestination()" (input)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Address to send to (Nano.to Usernames soon)" autocomplete="off">
+                    <input (blur)="validateDestination()" (input)="searchAddressBook()" (focus)="searchAddressBook()" [(ngModel)]="toAccountID" [ngClass]="{ 'uk-form-success': toAccountStatus === 2, 'uk-form-danger': toAccountStatus === 0 }" class="uk-input" id="form-horizontal-text2" type="text" placeholder="Address to send to" autocomplete="off">
 
                     <div *ngIf="(addressBookResults$ | async).length" [hidden]="!showAddressBook" class="nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute" style="z-index: 15000">
                       <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">Address Book Results</li>
+                        <li class="uk-nav-header">Nano Known</li>
                         <li class="uk-nav-divider"></li>
                         <li *ngFor="let book of addressBookResults$ | async">
                           <a (click)="selectBookEntry(book.account)">{{ book.name }}</a>
