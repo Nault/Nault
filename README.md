@@ -2,7 +2,7 @@
 
 <h1 align="center">Nault Pro</h1>
 
-<p align="center">Really Nice Nault Fork</p>
+<p align="center">Nano.to's Nault Fork</p>
 
 ![line](https://github.com/fwd/n2/raw/master/.github/line.png)
 
