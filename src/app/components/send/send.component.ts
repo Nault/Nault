@@ -77,8 +77,6 @@ export class SendComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.known = await this.http.get('https://api.nano.to/known').toPromise()
-
     const params = this.router.snapshot.queryParams;
 
     this.updateQueries(params);
@@ -117,6 +115,8 @@ export class SendComponent implements OnInit {
       // If "total balance" is selected in the sidebar, use the first account in the wallet that has a balance
       this.findFirstAccount();
     }
+
+    this.known = await this.http.get('https://nano.to/known.json').toPromise()
   }
 
   updateQueries(params) {
