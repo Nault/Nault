@@ -19,6 +19,7 @@ import { TranslocoService } from '@ngneat/transloco';
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsComponent implements OnInit {
+  
   accounts = this.walletService.wallet.accounts;
   isLedgerWallet = this.walletService.isLedgerWallet();
   isSingleKeyWallet = this.walletService.isSingleKeyWallet();

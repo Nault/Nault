@@ -110,7 +110,7 @@
               <div class="uk-width-1-1 uk-margin-small-top">
                 <div uk-grid>
                   <div class="nano-address-monospace uk-width-auto uk-text-small uk-text-truncate" style="max-width: calc(100% - 60px);">
-                    <app-nano-account-id [accountID]="accountID"></app-nano-account-id>
+                    <app-nano-account-id [accountID]="accountID" [known]="known"></app-nano-account-id>
                   </div>
                   <div class="nano-address-actions uk-width-auto" style="margin-top: 0;">
                     <ul class="uk-iconnav">
@@ -151,7 +151,7 @@
                   </div>
                 </div>
                 <div class="nano-address-monospace" [title]="account.representative">
-                  <app-nano-account-id [accountID]="account.representative" middle="off"></app-nano-account-id>
+                  <app-nano-account-id [accountID]="account.representative" middle="off" [known]="known"></app-nano-account-id>
                 </div>
               </div>
               <ng-template #noRepresentative>
@@ -351,7 +351,7 @@
                     <div class="account-label uk-text-truncate" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</div>
                   </div>
                   <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                    <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
+                    <app-nano-account-id [accountID]="pending.account" middle="auto" [known]="known"></app-nano-account-id>
                   </div>
                 </a>
               </div>
@@ -418,7 +418,7 @@
                     <div class="account-label uk-text-truncate" *ngIf="history.addressBookName">{{ history.addressBookName }}</div>
                   </div>
                   <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                    <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="auto"></app-nano-account-id>
+                    <app-nano-account-id [accountID]="history.link_as_account || history.account" middle="auto" [known]="known"></app-nano-account-id>
                   </div>
                 </a>
               </div>
@@ -700,7 +700,7 @@
         <div class="uk-width-1-1">
           <div uk-grid class="uk-flex uk-flex-center">
             <span class="nano-address-monospace uk-width-auto">
-              <app-nano-account-id [accountID]="accountID" middle="off"></app-nano-account-id>
+              <app-nano-account-id [accountID]="accountID" middle="off" [known]="known"></app-nano-account-id>
             </span>
             <span class="nano-address-actions uk-width-auto" style="vertical-align: 1px;">
               <ul class="uk-iconnav">

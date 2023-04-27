@@ -48,7 +48,7 @@
 }
 
 .nano-address-suffix {
-    color: #3379ca !important;
+    color: #23c7ff !important;
 }
 
 .light-mode .nano-card .logo {
@@ -65,7 +65,7 @@
 }
 
 .landing-container > div > .wallet-option {
-    border-color: #4A90E2;
+    border-color: #23c7ff;
     min-width: 280px;
     zoom: 0.9;
 }
@@ -256,4 +256,44 @@ width: 100%;
 .market-cards .card h3 {
 	margin: 0;
 	color: #FFF;
+}
+
+.account-container .identicon-name-row .nano-identicon {
+	display: none !important;
+}
+
+.nano-to-tag {
+	    display: block;
+    width: fit-content;
+    padding: 3px 9px;
+    border-radius: 4px;
+    text-transform: none;
+    border-color: #9A71D5;
+    background: #4b90e2;
+    color: #FFF;
+    font-size: 13px;
+}
+
+.transaction > .column.type-identicon {
+    display: none !important;
+}
+
+.transactions-list .account-column .account-container .identicon-name-row {
+    display: none !important;
+}
+
+.transactions-list .account-column .account-container .nano-address-clickable {
+    font-size: 17px;
+}
+
+.uk-text-muted {
+/*    color: #a9a9aa !important;*/
+    letter-spacing: 0.5px;
+    opacity: 0.5;
+    margin-top: -5px;
+    font-size: 15px !important;
+}
+
+.account-details-header .nano-to-name {
+    font-size: 22px;
 }

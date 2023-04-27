@@ -117,6 +117,7 @@ export class SendComponent implements OnInit {
     }
 
     this.known = await this.http.get('https://nano.to/known.json').toPromise()
+    
   }
 
   updateQueries(params) {

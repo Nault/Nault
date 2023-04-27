@@ -17,6 +17,7 @@ import * as nanocurrency from 'nanocurrency';
 import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { TranslocoService } from '@ngneat/transloco';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-account-details',
@@ -87,6 +88,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   ];
   selectedAmount = this.amounts[0];
 
+  known = null;
   amount = null;
   amountRaw: BigNumber = new BigNumber(0);
   amountFiat: number|null = null;
@@ -111,6 +113,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   // End remote signing
 
   constructor(
+    private http: HttpClient,
     private router: ActivatedRoute,
     private route: Router,
     private addressBook: AddressBookService,
@@ -134,6 +137,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+
+    await this.loadKnown();
+
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
       this.remoteVisible = params.sign === '1';
@@ -149,6 +155,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         this.mobileTransactionMenuModal.hide();
       }
     });
+
     this.priceSub = this.price.lastPrice$.subscribe(event => {
       this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
       this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
@@ -169,7 +176,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.mobileTransactionMenuModal = mobileTransactionMenuModal;
 
     await this.loadAccountDetails();
+    
     this.initialLoadDone = true;
+
+
     this.addressBook.loadAddressBook();
 
     this.populateRepresentativeList();
@@ -183,6 +193,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.representativesOverview = reps;
       this.updateRepresentativeInfo();
     });
+
   }
 
   async populateRepresentativeList() {
@@ -336,6 +347,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.loadAccountDetailsThrottled({ receivableBlockUpdate });
   }
 
+  async loadKnown() {
+    localStorage.setItem('nano-known', JSON.stringify( await this.http.get('https://nano.to/known.json').toPromise() ))
+  }
+
   loadAccountDetailsThrottled(params) {
     this.autoRefreshReasonBlockUpdate = (
         (params.receivableBlockUpdate != null)
@@ -446,6 +461,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async loadAccountDetails() {
+
     this.onAccountDetailsLoadStart();
 
     this.pendingBlocks = [];
@@ -457,7 +473,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.accountID = accountID;
     this.generateReceiveQR(accountID);
 
-    this.addressBookEntry = this.addressBook.getAccountName(accountID);
+    // console.log("loadAccountDetails", accountID)
+
+    var known = this.known ? this.known.find(a => a.address === accountID) : false
+
+    this.addressBookEntry = this.addressBook.getAccountName(accountID) || (known ? { name: known.name, account: known.address } : false);
+
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(accountID);
 
