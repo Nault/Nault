@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 // import {Subject, timer} from 'rxjs';
 // import {debounce} from 'rxjs/operators';
 // import {Router} from '@angular/router';
@@ -32,6 +33,7 @@ export class MarketplaceComponent implements OnInit {
   // reloadRepWarning$ = this.accountsChanged$.pipe(debounce(() => timer(5000)));
 
   constructor(
+    private http: HttpClient,
     // private walletService: WalletService,
     // private notificationService: NotificationService,
     // public modal: ModalService,
@@ -44,33 +46,34 @@ export class MarketplaceComponent implements OnInit {
 
   async ngOnInit() {
 
+    var vendors = await this.http.get('https://raw.githubusercontent.com/fwd/nano-market/master/vendors.json').toPromise()
 
-
-
+    // console.log("vendors", vendors)
 
 const images = 56
 
-function template(index) {
+function template(product) {
     return `
+
     <div class="market-star">
         <i class='bx bx-star'></i>
     </div>
+
     <div class="market-image">
-        <img class="img" src="https://raw.githubusercontent.com/luisDanielRoviraContreras/img/master/files/${index}.png" alt="">
-        <img class="bg" src="https://raw.githubusercontent.com/luisDanielRoviraContreras/img/master/files/${index}.png alt="">
+        <img class="img" src="${product.images[0]}" alt="">
     </div>
 
     <div class="market-text">
         <h3>
-            Training shoes
+            ${product['title']}
         </h3>
         <p>
-            The Nike SuperRep Go shoes combine comfortable foam cushioning,
+            ${product['description'] ? product['description'] : ''}
         </p>
     </div>
 
     <div class="market-price">
-        129.99$
+        ${product['price']} NANO
     </div>
 
     <div class="market-btn">
@@ -91,49 +94,31 @@ function template(index) {
     `
 }
 
-for (let index = 1; index < 20; index++) {
-    const element = document.createElement('div');
-    element.classList.add('card')
-    element.innerHTML = template(index)
-    document.querySelector('.market-cards-1').appendChild(element)
-}
-for (let index = 21; index < 40; index++) {
-    const element = document.createElement('div');
-    element.classList.add('card')
-    element.innerHTML = template(index)
-    document.querySelector('.market-cards-2').appendChild(element)
-}
-for (let index = 41; index < 56; index++) {
-    const element = document.createElement('div');
-    element.classList.add('card')
-    element.innerHTML = template(index)
-    document.querySelector('.market-cards-3').appendChild(element)
-}
-    
-function handleAdd(event) {
-    const card = event.target.closest('.card')
-    card.classList.add('add-active')
-    console.log(card)
-}
 
-function plusLess(event, type) {
-    const card = event.target.closest('.card')
-    const input = card.querySelector('input')
-    let oldVal = Number(input.value)
-    if (type == 'less') {
-        if (oldVal == 1) {
-            card.classList.remove('add-active')
-            return
+    for (var index in vendors) {
+
+        var vendor = vendors[index]
+
+        const title = document.createElement('h2');
+        const container = document.createElement('div');
+        
+        container.classList.add('market-cards')
+        
+        title.innerHTML = `<h3 class="marketplace-h3">${vendor['title']}</h3>`
+        container.innerHTML = ``
+        
+        document.getElementById('market-cards').appendChild(title)
+        document.getElementById('market-cards').appendChild(container)
+
+        for (var product of vendors[index]['products']) {
+            const element = document.createElement('div');
+            element.classList.add('card')
+            element.innerHTML = template(product)
+            container.appendChild(element)
         }
-        input.value = oldVal -= 1
-    } else {
-        input.value = oldVal += 1
+
     }
-}
-
-
-
-
+    
 
   }
 

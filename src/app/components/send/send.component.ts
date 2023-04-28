@@ -14,7 +14,6 @@ import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
-
 import { HttpClient } from '@angular/common/http';
 
 const nacl = window['nacl'];
