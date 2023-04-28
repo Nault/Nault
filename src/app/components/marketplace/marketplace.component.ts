@@ -46,9 +46,7 @@ export class MarketplaceComponent implements OnInit {
 
   async ngOnInit() {
 
-    var vendors = await this.http.get('https://raw.githubusercontent.com/fwd/nano-market/master/vendors.json').toPromise()
-
-    // console.log("vendors", vendors)
+var vendors = await this.http.get('https://market.nano.to').toPromise()
 
 const images = 56
 
@@ -77,8 +75,9 @@ function template(product) {
     </div>
 
     <div class="market-btn">
+
         <Button onclick="handleAdd(event)" class="add">
-            Buy Now
+            ${product['button'] ? product['button'] : 'Buy Now'}
         </Button>
 
         <div class="market-input-btns">
@@ -91,6 +90,7 @@ function template(product) {
             </Button>
         </div>
     </div>
+
     `
 }
 

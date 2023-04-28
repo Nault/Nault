@@ -16781,8 +16781,7 @@ class MarketplaceComponent {
     var _this = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      var vendors = yield _this.http.get('https://raw.githubusercontent.com/fwd/nano-market/master/vendors.json').toPromise(); // console.log("vendors", vendors)
-
+      var vendors = yield _this.http.get('https://market.nano.to').toPromise();
       const images = 56;
 
       function template(product) {
@@ -16810,8 +16809,9 @@ class MarketplaceComponent {
     </div>
 
     <div class="market-btn">
+
         <Button onclick="handleAdd(event)" class="add">
-            Buy Now
+            ${product['button'] ? product['button'] : 'Buy Now'}
         </Button>
 
         <div class="market-input-btns">
@@ -16824,6 +16824,7 @@ class MarketplaceComponent {
             </Button>
         </div>
     </div>
+
     `;
       }
 
@@ -16856,16 +16857,13 @@ MarketplaceComponent.ɵfac = function MarketplaceComponent_Factory(t) {
 MarketplaceComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
   type: MarketplaceComponent,
   selectors: [["app-marketplace"]],
-  decls: 4,
+  decls: 2,
   vars: 0,
-  consts: [[2, "margin", "10px 0"], [2, "text-align", "center", "background", "#3491ff", "padding", "10px 0", "color", "#FFF", "border-radius", "7px"], ["id", "market-cards"]],
+  consts: [[2, "margin", "10px 0"], ["id", "market-cards"]],
   template: function MarketplaceComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, "Page Under Development");
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](3, "div", 2);
+      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "div", 1);
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     }
   },
