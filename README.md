@@ -17,7 +17,8 @@
 - ✅ Redesigned UI/UX
 - ✅ Add Nano.to Usernames to send page.
 - ✅ Add Nano.to Usernames to transactions.
-- 🟧 Introduce eCommerce into Nault.Pro
+- 🟨 Introduce eCommerce into Nault.Pro
+- 🟨 Introduce easy Crypto to Crypto swapping.
 - 🟨 Professional Security Audit
 - 🟨 Nault.Pro Code Freeze & Formal Release
 
