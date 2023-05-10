@@ -14,6 +14,7 @@ import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
+import { HttpClient } from '@angular/common/http';
 import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
@@ -30,9 +31,23 @@ export class SendComponent implements OnInit {
   sendDestinationType = 'external-address';
 
   accounts = this.walletService.wallet.accounts;
+  aliasLookup = {
+    fullText: '',
+    name: '',
+    domain: '',
+  }
+  aliasLookupLatestSuccessful = {
+    fullText: '',
+    name: '',
+    domain: '',
+    address: '',
+  }
+  aliasResults$ = new BehaviorSubject([]);
   addressBookResults$ = new BehaviorSubject([]);
+  isDestinationAccountAlias = false;
   showAddressBook = false;
   addressBookMatch = '';
+  addressAliasMatch = '';
 
   amounts = [
     { name: 'XNO', shortName: 'XNO', value: 'mnano' },
@@ -70,6 +85,7 @@ export class SendComponent implements OnInit {
     public settings: AppSettingsService,
     private util: UtilService,
     private qrModalService: QrModalService,
+    private http: HttpClient,
     private translocoService: TranslocoService) { }
 
   async ngOnInit() {
@@ -194,6 +210,10 @@ export class SendComponent implements OnInit {
   }
 
   onDestinationAddressInput() {
+    this.addressAliasMatch = '';
+    this.addressBookMatch = '';
+
+    this.offerLookupIfDestinationIsAlias();
     this.searchAddressBook();
 
     const destinationAddress = this.toAccountID || '';
@@ -243,9 +263,117 @@ export class SendComponent implements OnInit {
     this.addressBookResults$.next(matches);
   }
 
+  offerLookupIfDestinationIsAlias() {
+    const destinationAddress = this.toAccountID || '';
+
+    const mayBeAnAlias = (
+        ( destinationAddress.startsWith('@') === true )
+      && ( destinationAddress.includes('.') === true )
+      && ( destinationAddress.endsWith('.') === false )
+      && ( destinationAddress.includes('/') === false )
+      && ( destinationAddress.includes('?') === false )
+    );
+
+    if (mayBeAnAlias === false) {
+      this.isDestinationAccountAlias = false;
+      this.aliasLookup = {
+        fullText: '',
+        name: '',
+        domain: '',
+      };
+      this.aliasResults$.next([]);
+      return
+    }
+
+    this.isDestinationAccountAlias = true;
+
+    const aliasWithoutFirstSymbol = destinationAddress.slice(1);
+    const aliasSplitResults = aliasWithoutFirstSymbol.split('@');
+
+    let aliasName = ''
+    let aliasDomain = ''
+
+    if (aliasSplitResults.length === 2) {
+      aliasName = aliasSplitResults[0]
+      aliasDomain = aliasSplitResults[1]
+    } else {
+      aliasDomain = aliasSplitResults[0]
+    }
+
+    this.aliasLookup = {
+      fullText: destinationAddress,
+      name: aliasName,
+      domain: aliasDomain,
+    };
+
+    this.aliasResults$.next([{ ...this.aliasLookup }]);
+
+    this.toAccountStatus = 1; // Neutral state
+  }
+
+  async lookupAlias() {
+    if (this.aliasLookup.domain === '') {
+      return;
+    }
+
+    this.toAccountStatus = 1; // Neutral state
+
+    const aliasDomain = this.aliasLookup.domain;
+
+    const aliasName = (
+        (this.aliasLookup.name !== '')
+      ? this.aliasLookup.name
+      : '_'
+    );
+
+    const lookupUrl =
+      `https://${ aliasDomain }/.well-known/nano-currency.json?names=${ aliasName }`;
+
+    await this.http.get<any>(lookupUrl).toPromise()
+      .then(res => {
+        try {
+          const matchingAccount =
+            res.names.find(
+              (account) =>
+                (account.name === aliasName)
+            );
+
+          if (matchingAccount == null) {
+            this.toAccountStatus = 0; // Error state
+            return;
+          }
+
+          if (!this.util.account.isValidAccount(matchingAccount.address)) {
+            this.toAccountStatus = 0; // Error state
+            return;
+          }
+
+          this.toAccountID = matchingAccount.address;
+
+          this.aliasLookupLatestSuccessful = {
+            ...this.aliasLookup,
+            address: this.toAccountID,
+          }
+
+          this.onDestinationAddressInput();
+          this.validateDestination();
+
+          return;
+        } catch(err) {
+          this.toAccountStatus = 0; // Error state
+          return;
+        }
+      })
+      .catch(err => {
+        this.toAccountStatus = 0; // Error state
+        return;
+      });
+  }
+
   selectBookEntry(account) {
     this.showAddressBook = false;
     this.toAccountID = account;
+    this.isDestinationAccountAlias = false;
     this.searchAddressBook();
     this.validateDestination();
   }
@@ -260,6 +388,21 @@ export class SendComponent implements OnInit {
 
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
+
+    this.addressAliasMatch = (
+        (
+            (this.aliasLookupLatestSuccessful.address !== '')
+          && (this.aliasLookupLatestSuccessful.address === this.toAccountID)
+        )
+      ? this.aliasLookupLatestSuccessful.fullText
+      : null
+    );
+
+    if (this.isDestinationAccountAlias === true) {
+      this.addressBookMatch = null;
+      this.toAccountStatus = 1; // Neutral state
+      return;
+    }
 
     this.addressBookMatch = (
         this.addressBookService.getAccountName(this.toAccountID)
@@ -426,6 +569,7 @@ export class SendComponent implements OnInit {
         this.fromAddressBook = '';
         this.toAddressBook = '';
         this.addressBookMatch = '';
+        this.addressAliasMatch = '';
       } else {
         if (!this.walletService.isLedgerWallet()) {
           this.notificationService.sendError(`There was an error sending your transaction, please try again.`);

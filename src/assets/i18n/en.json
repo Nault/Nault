@@ -84,6 +84,7 @@
     "the-balance-will-be-displayed-in-the-address-book": "The balance will be displayed in the address book.",
     "this-name-is-already-in-use-please-use-a-unique-name": "This name is already in use! Please use a unique name",
     "this-name-is-reserved-for-wallet-accounts-without-a-label": "This name is reserved for wallet accounts without a label",
+    "this-name-is-reserved-for-decentralized-aliases": "Names starting with @ are reserved for decentralized aliases",
     "track-balance": "Track Balance",
     "track-transactions": "Track Transactions",
     "unable-to-delete-entry": "Unable to delete entry: {{ message }}",
