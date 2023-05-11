@@ -345,12 +345,14 @@ export class SendComponent implements OnInit {
 
     this.toAccountStatus = 1; // Neutral state
 
-    const aliasFullText = this.aliasLookup.fullText;
-    const aliasDomain = this.aliasLookup.domain;
+    const aliasLookup = { ...this.aliasLookup };
+
+    const aliasFullText = aliasLookup.fullText;
+    const aliasDomain = aliasLookup.domain;
 
     const aliasName = (
-        (this.aliasLookup.name !== '')
-      ? this.aliasLookup.name
+        (aliasLookup.name !== '')
+      ? aliasLookup.name
       : '_'
     );
 
@@ -358,7 +360,7 @@ export class SendComponent implements OnInit {
       `https://${ aliasDomain }/.well-known/nano-currency.json?names=${ aliasName }`;
 
     this.aliasLookupInProgress = {
-      ...this.aliasLookup,
+      ...aliasLookup,
     };
 
     await this.http.get<any>(lookupUrl).toPromise()
@@ -410,9 +412,9 @@ export class SendComponent implements OnInit {
           this.toAccountID = matchingAccount.address;
 
           this.aliasLookupLatestSuccessful = {
-            ...this.aliasLookupInProgress,
+            ...aliasLookup,
             address: this.toAccountID,
-          }
+          };
 
           this.onDestinationAddressInput();
           this.validateDestination();
