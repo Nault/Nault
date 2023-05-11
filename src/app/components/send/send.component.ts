@@ -291,7 +291,12 @@ export class SendComponent implements OnInit {
 
     this.isDestinationAccountAlias = true;
 
-    const aliasWithoutFirstSymbol = destinationAddress.slice(1);
+    let aliasWithoutFirstSymbol = destinationAddress.slice(1);
+
+    if (aliasWithoutFirstSymbol.startsWith('_@') === true ) {
+      aliasWithoutFirstSymbol = aliasWithoutFirstSymbol.slice(2);
+    }
+
     const aliasSplitResults = aliasWithoutFirstSymbol.split('@');
 
     let aliasName = ''
@@ -305,7 +310,7 @@ export class SendComponent implements OnInit {
     }
 
     this.aliasLookup = {
-      fullText: destinationAddress,
+      fullText: `@${aliasWithoutFirstSymbol}`,
       name: aliasName,
       domain: aliasDomain,
     };
