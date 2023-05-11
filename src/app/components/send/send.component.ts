@@ -292,7 +292,7 @@ export class SendComponent implements OnInit {
 
     this.isDestinationAccountAlias = true;
 
-    let aliasWithoutFirstSymbol = destinationAddress.slice(1);
+    let aliasWithoutFirstSymbol = destinationAddress.slice(1).toLowerCase();
 
     if (aliasWithoutFirstSymbol.startsWith('_@') === true ) {
       aliasWithoutFirstSymbol = aliasWithoutFirstSymbol.slice(2);
