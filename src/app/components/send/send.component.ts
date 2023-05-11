@@ -316,6 +316,29 @@ export class SendComponent implements OnInit {
       return;
     }
 
+    if (this.settings.settings.decentralizedAliasesOption === 'disabled') {
+      const UIkit = window['UIkit'];
+      try {
+        await UIkit.modal.confirm(
+          `<p class="uk-alert uk-alert-warning"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span>
+          <span style="font-size: 18px;">
+          ${ this.translocoService.translate('configure-app.decentralized-aliases-require-external-requests') }
+          </span>`,
+          {
+            labels: {
+              cancel: this.translocoService.translate('general.cancel'),
+              ok: this.translocoService.translate('configure-app.allow-external-requests'),
+            }
+          }
+        );
+
+        this.settings.setAppSetting('decentralizedAliasesOption', 'enabled');
+      } catch (err) {
+        // pressed cancel, or a different error
+        return;
+      }
+    }
+
     this.toAccountStatus = 1; // Neutral state
 
     const aliasDomain = this.aliasLookup.domain;
