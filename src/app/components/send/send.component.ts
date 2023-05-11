@@ -377,6 +377,18 @@ export class SendComponent implements OnInit {
         };
 
         try {
+          const aliasesInJsonCount = (
+              ( Array.isArray(res.names) === true )
+            ? res.names.length
+            : 0
+          );
+
+          if (aliasesInJsonCount === 0) {
+            this.toAccountStatus = 0; // Error state
+            this.notificationService.sendWarning(`No aliases found on ${aliasDomain}`);
+            return;
+          }
+
           const matchingAccount =
             res.names.find(
               (account) =>
@@ -385,11 +397,13 @@ export class SendComponent implements OnInit {
 
           if (matchingAccount == null) {
             this.toAccountStatus = 0; // Error state
+            this.notificationService.sendWarning(`Alias @${aliasName} not found on ${aliasDomain}`);
             return;
           }
 
           if (!this.util.account.isValidAccount(matchingAccount.address)) {
             this.toAccountStatus = 0; // Error state
+            this.notificationService.sendWarning(`Alias ${aliasFullText} does not have a valid address`);
             return;
           }
 
@@ -406,6 +420,7 @@ export class SendComponent implements OnInit {
           return;
         } catch(err) {
           this.toAccountStatus = 0; // Error state
+          this.notificationService.sendWarning(`Unknown error has occurred while trying to lookup ${aliasFullText}`);
           return;
         }
       })
@@ -414,6 +429,13 @@ export class SendComponent implements OnInit {
           ...this.ALIAS_LOOKUP_DEFAULT_STATE,
         };
         this.toAccountStatus = 0; // Error state
+
+        if (err.status === 404) {
+          this.notificationService.sendWarning(`No aliases found on ${aliasDomain}`);
+        } else {
+          this.notificationService.sendWarning(`Could not reach domain ${aliasDomain}`);
+        }
+
         return;
       });
   }
