@@ -31,15 +31,21 @@ export class SendComponent implements OnInit {
   sendDestinationType = 'external-address';
 
   accounts = this.walletService.wallet.accounts;
-  aliasLookup = {
+
+  ALIAS_LOOKUP_DEFAULT_STATE = {
     fullText: '',
     name: '',
     domain: '',
   }
+
+  aliasLookup = {
+    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
+  }
+  aliasLookupInProgress = {
+    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
+  }
   aliasLookupLatestSuccessful = {
-    fullText: '',
-    name: '',
-    domain: '',
+    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
     address: '',
   }
   aliasResults$ = new BehaviorSubject([]);
@@ -277,9 +283,7 @@ export class SendComponent implements OnInit {
     if (mayBeAnAlias === false) {
       this.isDestinationAccountAlias = false;
       this.aliasLookup = {
-        fullText: '',
-        name: '',
-        domain: '',
+        ...this.ALIAS_LOOKUP_DEFAULT_STATE,
       };
       this.aliasResults$.next([]);
       return
@@ -341,6 +345,7 @@ export class SendComponent implements OnInit {
 
     this.toAccountStatus = 1; // Neutral state
 
+    const aliasFullText = this.aliasLookup.fullText;
     const aliasDomain = this.aliasLookup.domain;
 
     const aliasName = (
@@ -352,8 +357,25 @@ export class SendComponent implements OnInit {
     const lookupUrl =
       `https://${ aliasDomain }/.well-known/nano-currency.json?names=${ aliasName }`;
 
+    this.aliasLookupInProgress = {
+      ...this.aliasLookup,
+    };
+
     await this.http.get<any>(lookupUrl).toPromise()
       .then(res => {
+        const isOutdatedRequest = (
+            this.aliasLookupInProgress.fullText
+          !== aliasFullText
+        );
+
+        if (isOutdatedRequest === true) {
+          return;
+        }
+
+        this.aliasLookupInProgress = {
+          ...this.ALIAS_LOOKUP_DEFAULT_STATE,
+        };
+
         try {
           const matchingAccount =
             res.names.find(
@@ -374,7 +396,7 @@ export class SendComponent implements OnInit {
           this.toAccountID = matchingAccount.address;
 
           this.aliasLookupLatestSuccessful = {
-            ...this.aliasLookup,
+            ...this.aliasLookupInProgress,
             address: this.toAccountID,
           }
 
@@ -388,6 +410,9 @@ export class SendComponent implements OnInit {
         }
       })
       .catch(err => {
+        this.aliasLookupInProgress = {
+          ...this.ALIAS_LOOKUP_DEFAULT_STATE,
+        };
         this.toAccountStatus = 0; // Error state
         return;
       });

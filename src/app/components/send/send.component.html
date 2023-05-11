@@ -39,14 +39,21 @@
                         <ng-container *ngIf="(aliasResults$ | async).length">
                           <li class="uk-nav-header">Alias Lookup</li>
                           <li class="uk-nav-divider"></li>
-                          <li *ngFor="let alias of aliasResults$ | async">
-                            <a (click)="lookupAlias()" class="uk-padding-remove-bottom">
-                              <span class="text-half-muted">Press Enter or click here to request alias from</span>
-                            </a>
-                            <a (click)="lookupAlias()">
-                              <span class="uk-text-primary">{{ alias.domain }}</span>
+                          <li *ngIf="(aliasLookupInProgress.domain !== '')">
+                            <a>
+                              <span class="spinner uk-margin-small-right" uk-spinner="ratio: 0.5;"></span><span class="text-half-muted">Looking up {{ aliasLookupInProgress.fullText }}...</span>
                             </a>
                           </li>
+                          <ng-container *ngIf="(aliasLookupInProgress.domain === '')">
+                            <li *ngFor="let alias of aliasResults$ | async">
+                              <a (click)="lookupAlias()" class="uk-padding-remove-bottom">
+                                <span class="text-half-muted">Press Enter or click here to request alias from</span>
+                              </a>
+                              <a (click)="lookupAlias()">
+                                <span class="uk-text-primary">{{ alias.domain }}</span>
+                              </a>
+                            </li>
+                          </ng-container>
                           <li class="uk-nav-divider" *ngIf="(addressBookResults$ | async).length"></li>
                         </ng-container>
                         <ng-container *ngIf="(addressBookResults$ | async).length">
