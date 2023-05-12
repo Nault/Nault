@@ -393,7 +393,7 @@ export class SendComponent implements OnInit {
 
           if (aliasesInJsonCount === 0) {
             this.toAccountStatus = 0; // Error state
-            this.notificationService.sendWarning(`No aliases found on ${aliasDomain}`);
+            this.notificationService.sendWarning(`Alias @${aliasName} not found on ${aliasDomain}`);
             return;
           }
 
