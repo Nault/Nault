@@ -30093,7 +30093,7 @@ class ApiService {
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this14.request('process', {
-        block: JSON.stringify(block),
+        block: block,
         watch_work: 'false',
         subtype: _util_service__WEBPACK_IMPORTED_MODULE_1__.TxType[subtype]
       }, false);

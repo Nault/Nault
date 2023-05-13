@@ -157,7 +157,7 @@ export class ApiService {
     return await this.request('work_generate', { hash, difficulty }, workServer !== '', workServer, validateResponse);
   }
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
-    return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] }, false);
+    return await this.request('process', { block: block, watch_work: 'false', subtype: TxType[subtype] }, false);
   }
   async accountHistory(account, count = 25, raw = false, offset = 0, reverse = false): Promise<{history: any }> {
     // use unlimited count if 0
