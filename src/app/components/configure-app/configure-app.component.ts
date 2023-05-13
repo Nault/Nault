@@ -341,7 +341,7 @@ export class ConfigureAppComponent implements OnInit {
 
   }
 
-  async updateWalletSettings() {
+  async updateWalletSettings(hideAlert) {
     const newStorage = this.selectedStorage;
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
@@ -395,7 +395,7 @@ export class ConfigureAppComponent implements OnInit {
         newPoW = 'best';
       }
       // reset multiplier when not using it to avoid user mistake
-      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom' && newPoW !== 'nano.to') {
         this.selectedMultiplierOption = this.multiplierOptions[0].value;
       }
       // Cancel ongoing PoW if the old method was local PoW
@@ -438,7 +438,8 @@ export class ConfigureAppComponent implements OnInit {
     };
 
     this.appSettings.setAppSettings(newSettings);
-    this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
+
+    if (!hideAlert) this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
 
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
@@ -446,6 +447,11 @@ export class ConfigureAppComponent implements OnInit {
     if (reloadPending) {
       this.walletService.reloadBalances();
     }
+  }
+
+  async updateServerAndWalletSettings() {
+    this.updateWalletSettings(true)
+    this.updateServerSettings()
   }
 
   async updateServerSettings() {

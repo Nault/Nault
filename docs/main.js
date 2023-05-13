@@ -10168,7 +10168,7 @@ function ConfigureAppComponent_div_0_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵlistener"]("click", function ConfigureAppComponent_div_0_Template_button_click_159_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵrestoreView"](_r65);
       const ctx_r83 = _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵnextContext"]();
-      return ctx_r83.updateServerSettings();
+      return ctx_r83.updateServerAndWalletSettings();
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵtext"](160);
     _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵpipe"](161, "transloco");
@@ -10805,7 +10805,7 @@ class ConfigureAppComponent {
     })();
   }
 
-  updateWalletSettings() {
+  updateWalletSettings(hideAlert) {
     var _this5 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -10867,7 +10867,7 @@ class ConfigureAppComponent {
         } // reset multiplier when not using it to avoid user mistake
 
 
-        if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+        if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom' && newPoW !== 'nano.to') {
           _this5.selectedMultiplierOption = _this5.multiplierOptions[0].value;
         } // Cancel ongoing PoW if the old method was local PoW
 
@@ -10906,7 +10906,7 @@ class ConfigureAppComponent {
 
       _this5.appSettings.setAppSettings(newSettings);
 
-      _this5.notifications.sendSuccess(_this5.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
+      if (!hideAlert) _this5.notifications.sendSuccess(_this5.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
 
       if (resaveWallet) {
         _this5.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
@@ -10919,56 +10919,66 @@ class ConfigureAppComponent {
     })();
   }
 
-  updateServerSettings() {
+  updateServerAndWalletSettings() {
     var _this6 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this6.updateWalletSettings(true);
+
+      _this6.updateServerSettings();
+    })();
+  }
+
+  updateServerSettings() {
+    var _this7 = this;
+
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const newSettings = {
-        serverName: _this6.selectedServer,
+        serverName: _this7.selectedServer,
         serverAPI: null,
         serverWS: null,
         serverAuth: null
       }; // Custom... do some basic validation
 
-      if (_this6.serverAPI != null && _this6.serverAPI.trim().length > 1) {
-        if (_this6.serverAPI.startsWith('https://') || _this6.serverAPI.startsWith('http://')) {
-          newSettings.serverAPI = _this6.serverAPI;
+      if (_this7.serverAPI != null && _this7.serverAPI.trim().length > 1) {
+        if (_this7.serverAPI.startsWith('https://') || _this7.serverAPI.startsWith('http://')) {
+          newSettings.serverAPI = _this7.serverAPI;
         } else {
-          return _this6.notifications.sendWarning(_this6.translocoService.translate('configure-app.custom-api-server-has-an-invalid-address'));
+          return _this7.notifications.sendWarning(_this7.translocoService.translate('configure-app.custom-api-server-has-an-invalid-address'));
         }
       }
 
-      if (_this6.serverWS != null && _this6.serverWS.trim().length > 1) {
-        if (_this6.serverWS.startsWith('wss://') || _this6.serverWS.startsWith('ws://')) {
-          newSettings.serverWS = _this6.serverWS;
+      if (_this7.serverWS != null && _this7.serverWS.trim().length > 1) {
+        if (_this7.serverWS.startsWith('wss://') || _this7.serverWS.startsWith('ws://')) {
+          newSettings.serverWS = _this7.serverWS;
         } else {
-          return _this6.notifications.sendWarning(_this6.translocoService.translate('configure-app.custom-update-server-has-an-invalid-address'));
+          return _this7.notifications.sendWarning(_this7.translocoService.translate('configure-app.custom-update-server-has-an-invalid-address'));
         }
       }
 
-      if (_this6.serverAuth != null && _this6.serverAuth.trim().length > 1) {
-        newSettings.serverAuth = _this6.serverAuth;
+      if (_this7.serverAuth != null && _this7.serverAuth.trim().length > 1) {
+        newSettings.serverAuth = _this7.serverAuth;
       }
 
-      _this6.appSettings.setAppSettings(newSettings);
+      _this7.appSettings.setAppSettings(newSettings);
 
-      _this6.appSettings.loadAppSettings();
+      _this7.appSettings.loadAppSettings();
 
-      _this6.notifications.sendSuccess(_this6.translocoService.translate('configure-app.server-settings-successfully-updated'));
+      _this7.notifications.sendSuccess(_this7.translocoService.translate('configure-app.server-settings-successfully-updated'));
 
-      _this6.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
+      _this7.node.node.status = false; // Directly set node to offline since API url changed.  Status will get set by reloadBalances
       // Reload balances which triggers an api check + reconnect to websocket server
 
-      yield _this6.walletService.reloadBalances();
+      yield _this7.walletService.reloadBalances();
 
-      _this6.websocket.forceReconnect(); // this is updated after setting server to random and doing recheck of wallet balance
+      _this7.websocket.forceReconnect(); // this is updated after setting server to random and doing recheck of wallet balance
 
 
-      _this6.serverAPIUpdated = _this6.appSettings.settings.serverAPI;
-      _this6.serverAPI = _this6.serverAPIUpdated;
-      _this6.statsRefreshEnabled = true;
+      _this7.serverAPIUpdated = _this7.appSettings.settings.serverAPI;
+      _this7.serverAPI = _this7.serverAPIUpdated;
+      _this7.statsRefreshEnabled = true;
 
-      _this6.updateNodeStats();
+      _this7.updateNodeStats();
     })();
   }
 
@@ -10989,27 +10999,27 @@ class ConfigureAppComponent {
   }
 
   validateRepresentative() {
-    var _this7 = this;
+    var _this8 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      setTimeout(() => _this7.showRepresentatives = false, 400);
-      if (_this7.defaultRepresentative) _this7.defaultRepresentative = _this7.defaultRepresentative.replace(/ /g, '');
+      setTimeout(() => _this8.showRepresentatives = false, 400);
+      if (_this8.defaultRepresentative) _this8.defaultRepresentative = _this8.defaultRepresentative.replace(/ /g, '');
 
-      if (!_this7.defaultRepresentative) {
-        _this7.representativeListMatch = '';
+      if (!_this8.defaultRepresentative) {
+        _this8.representativeListMatch = '';
         return;
       }
 
-      const rep = _this7.repService.getRepresentative(_this7.defaultRepresentative);
+      const rep = _this8.repService.getRepresentative(_this8.defaultRepresentative);
 
-      const ninjaRep = yield _this7.ninja.getAccount(_this7.defaultRepresentative);
+      const ninjaRep = yield _this8.ninja.getAccount(_this8.defaultRepresentative);
 
       if (rep) {
-        _this7.representativeListMatch = rep.name;
+        _this8.representativeListMatch = rep.name;
       } else if (ninjaRep) {
-        _this7.representativeListMatch = ninjaRep.alias;
+        _this8.representativeListMatch = ninjaRep.alias;
       } else {
-        _this7.representativeListMatch = '';
+        _this8.representativeListMatch = '';
       }
     })();
   } // When changing the Server Config option, prefill values
@@ -11055,17 +11065,17 @@ class ConfigureAppComponent {
   }
 
   clearWorkCache() {
-    var _this8 = this;
+    var _this9 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
 
       try {
-        yield UIkit.modal.confirm('<p style="text-align: center;">' + _this8.translocoService.translate('configure-app.you-are-about-to-delete-all-locally-cached-proof-of-work') + '<br><br><b>' + _this8.translocoService.translate('configure-app.are-you-sure') + '</b></p>');
+        yield UIkit.modal.confirm('<p style="text-align: center;">' + _this9.translocoService.translate('configure-app.you-are-about-to-delete-all-locally-cached-proof-of-work') + '<br><br><b>' + _this9.translocoService.translate('configure-app.are-you-sure') + '</b></p>');
 
-        _this8.workPool.clearCache();
+        _this9.workPool.clearCache();
 
-        _this8.notifications.sendSuccess(_this8.translocoService.translate('configure-app.successfully-cleared-the-work-cache'));
+        _this9.notifications.sendSuccess(_this9.translocoService.translate('configure-app.successfully-cleared-the-work-cache'));
 
         return true;
       } catch (err) {
@@ -11075,52 +11085,52 @@ class ConfigureAppComponent {
   }
 
   clearWalletData() {
-    var _this9 = this;
-
-    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const UIkit = window['UIkit'];
-
-      try {
-        yield UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">' + _this9.translocoService.translate('configure-app.you-are-about-to-delete-all-locally-stored-data-about-your') + '</span><br><br><b style="font-size: 18px;">' + _this9.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + _this9.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>');
-
-        _this9.walletService.resetWallet();
-
-        _this9.walletService.removeWalletData();
-
-        _this9.notifications.sendSuccess(_this9.translocoService.translate('configure-app.successfully-deleted-all-wallet-data'));
-      } catch (err) {}
-    })();
-  }
-
-  clearAllData() {
     var _this10 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const UIkit = window['UIkit'];
 
       try {
-        yield UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">' + _this10.translocoService.translate('configure-app.clear-all-data.1') + '</span><br><br><b style="font-size: 18px;">' + _this10.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + _this10.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>');
+        yield UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">' + _this10.translocoService.translate('configure-app.you-are-about-to-delete-all-locally-stored-data-about-your') + '</span><br><br><b style="font-size: 18px;">' + _this10.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + _this10.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>');
 
         _this10.walletService.resetWallet();
 
         _this10.walletService.removeWalletData();
 
-        _this10.workPool.deleteCache();
+        _this10.notifications.sendSuccess(_this10.translocoService.translate('configure-app.successfully-deleted-all-wallet-data'));
+      } catch (err) {}
+    })();
+  }
 
-        _this10.addressBook.clearAddressBook();
+  clearAllData() {
+    var _this11 = this;
 
-        _this10.appSettings.clearAppSettings();
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const UIkit = window['UIkit'];
 
-        _this10.repService.resetRepresentativeList();
+      try {
+        yield UIkit.modal.confirm('<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">' + _this11.translocoService.translate('configure-app.clear-all-data.1') + '</span><br><br><b style="font-size: 18px;">' + _this11.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + _this11.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>');
 
-        _this10.api.deleteCache();
+        _this11.walletService.resetWallet();
 
-        _this10.loadFromSettings();
+        _this11.walletService.removeWalletData();
 
-        _this10.notifications.sendSuccess(_this10.translocoService.translate('configure-app.clear-all-data.successfully-deleted-locally-stored-data-and-reset-the')); // Get a new random API server or Nault will get stuck in offline mode
+        _this11.workPool.deleteCache();
+
+        _this11.addressBook.clearAddressBook();
+
+        _this11.appSettings.clearAppSettings();
+
+        _this11.repService.resetRepresentativeList();
+
+        _this11.api.deleteCache();
+
+        _this11.loadFromSettings();
+
+        _this11.notifications.sendSuccess(_this11.translocoService.translate('configure-app.clear-all-data.successfully-deleted-locally-stored-data-and-reset-the')); // Get a new random API server or Nault will get stuck in offline mode
 
 
-        _this10.updateServerSettings();
+        _this11.updateServerSettings();
       } catch (err) {}
     })();
   } // open qr reader modal
@@ -30275,6 +30285,14 @@ class AppSettingsService {
                 shouldRandom: false,
             },
             {
+                name: 'Nano.to Professional RPC',
+                value: 'nano.to',
+                api: 'https://rpc.nano.to',
+                ws: null,
+                auth: null,
+                shouldRandom: true,
+            },
+            {
                 name: 'My Nano Ninja',
                 value: 'ninja',
                 api: 'https://mynano.ninja/api/node',
@@ -32561,7 +32579,7 @@ class PowService {
   determineBestPoWMethod() {
     // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
-    return 'server';
+    return 'nano.to';
   }
   /**
    * Get PoW for a hash.  If it's already being processed, return the promise.

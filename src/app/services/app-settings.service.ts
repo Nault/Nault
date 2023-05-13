@@ -68,6 +68,14 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
+      name: 'Nano.to Professional RPC',
+      value: 'nano.to',
+      api: 'https://rpc.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
       name: 'My Nano Ninja',
       value: 'ninja',
       api: 'https://mynano.ninja/api/node',

@@ -44,8 +44,7 @@ export class PowService {
   determineBestPoWMethod(): PoWSource {
     // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
-
-    return 'server';
+    return 'nano.to';
   }
 
   /**
