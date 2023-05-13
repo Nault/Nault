@@ -370,6 +370,7 @@ export class SendComponent implements OnInit {
     this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
+
   }
 
   async confirmTransaction() {

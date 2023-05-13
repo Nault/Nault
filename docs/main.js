@@ -32345,7 +32345,8 @@ class NinjaService {
     var _this2 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      return yield _this2.request('accounts/verified');
+      yield _this2.request('accounts/verified');
+      return;
     })();
   }
 
@@ -32579,7 +32580,7 @@ class PowService {
   determineBestPoWMethod() {
     // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
-    return 'nano.to';
+    return 'server';
   }
   /**
    * Get PoW for a hash.  If it's already being processed, return the promise.
@@ -32693,7 +32694,7 @@ class PowService {
         powSource = _this2.determineBestPoWMethod();
       }
 
-      if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom') {
+      if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom' || powSource === 'nano.to') {
         if (multiplierSource > 1) {
           // use manual difficulty
           localMultiplier = multiplierSource;
@@ -32763,7 +32764,7 @@ class PowService {
           const proWork = yield _this2.getHashServer(queueItem.hash, queueItem.multiplier, workServer);
 
           if (proWork) {
-            work.work = proWork;
+            work.work = proWork.work;
             work.state = workState.success;
           } else {
             work.state = workState.error;

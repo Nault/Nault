@@ -44,7 +44,7 @@ export class PowService {
   determineBestPoWMethod(): PoWSource {
     // if (this.hasWebGLSupport()) return 'clientWebGL';
     // if (this.hasWorkerSupport()) return 'clientCPU'; // For now, server is better than a CPU default (For Mobile)
-    return 'nano.to';
+    return 'server';
   }
 
   /**
@@ -142,7 +142,7 @@ export class PowService {
       powSource = this.determineBestPoWMethod();
     }
 
-    if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom') {
+    if (powSource === 'clientCPU' || powSource === 'clientWebGL' || powSource === 'custom' || powSource === 'nano.to') {
       if (multiplierSource > 1) { // use manual difficulty
         localMultiplier = multiplierSource;
       } else { // use default requested difficulty
@@ -196,7 +196,7 @@ export class PowService {
         const proServer = 'https://rpc.nano.to';
         const proWork = await this.getHashServer(queueItem.hash, queueItem.multiplier, workServer);
         if (proWork) {
-          work.work = proWork;
+          work.work = proWork.work;
           work.state = workState.success;
         } else {
           work.state = workState.error;

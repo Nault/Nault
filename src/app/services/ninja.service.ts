@@ -49,7 +49,8 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    return await this.request('accounts/verified');
+    await this.request('accounts/verified');
+    return 
   }
 
   async recommendedRandomized(): Promise<any> {
