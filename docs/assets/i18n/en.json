@@ -201,7 +201,7 @@
     },
     "pow-multiplier": "PoW Multiplier",
     "pow-options": {
-      "external-nano-to": "Nano.to Professional RPC",
+      "external-nano-to": "Nano.to Pro RPC",
       "best-option-available": "Bananno dPoW",
       "client-side-cpu-slowest": "Local CPU (Slowest)",
       "client-side-gpu-webgl": "Local GPU/WebGL",

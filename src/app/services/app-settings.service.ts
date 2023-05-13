@@ -68,7 +68,7 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'Nano.to Professional RPC',
+      name: 'Nano.to Pro RPC',
       value: 'nano.to',
       api: 'https://rpc.nano.to',
       ws: null,
