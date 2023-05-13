@@ -4628,7 +4628,9 @@ class AccountDetailsComponent {
     var _this3 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      localStorage.setItem('nano-known', JSON.stringify(yield _this3.http.get('https://nano.to/known.json').toPromise()));
+      localStorage.setItem('nano-known', JSON.stringify(yield _this3.http.post('https://rpc.nano.to', {
+        action: "known"
+      }).toPromise()));
     })();
   }
 
@@ -5068,15 +5070,15 @@ class AccountDetailsComponent {
         return;
       }
 
-      const rep = _this9.repService.getRepresentative(_this9.representativeModel);
+      const rep = _this9.repService.getRepresentative(_this9.representativeModel); // const ninjaRep = await this.ninja.getAccount(this.representativeModel);
 
-      const ninjaRep = yield _this9.ninja.getAccount(_this9.representativeModel);
 
       if (rep) {
         _this9.representativeListMatch = rep.name;
-      } else if (ninjaRep) {
-        _this9.representativeListMatch = ninjaRep.alias;
-      } else {
+      } // else if (ninjaRep) {
+      //   this.representativeListMatch = ninjaRep.alias;
+      // } 
+      else {
         _this9.representativeListMatch = '';
       }
     })();
@@ -11010,15 +11012,15 @@ class ConfigureAppComponent {
         return;
       }
 
-      const rep = _this8.repService.getRepresentative(_this8.defaultRepresentative);
+      const rep = _this8.repService.getRepresentative(_this8.defaultRepresentative); // const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
-      const ninjaRep = yield _this8.ninja.getAccount(_this8.defaultRepresentative);
 
       if (rep) {
         _this8.representativeListMatch = rep.name;
-      } else if (ninjaRep) {
-        _this8.representativeListMatch = ninjaRep.alias;
-      } else {
+      } // else if (ninjaRep) {
+      //   this.representativeListMatch = ninjaRep.alias;
+      // } 
+      else {
         _this8.representativeListMatch = '';
       }
     })();
@@ -21936,15 +21938,15 @@ class RepresentativesComponent {
         return;
       }
 
-      const rep = _this3.representativeService.getRepresentative(_this3.toRepresentativeID);
+      const rep = _this3.representativeService.getRepresentative(_this3.toRepresentativeID); // const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
-      const ninjaRep = yield _this3.ninja.getAccount(_this3.toRepresentativeID);
 
       if (rep) {
         _this3.representativeListMatch = rep.name;
-      } else if (ninjaRep) {
-        _this3.representativeListMatch = ninjaRep.alias;
-      } else {
+      } // else if (ninjaRep) {
+      //   this.representativeListMatch = ninjaRep.alias;
+      // } 
+      else {
         _this3.representativeListMatch = '';
       }
     })();
@@ -23233,7 +23235,9 @@ class SendComponent {
         _this.findFirstAccount();
       }
 
-      _this.known = yield _this.http.get('https://nano.to/known.json').toPromise();
+      _this.known = yield _this.http.post('https://rpc.nano.to', {
+        action: "known"
+      }).toPromise();
     })();
   }
 
@@ -23470,8 +23474,7 @@ class SendComponent {
       _this4.amountFiat = _this4.util.nano.rawToMnano(rawAmount).times(_this4.price.price.lastPrice).toNumber();
       _this4.fromAddressBook = _this4.addressBookService.getAccountName(_this4.fromAccountID) || _this4.getAccountLabel(_this4.fromAccountID, 'Account');
       _this4.toAddressBook = _this4.addressBookService.getAccountName(destinationID) || _this4.getAccountLabel(destinationID, null); // Start precomputing the work...
-
-      _this4.workPool.addWorkToCache(_this4.fromAccount.frontier, 1);
+      // this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
       _this4.activePanel = 'confirm';
     })();
@@ -30092,8 +30095,9 @@ class ApiService {
     var _this14 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      console.log("block", block);
       return yield _this14.request('process', {
-        block: block,
+        block: JSON.stringify(block),
         watch_work: 'false',
         subtype: _util_service__WEBPACK_IMPORTED_MODULE_1__.TxType[subtype]
       }, false);
@@ -32345,7 +32349,9 @@ class NinjaService {
     var _this2 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this2.request('accounts/verified');
+      yield _this2.http.post('https://rpc.nano.to', {
+        action: "ninja_verified"
+      }).toPromise();
       return;
     })();
   }
@@ -32375,7 +32381,11 @@ class NinjaService {
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const REQUEST_TIMEOUT_MS = 10000;
 
-      const successPromise = _this5.http.get(_this5.ninjaUrl + 'accounts/' + account).toPromise().then(res => {
+      const successPromise = _this5.http.post('https://rpc.nano.to', {
+        action: "ninja_info",
+        account
+      }).toPromise() // this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
+      .then(res => {
         return res;
       }).catch(err => {
         if (err.status === 404) {
@@ -32763,7 +32773,7 @@ class PowService {
           const proWork = yield _this2.getHashServer(queueItem.hash, queueItem.multiplier, 'https://rpc.nano.to');
 
           if (proWork) {
-            work.work = proWork.work;
+            work.work = proWork;
             work.state = workState.success;
           } else {
             work.state = workState.error;
@@ -33044,8 +33054,8 @@ __webpack_require__.r(__webpack_exports__);
 class PriceService {
   constructor(http) {
     this.http = http;
-    this.storeKey = `nanovault-price`;
-    this.apiUrl = `https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    this.storeKey = `nanovault-price`; // apiUrl = `https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+
     this.price = {
       lastPrice: 0,
       lastPriceBTC: 0
@@ -33060,7 +33070,9 @@ class PriceService {
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!currency) return; // No currency defined, do not refetch
 
-      const response = yield _this.http.get(`${_this.apiUrl}`).toPromise();
+      const response = yield _this.http.post('https://rpc.nano.to', {
+        action: "market_data"
+      }).toPromise(); // const response: any = await this.http.get(`${this.apiUrl}`).toPromise();
 
       if (!response) {
         return _this.price.lastPrice;

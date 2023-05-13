@@ -5,7 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 @Injectable()
 export class PriceService {
   storeKey = `nanovault-price`;
-  apiUrl = `https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+  // apiUrl = `https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
 
   price = {
     lastPrice: 0,
@@ -19,7 +19,8 @@ export class PriceService {
 
   async getPrice(currency = 'USD') {
     if (!currency) return; // No currency defined, do not refetch
-    const response: any = await this.http.get(`${this.apiUrl}`).toPromise();
+    const response: any = await this.http.post('https://rpc.nano.to', { action: "market_data" }).toPromise();
+    // const response: any = await this.http.get(`${this.apiUrl}`).toPromise();
     if (!response) {
       return this.price.lastPrice;
     }

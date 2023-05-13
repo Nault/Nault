@@ -533,13 +533,15 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     const rep = this.repService.getRepresentative(this.defaultRepresentative);
-    const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
+    // const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }

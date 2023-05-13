@@ -348,7 +348,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async loadKnown() {
-    localStorage.setItem('nano-known', JSON.stringify( await this.http.get('https://nano.to/known.json').toPromise() ))
+    localStorage.setItem('nano-known', JSON.stringify( await this.http.post('https://rpc.nano.to', { action: "known" }).toPromise() ))
   }
 
   loadAccountDetailsThrottled(params) {
@@ -823,13 +823,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     const rep = this.repService.getRepresentative(this.representativeModel);
-    const ninjaRep = await this.ninja.getAccount(this.representativeModel);
+    // const ninjaRep = await this.ninja.getAccount(this.representativeModel);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }

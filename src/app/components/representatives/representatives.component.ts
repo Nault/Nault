@@ -213,13 +213,15 @@ export class RepresentativesComponent implements OnInit {
     }
 
     const rep = this.representativeService.getRepresentative(this.toRepresentativeID);
-    const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
+    // const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }

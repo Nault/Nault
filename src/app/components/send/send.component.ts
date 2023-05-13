@@ -115,7 +115,7 @@ export class SendComponent implements OnInit {
       this.findFirstAccount();
     }
 
-    this.known = await this.http.get('https://nano.to/known.json').toPromise()
+    this.known = await this.http.post('https://rpc.nano.to', { action: "known" }).toPromise()
     
   }
 
@@ -367,7 +367,7 @@ export class SendComponent implements OnInit {
     );
 
     // Start precomputing the work...
-    this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
+    // this.workPool.addWorkToCache(this.fromAccount.frontier, 1);
 
     this.activePanel = 'confirm';
 

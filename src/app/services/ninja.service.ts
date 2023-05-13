@@ -49,7 +49,7 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    await this.request('accounts/verified');
+    await this.http.post('https://rpc.nano.to', { action: "ninja_verified" }).toPromise();
     return 
   }
 
@@ -68,7 +68,8 @@ export class NinjaService {
     const REQUEST_TIMEOUT_MS = 10000;
 
     const successPromise =
-      this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
+      this.http.post('https://rpc.nano.to', { action: "ninja_info", account }).toPromise()
+      // this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
         .then(res => {
           return res;
         })
