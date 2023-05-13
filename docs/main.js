@@ -32760,8 +32760,7 @@ class PowService {
           break;
 
         case 'nano.to':
-          const proServer = 'https://rpc.nano.to';
-          const proWork = yield _this2.getHashServer(queueItem.hash, queueItem.multiplier, workServer);
+          const proWork = yield _this2.getHashServer(queueItem.hash, queueItem.multiplier, 'https://rpc.nano.to');
 
           if (proWork) {
             work.work = proWork.work;
