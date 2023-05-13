@@ -122,10 +122,11 @@ export class ConfigureAppComponent implements OnInit {
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
   powOptions = [
+    { name: this.translocoService.translate('configure-app.pow-options.external-nano-to'), value: 'nano.to' },
     { name: this.translocoService.translate('configure-app.pow-options.best-option-available'), value: 'best' },
     { name: this.translocoService.translate('configure-app.pow-options.client-side-gpu-webgl'), value: 'clientWebGL' },
     { name: this.translocoService.translate('configure-app.pow-options.client-side-cpu-slowest'), value: 'clientCPU' },
-    { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
+    // { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
     { name: this.translocoService.translate('configure-app.pow-options.external-custom-server'), value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;

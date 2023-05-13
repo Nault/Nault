@@ -201,10 +201,11 @@
     },
     "pow-multiplier": "PoW Multiplier",
     "pow-options": {
-      "best-option-available": "Best Option Available",
-      "client-side-cpu-slowest": "Client-side - CPU (Slowest)",
-      "client-side-gpu-webgl": "Client-side - GPU/WebGL",
-      "external-custom-server": "External - Custom Server",
+      "external-nano-to": "Nano.to Professional RPC",
+      "best-option-available": "Bananno dPoW",
+      "client-side-cpu-slowest": "Local CPU (Slowest)",
+      "client-side-gpu-webgl": "Local GPU/WebGL",
+      "external-custom-server": "Remote Server",
       "external-selected-server": "External - Selected Server"
     },
     "pow-source": "PoW Source",

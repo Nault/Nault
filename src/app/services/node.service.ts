@@ -10,7 +10,7 @@ export class NodeService {
 
   constructor(private notifications: NotificationService) { }
 
-  setOffline(msg = `Unable to connect to the nano node, your balances may be inaccurate!`) {
+  setOffline(msg = `Unable to connect Node.`) {
     if (this.node.status === false) return; // Already offline
     this.node.status = false;
 

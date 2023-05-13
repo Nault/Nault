@@ -200,8 +200,8 @@
                   <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
                 </div>
                 <div class="status-labels" *ngIf="settings.settings.serverAPI">
-                  <div class="label primary uk-text-danger">Unable to connect to the server</div>
-                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                  <div class="label primary uk-text-danger" style="text-decoration: none">Offline Mode</div>
+                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">change Node</a></div>
                 </div>
                 <div class="status-labels" *ngIf="!settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">Wallet is in offline mode</div>

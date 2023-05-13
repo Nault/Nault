@@ -3,7 +3,7 @@ import * as url from 'url';
 import { TranslocoService, getBrowserCultureLang, getBrowserLang } from '@ngneat/transloco';
 
 export type WalletStore = 'localStorage'|'none';
-export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
+export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom'|'nano.to';
 export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
@@ -44,7 +44,7 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
-    powSource: 'best',
+    powSource: 'nano.to',
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
@@ -190,6 +190,8 @@ export class AppSettingsService {
       this.settings.serverName = 'random';
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
+    } else if (this.settings.serverName === 'nano.to') {
+      console.log('SETTINGS: Nano.to Professional RPC');
     } else if (this.settings.serverName === 'offline') {
       console.log('SETTINGS: Offline Mode');
       this.settings.serverName = matchingServerOption.value;

@@ -193,6 +193,16 @@ export class PowService {
           work.state = workState.error;
         }
         break;
+      case 'nano.to':
+        const proServer = 'https://rpc.nano.to';
+        const proWork = await this.getHashServer(queueItem.hash, queueItem.multiplier, workServer);
+        if (proWork) {
+          work.work = proWork;
+          work.state = workState.success;
+        } else {
+          work.state = workState.error;
+        }
+        break;
     }
 
     this.currentProcessTime = 0; // Reset timer

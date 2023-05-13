@@ -122,46 +122,6 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">{{ 'configure-app.pow-source' | transloco }}</label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedPoWOption">
-                      <option *ngFor="let pow of powOptions" [value]="pow.value">
-                        <ng-element *ngIf="pow.value === 'server'">{{ getRemotePoWOptionName() }}</ng-element>
-                        <ng-element *ngIf="pow.value !== 'server'">{{ pow.name }}</ng-element>
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
-                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }}</label>
-                  <div class="uk-form-controls">
-                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
-                      <span class="uk-text-meta">
-                        {{ 'configure-app.this-has-to-be-a-valid-work.1' | transloco }} <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
-                      </span>
-                  </div>
-              </div>
-              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
-                <label class="uk-form-label">{{ 'configure-app.pow-multiplier' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.optional-increased-work-for-transaction-priority-during')"></span></label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedMultiplierOption">
-                      <option *ngFor="let multiplier of multiplierOptions" [value]="multiplier.value">{{ multiplier.name }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
                 <label class="uk-form-label">{{ 'configure-app.receive-method' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.if-automatically-receiving-incoming-transactions-with-the')"></span></label>
                 <div class="uk-form-controls">
 
@@ -398,6 +358,46 @@
                         </tr>
                       </table>
                     </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+                    <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">{{ 'configure-app.pow-source' | transloco }}</label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedPoWOption">
+                      <option *ngFor="let pow of powOptions" [value]="pow.value">
+                        <ng-element *ngIf="pow.value === 'server'">{{ getRemotePoWOptionName() }}</ng-element>
+                        <ng-element *ngIf="pow.value !== 'server'">{{ pow.name }}</ng-element>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
+                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }}</label>
+                  <div class="uk-form-controls">
+                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://rpc.nano.to">
+                      <span class="uk-text-meta">
+                        {{ 'configure-app.this-has-to-be-a-valid-work.1' | transloco }} <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
+                      </span>
+                  </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
+                <label class="uk-form-label">{{ 'configure-app.pow-multiplier' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.optional-increased-work-for-transaction-priority-during')"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedMultiplierOption">
+                      <option *ngFor="let multiplier of multiplierOptions" [value]="multiplier.value">{{ multiplier.name }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
