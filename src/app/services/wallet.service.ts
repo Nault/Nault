@@ -754,7 +754,7 @@ export class WalletService {
 
       walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
 
-      walletAccount.frontier = frontiers.frontiers[accountID] || null;
+      walletAccount.frontier = frontiers.frontiers?.[accountID] || null;
 
       walletBalance = walletBalance.plus(walletAccount.balance);
       walletPendingInclUnconfirmed = walletPendingInclUnconfirmed.plus(accountBalancePendingInclUnconfirmed);
