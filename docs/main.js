@@ -1268,7 +1268,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](52, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](53, "a", 35);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](54, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](55, "Nano.to");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](55, "Search");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
