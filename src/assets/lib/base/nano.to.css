@@ -28,7 +28,8 @@
 }
 
 .dark-mode .content-container {
-    background: #121213 !important;
+    background: #000 !important;
+/*    background: #121213 !important;*/
 }
 
 .nav-container .nav-representative-info > .representative > .representative-health-row.health-unknown {

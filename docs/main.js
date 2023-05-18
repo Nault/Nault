@@ -716,7 +716,7 @@ function AppComponent_app_change_rep_widget_49_Template(rf, ctx) {
   }
 }
 
-function AppComponent_span_70_Template(rf, ctx) {
+function AppComponent_span_74_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "span", 135);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "div", 36);
@@ -1180,7 +1180,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
   },
   decls: 180,
   vars: 77,
-  consts: [["uk-grid", "", 1, "app", 2, "overflow-y", "hidden", 3, "mousemove", "keypress"], [1, "uk-width-1-1", 2, "position", "relative", "overflow-y", "hidden"], ["uk-grid", "", 1, "mobile-top-bar", "uk-background-primary"], [1, "uk-width-1-2", "button-column"], [1, "nav-button", 3, "click"], ["uk-icon", "icon: menu;"], [1, "app-name"], [1, "uk-width-1-2", 2, "text-align", "right"], ["accountsDropdown", ""], [1, "header"], ["class", "account active", 4, "ngIf"], [3, "click"], [1, "name-column"], [1, "name"], [1, "address"], [1, "balance-column"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [4, "ngFor", "ngForOf"], ["uk-grid", "", 1, "app-grid"], [1, "uk-width-1-4", "nav-container"], [1, "nav-header"], ["uk-grid", ""], [1, "uk-width-expand"], [1, "logo"], [1, "card-contents"], [1, "account-name-container"], [1, "name", 3, "routerLink", "queryParams"], ["selectButton", ""], [1, "circle"], [1, "account-balances"], ["balancesLoading", ""], [4, "ngIf"], ["class", "nav-status-row", 4, "ngIf"], ["uk-nav", "", 1, "uk-nav", "uk-nav-default", "uk-nav-parent-icon", "left-nav"], ["routerLink", "/accounts", "routerLinkActive", "active"], [1, "label"], ["routerLink", "/send", "routerLinkActive", "active"], ["routerLink", "/receive", "routerLinkActive", "active"], [1, "uk-width-3-4"], [1, "uk-width-1-4", "uk-text-center", "label-new"], ["class", "uk-badge uk-text-top uk-align-center", 4, "ngIf"], ["routerLink", "/marketplace", "routerLinkActive", "active"], [1, "uk-parent"], ["href", "#"], [1, "uk-nav-sub"], ["routerLink", "/representatives", "routerLinkActive", "active", 3, "queryParams"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["routerLink", "/configure-wallet", "routerLinkActive", "active"], ["href", "https://simpleswap.io/?ref=ecc1985b556a", "target", "_blank"], [2, "display", "inline-block", "filter", "invert(1)", "margin-left", "6px", "zoom", "0.8", "vertical-align", "text-bottom"], ["height", "16", "viewBox", "0 0 16 16", "width", "16", "xmlns", "http://www.w3.org/2000/svg"], ["d", "M15,10 L15,14 C15,15.1045695 14.1045695,16 13,16 L2,16 C0.8954305,16 0,15.1045695 0,14 L0,3 C0,1.8954305 0.8954305,1 2,1 L6,1 L6,3 L2,3 L2,14 L13,14 L13,10 L15,10 Z M13.9971001,3.41421356 L7.70420685,9.70710678 L6.28999329,8.29289322 L12.5828865,2 L8.99710007,2 L8.99710007,0 L15.9971001,0 L15.9971001,7 L13.9971001,7 L13.9971001,3.41421356 Z", "fill-rule", "evenodd"], ["routerLink", "/address-book", "routerLinkActive", "active"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/sweeper", "routerLinkActive", "active"], ["routerLink", "/remote-signing", "routerLinkActive", "active"], ["routerLink", "/multisig", "routerLinkActive", "active"], ["routerLink", "/keygenerator", "routerLinkActive", "active"], ["routerLink", "/converter", "routerLinkActive", "active"], ["routerLink", "/qr-generator", "routerLinkActive", "active"], [1, "nav-search"], [1, "uk-search", "uk-search-default", "uk-width-1-1"], ["href", "javascript:void(0)", "uk-search-icon", "", 1, "uk-search-icon-flip", 3, "click"], ["id", "search-input", "type", "search", "placeholder", "Search for an account or block hash", "name", "searchData", 1, "uk-search-input", "uk-width-1-1", 3, "ngModel", "ngModelChange", "keyup.enter"], ["uk-grid", "", 1, "footer", "footer-actions", "uk-margin-remove-top", "uk-flex-middle"], [1, "uk-width-1-3", "uk-text-center"], ["routerLink", "/send", "routerLinkActive", "active", 1, "support-nault", 3, "queryParams"], [1, "button"], [1, "footer-link", "donation-icon"], ["uk-icon", "icon: heart; ratio: 1.2;"], [1, "section-caption"], [1, "uk-width-1-3", "uk-text-center", "community-column"], [1, "icons-row"], ["href", "https://github.com/fwd/Nault-Pro", "uk-icon", "icon: github-alt; ratio: 1.2;", "uk-tooltip", "", "title", "View our GitHub", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link"], ["href", "https://chat.nano.org", "uk-tooltip", "", "title", "Join our community on Discord", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link", "discord-icon"], ["width", "28", "height", "28", "xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 245 240"], ["d", "M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z", 1, "st0"], ["d", "M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z", 1, "st0"], [1, "uk-width-1-3", "uk-text-center", "dark-mode-column"], [1, "dark-mode-area"], [1, "dark-mode-switch"], ["width", "16", "height", "16", "version", "1.1", "viewBox", "0 0 160 160", "xmlns", "http://www.w3.org/2000/svg"], ["fill", "#EEE", "stroke", "#EEE", "stroke-linejoin", "round", "stroke-width", "2"], ["d", "m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z", "stop-color", "#000000"], ["transform", "matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)", "d", "m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z", "stop-color", "#000000"], ["uk-grid", "", 1, "footer", "footer-attribution", "uk-margin-remove-top"], [1, "attribution", "uk-width-1-1", "uk-text-center"], ["href", "https://github.com/Nault/Nault", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-width-expand", "content-container", "uk-panel", 3, "click"], [1, "account", "active"], [1, "address", "nano-address-monospace"], [1, "balance", "primary"], [1, "balance", "converted"], [1, "balance", "loading"], ["uk-spinner", "ratio: 0.5;"], ["class", "account inactive", 3, "click", 4, "ngIf"], [1, "account", "inactive", 3, "click"], ["class", "incoming-label", 4, "ngIf"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], [1, "balance-container", "primary"], [1, "amount-container"], [1, "amount-integer"], [1, "amount-fractional"], ["class", "amount-updating", 4, "ngIf"], ["class", "balance-container converted", 4, "ngIf"], [1, "amount-updating"], [1, "balance-container", "converted"], [1, "currency-name"], [1, "estimate-symbol"], ["class", "spinner-container", 4, "ngIf"], [1, "spinner-container"], ["uk-spinner", "ratio: 0.6;"], ["notProcessingPending", ""], [1, "nano-card", "incoming-card", "uk-animation-slide-left"], ["routerLink", "/receive", 1, "name"], [1, "nav-separator-top"], ["class", "nav-action-receive", 4, "ngIf"], [1, "nav-action-receive"], ["uk-icon", "icon: chevron-up; ratio: 1.2;", 1, "icon"], ["manuallyReceivingPending", ""], ["class", "nav-action-receive user-action-required uk-animation-slide-left", 4, "ngIf"], [1, "nav-action-receive", "user-action-required", "uk-animation-slide-left"], [1, "nav-action-receive", "uk-animation-slide-left"], [1, "nav-status-row"], [1, "status-icon"], ["uk-icon", "icon: warning; ratio: 1.2;", 1, "uk-text-danger"], ["class", "status-labels", 4, "ngIf"], [1, "status-labels"], [1, "label", "primary", "uk-text-danger", 2, "text-decoration", "none"], [1, "label", "secondary"], ["routerLink", "/configure-app"], [1, "label", "primary", "uk-text-danger"], [1, "uk-badge", "uk-text-top", "uk-align-center"], ["routerLink", "/manage-wallet", "routerLinkActive", "active"]],
+  consts: [["uk-grid", "", 1, "app", 2, "overflow-y", "hidden", 3, "mousemove", "keypress"], [1, "uk-width-1-1", 2, "position", "relative", "overflow-y", "hidden"], ["uk-grid", "", 1, "mobile-top-bar", "uk-background-primary"], [1, "uk-width-1-2", "button-column"], [1, "nav-button", 3, "click"], ["uk-icon", "icon: menu;"], [1, "app-name"], [1, "uk-width-1-2", 2, "text-align", "right"], ["accountsDropdown", ""], [1, "header"], ["class", "account active", 4, "ngIf"], [3, "click"], [1, "name-column"], [1, "name"], [1, "address"], [1, "balance-column"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [4, "ngFor", "ngForOf"], ["uk-grid", "", 1, "app-grid"], [1, "uk-width-1-4", "nav-container"], [1, "nav-header"], ["uk-grid", ""], [1, "uk-width-expand"], [1, "logo"], [1, "card-contents"], [1, "account-name-container"], [1, "name", 3, "routerLink", "queryParams"], ["selectButton", ""], [1, "circle"], [1, "account-balances"], ["balancesLoading", ""], [4, "ngIf"], ["class", "nav-status-row", 4, "ngIf"], ["uk-nav", "", 1, "uk-nav", "uk-nav-default", "uk-nav-parent-icon", "left-nav"], ["routerLink", "/marketplace", "routerLinkActive", "active"], [1, "label"], ["routerLink", "/accounts", "routerLinkActive", "active"], ["routerLink", "/send", "routerLinkActive", "active"], ["routerLink", "/receive", "routerLinkActive", "active"], [1, "uk-width-3-4"], [1, "uk-width-1-4", "uk-text-center", "label-new"], ["class", "uk-badge uk-text-top uk-align-center", 4, "ngIf"], [1, "uk-parent"], ["href", "#"], [1, "uk-nav-sub"], ["routerLink", "/representatives", "routerLinkActive", "active", 3, "queryParams"], ["routerLink", "/configure-app", "routerLinkActive", "active"], ["routerLink", "/configure-wallet", "routerLinkActive", "active"], ["href", "https://simpleswap.io/?ref=ecc1985b556a", "target", "_blank"], [2, "display", "inline-block", "filter", "invert(1)", "margin-left", "6px", "zoom", "0.8", "vertical-align", "text-bottom"], ["height", "16", "viewBox", "0 0 16 16", "width", "16", "xmlns", "http://www.w3.org/2000/svg"], ["d", "M15,10 L15,14 C15,15.1045695 14.1045695,16 13,16 L2,16 C0.8954305,16 0,15.1045695 0,14 L0,3 C0,1.8954305 0.8954305,1 2,1 L6,1 L6,3 L2,3 L2,14 L13,14 L13,10 L15,10 Z M13.9971001,3.41421356 L7.70420685,9.70710678 L6.28999329,8.29289322 L12.5828865,2 L8.99710007,2 L8.99710007,0 L15.9971001,0 L15.9971001,7 L13.9971001,7 L13.9971001,3.41421356 Z", "fill-rule", "evenodd"], ["routerLink", "/address-book", "routerLinkActive", "active"], ["routerLink", "/qr-scan", "routerLinkActive", "active"], ["routerLink", "/sweeper", "routerLinkActive", "active"], ["routerLink", "/remote-signing", "routerLinkActive", "active"], ["routerLink", "/multisig", "routerLinkActive", "active"], ["routerLink", "/keygenerator", "routerLinkActive", "active"], ["routerLink", "/converter", "routerLinkActive", "active"], ["routerLink", "/qr-generator", "routerLinkActive", "active"], [1, "nav-search"], [1, "uk-search", "uk-search-default", "uk-width-1-1"], ["href", "javascript:void(0)", "uk-search-icon", "", 1, "uk-search-icon-flip", 3, "click"], ["id", "search-input", "type", "search", "placeholder", "Search for an account or block hash", "name", "searchData", 1, "uk-search-input", "uk-width-1-1", 3, "ngModel", "ngModelChange", "keyup.enter"], ["uk-grid", "", 1, "footer", "footer-actions", "uk-margin-remove-top", "uk-flex-middle"], [1, "uk-width-1-3", "uk-text-center"], ["routerLink", "/send", "routerLinkActive", "active", 1, "support-nault", 3, "queryParams"], [1, "button"], [1, "footer-link", "donation-icon"], ["uk-icon", "icon: heart; ratio: 1.2;"], [1, "section-caption"], [1, "uk-width-1-3", "uk-text-center", "community-column"], [1, "icons-row"], ["href", "https://github.com/fwd/Nault-Pro", "uk-icon", "icon: github-alt; ratio: 1.2;", "uk-tooltip", "", "title", "View our GitHub", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link"], ["href", "https://chat.nano.org", "uk-tooltip", "", "title", "Join our community on Discord", "target", "_blank", "rel", "noopener noreferrer", 1, "footer-link", "discord-icon"], ["width", "28", "height", "28", "xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 245 240"], ["d", "M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z", 1, "st0"], ["d", "M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z", 1, "st0"], [1, "uk-width-1-3", "uk-text-center", "dark-mode-column"], [1, "dark-mode-area"], [1, "dark-mode-switch"], ["width", "16", "height", "16", "version", "1.1", "viewBox", "0 0 160 160", "xmlns", "http://www.w3.org/2000/svg"], ["fill", "#EEE", "stroke", "#EEE", "stroke-linejoin", "round", "stroke-width", "2"], ["d", "m145.54 108.99c-5.5673 25.239-34.67 39.667-62.22 39.667-37.888 0-68.603-30.714-68.603-68.603-1e-6 -37.888 30.714-68.603 68.603-68.603 9.8615 0 19.237 2.0808 27.712 5.8272-105.27 26.034-34.024 146.53 34.508 91.711z", "stop-color", "#000000"], ["transform", "matrix(.69599 .69599 -.69599 .69599 66.459 -75.221)", "d", "m120.54 62.862c-2.3901-1e-6 -9.2713 6.4507-10.961 4.7607s4.7607-8.5712 4.7607-10.961c0-2.3901-6.4507-9.2713-4.7607-10.961s8.5712 4.7607 10.961 4.7607 9.2712-6.4507 10.961-4.7607c1.69 1.6901-4.7607 8.5712-4.7607 10.961 0 2.3901 6.4507 9.2713 4.7607 10.961-1.6901 1.6901-8.5712-4.7607-10.961-4.7607z", "stop-color", "#000000"], ["uk-grid", "", 1, "footer", "footer-attribution", "uk-margin-remove-top"], [1, "attribution", "uk-width-1-1", "uk-text-center"], ["href", "https://github.com/Nault/Nault", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-width-expand", "content-container", "uk-panel", 3, "click"], [1, "account", "active"], [1, "address", "nano-address-monospace"], [1, "balance", "primary"], [1, "balance", "converted"], [1, "balance", "loading"], ["uk-spinner", "ratio: 0.5;"], ["class", "account inactive", 3, "click", 4, "ngIf"], [1, "account", "inactive", 3, "click"], ["class", "incoming-label", 4, "ngIf"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], [1, "balance-container", "primary"], [1, "amount-container"], [1, "amount-integer"], [1, "amount-fractional"], ["class", "amount-updating", 4, "ngIf"], ["class", "balance-container converted", 4, "ngIf"], [1, "amount-updating"], [1, "balance-container", "converted"], [1, "currency-name"], [1, "estimate-symbol"], ["class", "spinner-container", 4, "ngIf"], [1, "spinner-container"], ["uk-spinner", "ratio: 0.6;"], ["notProcessingPending", ""], [1, "nano-card", "incoming-card", "uk-animation-slide-left"], ["routerLink", "/receive", 1, "name"], [1, "nav-separator-top"], ["class", "nav-action-receive", 4, "ngIf"], [1, "nav-action-receive"], ["uk-icon", "icon: chevron-up; ratio: 1.2;", 1, "icon"], ["manuallyReceivingPending", ""], ["class", "nav-action-receive user-action-required uk-animation-slide-left", 4, "ngIf"], [1, "nav-action-receive", "user-action-required", "uk-animation-slide-left"], [1, "nav-action-receive", "uk-animation-slide-left"], [1, "nav-status-row"], [1, "status-icon"], ["uk-icon", "icon: warning; ratio: 1.2;", 1, "uk-text-danger"], ["class", "status-labels", 4, "ngIf"], [1, "status-labels"], [1, "label", "primary", "uk-text-danger", 2, "text-decoration", "none"], [1, "label", "secondary"], ["routerLink", "/configure-app"], [1, "label", "primary", "uk-text-danger"], [1, "uk-badge", "uk-text-top", "uk-align-center"], ["routerLink", "/manage-wallet", "routerLinkActive", "active"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "div", 0);
@@ -1268,38 +1268,38 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](52, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](53, "a", 35);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](54, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](55);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](56, "transloco");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](55, "Nano.to");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](57, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](58, "a", 37);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](59, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](60);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](61, "transloco");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](56, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](57, "a", 37);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](58, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](59);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](60, "transloco");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](62, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](63, "a", 38);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](64, "div", 22);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](65, "div", 39);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](66, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](67);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](68, "transloco");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](61, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](62, "a", 38);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](63, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](64);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](65, "transloco");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](66, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](67, "a", 39);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](68, "div", 22);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](69, "div", 40);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](70, AppComponent_span_70_Template, 4, 3, "span", 41);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](70, "div", 36);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](71);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](72, "transloco");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](73, "div", 41);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](74, AppComponent_span_74_Template, 4, 3, "span", 42);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](71, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](72, "a", 42);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](73, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](74, "Search");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
@@ -1541,15 +1541,15 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵproperty"]("ngIf", ctx.node.status === false && ctx.isConfigured());
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](1);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵproperty"]("ngIf", ctx.isConfigured());
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](6);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](56, 48, "general.accounts"));
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](60, 48, "general.accounts"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](61, 50, "general.send"));
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](65, 50, "general.send"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](68, 52, "general.receive"));
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](72, 52, "general.receive"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](3);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵproperty"]("ngIf", ctx.walletService.hasPendingTransactions());
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](3);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](78, 54, "general.settings"));
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](6);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](84, 56, "general.representatives"));
@@ -6565,7 +6565,7 @@ AccountsComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
   selectors: [["app-accounts"]],
   decls: 36,
   vars: 31,
-  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-margin-bottom"], [1, "uk-width-expand@s", "uk-width-1-1"], [1, "uk-heading-divider", "uk-text-truncate"], [1, "uk-text-truncate", 2, "font-size", "12px", "margin-left", "25px", "opacity", "0.2", "color", "#FFF", 3, "click"], [1, ""], ["uk-grid", "", 1, "uk-grid-small", "uk-child-width-expand"], ["type", "number", "class", "uk-input uk-form-width-small uk-width-1-1@m", "placeholder", "Account #", 3, "ngModel", "ngModelChange", 4, "ngIf"], [1, "uk-width-auto@m"], [1, "uk-button", "uk-button-secondary", "uk-width-1-1@m", 3, "click"], [1, "uk-card", "uk-overflow-hidden"], [1, "accounts-list", "uk-table", "uk-table-striped", "uk-table-small"], ["scope", "col", 1, "account-column", "uk-width-3-5@m", "uk-width-1-2"], ["scope", "col", 1, "account-amounts-column", "uk-width-1-5@m", "uk-width-1-4", "uk-text-right"], ["scope", "col"], ["class", "uk-visible-toggle", 4, "ngFor", "ngForOf"], [4, "ngIf"], ["class", "uk-table uk-table-striped uk-table-small", 4, "ngIf"], ["type", "number", "placeholder", "Account #", 1, "uk-input", "uk-form-width-small", "uk-width-1-1@m", 3, "ngModel", "ngModelChange"], [1, "uk-visible-toggle"], ["accountAmounts", ""], ["accountActions", ""], [1, "account-column", "uk-visible-toggle", "uk-text-truncate"], ["uk-grid", ""], [3, "routerLink", "queryParams", "click"], [1, "uk-flex"], ["scale", "12", "class", "nano-identicon", 3, "accountID", "settingIdenticonsStyle", 4, "ngIf"], [1, "uk-width-expand"], ["class", "account-index", 4, "ngIf"], [1, "account-label"], [1, "nano-address-clickable", "nano-address-monospace", "uk-text-truncate"], ["middle", "auto", 3, "accountID"], [1, "nano-address-actions", "uk-width-auto", "copy-container"], [1, "uk-iconnav", "copy-icons"], ["ngxClipboard", "", "uk-icon", "icon: copy", "uk-tooltip", "", 3, "cbContent", "title", "cbOnSuccess"], [1, "compact-account-amounts"], [3, "ngTemplateOutlet"], [1, "compact-account-actions"], [1, "account-amounts-column", "uk-text-right"], [1, "uk-float-right"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [1, "account-amounts-primary", "uk-width-1-1"], ["class", "incoming-label", 4, "ngIf"], [1, "amounts", 3, "title"], [1, "amount-integer"], [1, "amount-fractional"], [1, "currency-name"], [1, "account-amounts-converted", "uk-width-1-1", "text-half-muted"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], ["uk-spinner", "ratio: 0.5;"], ["uk-tooltip", "", 1, "icon-delete-account", "uk-text-danger", 3, "title", "click"], ["uk-icon", "icon: close;"], ["type", "button", 1, "button-delete-account", "uk-button", "uk-button-secondary", "uk-text-danger", "uk-text-center", "uk-width-auto", "nlt-icon-button", 3, "click"], ["uk-icon", "icon: close;", 1, "nlt-icon", 2, "vertical-align", "1px"], ["scale", "12", 1, "nano-identicon", 3, "accountID", "settingIdenticonsStyle"], [1, "account-index"], ["uk-icon", "icon: commenting", "uk-tooltip", "", 3, "title", "click"], ["colspan", "4", 2, "text-align", "center"], [3, "click"], [1, "uk-table", "uk-table-striped", "uk-table-small"], [1, "uk-alert", "uk-alert-primary", "missing-accounts-hint"], ["uk-icon", "icon: info"], [1, "hint-action", 3, "click"]],
+  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-margin-bottom"], [1, "uk-width-expand@s", "uk-width-1-1"], [1, "uk-heading-divider", "uk-text-truncate"], [1, "uk-text-truncate", 2, "font-size", "12px", "margin-left", "25px", "opacity", "0.4", "color", "#FFF", 3, "click"], [1, ""], ["uk-grid", "", 1, "uk-grid-small", "uk-child-width-expand"], ["type", "number", "class", "uk-input uk-form-width-small uk-width-1-1@m", "placeholder", "Account #", 3, "ngModel", "ngModelChange", 4, "ngIf"], [1, "uk-width-auto@m"], [1, "uk-button", "uk-button-secondary", "uk-width-1-1@m", 3, "click"], [1, "uk-card", "uk-overflow-hidden"], [1, "accounts-list", "uk-table", "uk-table-striped", "uk-table-small"], ["scope", "col", 1, "account-column", "uk-width-3-5@m", "uk-width-1-2"], ["scope", "col", 1, "account-amounts-column", "uk-width-1-5@m", "uk-width-1-4", "uk-text-right"], ["scope", "col"], ["class", "uk-visible-toggle", 4, "ngFor", "ngForOf"], [4, "ngIf"], ["class", "uk-table uk-table-striped uk-table-small", 4, "ngIf"], ["type", "number", "placeholder", "Account #", 1, "uk-input", "uk-form-width-small", "uk-width-1-1@m", 3, "ngModel", "ngModelChange"], [1, "uk-visible-toggle"], ["accountAmounts", ""], ["accountActions", ""], [1, "account-column", "uk-visible-toggle", "uk-text-truncate"], ["uk-grid", ""], [3, "routerLink", "queryParams", "click"], [1, "uk-flex"], ["scale", "12", "class", "nano-identicon", 3, "accountID", "settingIdenticonsStyle", 4, "ngIf"], [1, "uk-width-expand"], ["class", "account-index", 4, "ngIf"], [1, "account-label"], [1, "nano-address-clickable", "nano-address-monospace", "uk-text-truncate"], ["middle", "auto", 3, "accountID"], [1, "nano-address-actions", "uk-width-auto", "copy-container"], [1, "uk-iconnav", "copy-icons"], ["ngxClipboard", "", "uk-icon", "icon: copy", "uk-tooltip", "", 3, "cbContent", "title", "cbOnSuccess"], [1, "compact-account-amounts"], [3, "ngTemplateOutlet"], [1, "compact-account-actions"], [1, "account-amounts-column", "uk-text-right"], [1, "uk-float-right"], [4, "ngIf", "ngIfElse"], ["balanceLoading", ""], [1, "account-amounts-primary", "uk-width-1-1"], ["class", "incoming-label", 4, "ngIf"], [1, "amounts", 3, "title"], [1, "amount-integer"], [1, "amount-fractional"], [1, "currency-name"], [1, "account-amounts-converted", "uk-width-1-1", "text-half-muted"], [1, "incoming-label"], [1, "text-snippet"], [1, "text-full"], ["uk-spinner", "ratio: 0.5;"], ["uk-tooltip", "", 1, "icon-delete-account", "uk-text-danger", 3, "title", "click"], ["uk-icon", "icon: close;"], ["type", "button", 1, "button-delete-account", "uk-button", "uk-button-secondary", "uk-text-danger", "uk-text-center", "uk-width-auto", "nlt-icon-button", 3, "click"], ["uk-icon", "icon: close;", 1, "nlt-icon", 2, "vertical-align", "1px"], ["scale", "12", 1, "nano-identicon", 3, "accountID", "settingIdenticonsStyle"], [1, "account-index"], ["uk-icon", "icon: commenting", "uk-tooltip", "", 3, "title", "click"], ["colspan", "4", 2, "text-align", "center"], [3, "click"], [1, "uk-table", "uk-table-striped", "uk-table-small"], [1, "uk-alert", "uk-alert-primary", "missing-accounts-hint"], ["uk-icon", "icon: info"], [1, "hint-action", 3, "click"]],
   template: function AccountsComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
@@ -16778,44 +16778,114 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "MarketplaceComponent": () => (/* binding */ MarketplaceComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 3184);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ 28784);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 3184);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 28784);
+/* harmony import */ var _services_nano_block_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/nano-block.service */ 79653);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 52816);
+/* harmony import */ var _services_util_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/util.service */ 67241);
+
+
+
 
 
  // import { TranslocoService } from '@ngneat/transloco';
 
 class MarketplaceComponent {
-  // accounts = this.walletService.wallet.accounts;
-  // isLedgerWallet = this.walletService.isLedgerWallet();
-  // isSingleKeyWallet = this.walletService.isSingleKeyWallet();
-  // viewAdvanced = false;
-  // newAccountIndex = null;
   // // When we change the accounts, redetect changable reps (Debounce by 5 seconds)
   // accountsChanged$ = new Subject();
   // reloadRepWarning$ = this.accountsChanged$.pipe(debounce(() => timer(5000)));
-  constructor(http) {
+  constructor(http, // private walletService: WalletService,
+  // private notificationService: NotificationService,
+  // public modal: ModalService,
+  // public settings: AppSettingsService,
+  nanoBlock, // private representatives: RepresentativeService,
+  router, util) {
     this.http = http;
+    this.nanoBlock = nanoBlock;
+    this.router = router;
+    this.util = util; // accounts = this.walletService.wallet.accounts;
+    // isLedgerWallet = this.walletService.isLedgerWallet();
+    // isSingleKeyWallet = this.walletService.isSingleKeyWallet();
+    // viewAdvanced = false;
+
+    this.hidePopup = true;
+    this.string = '';
   }
 
   ngOnInit() {
-    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {})();
+    var _this = this;
+
+    return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      var on = false; // this.showPopup = false
+
+      window.addEventListener("message", event => {
+        if (event.data && typeof event.data === 'string' && event.data.includes('nano:')) {
+          // document.getElementById("approveDeepLink").style.display = on ? "none" : "flex";
+          _this.string = event.data; // this.hidePopup = false
+
+          console.log("asdadsd", _this.string);
+
+          _this.router.navigate(['send'], {
+            queryParams: {
+              to: event.data.replace('nano:', '').split('?')[0],
+              amount: event.data.replace('nano:', '').split('?')[1] ? event.data.replace('nano:', '').split('?')[1].replace('amount=', '') : ''
+            }
+          });
+        }
+      }, false);
+    })();
+  }
+
+  close() {
+    this.hidePopup = true; // document.getElementById("approveDeepLink").style.display = "none" ;
+  }
+
+  approve() {//     console.log( 
+    // this.string
+    //      )
+    // this.router.navigate(['send'], { queryParams: { 
+    //   to: this.string.replace('nano:', '').split('?')[0],
+    //   amount: this.string.replace('nano:', '').split('?')[1].replace('amount=', ''),
+    // } });
+    // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID, this.rawAmount, this.walletService.isLedgerWallet());
   }
 
 }
 
 MarketplaceComponent.ɵfac = function MarketplaceComponent_Factory(t) {
-  return new (t || MarketplaceComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpClient));
+  return new (t || MarketplaceComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_nano_block_service__WEBPACK_IMPORTED_MODULE_1__.NanoBlockService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_util_service__WEBPACK_IMPORTED_MODULE_2__.UtilService));
 };
 
-MarketplaceComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
+MarketplaceComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({
   type: MarketplaceComponent,
   selectors: [["app-marketplace"]],
-  decls: 1,
-  vars: 0,
-  consts: [["src", "https://nano.to?iframe=true", "frameborder", "0", 2, "width", "100%", "height", "95vh"]],
+  decls: 7,
+  vars: 1,
+  consts: [["src", "http://localhost:8080", "name", "nault", "frameborder", "0", 2, "width", "100%", "height", "95vh"], ["id", "approveDeepLink", 2, "display", "block", "position", "absolute", "background", "rgb(34 34 41 / 95%)", "z-index", "2", "width", "100%", "top", "0px", "left", "0px", "bottom", "0px", "padding", "20px", "align-items", "center", "justify-content", "center", 3, "hidden"], [2, "background", "#121213", "padding", "20px", "border-radius", "10px", "color", "#FFF", 3, "click"]],
   template: function MarketplaceComponent_Template(rf, ctx) {
     if (rf & 1) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "iframe", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div");
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "iframe", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](2, "div", 1);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "div", 2);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function MarketplaceComponent_Template_div_click_3_listener() {
+        return ctx.approve();
+      });
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, "Approve");
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "div", 2);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function MarketplaceComponent_Template_div_click_5_listener() {
+        return ctx.close();
+      });
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, "CAncel");
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    }
+
+    if (rf & 2) {
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("hidden", ctx.hidePopup);
     }
   },
   styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtYXJrZXRwbGFjZS5jb21wb25lbnQuY3NzIn0= */"]
@@ -23181,7 +23251,13 @@ class SendComponent {
 
   updateQueries(params) {
     if (params && params.amount && !isNaN(params.amount)) {
-      const amountAsRaw = new (bignumber_js__WEBPACK_IMPORTED_MODULE_1___default())(this.util.nano.mnanoToRaw(new (bignumber_js__WEBPACK_IMPORTED_MODULE_1___default())(params.amount)));
+      const amountAsRaw = new (bignumber_js__WEBPACK_IMPORTED_MODULE_1___default())(params.amount); // const amountAsRaw =
+      //   new BigNumber(
+      //     this.util.nano.mnanoToRaw(
+      //       new BigNumber(params.amount)
+      //     )
+      //   );
+
       this.amountExtraRaw = amountAsRaw.mod(this.nano).floor();
       this.amount = this.util.nano.rawToMnano(amountAsRaw.minus(this.amountExtraRaw)).toNumber();
       this.syncFiatPrice();

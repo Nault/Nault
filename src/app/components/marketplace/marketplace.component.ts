@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import BigNumber from 'bignumber.js';
+import {UtilService} from '../../services/util.service';
+import {NanoBlockService} from '../../services/nano-block.service';
 // import {Subject, timer} from 'rxjs';
 // import {debounce} from 'rxjs/operators';
-// import {Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {
   AppSettingsService,
   // LedgerService,
@@ -26,7 +29,8 @@ export class MarketplaceComponent implements OnInit {
   // isLedgerWallet = this.walletService.isLedgerWallet();
   // isSingleKeyWallet = this.walletService.isSingleKeyWallet();
   // viewAdvanced = false;
-  // newAccountIndex = null;
+  hidePopup = true;
+  string = '';
 
   // // When we change the accounts, redetect changable reps (Debounce by 5 seconds)
   // accountsChanged$ = new Subject();
@@ -38,15 +42,60 @@ export class MarketplaceComponent implements OnInit {
     // private notificationService: NotificationService,
     // public modal: ModalService,
     // public settings: AppSettingsService,
+    private nanoBlock: NanoBlockService,
     // private representatives: RepresentativeService,
-    // private router: Router,
+    private router: Router,
+    private util: UtilService,
     // private ledger: LedgerService,
     // private translocoService: TranslocoService
     ) { }
 
   async ngOnInit() {
 
+    var on = false
 
+    // this.showPopup = false
+
+    window.addEventListener(
+      "message",
+      (event) => {
+        if (event.data && typeof event.data === 'string' && event.data.includes('nano:')) {
+          // document.getElementById("approveDeepLink").style.display = on ? "none" : "flex";
+          
+          this.string = event.data
+          // this.hidePopup = false
+
+          console.log("asdadsd", this.string)
+
+          this.router.navigate(['send'], { queryParams: { 
+            to: event.data.replace('nano:', '').split('?')[0],
+            amount: event.data.replace('nano:', '').split('?')[1] ? event.data.replace('nano:', '').split('?')[1].replace('amount=', '') : '',
+          } });
+
+        }
+      },
+      false
+    );
+
+  }
+
+  close() {
+    this.hidePopup = true
+    // document.getElementById("approveDeepLink").style.display = "none" ;
+  }
+
+  approve() {
+
+//     console.log( 
+// this.string
+//      )
+
+    // this.router.navigate(['send'], { queryParams: { 
+    //   to: this.string.replace('nano:', '').split('?')[0],
+    //   amount: this.string.replace('nano:', '').split('?')[1].replace('amount=', ''),
+    // } });
+    
+    // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID, this.rawAmount, this.walletService.isLedgerWallet());
 
   }
 

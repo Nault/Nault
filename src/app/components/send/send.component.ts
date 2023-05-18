@@ -121,12 +121,14 @@ export class SendComponent implements OnInit {
 
   updateQueries(params) {
     if ( params && params.amount && !isNaN(params.amount) ) {
-      const amountAsRaw =
-        new BigNumber(
-          this.util.nano.mnanoToRaw(
-            new BigNumber(params.amount)
-          )
-        );
+      const amountAsRaw = new BigNumber(params.amount);
+
+      // const amountAsRaw =
+      //   new BigNumber(
+      //     this.util.nano.mnanoToRaw(
+      //       new BigNumber(params.amount)
+      //     )
+      //   );
 
       this.amountExtraRaw = amountAsRaw.mod(this.nano).floor();
 
