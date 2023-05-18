@@ -16859,33 +16859,14 @@ MarketplaceComponent.ɵfac = function MarketplaceComponent_Factory(t) {
 MarketplaceComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({
   type: MarketplaceComponent,
   selectors: [["app-marketplace"]],
-  decls: 7,
-  vars: 1,
-  consts: [["src", "http://localhost:8080", "name", "nault", "frameborder", "0", 2, "width", "100%", "height", "95vh"], ["id", "approveDeepLink", 2, "display", "block", "position", "absolute", "background", "rgb(34 34 41 / 95%)", "z-index", "2", "width", "100%", "top", "0px", "left", "0px", "bottom", "0px", "padding", "20px", "align-items", "center", "justify-content", "center", 3, "hidden"], [2, "background", "#121213", "padding", "20px", "border-radius", "10px", "color", "#FFF", 3, "click"]],
+  decls: 2,
+  vars: 0,
+  consts: [["src", "https://nano.to", "name", "nault", "frameborder", "0", 2, "width", "100%", "height", "95vh"]],
   template: function MarketplaceComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div");
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "iframe", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](2, "div", 1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "div", 2);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function MarketplaceComponent_Template_div_click_3_listener() {
-        return ctx.approve();
-      });
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, "Approve");
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](5, "div", 2);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function MarketplaceComponent_Template_div_click_5_listener() {
-        return ctx.close();
-      });
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, "CAncel");
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    }
-
-    if (rf & 2) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("hidden", ctx.hidePopup);
     }
   },
   styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtYXJrZXRwbGFjZS5jb21wb25lbnQuY3NzIn0= */"]
