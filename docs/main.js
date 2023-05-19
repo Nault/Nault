@@ -23491,7 +23491,7 @@ class SendComponent {
         const newHash = yield _this5.nanoBlock.generateSend(walletAccount, destinationID, _this5.rawAmount, _this5.walletService.isLedgerWallet());
 
         if (newHash) {
-          if (String(params.callback)) {
+          if (params.callback && String(params.callback).includes('api.nano.to')) {
             // try {
             function sleep(ms) {
               return new Promise(resolve => setTimeout(resolve, ms));

@@ -401,7 +401,7 @@ export class SendComponent implements OnInit {
 
       if (newHash) {
         
-        if (String(params.callback)) {
+        if (params.callback && String(params.callback).includes('api.nano.to')) {
           // try {
           function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
