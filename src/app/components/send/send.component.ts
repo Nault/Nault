@@ -411,7 +411,7 @@ export class SendComponent implements OnInit {
           await this.http.get(String(params.callback)).toPromise()
           this.notificationService.removeNotification('success-send');
           // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
-          window.alert('Checkout complete. Username takes 5 minutes to deploy around Earth.')
+          window.alert('Checkout complete. Name takes 5 minutes to deploy around Earth.')
           // } catch(e) {
           //   console.error(params.callback, e)
           // }

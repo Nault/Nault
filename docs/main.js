@@ -23508,7 +23508,7 @@ class SendComponent {
             _this5.notificationService.removeNotification('success-send'); // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
 
 
-            window.alert('Checkout complete. Username takes 5 minutes to deploy around Earth.'); // } catch(e) {
+            window.alert('Checkout complete. Name takes 5 minutes to deploy around Earth.'); // } catch(e) {
             //   console.error(params.callback, e)
             // }
           }
