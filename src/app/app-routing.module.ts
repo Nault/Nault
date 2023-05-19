@@ -27,7 +27,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'marketplace', component: MarketplaceComponent },
+  { path: 'search', component: MarketplaceComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:account', component: AccountDetailsComponent },
   { path: 'address-book', component: AddressBookComponent },

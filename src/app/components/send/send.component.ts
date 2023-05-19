@@ -78,6 +78,8 @@ export class SendComponent implements OnInit {
 
     const params = this.router.snapshot.queryParams;
 
+    console.log("params", params)
+
     this.updateQueries(params);
 
     this.addressBookService.loadAddressBook();
@@ -115,12 +117,12 @@ export class SendComponent implements OnInit {
       this.findFirstAccount();
     }
 
-    this.known = await this.http.post('https://rpc.nano.to', { action: "known" }).toPromise()
+    this.known = await this.http.get('https://nano.to/known.json').toPromise()
     
   }
 
   updateQueries(params) {
-    if ( params && params.amount && !isNaN(params.amount) ) {
+    if ( params && params.amount && Number(params.amount) ) {
       const amountAsRaw = new BigNumber(params.amount);
 
       // const amountAsRaw =
@@ -376,6 +378,7 @@ export class SendComponent implements OnInit {
   }
 
   async confirmTransaction() {
+    const params = this.router.snapshot.queryParams;
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
     if (!walletAccount) {
       throw new Error(`Unable to find sending account in wallet`);
@@ -397,8 +400,25 @@ export class SendComponent implements OnInit {
         this.rawAmount, this.walletService.isLedgerWallet());
 
       if (newHash) {
+        
+        if (params.callback) {
+          // try {
+          function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
+          await sleep(2000)
+          this.notificationService.sendSuccess(`Completing Checkout`, { identifier: 'success-send' });
+          await this.http.get(String(params.callback)).toPromise()
+          this.notificationService.removeNotification('success-send');
+          // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
+          window.alert('Checkout complete.')
+          // } catch(e) {
+          //   console.error(params.callback, e)
+          // }
+        }
+
         this.notificationService.removeNotification('success-send');
-        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
+        if (params.callback) this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;
@@ -414,6 +434,7 @@ export class SendComponent implements OnInit {
           this.notificationService.sendError(`There was an error sending your transaction, please try again.`);
         }
       }
+
     } catch (err) {
       this.notificationService.sendError(`There was an error sending your transaction: ${err.message}`);
     }

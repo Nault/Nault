@@ -60,16 +60,15 @@ export class MarketplaceComponent implements OnInit {
       "message",
       (event) => {
         if (event.data && typeof event.data === 'string' && event.data.includes('nano:')) {
-          // document.getElementById("approveDeepLink").style.display = on ? "none" : "flex";
           
           this.string = event.data
-          // this.hidePopup = false
 
-          console.log("asdadsd", this.string)
+          const params = new URLSearchParams(this.string.split('?')[1]);
 
           this.router.navigate(['send'], { queryParams: { 
             to: event.data.replace('nano:', '').split('?')[0],
-            amount: event.data.replace('nano:', '').split('?')[1] ? event.data.replace('nano:', '').split('?')[1].replace('amount=', '') : '',
+            amount: params.getAll('amount') || "0",
+            callback: params.getAll('callback'),
           } });
 
         }

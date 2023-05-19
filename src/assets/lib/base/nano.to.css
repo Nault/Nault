@@ -28,7 +28,7 @@
 }
 
 .dark-mode .content-container {
-    background: #000 !important;
+    background: #121213 !important;
 /*    background: #121213 !important;*/
 }
 
@@ -49,7 +49,7 @@
 }
 
 .nano-address-suffix {
-    color: #00a0d7 !important;
+    color: #3469ff !important;
 }
 
 .light-mode .nano-card .logo {
@@ -67,7 +67,7 @@
 }
 
 .landing-container > div > .wallet-option {
-    border-color: #00a0d7;
+    border-color: #3469ff;
     min-width: 280px;
     zoom: 0.9;
 }

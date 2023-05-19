@@ -1,4 +1,4 @@
-<span *ngIf="name" class="nano-to-name" style="color: #00a0d7;font-weight: bold;letter-spacing: 0.5px;line-height: 21px;">@{{ name }}</span>
+<span *ngIf="name" class="nano-to-name" style="color: #3469ff;font-weight: bold;letter-spacing: 0.5px;line-height: 21px;font-size: 17px;padding-left: 5px;margin-top: 3px;">@{{ name }}</span>
 <span *ngIf="!name" class="nano-address-prefix"><span class="nano-prefix">nano_</span>{{ firstCharacters }}</span>
 <span *ngIf="!name" 
 	[class]="{ 'nano-address-middle': true, 'uk-text-truncate': (middle === 'auto') }"
