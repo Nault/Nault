@@ -4627,7 +4627,7 @@ class AccountDetailsComponent {
     var _this3 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      localStorage.setItem('nano-known', JSON.stringify(yield _this3.http.get('https://nano.to/known.json').toPromise()));
+      localStorage.setItem('nano-known', JSON.stringify(yield _this3.http.get('https://api.nano.to/known.json').toPromise()));
     })();
   }
 
@@ -23214,7 +23214,7 @@ class SendComponent {
         _this.findFirstAccount();
       }
 
-      _this.known = yield _this.http.get('https://nano.to/known.json').toPromise();
+      _this.known = yield _this.http.get('https://api.nano.to/known.json').toPromise();
     })();
   }
 

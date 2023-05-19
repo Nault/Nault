@@ -117,7 +117,7 @@ export class SendComponent implements OnInit {
       this.findFirstAccount();
     }
 
-    this.known = await this.http.get('https://nano.to/known.json').toPromise()
+    this.known = await this.http.get('https://api.nano.to/known.json').toPromise()
     
   }
 
