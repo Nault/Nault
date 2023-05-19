@@ -23168,8 +23168,7 @@ class SendComponent {
     var _this = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const params = _this.router.snapshot.queryParams;
-      console.log("params", params);
+      const params = _this.router.snapshot.queryParams; // console.log("params", params)
 
       _this.updateQueries(params);
 

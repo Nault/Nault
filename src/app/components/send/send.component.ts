@@ -78,7 +78,7 @@ export class SendComponent implements OnInit {
 
     const params = this.router.snapshot.queryParams;
 
-    console.log("params", params)
+    // console.log("params", params)
 
     this.updateQueries(params);
 
