@@ -411,14 +411,14 @@ export class SendComponent implements OnInit {
           await this.http.get(String(params.callback)).toPromise()
           this.notificationService.removeNotification('success-send');
           // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
-          window.alert('Checkout complete. Username takes 5 minutes to deploy globally.')
+          window.alert('Checkout complete. Username takes 5 minutes to deploy around Earth.')
           // } catch(e) {
           //   console.error(params.callback, e)
           // }
         }
 
         this.notificationService.removeNotification('success-send');
-        if (params.callback) this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
+        if (!params.callback) this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;

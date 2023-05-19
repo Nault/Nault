@@ -23508,14 +23508,14 @@ class SendComponent {
             _this5.notificationService.removeNotification('success-send'); // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
 
 
-            window.alert('Checkout complete. Username takes 5 minutes to deploy globally.'); // } catch(e) {
+            window.alert('Checkout complete. Username takes 5 minutes to deploy around Earth.'); // } catch(e) {
             //   console.error(params.callback, e)
             // }
           }
 
           _this5.notificationService.removeNotification('success-send');
 
-          if (params.callback) _this5.notificationService.sendSuccess(`Successfully sent ${_this5.amount} ${_this5.selectedAmount.shortName}!`, {
+          if (!params.callback) _this5.notificationService.sendSuccess(`Successfully sent ${_this5.amount} ${_this5.selectedAmount.shortName}!`, {
             identifier: 'success-send'
           });
           _this5.activePanel = 'send';
