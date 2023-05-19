@@ -401,7 +401,7 @@ export class SendComponent implements OnInit {
 
       if (newHash) {
         
-        if (params.callback) {
+        if (String(params.callback)) {
           // try {
           function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
