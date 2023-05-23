@@ -17,6 +17,7 @@
 - ✅ Redesigned UI/UX
 - ✅ Add Nano.to Usernames to send page.
 - ✅ Add Nano.to Usernames to transactions.
+- 🟨 Introduce seamless OpenAI into Nault
 - 🟨 Introduce easy Crypto to Crypto swapping.
 - 🟨 Introduce eCommerce into Nault.Pro
 - 🟨 Professional Security Audit
