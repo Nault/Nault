@@ -418,7 +418,7 @@ export class SendComponent implements OnInit {
         }
 
         this.notificationService.removeNotification('success-send');
-        if (!params.callback) this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
+        if (!params.callback) this.notificationService.sendSuccess(`Sent ${this.amount}`, { identifier: 'success-send' });
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;

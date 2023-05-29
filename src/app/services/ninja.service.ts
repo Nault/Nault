@@ -30,13 +30,13 @@ export class NinjaService {
     const newlist = [];
 
     for (const account of replist) {
-      scores[account.score] = scores[account.score] || [];
-      scores[account.score].push(account);
+      scores[account.weight] = scores[account.weight] || [];
+      scores[account.weight].push(account);
     }
 
-    for (const score in scores) {
-      if (scores.hasOwnProperty(score)) {
-        let accounts = scores[score];
+    for (const weight in scores) {
+      if (scores.hasOwnProperty(weight)) {
+        let accounts = scores[weight];
         accounts = this.util.array.shuffle(accounts);
 
         for (const account of accounts) {
@@ -49,8 +49,7 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    await this.http.post('https://rpc.nano.to', { action: "ninja_verified" }).toPromise();
-    return 
+    return await this.http.post('https://rpc.nano.to', { action: "representatives" }).toPromise();
   }
 
   async recommendedRandomized(): Promise<any> {

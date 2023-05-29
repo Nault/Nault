@@ -130,7 +130,7 @@ export class WalletWidgetComponent implements OnInit {
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
     if (unlocked) {
-      this.notificationService.sendSuccess(`Wallet unlocked`);
+      // this.notificationService.sendSuccess(`Wallet unlocked`);
       this.modal.hide();
       if (this.unlockPassword.length < 6) {
         // eslint-disable-next-line max-len

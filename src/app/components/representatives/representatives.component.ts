@@ -233,7 +233,7 @@ export class RepresentativesComponent implements OnInit {
       const totalSupply = new BigNumber(133248289);
 
       const reps = scores.map(rep => {
-        const nanoWeight = this.util.nano.rawToMnano(rep.votingweight.toString() || 0);
+        const nanoWeight = this.util.nano.rawToMnano(rep.weight.toString() || 0);
         const percent = nanoWeight.div(totalSupply).times(100);
 
         // rep.weight = nanoWeight.toString(10);
@@ -277,9 +277,9 @@ export class RepresentativesComponent implements OnInit {
 
   selectRecommendedRep(rep) {
     this.selectedRecommendedRep = rep;
-    this.toRepresentativeID = rep.account;
+    this.toRepresentativeID = rep.rep_address;
     this.showRecommendedReps = false;
-    this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
+    this.representativeListMatch = rep.username; // We will save if they use this, so this is a nice little helper
   }
 
   async changeRepresentatives() {
