@@ -21424,57 +21424,45 @@ function RepresentativesComponent_div_12_button_32_Template(rf, ctx) {
   }
 }
 
-function RepresentativesComponent_div_12_div_33_li_15_Template(rf, ctx) {
+function RepresentativesComponent_div_12_div_33_li_9_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "li", 59);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 123);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 121);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, " Loading reps... ");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
 }
 
-function RepresentativesComponent_div_12_div_33_li_16_Template(rf, ctx) {
+function RepresentativesComponent_div_12_div_33_li_10_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "li", 59);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 123);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 121);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, " Unable to load representatives from My Nano Ninja ");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
 }
 
-function RepresentativesComponent_div_12_div_33_li_17_Template(rf, ctx) {
+function RepresentativesComponent_div_12_div_33_li_11_Template(rf, ctx) {
   if (rf & 1) {
     const _r60 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "li");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](1, "div", 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](2, "div", 124);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_li_17_Template_div_click_2_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](2, "div", 122);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_li_11_Template_div_click_2_listener() {
       const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r60);
       const rep_r58 = restoredCtx.$implicit;
       const ctx_r59 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](3);
       return ctx_r59.selectRecommendedRep(rep_r58);
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "span", 125);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "span", 123);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "span", 126);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "span", 124);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](7, "div", 114);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](8, "a", 127);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](9, "span", 128);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](10, "span", 129);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](11, "span", 130);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](13, "span", 131);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](14, "span", 132);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](7, "div", 125);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
@@ -21482,15 +21470,9 @@ function RepresentativesComponent_div_12_div_33_li_17_Template(rf, ctx) {
   if (rf & 2) {
     const rep_r58 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.score);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.weight);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.alias);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("href", "https://mynano.ninja/account/" + rep_r58.account, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsanitizeUrl"]);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate1"](" ", rep_r58.percent, "%");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate1"](" ", rep_r58.uptime.toFixed(2), "%");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.username);
   }
 }
 
@@ -21501,55 +21483,46 @@ function RepresentativesComponent_div_12_div_33_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "hr");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](2, "div", 67);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "p", 65);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](4, "Select a representative recommended by ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "a", 110);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](6, "MyNanoNinja");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](7, "ul", 111);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](8, "li", 112);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](9, "div", 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](10, "div", 113);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](11, "Representative");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](12, "div", 114);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](13, "Weight / Uptime / Accounts");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "ul", 110);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](4, "li", 111);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "div", 87);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](6, "div", 112);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](7, "Representatives");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](14, "ul", 115);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](15, RepresentativesComponent_div_12_div_33_li_15_Template, 3, 0, "li", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](16, RepresentativesComponent_div_12_div_33_li_16_Template, 3, 0, "li", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](17, RepresentativesComponent_div_12_div_33_li_17_Template, 16, 5, "li", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](8, "ul", 113);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](9, RepresentativesComponent_div_12_div_33_li_9_Template, 3, 0, "li", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](10, RepresentativesComponent_div_12_div_33_li_10_Template, 3, 0, "li", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](11, RepresentativesComponent_div_12_div_33_li_11_Template, 8, 2, "li", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](18, "a", 116);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](19, "View All ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](20, "span", 117);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](12, "a", 114);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](13, "View All ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](14, "span", 115);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](21, "ul", 118);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](22, "li");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](23, "a", 119);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_Template_a_click_23_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](15, "ul", 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](16, "li");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](17, "a", 117);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_Template_a_click_17_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r62);
       const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](2);
       return ctx_r61.previousReps();
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](24, "span", 120);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](18, "span", 118);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](25, "li");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](19, "li");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](20);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](27, "li");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](28, "a", 121);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_Template_a_click_28_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](21, "li");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](22, "a", 119);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_div_33_Template_a_click_22_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r62);
       const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](2);
       return ctx_r63.nextReps();
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](29, "span", 122);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](23, "span", 120);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -21559,7 +21532,7 @@ function RepresentativesComponent_div_12_div_33_Template(rf, ctx) {
 
   if (rf & 2) {
     const ctx_r34 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](9);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx_r34.recommendedRepsLoading);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx_r34.recommendedRepsLoading === null);
@@ -21574,7 +21547,7 @@ function RepresentativesComponent_div_12_button_35_Template(rf, ctx) {
   if (rf & 1) {
     const _r65 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 133);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 126);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function RepresentativesComponent_div_12_button_35_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r65);
       const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](2);
@@ -21587,8 +21560,8 @@ function RepresentativesComponent_div_12_button_35_Template(rf, ctx) {
 
 function RepresentativesComponent_div_12_button_36_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 134);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "span", 128);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, " Updating Representatives");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
@@ -21677,7 +21650,7 @@ function RepresentativesComponent_div_12_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](33, RepresentativesComponent_div_12_div_33_Template, 30, 6, "div", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](33, RepresentativesComponent_div_12_div_33_Template, 24, 6, "div", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](34, "div", 84);
@@ -21940,7 +21913,7 @@ class RepresentativesComponent {
         const scores = yield _this4.ninja.recommended();
         const totalSupply = new (bignumber_js__WEBPACK_IMPORTED_MODULE_1___default())(133248289);
         const reps = scores.map(rep => {
-          const nanoWeight = _this4.util.nano.rawToMnano(rep.votingweight.toString() || 0);
+          const nanoWeight = _this4.util.nano.rawToMnano(rep.weight.toString() || 0);
 
           const percent = nanoWeight.div(totalSupply).times(100); // rep.weight = nanoWeight.toString(10);
 
@@ -21982,9 +21955,9 @@ class RepresentativesComponent {
 
   selectRecommendedRep(rep) {
     this.selectedRecommendedRep = rep;
-    this.toRepresentativeID = rep.account;
+    this.toRepresentativeID = rep.rep_address;
     this.showRecommendedReps = false;
-    this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
+    this.representativeListMatch = rep.username; // We will save if they use this, so this is a nice little helper
   }
 
   changeRepresentatives() {
@@ -22123,7 +22096,7 @@ RepresentativesComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MO
   },
   decls: 13,
   vars: 2,
-  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-margin-bottom"], [1, "uk-width-expand@s", "uk-width-1-1"], [1, "uk-heading-divider", "uk-text-truncate"], [1, "uk-width-auto@s", "uk-width-1-1", "uk-text-right"], ["routerLink", "/manage-representatives", 1, "uk-button", "uk-button-secondary", "uk-align-right", "uk-width-auto@s"], ["uk-grid", "", 1, "uk-animation-slide-left-small", "uk-margin-remove-top"], ["class", "uk-card uk-overflow-auto", 4, "ngIf"], ["class", "uk-width-1-1", 4, "ngIf"], [1, "uk-card", "uk-overflow-auto"], ["href", "https://docs.nano.org/protocol-design/orv-consensus/", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-table", "uk-table-striped", "uk-table-small"], ["scope", "col", 1, "representative-health-column-header", "hide-on-small-viewports"], ["scope", "col", 1, "uk-width-expand"], ["scope", "col", 1, "voting-weight-column-header", "uk-width-1-4", "uk-text-right"], [4, "ngIf"], ["class", "uk-text-center", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["representativeHealth", ""], [1, "representative-row"], [1, "representative-health-column", "uk-visible-toggle", "uk-text-truncate", "hide-on-small-viewports"], [3, "ngTemplateOutlet"], [1, "representative-name-column", "uk-text-truncate", "rep-container", 3, "click"], [1, "representative-label-container"], [1, "account-label", "rep"], [1, "representative-weight-percentage", "uk-width-auto", "uk-flex-inline", "uk-flex-middle"], ["class", "value uk-text-small text-half-muted", 4, "ngIf"], [1, "representative-address", "uk-text-small", "uk-text-truncate"], ["middle", "auto", 1, "nano-address-monospace", 3, "accountID"], [1, "representative-health-compact", "only-on-small-viewports", "uk-margin-small-top"], [1, "voting-weight-column", "uk-width-1-4"], [1, "uk-text-small", "text-half-muted"], [1, "amounts"], [1, "amount-integer"], [1, "amount-fractional"], [1, "currency-name"], ["class", "delegating-account-row", 4, "ngFor", "ngForOf"], [3, "ngSwitch"], ["class", "representative-health-status health-green", 4, "ngSwitchCase"], ["class", "representative-health-status health-yellow", 4, "ngSwitchCase"], ["class", "representative-health-status health-red", 4, "ngSwitchCase"], ["class", "representative-health-status health-unknown", 4, "ngSwitchDefault"], [1, "representative-health-status", "health-green"], [1, "health-icon"], [1, "label"], [1, "representative-health-status", "health-yellow"], [1, "representative-health-status", "health-red"], [1, "representative-health-status", "health-unknown"], [1, "value", "uk-text-small", "text-half-muted"], [1, "delegating-account-row"], [1, "representative-health-column", "hide-on-small-viewports"], [1, "delegating-account-details-column", "uk-text-truncate", "account-container", 3, "click"], [1, "delegating-account"], [1, "descendant-icon"], [1, "descendant-details", "uk-text-truncate"], [1, "descendant-label"], [1, "account-label"], [1, "descendant-address", "uk-text-truncate"], [1, "uk-text-center"], ["colspan", "3", "style", "text-align: center;", 4, "ngIf"], ["colspan", "3", 2, "text-align", "center"], ["uk-spinner", "", 1, "uk-margin-right"], [1, "uk-card", "uk-card-default"], [1, "uk-card-body", 2, "padding-bottom", "0"], [1, "uk-text-lead", "uk-text-center"], [1, "change-representative-form", "uk-form-horizontal"], [1, "uk-margin"], ["for", "form-horizontal-select", 1, "uk-form-label"], [1, "uk-form-controls"], ["id", "form-horizontal-select", 1, "uk-select", 3, "ngModel", "ngModelChange", "change"], [3, "value"], [3, "value", 4, "ngFor", "ngForOf"], [1, "uk-list", "uk-list-striped"], ["for", "form-horizontal-text2", 1, "uk-form-label"], [1, "uk-inline", "uk-width-1-1"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["id", "form-horizontal-text2", "type", "text", "placeholder", "Representative Account", 1, "uk-input", 3, "ngModel", "blur", "input", "focus", "ngModelChange"], ["repInput", ""], ["class", "nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute", "style", "z-index: 15000", 3, "hidden", 4, "ngIf"], ["class", "uk-form-controls", 4, "ngIf"], [1, "uk-inline", "uk-width-1-1", "uk-margin-top"], ["class", "uk-button uk-button-default uk-button-small", 3, "click", 4, "ngIf"], ["class", "uk-button uk-button-primary uk-button-small", 3, "click", 4, "ngIf"], [1, "uk-card-footer"], ["class", "uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right", "type", "button", 3, "click", 4, "ngIf"], ["class", "uk-button uk-button-secondary uk-width-1-1 uk-disabled nlt-icon-button", "type", "button", 4, "ngIf"], ["uk-grid", ""], [1, "uk-width-5-6", "uk-text-truncate"], [1, "action-remove", "uk-width-1-6", "uk-text-center"], ["title", "Remove From List", "uk-tooltip", "", 1, "uk-text-danger", 3, "click"], ["uk-icon", "icon: close;"], [1, "uk-margin-small-right", "account-label", "blue"], [1, "uk-text-truncate"], [1, "nlt-dropdown", "uk-animation-slide-down-small", "uk-width-1-1", "uk-card", "uk-card-default", "uk-card-body", "uk-position-absolute", 2, "z-index", "15000", 3, "hidden"], [1, "uk-nav", "uk-nav-default"], [1, "uk-nav-header"], [1, "uk-nav-divider"], [3, "click"], ["class", "uk-text-success", "style", "margin-left: 4px;", 4, "ngIf"], ["class", "uk-text-warning", "style", "margin-left: 4px;", 4, "ngIf"], [1, "uk-text-success", 2, "margin-left", "4px"], ["uk-icon", "icon: star;"], [1, "uk-text-warning", 2, "margin-left", "4px"], ["uk-icon", "icon: warning;"], [1, "uk-inline", "uk-width-1-1", "uk-margin-small-top"], [1, "uk-button", "uk-button-default", "uk-button-small", 3, "click"], ["uk-icon", "icon: minus; ratio: 0.8", 2, "margin-right", "5px"], [1, "uk-button", "uk-button-primary", "uk-button-small", 3, "click"], ["uk-icon", "icon: plus; ratio: 0.8", 2, "margin-right", "5px"], ["href", "https://mynano.ninja", "target", "_blank", "rel", "noopener noreferrer", 1, "uk-link-text"], [1, "uk-list", "uk-list-striped", 2, "margin-bottom", "0"], [1, "uk-list-header"], [1, "uk-width-expand"], [1, "uk-width-1-2"], [1, "uk-list", "uk-list-striped", 2, "margin-top", "0"], ["href", "https://mynano.ninja", "target", "_blank", "rel", "noopener noreferrer", "uk-tooltip", "", "title", "View all verified representatives on MyNanoNinja", 1, "view-all-reps-link", "uk-link-muted"], ["uk-icon", "icon: push; ratio: 0.9;"], [1, "uk-pagination", "uk-flex-center", "uk-flex-middle"], ["uk-tooltip", "", "title", "Previous Page", 3, "click"], ["uk-pagination-previous", "", 1, "uk-icon-button"], ["uk-tooltip", "", "title", "Next Page", 3, "click"], ["uk-pagination-next", "", 1, "uk-icon-button"], ["uk-icon", "load"], [1, "uk-width-expand", 2, "cursor", "pointer", 3, "click"], ["uk-tooltip", "", "title", "My Nano Ninja Score", 1, "uk-badge", 2, "margin-right", "4px"], ["uk-tooltip", "", "title", "Select this representative"], ["target", "_blank", "rel", "noopener noreferrer", "uk-tooltip", "", "title", "View more details on My Nano Ninja", 1, "uk-link-muted", 2, "float", "right", 3, "href"], ["uk-icon", "search"], ["uk-tooltip", "", "title", "Percentage of network voting weight delegated", 1, "uk-text-primary", 2, "display", "inline-block", "margin-right", "15px"], ["uk-icon", "users"], ["uk-tooltip", "", "title", "Uptime since creation", 1, "", 2, "display", "inline-block", "margin-right", "15px", "color", "#13ab60"], ["uk-icon", "bolt"], ["type", "button", 1, "uk-button", "uk-button-primary", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", 3, "click"], ["type", "button", 1, "uk-button", "uk-button-secondary", "uk-width-1-1", "uk-disabled", "nlt-icon-button"], ["uk-spinner", "ratio: 0.5;", 1, "spinner"]],
+  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-margin-bottom"], [1, "uk-width-expand@s", "uk-width-1-1"], [1, "uk-heading-divider", "uk-text-truncate"], [1, "uk-width-auto@s", "uk-width-1-1", "uk-text-right"], ["routerLink", "/manage-representatives", 1, "uk-button", "uk-button-secondary", "uk-align-right", "uk-width-auto@s"], ["uk-grid", "", 1, "uk-animation-slide-left-small", "uk-margin-remove-top"], ["class", "uk-card uk-overflow-auto", 4, "ngIf"], ["class", "uk-width-1-1", 4, "ngIf"], [1, "uk-card", "uk-overflow-auto"], ["href", "https://docs.nano.org/protocol-design/orv-consensus/", "target", "_blank", "rel", "noopener noreferrer"], [1, "uk-table", "uk-table-striped", "uk-table-small"], ["scope", "col", 1, "representative-health-column-header", "hide-on-small-viewports"], ["scope", "col", 1, "uk-width-expand"], ["scope", "col", 1, "voting-weight-column-header", "uk-width-1-4", "uk-text-right"], [4, "ngIf"], ["class", "uk-text-center", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["representativeHealth", ""], [1, "representative-row"], [1, "representative-health-column", "uk-visible-toggle", "uk-text-truncate", "hide-on-small-viewports"], [3, "ngTemplateOutlet"], [1, "representative-name-column", "uk-text-truncate", "rep-container", 3, "click"], [1, "representative-label-container"], [1, "account-label", "rep"], [1, "representative-weight-percentage", "uk-width-auto", "uk-flex-inline", "uk-flex-middle"], ["class", "value uk-text-small text-half-muted", 4, "ngIf"], [1, "representative-address", "uk-text-small", "uk-text-truncate"], ["middle", "auto", 1, "nano-address-monospace", 3, "accountID"], [1, "representative-health-compact", "only-on-small-viewports", "uk-margin-small-top"], [1, "voting-weight-column", "uk-width-1-4"], [1, "uk-text-small", "text-half-muted"], [1, "amounts"], [1, "amount-integer"], [1, "amount-fractional"], [1, "currency-name"], ["class", "delegating-account-row", 4, "ngFor", "ngForOf"], [3, "ngSwitch"], ["class", "representative-health-status health-green", 4, "ngSwitchCase"], ["class", "representative-health-status health-yellow", 4, "ngSwitchCase"], ["class", "representative-health-status health-red", 4, "ngSwitchCase"], ["class", "representative-health-status health-unknown", 4, "ngSwitchDefault"], [1, "representative-health-status", "health-green"], [1, "health-icon"], [1, "label"], [1, "representative-health-status", "health-yellow"], [1, "representative-health-status", "health-red"], [1, "representative-health-status", "health-unknown"], [1, "value", "uk-text-small", "text-half-muted"], [1, "delegating-account-row"], [1, "representative-health-column", "hide-on-small-viewports"], [1, "delegating-account-details-column", "uk-text-truncate", "account-container", 3, "click"], [1, "delegating-account"], [1, "descendant-icon"], [1, "descendant-details", "uk-text-truncate"], [1, "descendant-label"], [1, "account-label"], [1, "descendant-address", "uk-text-truncate"], [1, "uk-text-center"], ["colspan", "3", "style", "text-align: center;", 4, "ngIf"], ["colspan", "3", 2, "text-align", "center"], ["uk-spinner", "", 1, "uk-margin-right"], [1, "uk-card", "uk-card-default"], [1, "uk-card-body", 2, "padding-bottom", "0"], [1, "uk-text-lead", "uk-text-center"], [1, "change-representative-form", "uk-form-horizontal"], [1, "uk-margin"], ["for", "form-horizontal-select", 1, "uk-form-label"], [1, "uk-form-controls"], ["id", "form-horizontal-select", 1, "uk-select", 3, "ngModel", "ngModelChange", "change"], [3, "value"], [3, "value", 4, "ngFor", "ngForOf"], [1, "uk-list", "uk-list-striped"], ["for", "form-horizontal-text2", 1, "uk-form-label"], [1, "uk-inline", "uk-width-1-1"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["id", "form-horizontal-text2", "type", "text", "placeholder", "Representative Account", 1, "uk-input", 3, "ngModel", "blur", "input", "focus", "ngModelChange"], ["repInput", ""], ["class", "nlt-dropdown uk-animation-slide-down-small uk-width-1-1 uk-card uk-card-default uk-card-body uk-position-absolute", "style", "z-index: 15000", 3, "hidden", 4, "ngIf"], ["class", "uk-form-controls", 4, "ngIf"], [1, "uk-inline", "uk-width-1-1", "uk-margin-top"], ["class", "uk-button uk-button-default uk-button-small", 3, "click", 4, "ngIf"], ["class", "uk-button uk-button-primary uk-button-small", 3, "click", 4, "ngIf"], [1, "uk-card-footer"], ["class", "uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right", "type", "button", 3, "click", 4, "ngIf"], ["class", "uk-button uk-button-secondary uk-width-1-1 uk-disabled nlt-icon-button", "type", "button", 4, "ngIf"], ["uk-grid", ""], [1, "uk-width-5-6", "uk-text-truncate"], [1, "action-remove", "uk-width-1-6", "uk-text-center"], ["title", "Remove From List", "uk-tooltip", "", 1, "uk-text-danger", 3, "click"], ["uk-icon", "icon: close;"], [1, "uk-margin-small-right", "account-label", "blue"], [1, "uk-text-truncate"], [1, "nlt-dropdown", "uk-animation-slide-down-small", "uk-width-1-1", "uk-card", "uk-card-default", "uk-card-body", "uk-position-absolute", 2, "z-index", "15000", 3, "hidden"], [1, "uk-nav", "uk-nav-default"], [1, "uk-nav-header"], [1, "uk-nav-divider"], [3, "click"], ["class", "uk-text-success", "style", "margin-left: 4px;", 4, "ngIf"], ["class", "uk-text-warning", "style", "margin-left: 4px;", 4, "ngIf"], [1, "uk-text-success", 2, "margin-left", "4px"], ["uk-icon", "icon: star;"], [1, "uk-text-warning", 2, "margin-left", "4px"], ["uk-icon", "icon: warning;"], [1, "uk-inline", "uk-width-1-1", "uk-margin-small-top"], [1, "uk-button", "uk-button-default", "uk-button-small", 3, "click"], ["uk-icon", "icon: minus; ratio: 0.8", 2, "margin-right", "5px"], [1, "uk-button", "uk-button-primary", "uk-button-small", 3, "click"], ["uk-icon", "icon: plus; ratio: 0.8", 2, "margin-right", "5px"], [1, "uk-list", "uk-list-striped", 2, "margin-bottom", "0"], [1, "uk-list-header"], [1, "uk-width-expand"], [1, "uk-list", "uk-list-striped", 2, "margin-top", "0"], ["href", "https://mynano.ninja", "target", "_blank", "rel", "noopener noreferrer", "uk-tooltip", "", "title", "View all verified representatives on MyNanoNinja", 1, "view-all-reps-link", "uk-link-muted"], ["uk-icon", "icon: push; ratio: 0.9;"], [1, "uk-pagination", "uk-flex-center", "uk-flex-middle"], ["uk-tooltip", "", "title", "Previous Page", 3, "click"], ["uk-pagination-previous", "", 1, "uk-icon-button"], ["uk-tooltip", "", "title", "Next Page", 3, "click"], ["uk-pagination-next", "", 1, "uk-icon-button"], ["uk-icon", "load"], [1, "uk-width-expand", 2, "cursor", "pointer", 3, "click"], ["uk-tooltip", "", "title", "My Nano Ninja Score", 1, "uk-badge", 2, "margin-right", "4px"], ["uk-tooltip", "", "title", "Select this representative"], [1, "uk-width-1-2"], ["type", "button", 1, "uk-button", "uk-button-primary", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", 3, "click"], ["type", "button", 1, "uk-button", "uk-button-secondary", "uk-width-1-1", "uk-disabled", "nlt-icon-button"], ["uk-spinner", "ratio: 0.5;", 1, "spinner"]],
   template: function RepresentativesComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 0);
@@ -23514,7 +23487,7 @@ class SendComponent {
 
           _this5.notificationService.removeNotification('success-send');
 
-          if (!params.callback) _this5.notificationService.sendSuccess(`Successfully sent ${_this5.amount} ${_this5.selectedAmount.shortName}!`, {
+          if (!params.callback) _this5.notificationService.sendSuccess(`Sent ${_this5.amount}`, {
             identifier: 'success-send'
           });
           _this5.activePanel = 'send';
@@ -29266,8 +29239,7 @@ class WalletWidgetComponent {
       const unlocked = yield _this4.walletService.unlockWallet(_this4.unlockPassword);
 
       if (unlocked) {
-        _this4.notificationService.sendSuccess(`Wallet unlocked`);
-
+        // this.notificationService.sendSuccess(`Wallet unlocked`);
         _this4.modal.hide();
 
         if (_this4.unlockPassword.length < 6) {
@@ -32332,13 +32304,13 @@ class NinjaService {
     const newlist = [];
 
     for (const account of replist) {
-      scores[account.score] = scores[account.score] || [];
-      scores[account.score].push(account);
+      scores[account.weight] = scores[account.weight] || [];
+      scores[account.weight].push(account);
     }
 
-    for (const score in scores) {
-      if (scores.hasOwnProperty(score)) {
-        let accounts = scores[score];
+    for (const weight in scores) {
+      if (scores.hasOwnProperty(weight)) {
+        let accounts = scores[weight];
         accounts = this.util.array.shuffle(accounts);
 
         for (const account of accounts) {
@@ -32354,10 +32326,9 @@ class NinjaService {
     var _this2 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this2.http.post('https://rpc.nano.to', {
-        action: "ninja_verified"
+      return yield _this2.http.post('https://rpc.nano.to', {
+        action: "representatives"
       }).toPromise();
-      return;
     })();
   }
 
