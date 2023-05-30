@@ -242,7 +242,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1" *ngIf="showServerValues()">
+          <div class="uk-width-1-1" *ngIf="showServerValues() && serverWS">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">{{ 'configure-app.websocket-server' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.this-server-is-used-to-notify-the-wallet-in-real-time-when')"></span></label>
@@ -263,7 +263,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1" *ngIf="showServerValues()">
+          <div class="uk-width-1-1" *ngIf="showServerValues() && serverAuth">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">{{ 'configure-app.authorization' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.use-if-the-api-requires-authentication')"></span></label>
@@ -345,10 +345,10 @@
                             <strong>{{ 'general.network' | transloco }}</strong>
                           </td>
                           <td>
-                            {{nodeNetwork || 'N/A'}}
+                            {{nodeNetwork ? nodeNetwork.toUpperCase() : 'N/A'}}
                           </td>
                         </tr>
-                        <tr *ngIf="showServerValues() && !showServerConfigs()">
+                        <tr *ngIf="false && showServerValues() && !showServerConfigs()">
                           <td>
                             <strong>{{ 'configure-app.random-server' | transloco }}</strong>
                           </td>
