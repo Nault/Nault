@@ -160,6 +160,7 @@ if (this.walletService.isLocked()) {
     // }
 
     // Log the received message from the child iframe
+    // if (event.data.action === 'loading') this.notificationService.sendError(`Thinking..`);
     if (event.data.action === 'prompt') this.purchasePrompt()
   }
 
@@ -196,6 +197,10 @@ if (this.walletService.isLocked()) {
         if (isIFrame(iframe) && iframe.contentWindow) {
 
             iframe.contentWindow.postMessage({ hash: newHash }, '*');
+
+            // this.notificationService.sendError(`Sent.`);
+            // this.notificationService.sendSuccess(`Payed 0.01`);
+
         }
 
       } else {
@@ -207,7 +212,11 @@ if (this.walletService.isLocked()) {
       }
 
     } catch (err) {
-      this.notificationService.sendError(`Error paying: ${err.message}`);
+
+      console.log( err.message )
+
+      // this.notificationService.sendError(`Error paying: ${err.message}`);
+    
     }
 
     await this.walletService.reloadBalances();

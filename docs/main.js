@@ -8216,6 +8216,7 @@ class AiComponent {
     //   return;
     // }
     // Log the received message from the child iframe
+    // if (event.data.action === 'loading') this.notificationService.sendError(`Thinking..`);
     if (event.data.action === 'prompt') this.purchasePrompt();
   }
 
@@ -8249,7 +8250,8 @@ class AiComponent {
           if (isIFrame(iframe) && iframe.contentWindow) {
             iframe.contentWindow.postMessage({
               hash: newHash
-            }, '*');
+            }, '*'); // this.notificationService.sendError(`Sent.`);
+            // this.notificationService.sendSuccess(`Payed 0.01`);
           }
         } else {
           if (!_this2.walletService.isLedgerWallet()) {
@@ -8257,7 +8259,7 @@ class AiComponent {
           }
         }
       } catch (err) {
-        _this2.notificationService.sendError(`Error paying: ${err.message}`);
+        console.log(err.message); // this.notificationService.sendError(`Error paying: ${err.message}`);
       }
 
       yield _this2.walletService.reloadBalances(); // return newHash
