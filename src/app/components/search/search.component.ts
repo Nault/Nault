@@ -18,12 +18,12 @@ import {
 // import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-marketplace',
-  templateUrl: './marketplace.component.html',
-  styleUrls: ['./marketplace.component.css']
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.css']
 })
 
-export class MarketplaceComponent implements OnInit {
+export class SearchComponent implements OnInit {
 
   // accounts = this.walletService.wallet.accounts;
   // isLedgerWallet = this.walletService.isLedgerWallet();
