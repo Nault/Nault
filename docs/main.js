@@ -16186,59 +16186,39 @@ function ManageWalletComponent_div_6_ng_container_4_Template(rf, ctx) {
   }
 }
 
-function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template(rf, ctx) {
+function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_6_Template(rf, ctx) {
   if (rf & 1) {
     const _r34 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "div", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](1, "div", 1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](2, "hr", 28);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](3, "div", 29);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](4, "div", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](5, "div", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](1, "div", 28);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](2, "img", 29);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](6, "p");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](7, "b");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](8, "If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](3, "div", 30);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](4, "br");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](5, " Scan the QR code on any device to import your Nault wallet!");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](6, "br");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](7, "br");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](8, " You can also import your wallet by using the URL below. ");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](9, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](10, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](11, " For backup purposes, ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](12, "b");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](13, "always store the secret recovery seed and/or mnemonic");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](14, " from the \"Backup Wallet\" section above. ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](15, "div", 32);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](16, "img", 33);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](17, "div", 34);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](18, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](19, " Scan the QR code on any device to import your Nault wallet!");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](20, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](21, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](22, " You can also import your wallet by using the URL below. ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](23, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](24, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](25, "input", 35);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](26, "div", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](27, "button", 37);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("cbOnSuccess", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template_button_cbOnSuccess_27_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](11, "input", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](12, "div", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](13, "button", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("cbOnSuccess", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_6_Template_button_cbOnSuccess_13_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r34);
       const ctx_r33 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"](4);
       return ctx_r33.notifications.sendSuccess("Wallet export copied to clipboard!");
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](28, "Copy To Clipboard");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](14, "Copy To Clipboard");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](29, "button", 38);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template_button_click_29_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](15, "button", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_6_Template_button_click_15_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r34);
       const ctx_r35 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"](4);
       return ctx_r35.exportToFile();
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](30, "Export As File");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](16, "Export As File");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
@@ -16247,7 +16227,7 @@ function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template
 
   if (rf & 2) {
     const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("src", ctx_r31.QRExportImg, _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵsanitizeUrl"]);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](9);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵpropertyInterpolate"]("value", ctx_r31.QRExportUrl);
@@ -16256,13 +16236,13 @@ function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template
   }
 }
 
-function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_10_Template(rf, ctx) {
+function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_7_Template(rf, ctx) {
   if (rf & 1) {
     const _r37 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "div", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](1, "button", 39);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_10_Template_button_click_1_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](1, "button", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_7_Template_button_click_1_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r37);
       const ctx_r36 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"](4);
       return ctx_r36.exportWallet();
@@ -16281,18 +16261,15 @@ function ManageWalletComponent_div_6_ng_template_5_ng_container_0_Template(rf, c
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](3, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](4, " Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device! ");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](5, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](6, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](7, " Note: The export does not contain your address book.");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](8, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](9, ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_9_Template, 31, 3, "div", 26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](6, ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_6_Template, 17, 3, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](10, ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_10_Template, 3, 0, "div", 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](7, ManageWalletComponent_div_6_ng_template_5_ng_container_0_div_7_Template, 3, 0, "div", 27);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementContainerEnd"]();
   }
 
   if (rf & 2) {
     const ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngIf", ctx_r28.showQRExport);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngIf", !ctx_r28.showQRExport);
@@ -16309,7 +16286,7 @@ function ManageWalletComponent_div_6_ng_template_5_ng_template_1_Template(rf, ct
 
 function ManageWalletComponent_div_6_ng_template_5_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](0, ManageWalletComponent_div_6_ng_template_5_ng_container_0_Template, 11, 2, "ng-container", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](0, ManageWalletComponent_div_6_ng_template_5_ng_container_0_Template, 8, 2, "ng-container", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](1, ManageWalletComponent_div_6_ng_template_5_ng_template_1_Template, 2, 0, "ng-template", null, 25, _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplateRefExtractor"]);
   }
 
@@ -16355,7 +16332,7 @@ function ManageWalletComponent_div_11_Template(rf, ctx) {
 
 function ManageWalletComponent_div_12_option_17_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "option", 58);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "option", 54);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵpipe"](2, "squeeze");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵpipe"](3, "amountsplit");
@@ -16375,7 +16352,7 @@ function ManageWalletComponent_div_12_option_17_Template(rf, ctx) {
 
 function ManageWalletComponent_div_12_option_35_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "option", 59);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "option", 55);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
   }
@@ -16397,42 +16374,42 @@ function ManageWalletComponent_div_12_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](3, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](4, " However, you can use an offset of X to continue exporting from (X + 1). Another way is connecting Nault to a ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](5, "a", 40);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](5, "a", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](6, "custom server");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](7, " for unlimited history.");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](8, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](9, "div", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](10, "div", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](11, "div", 42);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](12, "div", 43);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](13, "label", 44);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](10, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](11, "div", 38);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](12, "div", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](13, "label", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](14, "Account");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](15, "div", 45);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](16, "select", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](15, "div", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](16, "select", 42);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("ngModelChange", function ManageWalletComponent_div_12_Template_select_ngModelChange_16_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r43);
       const ctx_r42 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
       return ctx_r42.csvAccount = $event;
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](17, ManageWalletComponent_div_12_option_17_Template, 7, 19, "option", 47);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](17, ManageWalletComponent_div_12_option_17_Template, 7, 19, "option", 43);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](18, "div", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](19, "div", 42);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](20, "div", 43);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](21, "label", 48);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](18, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](19, "div", 38);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](20, "div", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](21, "label", 44);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](22, "Transaction Limit ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](23, "span", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](23, "span", 45);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](24, "div", 45);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](25, "div", 50);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](26, "input", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](24, "div", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](25, "div", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](26, "input", 47);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("ngModelChange", function ManageWalletComponent_div_12_Template_input_ngModelChange_26_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r43);
       const ctx_r44 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
@@ -16448,37 +16425,37 @@ function ManageWalletComponent_div_12_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](27, "div", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](28, "div", 42);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](29, "div", 43);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](30, "label", 52);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](27, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](28, "div", 38);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](29, "div", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](30, "label", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](31, "Transaction Order");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](32, "div", 45);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](33, "div", 50);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](34, "select", 53);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](32, "div", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](33, "div", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](34, "select", 49);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("ngModelChange", function ManageWalletComponent_div_12_Template_select_ngModelChange_34_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r43);
       const ctx_r46 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
       return ctx_r46.selectedOrder = $event;
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](35, ManageWalletComponent_div_12_option_35_Template, 2, 2, "option", 54);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](35, ManageWalletComponent_div_12_option_35_Template, 2, 2, "option", 50);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](36, "div", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](37, "div", 42);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](38, "div", 43);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](39, "label", 55);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](36, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](37, "div", 38);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](38, "div", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](39, "label", 51);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](40, "Offset (optional) ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](41, "span", 56);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](41, "span", 52);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](42, "div", 45);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](43, "div", 50);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](44, "input", 57);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](42, "div", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](43, "div", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](44, "input", 53);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("ngModelChange", function ManageWalletComponent_div_12_Template_input_ngModelChange_44_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r43);
       const ctx_r47 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
@@ -16523,7 +16500,7 @@ function ManageWalletComponent_button_14_Template(rf, ctx) {
   if (rf & 1) {
     const _r50 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 60);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 56);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_button_14_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r50);
       const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
@@ -16545,7 +16522,7 @@ function ManageWalletComponent_button_15_Template(rf, ctx) {
   if (rf & 1) {
     const _r52 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 60);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 56);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function ManageWalletComponent_button_15_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r52);
       const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
@@ -16565,8 +16542,8 @@ function ManageWalletComponent_button_15_Template(rf, ctx) {
 
 function ManageWalletComponent_button_16_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 61);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](1, "span", 62);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "button", 57);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelement"](1, "span", 58);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](2, " FETCHING HISTORY...");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
   }
@@ -16904,7 +16881,7 @@ ManageWalletComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODUL
   selectors: [["app-manage-wallet"]],
   decls: 17,
   vars: 8,
-  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], [1, "uk-heading-divider"], ["class", "uk-card uk-card-default uk-margin", 4, "ngIf"], [1, "uk-card", "uk-card-default", "uk-margin"], [1, "uk-card-header"], [1, "uk-card-title"], ["class", "uk-card-body", 4, "ngIf"], [1, "uk-card-footer", "uk-text-right@s", "uk-text-center", "nlt-button-group"], ["class", "uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right", "type", "button", 3, "disabled", "click", 4, "ngIf"], ["class", "uk-button uk-button-secondary uk-disabled uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button nlt-icon-button-inline", "type", "button", 4, "ngIf"], [1, "uk-card-body"], ["uk-grid", ""], [1, "uk-width-1-2@s"], ["placeholder", "New Password", "type", "password", 1, "uk-input", 3, "ngModel", "ngModelChange"], ["class", "password-helper", 4, "ngIf"], ["placeholder", "Confirm New Password", "type", "password", 1, "uk-input", 3, "ngModel", "ngModelChange"], [1, "uk-button", "uk-button-primary", "uk-width-auto@s", "uk-width-1-1", 3, "disabled", "click"], [1, "password-helper"], [4, "ngIf"], ["uk-icon", "icon: lock;"], ["ngxClipboard", "", "uk-tooltip", "", 3, "title", "cbContent", "cbOnSuccess"], ["title", "Copy Private Key", "ngxClipboard", "", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess"], [4, "ngIf", "ngIfElse"], ["walletUnlocked", ""], ["walletHasNoPassword", ""], ["uk-grid", "", 4, "ngIf"], ["class", "uk-card-footer uk-text-right@s uk-text-center nlt-button-group", 4, "ngIf"], [1, "uk-divider-icon", "uk-margin-small-top"], [1, "uk-alert", "uk-alert-danger", "nlt-inline-alert", 2, "max-width", "600px"], [1, "icon-column"], ["uk-icon", "icon: warning; ratio: 2;"], [1, "uk-width-1-1@s", "uk-width-1-2@m", "uk-width-1-3@l"], ["alt", "QR code", 2, "border-radius", "6px", 3, "src"], [1, "uk-width-1-1@s", "uk-width-1-2@m", "uk-width-2-3@l"], ["type", "text", 1, "uk-input", 2, "max-width", "750px", 3, "value"], [1, "nlt-button-group", "uk-margin-small-top"], ["ngxClipboard", "", 1, "uk-button", "uk-button-secondary", 2, "margin-left", "0", 3, "cbContent", "cbOnSuccess"], [1, "uk-button", "uk-button-primary", 3, "click"], [1, "uk-button", "uk-button-primary", "uk-width-auto@s", "uk-width-1-1", 3, "click"], ["routerLink", "/configure-app", "routerLinkActive", "active"], [1, "uk-width-1-1", "narrow-div"], [1, "uk-form-horizontal"], [1, "uk-margin"], ["for", "account", 1, "uk-form-label"], [1, "uk-form-controls"], ["id", "account", 1, "uk-select", 3, "ngModel", "ngModelChange"], [3, "value", 4, "ngFor", "ngForOf"], ["for", "tx-count", 1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Maximum number of transactions to export. Blank or 0 equals unlimited but only effective if using a custom server."], [1, "uk-inline", "uk-width-1-1"], ["id", "tx-count", "type", "text", "placeholder", "", "autocomplete", "off", 3, "ngModel", "ngModelChange"], ["for", "tx-order", 1, "uk-form-label"], ["id", "tx-order", 1, "uk-select", 3, "ngModel", "ngModelChange"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["for", "tx-offset", 1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Start the export after this index. 10 means starting at transaction 11. Blank or 0 equals no offset."], ["id", "tx-offset", "type", "text", "placeholder", "", "autocomplete", "off", 3, "ngModel", "ngModelChange"], [3, "value"], [3, "ngValue"], ["type", "button", 1, "uk-button", "uk-button-primary", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", 3, "disabled", "click"], ["type", "button", 1, "uk-button", "uk-button-secondary", "uk-disabled", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", "nlt-icon-button", "nlt-icon-button-inline"], ["uk-spinner", "ratio: 0.5;", 1, "uk-margin-right"]],
+  consts: [["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-width-1-1"], [1, "uk-heading-divider"], ["class", "uk-card uk-card-default uk-margin", 4, "ngIf"], [1, "uk-card", "uk-card-default", "uk-margin"], [1, "uk-card-header"], [1, "uk-card-title"], ["class", "uk-card-body", 4, "ngIf"], [1, "uk-card-footer", "uk-text-right@s", "uk-text-center", "nlt-button-group"], ["class", "uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m uk-float-right", "type", "button", 3, "disabled", "click", 4, "ngIf"], ["class", "uk-button uk-button-secondary uk-disabled uk-width-1-1@s uk-width-auto@m uk-float-right nlt-icon-button nlt-icon-button-inline", "type", "button", 4, "ngIf"], [1, "uk-card-body"], ["uk-grid", ""], [1, "uk-width-1-2@s"], ["placeholder", "New Password", "type", "password", 1, "uk-input", 3, "ngModel", "ngModelChange"], ["class", "password-helper", 4, "ngIf"], ["placeholder", "Confirm New Password", "type", "password", 1, "uk-input", 3, "ngModel", "ngModelChange"], [1, "uk-button", "uk-button-primary", "uk-width-auto@s", "uk-width-1-1", 3, "disabled", "click"], [1, "password-helper"], [4, "ngIf"], ["uk-icon", "icon: lock;"], ["ngxClipboard", "", "uk-tooltip", "", 3, "title", "cbContent", "cbOnSuccess"], ["title", "Copy Private Key", "ngxClipboard", "", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess"], [4, "ngIf", "ngIfElse"], ["walletUnlocked", ""], ["walletHasNoPassword", ""], ["uk-grid", "", 4, "ngIf"], ["class", "uk-card-footer uk-text-right@s uk-text-center nlt-button-group", 4, "ngIf"], [1, "uk-width-1-1@s", "uk-width-1-2@m", "uk-width-1-3@l"], ["alt", "QR code", 2, "border-radius", "6px", 3, "src"], [1, "uk-width-1-1@s", "uk-width-1-2@m", "uk-width-2-3@l"], ["type", "text", 1, "uk-input", 2, "max-width", "750px", 3, "value"], [1, "nlt-button-group", "uk-margin-small-top"], ["ngxClipboard", "", 1, "uk-button", "uk-button-secondary", 2, "margin-left", "0", 3, "cbContent", "cbOnSuccess"], [1, "uk-button", "uk-button-primary", 3, "click"], [1, "uk-button", "uk-button-primary", "uk-width-auto@s", "uk-width-1-1", 3, "click"], ["routerLink", "/configure-app", "routerLinkActive", "active"], [1, "uk-width-1-1", "narrow-div"], [1, "uk-form-horizontal"], [1, "uk-margin"], ["for", "account", 1, "uk-form-label"], [1, "uk-form-controls"], ["id", "account", 1, "uk-select", 3, "ngModel", "ngModelChange"], [3, "value", 4, "ngFor", "ngForOf"], ["for", "tx-count", 1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Maximum number of transactions to export. Blank or 0 equals unlimited but only effective if using a custom server."], [1, "uk-inline", "uk-width-1-1"], ["id", "tx-count", "type", "text", "placeholder", "", "autocomplete", "off", 3, "ngModel", "ngModelChange"], ["for", "tx-order", 1, "uk-form-label"], ["id", "tx-order", 1, "uk-select", 3, "ngModel", "ngModelChange"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["for", "tx-offset", 1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Start the export after this index. 10 means starting at transaction 11. Blank or 0 equals no offset."], ["id", "tx-offset", "type", "text", "placeholder", "", "autocomplete", "off", 3, "ngModel", "ngModelChange"], [3, "value"], [3, "ngValue"], ["type", "button", 1, "uk-button", "uk-button-primary", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", 3, "disabled", "click"], ["type", "button", 1, "uk-button", "uk-button-secondary", "uk-disabled", "uk-width-1-1@s", "uk-width-auto@m", "uk-float-right", "nlt-icon-button", "nlt-icon-button-inline"], ["uk-spinner", "ratio: 0.5;", 1, "uk-margin-right"]],
   template: function ManageWalletComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "div", 0);
@@ -16996,7 +16973,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const _c0 = ["accountAddFocus"];
 
-function MultisigComponent_div_39_Template(rf, ctx) {
+function MultisigComponent_div_20_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "p");
@@ -17020,28 +16997,28 @@ function MultisigComponent_div_39_Template(rf, ctx) {
   }
 }
 
-function MultisigComponent_li_47_Template(rf, ctx) {
+function MultisigComponent_li_28_Template(rf, ctx) {
   if (rf & 1) {
     const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "li");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "div", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "div", 31);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementContainerStart"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](4, "div", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](5, "app-nano-account-id", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](4, "div", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](5, "app-nano-account-id", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementContainerEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 38);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "a", 39);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_li_47_Template_a_click_7_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "a", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_li_28_Template_a_click_7_listener() {
       const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r10);
       const account_r8 = restoredCtx.$implicit;
       const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r9.removeSelectedAccount(account_r8);
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](8, "span", 40);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](8, "span", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -17055,17 +17032,17 @@ function MultisigComponent_li_47_Template(rf, ctx) {
   }
 }
 
-function MultisigComponent_div_49_Template(rf, ctx) {
+function MultisigComponent_div_30_Template(rf, ctx) {
   if (rf & 1) {
     const _r12 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_49_Template_div_click_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_30_Template_div_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r12);
       const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r11.setFocus();
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](1, "span", 42);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](1, "span", 38);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](2, " Add address");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
   }
@@ -17077,35 +17054,35 @@ const _c1 = function (a0) {
   };
 };
 
-function MultisigComponent_div_50_Template(rf, ctx) {
+function MultisigComponent_div_31_Template(rf, ctx) {
   if (rf & 1) {
     const _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 25);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "a", 43);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_50_Template_a_click_1_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "a", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_31_Template_a_click_1_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r15);
       const ctx_r14 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r14.addAccount();
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "a", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_50_Template_a_click_2_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "a", 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_div_31_Template_a_click_2_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r15);
       const ctx_r16 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r16.openQR("accountAdd", "account");
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "input", 33, 44);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_div_50_Template_input_input_3_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "input", 29, 40);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_div_31_Template_input_input_3_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r15);
       const ctx_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r17.validateAccountAdd();
-    })("keyup.enter", function MultisigComponent_div_50_Template_input_keyup_enter_3_listener() {
+    })("keyup.enter", function MultisigComponent_div_31_Template_input_keyup_enter_3_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r15);
       const ctx_r18 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r18.addAccount();
-    })("ngModelChange", function MultisigComponent_div_50_Template_input_ngModelChange_3_listener($event) {
+    })("ngModelChange", function MultisigComponent_div_31_Template_input_ngModelChange_3_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r15);
       const ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r19.accountAdd = $event;
@@ -17121,24 +17098,24 @@ function MultisigComponent_div_50_Template(rf, ctx) {
   }
 }
 
-function MultisigComponent_div_59_Template(rf, ctx) {
+function MultisigComponent_div_40_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 45);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 41);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](1, "...");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
   }
 }
 
-function MultisigComponent_div_60_Template(rf, ctx) {
+function MultisigComponent_div_41_Template(rf, ctx) {
   if (rf & 1) {
     const _r21 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
 
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 45);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](2, "app-nano-account-id", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](2, "app-nano-account-id", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "a", 46);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("cbOnSuccess", function MultisigComponent_div_60_Template_a_cbOnSuccess_3_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "a", 42);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("cbOnSuccess", function MultisigComponent_div_41_Template_a_cbOnSuccess_3_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r21);
       const ctx_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r20.copied();
@@ -17157,11 +17134,11 @@ function MultisigComponent_div_60_Template(rf, ctx) {
   }
 }
 
-function MultisigComponent_div_62_Template(rf, ctx) {
+function MultisigComponent_div_43_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](2, "div", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 44);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](2, "div", 45);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "p");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](4, " Before funding the multisig address, make sure that you added the correct participating addresses above.");
@@ -17171,12 +17148,12 @@ function MultisigComponent_div_62_Template(rf, ctx) {
   }
 }
 
-function MultisigComponent_a_84_Template(rf, ctx) {
+function MultisigComponent_a_65_Template(rf, ctx) {
   if (rf & 1) {
     const _r23 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
 
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "a", 47);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("cbOnSuccess", function MultisigComponent_a_84_Template_a_cbOnSuccess_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "a", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("cbOnSuccess", function MultisigComponent_a_65_Template_a_cbOnSuccess_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r23);
       const ctx_r22 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
       return ctx_r22.copied();
@@ -17409,9 +17386,9 @@ MultisigComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵloadQuery"]()) && (ctx._el = _t.first);
     }
   },
-  decls: 108,
+  decls: 89,
   vars: 23,
-  consts: [["uk-grid", ""], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-card", "uk-card-default"], [1, "uk-card-header", "uk-form-horizontal"], ["href", "https://docs.nault.cc/2021/04/20/multisig.html", "target", "_blank"], ["routerLink", "/keygenerator", 1, "name"], [1, "uk-alert", "uk-alert-danger", "nlt-inline-alert"], [1, "icon-column"], ["uk-icon", "icon: warning; ratio: 2;"], [1, "details-header", "advanced-options-link", 3, "click"], [4, "ngIf"], [1, "uk-form-horizontal"], [1, "uk-margin"], [1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Addresses to participate in the multisig address"], [1, "uk-form-controls"], [1, "uk-list", "uk-list-striped"], [4, "ngFor", "ngForOf"], ["class", "add-button uk-width-auto", 3, "click", 4, "ngIf"], ["class", "uk-inline uk-width-1-1", 4, "ngIf"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Final account to use with multisig transactions"], [1, "uk-inline", "uk-width-1-1", "multisig-result"], ["class", "uk-margin-small-bottom", 4, "ngIf"], ["class", "uk-alert uk-alert-danger nlt-inline-alert", 4, "ngIf"], [1, "uk-inline", "uk-width-1-1"], [1, "uk-width-1-3@l", "uk-width-1-1"], [1, "uk-button", "uk-button-primary", "uk-width-1-1", 3, "disabled", "click"], [1, "uk-button", "uk-button-primary", "uk-width-1-1", 3, "click"], [1, "uk-card", "uk-card-default", 2, "margin-top", "20px"], ["for", "form-horizontal-text2", 1, "uk-form-label"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["class", "uk-form-icon uk-form-icon-flip second-icon", "ngxClipboard", "", "uk-icon", "icon: copy", "title", "Copy Account", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess", 4, "ngIf"], ["type", "text", "placeholder", "nano_1abc...", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], ["type", "text", "placeholder", "nanosign:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], [1, "uk-width-5-6", "uk-text-truncate"], [1, "uk-text-truncate"], ["middle", "on", 1, "nano-address-monospace", 3, "accountID"], [1, "action-remove", "uk-width-1-6", "uk-text-right"], ["title", "Remove From List", "uk-tooltip", "", 1, "uk-text-danger", 3, "click"], ["uk-icon", "icon: close;"], [1, "add-button", "uk-width-auto", 3, "click"], ["uk-icon", "icon: plus"], ["uk-icon", "icon: plus", "uk-tooltip", "", "title", "Add address", 1, "uk-form-icon", "uk-form-icon-flip", "second-icon", 3, "click"], ["accountAddFocus", ""], [1, "uk-margin-small-bottom"], ["title", "Copy Address To Clipboard", "ngxClipboard", "", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess"], ["ngxClipboard", "", "uk-icon", "icon: copy", "title", "Copy Account", "uk-tooltip", "", 1, "uk-form-icon", "uk-form-icon-flip", "second-icon", 3, "cbContent", "cbOnSuccess"]],
+  consts: [["uk-grid", ""], [1, "uk-width-1-1"], ["uk-grid", "", 1, "uk-animation-slide-left-small"], [1, "uk-card", "uk-card-default"], [1, "uk-card-header", "uk-form-horizontal"], ["routerLink", "/keygenerator", 1, "name"], [1, "details-header", "advanced-options-link", 3, "click"], [4, "ngIf"], [1, "uk-form-horizontal"], [1, "uk-margin"], [1, "uk-form-label"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Addresses to participate in the multisig address"], [1, "uk-form-controls"], [1, "uk-list", "uk-list-striped"], [4, "ngFor", "ngForOf"], ["class", "add-button uk-width-auto", 3, "click", 4, "ngIf"], ["class", "uk-inline uk-width-1-1", 4, "ngIf"], ["uk-icon", "icon: info;", "uk-tooltip", "", "title", "Final account to use with multisig transactions"], [1, "uk-inline", "uk-width-1-1", "multisig-result"], ["class", "uk-margin-small-bottom", 4, "ngIf"], ["class", "uk-alert uk-alert-danger nlt-inline-alert", 4, "ngIf"], [1, "uk-inline", "uk-width-1-1"], [1, "uk-width-1-3@l", "uk-width-1-1"], [1, "uk-button", "uk-button-primary", "uk-width-1-1", 3, "disabled", "click"], [1, "uk-button", "uk-button-primary", "uk-width-1-1", 3, "click"], [1, "uk-card", "uk-card-default", 2, "margin-top", "20px"], ["for", "form-horizontal-text2", 1, "uk-form-label"], ["uk-icon", "icon: camera", "uk-tooltip", "", "title", "Scan from QR code", 1, "uk-form-icon", "uk-form-icon-flip", 3, "click"], ["class", "uk-form-icon uk-form-icon-flip second-icon", "ngxClipboard", "", "uk-icon", "icon: copy", "title", "Copy Account", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess", 4, "ngIf"], ["type", "text", "placeholder", "nano_1abc...", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], ["type", "text", "placeholder", "nanosign:{abc..}", "autocomplete", "off", 1, "uk-input", 3, "ngModel", "ngClass", "input", "keyup.enter", "ngModelChange"], [1, "uk-width-5-6", "uk-text-truncate"], [1, "uk-text-truncate"], ["middle", "on", 1, "nano-address-monospace", 3, "accountID"], [1, "action-remove", "uk-width-1-6", "uk-text-right"], ["title", "Remove From List", "uk-tooltip", "", 1, "uk-text-danger", 3, "click"], ["uk-icon", "icon: close;"], [1, "add-button", "uk-width-auto", 3, "click"], ["uk-icon", "icon: plus"], ["uk-icon", "icon: plus", "uk-tooltip", "", "title", "Add address", 1, "uk-form-icon", "uk-form-icon-flip", "second-icon", 3, "click"], ["accountAddFocus", ""], [1, "uk-margin-small-bottom"], ["title", "Copy Address To Clipboard", "ngxClipboard", "", "uk-tooltip", "", 3, "cbContent", "cbOnSuccess"], [1, "uk-alert", "uk-alert-danger", "nlt-inline-alert"], [1, "icon-column"], ["uk-icon", "icon: warning; ratio: 2;"], ["ngxClipboard", "", "uk-icon", "icon: copy", "title", "Copy Account", "uk-tooltip", "", 1, "uk-form-icon", "uk-form-icon-flip", "second-icon", 3, "cbContent", "cbOnSuccess"]],
   template: function MultisigComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
@@ -17423,138 +17400,111 @@ MultisigComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](5, "div", 1);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 3);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](9, "strong");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](10, "Multi-signature approach allows to create addresses where multiple private keys are required to access and transfer the funds. Users can own a subset of private keys, and they are able to sign transactions only if they collectively own all of the participating keys.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "1 - Create a Multisig Address");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](11, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](12, " A full user guide is found ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](13, "a", 5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](14, "here");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](11, "Add 2 or more nano addresses to form a new multisig address.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](12, "br");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](13, " If you (or the participants) don't have any, they can be generated with the ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](14, "a", 5);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](15, "Keypair Generator");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](15, ". ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](16, " and stored safely. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](16, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](17, "1 - Create a Multisig Address");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](18, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](19, "Add 2 or more nano addresses to form a new multisig address.");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](20, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](21, " If you (or the participants) don't have any, they can be generated with the ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](22, "a", 6);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](23, "Keypair Generator");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](24, " and stored safely. ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](25, "div");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](26, "div", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](27, "div", 8);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](28, "div", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](29, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](30, " Each address MUST have a known corresponding Private Key.");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](31, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](32, " This multisig is \"m of m\", meaning all keys must be available. ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](33, "strong");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](34, "Losing one key will invalidate the address!");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](35, "br");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](36, "div", 10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_div_click_36_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](17, "div", 6);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_div_click_17_listener() {
         return ctx.showAdvancedOptions = !ctx.showAdvancedOptions;
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](37, " MORE INFO ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](38, "div");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](18, " MORE INFO ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](19, "div");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](39, MultisigComponent_div_39_Template, 12, 0, "div", 11);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](40, "div", 12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](41, "div", 13);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](42, "label", 14);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](43, "Participating Addresses ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](44, "span", 15);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](20, MultisigComponent_div_20_Template, 12, 0, "div", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](21, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](22, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](23, "label", 10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](24, "Participating Addresses ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](25, "span", 11);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](45, "div", 16);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](46, "ul", 17);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](47, MultisigComponent_li_47_Template, 9, 1, "li", 18);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](48, "li");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](49, MultisigComponent_div_49_Template, 3, 0, "div", 19);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](50, MultisigComponent_div_50_Template, 5, 4, "div", 20);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](51, "div", 12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](52, "div", 13);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](53, "label", 14);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](54, "Multisig Address ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](55, "span", 21);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](56, "div", 16);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](57, "div", 22);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](58, "div", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](59, MultisigComponent_div_59_Template, 2, 0, "div", 23);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](60, MultisigComponent_div_60_Template, 5, 2, "div", 11);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](26, "div", 12);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](27, "ul", 13);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](28, MultisigComponent_li_28_Template, 9, 1, "li", 14);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](29, "li");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](30, MultisigComponent_div_30_Template, 3, 0, "div", 15);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](31, MultisigComponent_div_31_Template, 5, 4, "div", 16);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](61, "div");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](62, MultisigComponent_div_62_Template, 6, 0, "div", 24);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](32, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](33, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](34, "label", 10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](35, "Multisig Address ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](36, "span", 17);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](63, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](64, "div", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](65, "div", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](66, "button", 27);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_66_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](37, "div", 12);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](38, "div", 18);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](39, "div", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](40, MultisigComponent_div_40_Template, 2, 0, "div", 19);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](41, MultisigComponent_div_41_Template, 5, 2, "div", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](42, "div");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](43, MultisigComponent_div_43_Template, 6, 0, "div", 20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](44, "div", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](45, "div", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](46, "div", 22);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](47, "button", 23);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_47_listener() {
         return ctx.generateMultisig();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](67, "GENERATE MULTISIG");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](48, "GENERATE MULTISIG");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](68, "div", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](69, "button", 28);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_69_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](49, "div", 22);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](50, "button", 24);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_50_listener() {
         return ctx.reset();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](70, "RESET");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](51, "RESET");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](71, "div", 29);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](72, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](73, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](74, "2 - Create a Multisig Transaction");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](52, "div", 25);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](53, "div", 4);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](54, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](55, "2 - Create a Multisig Transaction");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](75, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](76, "Create a SEND, RECEIVE or CHANGE block using the Remote Signing method.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](56, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](57, "Create a SEND, RECEIVE or CHANGE block using the Remote Signing method.");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](77, "div", 12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](78, "div", 13);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](79, "label", 30);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](80, "Multisig Address");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](58, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](59, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](60, "label", 26);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](61, "Multisig Address");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](81, "div", 16);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](82, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](83, "a", 31);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_a_click_83_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](62, "div", 12);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](63, "div", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](64, "a", 27);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_a_click_64_listener() {
         return ctx.openQR("multisig", "account");
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](84, MultisigComponent_a_84_Template, 1, 1, "a", 32);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](85, "input", 33);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_Template_input_input_85_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](65, MultisigComponent_a_65_Template, 1, 1, "a", 28);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](66, "input", 29);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_Template_input_input_66_listener() {
         return ctx.validateMultisig();
-      })("keyup.enter", function MultisigComponent_Template_input_keyup_enter_85_listener() {
+      })("keyup.enter", function MultisigComponent_Template_input_keyup_enter_66_listener() {
         return ctx.navigateAccount();
-      })("ngModelChange", function MultisigComponent_Template_input_ngModelChange_85_listener($event) {
+      })("ngModelChange", function MultisigComponent_Template_input_ngModelChange_66_listener($event) {
         return ctx.multisigAccount = $event;
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -17562,39 +17512,39 @@ MultisigComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](86, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](87, "div", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](88, "div", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](89, "button", 28);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_89_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](67, "div", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](68, "div", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](69, "div", 22);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](70, "button", 24);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_70_listener() {
         return ctx.navigateAccount();
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](90, "CREATE BLOCK");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](71, "CREATE BLOCK");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](91, "div", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](92, "h4");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](93, "3 - Multisig for Participants");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](72, "div", 4);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](73, "h4");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](74, "3 - Multisig for Participants");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](94, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](95, "If multiple co-signers, enter the data that was shared with you to participate in the signing procedure.");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](75, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](76, "If multiple co-signers, enter the data that was shared with you to participate in the signing procedure.");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](96, "div", 12);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](97, "div", 13);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](98, "label", 30);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](99, "Signing Data");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](77, "div", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](78, "div", 9);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](79, "label", 26);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](80, "Signing Data");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](100, "div", 16);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](101, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](102, "input", 34);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_Template_input_input_102_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](81, "div", 12);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](82, "div", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](83, "input", 30);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("input", function MultisigComponent_Template_input_input_83_listener() {
         return ctx.validateUnsigned(ctx.unsignedBlock);
-      })("keyup.enter", function MultisigComponent_Template_input_keyup_enter_102_listener() {
+      })("keyup.enter", function MultisigComponent_Template_input_keyup_enter_83_listener() {
         return ctx.navigateBlock(ctx.unsignedBlock);
-      })("ngModelChange", function MultisigComponent_Template_input_ngModelChange_102_listener($event) {
+      })("ngModelChange", function MultisigComponent_Template_input_ngModelChange_83_listener($event) {
         return ctx.unsignedBlock = $event;
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -17602,14 +17552,14 @@ MultisigComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](103, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](104, "div", 0);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](105, "div", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](106, "button", 28);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_106_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](84, "div", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](85, "div", 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](86, "div", 22);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](87, "button", 24);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function MultisigComponent_Template_button_click_87_listener() {
         return ctx.navigateBlock(ctx.unsignedBlock);
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](107, "SIGN");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](88, "SIGN");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -17623,7 +17573,7 @@ MultisigComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7_
     }
 
     if (rf & 2) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](38);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](19);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵclassMap"](_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵpureFunction1"](15, _c2, ctx.showAdvancedOptions ? "chevron-up" : "chevron-down"));
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx.showAdvancedOptions);
