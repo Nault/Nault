@@ -384,7 +384,11 @@ width: 100%;
 
 @media (min-width: 768px) {
     .uk-flex-1 .qr-code {
-    max-width: 230px !important;
-    max-height: 230px !important;
+        max-width: 230px !important;
+        max-height: 230px !important;
+    }
 }
+
+.prose :where(a):not(:where([class~=not-prose] *)) {
+    color: inherit !important;
 }

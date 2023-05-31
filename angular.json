@@ -20,7 +20,7 @@
               "src/assets",
               "src/pow.wasm",
               "src/404.html",
-              "src/CNAME",
+              "src/sitemap.xml",
               "src/manifest.webmanifest"
             ],
             "styles": [
