@@ -13305,7 +13305,7 @@ class ConfigureWalletComponent {
   saveNewWallet() {
     this.walletService.saveWalletExport();
     this.walletService.informNewWallet();
-    this.notifications.sendSuccess(`New wallet created. Backup seed.`);
+    this.notifications.sendSuccess(`New wallet created.`);
   }
 
   setPanel(panel) {
