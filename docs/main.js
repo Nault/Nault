@@ -740,10 +740,16 @@ function AppComponent_li_89_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](0, "li");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](1, "a", 134);
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](2, "div", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3, "Manage Wallet");
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipe"](4, "transloco");
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
+  }
+
+  if (rf & 2) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵadvance"](3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵpipeBind1"](4, 1, "general.wallet-settings"));
   }
 }
 
@@ -1321,7 +1327,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](89, AppComponent_li_89_Template, 4, 0, "li", 32);
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtemplate"](89, AppComponent_li_89_Template, 5, 3, "li", 32);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](90, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](91, "a", 48);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](92, "div", 36);
@@ -13256,16 +13262,15 @@ class ConfigureWalletComponent {
   }
 
   confirmNewSeed() {
-    if (!this.hasConfirmedBackup) {
-      return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
-    }
-
+    // if (!this.hasConfirmedBackup) {
+    //   return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
+    // }
     this.walletService.createNewWallet(this.newWalletSeed);
     this.storePassword();
     this.newWalletSeed = '';
     this.newWalletMnemonicLines = [];
     this.saveNewWallet();
-    this.activePanel = panels.final;
+    this.route.navigate(['accounts']); // this.activePanel = panels.final;
   }
 
   saveWalletPassword() {
@@ -13288,6 +13293,8 @@ class ConfigureWalletComponent {
     } else if (this.selectedImportOption === 'privateKey' || this.selectedImportOption === 'expandedKey' || this.selectedImportOption === 'bip39-mnemonic') {
       this.importSingleKeyWallet();
     }
+
+    this.confirmNewSeed();
   }
 
   storePassword() {
@@ -13298,7 +13305,7 @@ class ConfigureWalletComponent {
   saveNewWallet() {
     this.walletService.saveWalletExport();
     this.walletService.informNewWallet();
-    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the secret recovery seed/mnemonic!`);
+    this.notifications.sendSuccess(`New wallet created. Backup seed.`);
   }
 
   setPanel(panel) {

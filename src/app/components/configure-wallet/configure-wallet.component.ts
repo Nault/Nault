@@ -301,19 +301,21 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   confirmNewSeed() {
-    if (!this.hasConfirmedBackup) {
-      return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
-    }
+    // if (!this.hasConfirmedBackup) {
+    //   return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
+    // }
     this.walletService.createNewWallet(this.newWalletSeed);
     this.storePassword();
     this.newWalletSeed = '';
     this.newWalletMnemonicLines = [];
     this.saveNewWallet();
 
-    this.activePanel = panels.final;
+    this.route.navigate(['accounts']);
+    // this.activePanel = panels.final;
   }
 
   saveWalletPassword() {
+
     if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
       return this.notifications.sendError(`Password confirmation does not match, try again!`);
     }
@@ -332,6 +334,8 @@ export class ConfigureWalletComponent implements OnInit {
     || this.selectedImportOption === 'bip39-mnemonic') {
       this.importSingleKeyWallet();
     }
+
+    this.confirmNewSeed()
   }
 
   storePassword() {
@@ -343,7 +347,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.walletService.saveWalletExport();
     this.walletService.informNewWallet();
 
-    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the secret recovery seed/mnemonic!`);
+    this.notifications.sendSuccess(`New wallet created. Backup seed.`);
   }
 
   setPanel(panel) {

@@ -242,7 +242,7 @@
             <a href="#">{{ 'general.settings' | transloco }}</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'general.app-settings' | transloco }}</div></a></li>
-              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">{{ 'general.wallet-settings' | transloco }}</div></a></li>
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'general.representatives' | transloco }}</div></a></li>
              
               <!-- <li class="uk-parent"> -->
