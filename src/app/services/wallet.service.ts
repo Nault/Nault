@@ -758,7 +758,7 @@ export class WalletService {
 
       walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
 
-      const walletAccountFrontier = frontiers.frontiers[accountID];
+      const walletAccountFrontier = frontiers.frontiers?.[accountID];
       const walletAccountFrontierIsValidHash = this.util.nano.isValidHash(walletAccountFrontier);
 
       walletAccount.frontier = (
