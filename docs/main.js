@@ -13157,7 +13157,7 @@ class ConfigureWalletComponent {
         return true;
       } catch (err) {
         if (!_this7.walletService.isLedgerWallet()) {
-          _this7.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your wallet's secret recovery seed and/or mnemonic`);
+          _this7.notifications.sendInfo(`Visit 'Backup Wallet' create backup.`);
         }
 
         return false;
