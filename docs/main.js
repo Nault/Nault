@@ -16762,13 +16762,13 @@ class ManageWalletComponent {
         }
       }
 
-      const fileName = `Nault-Wallet.json`;
+      const fileName = `Nault-Pro-Export.json`;
 
       const exportData = _this4.walletService.generateExportData();
 
       _this4.triggerFileDownload(fileName, exportData, 'json');
 
-      _this4.notifications.sendSuccess(`Wallet export downloaded!`);
+      _this4.notifications.sendSuccess(`Wallet export downloaded`);
     })();
   }
 
