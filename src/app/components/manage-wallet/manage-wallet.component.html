@@ -64,41 +64,29 @@
             <br>
             Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!
             <br>
-            <div *ngIf="showQRExport" uk-grid>
-              <!-- <div class="uk-width-1-1">
-                <hr class="uk-divider-icon uk-margin-small-top">
-                <div class="uk-alert uk-alert-danger nlt-inline-alert" style="max-width: 600px;">
-                  <div class="icon-column">
-                    <div uk-icon="icon: warning; ratio: 2;"></div>
-                  </div>
-                  <p>
-                    <b>If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.</b>
-                    <br><br>
-                    For backup purposes, <b>always store the secret recovery seed and/or mnemonic</b> from the "Backup Wallet" section above.
-                  </p>
-                </div>
-              </div> -->
-
+            <br>
+            <div uk-grid>
+           
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
-                <img [src]="QRExportImg" alt="QR code" style="border-radius: 6px;">
+                <img style-[src]="QRExportImg" alt="QR code" style="border-radius: 6px; max-width: 200px;">
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
-                Scan the QR code on any device to import your Nault wallet!<br>
+                Scan QR code on any device to import Nault wallet.<br>
                 <br>
                 <!-- You can also import your wallet by using the URL below. -->
                 <!-- <br><br> -->
-                <!-- <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}"> -->
+                <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}">
                 <div class="nlt-button-group uk-margin-small-top">
                   <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
-                  <button (click)="exportToFile()" class="uk-button uk-button-primary">Export As File</button>
+                  <button (click)="exportToFile()" class="uk-button uk-button-primary">Download File</button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
+        <!--   <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
             <button (click)="exportWallet()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Wallet</button>
-          </div>
+          </div> -->
         </ng-container>
         <ng-template #walletHasNoPassword>
           <div class="uk-card-body">
