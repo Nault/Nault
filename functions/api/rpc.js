@@ -1,29 +1,56 @@
-export async function onRequestGet(ctx) {
+/**
+ * Work In Progress
+ */
 
-  let url = new URL(ctx.request.url);
+export default {
+  async fetch(request) {
+    
+    /**
+     * Example someHost is set up to take in a JSON request
+     * Replace url with the host you wish to send requests to
+     * @param {string} url the URL to send the request to
+     * @param {BodyInit} body the JSON data to send in the request
+     */
+    const someHost = "https://rpc.nano.to";
 
-  async function gatherResponse(res) {
-    const { headers } = res;
-    const contentType = headers.get("content-type") || "";
-    if (contentType.includes("application/json")) {
-      return JSON.stringify(await res.json());
+    const url = someHost + "/requests/json";
+
+    const body = {
+      results: ["default data to send"],
+      errors: null,
+      msg: "I sent this to the fetch",
+    };
+
+    /**
+     * gatherResponse awaits and returns a response body as a string.
+     * Use await gatherResponse(..) in an async function to get the response body
+     * @param {Response} response
+     */
+    async function gatherResponse(response) {
+      const { headers } = response;
+      const contentType = headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        return JSON.stringify(await response.json());
+      } else if (contentType.includes("application/text")) {
+        return response.text();
+      } else if (contentType.includes("text/html")) {
+        return response.text();
+      } else {
+        return response.text();
+      }
     }
-    return res.text();
-  }
 
-  const init = {
-    headers: {
-      "content-type": "application/json;charset=UTF-8",
-    },
-  };
-
-  const _response = await fetch('https://nano.to/known.json', init);
-  const results = await gatherResponse(_response);
-  let name = url.searchParams.get('names');
-      name = name ? name.replace('@', '') : ''
-
-  const response = Response.json({ names: JSON.parse(results).filter(a => a.name.toLowerCase() === name.toLowerCase() || a.address === name) });
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  return response;
-
-}
+    const init = {
+      body: JSON.stringify(body),
+      method: "POST",
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+      },
+    };
+    const response = await fetch(url, init);
+    const results = await gatherResponse(response);
+    const res = Response.json(results);
+    res.headers.set('Access-Control-Allow-Origin', '*');
+    return res;
+  },
+};
