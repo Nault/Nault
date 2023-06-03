@@ -60,15 +60,15 @@
       <ng-template #walletUnlocked>
         <ng-container *ngIf="wallet.password else walletHasNoPassword">
           <div class="uk-card-body">
-            Use this export tool to simplify wallet transfer to other devices.
+            <!-- Use this export tool to simplify wallet transfer to other devices. -->
+            <!-- <br> -->
+            Your data is encrypted with your wallet's password, and then can be imported into Nault on any device.
             <br>
-            Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!
             <br>
-            <br>
-            <div uk-grid>
-           
+            <div *ngIf="showQRExport" uk-grid>
+      
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
-                <img style-[src]="QRExportImg" alt="QR code" style="border-radius: 6px; max-width: 200px;">
+                <img [src]="QRExportImg" alt="QR code" style="border-radius: 6px; max-width: 200px;">
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
@@ -78,15 +78,15 @@
                 <!-- <br><br> -->
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}">
                 <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
+                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy Clipboard</button>
                   <button (click)="exportToFile()" class="uk-button uk-button-primary">Download File</button>
                 </div>
               </div>
             </div>
           </div>
-        <!--   <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
+          <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group" *ngIf="!showQRExport">
             <button (click)="exportWallet()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Export Wallet</button>
-          </div> -->
+          </div>
         </ng-container>
         <ng-template #walletHasNoPassword>
           <div class="uk-card-body">

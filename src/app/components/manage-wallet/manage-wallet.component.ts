@@ -92,6 +92,7 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async exportWallet() {
+ 
     if (this.walletService.isLocked()) {
       const wasUnlocked = await this.walletService.requestWalletUnlock();
 
@@ -104,6 +105,7 @@ export class ManageWalletComponent implements OnInit {
     this.QRExportUrl = exportUrl;
     this.QRExportImg = await QRCode.toDataURL(exportUrl, { errorCorrectionLevel: 'M', scale: 8 });
     this.showQRExport = true;
+    
   }
 
   copied() {
