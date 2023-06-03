@@ -50,7 +50,7 @@
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Export Nault Wallet</h3>
+        <h3 class="uk-card-title">Export Nault File</h3>
       </div>
       <ng-container *ngIf="wallet.locked else walletUnlocked">
         <div class="uk-card-body">

@@ -11693,7 +11693,7 @@ function ConfigureWalletComponent_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnamespaceHTML"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](30, "h2");
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](31, "Import");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](31, "Nault");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](32, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](33, "File");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -11702,7 +11702,7 @@ function ConfigureWalletComponent_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](36, "span", 21);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](37, "or");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](38, " Nault.cc File");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](38, " Nault.cc");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](39, ConfigureWalletComponent_div_2_button_39_Template, 14, 0, "button", 22);
@@ -11979,7 +11979,7 @@ function ConfigureWalletComponent_div_8_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](3, "Import File");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](4, "p");
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](5, " If you have saved your wallet to a file using Nault before, use the button below to import it. ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](5, "Use the button below to import it.");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -16295,7 +16295,7 @@ function ManageWalletComponent_div_6_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](0, "div", 5);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](1, "div", 6);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](2, "h3", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](3, "Export Nault Wallet");
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](3, "Export Nault File");
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtemplate"](4, ManageWalletComponent_div_6_ng_container_4_Template, 4, 0, "ng-container", 25);
