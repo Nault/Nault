@@ -11695,7 +11695,7 @@ function ConfigureWalletComponent_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](30, "h2");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](31, "Nault");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](32, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](33, "Export");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](33, "Import");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](34, "p");
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](35, "Nault.Pro ");
