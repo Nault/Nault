@@ -194,13 +194,13 @@ export class ConfigureWalletComponent implements OnInit {
       if (this.walletService.isLedgerWallet()) {
         msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
       } else {
-        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">Configuring a new wallet will <b>destroy current wallet</b>.</p>';
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">Creating new wallet will destroy existing wallet..</p>';
       }
       await UIkit.modal.confirm(msg);
       return true;
     } catch (err) {
       if (!this.walletService.isLedgerWallet()) {
-        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your wallet's secret recovery seed and/or mnemonic`);
+        this.notifications.sendInfo(`Visit 'Backup Wallet' create backup.`);
       }
       return false;
     }
