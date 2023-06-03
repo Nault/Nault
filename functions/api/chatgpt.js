@@ -26,7 +26,7 @@ export async function onRequestGet(ctx) {
     // "frequency_penalty": 0.5
   }, { headers: { 'Authorization': OPEN_AI_KEY } })    
 
-  const response = await fetch('https://nano.to/known.json', init);
+  // const response = await fetch('https://nano.to/known.json', init);
 
   const results = await gatherResponse(_response);
 
