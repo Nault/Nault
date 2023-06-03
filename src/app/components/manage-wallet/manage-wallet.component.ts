@@ -189,7 +189,7 @@ export class ManageWalletComponent implements OnInit {
       }
     }
 
-    const fileName = `Nault-Pro-Export.json`;
+    const fileName = `Nault-Pro-Backup-${this.accounts[0] ? this.accounts[0].id.slice(0, 14) + '..' : ''}.json`;
     const exportData = this.walletService.generateExportData();
     this.triggerFileDownload(fileName, exportData, 'json');
 
