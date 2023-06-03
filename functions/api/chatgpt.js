@@ -17,7 +17,7 @@ export async function onRequestGet(ctx) {
     },
   };
 
-  _response = await server.http.post('https://api.openai.com/v1/chat/completions', {
+  const response = await server.http.post('https://api.openai.com/v1/chat/completions', {
     // "prompt": prompt,
     "model": "gpt-3.5-turbo",
     // "model": "text-davinci-003",
@@ -26,14 +26,17 @@ export async function onRequestGet(ctx) {
     // "frequency_penalty": 0.5
   }, { headers: { 'Authorization': OPEN_AI_KEY } })    
 
-  // const response = await fetch('https://nano.to/known.json', init);
+  // const json = await fetch('https://raw.githubusercontent.com/fwd/nano-to/master/known.json', init);
+  
+  const results = await gatherResponse(response);
+  
+  // let name = url.searchParams.get('names');
+      // name = name ? name.replace('@', '') : ''
 
-  const results = await gatherResponse(_response);
-
-  const res = Response.json({ response });
-
+  const res = Response.json(results);
+  
   res.headers.set('Access-Control-Allow-Origin', '*');
-
+  
   return res;
 
 }
