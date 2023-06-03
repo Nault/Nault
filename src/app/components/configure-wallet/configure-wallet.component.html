@@ -43,7 +43,23 @@
         </button>
       </div>
       <div class="uk-width-expand">
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+          </div>
+          <h2>Import<br>File</h2>
+          <p>Nault.Pro <span style="opacity: 0.7">or</span> Nault.cc File</p>
+        </button>
+    <!--     <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
+          <div class="icon">
+            <div class="more-options">···</div>
+          </div>
+          <h2>More<br>Options</h2>
+          <p>Import from file<br>or a private key</p>
+        </button> -->
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';" *ngIf="showMoreImportOptions">
           <div class="icon">
             <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <g>
@@ -57,22 +73,6 @@
           </div>
           <h2>Use<br>Ledger</h2>
           <p>Nano S / Nano X</p>
-        </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';">
-          <div class="icon">
-            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-              <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
-            </svg>
-          </div>
-          <h2>Import<br>File</h2>
-          <p>exported<br>Nault wallet</p>
-        </button>
-        <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
-          <div class="icon">
-            <div class="more-options">···</div>
-          </div>
-          <h2>More<br>Options</h2>
-          <p>Import from file<br>or a private key</p>
         </button>
         <button *ngIf="showMoreImportOptions" class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
           <div class="icon">
