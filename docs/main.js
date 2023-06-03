@@ -16762,7 +16762,7 @@ class ManageWalletComponent {
         }
       }
 
-      const fileName = `Nault-Pro-Backup-${_this4.accounts[0] ? _this4.accounts[0].id.slice(0, 14) + '..' : ''}.json`;
+      const fileName = `Nault-Pro-Backup-${_this4.accounts[0] ? _this4.accounts[0].id.slice(0, 14) : ''}.json`;
 
       const exportData = _this4.walletService.generateExportData();
 
