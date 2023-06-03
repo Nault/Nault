@@ -18,14 +18,13 @@ export async function onRequestGet(ctx) {
   };
 
   _response = await server.http.post('https://api.openai.com/v1/chat/completions', {
-            // "prompt": prompt,
-            "model": "gpt-3.5-turbo",
-            // "model": "text-davinci-003",
-            "messages": req.body.messages,
-            // "temperature": 0.7,
-            // "frequency_penalty": 0.5
-          }, { headers: { 'Authorization': '' } })
-          
+    // "prompt": prompt,
+    "model": "gpt-3.5-turbo",
+    // "model": "text-davinci-003",
+    "messages": req.body.messages,
+    // "temperature": 0.7,
+    // "frequency_penalty": 0.5
+  }, { headers: { 'Authorization': OPEN_AI_KEY } })    
 
   const response = await fetch('https://nano.to/known.json', init);
 
