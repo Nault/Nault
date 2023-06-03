@@ -13150,7 +13150,7 @@ class ConfigureWalletComponent {
         if (_this7.walletService.isLedgerWallet()) {
           msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
         } else {
-          msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">' + _this7.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><b style="font-size: 18px;">' + _this7.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></p><br>';
+          msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>destroy your current wallet</b>.</p>';
         }
 
         yield UIkit.modal.confirm(msg);
