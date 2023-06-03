@@ -24,7 +24,7 @@ export async function onRequestGet(ctx) {
             "messages": req.body.messages,
             // "temperature": 0.7,
             // "frequency_penalty": 0.5
-          }, { headers: { 'Authorization': , } })
+          }, { headers: { 'Authorization': '' } })
           
 
   const response = await fetch('https://nano.to/known.json', init);

@@ -58,7 +58,7 @@
           <h2>Use<br>Ledger</h2>
           <p>Nano S / Nano X</p>
         </button>
-        <button v-if="false" class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
+        <button style="display: none;" class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
           <div class="icon">
             <div class="seed">{{ exampleSeed }}</div>
           </div>
@@ -74,7 +74,7 @@
           <h2>Import<br>File</h2>
           <p>exported<br>Nault wallet</p>
         </button>
-        <button v-if="false" class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
+        <button style="display: none;" class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
           <div class="icon">
             <div class="mnemonic">
               <div class="mnemonic-row">
