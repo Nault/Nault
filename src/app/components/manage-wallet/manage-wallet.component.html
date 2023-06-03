@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
+    <div v-if="false" class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Backup Wallet</h3>
       </div>
@@ -86,9 +86,9 @@
                 <br>
                 Scan the QR code on any device to import your Nault wallet!<br>
                 <br>
-                You can also import your wallet by using the URL below.
-                <br><br>
-                <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}">
+                <!-- You can also import your wallet by using the URL below. -->
+                <!-- <br><br> -->
+                <!-- <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}"> -->
                 <div class="nlt-button-group uk-margin-small-top">
                   <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
                   <button (click)="exportToFile()" class="uk-button uk-button-primary">Export As File</button>
