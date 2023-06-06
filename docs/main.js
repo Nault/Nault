@@ -34924,8 +34924,12 @@ class WalletService {
             if (batchResponse.frontiers.hasOwnProperty(accountID)) {
               const frontier = batchResponse.frontiers[accountID];
 
-              if (frontier !== batchAccounts[accountID].publicKey) {
-                usedIndices.push(batchAccounts[accountID].index);
+              const frontierIsValidHash = _this7.util.nano.isValidHash(frontier);
+
+              if (frontierIsValidHash === true) {
+                if (frontier !== batchAccounts[accountID].publicKey) {
+                  usedIndices.push(batchAccounts[accountID].index);
+                }
               }
             }
           }
@@ -35144,7 +35148,9 @@ class WalletService {
     var _this12 = this;
 
     return (0,_Users_esteban_Desktop_nault_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      // to block two reloads to happen at the same time (websocket)
+      var _a; // to block two reloads to happen at the same time (websocket)
+
+
       if (_this12.wallet.updatingBalance) return;
       _this12.wallet.updatingBalance = true;
       const fiatPrice = _this12.price.price.lastPrice;
@@ -35182,7 +35188,11 @@ class WalletService {
         const accountBalancePendingInclUnconfirmed = new bignumber_js__WEBPACK_IMPORTED_MODULE_1__.BigNumber(accounts.balances[accountID].pending);
         walletAccount.balanceRaw = new bignumber_js__WEBPACK_IMPORTED_MODULE_1__.BigNumber(walletAccount.balance).mod(_this12.nano);
         walletAccount.balanceFiat = _this12.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
-        walletAccount.frontier = frontiers.frontiers[accountID] || null;
+        const walletAccountFrontier = (_a = frontiers.frontiers) === null || _a === void 0 ? void 0 : _a[accountID];
+
+        const walletAccountFrontierIsValidHash = _this12.util.nano.isValidHash(walletAccountFrontier);
+
+        walletAccount.frontier = walletAccountFrontierIsValidHash === true ? walletAccountFrontier : null;
         walletBalance = walletBalance.plus(walletAccount.balance);
         walletPendingInclUnconfirmed = walletPendingInclUnconfirmed.plus(accountBalancePendingInclUnconfirmed);
       }
