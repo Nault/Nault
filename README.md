@@ -30,3 +30,9 @@
 **MIT**
 
 ![line](https://github.com/fwd/n2/raw/master/.github/line.png)
+
+## Nano.to Support
+
+- 24/7 Email: support@nano.to
+- Twitter: [@nano2dev](https://twitter.com/nano2dev)
+- Discord: [Nano.to Discord](https://discord.gg/HgqDCkzP) 
