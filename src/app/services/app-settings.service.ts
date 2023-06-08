@@ -44,14 +44,14 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
+    serverName: 'nano.to',
     powSource: 'nano.to',
+    serverAPI: 'https://rpc.nano.to',
+    serverWS: null,
+    serverAuth: null,
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
-    serverName: 'random',
-    serverAPI: null,
-    serverWS: null,
-    serverAuth: null,
     minimumReceive: '0.000001',
     walletVersion: 1,
     lightModeEnabled: false,
@@ -59,14 +59,7 @@ export class AppSettingsService {
   };
 
   serverOptions = [
-    // {
-    //   name: 'Random',
-    //   value: 'random',
-    //   api: null,
-    //   ws: null,
-    //   auth: null,
-    //   shouldRandom: false,
-    // },
+    
     {
       name: 'Nano.to Pro RPC',
       value: 'nano.to',
@@ -75,14 +68,16 @@ export class AppSettingsService {
       auth: null,
       shouldRandom: true,
     },
+
     // {
-    //   name: 'My Nano Ninja',
+    //   name: 'Nano Ninja',
     //   value: 'ninja',
     //   api: 'https://mynano.ninja/api/node',
     //   ws: 'wss://ws.mynano.ninja',
     //   auth: null,
     //   shouldRandom: true,
     // },
+
     // {
     //   name: 'Nanos.cc',
     //   value: 'nanos',
@@ -91,6 +86,7 @@ export class AppSettingsService {
     //   auth: null,
     //   shouldRandom: true,
     // },
+
     // {
     //   name: 'PowerNode',
     //   value: 'powernode',
@@ -99,30 +95,16 @@ export class AppSettingsService {
     //   auth: null,
     //   shouldRandom: true,
     // },
+
     // {
-    //   name: 'Rainstorm City',
-    //   value: 'rainstorm',
-    //   api: 'https://rainstorm.city/api',
-    //   ws: 'wss://rainstorm.city/websocket',
-    //   auth: null,
-    //   shouldRandom: true,
-    // },
-    // {
-    //   name: 'Nanex.cc',
-    //   value: 'nanex',
-    //   api: 'https://api.nanex.cc',
+    //   name: 'Random',
+    //   value: 'random',
+    //   api: null,
     //   ws: null,
     //   auth: null,
     //   shouldRandom: false,
     // },
-    // {
-    //   name: 'NanoCrawler',
-    //   value: 'nanocrawler',
-    //   api: 'https://vault.nanocrawler.cc/api/node-api',
-    //   ws: null,
-    //   auth: null,
-    //   shouldRandom: false,
-    // },
+
     {
       name: 'Custom',
       value: 'custom',
@@ -131,14 +113,16 @@ export class AppSettingsService {
       auth: null,
       shouldRandom: false,
     },
+
     {
-      name: 'Offline Mode',
+      name: 'Offline',
       value: 'offline',
       api: null,
       ws: null,
       auth: null,
       shouldRandom: false,
     }
+
   ];
 
   // Simplified list for comparison in other classes

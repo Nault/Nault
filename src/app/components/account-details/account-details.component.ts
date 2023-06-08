@@ -348,7 +348,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async loadKnown() {
-    localStorage.setItem('nano-known', JSON.stringify( await this.http.get('https://api.nano.to/known.json').toPromise() ))
+    localStorage.setItem('nano-known', JSON.stringify( await this.http.post('https://rpc.nano.to', { action: "known" }).toPromise() ))
   }
 
   loadAccountDetailsThrottled(params) {
