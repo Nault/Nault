@@ -44,9 +44,10 @@
     var language = window.navigator.userLanguage || window.navigator.language;
     console.warn(`Language: ${language}`)
     if(!window.location.hash && language && language.split('-')[0] !== 'en') {
+      setTimeout(() => {
         window.location = window.location + `#googtrans(en|${language})`;
         window.location.reload()
-        // return
+      }, 500)
     }
   </script>
 
