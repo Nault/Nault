@@ -44,6 +44,7 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   languages = this.translocoService.getAvailableLangs() as [{id: string, label: string}];
+  
   selectedLanguage = this.languages[0].id;
 
   denominations = [
@@ -57,6 +58,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: this.translocoService.translate('configure-app.storage-options.browser-local-storage'), value: 'localStorage' },
     { name: this.translocoService.translate('configure-app.storage-options.none'), value: 'none' },
   ];
+
   selectedStorage = this.storageOptions[0].value;
 
   currencies = [

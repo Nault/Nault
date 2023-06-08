@@ -20236,7 +20236,7 @@ ReceiveComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_22_
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](2, ReceiveComponent_ng_template_2_Template, 6, 0, "ng-template", null, 2, _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplateRefExtractor"]);
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementStart"](4, "div", 3);
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementStart"](5, "h2", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtext"](6, "Receive Nano");
+      _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtext"](6, "Receive");
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵelementStart"](7, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_22__["ɵɵtemplate"](8, ReceiveComponent_ng_container_8_Template, 1, 0, "ng-container", 6);
@@ -22652,7 +22652,7 @@ function SendComponent_div_4_button_35_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtextInterpolate1"](" ", ctx_r7.sendDestinationType === "own-address" ? "Transfer nano" : "Send nano", " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtextInterpolate1"](" ", ctx_r7.sendDestinationType === "own-address" ? "Transfer" : "Send", " ");
   }
 }
 
@@ -23760,7 +23760,7 @@ SendComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_20__["
 
     if (rf & 2) {
       _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵadvance"](3);
-      _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtextInterpolate"](ctx.sendDestinationType === "own-address" ? "Transfer Between Accounts" : "Send Nano");
+      _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵtextInterpolate"](ctx.sendDestinationType === "own-address" ? "Transfer" : "Send");
       _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵadvance"](1);
       _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵproperty"]("ngIf", ctx.activePanel == "send");
       _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵadvance"](1);
@@ -36016,7 +36016,6 @@ TranslocoRootModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE
             useValue: (0,_ngneat_transloco__WEBPACK_IMPORTED_MODULE_2__.translocoConfig)({
                 availableLangs: [
                     { id: 'en', label: 'English' },
-                    // { id: 'de', label: 'Deutsch' }
                 ],
                 defaultLang: 'en',
                 fallbackLang: 'en',
@@ -36527,6 +36526,10 @@ var map = {
 	"./en.json": [
 		40502,
 		"translation1"
+	],
+	"./es.json": [
+		84268,
+		"translation2"
 	]
 };
 function webpackAsyncContext(req) {

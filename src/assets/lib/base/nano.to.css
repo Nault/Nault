@@ -392,3 +392,23 @@ width: 100%;
 .prose :where(a):not(:where([class~=not-prose] *)) {
     color: inherit !important;
 }
+
+#google_translate_element {
+    width: fit-content;
+    display: block;
+    margin: auto;
+    margin-right: 0
+}
+.skiptranslate iframe {
+    display: none
+}
+.skiptranslate {
+    font-size: 0!important
+}
+#goog-gt-tt, .goog-te-banner-frame.skiptranslate {
+    display: none!important
+}
+
+body {
+    top: 0!important
+}
