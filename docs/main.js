@@ -1309,7 +1309,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_21__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](75, "li");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](76, "a", 43);
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementStart"](77, "div", 36);
-      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](78, "NaultGPT");
+      _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵtext"](78, "ChatGPT");
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵelementEnd"]();
