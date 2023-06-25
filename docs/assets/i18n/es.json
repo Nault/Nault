@@ -205,7 +205,7 @@
       "best-option-available": "Bananno dPoW",
       "client-side-cpu-slowest": "Local CPU (Slowest)",
       "client-side-gpu-webgl": "Local GPU/WebGL",
-      "external-custom-server": "Remote Server",
+      "external-custom-server": "Custom Server",
       "external-selected-server": "External - Selected Server"
     },
     "pow-source": "PoW Source",

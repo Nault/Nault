@@ -30409,18 +30409,26 @@ class AppSettingsService {
         };
         this.serverOptions = [
             {
-                name: 'Nano.to Pro RPC',
+                name: 'Obelisk-1',
                 value: 'nano.to',
                 api: 'https://rpc.nano.to',
                 ws: null,
                 auth: null,
                 shouldRandom: true,
             },
+            {
+                name: 'Obelisk-2',
+                value: 'obelisk-2',
+                api: 'https://obelisk-2.ӿ.to',
+                // ws: 'wss://ws.mynano.ninja',
+                auth: null,
+                shouldRandom: true,
+            },
             // {
-            //   name: 'Nano Ninja',
-            //   value: 'ninja',
-            //   api: 'https://mynano.ninja/api/node',
-            //   ws: 'wss://ws.mynano.ninja',
+            //   name: 'Obelisk-3',
+            //   value: 'obelisk-3',
+            //   api: 'https://ӿ.to',
+            //   // ws: 'wss://ws.mynano.ninja',
             //   auth: null,
             //   shouldRandom: true,
             // },
@@ -30449,7 +30457,7 @@ class AppSettingsService {
             //   shouldRandom: false,
             // },
             {
-                name: 'Custom',
+                name: 'Custom Sercer',
                 value: 'custom',
                 api: null,
                 ws: null,
