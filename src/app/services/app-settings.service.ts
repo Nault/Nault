@@ -115,7 +115,7 @@ export class AppSettingsService {
     // },
 
     {
-      name: 'Custom Sercer',
+      name: 'Custom Server',
       value: 'custom',
       api: null,
       ws: null,

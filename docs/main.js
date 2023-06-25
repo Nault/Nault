@@ -30457,7 +30457,7 @@ class AppSettingsService {
             //   shouldRandom: false,
             // },
             {
-                name: 'Custom Sercer',
+                name: 'Custom Server',
                 value: 'custom',
                 api: null,
                 ws: null,
