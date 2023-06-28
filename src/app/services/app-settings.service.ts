@@ -61,7 +61,7 @@ export class AppSettingsService {
   serverOptions = [
     
     {
-      name: 'Us-1.Nano.to',
+      name: 'Us-1.Nano.to (US-1)',
       value: 'us-1.nano.to',
       api: 'https://us-1.nano.to',
       ws: null,
@@ -70,7 +70,7 @@ export class AppSettingsService {
     },
 
     {
-      name: 'Fosse.Nano.to',
+      name: 'Fosse.Nano.to (US-2)',
       value: 'fosse.nano.to',
       api: 'https://fosse.nano.to',
       ws: null,
@@ -79,10 +79,10 @@ export class AppSettingsService {
     },
 
     {
-      name: 'Solar.Nano.to',
+      name: 'Solar.Nano.to (Europe)',
       value: 'solar.nano.to',
-      api: 'https://solar.nano.to',
-      ws: null,
+      api: 'https://solarnanofaucet.space/api',
+      ws: 'wss://solarnanofaucet.space/websocket',
       auth: null,
       shouldRandom: false,
     },
