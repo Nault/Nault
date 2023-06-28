@@ -44,7 +44,7 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
-    serverName: 'nano.to',
+    serverName: 'us-1.nano.to',
     powSource: 'nano.to',
     serverAPI: 'https://rpc.nano.to',
     serverWS: null,
@@ -61,58 +61,40 @@ export class AppSettingsService {
   serverOptions = [
     
     {
-      name: 'Obelisk-1',
-      value: 'nano.to',
-      api: 'https://rpc.nano.to',
+      name: 'Us-1.Nano.to',
+      value: 'us-1.nano.to',
+      api: 'https://us-1.nano.to',
       ws: null,
       auth: null,
       shouldRandom: true,
     },
 
     {
-      name: 'Obelisk-2',
-      value: 'obelisk-2',
-      api: 'https://obelisk-2.ӿ.to',
-      // ws: 'wss://ws.mynano.ninja',
+      name: 'Fosse.Nano.to',
+      value: 'fosse.nano.to',
+      api: 'https://fosse.nano.to',
+      ws: null,
       auth: null,
       shouldRandom: true,
     },
 
-    // {
-    //   name: 'Obelisk-3',
-    //   value: 'obelisk-3',
-    //   api: 'https://ӿ.to',
-    //   // ws: 'wss://ws.mynano.ninja',
-    //   auth: null,
-    //   shouldRandom: true,
-    // },
+    {
+      name: 'Solar.Nano.to',
+      value: 'solar.nano.to',
+      api: 'https://solar.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
 
-    // {
-    //   name: 'Nanos.cc',
-    //   value: 'nanos',
-    //   api: 'https://nault.nanos.cc/proxy',
-    //   ws: 'wss://nault-ws.nanos.cc',
-    //   auth: null,
-    //   shouldRandom: true,
-    // },
-
-    // {
-    //   name: 'PowerNode',
-    //   value: 'powernode',
-    //   api: 'https://proxy.powernode.cc/proxy',
-    //   ws: 'wss://ws.powernode.cc',
-    //   auth: null,
-    //   shouldRandom: true,
-    // },
-
-    // {
-    //   name: 'Random',
-    //   value: 'random',
-    //   api: null,
-    //   ws: null,
-    //   auth: null,
-    //   shouldRandom: false,
-    // },
+    {
+      name: 'Random',
+      value: 'random',
+      api: null,
+      ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
 
     {
       name: 'Custom Server',
