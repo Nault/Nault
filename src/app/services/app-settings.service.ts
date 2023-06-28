@@ -79,7 +79,7 @@ export class AppSettingsService {
     },
 
     {
-      name: 'Solar.Nano.to (@JayCox/Europe)',
+      name: 'Europe-1.Nano.to',
       value: 'solar.nano.to',
       api: 'https://solarnanofaucet.space/api',
       ws: 'wss://solarnanofaucet.space/websocket',
