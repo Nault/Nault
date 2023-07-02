@@ -100,22 +100,6 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
       name: 'Custom',
       value: 'custom',
       api: null,
