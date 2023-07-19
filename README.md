@@ -35,4 +35,4 @@
 
 - Email: support@nano.to
 - Twitter: [@nano2dev](https://twitter.com/nano2dev)
-- Discord: [Nano.to Discord](https://discord.nault.pro) 
+- Mastodon: [Xno.Social](https://xno.social/@nano2dev) 
