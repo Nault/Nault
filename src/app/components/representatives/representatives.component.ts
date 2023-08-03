@@ -279,7 +279,7 @@ export class RepresentativesComponent implements OnInit {
     this.selectedRecommendedRep = rep;
     this.toRepresentativeID = rep.rep_address;
     this.showRecommendedReps = false;
-    this.representativeListMatch = rep.username; // We will save if they use this, so this is a nice little helper
+    this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
   }
 
   async changeRepresentatives() {

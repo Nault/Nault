@@ -21514,7 +21514,7 @@ function RepresentativesComponent_div_12_div_33_li_11_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.weight);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.username);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate"](rep_r58.alias);
   }
 }
 
@@ -21999,7 +21999,7 @@ class RepresentativesComponent {
     this.selectedRecommendedRep = rep;
     this.toRepresentativeID = rep.rep_address;
     this.showRecommendedReps = false;
-    this.representativeListMatch = rep.username; // We will save if they use this, so this is a nice little helper
+    this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
   }
 
   changeRepresentatives() {
