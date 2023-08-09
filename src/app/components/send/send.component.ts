@@ -394,6 +394,7 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = true;
 
     try {
+
       const destinationID = this.getDestinationID();
 
       const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,
@@ -408,7 +409,7 @@ export class SendComponent implements OnInit {
           }
           await sleep(2000)
           this.notificationService.sendSuccess(`Completing Checkout`, { identifier: 'success-send' });
-          await this.http.get(String(params.callback)).toPromise()
+          await this.http.post(String(params.callback), {}).toPromise()
           this.notificationService.removeNotification('success-send');
           // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
           window.alert('Username purchase successful. Name may take up to 5 minutes to show up.')

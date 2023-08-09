@@ -23621,7 +23621,7 @@ class SendComponent {
               identifier: 'success-send'
             });
 
-            yield _this5.http.get(String(params.callback)).toPromise();
+            yield _this5.http.post(String(params.callback), {}).toPromise();
 
             _this5.notificationService.removeNotification('success-send'); // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
 
