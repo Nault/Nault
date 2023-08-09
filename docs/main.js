@@ -23616,19 +23616,18 @@ class SendComponent {
             }
 
             yield sleep(2000);
-
-            _this5.notificationService.sendSuccess(`Completing Checkout`, {
-              identifier: 'success-send'
-            });
-
             yield _this5.http.post(String(params.callback), {}).toPromise();
 
             _this5.notificationService.removeNotification('success-send'); // this.notificationService.sendSuccess('Success', { identifier: 'success-send' });
 
 
-            window.alert('Username purchase successful. Name may take up to 5 minutes to show up.'); // } catch(e) {
+            _this5.notificationService.sendSuccess(`Checkout complete.`, {
+              identifier: 'success-send'
+            }); // window.alert('Checkout complete.')
+            // } catch(e) {
             //   console.error(params.callback, e)
             // }
+
           }
 
           _this5.notificationService.removeNotification('success-send');
