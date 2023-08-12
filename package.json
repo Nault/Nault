@@ -19,10 +19,10 @@
     "wallet:build": "ng build --configuration production",
     "wallet:build-desktop": "ng build --configuration=desktop --base-href ",
     "desktop:compile": "cd desktop-app && tsc && cd ..",
-    "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
+    "desktop:build": "NODE_OPTIONS=--openssl-legacy-provider npm run wallet:build-desktop && npm run desktop:compile",
     "desktop:build-local": "npm run desktop:build && npm run desktop:local",
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
-    "desktop:local": "electron-builder -p never"
+    "desktop:local": "npm_config_openssl_fips='' electron-builder -p never"
   },
   "private": true,
   "dependencies": {
