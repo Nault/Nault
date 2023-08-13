@@ -33,9 +33,11 @@ jobs:
 
   release:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
 
     # Run different jobs for each OS
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-20.04
@@ -43,16 +45,19 @@ jobs:
             asset_name: checksums
             app_ext: AppImage
             app_os: linux
+            experimental: false
           - os: macos-11
             artifact_name: checksums
             asset_name: checksums
             app_ext: dmg
             app_os: mac
+            experimental: false
           - os: windows-2022
             artifact_name: checksums
             asset_name: checksums
             app_ext: exe
             app_os: windows
+            experimental: true
 
     needs: pre_build # job dependency and shared variables
     steps:
