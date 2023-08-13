@@ -57,7 +57,7 @@ Then you can just go to the debug screen and choose "Electron: Main", "Electron:
 
 Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 ```bash
-npm run desktop:local
+npm run desktop:local --openssl_fips=''
 ```
 
 Can also run a complete build for your local OS. The "wallet:build-desktop" command is run automatically. (Will be in `desktop-app\build`):
