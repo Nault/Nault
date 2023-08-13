@@ -14,7 +14,7 @@ Seamless integration with any nano compatible RPC backend/websocket and the aim 
 ___
 
 ## How To Use
-Nault comes in different flavors to suit your need.
+Nault comes in different flavors to suit your needs.
 #### Desktop App
 Available for Windows/Mac/Linux - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS. Arch Linux users may [install it from the (unofficial) AUR](https://aur.archlinux.org/packages/nault-bin/).
 
