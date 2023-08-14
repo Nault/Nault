@@ -112,9 +112,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
     await this.updatePendingBlocks();
 
-    // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
+      // Set the account selected in the sidebar as default
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
+      this.onSelectedAccountChange(this.pendingAccountModel);
+    } else if (this.accounts.length === 1) {
+      // Auto-select account if it is the only account in the wallet
+      this.pendingAccountModel = this.accounts[0].id;
       this.onSelectedAccountChange(this.pendingAccountModel);
     }
 
