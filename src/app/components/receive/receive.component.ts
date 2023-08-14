@@ -36,10 +36,12 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   pendingAccountModel = '0';
   pendingBlocks = [];
   pendingBlocksForSelectedAccount = [];
+  qrCodeUri = null;
   qrCodeImage = null;
   qrAccount = '';
   qrAmount: BigNumber = null;
   recentlyCopiedAccountAddress = false;
+  recentlyCopiedPaymentUri = false;
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
@@ -296,7 +298,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     if (account.length > 1) {
       this.qrAccount = account;
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      this.qrCodeUri = `nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+      qrCode = await QRCode.toDataURL(this.qrCodeUri, {scale: 7});
     }
     this.qrCodeImage = qrCode;
   }
@@ -311,7 +314,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
     if (this.qrAccount.length > 1) {
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      this.qrCodeUri = `nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+      qrCode = await QRCode.toDataURL(this.qrCodeUri, {scale: 7});
       this.qrCodeImage = qrCode;
     }
   }
@@ -385,9 +389,24 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeoutIdClearingRecentlyCopiedState);
     }
     this.recentlyCopiedAccountAddress = true;
+    this.recentlyCopiedPaymentUri = false;
     this.timeoutIdClearingRecentlyCopiedState = setTimeout(
       () => {
         this.recentlyCopiedAccountAddress = false;
+      },
+      2000
+    );
+  }
+
+  copiedPaymentUri() {
+    if (this.timeoutIdClearingRecentlyCopiedState != null) {
+      clearTimeout(this.timeoutIdClearingRecentlyCopiedState);
+    }
+    this.recentlyCopiedPaymentUri = true;
+    this.recentlyCopiedAccountAddress = false;
+    this.timeoutIdClearingRecentlyCopiedState = setTimeout(
+      () => {
+        this.recentlyCopiedPaymentUri = false;
       },
       2000
     );
