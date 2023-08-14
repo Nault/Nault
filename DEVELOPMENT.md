@@ -22,15 +22,12 @@ npm install
 npm run wallet:dev
 ```
 
-If you want to debug in VS code, first install [debugger for chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
-Then you can just go to the debug screen and choose "Launch Chrome http"
+You can use JavaScript debugger bundled with VS Code to debug. Refer [here](https://github.com/microsoft/vscode-js-debug) for additional information.
 
 #### Run the wallet in dev mode as https (for example if using the Ledger device)
 ```bash
 npm run wallet:dev-ssl
 ```
-
-To debug in VS code: Go to debug screen and choose "Launch Chrome https"
 
 ## Build Wallet (For Production)
 Build a production version of the wallet for web:
@@ -52,12 +49,11 @@ Run the desktop wallet in dev mode:
 npm run desktop:dev
 ```
 
-If you want to debug in VS code, first install [debugger for chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
-Then you can just go to the debug screen and choose "Electron: Main", "Electron: Renderer", or "Electron: All" for both Main and Renderer threads.
+You can use JavaScript debugger bundled with VS Code to debug. Refer [here](https://github.com/microsoft/vscode-js-debug) for additional information.
 
 Build the desktop wallet for your local OS (Will be in `desktop-app\build`):
 ```bash
-npm run desktop:local
+npm run desktop:local --openssl_fips=''
 ```
 
 Can also run a complete build for your local OS. The "wallet:build-desktop" command is run automatically. (Will be in `desktop-app\build`):

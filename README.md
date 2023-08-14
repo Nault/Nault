@@ -4,7 +4,7 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/Nault/Nault/releases/latest)
 [![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
 
-Nault is a community driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
+Nault is a community-driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
 It's a fully client-side signing wallet for sending and receiving [nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
 
@@ -14,9 +14,9 @@ Seamless integration with any nano compatible RPC backend/websocket and the aim 
 ___
 
 ## How To Use
-Nault comes in different flavors to suit your need.
+Nault comes in different flavors to suit your needs.
 #### Desktop App
-Available for Windows/Mac/Linux - just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS. Arch Linux users may [install it from the (unofficial) AUR](https://aur.archlinux.org/packages/nault-bin/).
+Available for Windows/Mac/Linux – just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS. Arch Linux users may [install it from the (unofficial) AUR](https://aur.archlinux.org/packages/nault-bin/).
 
 If you want to verify the binary checksum there are plenty of apps to do this. One way is using a powershell or bash terminal:
 
