@@ -281,6 +281,10 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
+    if ( this.newAddressName.startsWith('@') === true ) {
+      return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
+    }
+
     // Remove spaces and convert to nano prefix
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('xrb_', 'nano_');
 

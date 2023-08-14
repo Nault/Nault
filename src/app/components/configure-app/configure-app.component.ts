@@ -148,6 +148,12 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedPendingOption = this.pendingOptions[0].value;
 
+  decentralizedAliasesOptions = [
+    { name: this.translocoService.translate('configure-app.decentralized-aliases-options.disabled'), value: 'disabled' },
+    { name: this.translocoService.translate('configure-app.decentralized-aliases-options.enabled'), value: 'enabled' },
+  ];
+  selectedDecentralizedAliasesOption = this.decentralizedAliasesOptions[0].value;
+
   // prefixOptions = [
   //   { name: 'xrb_', value: 'xrb' },
   //   { name: 'nano_', value: 'nano' },
@@ -282,6 +288,9 @@ export class ConfigureAppComponent implements OnInit {
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
 
+    const matchingDecentralizedAliasesOption = this.decentralizedAliasesOptions.find(d => d.value === settings.decentralizedAliasesOption);
+    this.selectedDecentralizedAliasesOption = matchingDecentralizedAliasesOption ? matchingDecentralizedAliasesOption.value : this.decentralizedAliasesOptions[0].value;
+
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
     this.serverAPI = settings.serverAPI;
@@ -371,6 +380,8 @@ export class ConfigureAppComponent implements OnInit {
       minReceive = this.minimumReceive;
     }
 
+    const decentralizedAliasesOption = this.selectedDecentralizedAliasesOption;
+
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
     || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
@@ -432,6 +443,7 @@ export class ConfigureAppComponent implements OnInit {
       multiplierSource: Number(this.selectedMultiplierOption),
       customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
+      decentralizedAliasesOption: decentralizedAliasesOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
     };

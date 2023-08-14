@@ -201,6 +201,23 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
+                <label class="uk-form-label">{{ 'configure-app.decentralized-aliases' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.decentralized-aliases-require-external-requests')"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedDecentralizedAliasesOption">
+                      <option *ngFor="let decentralizedAliasesOption of decentralizedAliasesOptions" [value]="decentralizedAliasesOption.value">{{ decentralizedAliasesOption.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
                 <label class="uk-form-label">{{ 'configure-app.default-representative' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.this-representative-will-be-used-for-any-new-account')"></span></label>
 
                 <div class="uk-form-controls">
