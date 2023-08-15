@@ -91,12 +91,12 @@ jobs:
       - name: Create Hashes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          openssl sha1 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
-          openssl md5 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
-          openssl sha256 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
-          openssl sha512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
-          openssl sha3-512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
-          openssl blake2b512 desktop-app/build/*.${{ matrix.app_ext }} >> desktop-app/build/${{ matrix.artifact_name }} | bash
+          openssl sha1 desktop-app/build/*.${{ matrix.app_ext }}       | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl md5 desktop-app/build/*.${{ matrix.app_ext }}        | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl sha256 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl sha512 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl sha3-512 desktop-app/build/*.${{ matrix.app_ext }}   | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl blake2b512 desktop-app/build/*.${{ matrix.app_ext }} | tee -a desktop-app/build/${{ matrix.artifact_name }} 
         shell: bash
 
       - name: Rename file paths in .yml (Linux)
