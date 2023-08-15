@@ -86,7 +86,7 @@ jobs:
 
       - name: Build Electron app
         run: |
-          npm run desktop:local --openssl_fips=''
+          npm run desktop:local
 
       - name: Create Hashes
         if: startsWith(github.ref, 'refs/tags/')
