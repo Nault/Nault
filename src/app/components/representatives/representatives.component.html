@@ -200,13 +200,13 @@
                 <hr>
 
                 <div class="uk-margin">
-                  <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
+                  <!-- <p class="uk-text-lead uk-text-center">Recommended</p> -->
                   <!--<h4>Or, Select a recommended representative</h4>-->
                   <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
                     <li class="uk-list-header">
                       <div uk-grid>
-                        <div class="uk-width-expand">Representative</div>
-                        <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
+                        <div class="uk-width-expand">Representatives</div>
+                        <!-- <div class="uk-width-1-2">Weight / Uptime / Accounts</div> -->
                         <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
                       </div>
                     </li>
@@ -221,14 +221,14 @@
                     <li *ngFor="let rep of recommendedRepsPaginated">
                       <div uk-grid >
                         <div class="uk-width-expand" (click)="selectRecommendedRep(rep)" style="cursor: pointer;">
-                          <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-right: 4px;">{{ rep.score }}</span> <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
-
+                          <!-- <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-right: 4px;">{{ rep.weight }}</span> -->
+                          <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
                         </div>
                         <div class="uk-width-1-2">
-                          <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a>
+                          <!-- <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a> -->
 
-                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
-                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
+                          <!-- <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span> -->
+                          <!-- <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime }}</span> -->
 
                         </div>
                       </div>
