@@ -20,7 +20,6 @@ interface AppSettings {
   multiplierSource: number;
   customWorkServer: string;
   pendingOption: string;
-  decentralizedAliasesOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -49,7 +48,6 @@ export class AppSettingsService {
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
-    decentralizedAliasesOption: 'disabled',
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
@@ -70,10 +68,10 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
+      name: 'Rainstorm City',
+      value: 'rainstorm',
+      api: 'https://rainstorm.city/api',
+      ws: 'wss://rainstorm.city/websocket',
       auth: null,
       shouldRandom: true,
     },
@@ -86,10 +84,34 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
-      name: 'Rainstorm City',
-      value: 'rainstorm',
-      api: 'https://rainstorm.city/api',
-      ws: 'wss://rainstorm.city/websocket',
+      name: 'Nano Garden',
+      value: 'nanogarden',
+      api: 'https://node.nano.garden/api',
+      ws: 'wss://node.nano.garden/ws',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Nano.to RPC (No Websocket)',
+      value: 'nanogarden',
+      api: 'https://rpc.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Nano.to US-1 (No Websocket)',
+      value: 'nanogarden',
+      api: 'https://us-1.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Nano.to US-2 (No Websocket)',
+      value: 'nanogarden',
+      api: 'https://us-2.nano.to',
+      ws: null,
       auth: null,
       shouldRandom: true,
     },
@@ -106,6 +128,14 @@ export class AppSettingsService {
       value: 'offline',
       api: null,
       ws: null,
+      auth: null,
+      shouldRandom: false,
+    },
+    {
+      name: 'Test Network Mode',
+      value: 'test-network',
+      api: 'https://xnotest.com/api',
+      ws: 'wss://xnotest.com/ws',
       auth: null,
       shouldRandom: false,
     }
@@ -219,7 +249,6 @@ export class AppSettingsService {
       multiplierSource: 1,
       customWorkServer: '',
       pendingOption: 'amount',
-      decentralizedAliasesOption: 'disabled',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,
