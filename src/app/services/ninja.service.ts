@@ -54,6 +54,11 @@ export class NinjaService {
 
   async recommendedRandomized(): Promise<any> {
     const replist = await this.recommended();
+
+    if (replist == null) {
+      return [];
+    }
+
     return this.randomizeByScore(replist);
   }
 
