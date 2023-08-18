@@ -659,8 +659,6 @@ export class SendComponent implements OnInit {
 
 
     this.confirmingTransaction = false;
-
-    await this.walletService.reloadBalances();
   }
 
   setMaxAmount() {

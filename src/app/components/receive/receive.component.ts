@@ -375,7 +375,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
 
     receivableBlock.loading = false;
-    await this.walletService.reloadBalances();
     this.updatePendingBlocks(); // update the list
   }
 
