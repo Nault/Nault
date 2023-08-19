@@ -221,8 +221,8 @@
                     <li *ngFor="let rep of recommendedRepsPaginated">
                       <div uk-grid >
                         <div class="uk-width-expand" (click)="selectRecommendedRep(rep)" style="cursor: pointer;">
-                          <!-- <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-right: 4px;">{{ rep.weight }}</span> -->
                           <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
+                          <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-left: 4px;">{{ rep.weight }}</span>
                         </div>
                         <div class="uk-width-1-2">
                           <!-- <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a> -->

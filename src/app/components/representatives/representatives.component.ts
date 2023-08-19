@@ -232,12 +232,12 @@ export class RepresentativesComponent implements OnInit {
       const scores = await this.ninja.recommended() as any[];
       const totalSupply = new BigNumber(133248289);
 
-      const reps = scores.map(rep => {
+      const reps = scores.filter(a => a.alias).map(rep => {
         const nanoWeight = this.util.nano.rawToMnano(rep.weight.toString() || 0);
         const percent = nanoWeight.div(totalSupply).times(100);
 
         // rep.weight = nanoWeight.toString(10);
-        rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
+        // rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
         rep.percent = percent.toFixed(3);
 
         return rep;

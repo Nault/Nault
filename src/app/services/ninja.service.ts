@@ -49,7 +49,7 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    return await this.http.post('https://rpc.nano.to', { action: "representatives" }).toPromise();
+    return await this.http.post('https://rpc.nano.to', { action: "reps" }).toPromise();
   }
 
   async recommendedRandomized(): Promise<any> {
