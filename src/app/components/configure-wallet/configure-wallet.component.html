@@ -313,11 +313,12 @@
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <h3>Use Ledger Hardware Wallet</h3>
-        <p>
-          Make sure you have the nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
-          <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
+        <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED">
+          <p>Make sure you have the nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.</p>
+          <p *ngIf="!ledgerService.isDesktop && !ledgerService.supportsBluetooth">Bluetooth is currently not supported by your browser, please use Chrome, Edge, Opera or Brave</p>
+          <p><a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a></p>
           <br>
-        </p>
+        </div>
         <div *ngIf="!ledgerService.supportsUSB">
           <div class="uk-alert uk-alert-warning nlt-inline-alert">
             <div class="icon-column">
@@ -338,8 +339,7 @@
               </div>
               <p>
                 <b>Ledger Device Not Connected</b><br>
-                Connect your Ledger device and make sure you have the nano app installed and running, then press the button below.<br>
-                <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
+                Make sure you have the nano app installed and running on the device, then press connect.<br>
               </p>
             </div>
           </div>
@@ -360,10 +360,22 @@
                 <div uk-icon="icon: check; ratio: 2;"></div>
               </div>
               <p>
-                <b>Ledger Device Ready</b><br>
-                Press the import button below to use your ledger wallet
+                <b>Ledger Device Connected</b><br>
+                Ledger data was imported successfully.
               </p>
             </div>
+          </div>
+        </div>
+        <div *ngIf="ledgerService.isDesktop && !ledgerService.supportsBluetooth && ledger.status === ledgerStatus.NOT_CONNECTED">
+          <div class="uk-alert uk-alert-danger nlt-inline-alert">
+            <div class="icon-column">
+              <div uk-icon="icon: warning; ratio: 2;"></div>
+            </div>
+            <p>
+              <b>No Compatible Bluetooth Hardware</b><br>
+              The Bluetooth support in Nault for desktop is limited to only specific Bluetooth modules.<br> 
+              For better compatibility, please try <a href="https://nault.cc" target="_blank" rel="noopener noreferrer">Nault.cc</a> in a browser with Bluetooth support (Chrome, Edge, Opera or Brave).
+            </p>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <div *ngIf="walletService.isLedgerWallet()">
-  <div class="nav-status-row" *ngIf="ledgerStatus === 'not-connected' || !ledgerStatus">
+  <div class="nav-status-row" *ngIf="ledgerStatus.status === 'not-connected' || !ledgerStatus.status">
     <div class="status-icon">
       <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
     </div>
@@ -8,7 +8,7 @@
       <div class="label secondary"><a (click)="reloadLedger()">Reconnect</a> or <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">view Troubleshooting Guide</a></div>
     </div>
   </div>
-  <div class="nav-status-row" *ngIf="( ledgerStatus === 'locked' )">
+  <div class="nav-status-row" *ngIf="( ledgerStatus.status === 'locked' )">
     <div class="status-icon">
       <span class="uk-text-warning" uk-icon="icon: warning; ratio: 1.2;"></span>
     </div>
@@ -17,7 +17,7 @@
       <div class="label secondary">Unlock the device, then <a (click)="reloadLedger()">click here</a> to reconnect</div>
     </div>
   </div>
-  <div class="nav-status-row interactable" (click)="reloadLedger()" *ngIf="( ledgerStatus === 'ready' )">
+  <div class="nav-status-row interactable" (click)="reloadLedger()" *ngIf="( ledgerStatus.status === 'ready' )">
     <div class="status-icon">
       <span class="uk-text-success" uk-icon="icon: bolt; ratio: 1.2;"></span>
     </div>

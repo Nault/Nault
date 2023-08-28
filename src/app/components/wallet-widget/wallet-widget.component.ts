@@ -13,7 +13,10 @@ import {PowService} from '../../services/pow.service';
 export class WalletWidgetComponent implements OnInit {
   wallet = this.walletService.wallet;
 
-  ledgerStatus = 'not-connected';
+  ledgerStatus = {
+    status: 'not-connected',
+    statusText: '',
+  };
   powAlert = false;
 
   unlockPassword = '';
@@ -39,8 +42,8 @@ export class WalletWidgetComponent implements OnInit {
     });
     this.modal = modal;
 
-    this.ledgerService.ledgerStatus$.subscribe((ledgerStatus: any) => {
-      this.ledgerStatus = ledgerStatus.status;
+    this.ledgerService.ledgerStatus$.subscribe((ledgerStatus) => {
+      this.ledgerStatus = ledgerStatus;
     });
 
     // Detect if a PoW is taking too long and alert
@@ -89,7 +92,7 @@ export class WalletWidgetComponent implements OnInit {
     try {
       await this.ledgerService.loadLedger();
       this.notificationService.removeNotification('ledger-status');
-      if (this.ledgerStatus === LedgerStatus.READY) {
+      if (this.ledgerStatus.status === LedgerStatus.READY) {
         this.notificationService.sendSuccess(`Successfully connected to Ledger device`);
       }
     } catch (err) {
