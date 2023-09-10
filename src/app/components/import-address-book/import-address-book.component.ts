@@ -39,7 +39,7 @@ export class ImportAddressBookComponent implements OnInit {
 
     try {
       let importBlob;
-      if (originalString && originalString.includes('account')) {
+      if (originalString && ( originalString.includes('account') || originalString.includes('address') )) {
         importBlob = JSON.parse(originalString); // new binary format
       } else {
         importBlob = JSON.parse(binary); // old non-binary version
@@ -49,28 +49,56 @@ export class ImportAddressBookComponent implements OnInit {
         return this.importDataError(`Bad import data.  Check your link and try again.`);
       }
       this.validImportData = true;
-      this.importData = importBlob;
       this.activePanel = 'import';
 
-      // Now, find conflicting accounts
+      let importDataAddress = {};
+      let importData = [];
+
       for (const entry of importBlob) {
-        if (!entry.account || !entry.name) {
+        // support common fields that address book exports from other apps may contain
+        const entryName = entry.name ?? entry.nickname;
+        const entryAddress = entry.account ?? entry.address;
+
+        if (!entryAddress || !entryName) {
           continue; // Data missing?
         }
-        entry.originalName = this.addressBook.getAccountName(entry.account);
-        entry.originalTrackBalance = this.addressBook.getBalanceTrackingById(entry.account);
-        entry.originalTrackTransactions = this.addressBook.getTransactionTrackingById(entry.account);
-        if (!entry.originalName) {
+
+        if ( importDataAddress[entryAddress] != null ) {
+          continue; // Duplicate
+        }
+        importDataAddress[entryAddress] = true;
+
+        const originalTrackBalance = this.addressBook.getBalanceTrackingById(entryAddress);
+        const originalTrackTransactions = this.addressBook.getTransactionTrackingById(entryAddress);
+
+        const importEntry = {
+          account: entryAddress,
+          originalName: this.addressBook.getAccountName(entryAddress),
+          name: entryName,
+          originalTrackBalance,
+          trackBalance: entry.trackBalance ?? originalTrackBalance,
+          originalTrackTransactions,
+          trackTransactions: entry.trackTransactions ?? originalTrackTransactions,
+        }
+
+        if (!importEntry.originalName) {
           this.newEntries++;
-        } else if (entry.originalName === entry.name && entry.originalTrackBalance === entry.trackBalance &&
-          entry.originalTrackTransactions === entry.trackTransactions) {
-          this.existingEntries++;
+        } else if (
+              (importEntry.originalName === entryName)
+            && (importEntry.originalTrackBalance === importEntry.trackBalance)
+            && (importEntry.originalTrackTransactions === importEntry.trackTransactions)
+          ) {
+            this.existingEntries++;
         } else {
           this.conflictingEntries++;
         }
+
+        importData.push(importEntry);
       }
 
+      this.importData = importData;
     } catch (err) {
+      console.log(err);
       return this.importDataError(`Unable to decode import data.  Check your link and try again.`);
     }
   }
