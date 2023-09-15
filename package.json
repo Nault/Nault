@@ -121,6 +121,9 @@
     "@ledgerhq/hw-transport": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.27.1"
   },
+  "alias": {
+    "@ledgerhq/devices": "@ledgerhq/devices/lib-es"
+  },
   "build": {
     "appId": "cc.nault",
     "buildVersion": "1.0.0",
