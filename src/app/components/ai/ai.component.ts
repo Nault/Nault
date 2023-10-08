@@ -186,7 +186,8 @@ if (this.walletService.isLocked()) {
       // hard code
       const destinationID = 'nano_1chatai164r4whzni648buh5u58ju9kfej8kmw4h73zhmszxbb7k1dgto6gu';
 
-      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
+      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.001'), this.walletService.isLedgerWallet());
+      // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
 
       if (newHash) {
 
