@@ -319,8 +319,8 @@ export class ConfigureWalletComponent implements OnInit {
     if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
       return this.notifications.sendError(`Password confirmation does not match, try again!`);
     }
-    if (this.walletPasswordModel.length < 6) {
-      return this.notifications.sendWarning(`Password length must be at least 6`);
+    if (this.walletPasswordModel.length < 3) {
+      return this.notifications.sendWarning(`Password length must be at least 3`);
     }
     this.newPassword = this.walletPasswordModel;
     this.walletPasswordModel = '';

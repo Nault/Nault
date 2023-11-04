@@ -12783,7 +12783,7 @@ function ConfigureWalletComponent_div_9_Template(rf, ctx) {
 
 const _c0 = function () {
   return {
-    minCharacters: 6
+    minCharacters: 3
   };
 };
 
@@ -12881,13 +12881,13 @@ function ConfigureWalletComponent_div_10_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngModel", ctx_r8.walletPasswordModel);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx_r8.walletPasswordModel.length > 0 && ctx_r8.walletPasswordModel.length < 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx_r8.walletPasswordModel.length > 0 && ctx_r8.walletPasswordModel.length < 3);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx_r8.walletPasswordConfirmModel.length >= 6 && ctx_r8.walletPasswordModel !== ctx_r8.walletPasswordConfirmModel);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngModel", ctx_r8.walletPasswordConfirmModel);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("disabled", ctx_r8.walletPasswordModel.length < 6 || ctx_r8.walletPasswordModel !== ctx_r8.walletPasswordConfirmModel);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("disabled", ctx_r8.walletPasswordModel.length < 3 || ctx_r8.walletPasswordModel !== ctx_r8.walletPasswordConfirmModel);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate"](ctx_r8.isNewWallet ? "Next" : "Import Wallet");
   }
@@ -13274,8 +13274,8 @@ class ConfigureWalletComponent {
       return this.notifications.sendError(`Password confirmation does not match, try again!`);
     }
 
-    if (this.walletPasswordModel.length < 6) {
-      return this.notifications.sendWarning(`Password length must be at least 6`);
+    if (this.walletPasswordModel.length < 3) {
+      return this.notifications.sendWarning(`Password length must be at least 3`);
     }
 
     this.newPassword = this.walletPasswordModel;
@@ -16138,13 +16138,13 @@ function ManageWalletComponent_div_4_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](7);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngModel", ctx_r0.newPassword);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngIf", ctx_r0.newPassword.length > 0 && ctx_r0.newPassword.length < 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngIf", ctx_r0.newPassword.length > 0 && ctx_r0.newPassword.length < 3);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngIf", ctx_r0.confirmPassword.length >= 6 && ctx_r0.newPassword !== ctx_r0.confirmPassword);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("ngModel", ctx_r0.confirmPassword);
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("disabled", ctx_r0.newPassword.length < 6 || ctx_r0.newPassword !== ctx_r0.confirmPassword);
+    _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("disabled", ctx_r0.newPassword.length < 3 || ctx_r0.newPassword !== ctx_r0.confirmPassword);
   }
 }
 
@@ -30493,7 +30493,7 @@ class AppSettingsService {
             lockOnClose: 1,
             lockInactivityMinutes: 30,
             ledgerReconnect: 'usb',
-            serverName: 'us-1.nano.to',
+            serverName: 'rpc.nano.to',
             powSource: 'nano.to',
             serverAPI: 'https://rpc.nano.to',
             serverWS: null,
@@ -30508,29 +30508,29 @@ class AppSettingsService {
         };
         this.serverOptions = [
             {
-                name: 'US-1.Nano.to',
-                value: 'us-1.nano.to',
-                api: 'https://us-1.nano.to',
+                name: 'Nano.to Pro RPC',
+                value: 'rpc.nano.to',
+                api: 'https://rpc.nano.to',
                 ws: null,
                 auth: null,
                 shouldRandom: true,
             },
-            {
-                name: 'US-2.Nano.to',
-                value: 'us-2.nano.to',
-                api: 'https://us-2.nano.to',
-                ws: null,
-                auth: null,
-                shouldRandom: true,
-            },
-            {
-                name: 'Europe-1.Nano.to',
-                value: 'solar.nano.to',
-                api: 'https://solarnanofaucet.space/api',
-                ws: 'wss://solarnanofaucet.space/websocket',
-                auth: null,
-                shouldRandom: false,
-            },
+            // {
+            //   name: 'US-2.Nano.to',
+            //   value: 'us-2.nano.to',
+            //   api: 'https://us-2.nano.to',
+            //   ws: null,
+            //   auth: null,
+            //   shouldRandom: true,
+            // },
+            // {
+            //   name: 'Solar.Nano.to',
+            //   value: 'solar.nano.to',
+            //   api: 'https://solarnanofaucet.space/api',
+            //   ws: 'wss://solarnanofaucet.space/websocket',
+            //   auth: null,
+            //   shouldRandom: false,
+            // },
             {
                 name: 'Random',
                 value: 'random',

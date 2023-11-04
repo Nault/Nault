@@ -44,7 +44,7 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
-    serverName: 'us-1.nano.to',
+    serverName: 'rpc.nano.to',
     powSource: 'nano.to',
     serverAPI: 'https://rpc.nano.to',
     serverWS: null,
@@ -61,31 +61,31 @@ export class AppSettingsService {
   serverOptions = [
     
     {
-      name: 'US-1.Nano.to',
-      value: 'us-1.nano.to',
-      api: 'https://us-1.nano.to',
+      name: 'Nano.to Pro RPC',
+      value: 'rpc.nano.to',
+      api: 'https://rpc.nano.to',
       ws: null,
       auth: null,
       shouldRandom: true,
     },
 
-    {
-      name: 'US-2.Nano.to',
-      value: 'us-2.nano.to',
-      api: 'https://us-2.nano.to',
-      ws: null,
-      auth: null,
-      shouldRandom: true,
-    },
+    // {
+    //   name: 'US-2.Nano.to',
+    //   value: 'us-2.nano.to',
+    //   api: 'https://us-2.nano.to',
+    //   ws: null,
+    //   auth: null,
+    //   shouldRandom: true,
+    // },
 
-    {
-      name: 'Europe-1.Nano.to',
-      value: 'solar.nano.to',
-      api: 'https://solarnanofaucet.space/api',
-      ws: 'wss://solarnanofaucet.space/websocket',
-      auth: null,
-      shouldRandom: false,
-    },
+    // {
+    //   name: 'Solar.Nano.to',
+    //   value: 'solar.nano.to',
+    //   api: 'https://solarnanofaucet.space/api',
+    //   ws: 'wss://solarnanofaucet.space/websocket',
+    //   auth: null,
+    //   shouldRandom: false,
+    // },
 
     {
       name: 'Random',

@@ -470,7 +470,7 @@
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
         <!-- <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter> -->
-        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 6 } }}</span>
+        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 3">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 3 } }}</span>
         <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">{{ 'configure-wallet.set-wallet-password.errors.passwords-do-not-match' | transloco }}</span>
       </div>
       <div class="uk-width-1-2@m">
@@ -479,7 +479,7 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 6 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? 'Next':'Import Wallet'}}</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 3 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? 'Next':'Import Wallet'}}</button>
   </div>
 </div>
 
