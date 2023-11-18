@@ -32551,9 +32551,7 @@ class NinjaService {
     var _this2 = this;
 
     return (0,_Users_esteban_Desktop_nault_pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      return yield _this2.http.post('https://rpc.nano.to', {
-        action: "reps"
-      }).toPromise();
+      return yield _this2.http.get('https://nano.to/reps.json').toPromise();
     })();
   }
 
