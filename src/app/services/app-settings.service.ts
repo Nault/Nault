@@ -70,22 +70,6 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
-      value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://nault.nanos.cc/proxy',
-      ws: 'wss://nault-ws.nanos.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
       name: 'Rainstorm City',
       value: 'rainstorm',
       api: 'https://rainstorm.city/api',
@@ -117,7 +101,6 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'proxy.nanos.cc/proxy',
     'node.somenano.com'
   ]);
 
