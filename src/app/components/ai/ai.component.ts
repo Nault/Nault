@@ -63,10 +63,7 @@ export class AiComponent implements OnInit {
 
     var on = false
 
-
-
-
-if (this.walletService.isLocked()) {
+    if (this.walletService.isLocked()) {
 
       const wasUnlocked = await this.walletService.requestWalletUnlock();
 
@@ -103,15 +100,15 @@ if (this.walletService.isLocked()) {
     //   false
     // );
 
-    window.onmessage = function(e) {
-        if (e.data == 'mounted') {
-            // alert('It mounted');
-        }
-        if (e.data == 'prompt') {
-            // alert('It prompted');
-            self.purchasePrompt()
-        }
-    };
+    // window.onmessage = function(e) {
+    //     if (e.data == 'mounted') {
+    //         // alert('It mounted');
+    //     }
+    //     if (e.data == 'prompt') {
+    //         // alert('It prompted');
+    //         self.purchasePrompt()
+    //     }
+    // };
 
     // window.addEventListener("message", ({data}) => {
     //   console.log("Message from worker: " + data); // 3
@@ -155,16 +152,16 @@ if (this.walletService.isLocked()) {
 
   receiveMessage(event: MessageEvent) {
     // Check the origin of the message to ensure it's from a trusted source
-    // if (event.origin !== 'http://example.com') {
-    //   return;
-    // }
+    if (event.origin !== 'https://ai.nault.pro') {
+      return;
+    }
 
     // Log the received message from the child iframe
     // if (event.data.action === 'loading') this.notificationService.sendError(`Thinking..`);
-    if (event.data.action === 'prompt') this.purchasePrompt()
+    if (event.data.action === 'prompt') this.purchasePrompt(event.data.price)
   }
 
-  async purchasePrompt() {
+  async purchasePrompt(amount) {
 
     // console.log('CHILD->PARENT:', "Purchasing Prompt");
 
@@ -187,7 +184,7 @@ if (this.walletService.isLocked()) {
       const destinationID = 'nano_1chatai164r4whzni648buh5u58ju9kfej8kmw4h73zhmszxbb7k1dgto6gu';
 
       // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
-      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.001'), this.walletService.isLedgerWallet());
+      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw(amount), this.walletService.isLedgerWallet());
       // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
 
       if (newHash) {

@@ -8180,17 +8180,16 @@ class AiComponent {
       //   },
       //   false
       // );
-
-
-      window.onmessage = function (e) {
-        if (e.data == 'mounted') {// alert('It mounted');
-        }
-
-        if (e.data == 'prompt') {
-          // alert('It prompted');
-          self.purchasePrompt();
-        }
-      }; // window.addEventListener("message", ({data}) => {
+      // window.onmessage = function(e) {
+      //     if (e.data == 'mounted') {
+      //         // alert('It mounted');
+      //     }
+      //     if (e.data == 'prompt') {
+      //         // alert('It prompted');
+      //         self.purchasePrompt()
+      //     }
+      // };
+      // window.addEventListener("message", ({data}) => {
       //   console.log("Message from worker: " + data); // 3
       // });
       // window.addEventListener('message', receiveMessage, false);
@@ -8223,15 +8222,16 @@ class AiComponent {
 
   receiveMessage(event) {
     // Check the origin of the message to ensure it's from a trusted source
-    // if (event.origin !== 'http://example.com') {
-    //   return;
-    // }
-    // Log the received message from the child iframe
+    if (event.origin !== 'https://ai.nault.pro') {
+      return;
+    } // Log the received message from the child iframe
     // if (event.data.action === 'loading') this.notificationService.sendError(`Thinking..`);
-    if (event.data.action === 'prompt') this.purchasePrompt();
+
+
+    if (event.data.action === 'prompt') this.purchasePrompt(event.data.price);
   }
 
-  purchasePrompt() {
+  purchasePrompt(amount) {
     var _this2 = this;
 
     return (0,_Users_esteban_Desktop_nault_pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -8252,7 +8252,7 @@ class AiComponent {
         // hard code
         const destinationID = 'nano_1chatai164r4whzni648buh5u58ju9kfej8kmw4h73zhmszxbb7k1dgto6gu'; // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
 
-        const newHash = yield _this2.nanoBlock.generateSend(walletAccount, destinationID, _this2.util.nano.mnanoToRaw('0.001'), _this2.walletService.isLedgerWallet()); // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
+        const newHash = yield _this2.nanoBlock.generateSend(walletAccount, destinationID, _this2.util.nano.mnanoToRaw(amount), _this2.walletService.isLedgerWallet()); // const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,this.util.nano.mnanoToRaw('0.01'), this.walletService.isLedgerWallet());
 
         if (newHash) {
           const isIFrame = input => input !== null && input.tagName === 'IFRAME';
