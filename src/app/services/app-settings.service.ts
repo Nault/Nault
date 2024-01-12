@@ -78,6 +78,14 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
+      name: 'SomeNano',
+      value: 'somenano',
+      api: 'https://node.somenano.com/proxy',
+      ws: 'wss://node.somenano.com/websocket',
+      auth: null,
+      shouldRandom: true,
+    },
+    {
       name: 'Custom',
       value: 'custom',
       api: null,
