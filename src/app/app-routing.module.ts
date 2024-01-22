@@ -6,6 +6,7 @@ import {AccountsComponent} from './components/accounts/accounts.component';
 import {SearchComponent} from './components/search/search.component';
 import {DonateComponent} from './components/donate/donate.component';
 import {AiComponent} from './components/ai/ai.component';
+import {SocialComponent} from './components/social/social.component';
 import {SendComponent} from './components/send/send.component';
 import {AddressBookComponent} from './components/address-book/address-book.component';
 import {ReceiveComponent} from './components/receive/receive.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'donate', component: DonateComponent },
   { path: 'ai', component: AiComponent },
+  { path: 'social', component: SocialComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:account', component: AccountDetailsComponent },
   { path: 'address-book', component: AddressBookComponent },
