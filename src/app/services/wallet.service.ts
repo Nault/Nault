@@ -1051,7 +1051,7 @@ export class WalletService {
         return null; // Denied to receive, stop processing
       }
       this.processingPending = false;
-      return this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+      // return this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
     }
 
     this.processingPending = false;

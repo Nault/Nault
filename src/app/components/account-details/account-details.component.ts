@@ -1002,7 +1002,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.wallet.clearPendingBlocks();
     } else {
       if (!this.wallet.isLedgerWallet()) {
-        this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+        // this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
       }
     }
 

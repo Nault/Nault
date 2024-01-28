@@ -362,7 +362,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       this.walletService.removePendingBlock(receivableBlock.hash);
     } else {
       if (!this.walletService.isLedgerWallet()) {
-        this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+        // this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
       }
     }
 

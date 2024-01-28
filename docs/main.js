@@ -5246,10 +5246,7 @@ class AccountDetailsComponent {
 
         _this11.wallet.clearPendingBlocks();
       } else {
-        if (!_this11.wallet.isLedgerWallet()) {
-          _this11.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {
-            length: 10000
-          });
+        if (!_this11.wallet.isLedgerWallet()) {// this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
         }
       }
 
@@ -20192,10 +20189,7 @@ class ReceiveComponent {
 
         _this8.walletService.removePendingBlock(receivableBlock.hash);
       } else {
-        if (!_this8.walletService.isLedgerWallet()) {
-          _this8.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {
-            length: 10000
-          });
+        if (!_this8.walletService.isLedgerWallet()) {// this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
         }
       }
 
@@ -35818,10 +35812,7 @@ class WalletService {
           return null; // Denied to receive, stop processing
         }
 
-        _this20.processingPending = false;
-        return _this20.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {
-          length: 10000
-        });
+        _this20.processingPending = false; // return this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
       }
 
       _this20.processingPending = false;
