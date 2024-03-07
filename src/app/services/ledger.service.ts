@@ -5,7 +5,6 @@ import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
-import * as LedgerLogs from '@ledgerhq/logs';
 import {Subject} from 'rxjs';
 import {ApiService} from './api.service';
 import {NotificationService} from './notification.service';
@@ -47,9 +46,9 @@ const zeroBlock = '0000000000000000000000000000000000000000000000000000000000000
 export class LedgerService {
   walletPrefix = `44'/165'/`;
 
-  waitTimeout = 300000;
-  normalTimeout = 5000;
-  pollInterval = 15000;
+  waitTimeout = 30000;
+  pollInterval = 5000;
+  u2fPollInterval = 30000;
 
   pollingLedger = false;
 
@@ -70,9 +69,9 @@ export class LedgerService {
   supportsUSB = false;
 
   transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
-  DynamicTransport = TransportU2F;
+  DynamicTransport: typeof TransportUSB | typeof TransportHID | typeof TransportBLE = TransportU2F;
 
-  ledgerStatus$: Subject<any> = new Subject();
+  ledgerStatus$: Subject<{ status: string, statusText: string }> = new Subject();
   desktopMessage$ = new Subject();
 
   constructor(private api: ApiService,
@@ -118,6 +117,7 @@ export class LedgerService {
       }
     });
     this.supportsUSB = true;
+    this.supportsBluetooth = true;
   }
 
   /**
@@ -137,14 +137,8 @@ export class LedgerService {
    * Detect the optimal USB transport protocol for the current browser and OS
    */
   detectUsbTransport() {
-    const isWindows = window.navigator.platform.includes('Win');
-
-    if (isWindows && this.supportsWebHID) {
-      // Prefer WebHID on Windows due to stability issues with WebUSB
-      this.transportMode = 'HID';
-      this.DynamicTransport = TransportHID;
-    } else if (this.supportsWebUSB) {
-      // Else prefer WebUSB
+    if (this.supportsWebUSB) {
+      // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
     } else if (this.supportsWebHID) {
@@ -267,11 +261,10 @@ export class LedgerService {
 
   async loadTransport() {
     return new Promise((resolve, reject) => {
-      this.DynamicTransport.create().then(trans => {
+      this.DynamicTransport.create(3000, this.waitTimeout).then(trans => {
 
         // LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
         this.ledger.transport = trans;
-        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
         this.ledger.nano = new Nano(this.ledger.transport);
 
         resolve(this.ledger.transport);
@@ -298,6 +291,9 @@ export class LedgerService {
         const sub = this.ledgerStatus$.subscribe(newStatus => {
           if (newStatus.status === LedgerStatus.READY) {
             resolve(true);
+          } else if (newStatus.statusText.includes('No compatible USB Bluetooth 4.0 device found') || newStatus.statusText.includes('Could not start scanning')) {
+            this.supportsBluetooth = false;
+            reject(newStatus.statusText);
           } else {
             reject(new Error(newStatus.statusText || `Unable to load desktop Ledger device`));
           }
@@ -323,6 +319,9 @@ export class LedgerService {
             console.log(`Error loading ${this.transportMode} transport `, err);
             this.ledger.status = LedgerStatus.NOT_CONNECTED;
             this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Ledger transport: ${err.message || err}` });
+            if (!hideNotifications) {
+              this.notifications.sendWarning(`Ledger connection failed. Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
+            }
           }
           this.resetLedger();
           resolve(false);
@@ -333,9 +332,6 @@ export class LedgerService {
         return resolve(false);
       }
 
-      if (this.ledger.status === LedgerStatus.READY) {
-        return resolve(true); // Already ready?
-      }
       let resolved = false;
 
       // Set up a timeout when things are not ready
@@ -357,12 +353,10 @@ export class LedgerService {
         resolved = true;
 
         if (!ledgerConfig) return resolve(false);
-        if (ledgerConfig && ledgerConfig.version) {
-          this.ledger.status = LedgerStatus.LOCKED;
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano app detected, but ledger is locked` });
-        }
       } catch (err) {
         console.log(`App config error: `, err);
+        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to load Nano App configuration: ${err.message || err}` });
         if (err.statusText === 'HALTED') {
           this.resetLedger();
         }
@@ -452,9 +446,8 @@ export class LedgerService {
       await this.loadLedger(); // Make sure ledger is ready
     }
     if (this.isDesktop) {
-      return this.signBlockDesktop(accountIndex, blockData);
+      return await this.signBlockDesktop(accountIndex, blockData);
     } else {
-      this.ledger.transport.setExchangeTimeout(this.waitTimeout);
       return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
     }
   }
@@ -464,7 +457,6 @@ export class LedgerService {
   }
 
   async getLedgerAccountWeb(accountIndex: number, showOnScreen = false) {
-    this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
     try {
       return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
     } catch (err) {
@@ -483,9 +475,10 @@ export class LedgerService {
   pollLedgerStatus() {
     if (!this.pollingLedger) return;
     setTimeout(async () => {
+      if (!this.pollingLedger) return;
       await this.checkLedgerStatus();
       this.pollLedgerStatus();
-    }, this.pollInterval);
+    }, this.transportMode === 'U2F' ? this.u2fPollInterval : this.pollInterval);
   }
 
   async checkLedgerStatus() {
@@ -499,8 +492,12 @@ export class LedgerService {
     } catch (err) {
       // Ignore race condition error, which means an action is pending on the ledger (such as block confirmation)
       if (err.name !== 'TransportRaceCondition') {
-        console.log('Check ledger status failed ', err);
-        this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        console.log('Check ledger status failed ', JSON.stringify(err));
+        if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+          this.ledger.status = LedgerStatus.LOCKED;
+        } else {
+          this.ledger.status = LedgerStatus.NOT_CONNECTED;
+        }
         this.pollingLedger = false;
         this.resetLedger();
       }

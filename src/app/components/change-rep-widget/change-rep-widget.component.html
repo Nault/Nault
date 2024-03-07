@@ -55,10 +55,10 @@
         <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-announced-plans-to-permanently-shutdown' | transloco }}
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryHighWeight">
-        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-very-high-voting-weight' | transloco: { percent: 5 } }}
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-very-high-voting-weight' | transloco: { percent: 3 } }}
       </p>
       <p class="uk-text-warning" *ngIf="rep.status.highWeight">
-        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-high-voting-weight' | transloco: { percent: 3 } }}
+        <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-has-a-high-voting-weight' | transloco: { percent: 2 } }}
       </p>
       <p class="uk-text-danger" *ngIf="rep.status.veryLowUptime && rep.status.uptime > 0">
         <span uk-icon="icon: warning;"></span>{{ 'change-rep-widget.this-representative-is-often-offline' | transloco: { percent: rep.status.uptime.toFixed(1) } }}

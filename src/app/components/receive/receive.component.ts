@@ -36,10 +36,12 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   pendingAccountModel = '0';
   pendingBlocks = [];
   pendingBlocksForSelectedAccount = [];
+  qrCodeUri = null;
   qrCodeImage = null;
   qrAccount = '';
   qrAmount: BigNumber = null;
   recentlyCopiedAccountAddress = false;
+  recentlyCopiedPaymentUri = false;
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
@@ -112,9 +114,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
     await this.updatePendingBlocks();
 
-    // Set the account selected in the sidebar as default
     if (this.walletService.wallet.selectedAccount !== null) {
+      // Set the account selected in the sidebar as default
       this.pendingAccountModel = this.walletService.wallet.selectedAccount.id;
+      this.onSelectedAccountChange(this.pendingAccountModel);
+    } else if (this.accounts.length === 1) {
+      // Auto-select account if it is the only account in the wallet
+      this.pendingAccountModel = this.accounts[0].id;
       this.onSelectedAccountChange(this.pendingAccountModel);
     }
 
@@ -292,7 +298,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     if (account.length > 1) {
       this.qrAccount = account;
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      this.qrCodeUri = `nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+      qrCode = await QRCode.toDataURL(this.qrCodeUri, {scale: 7});
     }
     this.qrCodeImage = qrCode;
   }
@@ -307,7 +314,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
     if (this.qrAccount.length > 1) {
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      this.qrCodeUri = `nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+      qrCode = await QRCode.toDataURL(this.qrCodeUri, {scale: 7});
       this.qrCodeImage = qrCode;
     }
   }
@@ -367,7 +375,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
 
     receivableBlock.loading = false;
-    await this.walletService.reloadBalances();
     this.updatePendingBlocks(); // update the list
   }
 
@@ -381,9 +388,24 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeoutIdClearingRecentlyCopiedState);
     }
     this.recentlyCopiedAccountAddress = true;
+    this.recentlyCopiedPaymentUri = false;
     this.timeoutIdClearingRecentlyCopiedState = setTimeout(
       () => {
         this.recentlyCopiedAccountAddress = false;
+      },
+      2000
+    );
+  }
+
+  copiedPaymentUri() {
+    if (this.timeoutIdClearingRecentlyCopiedState != null) {
+      clearTimeout(this.timeoutIdClearingRecentlyCopiedState);
+    }
+    this.recentlyCopiedPaymentUri = true;
+    this.recentlyCopiedAccountAddress = false;
+    this.timeoutIdClearingRecentlyCopiedState = setTimeout(
+      () => {
+        this.recentlyCopiedPaymentUri = false;
       },
       2000
     );

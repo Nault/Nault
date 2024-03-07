@@ -281,6 +281,10 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
+    if ( this.newAddressName.startsWith('@') === true ) {
+      return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
+    }
+
     // Remove spaces and convert to nano prefix
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('xrb_', 'nano_');
 
@@ -403,7 +407,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       const fileData = event.target['result'] as string;
       try {
         const importData = JSON.parse(fileData);
-        if (!importData.length || !importData[0].account) {
+        if (!importData.length || (!importData[0].account && !importData[0].address)) {
           return this.notificationService.sendError(this.translocoService.translate('address-book.bad-import-data-make-sure-you-selected-a-nault-address-book'));
         }
 

@@ -20,6 +20,7 @@ interface AppSettings {
   multiplierSource: number;
   customWorkServer: string;
   pendingOption: string;
+  decentralizedAliasesOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -52,6 +53,11 @@ export class AppSettingsService {
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
+    decentralizedAliasesOption: 'disabled',
+    serverName: 'random',
+    serverAPI: null,
+    serverWS: null,
+    serverAuth: null,
     minimumReceive: '0.000001',
     walletVersion: 1,
     lightModeEnabled: false,
@@ -66,6 +72,14 @@ export class AppSettingsService {
       api: 'https://rpc.nano.to',
       ws: null,
       auth: null,
+      shouldRandom: false,
+    },
+    {
+      name: 'Rainstorm City',
+      value: 'rainstorm',
+      api: 'https://rainstorm.city/api',
+      ws: 'wss://rainstorm.city/websocket',
+      auth: null,
       shouldRandom: true,
     },
 
@@ -78,16 +92,6 @@ export class AppSettingsService {
     //   shouldRandom: true,
     // },
 
-<<<<<<< HEAD
-    // {
-    //   name: 'Solar.Nano.to',
-    //   value: 'solar.nano.to',
-    //   api: 'https://solarnanofaucet.space/api',
-    //   ws: 'wss://solarnanofaucet.space/websocket',
-    //   auth: null,
-    //   shouldRandom: false,
-    // },
-=======
     {
       name: 'Europe-1.Nano.to',
       value: 'uk-1.nano.to',
@@ -97,7 +101,6 @@ export class AppSettingsService {
       auth: null,
       shouldRandom: true,
     },
->>>>>>> 3f7fa55 (misc fixes)
 
     {
       name: 'Random',
@@ -134,7 +137,6 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'proxy.nanos.cc/proxy',
     'node.somenano.com'
   ]);
 
@@ -238,6 +240,7 @@ export class AppSettingsService {
       multiplierSource: 1,
       customWorkServer: '',
       pendingOption: 'amount',
+      decentralizedAliasesOption: 'disabled',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,

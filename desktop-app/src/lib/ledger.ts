@@ -1,6 +1,6 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
-import * as LedgerLogs from '@ledgerhq/logs';
+import Transport from '@ledgerhq/hw-transport';
 import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
@@ -20,6 +20,12 @@ const LedgerStatus = {
   READY: 'ready',
 };
 
+export interface LedgerData {
+  status: string;
+  nano: any|null;
+  transport: Transport|null;
+}
+
 
 /**
  * This class is close to a clone of the LedgerService for web, but it
@@ -27,9 +33,8 @@ const LedgerStatus = {
  */
 export class LedgerService {
   walletPrefix = `44'/165'/`;
-  waitTimeout = 300000;
-  normalTimeout = 5000;
-  pollInterval = 45000;
+  waitTimeout = 30000;
+  pollInterval = 5000;
 
   pollingLedger = false;
   queryingLedger = false;
@@ -37,7 +42,7 @@ export class LedgerService {
   ledgerStatus$ = new rx.Subject();
   ledgerMessage$ = new rx.Subject();
 
-  ledger = {
+  ledger: LedgerData = {
     status: LedgerStatus.NOT_CONNECTED,
     nano: null,
     transport: null,
@@ -56,15 +61,33 @@ export class LedgerService {
   // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
+      const transport = bluetooth ? TransportNodeBle : TransportNodeHid;
+      let found = false;
+      const sub = transport.listen({
+        next: async(e) => {
+          found = true;
+          if (sub) sub.unsubscribe();
+          clearTimeout(timeoutId);
+          this.ledger.transport = await transport.open(e.descriptor);
+          this.ledger.nano = new Nano(this.ledger.transport);
+          resolve(this.ledger.transport);
+        },
+        error: (e) => {
+          clearTimeout(timeoutId);
+          reject(e);
+        },
+        complete: () => {
+          clearTimeout(timeoutId);
+          if (!found) {
+            reject(new Error(transport.ErrorMessage_NoDeviceFound));
+          }
+        }
+      })
 
-        // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
-        this.ledger.transport = trans;
-        this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.nano = new Nano(this.ledger.transport);
-
-        resolve(this.ledger.transport);
-      }).catch(reject);
+      const timeoutId = setTimeout(() => {
+        sub.unsubscribe();
+        reject(new Error(transport.ErrorMessage_ListenTimeout));
+      }, this.waitTimeout);
     });
   }
 
@@ -88,10 +111,6 @@ export class LedgerService {
     }
 
     let resolved = false;
-    if (this.ledger.status === LedgerStatus.READY) {
-      this.ledgerStatus$.next({ status: this.ledger.status, statusText: 'Ledger device already ready' });
-      return true; // Already ready?
-    }
 
     setTimeout(() => {
       if (resolved || this.ledger.status === LedgerStatus.READY) return;
@@ -117,6 +136,7 @@ export class LedgerService {
     } catch (err) {
       console.log(err);
       if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+        this.setLedgerStatus(LedgerStatus.LOCKED, `Ledger device locked`);
       }
     }
 
@@ -125,8 +145,6 @@ export class LedgerService {
 
   async getLedgerAccount(accountIndex, showOnScreen = false) {
     try {
-      this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
-
       this.queryingLedger = true;
       const account = await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
       this.queryingLedger = false;
@@ -208,7 +226,11 @@ export class LedgerService {
       await this.getLedgerAccount(0, false);
       this.setLedgerStatus(LedgerStatus.READY);
     } catch (err) {
-      this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Ledger Disconnected: ${err.message || err }`);
+      if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
+        this.setLedgerStatus(LedgerStatus.LOCKED, `Ledger device locked`);
+      } else {
+        this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, `Ledger Disconnected: ${err.message || err }`);
+      }
       this.pollingLedger = false;
     }
   }

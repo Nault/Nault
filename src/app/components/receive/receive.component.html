@@ -12,6 +12,40 @@
         <span class="merchant-mode-text-short">Merchant Mode</span>
       </button>
     </ng-template>
+
+    <ng-template #copyPaymentUriButton>
+      <button
+        *ngIf="(pendingAccountModel !== '0') && (qrAmount != null)"
+        class="uk-width-1-1 uk-width-5-6@s uk-button uk-button-primary uk-text-center nlt-icon-button"
+        [class.nlt-button-success]="recentlyCopiedPaymentUri"
+        [class.uk-disabled]="recentlyCopiedPaymentUri"
+        type="button"
+        ngxClipboard
+        [cbContent]="qrCodeUri"
+        (cbOnSuccess)="copiedPaymentUri()"
+      >
+        <span class="nlt-icon" uk-icon="icon: copy;"></span>
+        {{ recentlyCopiedPaymentUri ? 'Copied!' : 'Copy payment link' }}
+      </button>
+    </ng-template>
+
+    <ng-template #copyPaymentAddressButton>
+      <button
+        *ngIf="(pendingAccountModel !== '0')"
+        class="uk-width-1-1 uk-width-5-6@s uk-button uk-text-center nlt-icon-button"
+        [class.uk-button-primary]="recentlyCopiedAccountAddress || (qrAmount == null)"
+        [class.uk-button-secondary]="!recentlyCopiedAccountAddress && (qrAmount != null)"
+        [class.nlt-button-success]="recentlyCopiedAccountAddress"
+        [class.uk-disabled]="recentlyCopiedAccountAddress"
+        type="button"
+        ngxClipboard
+        [cbContent]="pendingAccountModel"
+        (cbOnSuccess)="copiedAccountAddress()"
+      >
+        <span class="nlt-icon" uk-icon="icon: copy;"></span>
+        {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
+      </button>
+    </ng-template>
     
     <div class="uk-margin-bottom uk-flex uk-flex-between">
       <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive</h2>
@@ -50,6 +84,15 @@
                 </div>
               </div>
             </div>
+
+            <div class="uk-margin uk-margin-medium-top uk-visible@s uk-flex uk-flex-column" style="width: 320px;">
+              <div class="uk-width-1-1 uk-flex" [style]="( (qrAmount != null) ? 'margin-bottom: 20px;' : '' )">
+                <ng-container *ngTemplateOutlet="copyPaymentUriButton"></ng-container>
+              </div>
+              <div class="uk-width-1-1 uk-flex">
+                <ng-container *ngTemplateOutlet="copyPaymentAddressButton"></ng-container>
+              </div>
+            </div>
           </div>
 
           <div class="uk-flex-1 qr-column">
@@ -73,25 +116,11 @@
             <div>
               <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address" *ngIf="(pendingAccountModel !== '0')">
                 <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
-                <a class="span-icon hide-on-small-viewports" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
-              <div class="uk-margin-medium-top only-on-small-viewports nlt-button-group uk-flex uk-flex-column uk-flex-middle">
-                <button
-                  *ngIf="(pendingAccountModel !== '0')"
-                  class="uk-width-1-1 uk-width-4-5@s uk-button uk-button-primary uk-text-center nlt-icon-button"
-                  [class.nlt-button-success]="recentlyCopiedAccountAddress"
-                  [class.uk-disabled]="recentlyCopiedAccountAddress"
-                  type="button"
-                  ngxClipboard
-                  [cbContent]="pendingAccountModel"
-                  (cbOnSuccess)="copiedAccountAddress()"
-                >
-                  <span class="nlt-icon" uk-icon="icon: copy;"></span>
-                  {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
-                </button>
-                <div class="uk-hidden@s uk-width-1-1 uk-flex">
-                  <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
-                </div>
+              <div class="uk-margin-medium-top uk-hidden@s nlt-button-group uk-flex uk-flex-column uk-flex-middle">
+                <ng-container *ngTemplateOutlet="copyPaymentUriButton"></ng-container>
+                <ng-container *ngTemplateOutlet="copyPaymentAddressButton"></ng-container>
+                <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
               </div>
             </div>
           </div>

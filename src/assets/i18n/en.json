@@ -84,6 +84,7 @@
     "the-balance-will-be-displayed-in-the-address-book": "The balance will be displayed in the address book.",
     "this-name-is-already-in-use-please-use-a-unique-name": "This name is already in use! Please use a unique name",
     "this-name-is-reserved-for-wallet-accounts-without-a-label": "This name is reserved for wallet accounts without a label",
+    "this-name-is-reserved-for-decentralized-aliases": "Names starting with @ are reserved for decentralized aliases",
     "track-balance": "Track Balance",
     "track-transactions": "Track Transactions",
     "unable-to-delete-entry": "Unable to delete entry: {{ message }}",
@@ -133,6 +134,7 @@
   },
   "configure-app": {
     "advanced-options": "Advanced Options",
+    "allow-external-requests": "Allow External Requests",
     "api-server": "API Server",
     "app-display-settings-successfully-updated": "App display settings successfully updated!",
     "app-wallet-settings-successfully-updated": "App wallet settings successfully updated!",
@@ -158,6 +160,12 @@
     },
     "custom-api-server-has-an-invalid-address": "Custom API Server has an invalid address.",
     "custom-update-server-has-an-invalid-address": "Custom Update Server has an invalid address.",
+    "decentralized-aliases": "Decentralized Aliases",
+    "decentralized-aliases-options": {
+      "disabled": "Disabled",
+      "enabled": "Enabled - Allow External Requests to Alias Domains"
+    },
+    "decentralized-aliases-require-external-requests": "Decentralized aliases require external requests to alias domains. When you try to lookup the address of @madeline@example.com, the domain example.com may record your IP address.",
     "default-representative": "Default Representative",
     "default-representative-is-not-a-valid-account": "Default representative is not a valid account",
     "delete-all-data": "Delete ALL Data",
@@ -284,7 +292,7 @@
         "password-must-be-at-least-x-characters-long": "Password must be at least {{ minCharacters }} characters long",
         "passwords-do-not-match": "Passwords do not match!"
       },
-      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password (the bar should be green).",
+      "for-the-safety-of-your-funds-use-a-secure-password": "For the safety of your funds, use a secure password.",
       "set-wallet-password": "Set Wallet Password",
       "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "While the application is locked, the secret recovery phrase will be encrypted, which prevents sending/receiving funds and managing accounts."
     }

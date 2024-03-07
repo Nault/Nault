@@ -765,14 +765,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
     if ( regexp.test(this.addressBookModel) === true ) {
-      return this.notifications.sendError(`This name is reserved for wallet accounts without a label`);
+      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
+    }
+
+    if ( this.addressBookModel.startsWith('@') === true ) {
+      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
     }
 
     // Make sure no other entries are using that name
     const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel);
 
     if ( (accountIdWithSameName !== null) && (accountIdWithSameName !== this.accountID) ) {
-      return this.notifications.sendError(`This name is already in use! Please use a unique name`);
+      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'));
     }
 
     try {
@@ -780,11 +784,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       const currentTransactionTracking = this.addressBook.getTransactionTrackingById(this.accountID);
       await this.addressBook.saveAddress(this.accountID, this.addressBookModel, currentBalanceTracking, currentTransactionTracking);
     } catch (err) {
-      this.notifications.sendError(`Unable to save entry: ${err.message}`);
+      this.notifications.sendError(this.translocoService.translate('address-book.unable-to-save-entry', { message: err.message }));
       return;
     }
 
-    this.notifications.sendSuccess(`Address book entry saved successfully!`);
+    this.notifications.sendSuccess(this.translocoService.translate('address-book.address-book-entry-saved-successfully'));
 
     this.addressBookEntry = this.addressBookModel;
     this.showEditAddressBook = false;

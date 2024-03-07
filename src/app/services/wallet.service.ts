@@ -154,10 +154,26 @@ export class WalletService {
 
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
 
-      // If an incoming pending
-      if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
-      && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
-        if (shouldNotify) {
+      const isConfirmedIncomingTransactionForOwnWalletAccount = (
+          (transaction.block.type === 'state')
+        && (transaction.block.subtype === 'send')
+        && ( walletAccountIDs.includes(transaction.block.link_as_account) === true )
+      );
+
+      const isConfirmedSendTransactionFromOwnWalletAccount = (
+          (transaction.block.type === 'state')
+        && (transaction.block.subtype === 'send')
+        && ( walletAccountIDs.includes(transaction.block.account) === true )
+      );
+
+      const isConfirmedReceiveTransactionFromOwnWalletAccount = (
+          (transaction.block.type === 'state')
+        && (transaction.block.subtype === 'receive')
+        && ( walletAccountIDs.includes(transaction.block.account) === true )
+      );
+
+      if (isConfirmedIncomingTransactionForOwnWalletAccount === true) {
+        if (shouldNotify === true) {
           if (this.wallet.locked && this.appSettings.settings.pendingOption !== 'manual') {
             this.notifications.sendWarning(`New incoming transaction - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
           } else if (this.appSettings.settings.pendingOption === 'manual') {
@@ -171,12 +187,11 @@ export class WalletService {
           );
         }
         await this.processStateBlock(transaction);
-
-        // If a confirmed outgoing transaction
-      } else if (transaction.block.type === 'state' && transaction.block.subtype === 'send'
-      && walletAccountIDs.indexOf(transaction.block.account) !== -1) {
+      } else if (isConfirmedSendTransactionFromOwnWalletAccount === true) {
         shouldNotify = true;
         await this.processStateBlock(transaction);
+      } else if (isConfirmedReceiveTransactionFromOwnWalletAccount === true) {
+        shouldNotify = true;
       }
 
       // Find if the source or destination is a tracked address in the address book
@@ -229,8 +244,16 @@ export class WalletService {
       // I'm not sure about that because what happens if the websocket is disconnected and misses a transaction?
       // won't the balance be incorrect if relying only on the websocket? / Json
 
-      // Only reload balance if the incoming is to an internal wallet (to avoid RPC spam)
-      if (shouldNotify && walletAccountIDs.indexOf(transaction.block.link_as_account) !== -1) {
+      const shouldReloadBalances = (
+          (shouldNotify === true)
+        && (
+            (isConfirmedIncomingTransactionForOwnWalletAccount === true)
+          || (isConfirmedSendTransactionFromOwnWalletAccount === true)
+          || (isConfirmedReceiveTransactionFromOwnWalletAccount === true)
+        )
+      );
+
+      if (shouldReloadBalances === true) {
         await this.reloadBalances();
       }
     });
