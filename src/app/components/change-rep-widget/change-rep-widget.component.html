@@ -90,7 +90,7 @@
   </div>
 </div>
 <ng-template #noRepresentatives>
-  <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
+  <!-- <div class="nav-representative-info" *ngIf="(!initialLoadComplete || selectedAccountHasRepresentative) else selectedAccountHasNoRep">
     <div class="representative">
       <h2>{{ 'general.representative' | transloco }}</h2>
       <div class="representative-name-row">
@@ -101,7 +101,7 @@
         <div class="label">{{ 'change-rep-widget.checking-status' | transloco }}</div>
       </div>
     </div>
-  </div>
+  </div> -->
   <ng-template #selectedAccountHasNoRep>
     <div class="nav-representative-info">
       <div class="representative">

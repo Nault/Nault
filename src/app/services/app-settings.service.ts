@@ -78,6 +78,7 @@ export class AppSettingsService {
     //   shouldRandom: true,
     // },
 
+<<<<<<< HEAD
     // {
     //   name: 'Solar.Nano.to',
     //   value: 'solar.nano.to',
@@ -86,6 +87,17 @@ export class AppSettingsService {
     //   auth: null,
     //   shouldRandom: false,
     // },
+=======
+    {
+      name: 'Europe-1.Nano.to',
+      value: 'uk-1.nano.to',
+      api: 'https://us-2.nano.to',
+      ws: null,
+      // ws: 'wss://solarnanofaucet.space/websocket',
+      auth: null,
+      shouldRandom: true,
+    },
+>>>>>>> 3f7fa55 (misc fixes)
 
     {
       name: 'Random',
@@ -97,7 +109,7 @@ export class AppSettingsService {
     },
 
     {
-      name: 'Custom Server',
+      name: 'Custom',
       value: 'custom',
       api: null,
       ws: null,

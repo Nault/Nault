@@ -26,7 +26,7 @@ export class NanoAccountIdComponent implements OnChanges {
   ngOnChanges() {
     
     const accountID = this.accountID;
-    const openingChars = 10;
+    const openingChars = 12;
     const closingChars = 5;
 
     var known = localStorage.getItem('nano-known') ? JSON.parse(localStorage.getItem('nano-known')) : []

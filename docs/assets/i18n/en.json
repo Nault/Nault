@@ -27,7 +27,7 @@
   "accounts": {
     "account-address-confirmed-on-ledger": "Account address confirmed on Ledger",
     "account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "Account address denied - if it is wrong do not use the wallet!",
-    "add-new-account": "Add New Account",
+    "add-new-account": "Add Account",
     "advanced-mode": "Advanced Mode",
     "confirm-address-on-ledger": "Confirm Address On Ledger",
     "confirming-account-address-on-ledger-device": "Confirming account address on Ledger device...",
@@ -237,7 +237,7 @@
     "this-has-to-be-a-valid-work": {
       "1": "This has to be a valid",
       "2-link-work": "Nano Work Server",
-      "3": "endpoint or an API compliant with it. If your server on localhost does not work, try the desktop app instead."
+      "3": "endpoint or an API compliant with it."
     },
     "this-representative-will-be-used-for-any-new-account": "This representative will be used for any new account",
     "this-server-is-used-for-rpc-communication-with-the-nano-node": "This server is used for RPC communication with the nano node",

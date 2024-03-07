@@ -52,6 +52,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'knano', value: 'knano' },
     { name: 'nano', value: 'nano' },
   ];
+
   selectedDenomination = this.denominations[0].value;
 
   storageOptions = [
@@ -256,6 +257,7 @@ export class ConfigureAppComponent implements OnInit {
     const settings = this.appSettings.settings;
 
     const matchingLanguage = this.languages.find(language => language.id === settings.language);
+    
     this.selectedLanguage = matchingLanguage.id || this.languages[0].id;
 
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);

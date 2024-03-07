@@ -6,7 +6,7 @@
       <div class="uk-width-1-2 button-column">
         <div class="nav-button" (click)="toggleNav()">
           <span uk-icon="icon: menu;"></span>
-          <span class="app-name"><b>Nano</b> Pro</span>
+          <span class="app-name"><b>Nano</b></span>
         </div>
       </div>
       <div class="uk-width-1-2" style="text-align: right;">
@@ -219,7 +219,6 @@
 
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon left-nav" uk-nav>
           <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">{{ 'general.accounts' | transloco }}</div></a></li>
-          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'general.send' | transloco }}</div></a></li>
           <li>
             <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
@@ -232,6 +231,7 @@
               </div>
             </a>
           </li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'general.send' | transloco }}</div></a></li>
           <li>
             <a routerLink="/search" routerLinkActive="active"><div class="label">Search</div></a>
           </li>
@@ -275,12 +275,12 @@
 
         <app-install-widget></app-install-widget>
 
-        <div class="nav-search">
+        <!-- <div class="nav-search">
           <form class="uk-search uk-search-default uk-width-1-1">
             <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
             <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
           </form>
-        </div>
+        </div> -->
 
         <div class="footer footer-actions uk-margin-remove-top uk-flex-middle" uk-grid>
           <div class="uk-width-1-3 uk-text-center">
