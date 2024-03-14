@@ -774,8 +774,8 @@ export class WalletService {
 
       if (!walletAccount) continue;
 
-      walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
-      const accountBalancePendingInclUnconfirmed = new BigNumber(accounts.balances[accountID].pending);
+      walletAccount.balance = new BigNumber(accounts.balances[accountID].balance || 0);
+      const accountBalancePendingInclUnconfirmed = new BigNumber(accounts.balances[accountID].pending || 0);
 
       walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
 
