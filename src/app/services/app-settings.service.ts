@@ -99,7 +99,7 @@ export class AppSettingsService {
       api: 'https://node.spynano.org/proxy',
       ws: 'wss://node.spynano.org/websocket',
       auth: null,
-      shouldRandom: true,
+      shouldRandom: false,
     },
     {
       name: 'Custom',
