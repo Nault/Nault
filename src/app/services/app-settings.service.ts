@@ -94,7 +94,7 @@ export class AppSettingsService {
       shouldRandom: true,
     },
     {
-      name: 'SpyNano',
+      name: 'SpyNano (New Node - Use with caution)',
       value: 'spynano',
       api: 'https://node.spynano.org/proxy',
       ws: 'wss://node.spynano.org/websocket',
