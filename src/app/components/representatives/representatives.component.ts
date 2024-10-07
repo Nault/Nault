@@ -341,7 +341,7 @@ export class RepresentativesComponent implements OnInit {
           this.notifications.sendError(`Error changing representative for ${account.id}, please try again`);
         }
       } catch (err) {
-        this.notifications.sendError(err.message);
+        this.notifications.sendError('Error changing representative: ' + err.message);
       }
     }
 
