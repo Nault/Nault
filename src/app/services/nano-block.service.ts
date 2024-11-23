@@ -29,6 +29,9 @@ export class NanoBlockService {
 
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
+  // https://docs.nano.org/releases/network-upgrades/#epoch-blocks
+  epochV2SignerAccount = 'nano_3qb6o6i1tkzr6jwr5s7eehfxwg9x6eemitdinbpi7u8bjjwsgqfj4wzser3x';
+
   newOpenBlock$: BehaviorSubject<boolean|false> = new BehaviorSubject(false);
 
   constructor(
@@ -448,11 +451,23 @@ export class NanoBlockService {
       throw new Error(`Frontier hash didn't match block data`);
     }
 
-    const isFrontierBlockSignatureValid =
-      nanocurrencyWebTools.verifyBlock(accountPublicKey, frontierBlockDataUntrusted.contents);
+    if (frontierBlockDataUntrusted.subtype === 'epoch') {
+      const isEpochV2BlockSignatureValid =
+        nanocurrencyWebTools.verifyBlock(
+          this.util.account.getAccountPublicKey(this.epochV2SignerAccount),
+          frontierBlockDataUntrusted.contents
+        );
 
-    if (isFrontierBlockSignatureValid !== true) {
-      throw new Error(`Node provided an untrusted frontier block that was signed by someone else`);
+      if (isEpochV2BlockSignatureValid !== true) {
+        throw new Error(`Node provided an untrusted frontier block that is an unsupported epoch`);
+      }
+    } else {
+      const isFrontierBlockSignatureValid =
+        nanocurrencyWebTools.verifyBlock(accountPublicKey, frontierBlockDataUntrusted.contents);
+
+      if (isFrontierBlockSignatureValid !== true) {
+        throw new Error(`Node provided an untrusted frontier block that was signed by someone else`);
+      }
     }
   }
 
