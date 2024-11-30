@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
 
     // update selected account object with the latest balance, pending, etc
     if (this.wallet.selectedAccountId) {
-      const currentUpdatedAccount = this.wallet.accounts.find(a => a.id === this.wallet.selectedAccountId);
+      const currentUpdatedAccount = this.wallet.accounts.find(a => a.id === this.wallet.selectedAccountId) ?? null;
       this.wallet.selectedAccount = currentUpdatedAccount;
     }
 
