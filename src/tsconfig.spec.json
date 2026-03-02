@@ -13,10 +13,7 @@
     "polyfills.ts"
   ],
   "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
+    "**/*.spec.ts",
+    "**/*.d.ts"
   ]
 }

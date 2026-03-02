@@ -1,4 +1,13 @@
-<div uk-grid class="app" (mousemove)="updateIdleTime()" (keypress)="updateIdleTime()" [style.height]="( innerHeight + 'px' )" style="overflow-y: hidden;">
+<div
+  uk-grid
+  class="app"
+  [class.dark-mode]="!settings.settings.lightModeEnabled"
+  [class.light-mode]="settings.settings.lightModeEnabled"
+  (mousemove)="updateIdleTime()"
+  (keypress)="updateIdleTime()"
+  [style.height]="( innerHeight + 'px' )"
+  style="overflow-y: hidden;"
+>
   <div class="uk-width-1-1" style="position: relative; overflow-y: hidden;">
 
     <!-- Mobile top bar -->
@@ -6,7 +15,7 @@
       <div class="uk-width-1-2 button-column">
         <div class="nav-button" (click)="toggleNav()">
           <span uk-icon="icon: menu;"></span>
-          <span class="app-name">Nault</span>
+          <span class="app-name"><b>Nano</b> Pro</span>
         </div>
       </div>
       <div class="uk-width-1-2" style="text-align: right;">
@@ -37,7 +46,7 @@
       </div>
       <div [class]="[ 'account', (wallet.selectedAccount === null) ? 'active' : 'inactive' ]" (click)="selectAccount(null)"> <!-- active/inactive total balance -->
         <div class="name-column">
-          <div class="name">Total Balance</div>
+          <div class="name">Balance</div>
           <div class="address"> </div>
         </div>
         <div class="balance-column">
@@ -94,7 +103,20 @@
           <div uk-grid>
             <div class="uk-width-expand">
 
-              <div [class]="[ 'nano-card', (wallet.selectedAccount === null) ? 'is-wallet' : 'is-card' ]">
+              <div
+                class="nano-card"
+                [ngClass]="{
+                  'is-wallet': wallet.selectedAccount === null,
+                  'is-card': wallet.selectedAccount !== null,
+                  'has-custom-bg': wallet.selectedAccount === null && !!settings.settings.navCardBackground && settings.settings.navCardBackground.startsWith('data:image/')
+                }"
+              >
+                <img
+                  class="custom-background"
+                  *ngIf="wallet.selectedAccount === null && settings.settings.navCardBackground && settings.settings.navCardBackground.startsWith('data:image/')"
+                  [src]="settings.settings.navCardBackground"
+                  alt="Wallet card background"
+                >
                 <div class="logo"></div>
                 <div class="card-contents">
                   <div class="account-name-container">
@@ -113,7 +135,7 @@
                         ? wallet.selectedAccount.addressBookName
                         : (('general.account' | transloco) + ' #' + wallet.selectedAccount.index)
                       )
-                      : 'Total Balance'
+                      : 'Balance'
                     }}</a>
                     <div #selectButton [class]="[ 'select-button', showAccountsDropdown ? 'open' : 'closed' ]" (click)="toggleAccountsDropdown()">
                       <div class="circle"></div>
@@ -124,7 +146,7 @@
                   <div class="account-balances">
                     <ng-container *ngIf="( ( node.status && (wallet.balanceInitialized === true) ) || !isConfigured() ) else balancesLoading">
                       <div class="balance-container primary">
-                        <div class="currency-name">XNO</div>
+                        <!-- <div class="currency-name">NANO</div> -->
                         <div class="amount-container">
                           <div class="amount-integer">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 0 }}</div>
                           <div class="amount-fractional">{{ (wallet.selectedAccount !== null ? wallet.selectedAccount.balance : wallet.balance) | rai: 'mnano,true' | amountsplit: 1 }}</div>
@@ -176,7 +198,7 @@
                     </div>
                     <div class="account-balances">
                       <div class="balance-container primary">
-                        <div class="currency-name">XNO</div>
+                        <!-- <div class="currency-name">NANO</div> -->
                         <div class="amount-container">
                           <div class="amount-integer">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 0 }}</div>
                           <div class="amount-fractional">{{ (wallet.selectedAccount ? wallet.selectedAccount.pending : wallet.pending) | rai: 'mnano,true' | amountsplit: 1 }}</div>
@@ -200,8 +222,8 @@
                   <span class="uk-text-danger" uk-icon="icon: warning; ratio: 1.2;"></span>
                 </div>
                 <div class="status-labels" *ngIf="settings.settings.serverAPI">
-                  <div class="label primary uk-text-danger">Unable to connect to the server</div>
-                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">select a different server</a></div>
+                  <div class="label primary uk-text-danger" style="text-decoration: none">Offline Mode</div>
+                  <div class="label secondary"><a (click)="retryConnection()">Refresh</a> or <a routerLink="/configure-app">change Node</a></div>
                 </div>
                 <div class="status-labels" *ngIf="!settings.settings.serverAPI">
                   <div class="label primary uk-text-danger">Wallet is in offline mode</div>
@@ -232,52 +254,61 @@
               </div>
             </a>
           </li>
-          <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">{{ 'general.address-book' | transloco }}</div></a></li>
-          <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">{{ 'general.scan-qr-code' | transloco }}</div></a></li>
+          <li *ngIf="cloudWalletService.hasSession()">
+            <a routerLink="/cloud-auth/login" routerLinkActive="active"><div class="label">Cloud Wallet</div></a>
+          </li>
+        <!--   <li>
+            <a routerLink="/donate" routerLinkActive="active"><div class="label">Donate</div></a>
+          </li> -->
+          <!-- <li>
+            <a routerLink="/social" routerLinkActive="active"><div class="label">XnoSocial</div></a>
+          </li> -->
           <li class="uk-parent">
             <a href="#">{{ 'general.settings' | transloco }}</a>
             <ul class="uk-nav-sub">
-              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'general.representatives' | transloco }}</div></a></li>
               <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'general.app-settings' | transloco }}</div></a></li>
-              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
-            </ul>
-          </li>
-          <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
-            <ul class="uk-nav-sub">
-              <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
-              <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
-              <li><a routerLink="/multisig" routerLinkActive="active"><div class="label">Multi Signature</div></a></li>
-              <li><a routerLink="/keygenerator" routerLinkActive="active"><div class="label">Keypair Generator</div></a></li>
-              <li><a routerLink="/converter" routerLinkActive="active"><div class="label">Unit Converter</div></a></li>
-              <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">QR Generator</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">{{ 'general.wallet-settings' | transloco }}</div></a></li>
+              <li><a routerLink="/cloud-auth/login" routerLinkActive="active"><div class="label">Cloud Wallet</div></a></li>
+              <li><a routerLink="/cloud-api-docs" routerLinkActive="active"><div class="label">Cloud API Docs</div></a></li>
+              <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'general.representatives' | transloco }}</div></a></li>
+             
+              <!-- <li class="uk-parent"> -->
+                <!-- <a href="#">Advanced</a> -->
+                <!-- <ul class="uk-nav-sub"> -->
+                  <li><a href="https://simpleswap.io/?ref=ecc1985b556a" target="_blank"><div class="label">SimpleSwap 
+                    <div style="display: inline-block;filter: invert(1);margin-left: 6px;zoom: 0.8;vertical-align: text-bottom;"><svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M15,10 L15,14 C15,15.1045695 14.1045695,16 13,16 L2,16 C0.8954305,16 0,15.1045695 0,14 L0,3 C0,1.8954305 0.8954305,1 2,1 L6,1 L6,3 L2,3 L2,14 L13,14 L13,10 L15,10 Z M13.9971001,3.41421356 L7.70420685,9.70710678 L6.28999329,8.29289322 L12.5828865,2 L8.99710007,2 L8.99710007,0 L15.9971001,0 L15.9971001,7 L13.9971001,7 L13.9971001,3.41421356 Z" fill-rule="evenodd"></path></svg></div>
+
+                  </div></a></li>
+                  <!-- <li><a routerLink="/address-book" routerLinkActive="active"><div class="label">{{ 'general.address-book' | transloco }}</div></a></li> -->
+                  <!-- <li><a routerLink="/qr-scan" routerLinkActive="active"><div class="label">{{ 'general.scan-qr-code' | transloco }}</div></a></li> -->
+                  <!-- <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li> -->
+                  <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>
+                  <li><a routerLink="/multisig" routerLinkActive="active"><div class="label">Multi Signature</div></a></li>
+                  <li><a routerLink="/keygenerator" routerLinkActive="active"><div class="label">Keypair Generator</div></a></li>
+                  <li><a routerLink="/converter" routerLinkActive="active"><div class="label">Unit Converter</div></a></li>
+                  <li><a routerLink="/qr-generator" routerLinkActive="active"><div class="label">QR Generator</div></a></li>
+                  <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
+                <!-- </ul> -->
+              <!-- </li> -->
             </ul>
           </li>
         </ul>
 
         <app-install-widget></app-install-widget>
 
-        <div class="nav-search">
-          <form class="uk-search uk-search-default uk-width-1-1">
-            <a href="javascript:void(0)" (click)="performSearch()" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input uk-width-1-1" id="search-input" type="search" placeholder="Search for an account or block hash" [(ngModel)]="searchData" name="searchData" (keyup.enter)="performSearch()">
-          </form>
-        </div>
-
         <div class="footer footer-actions uk-margin-remove-top uk-flex-middle" uk-grid>
           <div class="uk-width-1-3 uk-text-center">
-            <a class="support-nault" routerLink="/send" [queryParams]="{ to: donationAccount }" routerLinkActive="active">
+            <a class="support-nault" target="https://nano.to" target="_blank">
               <div class="button">
                 <a class="footer-link donation-icon"><span uk-icon="icon: heart; ratio: 1.2;"></span></a>
               </div>
-              <div class="section-caption">Donate</div>
+              <div class="section-caption">Nano.to</div>
             </a>
           </div>
           <div class="uk-width-1-3 uk-text-center community-column">
             <div class="icons-row">
-              <a href="https://github.com/Nault/Nault" uk-icon="icon: github-alt; ratio: 1.2;" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener noreferrer"></a>
-              <a href="https://chat.nano.org" uk-tooltip title="Join our community on Discord" class="footer-link discord-icon" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/fwd/Nault-Pro" uk-icon="icon: github-alt; ratio: 1.2;" uk-tooltip title="View our GitHub" class="footer-link" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://discord.gg/2xYr2ZthZF" uk-tooltip title="Join Nault.Pro on Discord" class="footer-link discord-icon" target="_blank" rel="noopener noreferrer">
                 <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240"><path class="st0" d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z"/><path class="st0" d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z"/></svg>
               </a>
             </div>
@@ -301,7 +332,7 @@
         </div>
         <div class="footer footer-attribution uk-margin-remove-top" uk-grid>
           <div class="attribution uk-width-1-1 uk-text-center">
-            Based on <a href="https://github.com/cronoh/nanovault" target="_blank" rel="noopener noreferrer">NanoVault</a>
+            Based on <a href="https://github.com/Nault/Nault" target="_blank" rel="noopener noreferrer">Nault</a>
           </div>
         </div>
 

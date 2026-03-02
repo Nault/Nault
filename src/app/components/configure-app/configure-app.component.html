@@ -56,9 +56,8 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1">
+          <div style="display: none;" class="uk-width-1-1">
             <div class="uk-form-horizontal">
-
               <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">{{ 'configure-app.identicons' | transloco }}</label>
                 <div class="uk-form-controls">
@@ -67,7 +66,6 @@
                   </select>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -105,6 +103,24 @@
 
           <div class="uk-width-1-1">
             <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label">Wallet Card Background</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" type="file" accept="image/*" (change)="onNavCardBackgroundSelected($event)">
+                  <span class="uk-text-meta">Use a custom image for the Balance card in the left navigation (max 500KB).</span>
+                  <div class="card-background-preview" *ngIf="navCardBackground" [style.background-image]="'url(' + navCardBackground + ')'">
+                    <div class="preview-label">Preview</div>
+                  </div>
+                  <div class="uk-margin-small-top" *ngIf="navCardBackground">
+                    <button class="uk-button uk-button-default uk-button-small" (click)="clearNavCardBackground()">Reset Background</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-width-1-1" *ngIf="!cloudWalletService.hasSession()">
+            <div class="uk-form-horizontal">
 
               <div class="uk-margin">
                 <label class="uk-form-label">{{ 'configure-app.component.wallet-storage' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.change-where-your-wallet-is-stored-if-you-select-none-your')"></span></label>
@@ -113,46 +129,6 @@
                   <div class="uk-inline uk-width-1-1">
                     <select class="uk-select" [(ngModel)]="selectedStorage">
                       <option *ngFor="let storage of storageOptions" [value]="storage.value">{{ storage.name }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
-                <label class="uk-form-label">{{ 'configure-app.pow-source' | transloco }}</label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedPoWOption">
-                      <option *ngFor="let pow of powOptions" [value]="pow.value">
-                        <ng-element *ngIf="pow.value === 'server'">{{ getRemotePoWOptionName() }}</ng-element>
-                        <ng-element *ngIf="pow.value !== 'server'">{{ pow.name }}</ng-element>
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
-                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }}</label>
-                  <div class="uk-form-controls">
-                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="http://my-work-server:port">
-                      <span class="uk-text-meta">
-                        {{ 'configure-app.this-has-to-be-a-valid-work.1' | transloco }} <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
-                      </span>
-                  </div>
-              </div>
-              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
-                <label class="uk-form-label">{{ 'configure-app.pow-multiplier' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.optional-increased-work-for-transaction-priority-during')"></span></label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedMultiplierOption">
-                      <option *ngFor="let multiplier of multiplierOptions" [value]="multiplier.value">{{ multiplier.name }}</option>
                     </select>
                   </div>
                 </div>
@@ -191,23 +167,6 @@
                       </div>
 
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="uk-width-1-1">
-            <div class="uk-form-horizontal">
-
-              <div class="uk-margin">
-                <label class="uk-form-label">{{ 'configure-app.decentralized-aliases' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.decentralized-aliases-require-external-requests')"></span></label>
-                <div class="uk-form-controls">
-
-                  <div class="uk-inline uk-width-1-1">
-                    <select class="uk-select" [(ngModel)]="selectedDecentralizedAliasesOption">
-                      <option *ngFor="let decentralizedAliasesOption of decentralizedAliasesOptions" [value]="decentralizedAliasesOption.value">{{ decentralizedAliasesOption.name }}</option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -301,7 +260,7 @@
             </div>
           </div>
 
-          <div class="uk-width-1-1" *ngIf="showServerValues()">
+          <div class="uk-width-1-1" *ngIf="showServerValues() && serverWS">
             <div class="uk-form-horizontal">
               <div class="">
                 <label class="uk-form-label uk-text-right">{{ 'configure-app.websocket-server' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.this-server-is-used-to-notify-the-wallet-in-real-time-when')"></span></label>
@@ -325,19 +284,21 @@
           <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
+
                 <label class="uk-form-label uk-text-right">{{ 'configure-app.authorization' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.use-if-the-api-requires-authentication')"></span></label>
                 <div class="uk-form-controls">
 
-                  <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
-                    <strong>{{ serverAuth }}</strong>
-                  </div>
-                  <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
+                  <div class="uk-inline uk-width-1-1">
                     <input [(ngModel)]="serverAuth" class="uk-input uk-margin-small-bottom" type="text" placeholder="Optional">
                     <span class="uk-text-meta">
-                      {{ 'configure-app.this-has-to-be-a-valid-authorization-header' | transloco }}<br>
-                      <i>{{ 'configure-app.for-example-using-basic-auth' | transloco }}</i>
+                      <span *ngIf="serverAPI && !serverAPI.includes('nano.to')">{{ 'configure-app.this-has-to-be-a-valid-authorization-header' | transloco }}</span>
+                      <span *ngIf="serverAPI && serverAPI.includes('nano.to') || serverAPI && serverAPI.toLowerCase().includes('random')">
+                        Unlimited Access to Nano Nodes.
+                        <a href="https://rpc.nano.to/?key" target="_blank">Get Nano.to Business API Key</a>
+                      </span>
                     </span>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -404,10 +365,10 @@
                             <strong>{{ 'general.network' | transloco }}</strong>
                           </td>
                           <td>
-                            {{nodeNetwork || 'N/A'}}
+                            {{nodeNetwork ? nodeNetwork.toUpperCase() : 'N/A'}}
                           </td>
                         </tr>
-                        <tr *ngIf="showServerValues() && !showServerConfigs()">
+                        <tr *ngIf="false && showServerValues() && !showServerConfigs()">
                           <td>
                             <strong>{{ 'configure-app.random-server' | transloco }}</strong>
                           </td>
@@ -423,10 +384,50 @@
             </div>
           </div>
 
+          <div class="uk-width-1-1">
+            <div class="uk-form-horizontal">
+
+              <div class="uk-margin">
+                <label class="uk-form-label">{{ 'configure-app.pow-source' | transloco }}</label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedPoWOption">
+                      <option *ngFor="let pow of powOptions" [value]="pow.value">
+                        <ng-element *ngIf="pow.value === 'server'">{{ getRemotePoWOptionName() }}</ng-element>
+                        <ng-element *ngIf="pow.value !== 'server'">{{ pow.name }}</ng-element>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'custom'">
+                <label class="uk-form-label">{{ 'configure-app.work-server' | transloco }}</label>
+                  <div class="uk-form-controls">
+                      <input [(ngModel)]="customWorkServer" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://rpc.nano.to">
+                      <span class="uk-text-meta">
+                        {{ 'configure-app.this-has-to-be-a-valid-work.1' | transloco }} <a href="https://docs.nault.cc/2021/02/13/custom-work-server.html" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
+                      </span>
+                  </div>
+              </div>
+              <div class="uk-margin" *ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'">
+                <label class="uk-form-label">{{ 'configure-app.pow-multiplier' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.optional-increased-work-for-transaction-priority-during')"></span></label>
+                <div class="uk-form-controls">
+
+                  <div class="uk-inline uk-width-1-1">
+                    <select class="uk-select" [(ngModel)]="selectedMultiplierOption">
+                      <option *ngFor="let multiplier of multiplierOptions" [value]="multiplier.value">{{ multiplier.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center">
-        <button (click)="updateServerSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'configure-app.update-server-settings' | transloco }}</button>
+        <button (click)="updateServerAndWalletSettings()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">{{ 'configure-app.update-server-settings' | transloco }}</button>
       </div>
     </div>
 

@@ -3,7 +3,7 @@ import * as url from 'url';
 import { TranslocoService, getBrowserCultureLang, getBrowserLang } from '@ngneat/transloco';
 
 export type WalletStore = 'localStorage'|'none';
-export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom';
+export type PoWSource = 'server'|'clientCPU'|'clientWebGL'|'best'|'custom'|'nano.to';
 export type LedgerConnectionType = 'usb'|'bluetooth';
 
 interface AppSettings {
@@ -20,7 +20,6 @@ interface AppSettings {
   multiplierSource: number;
   customWorkServer: string;
   pendingOption: string;
-  decentralizedAliasesOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -29,6 +28,7 @@ interface AppSettings {
   walletVersion: number | null;
   lightModeEnabled: boolean;
   identiconsStyle: string;
+  navCardBackground: string | null;
 }
 
 @Injectable()
@@ -45,29 +45,61 @@ export class AppSettingsService {
     lockOnClose: 1,
     lockInactivityMinutes: 30,
     ledgerReconnect: 'usb',
-    powSource: 'best',
+    serverName: 'rpc.nano.to',
+    powSource: 'nano.to',
+    serverAPI: 'https://rpc.nano.to',
+    serverWS: null,
+    serverAuth: null,
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
-    decentralizedAliasesOption: 'disabled',
-    serverName: 'random',
-    serverAPI: null,
-    serverWS: null,
-    serverAuth: null,
     minimumReceive: '0.000001',
     walletVersion: 1,
     lightModeEnabled: false,
     identiconsStyle: 'nanoidenticons',
+    navCardBackground: null,
   };
 
   serverOptions = [
     {
-      name: 'Random',
-      value: 'random',
-      api: null,
+      name: 'Nano.to - Automatic',
+      value: 'rpc.nano.to',
+      api: 'https://rpc.nano.to',
       ws: null,
       auth: null,
       shouldRandom: false,
+    },
+    {
+      name: 'US-1.Nano.To',
+      value: 'us-2.nano.to',
+      api: 'https://us-2.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'US-2.Nano.To',
+      value: 'us-2.nano.to',
+      api: 'https://us-2.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Europe-1.Nano.To',
+      value: 'uk-2.nano.to',
+      api: 'https://us-2.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
+    },
+    {
+      name: 'Africa-1.Nano.To',
+      value: 'humblenano-2.nano.to',
+      api: 'https://humblenano-2.nano.to',
+      ws: null,
+      auth: null,
+      shouldRandom: true,
     },
     {
       name: 'XNOPay UK 1',
@@ -110,13 +142,14 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'Custom',
+      name: 'Custom Server',
       value: 'custom',
       api: null,
       ws: null,
       auth: null,
       shouldRandom: false,
     },
+
     {
       name: 'Offline Mode',
       value: 'offline',
@@ -125,6 +158,7 @@ export class AppSettingsService {
       auth: null,
       shouldRandom: false,
     }
+
   ];
 
   // Simplified list for comparison in other classes
@@ -132,9 +166,7 @@ export class AppSettingsService {
     if (!server.api) return acc;
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
-  }, [
-    'node.somenano.com'
-  ]);
+  }, []);
 
   constructor(
     private translate: TranslocoService
@@ -183,6 +215,8 @@ export class AppSettingsService {
       this.settings.serverName = 'random';
     } else if (this.settings.serverName === 'custom') {
       console.log('SETTINGS: Custom');
+    } else if (this.settings.serverName === 'nano.to') {
+      console.log('SETTINGS: Nano.to Professional RPC');
     } else if (this.settings.serverName === 'offline') {
       console.log('SETTINGS: Offline Mode');
       this.settings.serverName = matchingServerOption.value;
@@ -234,7 +268,6 @@ export class AppSettingsService {
       multiplierSource: 1,
       customWorkServer: '',
       pendingOption: 'amount',
-      decentralizedAliasesOption: 'disabled',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,
@@ -243,6 +276,7 @@ export class AppSettingsService {
       walletVersion: 1,
       lightModeEnabled: false,
       identiconsStyle: 'nanoidenticons',
+      navCardBackground: null,
     };
   }
 

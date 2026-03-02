@@ -1,0 +1,57 @@
+<div class="cloud-api-docs uk-animation-slide-left-small">
+  <h2 class="uk-heading-divider">Cloud Wallet API Docs</h2>
+
+  <div class="uk-alert uk-alert-primary">
+    Base URL: <code>{{ apiBase }}</code>
+  </div>
+
+  <div class="doc-card">
+    <h3>1. Create API Key</h3>
+    <p>Create from the Cloud Wallet page after signing in.</p>
+    <pre><code class="language-bash" [textContent]="createKeyExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>2. Get Profile</h3>
+    <pre><code class="language-bash" [textContent]="profileExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>3. Get Encrypted Wallet Export</h3>
+    <p>Returns encrypted payload only. Decrypt client-side with wallet password.</p>
+    <pre><code class="language-bash" [textContent]="walletExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>4. Create / Derive Account</h3>
+    <p>Creates the next account index by default. You can also pass <code>accountIndex</code> explicitly.</p>
+    <pre><code class="language-bash" [textContent]="createAccountExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>5. Receive Pending Transactions</h3>
+    <p>Creates open/receive blocks for pending incoming transactions.</p>
+    <pre><code class="language-bash" [textContent]="receiveExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>6. Send Transaction</h3>
+    <p>Supports Nano address or verified username format like <code>@development</code>.</p>
+    <pre><code class="language-bash" [textContent]="sendExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>7. Change Representative</h3>
+    <p>Updates representative for an opened account. Accepts address or <code>@username</code>.</p>
+    <pre><code class="language-bash" [textContent]="changeRepExample"></code></pre>
+  </div>
+
+  <div class="doc-card">
+    <h3>Response Example</h3>
+    <pre><code class="language-json" [textContent]="responseExample"></code></pre>
+  </div>
+
+  <div class="uk-alert uk-alert-warning">
+    Keep API keys secret. Revoke compromised keys immediately from Cloud Wallet settings.
+  </div>
+</div>

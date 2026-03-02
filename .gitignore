@@ -10,6 +10,7 @@
 
 # dependencies
 /node_modules
+/functions/node_modules
 
 # IDEs and editors
 /.idea
@@ -29,6 +30,9 @@
 
 # misc
 /.angular/cache
+/.wrangler
+/cloud-wallet-worker/.wrangler
+/cloud-wallet-worker/node_modules
 /.sass-cache
 /connect.lock
 /coverage

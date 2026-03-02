@@ -1,5 +1,5 @@
 node_modules
 npm-debug.log
-dist
+docs
 desktop-app/dist
 desktop-app/build

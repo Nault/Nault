@@ -49,3 +49,28 @@ th.hidden-column, td.hidden-column {
 .icon-delete-account {
 	vertical-align: -2px;
 }
+
+.advanced-mode-toggle {
+	font-size: 12px;
+	margin-left: 25px;
+	opacity: 0.55;
+	color: #5a6a80;
+}
+
+.advanced-mode-toggle:hover,
+.advanced-mode-toggle:focus {
+	text-decoration: none;
+	opacity: 0.9;
+	color: #2f4b73;
+}
+
+:host-context(.dark-mode) .advanced-mode-toggle {
+	color: #d5d5e8;
+	opacity: 0.65;
+}
+
+:host-context(.dark-mode) .advanced-mode-toggle:hover,
+:host-context(.dark-mode) .advanced-mode-toggle:focus {
+	color: #ffffff;
+	opacity: 0.95;
+}

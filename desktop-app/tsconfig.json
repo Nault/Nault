@@ -1,11 +1,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "docs",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
@@ -21,8 +20,5 @@
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    "**/node_modules/**"
   ]
 }

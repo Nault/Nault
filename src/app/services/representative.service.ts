@@ -210,7 +210,10 @@ export class RepresentativeService {
           repStatus.changeRequired = true;
         }
 
-        let uptimeIntervalValue = knownRepNinja.uptime_over.week;
+        const uptimeOver = knownRepNinja.uptime_over || {};
+        const dayUptime = Number(uptimeOver.day || 0);
+        const weekUptime = Number(uptimeOver.week || 0);
+        let uptimeIntervalValue = weekUptime;
 
         // temporary fix for knownRepNinja.uptime_over.week always returning 0
         // uptimeIntervalValue = knownRepNinja.uptime_over.month;
@@ -220,7 +223,7 @@ export class RepresentativeService {
         // consider uptime value at least 1/<interval days> of daily uptime
         uptimeIntervalValue = Math.max(
           uptimeIntervalValue,
-          (knownRepNinja.uptime_over.day / uptimeIntervalDays)
+          (dayUptime / uptimeIntervalDays)
         );
 
         if (repOnline === true) {

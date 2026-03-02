@@ -1,0 +1,57 @@
+.cloud-api-docs {
+  padding: 10px 6px 24px;
+}
+
+.doc-card {
+  background: #ffffff;
+  border: 1px solid #e3e9f2;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.doc-card h3 {
+  margin-top: 0;
+}
+
+.doc-card pre {
+  background: #0f1724;
+  color: #dbe7ff;
+  border-radius: 10px;
+  padding: 10px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.doc-card code {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+}
+
+:host-context(.dark-mode) .cloud-api-docs {
+  color: #dce7ff;
+}
+
+:host-context(.dark-mode) .doc-card {
+  background: #131a2a;
+  border-color: #2a3550;
+}
+
+:host-context(.dark-mode) .doc-card p {
+  color: #a8b5ce;
+}
+
+:host-context(.dark-mode) .doc-card pre {
+  background: #0b111c;
+  color: #d7e6ff;
+}
+
+:host-context(.dark-mode) .uk-alert-primary {
+  background: #132740;
+  color: #cde4ff;
+}
+
+:host-context(.dark-mode) .uk-alert-warning {
+  background: #3a2f16;
+  color: #ffefc7;
+}

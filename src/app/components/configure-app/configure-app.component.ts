@@ -15,6 +15,7 @@ import {RepresentativeService} from '../../services/representative.service';
 import {NinjaService} from '../../services/ninja.service';
 import {QrModalService} from '../../services/qr-modal.service';
 import { TranslocoService } from '@ngneat/transloco';
+import { CloudWalletService } from '../../services/cloud-wallet.service';
 
 @Component({
   selector: 'app-configure-app',
@@ -40,10 +41,12 @@ export class ConfigureAppComponent implements OnInit {
     private ninja: NinjaService,
     private renderer: Renderer2,
     private qrModalService: QrModalService,
-    private translocoService: TranslocoService) { }
+    private translocoService: TranslocoService,
+    private cloudWalletService: CloudWalletService) { }
   wallet = this.walletService.wallet;
 
   languages = this.translocoService.getAvailableLangs() as [{id: string, label: string}];
+  
   selectedLanguage = this.languages[0].id;
 
   denominations = [
@@ -57,6 +60,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: this.translocoService.translate('configure-app.storage-options.browser-local-storage'), value: 'localStorage' },
     { name: this.translocoService.translate('configure-app.storage-options.none'), value: 'none' },
   ];
+
   selectedStorage = this.storageOptions[0].value;
 
   currencies = [
@@ -65,6 +69,7 @@ export class ConfigureAppComponent implements OnInit {
     { name: 'BTC - Bitcoin', value: 'BTC' },
     { name: 'AUD - Australian Dollar', value: 'AUD' },
     { name: 'BRL - Brazilian Real', value: 'BRL' },
+    { name: 'CUP - Cuban Peso', value: 'CUP' },
     { name: 'CAD - Canadian Dollar', value: 'CAD' },
     { name: 'CHF - Swiss Franc', value: 'CHF' },
     { name: 'CLP - Chilean Peso', value: 'CLP' },
@@ -122,10 +127,11 @@ export class ConfigureAppComponent implements OnInit {
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
   powOptions = [
+    { name: this.translocoService.translate('configure-app.pow-options.external-nano-to'), value: 'nano.to' },
     { name: this.translocoService.translate('configure-app.pow-options.best-option-available'), value: 'best' },
     { name: this.translocoService.translate('configure-app.pow-options.client-side-gpu-webgl'), value: 'clientWebGL' },
     { name: this.translocoService.translate('configure-app.pow-options.client-side-cpu-slowest'), value: 'clientCPU' },
-    { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
+    // { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
     { name: this.translocoService.translate('configure-app.pow-options.external-custom-server'), value: 'custom' },
   ];
   selectedPoWOption = this.powOptions[0].value;
@@ -147,12 +153,6 @@ export class ConfigureAppComponent implements OnInit {
     { name: this.translocoService.translate('configure-app.pending-options.manual'), value: 'manual' },
   ];
   selectedPendingOption = this.pendingOptions[0].value;
-
-  decentralizedAliasesOptions = [
-    { name: this.translocoService.translate('configure-app.decentralized-aliases-options.disabled'), value: 'disabled' },
-    { name: this.translocoService.translate('configure-app.decentralized-aliases-options.enabled'), value: 'enabled' },
-  ];
-  selectedDecentralizedAliasesOption = this.decentralizedAliasesOptions[0].value;
 
   // prefixOptions = [
   //   { name: 'xrb_', value: 'xrb' },
@@ -188,6 +188,7 @@ export class ConfigureAppComponent implements OnInit {
   shouldRandom = null;
 
   customWorkServer = '';
+  navCardBackground: string | null = null;
 
   showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
   showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
@@ -196,6 +197,18 @@ export class ConfigureAppComponent implements OnInit {
   async ngOnInit() {
     this.loadFromSettings();
     this.updateNodeStats();
+
+    if (this.cloudWalletService.hasSession()) {
+      try {
+        const applied = await this.cloudWalletService.applyCloudServerSettings(true);
+        if (applied) {
+          this.loadFromSettings();
+          this.notifications.sendSuccess('Loaded cloud server settings for this account');
+        }
+      } catch {
+        this.notifications.sendWarning('Unable to load cloud server settings. Using local settings.');
+      }
+    }
 
     setTimeout(() => this.populateRepresentativeList(), 500);
   }
@@ -284,12 +297,10 @@ export class ConfigureAppComponent implements OnInit {
     this.selectedMultiplierOption = matchingMultiplierOption ? matchingMultiplierOption.value : this.multiplierOptions[0].value;
 
     this.customWorkServer = settings.customWorkServer;
+    this.navCardBackground = settings.navCardBackground || null;
 
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
     this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
-
-    const matchingDecentralizedAliasesOption = this.decentralizedAliasesOptions.find(d => d.value === settings.decentralizedAliasesOption);
-    this.selectedDecentralizedAliasesOption = matchingDecentralizedAliasesOption ? matchingDecentralizedAliasesOption.value : this.decentralizedAliasesOptions[0].value;
 
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
@@ -303,6 +314,67 @@ export class ConfigureAppComponent implements OnInit {
     if (this.defaultRepresentative) {
       this.validateRepresentative();
     }
+  }
+
+  async onNavCardBackgroundSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0] || null;
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      this.notifications.sendWarning('Please select a valid image file');
+      input.value = '';
+      return;
+    }
+
+    if (file.size > 500 * 1024) {
+      this.notifications.sendWarning('Image is too large. Please use an image under 500KB.');
+      input.value = '';
+      return;
+    }
+
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ''));
+      reader.onerror = () => reject(new Error('Unable to read file'));
+      reader.readAsDataURL(file);
+    }).catch(() => '');
+
+    input.value = '';
+    if (!dataUrl) {
+      this.notifications.sendError('Unable to read image file');
+      return;
+    }
+
+    this.navCardBackground = dataUrl;
+    this.appSettings.setAppSetting('navCardBackground', dataUrl);
+
+    if (this.cloudWalletService.hasSession()) {
+      try {
+        await this.cloudWalletService.saveNavCardBackgroundToCloud(dataUrl);
+      } catch {
+        this.notifications.sendWarning('Background updated locally, but cloud sync failed.');
+      }
+    }
+
+    this.notifications.sendSuccess('Wallet card background updated');
+  }
+
+  async clearNavCardBackground() {
+    this.navCardBackground = null;
+    this.appSettings.setAppSetting('navCardBackground', null);
+
+    if (this.cloudWalletService.hasSession()) {
+      try {
+        await this.cloudWalletService.saveNavCardBackgroundToCloud(null);
+      } catch {
+        this.notifications.sendWarning('Background cleared locally, but cloud sync failed.');
+      }
+    }
+
+    this.notifications.sendSuccess('Wallet card background reset');
   }
 
   async updateDisplaySettings() {
@@ -349,7 +421,7 @@ export class ConfigureAppComponent implements OnInit {
 
   }
 
-  async updateWalletSettings() {
+  async updateWalletSettings(hideAlert) {
     const newStorage = this.selectedStorage;
     const resaveWallet = this.appSettings.settings.walletStore !== newStorage;
 
@@ -380,8 +452,6 @@ export class ConfigureAppComponent implements OnInit {
       minReceive = this.minimumReceive;
     }
 
-    const decentralizedAliasesOption = this.selectedDecentralizedAliasesOption;
-
     // reload pending if threshold changes or if receive priority changes from manual to auto
     let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
     || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption);
@@ -405,7 +475,7 @@ export class ConfigureAppComponent implements OnInit {
         newPoW = 'best';
       }
       // reset multiplier when not using it to avoid user mistake
-      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom' && newPoW !== 'nano.to') {
         this.selectedMultiplierOption = this.multiplierOptions[0].value;
       }
       // Cancel ongoing PoW if the old method was local PoW
@@ -443,13 +513,13 @@ export class ConfigureAppComponent implements OnInit {
       multiplierSource: Number(this.selectedMultiplierOption),
       customWorkServer: this.customWorkServer,
       pendingOption: pendingOption,
-      decentralizedAliasesOption: decentralizedAliasesOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
     };
 
     this.appSettings.setAppSettings(newSettings);
-    this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
+
+    if (!hideAlert) this.notifications.sendSuccess(this.translocoService.translate('configure-app.app-wallet-settings-successfully-updated'));
 
     if (resaveWallet) {
       this.walletService.saveWalletExport(); // If swapping the storage engine, resave the wallet
@@ -457,6 +527,11 @@ export class ConfigureAppComponent implements OnInit {
     if (reloadPending) {
       this.walletService.reloadBalances();
     }
+  }
+
+  async updateServerAndWalletSettings() {
+    this.updateWalletSettings(true)
+    this.updateServerSettings()
   }
 
   async updateServerSettings() {
@@ -503,6 +578,20 @@ export class ConfigureAppComponent implements OnInit {
     this.serverAPI = this.serverAPIUpdated;
     this.statsRefreshEnabled = true;
     this.updateNodeStats();
+
+    if (this.cloudWalletService.hasSession()) {
+      try {
+        await this.cloudWalletService.saveServerSettingsToCloud({
+          serverName: this.appSettings.settings.serverName,
+          serverAPI: this.appSettings.settings.serverAPI,
+          serverWS: this.appSettings.settings.serverWS,
+          serverAuth: this.appSettings.settings.serverAuth,
+        });
+        this.notifications.sendSuccess('Server settings synced to cloud profile');
+      } catch {
+        this.notifications.sendWarning('Server settings updated locally, but cloud sync failed.');
+      }
+    }
   }
 
   searchRepresentatives() {
@@ -538,13 +627,15 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     const rep = this.repService.getRepresentative(this.defaultRepresentative);
-    const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
+    // const ninjaRep = await this.ninja.getAccount(this.defaultRepresentative);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }

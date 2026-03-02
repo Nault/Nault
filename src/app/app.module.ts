@@ -71,6 +71,9 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
 import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
+import { CloudAuthComponent } from './components/cloud-auth/cloud-auth.component';
+import { CloudWalletService } from './services/cloud-wallet.service';
+import { CloudApiDocsComponent } from './components/cloud-api-docs/cloud-api-docs.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +114,9 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     MultisigComponent,
     KeygeneratorComponent,
     NanoTransactionMobileComponent,
-    NoPaddingZerosPipe
+    NoPaddingZerosPipe,
+    CloudAuthComponent,
+    CloudApiDocsComponent
   ],
   imports: [
     BrowserModule,
@@ -148,7 +153,8 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     QrModalService,
     DeeplinkService,
     MusigService,
-    NoPaddingZerosPipe
+    NoPaddingZerosPipe,
+    CloudWalletService
   ],
   bootstrap: [AppComponent]
 })

@@ -3,52 +3,18 @@
 
     <ng-template #switchToMerchantModeButton>
       <button
-        class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary uk-text-center nlt-icon-button nlt-button-green"
+        class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary uk-text-center nlt-icon-button nlt-button-blue"
         type="button"
         (click)="merchantModeEnable()"
       >
         <span class="nlt-icon" uk-icon="icon: cart;"></span>
-        <span class="merchant-mode-text-full">Switch to Merchant Mode</span>
+        <span class="merchant-mode-text-full">Merchant Mode</span>
         <span class="merchant-mode-text-short">Merchant Mode</span>
-      </button>
-    </ng-template>
-
-    <ng-template #copyPaymentUriButton>
-      <button
-        *ngIf="(pendingAccountModel !== '0') && (qrAmount != null)"
-        class="uk-width-1-1 uk-width-5-6@s uk-button uk-button-primary uk-text-center nlt-icon-button"
-        [class.nlt-button-success]="recentlyCopiedPaymentUri"
-        [class.uk-disabled]="recentlyCopiedPaymentUri"
-        type="button"
-        ngxClipboard
-        [cbContent]="qrCodeUri"
-        (cbOnSuccess)="copiedPaymentUri()"
-      >
-        <span class="nlt-icon" uk-icon="icon: copy;"></span>
-        {{ recentlyCopiedPaymentUri ? 'Copied!' : 'Copy payment link' }}
-      </button>
-    </ng-template>
-
-    <ng-template #copyPaymentAddressButton>
-      <button
-        *ngIf="(pendingAccountModel !== '0')"
-        class="uk-width-1-1 uk-width-5-6@s uk-button uk-text-center nlt-icon-button"
-        [class.uk-button-primary]="recentlyCopiedAccountAddress || (qrAmount == null)"
-        [class.uk-button-secondary]="!recentlyCopiedAccountAddress && (qrAmount != null)"
-        [class.nlt-button-success]="recentlyCopiedAccountAddress"
-        [class.uk-disabled]="recentlyCopiedAccountAddress"
-        type="button"
-        ngxClipboard
-        [cbContent]="pendingAccountModel"
-        (cbOnSuccess)="copiedAccountAddress()"
-      >
-        <span class="nlt-icon" uk-icon="icon: copy;"></span>
-        {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
       </button>
     </ng-template>
     
     <div class="uk-margin-bottom uk-flex uk-flex-between">
-      <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive Nano</h2>
+      <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive</h2>
       <div class="uk-flex-none uk-visible@s uk-flex uk-flex-top uk-margin-medium-left">
         <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
       </div>
@@ -84,15 +50,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="uk-margin uk-margin-medium-top uk-visible@s uk-flex uk-flex-column" style="width: 320px;">
-              <div class="uk-width-1-1 uk-flex" [style]="( (qrAmount != null) ? 'margin-bottom: 20px;' : '' )">
-                <ng-container *ngTemplateOutlet="copyPaymentUriButton"></ng-container>
-              </div>
-              <div class="uk-width-1-1 uk-flex">
-                <ng-container *ngTemplateOutlet="copyPaymentAddressButton"></ng-container>
-              </div>
-            </div>
           </div>
 
           <div class="uk-flex-1 qr-column">
@@ -116,11 +73,25 @@
             <div>
               <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address" *ngIf="(pendingAccountModel !== '0')">
                 <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
+                <a class="span-icon hide-on-small-viewports" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
-              <div class="uk-margin-medium-top uk-hidden@s nlt-button-group uk-flex uk-flex-column uk-flex-middle">
-                <ng-container *ngTemplateOutlet="copyPaymentUriButton"></ng-container>
-                <ng-container *ngTemplateOutlet="copyPaymentAddressButton"></ng-container>
-                <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
+              <div class="uk-margin-medium-top only-on-small-viewports nlt-button-group uk-flex uk-flex-column uk-flex-middle">
+                <button
+                  *ngIf="(pendingAccountModel !== '0')"
+                  class="uk-width-1-1 uk-width-4-5@s uk-button uk-button-primary uk-text-center nlt-icon-button"
+                  [class.nlt-button-success]="recentlyCopiedAccountAddress"
+                  [class.uk-disabled]="recentlyCopiedAccountAddress"
+                  type="button"
+                  ngxClipboard
+                  [cbContent]="pendingAccountModel"
+                  (cbOnSuccess)="copiedAccountAddress()"
+                >
+                  <span class="nlt-icon" uk-icon="icon: copy;"></span>
+                  {{ recentlyCopiedAccountAddress ? 'Copied!' : 'Copy address' }}
+                </button>
+                <div class="uk-hidden@s uk-width-1-1 uk-flex">
+                  <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
+                </div>
               </div>
             </div>
           </div>
@@ -253,7 +224,7 @@
               <span class="uk-text-small">Ready to receive</span><br>
               <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
               <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
-              <span class="currency-name">XNO</span>
+              <span class="currency-name">NANO</span>
               <div class="compact-actions-date">
                 <ng-template [ngTemplateOutlet]="transactionActions"></ng-template>
               </div>
@@ -277,7 +248,7 @@
         <table class="uk-table uk-table-striped uk-table-small" *ngIf="settings.settings.minimumReceive">
           <thead>
             <tr class="uk-alert uk-alert-primary missing-accounts-hint">
-              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Minimum Receive is set to <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 0 }}{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template>, transactions below this amount will be hidden.</td>
+              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Below <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 0 }}{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template> will be hidden.</td>
             </tr>
           </thead>
         </table>

@@ -3,7 +3,7 @@
     <div uk-grid class="uk-text-center" style="margin-bottom: 70px;">
       <div class="uk-width-1-1" style="margin-top: 45px;">
         <img [src]="( settingsService.settings.lightModeEnabled ? 'assets/img/nault-logo.svg' : 'assets/img/nault-logo-night-mode.svg' )" width="250px" style="display: block; margin: 0 auto 20px auto;" alt="Logo"/>
-        <span class="uk-text-lead">{{ 'welcome.a-secure-open-source-wallet-for-nano' | transloco }}</span><br>
+        <span class="uk-text-lead" style="display: block">{{ 'welcome.a-secure-open-source-wallet-for-nano' | transloco }}</span><br>
       </div>
 
       <div class="uk-width-1-1" *ngIf="!isConfigured()">

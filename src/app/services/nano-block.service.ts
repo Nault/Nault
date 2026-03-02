@@ -427,7 +427,9 @@ export class NanoBlockService {
 
     if (!frontierBlockDataUntrusted) throw new Error(`Unable to load frontier block data`);
 
-    frontierBlockDataUntrusted.contents = JSON.parse(frontierBlockDataUntrusted.contents);
+    frontierBlockDataUntrusted.contents = (typeof frontierBlockDataUntrusted.contents === 'string')
+      ? JSON.parse(frontierBlockDataUntrusted.contents)
+      : frontierBlockDataUntrusted.contents;
 
     const isFrontierBlockMatchingAccountInfo = (
         (frontierBlockDataUntrusted.contents.balance === accountInfoUntrusted.balance)

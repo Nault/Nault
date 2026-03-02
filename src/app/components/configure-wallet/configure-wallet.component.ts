@@ -7,6 +7,7 @@ import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
 import { wallet } from 'nanocurrency-web';
 import { TranslocoService } from '@ngneat/transloco';
+import { CloudWalletService } from '../../services/cloud-wallet.service';
 
 enum panels {
   'landing',
@@ -58,6 +59,7 @@ export class ConfigureWalletComponent implements OnInit {
   indexMax = INDEX_MAX;
 
   selectedImportOption = 'seed';
+  walletStorageMode: 'local' | 'cloud' = 'local';
 
   ledgerStatus = LedgerStatus;
   ledger = this.ledgerService.ledger;
@@ -70,7 +72,8 @@ export class ConfigureWalletComponent implements OnInit {
     private qrModalService: QrModalService,
     private ledgerService: LedgerService,
     private util: UtilService,
-    private translocoService: TranslocoService) {
+    private translocoService: TranslocoService,
+    public cloudWalletService: CloudWalletService) {
     if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
       this.activePanel = panels.import;
       this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed;
@@ -84,6 +87,9 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   async ngOnInit() {
+    const cloudModeRequested = this.router.snapshot.queryParamMap.get('cloud') === '1';
+    this.walletStorageMode = cloudModeRequested ? 'cloud' : 'local';
+
     const exampleSeedBytes = this.util.account.generateSeedBytes();
     const exampleSeedFull = this.util.hex.fromUint8(exampleSeedBytes);
 
@@ -116,6 +122,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.storePassword();
 
     this.notifications.sendSuccess(`Successfully imported wallet!`, {length: 10000});
+    this.syncWalletToCloudIfNeeded();
 
     // this.repService.detectChangeableReps(); // this is now called from change-rep-widget.component when new wallet
     this.walletService.informNewWallet();
@@ -128,6 +135,7 @@ export class ConfigureWalletComponent implements OnInit {
     this.keyString = '';
 
     this.notifications.sendSuccess(`Successfully imported wallet from a private key!`);
+    this.syncWalletToCloudIfNeeded();
     this.walletService.informNewWallet();
   }
 
@@ -180,6 +188,7 @@ export class ConfigureWalletComponent implements OnInit {
     // Create new ledger wallet
     const newWallet = await this.walletService.createLedgerWallet();
     this.notifications.sendSuccess(`Successfully loaded ledger device!`);
+    this.syncWalletToCloudIfNeeded();
 
     this.walletService.informNewWallet();
   }
@@ -189,21 +198,30 @@ export class ConfigureWalletComponent implements OnInit {
     if (!this.isConfigured()) return true;
 
     const UIkit = window['UIkit'];
+    let msg;
     try {
-      const msg = this.walletService.isLedgerWallet()
-        ? '<p class="uk-alert uk-alert-info"><br><span class="uk-flex"><span uk-icon="icon: info; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.</p><br>'
-        : '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></p><br>';
+      if (this.walletService.isLedgerWallet()) {
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
+      } else {
+        msg = '<p class="uk-alert uk-alert-danger" style=" background-color: #e74c3c !important"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;"><b>Creating new wallet will destroy existing wallet.</b></p>';
+      }
       await UIkit.modal.confirm(msg);
       return true;
     } catch (err) {
       if (!this.walletService.isLedgerWallet()) {
-        this.notifications.sendInfo(`You can use the 'Manage Wallet' page to backup your wallet's secret recovery seed and/or mnemonic`);
+        this.notifications.sendInfo(`Visit 'Backup Wallet' create backup.`);
       }
       return false;
     }
   }
 
   async setPasswordInit() {
+    if (this.walletStorageMode === 'cloud' && !this.cloudWalletService.hasSession()) {
+      this.notifications.sendInfo('Please sign in or register first to use cloud wallet mode.');
+      this.route.navigate(['cloud-auth/register'], { queryParams: { next: 'configure-wallet' } });
+      return;
+    }
+
     // if importing from existing, the format check must be done prior the password page
     if (!this.isNewWallet) {
       if (this.selectedImportOption === 'mnemonic' || this.selectedImportOption === 'seed') {
@@ -298,24 +316,26 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   confirmNewSeed() {
-    if (!this.hasConfirmedBackup) {
-      return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
-    }
+    // if (!this.hasConfirmedBackup) {
+    //   return this.notifications.sendWarning(`Please confirm you have saved a wallet backup!`);
+    // }
     this.walletService.createNewWallet(this.newWalletSeed);
     this.storePassword();
     this.newWalletSeed = '';
     this.newWalletMnemonicLines = [];
     this.saveNewWallet();
 
-    this.activePanel = panels.final;
+    this.route.navigate(['accounts']);
+    // this.activePanel = panels.final;
   }
 
   saveWalletPassword() {
+
     if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
       return this.notifications.sendError(`Password confirmation does not match, try again!`);
     }
-    if (this.walletPasswordModel.length < 6) {
-      return this.notifications.sendWarning(`Password length must be at least 6`);
+    if (this.walletPasswordModel.length < 3) {
+      return this.notifications.sendWarning(`Password length must be at least 3`);
     }
     this.newPassword = this.walletPasswordModel;
     this.walletPasswordModel = '';
@@ -329,6 +349,8 @@ export class ConfigureWalletComponent implements OnInit {
     || this.selectedImportOption === 'bip39-mnemonic') {
       this.importSingleKeyWallet();
     }
+
+    this.confirmNewSeed()
   }
 
   storePassword() {
@@ -338,9 +360,10 @@ export class ConfigureWalletComponent implements OnInit {
 
   saveNewWallet() {
     this.walletService.saveWalletExport();
+    this.syncWalletToCloudIfNeeded();
     this.walletService.informNewWallet();
 
-    this.notifications.sendSuccess(`Successfully created new wallet! Do not lose the secret recovery seed/mnemonic!`);
+    this.notifications.sendSuccess(`New wallet created.`);
   }
 
   setPanel(panel) {
@@ -350,6 +373,10 @@ export class ConfigureWalletComponent implements OnInit {
     } else if (panel === panels.import) {
       this.isNewWallet = false;
     }
+  }
+
+  goToCloudLogin() {
+    this.route.navigate(['cloud-auth/login']);
   }
 
   copiedNewWalletSeed() {
@@ -431,6 +458,19 @@ export class ConfigureWalletComponent implements OnInit {
       invalid = true;
     }
     this.validIndex = !invalid;
+  }
+
+  private async syncWalletToCloudIfNeeded() {
+    if (this.walletStorageMode !== 'cloud' || !this.cloudWalletService.hasSession()) {
+      return;
+    }
+
+    try {
+      await this.cloudWalletService.syncCurrentWalletToCloud();
+      this.notifications.sendSuccess('Encrypted wallet backup synced to cloud');
+    } catch {
+      this.notifications.sendWarning('Wallet created locally, but cloud sync failed. You can retry in Settings > Manage Wallet.');
+    }
   }
 
 }

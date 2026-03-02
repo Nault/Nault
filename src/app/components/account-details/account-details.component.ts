@@ -17,6 +17,7 @@ import * as nanocurrency from 'nanocurrency';
 import {NinjaService} from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { TranslocoService } from '@ngneat/transloco';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-account-details',
@@ -87,6 +88,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   ];
   selectedAmount = this.amounts[0];
 
+  known = null;
   amount = null;
   amountRaw: BigNumber = new BigNumber(0);
   amountFiat: number|null = null;
@@ -111,6 +113,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   // End remote signing
 
   constructor(
+    private http: HttpClient,
     private router: ActivatedRoute,
     private route: Router,
     private addressBook: AddressBookService,
@@ -134,6 +137,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+
+    await this.loadKnown();
+
     const params = this.router.snapshot.queryParams;
     if ('sign' in params) {
       this.remoteVisible = params.sign === '1';
@@ -149,6 +155,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
         this.mobileTransactionMenuModal.hide();
       }
     });
+
     this.priceSub = this.price.lastPrice$.subscribe(event => {
       this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber();
       this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber();
@@ -169,7 +176,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.mobileTransactionMenuModal = mobileTransactionMenuModal;
 
     await this.loadAccountDetails();
+    
     this.initialLoadDone = true;
+
+
     this.addressBook.loadAddressBook();
 
     this.populateRepresentativeList();
@@ -183,6 +193,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       this.representativesOverview = reps;
       this.updateRepresentativeInfo();
     });
+
   }
 
   async populateRepresentativeList() {
@@ -336,6 +347,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.loadAccountDetailsThrottled({ receivableBlockUpdate });
   }
 
+  async loadKnown() {
+    localStorage.setItem('nano-known', JSON.stringify( await this.http.post('https://rpc.nano.to', { action: "known" }).toPromise() ))
+  }
+
   loadAccountDetailsThrottled(params) {
     this.autoRefreshReasonBlockUpdate = (
         (params.receivableBlockUpdate != null)
@@ -446,6 +461,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   async loadAccountDetails() {
+
     this.onAccountDetailsLoadStart();
 
     this.pendingBlocks = [];
@@ -457,7 +473,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     this.accountID = accountID;
     this.generateReceiveQR(accountID);
 
-    this.addressBookEntry = this.addressBook.getAccountName(accountID);
+    // console.log("loadAccountDetails", accountID)
+
+    var known = this.known ? this.known.find(a => a.address === accountID) : false
+
+    this.addressBookEntry = this.addressBook.getAccountName(accountID) || (known ? { name: known.name, account: known.address } : false);
+
     this.addressBookModel = this.addressBookEntry || '';
     this.walletAccount = this.wallet.getWalletAccount(accountID);
 
@@ -744,18 +765,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
     if ( regexp.test(this.addressBookModel) === true ) {
-      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
-    }
-
-    if ( this.addressBookModel.startsWith('@') === true ) {
-      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
+      return this.notifications.sendError(`This name is reserved for wallet accounts without a label`);
     }
 
     // Make sure no other entries are using that name
     const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel);
 
     if ( (accountIdWithSameName !== null) && (accountIdWithSameName !== this.accountID) ) {
-      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'));
+      return this.notifications.sendError(`This name is already in use! Please use a unique name`);
     }
 
     try {
@@ -763,11 +780,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       const currentTransactionTracking = this.addressBook.getTransactionTrackingById(this.accountID);
       await this.addressBook.saveAddress(this.accountID, this.addressBookModel, currentBalanceTracking, currentTransactionTracking);
     } catch (err) {
-      this.notifications.sendError(this.translocoService.translate('address-book.unable-to-save-entry', { message: err.message }));
+      this.notifications.sendError(`Unable to save entry: ${err.message}`);
       return;
     }
 
-    this.notifications.sendSuccess(this.translocoService.translate('address-book.address-book-entry-saved-successfully'));
+    this.notifications.sendSuccess(`Address book entry saved successfully!`);
 
     this.addressBookEntry = this.addressBookModel;
     this.showEditAddressBook = false;
@@ -806,13 +823,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     const rep = this.repService.getRepresentative(this.representativeModel);
-    const ninjaRep = await this.ninja.getAccount(this.representativeModel);
+    // const ninjaRep = await this.ninja.getAccount(this.representativeModel);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }

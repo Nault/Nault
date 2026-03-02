@@ -13,10 +13,7 @@ import {PowService} from '../../services/pow.service';
 export class WalletWidgetComponent implements OnInit {
   wallet = this.walletService.wallet;
 
-  ledgerStatus = {
-    status: 'not-connected',
-    statusText: '',
-  };
+  ledgerStatus = 'not-connected';
   powAlert = false;
 
   unlockPassword = '';
@@ -42,8 +39,8 @@ export class WalletWidgetComponent implements OnInit {
     });
     this.modal = modal;
 
-    this.ledgerService.ledgerStatus$.subscribe((ledgerStatus) => {
-      this.ledgerStatus = ledgerStatus;
+    this.ledgerService.ledgerStatus$.subscribe((ledgerStatus: any) => {
+      this.ledgerStatus = ledgerStatus.status;
     });
 
     // Detect if a PoW is taking too long and alert
@@ -92,7 +89,7 @@ export class WalletWidgetComponent implements OnInit {
     try {
       await this.ledgerService.loadLedger();
       this.notificationService.removeNotification('ledger-status');
-      if (this.ledgerStatus.status === LedgerStatus.READY) {
+      if (this.ledgerStatus === LedgerStatus.READY) {
         this.notificationService.sendSuccess(`Successfully connected to Ledger device`);
       }
     } catch (err) {
@@ -133,7 +130,7 @@ export class WalletWidgetComponent implements OnInit {
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
     if (unlocked) {
-      this.notificationService.sendSuccess(`Wallet unlocked`);
+      // this.notificationService.sendSuccess(`Wallet unlocked`);
       this.modal.hide();
       if (this.unlockPassword.length < 6) {
         // eslint-disable-next-line max-len

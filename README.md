@@ -1,70 +1,61 @@
-# Nault
+<h1 align="center">Nault Pro</h1>
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/nault/nault)
-[![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/Nault/Nault/releases/latest)
-[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
+<h3 align="center">Nano.to's Nault Fork</h3>
 
-Nault is a community-driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
+<p align="center">
+  <img src="https://github.com/fwd/nault/raw/master/.github/screen.png" alt="Nault Promo" />
+</p>
 
-It's a fully client-side signing wallet for sending and receiving [nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
+Nault Pro is a non-custodial Nano wallet experience that can run fully local, or be self-hosted on Cloudflare for cloud-enabled features.
 
-Seamless integration with any nano compatible RPC backend/websocket and the aim to be more frequently maintained are some of the main features. Those together will greatly increase the stability, performance and uptime.
+## Why Nault Pro Cloud (without giving up custody)
 
-![Nault Screenshot](/src/assets/img/preview.png)
-___
+- **Non-custodial by design**: your wallet backup is stored as encrypted wallet data, not as plaintext keys.
+- **Cloud convenience**: sync profile settings, access cloud-backed wallet data, and use API keys for programmatic actions.
+- **Self-hosted control**: run your own Cloudflare Worker + D1 database so you control infrastructure and policy.
+- **Local-first still supported**: if you prefer, use Nault Pro as a local wallet with browser storage and no cloud backup.
 
-## How To Use
-Nault comes in different flavors to suit your needs.
-#### Desktop App
-Available for Windows/Mac/Linux – just head over to the [latest release](https://github.com/Nault/Nault/releases/latest) and download the version for your OS. Arch Linux users may [install it from the (unofficial) AUR](https://aur.archlinux.org/packages/nault-bin/).
+## Self-hosting on Cloudflare
 
-If you want to verify the binary checksum there are plenty of apps to do this. One way is using a powershell or bash terminal:
+The repository includes `functions/` for running Nault Pro cloud services through Cloudflare Pages Functions + D1.
 
-* **Powershell:** `Get-FileHash -Path '.\Nault-Setup-x.x.x-Windows.exe' -Algorithm SHA256`
-* **Bash:** `openssl sha256 Nault-x.x.x-Linux.AppImage`
+1. Create and wire a D1 database binding named `DB` in your Pages project.
+2. Apply schema:
 
-Then compare the output hash with the one listed in the corresponding checksums file that you download.
+```bash
+npx wrangler d1 execute nault-pro --file=./functions/schema.sql --remote
+```
 
-#### Web App
-You can also use Nault from any device on the web at [nault.cc](https://nault.cc).
+3. Set required secret:
 
-Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
+```bash
+npx wrangler pages secret put JWT_SECRET --project-name <your-pages-project>
+```
 
-The web version can additionally be pulled from the [dockerhub repo](https://hub.docker.com/r/nault/nault) using: docker pull nault/nault:latest
+4. (Optional) Set `CORS_ORIGIN` and `RPC_URL` as Pages variables for your environment.
+5. Deploy:
 
-A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
+```bash
+# Deploy static site + functions using your Pages workflow
+```
 
-#### Mobile App
-There is no native mobile app but the web wallet contains a Progressive Web App (PWA). That allows you to run it in offline mode for remote-signing.
+## Changes
 
-If you visit [nault.cc](https://nault.cc) in your phone you will be given the option to install it.
+- ✅ Redesigned UI/UX
+- ✅ Add Nano.to Usernames to send page.
+- ✅ Add Nano.to Usernames to transactions.
+- ✅ Add seamless OpenAI into Nault
+- 🟨 Add Community Funding Page
+- 🟨 Add eCommerce into Nault.Pro
+- 🟨 Professional Security Audit
+- 🟨 Nault.Pro Code Freeze & Formal Release
 
-* Android: Click on "Install Nault for Android" in the menu
-* iOS (Safari only): 1 - Tap the share button. 2 - Select "+ Add to home screen". 3 - Open Nault from the home screen
+### License 
 
-## How To Help
+**MIT**
 
-Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
+## Nano.to Support
 
-If you want to know how to setup the development environment head over to [DEVELOPMENT.md](DEVELOPMENT.md).
-
-## Support
-
-If you are looking for more interactive and quick support compared to creating a new Github issue, you will then find most of the developers in the Nault channel over at the [TNC discord server](https://discord.nanocenter.org/).
-
-## Acknowledgements
-
-Special thanks to the following!
-
-- [NanoVault](https://github.com/cronoh/nanovault) - The original one
-- [numtel/nano-webgl-pow](https://github.com/numtel/nano-webgl-pow) - WebGL PoW Implementation
-- [jaimehgb/RaiBlocksWebAssemblyPoW](https://github.com/jaimehgb/RaiBlocksWebAssemblyPoW) - CPU PoW Implementation
-- [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
-- [dchest/tweetnacl-js](https://github.com/dchest/tweetnacl-js) - Cryptography Implementation
-
-## Donations
-
-If you have found Nault useful and are feeling generous, you can donate at
-`nano_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`
-
-Thanks a lot!
+- Email: support@nano.to
+- Twitter: [@nano2dev](https://twitter.com/nano2dev)
+- Mastodon: [Xno.Social](https://xno.social/@nano2dev)

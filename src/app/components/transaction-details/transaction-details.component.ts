@@ -84,7 +84,19 @@ export class TransactionDetailsComponent implements OnInit {
     }
 
     const hashData = blockData.blocks[hash];
-    const hashContents = JSON.parse(hashData.contents);
+    let hashContents = hashData.contents ? hashData.contents : hashData;
+
+    if (typeof hashContents === 'string') {
+      try {
+        hashContents = JSON.parse(hashContents);
+      } catch {
+        this.loadingBlock = false;
+        this.transaction = null;
+        this.notifications.sendError(`Unable to parse block data for this transaction`);
+        return;
+      }
+    }
+
     hashData.contents = hashContents;
 
     this.transactionJSON = JSON.stringify(hashData.contents, null , 4);
@@ -103,7 +115,9 @@ export class TransactionDetailsComponent implements OnInit {
       } else {
         const prevRes = await this.api.blocksInfo([hashData.contents.previous]);
         const prevData = prevRes.blocks[hashData.contents.previous];
-        prevData.contents = JSON.parse(prevData.contents);
+        prevData.contents = (typeof prevData.contents === 'string')
+          ? JSON.parse(prevData.contents)
+          : prevData.contents;
         if (!prevData.contents.balance) {
           // Previous block is not a state block.
           this.blockType = prevData.contents.type;

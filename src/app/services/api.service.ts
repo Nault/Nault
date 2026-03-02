@@ -157,6 +157,7 @@ export class ApiService {
     return await this.request('work_generate', { hash, difficulty }, workServer !== '', workServer, validateResponse);
   }
   async process(block, subtype: TxType): Promise<{ hash: string, error?: string }> {
+    console.log("block", block)
     return await this.request('process', { block: JSON.stringify(block), watch_work: 'false', subtype: TxType[subtype] }, false);
   }
   async accountHistory(account, count = 25, raw = false, offset = 0, reverse = false): Promise<{history: any }> {

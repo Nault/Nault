@@ -1,0 +1,8 @@
+{
+  "name": "nault-pages-functions",
+  "private": true,
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "nanocurrency-web": "^1.4.3"
+  }
+}

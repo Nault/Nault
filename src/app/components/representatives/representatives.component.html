@@ -74,7 +74,7 @@
                     <div class="amounts">
                       <span class="amount-integer">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 0 }}</span>
                       <span class="amount-fractional">{{ rep.delegatedWeight | rai: 'mnano,true' | amountsplit: 1 }}</span>
-                      <span class="currency-name">XNO</span>
+                      <span class="currency-name">NANO</span>
                     </div>
                   </td>
                 </tr>
@@ -97,7 +97,7 @@
                     <div class="amounts">
                       <span class="amount-integer">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
                       <span class="amount-fractional">{{ delegatingAccount.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
-                      <span class="currency-name">XNO</span>
+                      <span class="currency-name">NANO</span>
                     </div>
                   </td>
                 </tr>
@@ -136,7 +136,7 @@
                   <select class="uk-select" [(ngModel)]="changeAccountID" (change)="newAccountID()" id="form-horizontal-select">
                     <option [value]="null">Select Accounts to Change</option>
                     <option [value]="'all'">All Current Accounts</option>
-                    <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} XNO)</option>
+                    <option *ngFor="let account of walletService.wallet.accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} NANO)</option>
                   </select>
                   <ul class="uk-list uk-list-striped">
                     <li *ngFor="let account of selectedAccounts">
@@ -188,24 +188,26 @@
                   </div>
                 </div>
 
-                <!-- <div class="uk-form-controls">
+                <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1 uk-margin-top">
                     <button class="uk-button uk-button-default uk-button-small" *ngIf="showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: minus; ratio: 0.8" style="margin-right: 5px;"></span> Hide Recommended Representatives</button>
                     <button class="uk-button uk-button-primary uk-button-small" *ngIf="!showRecommendedReps" (click)="showRecommendedReps = !showRecommendedReps"><span uk-icon="icon: plus; ratio: 0.8" style="margin-right: 5px;"></span> View Recommended Representatives</button>
                   </div>
-                </div> -->
+                </div>
               </div>
 
-              <!-- <div *ngIf="showRecommendedReps">
+              <div *ngIf="showRecommendedReps">
                 <hr>
 
                 <div class="uk-margin">
-                  <p class="uk-text-lead uk-text-center">Select a representative recommended by <a href="https://mynano.ninja" target="_blank" rel="noopener noreferrer" class="uk-link-text">MyNanoNinja</a></p>
+                  <!-- <p class="uk-text-lead uk-text-center">Recommended</p> -->
+                  <!--<h4>Or, Select a recommended representative</h4>-->
                   <ul class="uk-list uk-list-striped" style="margin-bottom: 0;">
                     <li class="uk-list-header">
                       <div uk-grid>
-                        <div class="uk-width-expand">Representative</div>
-                        <div class="uk-width-1-2">Weight / Uptime / Accounts</div>
+                        <div class="uk-width-expand">Representatives</div>
+                        <!-- <div class="uk-width-1-2">Weight / Uptime / Accounts</div> -->
+                        <!--<div class="uk-width-1-5">Uptime / Delegators</div>-->
                       </div>
                     </li>
                   </ul>
@@ -219,14 +221,14 @@
                     <li *ngFor="let rep of recommendedRepsPaginated">
                       <div uk-grid >
                         <div class="uk-width-expand" (click)="selectRecommendedRep(rep)" style="cursor: pointer;">
-                          <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-right: 4px;">{{ rep.score }}</span> <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
-
+                          <span uk-tooltip title="Select this representative">{{ rep.alias }}</span>
+                          <span class="uk-badge" uk-tooltip title="My Nano Ninja Score" style="margin-left: 4px;">{{ rep.weight }}</span>
                         </div>
                         <div class="uk-width-1-2">
-                          <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a>
+                          <!-- <a [href]="'https://mynano.ninja/account/' + rep.account" target="_blank" rel="noopener noreferrer" style="float: right;" uk-tooltip title="View more details on My Nano Ninja" class="uk-link-muted"><span uk-icon="search"></span></a> -->
 
-                          <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span>
-                          <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime.toFixed(2) }}%</span>
+                          <!-- <span style="display: inline-block; margin-right: 15px;" uk-tooltip title="Percentage of network voting weight delegated" class="uk-text-primary"><span uk-icon="users"></span> {{ rep.percent }}%</span> -->
+                          <!-- <span style="display: inline-block; margin-right: 15px; color: #13ab60;" uk-tooltip title="Uptime since creation" class=""><span uk-icon="bolt"></span> {{ rep.uptime }}</span> -->
 
                         </div>
                       </div>
@@ -240,7 +242,7 @@
                   </ul>
                 </div>
 
-              </div> -->
+              </div>
 
 
             </div>

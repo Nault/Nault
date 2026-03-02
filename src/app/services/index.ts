@@ -16,3 +16,4 @@ export * from './websocket.service';
 export * from './work-pool.service';
 export * from './ninja.service';
 export * from './deeplink.service';
+export * from './cloud-wallet.service';

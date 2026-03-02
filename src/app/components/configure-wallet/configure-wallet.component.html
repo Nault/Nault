@@ -1,5 +1,20 @@
-<h2 class="uk-heading-divider">Configure Wallet</h2>
+<h2 class="uk-heading-divider">New Wallet</h2>
 
+<div class="storage-mode-card">
+  <div class="storage-mode-header">Choose Wallet Storage</div>
+  <div class="storage-mode-buttons">
+    <button class="storage-mode-button" [class.active]="walletStorageMode === 'local'" (click)="walletStorageMode = 'local'">
+      <strong>Local Wallet</strong>
+      <span>Device-only storage with encrypted local backup.</span>
+    </button>
+    <button class="storage-mode-button" [class.active]="walletStorageMode === 'cloud'" (click)="walletStorageMode = 'cloud'">
+      <strong>Cloud Wallet</strong>
+      <span>Encrypted backup linked to your email account.</span>
+    </button>
+  </div>
+</div>
+
+<!-- 
 <div *ngIf="isConfigured() && !walletService.isLedgerWallet() && (activePanel === panels.landing || activePanel === panels.import || activePanel === panels.mnemonicTypeSelection)" class="uk-margin-small-bottom">
   <div class="uk-alert uk-alert-danger nlt-inline-alert">
     <div class="icon-column">
@@ -12,7 +27,8 @@
     </p>
   </div>
 </div>
-
+ -->
+ 
 <div class="uk-card uk-card-default wallet-setup-card" *ngIf="activePanel === panels.landing">
   <div class="uk-card-body">
     <div class="landing-container uk-grid-divider" uk-grid>
@@ -36,12 +52,43 @@
               </g>
             </svg>
           </div>
-          <h2>New<br>Wallet</h2>
-          <p>Generate seed<br>and mnemonic</p>
+          <h2>{{ walletStorageMode === 'cloud' ? 'New Cloud Wallet' : 'New Wallet' }}</h2>
+          <p>{{ walletStorageMode === 'cloud' ? 'Create and sync encrypted backup' : 'Generate seed and mnemonic' }}</p>
         </button>
       </div>
       <div class="uk-width-expand">
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';">
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
+            </svg>
+          </div>
+          <h2>{{ walletStorageMode === 'cloud' ? 'Import to Cloud' : 'Nault Import' }}</h2>
+          <p>{{ walletStorageMode === 'cloud' ? 'Import then sync encrypted backup' : 'Nault.Pro or Nault.cc' }}</p>
+        </button>
+        <button class="wallet-option" *ngIf="walletStorageMode === 'cloud'" (click)="goToCloudLogin()">
+          <div class="icon">
+            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none" stroke="#000" stroke-width="2">
+                <rect x="16" y="32" width="128" height="96" rx="10"/>
+                <path d="m40 64h80"/>
+                <path d="m40 84h80"/>
+                <path d="m64 20v24"/>
+                <path d="m96 20v24"/>
+              </g>
+            </svg>
+          </div>
+          <h2>Cloud Login</h2>
+          <p>Sign in to restore cloud wallet</p>
+        </button>
+    <!--     <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
+          <div class="icon">
+            <div class="more-options">···</div>
+          </div>
+          <h2>More<br>Options</h2>
+          <p>Import from file<br>or a private key</p>
+        </button> -->
+        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'ledger';" *ngIf="showMoreImportOptions">
           <div class="icon">
             <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <g>
@@ -56,14 +103,14 @@
           <h2>Use<br>Ledger</h2>
           <p>Nano S / Nano X</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
+        <button *ngIf="showMoreImportOptions" class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'seed';">
           <div class="icon">
             <div class="seed">{{ exampleSeed }}</div>
           </div>
           <h2>Import<br>Seed</h2>
           <p>64 hex<br>characters</p>
         </button>
-        <button class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
+        <button *ngIf="showMoreImportOptions" class="wallet-option" (click)="setPanel(panels.mnemonicTypeSelection);">
           <div class="icon">
             <div class="mnemonic">
               <div class="mnemonic-row">
@@ -86,22 +133,6 @@
           </div>
           <h2>Import<br>Mnemonic</h2>
           <p>12, 15, 18, 21<br>or 24 words</p>
-        </button>
-        <button class="wallet-option more-options" (click)="showMoreImportOptions = true;" *ngIf="!showMoreImportOptions">
-          <div class="icon">
-            <div class="more-options">···</div>
-          </div>
-          <h2>More<br>Options</h2>
-          <p>Import from file<br>or a private key</p>
-        </button>
-        <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'file';" *ngIf="showMoreImportOptions">
-          <div class="icon">
-            <svg width="120" height="120" version="1.1" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-              <path d="m111.24 21.503c6.0699 1.9309 10.664 6.5178 13.516 14.24m-88.044-14.24h74.527l0.32099 14.165 13.195 0.07558v99.871c0 1.5009-1.2083 2.7092-2.7092 2.7092h-85.334c-1.5009 0-2.7092-1.2083-2.7092-2.7092v-111.4c0-1.5009 1.2083-2.7092 2.7092-2.7092z" fill="none" stroke="#000" stroke-width="2"/>
-            </svg>
-          </div>
-          <h2>Import<br>File</h2>
-          <p>exported<br>Nault wallet</p>
         </button>
         <button class="wallet-option" (click)="setPanel(panels.import); selectedImportOption = 'privateKey';" *ngIf="showMoreImportOptions">
           <div class="icon">
@@ -246,9 +277,7 @@
     <div uk-grid *ngIf="selectedImportOption === 'file'">
       <div class="uk-width-1-1">
         <h3>Import File</h3>
-        <p>
-          If you have saved your wallet to a file using Nault before, use the button below to import it.
-        </p>
+        <p>Click button below to import JSON file.</p>
       </div>
     </div>
     <div uk-grid *ngIf="selectedImportOption === 'seed'" class="uk-margin-top">
@@ -313,12 +342,11 @@
     <div uk-grid *ngIf="selectedImportOption === 'ledger'" class="uk-margin-top">
       <div class="uk-width-1-1">
         <h3>Use Ledger Hardware Wallet</h3>
-        <div *ngIf="ledger.status === ledgerStatus.NOT_CONNECTED">
-          <p>Make sure you have the nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.</p>
-          <p *ngIf="!ledgerService.isDesktop && !ledgerService.supportsBluetooth">Bluetooth is currently not supported by your browser, please use Chrome, Edge, Opera or Brave</p>
-          <p><a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a></p>
+        <p>
+          Make sure you have the nano app installed and running on your Ledger, then click one of the buttons below to connect via either USB or Bluetooth.<br> 
+          <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html" target="_blank" rel="noopener noreferrer">Ledger/Nault User Guide and Troubleshooting</a><br>
           <br>
-        </div>
+        </p>
         <div *ngIf="!ledgerService.supportsUSB">
           <div class="uk-alert uk-alert-warning nlt-inline-alert">
             <div class="icon-column">
@@ -339,7 +367,8 @@
               </div>
               <p>
                 <b>Ledger Device Not Connected</b><br>
-                Make sure you have the nano app installed and running on the device, then press connect.<br>
+                Connect your Ledger device and make sure you have the nano app installed and running, then press the button below.<br>
+                <span *ngIf=!ledgerService.supportsBluetooth>Bluetooth is currently not supported by your browser, please use Google Chrome or <a href="https://github.com/Nault/Nault/releases/latest" target="_blank" rel="noopener noreferrer">download the Desktop App</a></span>
               </p>
             </div>
           </div>
@@ -360,22 +389,10 @@
                 <div uk-icon="icon: check; ratio: 2;"></div>
               </div>
               <p>
-                <b>Ledger Device Connected</b><br>
-                Ledger data was imported successfully.
+                <b>Ledger Device Ready</b><br>
+                Press the import button below to use your ledger wallet
               </p>
             </div>
-          </div>
-        </div>
-        <div *ngIf="ledgerService.isDesktop && !ledgerService.supportsBluetooth && ledger.status === ledgerStatus.NOT_CONNECTED">
-          <div class="uk-alert uk-alert-danger nlt-inline-alert">
-            <div class="icon-column">
-              <div uk-icon="icon: warning; ratio: 2;"></div>
-            </div>
-            <p>
-              <b>No Compatible Bluetooth Hardware</b><br>
-              The Bluetooth support in Nault for desktop is limited to only specific Bluetooth modules.<br> 
-              For better compatibility, please try <a href="https://nault.cc" target="_blank" rel="noopener noreferrer">Nault.cc</a> in a browser with Bluetooth support (Chrome, Edge, Opera or Brave).
-            </p>
           </div>
         </div>
       </div>
@@ -424,24 +441,8 @@
 
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.backup">
-  <div class="uk-card-header">
-    <h3 class="uk-card-title">{{ 'configure-wallet.new-wallet.recovery-phrases-for-new-wallet' | transloco }}</h3>
-  </div>
-  <div class="uk-card-body">
-    <p>{{ 'configure-wallet.new-wallet.please-take-some-time-to-write-down-recovery-phrases' | transloco }}</p>
-    <div>
-      <div class="uk-alert uk-alert-danger nlt-inline-alert">
-        <div class="icon-column">
-          <div uk-icon="icon: warning; ratio: 2;"></div>
-        </div>
-        <p>
-          {{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.1' | transloco }}<strong>{{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.2-strong' | transloco }}</strong>{{ 'configure-wallet.new-wallet.recovery-phrases-alert.1.3' | transloco }}<br>
-          {{ 'configure-wallet.new-wallet.recovery-phrases-alert.2' | transloco }}
-        </p>
-      </div>
-    </div>
-    <br>
 
+  <div class="uk-card-body">
     <div uk-grid>
       <div class="uk-width-1-4@m">{{ 'configure-wallet.new-wallet.secret-recovery-seed' | transloco }}</div>
       <div class="uk-width-3-4@m">
@@ -493,14 +494,12 @@
   </div>
   <div class="uk-card-body">
     <p>{{ 'configure-wallet.set-wallet-password.choose-a-wallet-password-that-will-be-used-to-unlock-this-application' | transloco }}</p>
-    <p>{{ 'configure-wallet.set-wallet-password.while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted' | transloco }}</p>
-    <p>{{ 'configure-wallet.set-wallet-password.for-the-safety-of-your-funds-use-a-secure-password' | transloco }}</p>
     <br>
     <div uk-grid>
       <div class="uk-width-1-2@m">
         <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
         <!-- <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter> -->
-        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 6 } }}</span>
+        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 3">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 3 } }}</span>
         <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">{{ 'configure-wallet.set-wallet-password.errors.passwords-do-not-match' | transloco }}</span>
       </div>
       <div class="uk-width-1-2@m">
@@ -509,18 +508,17 @@
     </div>
   </div>
   <div class="uk-card-footer uk-text-right">
-    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 6 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? 'Next':'Import Wallet'}}</button>
+    <button class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1" [disabled]="walletPasswordModel.length < 3 || (walletPasswordModel !== walletPasswordConfirmModel)" (click)="saveWalletPassword()">{{isNewWallet ? 'Next':'Import Wallet'}}</button>
   </div>
 </div>
 
 <div class="uk-card uk-card-default" *ngIf="activePanel === panels.final">
   <div class="uk-card-header">
-    <h3 class="uk-card-title">Wallet Created!</h3>
+    <h3 class="uk-card-title">Wallet Created</h3>
   </div>
   <div class="uk-card-body">
     <p>
-      Your wallet has been created and you are ready to send and receive nano!<br>
-      It will lock after a certain amount of inactivity which can be changed in the <a routerLink="/configure-app" routerLinkActive="active">app settings</a>.
+      Your wallet has been created and ready to use.<br>
     </p>
   </div>
   <div class="uk-card-footer uk-text-right">
@@ -528,9 +526,9 @@
   </div>
 </div>
 
-<div *ngIf="activePanel === panels.final && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
+<!-- <div *ngIf="activePanel === panels.final && !walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><strong>ProTip:</strong> If you lose your password, you can always restore your wallet using your seed or mnemonic you were given.</p>
 </div>
 <div *ngIf="activePanel === panels.final && walletService.isLedgerWallet()" class="uk-alert-primary" uk-alert>
   <p><strong>ProTip:</strong> Press the Ledger status bar on the left side to reload your Ledger when connecting or disconnecting it.</p>
-</div>
+</div> -->

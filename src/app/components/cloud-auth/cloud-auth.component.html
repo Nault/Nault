@@ -1,0 +1,200 @@
+<div class="cloud-auth-page">
+  <div class="cloud-auth-shell">
+    <div class="hero">
+      <p class="eyebrow">Nault Pro Cloud Wallet</p>
+      <h1>Email login, encrypted wallet backup</h1>
+      <p class="supporting-text">
+        Your wallet data stays encrypted with your wallet password. Cloud mode gives you access with email and password,
+        while keeping custody in your hands.
+      </p>
+    </div>
+
+    <div class="auth-card" *ngIf="!cloudWalletService.hasSession()">
+      <div class="auth-mode-row">
+        <button class="mode-button" [class.active]="mode === 'login'" (click)="setMode('login')">Login</button>
+        <button class="mode-button" [class.active]="mode === 'register'" (click)="setMode('register')">Register</button>
+      </div>
+
+      <div class="form-row">
+        <label>Email</label>
+        <input class="uk-input" [(ngModel)]="email" type="email" placeholder="you@example.com" autocomplete="username">
+      </div>
+
+      <div class="form-row">
+        <label>Password</label>
+        <input class="uk-input" [(ngModel)]="password" type="password" placeholder="At least 8 characters" autocomplete="current-password">
+      </div>
+
+      <div class="form-row" *ngIf="mode === 'register'">
+        <label>Confirm Password</label>
+        <input class="uk-input" [(ngModel)]="confirmPassword" type="password" placeholder="Repeat password" autocomplete="new-password">
+      </div>
+
+      <div class="form-row" *ngIf="mode === 'login' && requiresTwoFactor">
+        <label>2FA Code</label>
+        <input class="uk-input" [(ngModel)]="totpCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code">
+        <small>Open your authenticator app and enter the current 6-digit code.</small>
+      </div>
+
+      <button class="uk-button uk-button-primary uk-width-1-1" [disabled]="busy" (click)="submitAuth()">
+        {{ mode === 'register' ? 'Create Cloud Account' : 'Login' }}
+      </button>
+    </div>
+
+    <div class="auth-card dashboard-card" *ngIf="cloudWalletService.hasSession()">
+      <div class="dashboard-header">
+        <div>
+          <p class="eyebrow">Cloud Dashboard</p>
+          <h3>{{ cloudWalletService.getSessionEmail() }}</h3>
+          <p class="dashboard-subtitle">Manage your backup, security, and API access from one place.</p>
+        </div>
+        <button class="uk-button uk-button-danger" (click)="logout()">Sign Out</button>
+      </div>
+
+      <div class="dashboard-layout">
+        <aside class="dashboard-nav">
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'overview'" (click)="setActivePanel('overview')">Overview</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'wallet'" (click)="setActivePanel('wallet')">Wallet</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'security'" (click)="setActivePanel('security')">Security</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'api'" (click)="setActivePanel('api')">Developer API</button>
+        </aside>
+
+        <div class="dashboard-mobile-nav">
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'overview'" (click)="setActivePanel('overview')">Overview</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'wallet'" (click)="setActivePanel('wallet')">Wallet</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'security'" (click)="setActivePanel('security')">Security</button>
+          <button class="dashboard-nav-item" [class.active]="activePanel === 'api'" (click)="setActivePanel('api')">API</button>
+        </div>
+
+        <section class="dashboard-content" *ngIf="activePanel === 'overview'">
+          <h4>Account Overview</h4>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span>Cloud Backup</span>
+              <strong>{{ cloudWalletExists ? 'Available' : 'Not Found' }}</strong>
+            </div>
+            <div class="stat-card">
+              <span>Two-Factor Auth</span>
+              <strong>{{ twoFactorEnabled ? 'Enabled' : 'Disabled' }}</strong>
+            </div>
+            <div class="stat-card">
+              <span>API Keys</span>
+              <strong>{{ apiKeys.length }}</strong>
+            </div>
+          </div>
+          <div class="button-row secondary">
+            <button class="uk-button uk-button-default" (click)="setActivePanel('wallet')">Manage Wallet</button>
+            <button class="uk-button uk-button-default" (click)="setActivePanel('security')">Manage Security</button>
+            <button class="uk-button uk-button-default" (click)="setActivePanel('api')">Manage API</button>
+          </div>
+        </section>
+
+        <section class="dashboard-content" *ngIf="activePanel === 'wallet'">
+          <h4>Wallet Management</h4>
+          <p *ngIf="cloudWalletExists">Cloud wallet backup found for this account.</p>
+          <p *ngIf="!cloudWalletExists">No cloud wallet backup yet. Create one from wallet setup.</p>
+
+          <div class="form-row" *ngIf="cloudWalletExists">
+            <label>Wallet Password</label>
+            <input class="uk-input" [(ngModel)]="walletPassword" type="password" placeholder="Wallet password used for encryption">
+          </div>
+
+          <div class="button-row secondary" *ngIf="cloudWalletExists">
+            <button class="uk-button uk-button-primary" [disabled]="busy" (click)="importCloudWallet()">Import Cloud Wallet</button>
+            <button class="uk-button uk-button-default" [disabled]="busy" (click)="exportCloudWallet()">Export Cloud Backup</button>
+          </div>
+
+          <div class="button-row secondary">
+            <button class="uk-button uk-button-primary" (click)="goToCloudSetup()">Configure Wallet</button>
+            <button class="uk-button uk-button-default" *ngIf="!cloudWalletExists" (click)="goToCloudSetup()">Create New Cloud Wallet</button>
+          </div>
+        </section>
+
+        <section class="dashboard-content" *ngIf="activePanel === 'security'">
+          <h4>Security</h4>
+          <div class="two-factor-status" [class.enabled]="twoFactorEnabled">
+            <span class="status-dot"></span>
+            <span>{{ twoFactorEnabled ? 'Two-factor authentication is enabled' : 'Two-factor authentication is disabled' }}</span>
+          </div>
+
+          <div class="two-factor-setup" *ngIf="!twoFactorEnabled">
+            <div *ngIf="!twoFactorQrCode" class="button-row">
+              <p class="two-factor-note">Protect your cloud wallet login with an authenticator app like Google Authenticator, Authy, or 1Password.</p>
+              <p class="two-factor-note pending" *ngIf="twoFactorSetupPending">A previous setup is still pending verification. Generate a new QR code to restart safely.</p>
+              <button class="uk-button uk-button-primary" [disabled]="busy" (click)="startTwoFactorSetup()">Set Up 2FA</button>
+            </div>
+
+            <div *ngIf="twoFactorQrCode" class="two-factor-setup-panel">
+              <h5>Set up your authenticator</h5>
+              <ol>
+                <li>Scan this QR code in your authenticator app.</li>
+                <li>If scanning fails, use the manual secret shown below.</li>
+                <li>Enter the 6-digit code to finish setup.</li>
+              </ol>
+
+              <div class="two-factor-qr-wrap">
+                <img [src]="twoFactorQrCode" alt="2FA setup QR code" />
+              </div>
+
+              <div class="form-row">
+                <label>Manual Secret</label>
+                <input class="uk-input" [value]="twoFactorSecret" readonly>
+              </div>
+
+              <div class="form-row">
+                <label>Verification Code</label>
+                <input class="uk-input" [(ngModel)]="twoFactorVerificationCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
+              </div>
+
+              <div class="button-row secondary">
+                <button class="uk-button uk-button-primary" [disabled]="busy" (click)="enableTwoFactor()">Enable 2FA</button>
+                <button class="uk-button uk-button-default" [disabled]="busy" (click)="startTwoFactorSetup()">Regenerate QR</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="two-factor-disable" *ngIf="twoFactorEnabled">
+            <div class="form-row">
+              <label>Code to Disable 2FA</label>
+              <input class="uk-input" [(ngModel)]="twoFactorDisableCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
+            </div>
+            <div class="button-row">
+              <button class="uk-button uk-button-danger" [disabled]="busy" (click)="disableTwoFactor()">Disable 2FA</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-content" *ngIf="activePanel === 'api'">
+          <h4>Developer API</h4>
+          <p>Create API keys to access your cloud wallet programmatically.</p>
+
+          <div class="form-row">
+            <label>New API Key Name</label>
+            <input class="uk-input" [(ngModel)]="apiKeyName" type="text" placeholder="Trading bot key">
+          </div>
+
+          <div class="button-row secondary">
+            <button class="uk-button uk-button-primary" [disabled]="busy" (click)="createApiKey()">Create API Key</button>
+            <button class="uk-button uk-button-default" (click)="openApiDocs()">Open API Docs</button>
+          </div>
+
+          <div class="api-key-box" *ngIf="newApiKey">
+            <label>Your new API key (copy now)</label>
+            <input class="uk-input" [value]="newApiKey" readonly>
+          </div>
+
+          <div class="api-key-list" *ngIf="apiKeys.length">
+            <div class="api-key-item" *ngFor="let key of apiKeys">
+              <div>
+                <strong>{{ key.name }}</strong>
+                <div class="meta">{{ key.keyPrefix }}... · Created {{ key.createdAt }}</div>
+              </div>
+              <button *ngIf="!key.revokedAt" class="uk-button uk-button-danger uk-button-small" (click)="revokeApiKey(key.id)">Revoke</button>
+              <span *ngIf="key.revokedAt" class="revoked">Revoked</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

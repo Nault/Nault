@@ -12,7 +12,7 @@
           <div class="uk-width-1-2@s">
             <input class="uk-input" [(ngModel)]="newPassword" placeholder="New Password" type="password">
             <!-- <password-strength-meter *ngIf="newPassword.length > 0" [password]="newPassword" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter> -->
-            <span class="password-helper" *ngIf="newPassword.length > 0 && newPassword.length < 6">Password must be at least 6 characters long</span>
+            <span class="password-helper" *ngIf="newPassword.length > 0 && newPassword.length < 3">Password must be at least 6 characters long</span>
             <span class="password-helper" *ngIf="confirmPassword.length >= 6 && newPassword !== confirmPassword">Passwords do not match!</span>
           </div>
           <div class="uk-width-1-2@s">
@@ -21,11 +21,11 @@
         </div>
       </div>
       <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
-        <button [disabled]="newPassword.length < 6 || (newPassword !== confirmPassword)" (click)="changePassword()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Password</button>
+        <button [disabled]="newPassword.length < 3 || (newPassword !== confirmPassword)" (click)="changePassword()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Update Password</button>
       </div>
     </div>
 
-    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
+    <div style="display: none;" class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
         <h3 class="uk-card-title">Backup Wallet</h3>
       </div>
@@ -50,7 +50,7 @@
 
     <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
       <div class="uk-card-header">
-        <h3 class="uk-card-title">Export Nault Wallet</h3>
+        <h3 class="uk-card-title">Export Nault File</h3>
       </div>
       <ng-container *ngIf="wallet.locked else walletUnlocked">
         <div class="uk-card-body">
@@ -60,39 +60,26 @@
       <ng-template #walletUnlocked>
         <ng-container *ngIf="wallet.password else walletHasNoPassword">
           <div class="uk-card-body">
-            Use this export tool to simplify wallet transfer to other devices.
+            <!-- Use this export tool to simplify wallet transfer to other devices. -->
+            <!-- <br> -->
+            Your data is encrypted with your wallet's password, and then can be imported into Nault on any device.
             <br>
-            Your data will be encrypted with your wallet's password, and then can be imported into Nault on any device!
-            <br><br>
-            Note: The export does not contain your address book.<br>
+            <br>
             <div *ngIf="showQRExport" uk-grid>
-              <div class="uk-width-1-1">
-                <hr class="uk-divider-icon uk-margin-small-top">
-                <div class="uk-alert uk-alert-danger nlt-inline-alert" style="max-width: 600px;">
-                  <div class="icon-column">
-                    <div uk-icon="icon: warning; ratio: 2;"></div>
-                  </div>
-                  <p>
-                    <b>If you forget the wallet password used at the time of this export, you will NOT be able to restore your wallet.</b>
-                    <br><br>
-                    For backup purposes, <b>always store the secret recovery seed and/or mnemonic</b> from the "Backup Wallet" section above.
-                  </p>
-                </div>
-              </div>
-
+      
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
-                <img [src]="QRExportImg" alt="QR code" style="border-radius: 6px;">
+                <img [src]="QRExportImg" alt="QR code" style="border-radius: 6px; max-width: 200px;">
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <br>
-                Scan the QR code on any device to import your Nault wallet!<br>
+                Scan QR code on any device to import Nault wallet.<br>
                 <br>
-                You can also import your wallet by using the URL below.
-                <br><br>
+                <!-- You can also import your wallet by using the URL below. -->
+                <!-- <br><br> -->
                 <input type="text" class="uk-input" style="max-width: 750px;" value="{{ QRExportUrl }}">
                 <div class="nlt-button-group uk-margin-small-top">
-                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy To Clipboard</button>
-                  <button (click)="exportToFile()" class="uk-button uk-button-primary">Export As File</button>
+                  <button ngxClipboard [cbContent]="QRExportUrl" (cbOnSuccess)="notifications.sendSuccess('Wallet export copied to clipboard!')" class="uk-button uk-button-secondary" style="margin-left: 0;">Copy Clipboard</button>
+                  <button (click)="exportToFile()" class="uk-button uk-button-primary">Download File</button>
                 </div>
               </div>
             </div>
@@ -107,6 +94,26 @@
           </div>
         </ng-template>
       </ng-template>
+    </div>
+
+    <div class="uk-card uk-card-default uk-margin" *ngIf="!walletService.isLedgerWallet()">
+      <div class="uk-card-header">
+        <h3 class="uk-card-title">Cloud Wallet Backup</h3>
+      </div>
+      <div class="uk-card-body">
+        <p *ngIf="!cloudWalletService.hasSession()">
+          Sign in with your email account to enable encrypted cloud backups.
+        </p>
+        <p *ngIf="cloudWalletService.hasSession()">
+          Signed in as <b>{{ cloudWalletService.getSessionEmail() }}</b>.<br>
+          Sync will upload your existing encrypted local wallet export to Cloud Wallet.
+        </p>
+      </div>
+      <div class="uk-card-footer uk-text-right@s uk-text-center nlt-button-group">
+        <button *ngIf="!cloudWalletService.hasSession()" (click)="openCloudAuth()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Sign In to Cloud Wallet</button>
+        <button *ngIf="cloudWalletService.hasSession() && !cloudSyncing" (click)="syncWalletToCloud()" class="uk-button uk-button-primary uk-width-auto@s uk-width-1-1">Import Wallet to Cloud</button>
+        <button *ngIf="cloudWalletService.hasSession() && cloudSyncing" class="uk-button uk-button-secondary uk-disabled uk-width-auto@s uk-width-1-1 nlt-icon-button nlt-icon-button-inline" type="button"><span class="uk-margin-right" uk-spinner="ratio: 0.5;"></span>SYNCING...</button>
+      </div>
     </div>
 
     <div class="uk-card uk-card-default uk-margin">

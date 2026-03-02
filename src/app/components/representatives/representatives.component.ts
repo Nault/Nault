@@ -213,13 +213,15 @@ export class RepresentativesComponent implements OnInit {
     }
 
     const rep = this.representativeService.getRepresentative(this.toRepresentativeID);
-    const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
+    // const ninjaRep = await this.ninja.getAccount(this.toRepresentativeID);
 
     if (rep) {
       this.representativeListMatch = rep.name;
-    } else if (ninjaRep) {
-      this.representativeListMatch = ninjaRep.alias;
-    } else {
+    } 
+    // else if (ninjaRep) {
+    //   this.representativeListMatch = ninjaRep.alias;
+    // } 
+    else {
       this.representativeListMatch = '';
     }
   }
@@ -230,12 +232,12 @@ export class RepresentativesComponent implements OnInit {
       const scores = await this.ninja.recommended() as any[];
       const totalSupply = new BigNumber(133248289);
 
-      const reps = scores.map(rep => {
-        const nanoWeight = this.util.nano.rawToMnano(rep.votingweight.toString() || 0);
+      const reps = scores.filter(a => a.alias).map(rep => {
+        const nanoWeight = this.util.nano.rawToMnano(rep.weight.toString() || 0);
         const percent = nanoWeight.div(totalSupply).times(100);
 
         // rep.weight = nanoWeight.toString(10);
-        rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
+        // rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
         rep.percent = percent.toFixed(3);
 
         return rep;
@@ -275,7 +277,7 @@ export class RepresentativesComponent implements OnInit {
 
   selectRecommendedRep(rep) {
     this.selectedRecommendedRep = rep;
-    this.toRepresentativeID = rep.account;
+    this.toRepresentativeID = rep.rep_address;
     this.showRecommendedReps = false;
     this.representativeListMatch = rep.alias; // We will save if they use this, so this is a nice little helper
   }

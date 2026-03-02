@@ -38,6 +38,35 @@
 		> .card-contents > .account-name-container > .select-button.open > .circle {
 			background: @wallet-card-background-color;
 		}
+
+		&.has-custom-bg {
+			background: @wallet-card-background-color;
+
+			> .custom-background {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+			}
+
+			> .logo {
+				filter: hue-rotate(5deg) saturate(0.65) brightness(0.28);
+			}
+
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(140deg, rgba(16, 28, 43, 0.55), rgba(8, 18, 31, 0.35));
+				pointer-events: none;
+			}
+
+			> .card-contents > .account-name-container > .select-button.open > .circle {
+				background: rgba(20, 26, 42, 0.8);
+			}
+		}
 	}
 
 	&.incoming-card {
