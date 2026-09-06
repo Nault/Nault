@@ -64,11 +64,10 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
         with:
           node-version: 16
-          cache: 'npm'
 
       - name: Install APT dependencies
         if: matrix.os == 'ubuntu-20.04'
