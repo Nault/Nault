@@ -71,6 +71,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
 import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
+import { HideModalDirective } from './directives/hide-modal.directive';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     MultisigComponent,
     KeygeneratorComponent,
     NanoTransactionMobileComponent,
-    NoPaddingZerosPipe
+    NoPaddingZerosPipe,
+    HideModalDirective
   ],
   imports: [
     BrowserModule,
