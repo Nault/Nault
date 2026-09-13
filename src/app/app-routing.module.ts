@@ -30,6 +30,7 @@ const routes: Routes = [
   { path: 'account/:account', component: AccountDetailsComponent },
   { path: 'address-book', component: AddressBookComponent },
   { path: 'configure-wallet', component: ConfigureWalletComponent },
+  { path: 'configure-wallet/:mode', component: ConfigureWalletComponent },
   { path: 'configure-app', component: ConfigureAppComponent },
   { path: 'import-address-book', component: ImportAddressBookComponent },
   { path: 'import-wallet', component: ImportWalletComponent },
