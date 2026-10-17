@@ -743,6 +743,16 @@ export class WalletService {
     if (this.wallet.updatingBalance) return;
 
     this.wallet.updatingBalance = true;
+    try {
+      await this.refreshBalances();
+    } catch (error) {
+      // A failed RPC must not leave the balance spinner running forever.
+      this.wallet.updatingBalance = false;
+      throw error;
+    }
+  }
+
+  private async refreshBalances() {
     const fiatPrice = this.price.price.lastPrice;
 
     const accountIDs = this.wallet.accounts.map(a => a.id);
